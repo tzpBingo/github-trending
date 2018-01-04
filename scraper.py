@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # coding:utf-8
 
 import datetime
@@ -33,6 +34,10 @@ def scrape(language, filename):
     }
 
     url = 'https://github.com/trending/{language}'.format(language=language)
+    if language=='all':
+        url = 'https://github.com/trending'
+    else:
+        pass
     r = requests.get(url, headers=HEADERS)
     assert r.status_code == 200
 
@@ -66,16 +71,24 @@ def job():
     createMarkdown(strdate, filename)
 
     # write markdown
+    scrape('all', filename)
+    scrape('unknown', filename)
     scrape('python', filename)
     scrape('swift', filename)
+    scrape('objective-c', filename)
     scrape('javascript', filename)
     scrape('go', filename)
+    scrape('java', filename)
+    scrape('html', filename)
+    scrape('kotlin',filename)
+    scrape('shell',filename)
 
     # git add commit push
     git_add_commit_push(strdate, filename)
 
 
 if __name__ == '__main__':
+    # job()
     while True:
         job()
         time.sleep(24 * 60 * 60)
