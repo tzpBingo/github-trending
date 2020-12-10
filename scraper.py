@@ -85,6 +85,7 @@ def job():
 
 
 if __name__ == '__main__':
-    while True:
-        job()
-        time.sleep(24 * 60 * 60)
+    job()
+    # while True:
+    #     job()
+    #     time.sleep(24 * 60 * 60)
