@@ -40,3 +40,5 @@ The programming languages now configured are:
   
 
 You can also manually configure the programming language you care about yourself 🤪.
+
+> Thanks for non-commercial open source development authorization by JetBrains!
