@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	//loop
+	//loop down load
 	for {
 
 		dateString := dateString()
@@ -27,7 +27,7 @@ func main() {
 		scrape("go", filename)
 		scrape("javascript", filename)
 		scrape("ruby", filename)
-
+		scrape("java", filename)
 		gitPull()
 		gitAddAll()
 		gitCommit(dateString)
