@@ -75,6 +75,7 @@ def job():
     scrape('objective-c', filename)
     scrape('javascript', filename)
     scrape('go', filename)
+    scrape('golang', filename)
     scrape('java', filename)
     scrape('html', filename)
     scrape('kotlin',filename)
