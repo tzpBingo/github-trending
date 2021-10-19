@@ -1,75 +1,26 @@
-"""
-函数递归调用 - 函数直接或者间接的调用了自身
-1. 收敛条件
-2. 递归公式
+from bs4 import BeautifulSoup
 
-n! = n * (n-1)!
-f(n) = f(n-1) + f(n-2)
-1 1 2 3 5 8 13 21 34 55 ...
-"""
-from contextlib import contextmanager
-from time import perf_counter
+import requests
 
-
-def fac(num):
-    """求阶乘"""
-    assert num >= 0
-    if num in (0, 1):
-        return 1
-    return num * fac(num - 1)
-
-
-def fib2(num):
-    """普通函数"""
-    a, b = 1, 1
-    for _ in range(num - 1):
-        a, b = b, a + b
-    return a
-
-
-def fib3(num):
-    """生成器"""
-    a, b = 0, 1
-    for _ in range(num):
-        a, b = b, a + b
-        yield a
-
-
-# 动态规划 - 保存可能进行重复运算的中间结果（空间换时间）
-def fib(num, results={}):
-    """斐波拉切数"""
-    assert num > 0
-    if num in (1, 2):
-        return 1
-    try:
-        return results[num]
-    except KeyError:
-        results[num] = fib(num - 1) + fib(num - 2)
-        return results[num]
-
-
-@contextmanager
-def timer():
-    try:
-        start = perf_counter()
-        yield
-    finally:
-        end = perf_counter()
-        print(f'{end - start}秒')
+import re
 
 
 def main():
-    """主函数"""
-    # for val in fib3(20):
-    #     print(val)
-    # gen = fib3(20)
-    # for _ in range(10):
-    #     print(next(gen))
-    for num in range(1, 121):
-        with timer():
-            print(f'{num}: {fib(num)}')
-    # print(fac(5))
-    # print(fac(-5))
+    # 通过requests第三方库的get方法获取页面
+    resp = requests.get('http://sports.sohu.com/nba_a.shtml')
+    # 对响应的字节串(bytes)进行解码操作(搜狐的部分页面使用了GBK编码)
+    html = resp.content.decode('gbk')
+    # 创建BeautifulSoup对象来解析页面(相当于JavaScript的DOM)
+    bs = BeautifulSoup(html, 'lxml')
+    # 通过CSS选择器语法查找元素并通过循环进行处理
+    # for elem in bs.find_all(lambda x: 'test' in x.attrs):
+    for elem in bs.select('a[test]'):
+        # 通过attrs属性(字典)获取元素的属性值
+        link_url = elem.attrs['href']
+        resp = requests.get(link_url)
+        bs_sub = BeautifulSoup(resp.text, 'lxml')
+        # 使用正则表达式对获取的数据做进一步的处理
+        print(re.sub(r'[\r\n]', '', bs_sub.find('h1').text))
 
 
 if __name__ == '__main__':

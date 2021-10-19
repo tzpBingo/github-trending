@@ -1,48 +1,49 @@
-"""
-编码和解码 - BASE64
-0-9A-Za-z+/
-1100 0101 1001 0011 0111 0110
-00110001 00011001 00001101 00110110
-base64
-b64encode / b64decode
--------------------------------------
-序列化和反序列化
-序列化 - 将对象变成字节序列(bytes)或者字符序列(str) - 串行化/腌咸菜
-反序列化 - 把字节序列或者字符序列还原成对象
-Python标准库对序列化的支持：
-json - 字符形式的序列化
-pickle - 字节形式的序列化
-dumps / loads
-"""
-import base64
-import json
-import redis
 
-from example02 import Person
+from hashlib import sha1
+from urllib.parse import urljoin
 
+import pickle
+import re
+import requests
+import zlib
 
-class PersonJsonEncoder(json.JSONEncoder):
-
-    def default(self, o):
-        return o.__dict__
+from bs4 import BeautifulSoup
+from redis import Redis
 
 
 def main():
-    cli = redis.StrictRedis(host='120.77.222.217', port=6379, 
-                            password='123123')
-    data = base64.b64decode(cli.get('guido'))
-    with open('guido2.jpg', 'wb') as file_stream:
-        file_stream.write(data)
-    # with open('guido.jpg', 'rb') as file_stream:
-    #     result = base64.b64encode(file_stream.read())
-    # cli.set('guido', result)
-    # persons = [
-    #     Person('骆昊', 39), Person('王大锤', 18),
-    #     Person('白元芳', 25), Person('狄仁杰', 37)
-    # ]
-    # persons = json.loads(cli.get('persons'))
-    # print(persons)
-    # cli.set('persons', json.dumps(persons, cls=PersonJsonEncoder))
+    # 指定种子页面
+    base_url = 'https://www.zhihu.com/'
+    seed_url = urljoin(base_url, 'explore')
+    # 创建Redis客户端
+    client = Redis(host='1.2.3.4', port=6379, password='1qaz2wsx')
+    # 设置用户代理(否则访问会被拒绝)
+    headers = {'user-agent': 'Baiduspider'}
+    # 通过requests模块发送GET请求并指定用户代理
+    resp = requests.get(seed_url, headers=headers)
+    # 创建BeautifulSoup对象并指定使用lxml作为解析器
+    soup = BeautifulSoup(resp.text, 'lxml')
+    href_regex = re.compile(r'^/question')
+    # 将URL处理成SHA1摘要(长度固定更简短)
+    hasher_proto = sha1()
+    # 查找所有href属性以/question打头的a标签
+    for a_tag in soup.find_all('a', {'href': href_regex}):
+        # 获取a标签的href属性值并组装完整的URL
+        href = a_tag.attrs['href']
+        full_url = urljoin(base_url, href)
+        # 传入URL生成SHA1摘要
+        hasher = hasher_proto.copy()
+        hasher.update(full_url.encode('utf-8'))
+        field_key = hasher.hexdigest()
+        # 如果Redis的键'zhihu'对应的hash数据类型中没有URL的摘要就访问页面并缓存
+        if not client.hexists('zhihu', field_key):
+            html_page = requests.get(full_url, headers=headers).text
+            # 对页面进行序列化和压缩操作
+            zipped_page = zlib.compress(pickle.dumps(html_page))
+            # 使用hash数据类型保存URL摘要及其对应的页面代码
+            client.hset('zhihu', field_key, zipped_page)
+    # 显示总共缓存了多少个页面
+    print('Total %d question pages found.' % client.hlen('zhihu'))
 
 
 if __name__ == '__main__':

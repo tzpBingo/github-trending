@@ -1,68 +1,83 @@
-"""
-查找 - 顺序查找和二分查找
-算法：解决问题的方法（步骤）
-评价一个算法的好坏主要有两个指标：渐近时间复杂度和渐近空间复杂度，通常一个算法很难做到时间复杂度和空间复杂度都很低（因为时间和空间是不可调和的矛盾）
-表示渐近时间复杂度通常使用大O标记
-O(c)：常量时间复杂度 - 哈希存储 / 布隆过滤器
-O(log_2 n)：对数时间复杂度 - 折半查找
-O(n)：线性时间复杂度 - 顺序查找
-O(n * log_2 n)：- 对数线性时间复杂度 - 高级排序算法（归并排序、快速排序）
-O(n ** 2)：平方时间复杂度 - 简单排序算法（冒泡排序、选择排序、插入排序）
-O(n ** 3)：立方时间复杂度 - Floyd算法 / 矩阵乘法运算
-也称为多项式时间复杂度
-O(2 ** n)：几何级数时间复杂度 - 汉诺塔
-O(3 ** n)：几何级数时间复杂度
-也称为指数时间复杂度
-O(n!)：阶乘时间复杂度 - 旅行经销商问题 - NP
-"""
-from math import log2, factorial
-from matplotlib import pyplot
+from urllib.error import URLError
+from urllib.request import urlopen
 
-import numpy
+import re
+import pymysql
+import ssl
+
+from pymysql import Error
 
 
-def seq_search(items: list, elem) -> int:
-    """顺序查找"""
-    for index, item in enumerate(items):
-        if elem == item:
-            return index
-    return -1
+# 通过指定的字符集对页面进行解码(不是每个网站都将字符集设置为utf-8)
+def decode_page(page_bytes, charsets=('utf-8',)):
+    page_html = None
+    for charset in charsets:
+        try:
+            page_html = page_bytes.decode(charset)
+            break
+        except UnicodeDecodeError:
+            pass
+            # logging.error('Decode:', error)
+    return page_html
 
 
-def bin_search(items, elem):
-    """二分查找"""
-    start, end = 0, len(items) - 1
-    while start <= end:
-        mid = (start + end) // 2
-        if elem > items[mid]:
-            start = mid + 1
-        elif elem < items[mid]:
-            end = mid - 1
-        else:
-            return mid
-    return -1
+# 获取页面的HTML代码(通过递归实现指定次数的重试操作)
+def get_page_html(seed_url, *, retry_times=3, charsets=('utf-8',)):
+    page_html = None
+    try:
+        page_html = decode_page(urlopen(seed_url).read(), charsets)
+    except URLError:
+        # logging.error('URL:', error)
+        if retry_times > 0:
+            return get_page_html(seed_url, retry_times=retry_times - 1,
+                                 charsets=charsets)
+    return page_html
+
+
+# 从页面中提取需要的部分(通常是链接也可以通过正则表达式进行指定)
+def get_matched_parts(page_html, pattern_str, pattern_ignore_case=re.I):
+    pattern_regex = re.compile(pattern_str, pattern_ignore_case)
+    return pattern_regex.findall(page_html) if page_html else []
+
+
+# 开始执行爬虫程序并对指定的数据进行持久化操作
+def start_crawl(seed_url, match_pattern, *, max_depth=-1):
+    conn = pymysql.connect(host='localhost', port=3306,
+                           database='crawler', user='root',
+                           password='123456', charset='utf8')
+    try:
+        with conn.cursor() as cursor:
+            url_list = [seed_url]
+            visited_url_list = {seed_url: 0}
+            while url_list:
+                current_url = url_list.pop(0)
+                depth = visited_url_list[current_url]
+                if depth != max_depth:
+                    page_html = get_page_html(current_url, charsets=('utf-8', 'gbk', 'gb2312'))
+                    links_list = get_matched_parts(page_html, match_pattern)
+                    param_list = []
+                    for link in links_list:
+                        if link not in visited_url_list:
+                            visited_url_list[link] = depth + 1
+                            page_html = get_page_html(link, charsets=('utf-8', 'gbk', 'gb2312'))
+                            headings = get_matched_parts(page_html, r'<h1>(.*)<span')
+                            if headings:
+                                param_list.append((headings[0], link))
+                    cursor.executemany('insert into tb_result values (default, %s, %s)',
+                                       param_list)
+                    conn.commit()
+    except Error:
+        pass
+        # logging.error('SQL:', error)
+    finally:
+        conn.close()
 
 
 def main():
-    """主函数（程序入口）"""
-    num = 6
-    styles = ['r-.', 'g-*', 'b-o', 'y-x', 'c-^', 'm-+', 'k-d']
-    legends = ['对数', '线性', '线性对数', '平方', '立方', '几何级数', '阶乘']
-    x_data = [x for x in range(1, num + 1)]
-    y_data1 = [log2(y) for y in range(1, num + 1)]
-    y_data2 = [y for y in range(1, num + 1)]
-    y_data3 = [y * log2(y) for y in range(1, num + 1)]
-    y_data4 = [y ** 2 for y in range(1, num + 1)]
-    y_data5 = [y ** 3 for y in range(1, num + 1)]
-    y_data6 = [3 ** y for y in range(1, num + 1)]
-    y_data7 = [factorial(y) for y in range(1, num + 1)]
-    y_datas = [y_data1, y_data2, y_data3, y_data4, y_data5, y_data6, y_data7]
-    for index, y_data in enumerate(y_datas):
-        pyplot.plot(x_data, y_data, styles[index])
-    pyplot.legend(legends)
-    pyplot.xticks(numpy.arange(1, 7, step=1))
-    pyplot.yticks(numpy.arange(0, 751, step=50))
-    pyplot.show()
+    ssl._create_default_https_context = ssl._create_unverified_context
+    start_crawl('http://sports.sohu.com/nba_a.shtml',
+                r'<a[^>]+test=a\s[^>]*href=["\'](.*?)["\']',
+                max_depth=2)
 
 
 if __name__ == '__main__':
