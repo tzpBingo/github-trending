@@ -168,6 +168,34 @@ class ClbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CloneLoadBalancer(self, request):
+        """克隆负载均衡实例，根据指定的负载均衡实例，复制出相同规则和绑定关系的负载均衡实例。
+
+        :param request: Request instance for CloneLoadBalancer.
+        :type request: :class:`tencentcloud.clb.v20180317.models.CloneLoadBalancerRequest`
+        :rtype: :class:`tencentcloud.clb.v20180317.models.CloneLoadBalancerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("CloneLoadBalancer", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CloneLoadBalancerResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateClsLogSet(self, request):
         """创建CLB专有日志集，此日志集用于存储CLB的日志。
 
@@ -1033,6 +1061,34 @@ class ClbClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeLoadBalancerListByCertIdResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeLoadBalancerOverview(self, request):
+        """查询运行中、隔离中、即将到期和负载均衡总数。
+
+        :param request: Request instance for DescribeLoadBalancerOverview.
+        :type request: :class:`tencentcloud.clb.v20180317.models.DescribeLoadBalancerOverviewRequest`
+        :rtype: :class:`tencentcloud.clb.v20180317.models.DescribeLoadBalancerOverviewResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DescribeLoadBalancerOverview", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeLoadBalancerOverviewResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

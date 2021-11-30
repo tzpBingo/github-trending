@@ -2042,6 +2042,34 @@ class TkeClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DisableClusterDeletionProtection(self, request):
+        """关闭集群删除保护
+
+        :param request: Request instance for DisableClusterDeletionProtection.
+        :type request: :class:`tencentcloud.tke.v20180525.models.DisableClusterDeletionProtectionRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.DisableClusterDeletionProtectionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DisableClusterDeletionProtection", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DisableClusterDeletionProtectionResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DisableVpcCniNetworkType(self, request):
         """提供给附加了VPC-CNI能力的Global-Route集群关闭VPC-CNI
 
@@ -2070,6 +2098,34 @@ class TkeClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def EnableClusterDeletionProtection(self, request):
+        """启用集群删除保护
+
+        :param request: Request instance for EnableClusterDeletionProtection.
+        :type request: :class:`tencentcloud.tke.v20180525.models.EnableClusterDeletionProtectionRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.EnableClusterDeletionProtectionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("EnableClusterDeletionProtection", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.EnableClusterDeletionProtectionResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def EnableVpcCniNetworkType(self, request):
         """GR集群可以通过本接口附加vpc-cni容器网络插件，开启vpc-cni容器网络能力
 
@@ -2084,6 +2140,62 @@ class TkeClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.EnableVpcCniNetworkTypeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ForwardApplicationRequestV3(self, request):
+        """操作TKE集群的addon
+
+        :param request: Request instance for ForwardApplicationRequestV3.
+        :type request: :class:`tencentcloud.tke.v20180525.models.ForwardApplicationRequestV3Request`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.ForwardApplicationRequestV3Response`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("ForwardApplicationRequestV3", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ForwardApplicationRequestV3Response()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def GetTkeAppChartList(self, request):
+        """获取TKE支持的App列表
+
+        :param request: Request instance for GetTkeAppChartList.
+        :type request: :class:`tencentcloud.tke.v20180525.models.GetTkeAppChartListRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.GetTkeAppChartListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("GetTkeAppChartList", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.GetTkeAppChartListResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

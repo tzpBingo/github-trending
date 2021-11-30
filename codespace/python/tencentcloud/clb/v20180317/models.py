@@ -930,6 +930,132 @@ class ClassicalTargetInfo(AbstractModel):
         
 
 
+class CloneLoadBalancerRequest(AbstractModel):
+    """CloneLoadBalancer请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LoadBalancerId: 负载均衡ID。
+        :type LoadBalancerId: str
+        :param LoadBalancerName: 克隆出负载均衡实例的名称，规则：1-60 个英文、汉字、数字、连接线“-”或下划线“_”。
+注意：如果名称与系统中已有负载均衡实例的名称相同，则系统将会自动生成此次创建的负载均衡实例的名称。
+        :type LoadBalancerName: str
+        :param ProjectId: 负载均衡实例所属的项目 ID，可以通过 DescribeProject 接口获取。不传此参数则视为默认项目。
+        :type ProjectId: int
+        :param MasterZoneId: 仅适用于公网负载均衡。设置跨可用区容灾时的主可用区ID，例如 100001 或 ap-guangzhou-1
+注：主可用区是需要承载流量的可用区，备可用区默认不承载流量，主可用区不可用时才使用备可用区，平台将为您自动选择最佳备可用区。可通过 DescribeMasterZones 接口查询一个地域的主可用区的列表。
+        :type MasterZoneId: str
+        :param SlaveZoneId: 仅适用于公网负载均衡。设置跨可用区容灾时的备可用区ID，例如 100001 或 ap-guangzhou-1
+注：备可用区是主可用区故障后，需要承载流量的可用区。可通过 DescribeMasterZones 接口查询一个地域的主/备可用区的列表。
+        :type SlaveZoneId: str
+        :param ZoneId: 仅适用于公网负载均衡。可用区ID，指定可用区以创建负载均衡实例。如：ap-guangzhou-1。
+        :type ZoneId: str
+        :param InternetAccessible: 仅适用于公网负载均衡。负载均衡的网络计费模式。
+        :type InternetAccessible: :class:`tencentcloud.clb.v20180317.models.InternetAccessible`
+        :param VipIsp: 仅适用于公网负载均衡。CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
+        :type VipIsp: str
+        :param Vip: 指定Vip申请负载均衡。
+        :type Vip: str
+        :param Tags: 购买负载均衡同时，给负载均衡打上标签。
+        :type Tags: list of TagInfo
+        :param ExclusiveCluster: 独占集群信息。
+        :type ExclusiveCluster: :class:`tencentcloud.clb.v20180317.models.ExclusiveCluster`
+        :param BandwidthPackageId: 带宽包ID，指定此参数时，网络计费方式（InternetAccessible.InternetChargeType）只支持按带宽包计费（BANDWIDTH_PACKAGE）。
+        :type BandwidthPackageId: str
+        :param SnatPro: 是否支持绑定跨地域/跨Vpc绑定IP的功能。
+        :type SnatPro: bool
+        :param SnatIps: 开启绑定跨地域/跨Vpc绑定IP的功能后，创建SnatIp。
+        :type SnatIps: list of SnatIp
+        :param ClusterIds: 公网独占集群ID或者CDCId。
+        :type ClusterIds: list of str
+        :param ClusterTag: Stgw独占集群的标签。
+        :type ClusterTag: str
+        :param Zones: 仅适用于私有网络内网负载均衡。内网就近接入时，选择可用区下发。
+        :type Zones: list of str
+        :param EipAddressId: EIP 的唯一 ID，形如：eip-11112222，仅适用于内网负载均衡绑定EIP。
+        :type EipAddressId: str
+        """
+        self.LoadBalancerId = None
+        self.LoadBalancerName = None
+        self.ProjectId = None
+        self.MasterZoneId = None
+        self.SlaveZoneId = None
+        self.ZoneId = None
+        self.InternetAccessible = None
+        self.VipIsp = None
+        self.Vip = None
+        self.Tags = None
+        self.ExclusiveCluster = None
+        self.BandwidthPackageId = None
+        self.SnatPro = None
+        self.SnatIps = None
+        self.ClusterIds = None
+        self.ClusterTag = None
+        self.Zones = None
+        self.EipAddressId = None
+
+
+    def _deserialize(self, params):
+        self.LoadBalancerId = params.get("LoadBalancerId")
+        self.LoadBalancerName = params.get("LoadBalancerName")
+        self.ProjectId = params.get("ProjectId")
+        self.MasterZoneId = params.get("MasterZoneId")
+        self.SlaveZoneId = params.get("SlaveZoneId")
+        self.ZoneId = params.get("ZoneId")
+        if params.get("InternetAccessible") is not None:
+            self.InternetAccessible = InternetAccessible()
+            self.InternetAccessible._deserialize(params.get("InternetAccessible"))
+        self.VipIsp = params.get("VipIsp")
+        self.Vip = params.get("Vip")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = TagInfo()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        if params.get("ExclusiveCluster") is not None:
+            self.ExclusiveCluster = ExclusiveCluster()
+            self.ExclusiveCluster._deserialize(params.get("ExclusiveCluster"))
+        self.BandwidthPackageId = params.get("BandwidthPackageId")
+        self.SnatPro = params.get("SnatPro")
+        if params.get("SnatIps") is not None:
+            self.SnatIps = []
+            for item in params.get("SnatIps"):
+                obj = SnatIp()
+                obj._deserialize(item)
+                self.SnatIps.append(obj)
+        self.ClusterIds = params.get("ClusterIds")
+        self.ClusterTag = params.get("ClusterTag")
+        self.Zones = params.get("Zones")
+        self.EipAddressId = params.get("EipAddressId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloneLoadBalancerResponse(AbstractModel):
+    """CloneLoadBalancer返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class Cluster(AbstractModel):
     """集群的详细信息，如集群ID，名称，类型，可用区，标签等
 
@@ -3082,6 +3208,45 @@ class DescribeLoadBalancerListByCertIdResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeLoadBalancerOverviewRequest(AbstractModel):
+    """DescribeLoadBalancerOverview请求参数结构体
+
+    """
+
+
+class DescribeLoadBalancerOverviewResponse(AbstractModel):
+    """DescribeLoadBalancerOverview返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 负载均衡总数
+        :type TotalCount: int
+        :param RunningCount: 运行中的负载均衡数目
+        :type RunningCount: int
+        :param IsolationCount: 隔离中的负载均衡数目
+        :type IsolationCount: int
+        :param WillExpireCount: 即将到期的负载均衡数目
+        :type WillExpireCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.RunningCount = None
+        self.IsolationCount = None
+        self.WillExpireCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        self.RunningCount = params.get("RunningCount")
+        self.IsolationCount = params.get("IsolationCount")
+        self.WillExpireCount = params.get("WillExpireCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeLoadBalancerTrafficRequest(AbstractModel):
     """DescribeLoadBalancerTraffic请求参数结构体
 
@@ -3144,7 +3309,7 @@ class DescribeLoadBalancersDetailRequest(AbstractModel):
         :type Limit: int
         :param Offset: 返回负载均衡列表起始偏移量，默认0。
         :type Offset: int
-        :param Fields: 选择返回的Fields列表，默认添加LoadBalancerId和LoadBalancerName。
+        :param Fields: 选择返回的Fields列表，系统仅会返回Fileds中填写的字段，可填写的字段详情请参见<a href="https://cloud.tencent.com/document/api/214/30694#LoadBalancerDetail">LoadBalancerDetail</a>。若未在Fileds填写相关字段，则此字段返回null。Fileds中默认添加LoadBalancerId和LoadBalancerName字段。
         :type Fields: list of str
         :param TargetType: 当Fields包含TargetId、TargetAddress、TargetPort、TargetWeight等Fields时，必选选择导出目标组的Target或者非目标组Target，值范围NODE、GROUP。
         :type TargetType: str
@@ -3264,7 +3429,8 @@ OPEN：公网属性， INTERNAL：内网属性。
         :type SecurityGroup: str
         :param MasterZone: 主可用区ID，如 ："100001" （对应的是广州一区）。
         :type MasterZone: str
-        :param Filters: 每次请求的`Filters`的上限为10，`Filter.Values`的上限为100。详细的过滤条件如下：
+        :param Filters: 每次请求的`Filters`的上限为10，`Filter.Values`的上限为100。<br/>`Filter.Name`和`Filter.Values`皆为必填项。详细的过滤条件如下：
+<li> charge-type - String - 是否必填：否 - （过滤条件）按照 CLB 的实例计费模式过滤，包括"PREPAID","POSTPAID_BY_HOUR"。</li>
 <li> internet-charge-type - String - 是否必填：否 - （过滤条件）按照 CLB 的网络计费模式过滤，包括"BANDWIDTH_PREPAID","TRAFFIC_POSTPAID_BY_HOUR","BANDWIDTH_POSTPAID_BY_HOUR","BANDWIDTH_PACKAGE"。</li>
 <li> master-zone-id - String - 是否必填：否 - （过滤条件）按照 CLB 的主可用区ID过滤，如 ："100001" （对应的是广州一区）。</li>
 <li> tag-key - String - 是否必填：否 - （过滤条件）按照 CLB 标签的键过滤。</li>
@@ -3272,6 +3438,7 @@ OPEN：公网属性， INTERNAL：内网属性。
 <li> function-name - String - 是否必填：否 - （过滤条件）按照 CLB 后端绑定的SCF云函数的函数名称过滤。</li>
 <li> function-name - String - 是否必填：否 - （过滤条件）按照 CLB 后端绑定的SCF云函数的函数名称过滤。</li>
 <li> vip-isp - String - 是否必填：否 - （过滤条件）按照 CLB VIP的运营商类型过滤，如："BGP","INTERNAL","CMCC","CTCC","CUCC"等。</li>
+<li> sla-type - String - 是否必填：否 - （过滤条件）按照 CLB 的性能容量型规格过滤，包括"clb.c2.medium","clb.c3.small","clb.c3.medium","clb.c4.small","clb.c4.medium","clb.c4.large","clb.c4.xlarge"。</li>
         :type Filters: list of Filter
         """
         self.LoadBalancerIds = None
@@ -4686,6 +4853,12 @@ OPEN：公网属性， INTERNAL：内网属性。
         :param HealthLogTopicId: 负载均衡日志服务(CLS)的健康检查日志主题ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type HealthLogTopicId: str
+        :param ClusterIds: 集群ID.
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterIds: list of str
+        :param AttributeFlags: 负载均衡的属性
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttributeFlags: list of str
         """
         self.LoadBalancerId = None
         self.LoadBalancerName = None
@@ -4738,6 +4911,8 @@ OPEN：公网属性， INTERNAL：内网属性。
         self.NfvInfo = None
         self.HealthLogSetId = None
         self.HealthLogTopicId = None
+        self.ClusterIds = None
+        self.AttributeFlags = None
 
 
     def _deserialize(self, params):
@@ -4819,6 +4994,8 @@ OPEN：公网属性， INTERNAL：内网属性。
         self.NfvInfo = params.get("NfvInfo")
         self.HealthLogSetId = params.get("HealthLogSetId")
         self.HealthLogTopicId = params.get("HealthLogTopicId")
+        self.ClusterIds = params.get("ClusterIds")
+        self.AttributeFlags = params.get("AttributeFlags")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
