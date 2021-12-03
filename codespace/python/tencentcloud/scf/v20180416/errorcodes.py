@@ -203,6 +203,9 @@ INVALIDPARAMETERVALUE_APMCONFIGINSTANCEID = 'InvalidParameterValue.ApmConfigInst
 # ApmConfigRegion参数传入错误。
 INVALIDPARAMETERVALUE_APMCONFIGREGION = 'InvalidParameterValue.ApmConfigRegion'
 
+# Args 参数值有误。
+INVALIDPARAMETERVALUE_ARGS = 'InvalidParameterValue.Args'
+
 # 函数异步重试配置参数无效。
 INVALIDPARAMETERVALUE_ASYNCTRIGGERCONFIG = 'InvalidParameterValue.AsyncTriggerConfig'
 
@@ -235,6 +238,9 @@ INVALIDPARAMETERVALUE_CODESECRET = 'InvalidParameterValue.CodeSecret'
 
 # CodeSource传入错误。
 INVALIDPARAMETERVALUE_CODESOURCE = 'InvalidParameterValue.CodeSource'
+
+# Command[Entrypoint] 参数值有误。
+INVALIDPARAMETERVALUE_COMMAND = 'InvalidParameterValue.Command'
 
 # CompatibleRuntimes参数传入错误。
 INVALIDPARAMETERVALUE_COMPATIBLERUNTIMES = 'InvalidParameterValue.CompatibleRuntimes'
@@ -269,6 +275,9 @@ INVALIDPARAMETERVALUE_DEFAULTNAMESPACE = 'InvalidParameterValue.DefaultNamespace
 # Description传入错误。
 INVALIDPARAMETERVALUE_DESCRIPTION = 'InvalidParameterValue.Description'
 
+# 环境变量DNS[OS_NAMESERVER]配置有误。
+INVALIDPARAMETERVALUE_DNSINFO = 'InvalidParameterValue.DnsInfo'
+
 # EipConfig参数错误。
 INVALIDPARAMETERVALUE_EIPCONFIG = 'InvalidParameterValue.EipConfig'
 
@@ -286,6 +295,9 @@ INVALIDPARAMETERVALUE_ENVIRONMENTSYSTEMPROTECT = 'InvalidParameterValue.Environm
 
 # Filters参数错误。
 INVALIDPARAMETERVALUE_FILTERS = 'InvalidParameterValue.Filters'
+
+# Function取值与规范不符，请修正后再试。可参考：https://tencentcs.com/5jXKFnBW。
+INVALIDPARAMETERVALUE_FUNCTION = 'InvalidParameterValue.Function'
 
 # 函数不存在。
 INVALIDPARAMETERVALUE_FUNCTIONNAME = 'InvalidParameterValue.FunctionName'
@@ -313,6 +325,9 @@ INVALIDPARAMETERVALUE_HANDLER = 'InvalidParameterValue.Handler'
 
 # IdleTimeOut参数传入错误。
 INVALIDPARAMETERVALUE_IDLETIMEOUT = 'InvalidParameterValue.IdleTimeOut'
+
+# imageUri 传入有误。
+INVALIDPARAMETERVALUE_IMAGEURI = 'InvalidParameterValue.ImageUri'
 
 # InlineZipFile非法。
 INVALIDPARAMETERVALUE_INLINEZIPFILE = 'InvalidParameterValue.InlineZipFile'
@@ -380,6 +395,9 @@ INVALIDPARAMETERVALUE_PUBLICNETCONFIG = 'InvalidParameterValue.PublicNetConfig'
 # 不支持的函数版本。
 INVALIDPARAMETERVALUE_QUALIFIER = 'InvalidParameterValue.Qualifier'
 
+# 企业版镜像实例ID[RegistryId]传值错误。
+INVALIDPARAMETERVALUE_REGISTRYID = 'InvalidParameterValue.RegistryId'
+
 # RetCode不合法。
 INVALIDPARAMETERVALUE_RETCODE = 'InvalidParameterValue.RetCode'
 
@@ -400,6 +418,9 @@ INVALIDPARAMETERVALUE_SERVICENAME = 'InvalidParameterValue.ServiceName'
 
 # Stamp取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_STAMP = 'InvalidParameterValue.Stamp'
+
+# 起始时间传入错误。
+INVALIDPARAMETERVALUE_STARTTIME = 'InvalidParameterValue.StartTime'
 
 # 需要同时指定开始日期与结束日期。
 INVALIDPARAMETERVALUE_STARTTIMEORENDTIME = 'InvalidParameterValue.StartTimeOrEndTime'
