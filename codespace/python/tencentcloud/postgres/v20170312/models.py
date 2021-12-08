@@ -412,7 +412,7 @@ class CreateInstancesRequest(AbstractModel):
         r"""
         :param SpecCode: 售卖规格ID。该参数可以通过调用DescribeProductConfig的返回值中的SpecCode字段来获取。
         :type SpecCode: str
-        :param DBVersion: PostgreSQL内核版本，目前支持：9.3.5、9.5.4、10.4、11.8、12.4五种版本。
+        :param DBVersion: PostgreSQL主版本，目前支持：9.3、9.5、10、11、12、13以及9.3.5、9.5.4、10.4、11.8、12.4版本。
         :type DBVersion: str
         :param Storage: 实例容量大小，单位：GB。
         :type Storage: int
@@ -925,7 +925,7 @@ class DBInstance(AbstractModel):
         :type DBInstanceId: str
         :param DBInstanceName: 实例名称
         :type DBInstanceName: str
-        :param DBInstanceStatus: 实例状态，分别为：applying（申请中）、init(待初始化)、initing(初始化中)、running(运行中)、limited run（受限运行）、isolated（已隔离）、recycling（回收中）、recycled（已回收）、job running（任务执行中）、offline（下线）、migrating（迁移中）、expanding（扩容中）、waitSwitch（等待切换）、switching（切换中）、readonly（只读）、restarting（重启中）、
+        :param DBInstanceStatus: 实例状态，分别为：applying（申请中）、init(待初始化)、initing(初始化中)、running(运行中)、limited run（受限运行）、isolated（已隔离）、recycling（回收中）、recycled（已回收）、job running（任务执行中）、offline（下线）、migrating（迁移中）、expanding（扩容中）、waitSwitch（等待切换）、switching（切换中）、readonly（只读）、restarting（重启中）、network changing（网络变更中）
         :type DBInstanceStatus: str
         :param DBInstanceMemory: 实例分配的内存大小，单位：GB
         :type DBInstanceMemory: int
