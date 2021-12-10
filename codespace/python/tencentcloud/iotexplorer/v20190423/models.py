@@ -2757,6 +2757,34 @@ class DeviceSignatureInfo(AbstractModel):
         
 
 
+class DeviceUser(AbstractModel):
+    """设备的用户
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserId: 用户ID
+        :type UserId: str
+        :param Role: 用户角色 1所有者，0：其他分享者
+        :type Role: int
+        """
+        self.UserId = None
+        self.Role = None
+
+
+    def _deserialize(self, params):
+        self.UserId = params.get("UserId")
+        self.Role = params.get("Role")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DevicesItem(AbstractModel):
     """ProductId -> DeviceName
 
@@ -3504,6 +3532,61 @@ class GetDeviceLocationHistoryResponse(AbstractModel):
                 obj = PositionItem()
                 obj._deserialize(item)
                 self.Positions.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class GetFamilyDeviceUserListRequest(AbstractModel):
+    """GetFamilyDeviceUserList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProductId: 产品ID
+        :type ProductId: str
+        :param DeviceName: 设备名称
+        :type DeviceName: str
+        """
+        self.ProductId = None
+        self.DeviceName = None
+
+
+    def _deserialize(self, params):
+        self.ProductId = params.get("ProductId")
+        self.DeviceName = params.get("DeviceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetFamilyDeviceUserListResponse(AbstractModel):
+    """GetFamilyDeviceUserList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserList: 设备的用户列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserList: list of DeviceUser
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UserList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("UserList") is not None:
+            self.UserList = []
+            for item in params.get("UserList"):
+                obj = DeviceUser()
+                obj._deserialize(item)
+                self.UserList.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -5323,6 +5406,65 @@ class PublishMessageResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class PublishRRPCMessageRequest(AbstractModel):
+    """PublishRRPCMessage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProductId: 产品ID
+        :type ProductId: str
+        :param DeviceName: 设备名称
+        :type DeviceName: str
+        :param Payload: 消息内容，utf8编码
+        :type Payload: str
+        """
+        self.ProductId = None
+        self.DeviceName = None
+        self.Payload = None
+
+
+    def _deserialize(self, params):
+        self.ProductId = params.get("ProductId")
+        self.DeviceName = params.get("DeviceName")
+        self.Payload = params.get("Payload")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PublishRRPCMessageResponse(AbstractModel):
+    """PublishRRPCMessage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MessageId: RRPC消息ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MessageId: int
+        :param PayloadBase64: 设备回复的消息内容，采用base64编码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PayloadBase64: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.MessageId = None
+        self.PayloadBase64 = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.MessageId = params.get("MessageId")
+        self.PayloadBase64 = params.get("PayloadBase64")
         self.RequestId = params.get("RequestId")
 
 
