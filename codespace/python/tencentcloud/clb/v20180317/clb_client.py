@@ -907,6 +907,34 @@ class ClbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeCrossTargets(self, request):
+        """查询跨域2.0版本云联网后端子机和网卡信息。
+
+        :param request: Request instance for DescribeCrossTargets.
+        :type request: :class:`tencentcloud.clb.v20180317.models.DescribeCrossTargetsRequest`
+        :rtype: :class:`tencentcloud.clb.v20180317.models.DescribeCrossTargetsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DescribeCrossTargets", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeCrossTargetsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeCustomizedConfigAssociateList(self, request):
         """拉取配置绑定的 server 或 location，如果 domain 存在，结果将根据 domain 过滤。或拉取配置绑定的 loadbalancer。
 
@@ -1469,6 +1497,35 @@ class ClbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def MigrateClassicalLoadBalancers(self, request):
+        """本接口将传统型负载均衡迁移成(原应用型)负载均衡
+        本接口为异步接口，接口成功返回后，可使用 DescribeLoadBalancers 接口查询负载均衡实例的状态（如创建中、正常），以确定是否创建成功。
+
+        :param request: Request instance for MigrateClassicalLoadBalancers.
+        :type request: :class:`tencentcloud.clb.v20180317.models.MigrateClassicalLoadBalancersRequest`
+        :rtype: :class:`tencentcloud.clb.v20180317.models.MigrateClassicalLoadBalancersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("MigrateClassicalLoadBalancers", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.MigrateClassicalLoadBalancersResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyBlockIPList(self, request):
         """修改负载均衡的IP（client IP）封禁黑名单列表，一个转发规则最多支持封禁 2000000 个IP，及黑名单容量为 2000000。
         （接口灰度中，如需使用请提工单）
@@ -1614,7 +1671,7 @@ class ClbClient(AbstractClient):
 
 
     def ModifyLoadBalancerSla(self, request):
-        """升、降配接口。支持共享型clb升级到性能保障型clb。支持性能保障型提升等级。支持性能保障降低规格。（不支持性能保障降级到共享型）。
+        """支持共享型clb升级到性能容量型clb（不支持性能保障降级到共享型）。
 
         :param request: Request instance for ModifyLoadBalancerSla.
         :type request: :class:`tencentcloud.clb.v20180317.models.ModifyLoadBalancerSlaRequest`
