@@ -280,7 +280,7 @@ class NlpClient(AbstractClient):
 
 
     def DescribeEntity(self, request):
-        """输入实体名称，返回实体相关的信息如实体别名、实体英文名、实体详细信息、相关实体等。
+        """此接口正在维护升级，后续上线另行通知。
 
         :param request: Request instance for DescribeEntity.
         :type request: :class:`tencentcloud.nlp.v20190408.models.DescribeEntityRequest`
@@ -308,7 +308,7 @@ class NlpClient(AbstractClient):
 
 
     def DescribeRelation(self, request):
-        """输入两个实体，返回两个实体间的关系，例如马化腾与腾讯公司不仅是相关实体，二者还存在隶属关系（马化腾属于腾讯公司）。
+        """此接口正在维护升级，后续上线另行通知。
 
         :param request: Request instance for DescribeRelation.
         :type request: :class:`tencentcloud.nlp.v20190408.models.DescribeRelationRequest`
@@ -336,7 +336,7 @@ class NlpClient(AbstractClient):
 
 
     def DescribeTriple(self, request):
-        """三元组查询，主要分为两类，SP查询和PO查询。SP查询表示已知主语和谓语查询宾语，PO查询表示已知宾语和谓语查询主语。每一个SP或PO查询都是一个可独立执行的查询，TQL支持SP查询的嵌套查询，即主语可以是一个嵌套的子查询。其他复杂的三元组查询方法，请参考官网API文档示例。
+        """此接口正在维护升级，后续上线另行通知。
 
         :param request: Request instance for DescribeTriple.
         :type request: :class:`tencentcloud.nlp.v20190408.models.DescribeTripleRequest`
@@ -578,7 +578,7 @@ class NlpClient(AbstractClient):
 
         目前已提供：
 
-        - 通用领域分类体系，二级分类，包括15个分类类目，分别是汽车、科技、健康、体育、旅行、教育、职业、文化、军事、房产、娱乐、女性、奥运、财经以及其他，适用于通用的场景。
+        - 通用领域分类体系，二级分类，包括14个分类类目，分别是汽车、科技、健康、体育、旅行、教育、职业、文化、房产、娱乐、女性、奥运、财经以及其他，适用于通用的场景。
 
         - 新闻领域分类体系，五级分类，包括35个一级分类类目，228个二级分类，493个三级分类，204个四级分类，40个五级分类（详细请见附录->文本分类映射表），已应用于腾讯新闻的文章分类。
 

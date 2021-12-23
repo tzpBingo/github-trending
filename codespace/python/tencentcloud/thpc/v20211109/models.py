@@ -127,6 +127,78 @@ class CFSOption(AbstractModel):
         
 
 
+class ClusterOverview(AbstractModel):
+    """集群概览信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID。
+        :type ClusterId: str
+        :param ClusterStatus: 集群状态。取值范围：<br><li>PENDING：创建中<br><li>INITING：初始化中<br><li>INIT_FAILED：初始化失败<br><li>RUNNING：运行中<br><li>TERMINATING：销毁中
+        :type ClusterStatus: str
+        :param ClusterName: 集群名称。
+        :type ClusterName: str
+        :param Placement: 集群位置信息。
+        :type Placement: :class:`tencentcloud.thpc.v20211109.models.Placement`
+        :param CreateTime: 集群创建时间。
+        :type CreateTime: str
+        :param SchedulerType: 集群调度器。
+        :type SchedulerType: str
+        :param ComputeNodeCount: 计算节点数量。
+        :type ComputeNodeCount: int
+        :param ComputeNodeSet: 计算节点概览。
+        :type ComputeNodeSet: list of ComputeNodeOverview
+        :param ManagerNodeCount: 管控节点数量。
+        :type ManagerNodeCount: int
+        :param ManagerNodeSet: 管控节点概览。
+        :type ManagerNodeSet: list of ManagerNodeOverview
+        """
+        self.ClusterId = None
+        self.ClusterStatus = None
+        self.ClusterName = None
+        self.Placement = None
+        self.CreateTime = None
+        self.SchedulerType = None
+        self.ComputeNodeCount = None
+        self.ComputeNodeSet = None
+        self.ManagerNodeCount = None
+        self.ManagerNodeSet = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.ClusterStatus = params.get("ClusterStatus")
+        self.ClusterName = params.get("ClusterName")
+        if params.get("Placement") is not None:
+            self.Placement = Placement()
+            self.Placement._deserialize(params.get("Placement"))
+        self.CreateTime = params.get("CreateTime")
+        self.SchedulerType = params.get("SchedulerType")
+        self.ComputeNodeCount = params.get("ComputeNodeCount")
+        if params.get("ComputeNodeSet") is not None:
+            self.ComputeNodeSet = []
+            for item in params.get("ComputeNodeSet"):
+                obj = ComputeNodeOverview()
+                obj._deserialize(item)
+                self.ComputeNodeSet.append(obj)
+        self.ManagerNodeCount = params.get("ManagerNodeCount")
+        if params.get("ManagerNodeSet") is not None:
+            self.ManagerNodeSet = []
+            for item in params.get("ManagerNodeSet"):
+                obj = ManagerNodeOverview()
+                obj._deserialize(item)
+                self.ManagerNodeSet.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ComputeNode(AbstractModel):
     """计算节点信息。
 
@@ -191,6 +263,31 @@ class ComputeNode(AbstractModel):
         
 
 
+class ComputeNodeOverview(AbstractModel):
+    """计算节点概览。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NodeId: 计算节点ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NodeId: str
+        """
+        self.NodeId = None
+
+
+    def _deserialize(self, params):
+        self.NodeId = params.get("NodeId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CreateClusterRequest(AbstractModel):
     """CreateCluster请求参数结构体
 
@@ -208,7 +305,7 @@ class CreateClusterRequest(AbstractModel):
         :type ComputeNode: :class:`tencentcloud.thpc.v20211109.models.ComputeNode`
         :param ComputeNodeCount: 指定计算节点的数量。默认取值：0。
         :type ComputeNodeCount: int
-        :param SchedulerType: 调度器类型。目前仅支持SGE调度器。
+        :param SchedulerType: 调度器类型。<br><li>SGE：SGE调度器。
         :type SchedulerType: str
         :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前仅支持公有镜像和自定义镜像。
         :type ImageId: str
@@ -226,7 +323,7 @@ true：发送检查请求，不会创建实例。检查项包括是否填写了�
 如果检查通过，则返回RequestId.
 false（默认）：发送正常请求，通过检查后直接创建实例
         :type DryRun: bool
-        :param AccountType: 域名字服务类型。目前仅支持NIS域名字服务。
+        :param AccountType: 域名字服务类型。<br><li>NIS：NIS域名字服务。
         :type AccountType: str
         :param ClusterName: 集群显示名称。
         :type ClusterName: str
@@ -295,6 +392,7 @@ class CreateClusterResponse(AbstractModel):
     def __init__(self):
         r"""
         :param ClusterId: 集群ID。
+注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -374,6 +472,68 @@ class DeleteClusterResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeClustersRequest(AbstractModel):
+    """DescribeClusters请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterIds: 集群ID列表。通过该参数可以指定需要查询信息的集群列表。<br>如果您不指定该参数，则返回Limit数量以内的集群信息。
+        :type ClusterIds: list of str
+        :param Offset: 偏移量，默认为0。关于`Offset`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
+        :type Offset: int
+        :param Limit: 返回数量，默认为20，最大值为100。关于`Limit`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
+        :type Limit: int
+        """
+        self.ClusterIds = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.ClusterIds = params.get("ClusterIds")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeClustersResponse(AbstractModel):
+    """DescribeClusters返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterSet: 集群概览信息列表。
+        :type ClusterSet: list of ClusterOverview
+        :param TotalCount: 集群数量。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ClusterSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("ClusterSet") is not None:
+            self.ClusterSet = []
+            for item in params.get("ClusterSet"):
+                obj = ClusterOverview()
+                obj._deserialize(item)
+                self.ClusterSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -554,6 +714,31 @@ class ManagerNode(AbstractModel):
             self.InternetAccessible = InternetAccessible()
             self.InternetAccessible._deserialize(params.get("InternetAccessible"))
         self.InstanceName = params.get("InstanceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ManagerNodeOverview(AbstractModel):
+    """管控节点概览。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NodeId: 管控节点ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NodeId: str
+        """
+        self.NodeId = None
+
+
+    def _deserialize(self, params):
+        self.NodeId = params.get("NodeId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

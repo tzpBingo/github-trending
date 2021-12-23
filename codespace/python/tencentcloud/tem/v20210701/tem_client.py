@@ -138,6 +138,37 @@ class TemClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteApplication(self, request):
+        """服务删除
+          - 停止当前运行服务
+          - 删除服务相关资源
+          - 删除服务
+
+        :param request: Request instance for DeleteApplication.
+        :type request: :class:`tencentcloud.tem.v20210701.models.DeleteApplicationRequest`
+        :rtype: :class:`tencentcloud.tem.v20210701.models.DeleteApplicationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DeleteApplication", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DeleteApplicationResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteIngress(self, request):
         """删除 Ingress 规则
 
@@ -572,6 +603,34 @@ class TemClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.RevertDeployApplicationResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RollingUpdateApplicationByVersion(self, request):
+        """更新应用部署版本
+
+        :param request: Request instance for RollingUpdateApplicationByVersion.
+        :type request: :class:`tencentcloud.tem.v20210701.models.RollingUpdateApplicationByVersionRequest`
+        :rtype: :class:`tencentcloud.tem.v20210701.models.RollingUpdateApplicationByVersionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("RollingUpdateApplicationByVersion", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.RollingUpdateApplicationByVersionResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

@@ -3027,7 +3027,7 @@ class CreateComplianceTaskRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AssetTypeSet: 指定要扫描的资产类型列表。若不填，对所有资产触发扫描。
+        :param AssetTypeSet: 指定要扫描的资产类型列表。
 ASSET_CONTAINER, 容器
 ASSET_IMAGE, 镜像
 ASSET_HOST, 主机
@@ -7866,7 +7866,7 @@ class DescribeComplianceAssetPolicyItemListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CustomerAssetId: 资产的ID。
+        :param CustomerAssetId: 客户资产的ID。
         :type CustomerAssetId: int
         :param Offset: 起始偏移量，默认为0。
         :type Offset: int
@@ -7938,9 +7938,7 @@ class DescribeCompliancePeriodTaskListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AssetType: 资产的类型，传入时，只查询此类型资产的定时任务；不传，则返回所有定时任务。
-
-取值为：
+        :param AssetType: 资产的类型，取值为：
 ASSET_CONTAINER, 容器
 ASSET_IMAGE, 镜像
 ASSET_HOST, 主机
@@ -8127,6 +8125,10 @@ class DescribeComplianceScanFailedAssetListRequest(AbstractModel):
     def __init__(self):
         r"""
         :param AssetTypeSet: 资产类型列表。
+ASSET_CONTAINER, 容器
+ASSET_IMAGE, 镜像
+ASSET_HOST, 主机
+ASSET_K8S, K8S资产
         :type AssetTypeSet: list of str
         :param Offset: 起始偏移量，默认为0。
         :type Offset: int
@@ -10481,6 +10483,12 @@ CONTAINER_NOT_FOUND_DEAL_ISOLATE:隔离时，容器不存在
 CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
 注意：此字段可能返回 null，表示取不到有效值。
         :type SubStatus: str
+        :param HostIP: 内网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostIP: str
+        :param ClientIP: 外网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClientIP: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -10516,6 +10524,8 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         self.EventType = None
         self.Status = None
         self.SubStatus = None
+        self.HostIP = None
+        self.ClientIP = None
         self.RequestId = None
 
 
@@ -10552,6 +10562,8 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         self.EventType = params.get("EventType")
         self.Status = params.get("Status")
         self.SubStatus = params.get("SubStatus")
+        self.HostIP = params.get("HostIP")
+        self.ClientIP = params.get("ClientIP")
         self.RequestId = params.get("RequestId")
 
 
@@ -14067,6 +14079,12 @@ MountNamespace逃逸、
         :type EventCount: int
         :param LatestFoundTime: 最近生成时间
         :type LatestFoundTime: str
+        :param HostIP: 内网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostIP: str
+        :param ClientIP: 外网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClientIP: str
         """
         self.EventId = None
         self.FoundTime = None
@@ -14081,6 +14099,8 @@ MountNamespace逃逸、
         self.EventType = None
         self.EventCount = None
         self.LatestFoundTime = None
+        self.HostIP = None
+        self.ClientIP = None
 
 
     def _deserialize(self, params):
@@ -14097,6 +14117,8 @@ MountNamespace逃逸、
         self.EventType = params.get("EventType")
         self.EventCount = params.get("EventCount")
         self.LatestFoundTime = params.get("LatestFoundTime")
+        self.HostIP = params.get("HostIP")
+        self.ClientIP = params.get("ClientIP")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
