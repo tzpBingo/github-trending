@@ -104,6 +104,9 @@ INTERNALERROR_DBOPERATIONFAILED = 'InternalError.DbOperationFailed'
 # 查询独享集群信息失败。
 INTERNALERROR_FENCEERROR = 'InternalError.FenceError'
 
+# 获取指标数据。
+INTERNALERROR_FETCHMETRICDATAFAILED = 'InternalError.FetchMetricDataFailed'
+
 # 获取数据库实例参数失败。
 INTERNALERROR_GETDBCONFIGFAILED = 'InternalError.GetDbConfigFailed'
 
@@ -247,6 +250,9 @@ INVALIDPARAMETER_SUBNETUNAVAILABLE = 'InvalidParameter.SubnetUnavailable'
 
 # 找不到指定的虚拟私有网络。
 INVALIDPARAMETER_VPCNOTFOUND = 'InvalidParameter.VpcNotFound'
+
+# 可用区信息错误。
+INVALIDPARAMETER_ZONEIDILLEGAL = 'InvalidParameter.ZoneIdIllegal'
 
 # 想要创建的账号已经存在。
 INVALIDPARAMETERVALUE_ACCOUNTALREADYEXISTS = 'InvalidParameterValue.AccountAlreadyExists'

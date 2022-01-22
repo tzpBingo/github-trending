@@ -74,6 +74,9 @@ INTERNALERROR_INVALIDCOMMANDNOTFOUND = 'InternalError.InvalidCommandNotFound'
 # 请求出现错误。
 INTERNALERROR_REQUESTERROR = 'InternalError.RequestError'
 
+# 调用计费网关服务失败。
+INTERNALERROR_TRADECALLBILLINGGATEWAYFAILED = 'InternalError.TradeCallBillingGatewayFailed'
+
 # 价格获取失败。
 INTERNALERROR_TRADEGETPRICEFAILED = 'InternalError.TradeGetPriceFailed'
 
@@ -301,6 +304,9 @@ RESOURCENOTFOUND_SNAPSHOTNOTFOUND = 'ResourceNotFound.SnapshotNotFound'
 
 # 资源不可用。
 RESOURCEUNAVAILABLE = 'ResourceUnavailable'
+
+# 镜像资源不可用。
+RESOURCEUNAVAILABLE_BLUEPRINTUNAVAILABLE = 'ResourceUnavailable.BlueprintUnavailable'
 
 # MFA 已过期。
 UNAUTHORIZEDOPERATION_MFAEXPIRED = 'UnauthorizedOperation.MFAExpired'

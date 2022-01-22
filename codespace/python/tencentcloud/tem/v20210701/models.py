@@ -599,8 +599,10 @@ class DeployApplicationRequest(AbstractModel):
         :param PkgName: 包名。使用 JAR 包或者 WAR 包部署的时候必填。
         :type PkgName: str
         :param JdkVersion: JDK 版本。
-- KONA：使用 kona jdk。
-- OPEN：使用 open jdk。
+- KONA:8：使用 kona jdk 8。
+- OPEN:8：使用 open jdk 8。
+- KONA:11：使用 kona jdk 11。
+- OPEN:11：使用 open jdk 11。
         :type JdkVersion: str
         :param SecurityGroupIds: 安全组ID s
         :type SecurityGroupIds: list of str
@@ -638,6 +640,12 @@ class DeployApplicationRequest(AbstractModel):
         :type CronHorizontalAutoscaler: list of CronHorizontalAutoscaler
         :param LogEnable: 是否启用log，1为启用，0为不启用
         :type LogEnable: int
+        :param ConfEdited: （除开镜像配置）配置是否修改
+        :type ConfEdited: bool
+        :param SpeedUp: 是否开启应用加速
+        :type SpeedUp: bool
+        :param StartupProbe: 启动探针配置
+        :type StartupProbe: :class:`tencentcloud.tem.v20210701.models.HealthCheckConfig`
         """
         self.ApplicationId = None
         self.InitPodNum = None
@@ -674,6 +682,9 @@ class DeployApplicationRequest(AbstractModel):
         self.HorizontalAutoscaler = None
         self.CronHorizontalAutoscaler = None
         self.LogEnable = None
+        self.ConfEdited = None
+        self.SpeedUp = None
+        self.StartupProbe = None
 
 
     def _deserialize(self, params):
@@ -754,6 +765,11 @@ class DeployApplicationRequest(AbstractModel):
                 obj._deserialize(item)
                 self.CronHorizontalAutoscaler.append(obj)
         self.LogEnable = params.get("LogEnable")
+        self.ConfEdited = params.get("ConfEdited")
+        self.SpeedUp = params.get("SpeedUp")
+        if params.get("StartupProbe") is not None:
+            self.StartupProbe = HealthCheckConfig()
+            self.StartupProbe._deserialize(params.get("StartupProbe"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -923,11 +939,14 @@ class DeployStrategyConf(AbstractModel):
         :type DeployStrategyType: int
         :param BatchInterval: 每批暂停间隔
         :type BatchInterval: int
+        :param MinAvailable: 最小可用实例数
+        :type MinAvailable: int
         """
         self.TotalBatchCount = None
         self.BetaBatchNum = None
         self.DeployStrategyType = None
         self.BatchInterval = None
+        self.MinAvailable = None
 
 
     def _deserialize(self, params):
@@ -935,6 +954,7 @@ class DeployStrategyConf(AbstractModel):
         self.BetaBatchNum = params.get("BetaBatchNum")
         self.DeployStrategyType = params.get("DeployStrategyType")
         self.BatchInterval = params.get("BatchInterval")
+        self.MinAvailable = params.get("MinAvailable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2212,18 +2232,28 @@ class Pair(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Key: 建
+        :param Key: 键
         :type Key: str
         :param Value: 值
         :type Value: str
+        :param Type: 类型，default 为自定义，reserved 为系统变量，referenced 为引用配置项
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param Config: 配置名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Config: str
         """
         self.Key = None
         self.Value = None
+        self.Type = None
+        self.Config = None
 
 
     def _deserialize(self, params):
         self.Key = params.get("Key")
         self.Value = params.get("Value")
+        self.Type = params.get("Type")
+        self.Config = params.get("Config")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2503,12 +2533,27 @@ class RollingUpdateApplicationByVersionRequest(AbstractModel):
         :type PackageName: str
         :param From: 请求来源平台，含 IntelliJ，Coding
         :type From: str
+        :param DeployStrategyType: 部署策略，AUTO 为全自动；BETA 为小批量验证后自动；MANUAL 为全手动；
+        :type DeployStrategyType: str
+        :param TotalBatchCount: 发布批次数
+        :type TotalBatchCount: int
+        :param BatchInterval: 批次间隔时间
+        :type BatchInterval: int
+        :param BetaBatchNum: 小批量验证批次的实例数
+        :type BetaBatchNum: int
+        :param MinAvailable: 发布过程中保障的最小可用实例数
+        :type MinAvailable: int
         """
         self.ApplicationId = None
         self.EnvironmentId = None
         self.DeployVersion = None
         self.PackageName = None
         self.From = None
+        self.DeployStrategyType = None
+        self.TotalBatchCount = None
+        self.BatchInterval = None
+        self.BetaBatchNum = None
+        self.MinAvailable = None
 
 
     def _deserialize(self, params):
@@ -2517,6 +2562,11 @@ class RollingUpdateApplicationByVersionRequest(AbstractModel):
         self.DeployVersion = params.get("DeployVersion")
         self.PackageName = params.get("PackageName")
         self.From = params.get("From")
+        self.DeployStrategyType = params.get("DeployStrategyType")
+        self.TotalBatchCount = params.get("TotalBatchCount")
+        self.BatchInterval = params.get("BatchInterval")
+        self.BetaBatchNum = params.get("BetaBatchNum")
+        self.MinAvailable = params.get("MinAvailable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2867,6 +2917,8 @@ class TemNamespaceInfo(AbstractModel):
         :type ClusterStatus: str
         :param EnableTswTraceService: 是否开启tsw
         :type EnableTswTraceService: bool
+        :param Locked: 环境锁，1为上锁，0则为上锁
+        :type Locked: int
         """
         self.EnvironmentId = None
         self.Channel = None
@@ -2884,6 +2936,7 @@ class TemNamespaceInfo(AbstractModel):
         self.SubnetId = None
         self.ClusterStatus = None
         self.EnableTswTraceService = None
+        self.Locked = None
 
 
     def _deserialize(self, params):
@@ -2903,6 +2956,7 @@ class TemNamespaceInfo(AbstractModel):
         self.SubnetId = params.get("SubnetId")
         self.ClusterStatus = params.get("ClusterStatus")
         self.EnableTswTraceService = params.get("EnableTswTraceService")
+        self.Locked = params.get("Locked")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

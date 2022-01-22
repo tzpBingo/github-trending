@@ -1883,6 +1883,12 @@ class ContainerGroupDeploy(AbstractModel):
         :param TcrRepoInfo: TcrRepoInfo值
 注意：此字段可能返回 null，表示取不到有效值。
         :type TcrRepoInfo: :class:`tencentcloud.tsf.v20180326.models.TcrRepoInfo`
+        :param VolumeInfos: 数据卷信息，list
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeInfos: list of VolumeInfo
+        :param VolumeMountInfos: 数据卷挂载信息，list
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeMountInfos: list of VolumeMountInfo
         """
         self.GroupId = None
         self.GroupName = None
@@ -1916,6 +1922,8 @@ class ContainerGroupDeploy(AbstractModel):
         self.DisableService = None
         self.HeadlessService = None
         self.TcrRepoInfo = None
+        self.VolumeInfos = None
+        self.VolumeMountInfos = None
 
 
     def _deserialize(self, params):
@@ -1965,6 +1973,18 @@ class ContainerGroupDeploy(AbstractModel):
         if params.get("TcrRepoInfo") is not None:
             self.TcrRepoInfo = TcrRepoInfo()
             self.TcrRepoInfo._deserialize(params.get("TcrRepoInfo"))
+        if params.get("VolumeInfos") is not None:
+            self.VolumeInfos = []
+            for item in params.get("VolumeInfos"):
+                obj = VolumeInfo()
+                obj._deserialize(item)
+                self.VolumeInfos.append(obj)
+        if params.get("VolumeMountInfos") is not None:
+            self.VolumeMountInfos = []
+            for item in params.get("VolumeMountInfos"):
+                obj = VolumeMountInfo()
+                obj._deserialize(item)
+                self.VolumeMountInfos.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3691,11 +3711,14 @@ class CreateTaskFlowRequest(AbstractModel):
         :type FlowEdges: list of TaskFlowEdge
         :param TimeOut: 工作流执行超时时间
         :type TimeOut: int
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
         """
         self.FlowName = None
         self.TriggerRule = None
         self.FlowEdges = None
         self.TimeOut = None
+        self.ProgramIdList = None
 
 
     def _deserialize(self, params):
@@ -3710,6 +3733,7 @@ class CreateTaskFlowRequest(AbstractModel):
                 obj._deserialize(item)
                 self.FlowEdges.append(obj)
         self.TimeOut = params.get("TimeOut")
+        self.ProgramIdList = params.get("ProgramIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3727,6 +3751,7 @@ class CreateTaskFlowResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 工作流 ID
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3777,6 +3802,8 @@ class CreateTaskRequest(AbstractModel):
         :type AdvanceSettings: :class:`tencentcloud.tsf.v20180326.models.AdvanceSettings`
         :param TaskArgument: 任务参数，长度限制10000个字符
         :type TaskArgument: str
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
         """
         self.TaskName = None
         self.TaskContent = None
@@ -3793,6 +3820,7 @@ class CreateTaskRequest(AbstractModel):
         self.SuccessRatio = None
         self.AdvanceSettings = None
         self.TaskArgument = None
+        self.ProgramIdList = None
 
 
     def _deserialize(self, params):
@@ -3820,6 +3848,7 @@ class CreateTaskRequest(AbstractModel):
             self.AdvanceSettings = AdvanceSettings()
             self.AdvanceSettings._deserialize(params.get("AdvanceSettings"))
         self.TaskArgument = params.get("TaskArgument")
+        self.ProgramIdList = params.get("ProgramIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3837,6 +3866,7 @@ class CreateTaskResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 任务ID
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -4864,10 +4894,16 @@ class DeployContainerGroupRequest(AbstractModel):
         :type IncrementalDeployment: bool
         :param RepoType: tcr或者不填
         :type RepoType: str
-        :param VolumeInfos: 数据卷信息
+        :param VolumeInfos: 数据卷信息-废弃，请用VolumeInfoList参数
         :type VolumeInfos: :class:`tencentcloud.tsf.v20180326.models.VolumeInfo`
-        :param VolumeMountInfos: 数据卷挂载点信息
+        :param VolumeMountInfos: 数据卷挂载点信息-废弃，请用VolumeMountInfoList参数
         :type VolumeMountInfos: :class:`tencentcloud.tsf.v20180326.models.VolumeMountInfo`
+        :param VolumeInfoList: 数据卷信息，list
+        :type VolumeInfoList: list of VolumeInfo
+        :param VolumeMountInfoList: 数据卷挂载点信息，list
+        :type VolumeMountInfoList: list of VolumeMountInfo
+        :param VolumeClean: 是否清除数据卷信息，默认false
+        :type VolumeClean: bool
         """
         self.GroupId = None
         self.TagName = None
@@ -4902,6 +4938,9 @@ class DeployContainerGroupRequest(AbstractModel):
         self.RepoType = None
         self.VolumeInfos = None
         self.VolumeMountInfos = None
+        self.VolumeInfoList = None
+        self.VolumeMountInfoList = None
+        self.VolumeClean = None
 
 
     def _deserialize(self, params):
@@ -4953,6 +4992,19 @@ class DeployContainerGroupRequest(AbstractModel):
         if params.get("VolumeMountInfos") is not None:
             self.VolumeMountInfos = VolumeMountInfo()
             self.VolumeMountInfos._deserialize(params.get("VolumeMountInfos"))
+        if params.get("VolumeInfoList") is not None:
+            self.VolumeInfoList = []
+            for item in params.get("VolumeInfoList"):
+                obj = VolumeInfo()
+                obj._deserialize(item)
+                self.VolumeInfoList.append(obj)
+        if params.get("VolumeMountInfoList") is not None:
+            self.VolumeMountInfoList = []
+            for item in params.get("VolumeMountInfoList"):
+                obj = VolumeMountInfo()
+                obj._deserialize(item)
+                self.VolumeMountInfoList.append(obj)
+        self.VolumeClean = params.get("VolumeClean")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9153,6 +9205,8 @@ class DescribeTaskRecordsRequest(AbstractModel):
         :type TaskType: str
         :param ExecuteType: 任务触发类型，UNICAST、BROADCAST。
         :type ExecuteType: str
+        :param Ids: 无
+        :type Ids: list of str
         """
         self.Offset = None
         self.Limit = None
@@ -9161,6 +9215,7 @@ class DescribeTaskRecordsRequest(AbstractModel):
         self.GroupId = None
         self.TaskType = None
         self.ExecuteType = None
+        self.Ids = None
 
 
     def _deserialize(self, params):
@@ -9171,6 +9226,7 @@ class DescribeTaskRecordsRequest(AbstractModel):
         self.GroupId = params.get("GroupId")
         self.TaskType = params.get("TaskType")
         self.ExecuteType = params.get("ExecuteType")
+        self.Ids = params.get("Ids")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9188,6 +9244,7 @@ class DescribeTaskRecordsResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 任务记录列表
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: :class:`tencentcloud.tsf.v20180326.models.TaskRecordPage`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -12649,6 +12706,8 @@ class ModifyTaskRequest(AbstractModel):
         :type RetryInterval: int
         :param TaskArgument: 任务参数，长度限制10000个字符
         :type TaskArgument: str
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
         """
         self.TaskId = None
         self.TaskName = None
@@ -12666,6 +12725,7 @@ class ModifyTaskRequest(AbstractModel):
         self.RetryCount = None
         self.RetryInterval = None
         self.TaskArgument = None
+        self.ProgramIdList = None
 
 
     def _deserialize(self, params):
@@ -12694,6 +12754,7 @@ class ModifyTaskRequest(AbstractModel):
         self.RetryCount = params.get("RetryCount")
         self.RetryInterval = params.get("RetryInterval")
         self.TaskArgument = params.get("TaskArgument")
+        self.ProgramIdList = params.get("ProgramIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12711,6 +12772,7 @@ class ModifyTaskResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 更新是否成功
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str

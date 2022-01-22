@@ -509,6 +509,98 @@ class AttachedPolicyOfRole(AbstractModel):
         
 
 
+class AttachedUserPolicy(AbstractModel):
+    """用户关联的策略详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PolicyId: 策略ID
+        :type PolicyId: str
+        :param PolicyName: 策略名
+        :type PolicyName: str
+        :param Description: 策略描述
+        :type Description: str
+        :param AddTime: 创建时间
+        :type AddTime: str
+        :param StrategyType: 策略类型(1表示自定义策略，2表示预设策略)
+        :type StrategyType: str
+        :param CreateMode: 创建模式(1表示按产品或项目权限创建的策略，其他表示策略语法创建的策略)
+        :type CreateMode: str
+        :param Groups: 随组关联信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Groups: list of AttachedUserPolicyGroupInfo
+        :param Deactived: 是否已下线(0:否 1:是)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Deactived: int
+        :param DeactivedDetail: 已下线的产品列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeactivedDetail: list of str
+        """
+        self.PolicyId = None
+        self.PolicyName = None
+        self.Description = None
+        self.AddTime = None
+        self.StrategyType = None
+        self.CreateMode = None
+        self.Groups = None
+        self.Deactived = None
+        self.DeactivedDetail = None
+
+
+    def _deserialize(self, params):
+        self.PolicyId = params.get("PolicyId")
+        self.PolicyName = params.get("PolicyName")
+        self.Description = params.get("Description")
+        self.AddTime = params.get("AddTime")
+        self.StrategyType = params.get("StrategyType")
+        self.CreateMode = params.get("CreateMode")
+        if params.get("Groups") is not None:
+            self.Groups = []
+            for item in params.get("Groups"):
+                obj = AttachedUserPolicyGroupInfo()
+                obj._deserialize(item)
+                self.Groups.append(obj)
+        self.Deactived = params.get("Deactived")
+        self.DeactivedDetail = params.get("DeactivedDetail")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AttachedUserPolicyGroupInfo(AbstractModel):
+    """用户关联策略(随组关联)信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 分组ID
+        :type GroupId: int
+        :param GroupName: 分组名称
+        :type GroupName: str
+        """
+        self.GroupId = None
+        self.GroupName = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.GroupName = params.get("GroupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ConsumeCustomMFATokenRequest(AbstractModel):
     """ConsumeCustomMFAToken请求参数结构体
 
@@ -1569,7 +1661,7 @@ class DescribeUserSAMLConfigResponse(AbstractModel):
         r"""
         :param SAMLMetadata: SAML元数据文档
         :type SAMLMetadata: str
-        :param Status: 状态：0:未设置，11:已开启，2:已禁用
+        :param Status: 状态：0:未设置，1:已开启，2:已禁用
         :type Status: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1980,7 +2072,7 @@ class GetPolicyVersionRequest(AbstractModel):
         r"""
         :param PolicyId: 策略ID
         :type PolicyId: int
-        :param VersionId: 策略版本号
+        :param VersionId: 策略版本号，可由ListPolicyVersions获取
         :type VersionId: int
         """
         self.PolicyId = None
@@ -2414,8 +2506,9 @@ class GetUserResponse(AbstractModel):
         :param Uid: 子用户 UID
         :type Uid: int
         :param Remark: 子用户备注
+注意：此字段可能返回 null，表示取不到有效值。
         :type Remark: str
-        :param ConsoleLogin: 子用户能否登录控制台
+        :param ConsoleLogin: 子用户能否登录控制台 0-无法登录控制台，1-可以登录控制台
         :type ConsoleLogin: int
         :param PhoneNum: 手机号
         :type PhoneNum: str
@@ -2534,17 +2627,17 @@ class GroupMemberInfo(AbstractModel):
         :type PhoneNum: str
         :param CountryCode: 手机区域代码。
         :type CountryCode: str
-        :param PhoneFlag: 是否已验证手机。
+        :param PhoneFlag: 是否已验证手机。0-未验证  1-验证
         :type PhoneFlag: int
         :param Email: 邮箱地址。
         :type Email: str
-        :param EmailFlag: 是否已验证邮箱。
+        :param EmailFlag: 是否已验证邮箱。0-未验证  1-验证
         :type EmailFlag: int
-        :param UserType: 用户类型。
+        :param UserType: 用户类型。1-全局协作者 2-项目协作者 3-消息接收者
         :type UserType: int
         :param CreateTime: 创建时间。
         :type CreateTime: str
-        :param IsReceiverOwner: 是否为主消息接收人。
+        :param IsReceiverOwner: 是否为主消息接收人。0-否 1-是
         :type IsReceiverOwner: int
         """
         self.Uid = None
@@ -2768,6 +2861,80 @@ class ListAttachedRolePoliciesResponse(AbstractModel):
                 obj = AttachedPolicyOfRole()
                 obj._deserialize(item)
                 self.List.append(obj)
+        self.TotalNum = params.get("TotalNum")
+        self.RequestId = params.get("RequestId")
+
+
+class ListAttachedUserAllPoliciesRequest(AbstractModel):
+    """ListAttachedUserAllPolicies请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TargetUin: 目标用户ID
+        :type TargetUin: int
+        :param Rp: 每页数量，必须大于 0 且小于或等于 200
+        :type Rp: int
+        :param Page: 页码，从 1开始，不能大于 200
+        :type Page: int
+        :param AttachType: 0:返回直接关联和随组关联策略，1:只返回直接关联策略，2:只返回随组关联策略
+        :type AttachType: int
+        :param StrategyType: 策略类型
+        :type StrategyType: int
+        :param Keyword: 搜索关键字
+        :type Keyword: str
+        """
+        self.TargetUin = None
+        self.Rp = None
+        self.Page = None
+        self.AttachType = None
+        self.StrategyType = None
+        self.Keyword = None
+
+
+    def _deserialize(self, params):
+        self.TargetUin = params.get("TargetUin")
+        self.Rp = params.get("Rp")
+        self.Page = params.get("Page")
+        self.AttachType = params.get("AttachType")
+        self.StrategyType = params.get("StrategyType")
+        self.Keyword = params.get("Keyword")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ListAttachedUserAllPoliciesResponse(AbstractModel):
+    """ListAttachedUserAllPolicies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PolicyList: 策略列表数据
+        :type PolicyList: list of AttachedUserPolicy
+        :param TotalNum: 策略总数
+        :type TotalNum: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.PolicyList = None
+        self.TotalNum = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("PolicyList") is not None:
+            self.PolicyList = []
+            for item in params.get("PolicyList"):
+                obj = AttachedUserPolicy()
+                obj._deserialize(item)
+                self.PolicyList.append(obj)
         self.TotalNum = params.get("TotalNum")
         self.RequestId = params.get("RequestId")
 
@@ -4113,7 +4280,7 @@ class SetDefaultPolicyVersionRequest(AbstractModel):
         r"""
         :param PolicyId: 策略ID
         :type PolicyId: int
-        :param VersionId: 策略版本号
+        :param VersionId: 策略版本号，可由ListPolicyVersions获取
         :type VersionId: int
         """
         self.PolicyId = None
@@ -4572,9 +4739,9 @@ class UpdateRoleConsoleLoginRequest(AbstractModel):
         r"""
         :param ConsoleLogin: 是否可登录，可登录：1，不可登录：0
         :type ConsoleLogin: int
-        :param RoleId: 角色ID
+        :param RoleId: 角色ID，入参 RoleId 与 RoleName 二选一
         :type RoleId: int
-        :param RoleName: 角色名
+        :param RoleName: 角色名，入参 RoleId 与 RoleName 二选一
         :type RoleName: str
         """
         self.ConsoleLogin = None

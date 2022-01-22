@@ -2724,14 +2724,18 @@ class DescribeBaseMetricsRequest(AbstractModel):
         :type Namespace: str
         :param MetricName: 指标名，各个云产品的指标名不同。如需获取指标名，请前往各产品监控指标文档，例如云服务器的指标名，可参见 [云服务器监控指标](https://cloud.tencent.com/document/product/248/6843)
         :type MetricName: str
+        :param Dimensions: 可选参数，按照维度过滤
+        :type Dimensions: list of str
         """
         self.Namespace = None
         self.MetricName = None
+        self.Dimensions = None
 
 
     def _deserialize(self, params):
         self.Namespace = params.get("Namespace")
         self.MetricName = params.get("MetricName")
+        self.Dimensions = params.get("Dimensions")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7172,16 +7176,26 @@ class URLNotice(AbstractModel):
         :param ValidationCode: 验证码
 注意：此字段可能返回 null，表示取不到有效值。
         :type ValidationCode: str
+        :param StartTime: 通知开始时间 一天开始的秒数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: int
+        :param EndTime: 通知结束时间 一天开始的秒数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: int
         """
         self.URL = None
         self.IsValid = None
         self.ValidationCode = None
+        self.StartTime = None
+        self.EndTime = None
 
 
     def _deserialize(self, params):
         self.URL = params.get("URL")
         self.IsValid = params.get("IsValid")
         self.ValidationCode = params.get("ValidationCode")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -447,6 +447,8 @@ class CreateImageRequest(AbstractModel):
         :type SnapshotIds: list of str
         :param DryRun: 检测本次请求的是否成功，但不会对操作的资源产生任何影响
         :type DryRun: bool
+        :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到自定义镜像。
+        :type TagSpecification: list of TagSpecification
         """
         self.ImageName = None
         self.InstanceId = None
@@ -456,6 +458,7 @@ class CreateImageRequest(AbstractModel):
         self.DataDiskIds = None
         self.SnapshotIds = None
         self.DryRun = None
+        self.TagSpecification = None
 
 
     def _deserialize(self, params):
@@ -467,6 +470,12 @@ class CreateImageRequest(AbstractModel):
         self.DataDiskIds = params.get("DataDiskIds")
         self.SnapshotIds = params.get("SnapshotIds")
         self.DryRun = params.get("DryRun")
+        if params.get("TagSpecification") is not None:
+            self.TagSpecification = []
+            for item in params.get("TagSpecification"):
+                obj = TagSpecification()
+                obj._deserialize(item)
+                self.TagSpecification.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1525,13 +1534,19 @@ class DescribeImagesRequest(AbstractModel):
         :param ImageIds: 镜像ID列表 。镜像ID如：`img-gvbnzy6f`。array型参数的格式可以参考[API简介](https://cloud.tencent.com/document/api/213/15688)。镜像ID可以通过如下方式获取：<br><li>通过[DescribeImages](https://cloud.tencent.com/document/api/213/15715)接口返回的`ImageId`获取。<br><li>通过[镜像控制台](https://console.cloud.tencent.com/cvm/image)获取。
         :type ImageIds: list of str
         :param Filters: 过滤条件，每次请求的`Filters`的上限为10，`Filters.Values`的上限为5。参数不可以同时指定`ImageIds`和`Filters`。详细的过滤条件如下：
-<li> image-id - String - 是否必填： 否 - （过滤条件）按照镜像ID进行过滤</li>
-<li> image-type - String - 是否必填： 否 - （过滤条件）按照镜像类型进行过滤。取值范围：
-    PRIVATE_IMAGE: 私有镜像 (本账户创建的镜像) 
-    PUBLIC_IMAGE: 公共镜像 (腾讯云官方镜像)
-    SHARED_IMAGE: 共享镜像(其他账户共享给本账户的镜像) 。</li>
-<li> image-name - String - 是否必填： 否 - （过滤条件）按照镜像名称进行过滤</li>
-<li> platform - String - 是否必填： 否 - （过滤条件）按照镜像平台过滤，如 CentOS</li>
+
+<li><strong>image-id</strong></li>
+<p style="padding-left: 30px;">按照【<strong>镜像ID</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>image-type</strong></li>
+<p style="padding-left: 30px;">按照【<strong>镜像类型</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p><p style="padding-left: 30px;">可选项：</p><p style="padding-left: 30px;">PRIVATE_IMAGE: 私有镜像 (本账户创建的镜像)</p><p style="padding-left: 30px;">PUBLIC_IMAGE: 公共镜像 (腾讯云官方镜像)</p><p style="padding-left: 30px;">SHARED_IMAGE: 共享镜像(其他账户共享给本账户的镜像)</p>
+<li><strong>image-name</strong></li>
+<p style="padding-left: 30px;">按照【<strong>镜像名称</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>platform</strong></li>
+<p style="padding-left: 30px;">按照【<strong>镜像平台</strong>】进行过滤，如CentOS。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>tag-key</strong></li>
+<p style="padding-left: 30px;">按照【<strong>标签键</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>tag:tag-key</strong></li>
+<p style="padding-left: 30px;">按照【<strong>标签键值对</strong>】进行过滤。tag-key使用具体的标签键进行替换。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
         :type Filters: list of Filter
         :param Offset: 偏移量，默认为0。关于Offset详见[API简介](/document/api/213/568#.E8.BE.93.E5.85.A5.E5.8F.82.E6.95.B0.E4.B8.8E.E8.BF.94.E5.9B.9E.E5.8F.82.E6.95.B0.E9.87.8A.E4.B9.89)。
         :type Offset: int
@@ -3354,6 +3369,8 @@ class ImportImageRequest(AbstractModel):
         :type DryRun: bool
         :param Force: 是否强制导入，参考[强制导入镜像](https://cloud.tencent.com/document/product/213/12849)
         :type Force: bool
+        :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到自定义镜像。
+        :type TagSpecification: list of TagSpecification
         """
         self.Architecture = None
         self.OsType = None
@@ -3363,6 +3380,7 @@ class ImportImageRequest(AbstractModel):
         self.ImageDescription = None
         self.DryRun = None
         self.Force = None
+        self.TagSpecification = None
 
 
     def _deserialize(self, params):
@@ -3374,6 +3392,12 @@ class ImportImageRequest(AbstractModel):
         self.ImageDescription = params.get("ImageDescription")
         self.DryRun = params.get("DryRun")
         self.Force = params.get("Force")
+        if params.get("TagSpecification") is not None:
+            self.TagSpecification = []
+            for item in params.get("TagSpecification"):
+                obj = TagSpecification()
+                obj._deserialize(item)
+                self.TagSpecification.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6059,6 +6083,59 @@ class Price(AbstractModel):
         
 
 
+class ProgramFpgaImageRequest(AbstractModel):
+    """ProgramFpgaImage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例的ID信息。
+        :type InstanceId: str
+        :param FPGAUrl: FPGA镜像文件的COS URL地址。
+        :type FPGAUrl: str
+        :param DBDFs: 实例上FPGA卡的DBDF号，不填默认烧录FPGA镜像到实例所拥有的所有FPGA卡。
+        :type DBDFs: list of str
+        :param DryRun: 试运行，不会执行实际的烧录动作，默认为False。
+        :type DryRun: bool
+        """
+        self.InstanceId = None
+        self.FPGAUrl = None
+        self.DBDFs = None
+        self.DryRun = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.FPGAUrl = params.get("FPGAUrl")
+        self.DBDFs = params.get("DBDFs")
+        self.DryRun = params.get("DryRun")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ProgramFpgaImageResponse(AbstractModel):
+    """ProgramFpgaImage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class PurchaseReservedInstancesOfferingRequest(AbstractModel):
     """PurchaseReservedInstancesOffering请求参数结构体
 
@@ -6928,10 +7005,16 @@ class ResizeInstanceDisksRequest(AbstractModel):
         :type DataDisks: list of DataDisk
         :param ForceStop: 是否对运行中的实例选择强制关机。建议对运行中的实例先手动关机，然后再重置用户密码。取值范围：<br><li>TRUE：表示在正常关机失败后进行强制关机<br><li>FALSE：表示在正常关机失败后不进行强制关机<br><br>默认取值：FALSE。<br><br>强制关机的效果等同于关闭物理计算机的电源开关。强制关机可能会导致数据丢失或文件系统损坏，请仅在服务器不能正常关机时使用。
         :type ForceStop: bool
+        :param SystemDisk: 待扩容的系统盘配置信息。只支持扩容云盘。
+        :type SystemDisk: :class:`tencentcloud.cvm.v20170312.models.SystemDisk`
+        :param ResizeOnline: 扩容云盘的方式是否为在线扩容。
+        :type ResizeOnline: bool
         """
         self.InstanceId = None
         self.DataDisks = None
         self.ForceStop = None
+        self.SystemDisk = None
+        self.ResizeOnline = None
 
 
     def _deserialize(self, params):
@@ -6943,6 +7026,10 @@ class ResizeInstanceDisksRequest(AbstractModel):
                 obj._deserialize(item)
                 self.DataDisks.append(obj)
         self.ForceStop = params.get("ForceStop")
+        if params.get("SystemDisk") is not None:
+            self.SystemDisk = SystemDisk()
+            self.SystemDisk._deserialize(params.get("SystemDisk"))
+        self.ResizeOnline = params.get("ResizeOnline")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

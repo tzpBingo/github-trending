@@ -277,6 +277,62 @@ class BankCardVerificationResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ChargeDetail(AbstractModel):
+    """计费详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ReqTime: 一比一时间时间戳，13位。
+        :type ReqTime: str
+        :param Seq: 一比一请求的唯一标记。
+        :type Seq: str
+        :param Idcard: 一比一时使用的、脱敏后的身份证号。
+        :type Idcard: str
+        :param Name: 一比一时使用的、脱敏后的姓名。
+        :type Name: str
+        :param Sim: 一比一的相似度。0-100，保留2位小数。
+        :type Sim: str
+        :param IsNeedCharge: 本次详情是否收费。
+        :type IsNeedCharge: bool
+        :param ChargeType: 收费类型，比对、核身、混合部署。
+        :type ChargeType: str
+        :param ErrorCode: 本次活体一比一最终结果。
+        :type ErrorCode: str
+        :param ErrorMessage: 本次活体一比一最终结果描述。
+        :type ErrorMessage: str
+        """
+        self.ReqTime = None
+        self.Seq = None
+        self.Idcard = None
+        self.Name = None
+        self.Sim = None
+        self.IsNeedCharge = None
+        self.ChargeType = None
+        self.ErrorCode = None
+        self.ErrorMessage = None
+
+
+    def _deserialize(self, params):
+        self.ReqTime = params.get("ReqTime")
+        self.Seq = params.get("Seq")
+        self.Idcard = params.get("Idcard")
+        self.Name = params.get("Name")
+        self.Sim = params.get("Sim")
+        self.IsNeedCharge = params.get("IsNeedCharge")
+        self.ChargeType = params.get("ChargeType")
+        self.ErrorCode = params.get("ErrorCode")
+        self.ErrorMessage = params.get("ErrorMessage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CheckBankCardInformationRequest(AbstractModel):
     """CheckBankCardInformation请求参数结构体
 
@@ -902,12 +958,19 @@ class DetectInfoIdCardData(AbstractModel):
         :param Avatar: 身份证正面人像图base64编码。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Avatar: str
+        :param WarnInfos: 开启身份证防翻拍告警功能后才会返回，返回数组中可能出现的告警码如下：
+-9102 身份证复印件告警。
+-9103 身份证翻拍告警。
+-9106 身份证 PS 告警。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WarnInfos: list of int
         """
         self.OcrFront = None
         self.OcrBack = None
         self.ProcessedFrontImage = None
         self.ProcessedBackImage = None
         self.Avatar = None
+        self.WarnInfos = None
 
 
     def _deserialize(self, params):
@@ -916,6 +979,7 @@ class DetectInfoIdCardData(AbstractModel):
         self.ProcessedFrontImage = params.get("ProcessedFrontImage")
         self.ProcessedBackImage = params.get("ProcessedBackImage")
         self.Avatar = params.get("Avatar")
+        self.WarnInfos = params.get("WarnInfos")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2057,6 +2121,72 @@ class GetRealNameAuthTokenResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class GetWeChatBillDetailsRequest(AbstractModel):
+    """GetWeChatBillDetails请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Date: 拉取的日期（YYYY-MM-DD）。最大可追溯到365天前。当天6点后才能拉取前一天的数据。
+        :type Date: str
+        :param Cursor: 游标。用于分页，取第一页时传0，取后续页面时，传入本接口响应中返回的NextCursor字段的值。
+        :type Cursor: int
+        :param RuleId: 需要拉取账单详情业务对应的RuleId。不传会返回所有RuleId数据。默认为空字符串。
+        :type RuleId: str
+        """
+        self.Date = None
+        self.Cursor = None
+        self.RuleId = None
+
+
+    def _deserialize(self, params):
+        self.Date = params.get("Date")
+        self.Cursor = params.get("Cursor")
+        self.RuleId = params.get("RuleId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetWeChatBillDetailsResponse(AbstractModel):
+    """GetWeChatBillDetails返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param HasNextPage: 是否还有下一页。该字段为true时，需要将NextCursor的值作为入参Cursor继续调用本接口。
+        :type HasNextPage: bool
+        :param NextCursor: 下一页的游标。用于分页。
+        :type NextCursor: int
+        :param WeChatBillDetails: 数据
+        :type WeChatBillDetails: list of WeChatBillDetail
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.HasNextPage = None
+        self.NextCursor = None
+        self.WeChatBillDetails = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.HasNextPage = params.get("HasNextPage")
+        self.NextCursor = params.get("NextCursor")
+        if params.get("WeChatBillDetails") is not None:
+            self.WeChatBillDetails = []
+            for item in params.get("WeChatBillDetails"):
+                obj = WeChatBillDetail()
+                obj._deserialize(item)
+                self.WeChatBillDetails.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class IdCardOCRVerificationRequest(AbstractModel):
     """IdCardOCRVerification请求参数结构体
 
@@ -2872,6 +3002,240 @@ class MobileStatusResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class PhoneVerificationCMCCRequest(AbstractModel):
+    """PhoneVerificationCMCC请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IdCard: 身份证号
+        :type IdCard: str
+        :param Name: 姓名
+        :type Name: str
+        :param Phone: 手机号
+        :type Phone: str
+        :param Encryption: 敏感数据加密信息。对传入信息（姓名、身份证号、手机号）有加密需求的用户可使用此参数，详情请点击左侧链接。
+        :type Encryption: :class:`tencentcloud.faceid.v20180301.models.Encryption`
+        """
+        self.IdCard = None
+        self.Name = None
+        self.Phone = None
+        self.Encryption = None
+
+
+    def _deserialize(self, params):
+        self.IdCard = params.get("IdCard")
+        self.Name = params.get("Name")
+        self.Phone = params.get("Phone")
+        if params.get("Encryption") is not None:
+            self.Encryption = Encryption()
+            self.Encryption._deserialize(params.get("Encryption"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PhoneVerificationCMCCResponse(AbstractModel):
+    """PhoneVerificationCMCC返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 认证结果码，收费情况如下。
+收费结果码：
+0: 认证通过
+-4: 信息不一致（手机号已实名，但姓名和身份证号与实名信息不一致）
+不收费结果码：
+-6: 手机号码不合法
+-7: 身份证号码有误
+-8: 姓名校验不通过
+-9: 没有记录
+-10: 认证未通过
+-11: 验证中心服务繁忙
+        :type Result: str
+        :param Isp: 运营商名称。
+取值范围为["移动","联通","电信",""]
+        :type Isp: str
+        :param Description: 业务结果描述。
+        :type Description: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.Isp = None
+        self.Description = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.Isp = params.get("Isp")
+        self.Description = params.get("Description")
+        self.RequestId = params.get("RequestId")
+
+
+class PhoneVerificationCTCCRequest(AbstractModel):
+    """PhoneVerificationCTCC请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IdCard: 身份证号
+        :type IdCard: str
+        :param Name: 姓名
+        :type Name: str
+        :param Phone: 手机号
+        :type Phone: str
+        :param Encryption: 敏感数据加密信息。对传入信息（姓名、身份证号、手机号）有加密需求的用户可使用此参数，详情请点击左侧链接。
+        :type Encryption: :class:`tencentcloud.faceid.v20180301.models.Encryption`
+        """
+        self.IdCard = None
+        self.Name = None
+        self.Phone = None
+        self.Encryption = None
+
+
+    def _deserialize(self, params):
+        self.IdCard = params.get("IdCard")
+        self.Name = params.get("Name")
+        self.Phone = params.get("Phone")
+        if params.get("Encryption") is not None:
+            self.Encryption = Encryption()
+            self.Encryption._deserialize(params.get("Encryption"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PhoneVerificationCTCCResponse(AbstractModel):
+    """PhoneVerificationCTCC返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 认证结果码，收费情况如下。
+收费结果码：
+0: 认证通过
+-4: 信息不一致（手机号已实名，但姓名和身份证号与实名信息不一致）
+不收费结果码：
+-6: 手机号码不合法
+-7: 身份证号码有误
+-8: 姓名校验不通过
+-9: 没有记录
+-10: 认证未通过
+-11: 验证中心服务繁忙
+        :type Result: str
+        :param Isp: 运营商名称。
+取值范围为["移动","联通","电信",""]
+        :type Isp: str
+        :param Description: 业务结果描述。
+        :type Description: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.Isp = None
+        self.Description = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.Isp = params.get("Isp")
+        self.Description = params.get("Description")
+        self.RequestId = params.get("RequestId")
+
+
+class PhoneVerificationCUCCRequest(AbstractModel):
+    """PhoneVerificationCUCC请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IdCard: 身份证号
+        :type IdCard: str
+        :param Name: 姓名
+        :type Name: str
+        :param Phone: 手机号
+        :type Phone: str
+        :param Encryption: 敏感数据加密信息。对传入信息（姓名、身份证号、手机号）有加密需求的用户可使用此参数，详情请点击左侧链接。
+        :type Encryption: :class:`tencentcloud.faceid.v20180301.models.Encryption`
+        """
+        self.IdCard = None
+        self.Name = None
+        self.Phone = None
+        self.Encryption = None
+
+
+    def _deserialize(self, params):
+        self.IdCard = params.get("IdCard")
+        self.Name = params.get("Name")
+        self.Phone = params.get("Phone")
+        if params.get("Encryption") is not None:
+            self.Encryption = Encryption()
+            self.Encryption._deserialize(params.get("Encryption"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PhoneVerificationCUCCResponse(AbstractModel):
+    """PhoneVerificationCUCC返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 认证结果码，收费情况如下。
+收费结果码：
+0: 认证通过
+-4: 信息不一致（手机号已实名，但姓名和身份证号与实名信息不一致）
+不收费结果码：
+-6: 手机号码不合法
+-7: 身份证号码有误
+-8: 姓名校验不通过
+-9: 没有记录
+-10: 认证未通过
+-11: 验证中心服务繁忙
+        :type Result: str
+        :param Isp: 运营商名称。
+取值范围为["移动","联通","电信",""]
+        :type Isp: str
+        :param Description: 业务结果描述。
+        :type Description: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.Isp = None
+        self.Description = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.Isp = params.get("Isp")
+        self.Description = params.get("Description")
+        self.RequestId = params.get("RequestId")
+
+
 class PhoneVerificationRequest(AbstractModel):
     """PhoneVerification请求参数结构体
 
@@ -2938,15 +3302,61 @@ class PhoneVerificationResponse(AbstractModel):
         :type Result: str
         :param Description: 业务结果描述。
         :type Description: str
+        :param Isp: 运营商名称。
+取值范围为["","移动","电信","联通"]
+        :type Isp: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Result = None
         self.Description = None
+        self.Isp = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Result = params.get("Result")
         self.Description = params.get("Description")
+        self.Isp = params.get("Isp")
         self.RequestId = params.get("RequestId")
+
+
+class WeChatBillDetail(AbstractModel):
+    """账单详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BizToken: token
+        :type BizToken: str
+        :param ChargeCount: 本token收费次数
+        :type ChargeCount: int
+        :param ChargeDetails: 本token计费详情
+        :type ChargeDetails: list of ChargeDetail
+        :param RuleId: 业务RuleId
+        :type RuleId: str
+        """
+        self.BizToken = None
+        self.ChargeCount = None
+        self.ChargeDetails = None
+        self.RuleId = None
+
+
+    def _deserialize(self, params):
+        self.BizToken = params.get("BizToken")
+        self.ChargeCount = params.get("ChargeCount")
+        if params.get("ChargeDetails") is not None:
+            self.ChargeDetails = []
+            for item in params.get("ChargeDetails"):
+                obj = ChargeDetail()
+                obj._deserialize(item)
+                self.ChargeDetails.append(obj)
+        self.RuleId = params.get("RuleId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        

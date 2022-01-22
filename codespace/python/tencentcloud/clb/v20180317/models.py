@@ -970,6 +970,8 @@ class CloneLoadBalancerRequest(AbstractModel):
         :type SnatIps: list of SnatIp
         :param ClusterIds: 公网独占集群ID或者CDCId。
         :type ClusterIds: list of str
+        :param SlaType: 性能保障规格。
+        :type SlaType: str
         :param ClusterTag: Stgw独占集群的标签。
         :type ClusterTag: str
         :param Zones: 仅适用于私有网络内网负载均衡。内网就近接入时，选择可用区下发。
@@ -992,6 +994,7 @@ class CloneLoadBalancerRequest(AbstractModel):
         self.SnatPro = None
         self.SnatIps = None
         self.ClusterIds = None
+        self.SlaType = None
         self.ClusterTag = None
         self.Zones = None
         self.EipAddressId = None
@@ -1027,6 +1030,7 @@ class CloneLoadBalancerRequest(AbstractModel):
                 obj._deserialize(item)
                 self.SnatIps.append(obj)
         self.ClusterIds = params.get("ClusterIds")
+        self.SlaType = params.get("SlaType")
         self.ClusterTag = params.get("ClusterTag")
         self.Zones = params.get("Zones")
         self.EipAddressId = params.get("EipAddressId")
@@ -1345,21 +1349,21 @@ class CreateClsLogSetRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Period: 日志集的保存周期，单位：天，最大 90。
-        :type Period: int
         :param LogsetName: 日志集的名字，不能和cls其他日志集重名。不填默认为clb_logset。
         :type LogsetName: str
+        :param Period: 日志集的保存周期，单位：天。
+        :type Period: int
         :param LogsetType: 日志集类型，ACCESS：访问日志，HEALTH：健康检查日志，默认ACCESS。
         :type LogsetType: str
         """
-        self.Period = None
         self.LogsetName = None
+        self.Period = None
         self.LogsetType = None
 
 
     def _deserialize(self, params):
-        self.Period = params.get("Period")
         self.LogsetName = params.get("LogsetName")
+        self.Period = params.get("Period")
         self.LogsetType = params.get("LogsetType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -1641,15 +1645,20 @@ class CreateLoadBalancerResponse(AbstractModel):
         r"""
         :param LoadBalancerIds: 由负载均衡实例唯一 ID 组成的数组。
         :type LoadBalancerIds: list of str
+        :param DealName: 订单号。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DealName: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.LoadBalancerIds = None
+        self.DealName = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.LoadBalancerIds = params.get("LoadBalancerIds")
+        self.DealName = params.get("DealName")
         self.RequestId = params.get("RequestId")
 
 
@@ -1840,16 +1849,20 @@ class CreateTopicRequest(AbstractModel):
         :type PartitionCount: int
         :param TopicType: 日志类型，ACCESS：访问日志，HEALTH：健康检查日志，默认ACCESS。
         :type TopicType: str
+        :param Period: 日志集的保存周期，单位：天，默认30天。
+        :type Period: int
         """
         self.TopicName = None
         self.PartitionCount = None
         self.TopicType = None
+        self.Period = None
 
 
     def _deserialize(self, params):
         self.TopicName = params.get("TopicName")
         self.PartitionCount = params.get("PartitionCount")
         self.TopicType = params.get("TopicType")
+        self.Period = params.get("Period")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2181,11 +2194,11 @@ class DeleteRuleRequest(AbstractModel):
         :type ListenerId: str
         :param LocationIds: 要删除的转发规则的ID组成的数组。
         :type LocationIds: list of str
-        :param Domain: 要删除的转发规则的域名，已提供LocationIds参数时本参数不生效。
+        :param Domain: 要删除的转发规则的域名，如果是多域名，可以指定多域名列表中的任意一个。已提供LocationIds参数时本参数不生效。
         :type Domain: str
         :param Url: 要删除的转发规则的转发路径，已提供LocationIds参数时本参数不生效。
         :type Url: str
-        :param NewDefaultServerDomain: 监听器下必须配置一个默认域名，当需要删除默认域名时，可以指定另一个域名作为新的默认域名。
+        :param NewDefaultServerDomain: 监听器下必须配置一个默认域名，当需要删除默认域名时，可以指定另一个域名作为新的默认域名，如果新的默认域名是多域名，可以指定多域名列表中的任意一个。
         :type NewDefaultServerDomain: str
         """
         self.LoadBalancerId = None
@@ -4077,12 +4090,16 @@ class DescribeTaskStatusRequest(AbstractModel):
         r"""
         :param TaskId: 请求ID，即接口返回的 RequestId 参数。
         :type TaskId: str
+        :param DealName: 订单ID。
+        :type DealName: str
         """
         self.TaskId = None
+        self.DealName = None
 
 
     def _deserialize(self, params):
         self.TaskId = params.get("TaskId")
+        self.DealName = params.get("DealName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4101,15 +4118,20 @@ class DescribeTaskStatusResponse(AbstractModel):
         r"""
         :param Status: 任务的当前状态。 0：成功，1：失败，2：进行中。
         :type Status: int
+        :param LoadBalancerIds: 由负载均衡实例唯一 ID 组成的数组。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LoadBalancerIds: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Status = None
+        self.LoadBalancerIds = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Status = params.get("Status")
+        self.LoadBalancerIds = params.get("LoadBalancerIds")
         self.RequestId = params.get("RequestId")
 
 
@@ -4317,7 +4339,7 @@ class HealthCheck(AbstractModel):
         :param HttpVersion: 自定义探测相关参数。健康检查协议CheckType的值取HTTP时，必传此字段，代表后端服务的HTTP版本：HTTP/1.0、HTTP/1.1；（仅适用于TCP监听器）
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpVersion: str
-        :param SourceIpType: 自定义探测相关参数。健康检查原IP类型：0（使用LB的VIP做为源IP），1（使用100.64网段IP做为源IP），默认值：0
+        :param SourceIpType: 自定义探测相关参数。健康检查原IP类型：0（使用LB的VIP作为源IP），1（使用100.64网段IP作为源IP），默认值：0
 注意：此字段可能返回 null，表示取不到有效值。
         :type SourceIpType: int
         """
@@ -5236,6 +5258,9 @@ Public：公网属性， Private：内网属性。
         :param TargetHealth: 后端目标健康状态。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TargetHealth: str
+        :param Domains: 转发规则的域名列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domains: str
         """
         self.LoadBalancerId = None
         self.LoadBalancerName = None
@@ -5270,6 +5295,7 @@ Public：公网属性， Private：内网属性。
         self.SecurityGroup = None
         self.LoadBalancerPassToTarget = None
         self.TargetHealth = None
+        self.Domains = None
 
 
     def _deserialize(self, params):
@@ -5317,6 +5343,7 @@ Public：公网属性， Private：内网属性。
         self.SecurityGroup = params.get("SecurityGroup")
         self.LoadBalancerPassToTarget = params.get("LoadBalancerPassToTarget")
         self.TargetHealth = params.get("TargetHealth")
+        self.Domains = params.get("Domains")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5592,9 +5619,9 @@ class ModifyDomainAttributesRequest(AbstractModel):
         :type LoadBalancerId: str
         :param ListenerId: 负载均衡监听器ID。
         :type ListenerId: str
-        :param Domain: 域名（必须是已经创建的转发规则下的域名）。
+        :param Domain: 域名（必须是已经创建的转发规则下的域名），如果是多域名，可以指定多域名列表中的任意一个。
         :type Domain: str
-        :param NewDomain: 要修改的新域名。
+        :param NewDomain: 要修改的新域名。NewDomain和NewDomains只能传一个。
         :type NewDomain: str
         :param Certificate: 域名相关的证书信息，注意，仅对启用SNI的监听器适用。
         :type Certificate: :class:`tencentcloud.clb.v20180317.models.CertificateInput`
@@ -5602,8 +5629,10 @@ class ModifyDomainAttributesRequest(AbstractModel):
         :type Http2: bool
         :param DefaultServer: 是否设为默认域名，注意，一个监听器下只能设置一个默认域名。
         :type DefaultServer: bool
-        :param NewDefaultServerDomain: 监听器下必须配置一个默认域名，若要关闭原默认域名，必须同时指定另一个域名作为新的默认域名。
+        :param NewDefaultServerDomain: 监听器下必须配置一个默认域名，若要关闭原默认域名，必须同时指定另一个域名作为新的默认域名，如果新的默认域名是多域名，可以指定多域名列表中的任意一个。
         :type NewDefaultServerDomain: str
+        :param NewDomains: 要修改的新域名列表。NewDomain和NewDomains只能传一个。
+        :type NewDomains: list of str
         """
         self.LoadBalancerId = None
         self.ListenerId = None
@@ -5613,6 +5642,7 @@ class ModifyDomainAttributesRequest(AbstractModel):
         self.Http2 = None
         self.DefaultServer = None
         self.NewDefaultServerDomain = None
+        self.NewDomains = None
 
 
     def _deserialize(self, params):
@@ -5626,6 +5656,7 @@ class ModifyDomainAttributesRequest(AbstractModel):
         self.Http2 = params.get("Http2")
         self.DefaultServer = params.get("DefaultServer")
         self.NewDefaultServerDomain = params.get("NewDefaultServerDomain")
+        self.NewDomains = params.get("NewDomains")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6718,10 +6749,10 @@ class RuleInput(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Domain: 转发规则的域名。长度限制为：1~80。
-        :type Domain: str
         :param Url: 转发规则的路径。长度限制为：1~200。
         :type Url: str
+        :param Domain: 转发规则的域名。长度限制为：1~80。Domain和Domains只需要传一个，单域名规则传Domain，多域名规则传Domains。
+        :type Domain: str
         :param SessionExpireTime: 会话保持时间。设置为0表示关闭会话保持，开启会话保持可取值30~3600，单位：秒。
         :type SessionExpireTime: int
         :param HealthCheck: 健康检查信息。详情请参见：[健康检查](https://cloud.tencent.com/document/product/214/6097)
@@ -6745,9 +6776,11 @@ class RuleInput(AbstractModel):
         :type TrpcFunc: str
         :param Quic: 是否开启QUIC，注意，只有HTTPS域名才能开启QUIC
         :type Quic: bool
+        :param Domains: 转发规则的域名列表。每个域名的长度限制为：1~80。Domain和Domains只需要传一个，单域名规则传Domain，多域名规则传Domains。
+        :type Domains: list of str
         """
-        self.Domain = None
         self.Url = None
+        self.Domain = None
         self.SessionExpireTime = None
         self.HealthCheck = None
         self.Certificate = None
@@ -6759,11 +6792,12 @@ class RuleInput(AbstractModel):
         self.TrpcCallee = None
         self.TrpcFunc = None
         self.Quic = None
+        self.Domains = None
 
 
     def _deserialize(self, params):
-        self.Domain = params.get("Domain")
         self.Url = params.get("Url")
+        self.Domain = params.get("Domain")
         self.SessionExpireTime = params.get("SessionExpireTime")
         if params.get("HealthCheck") is not None:
             self.HealthCheck = HealthCheck()
@@ -6779,6 +6813,7 @@ class RuleInput(AbstractModel):
         self.TrpcCallee = params.get("TrpcCallee")
         self.TrpcFunc = params.get("TrpcFunc")
         self.Quic = params.get("Quic")
+        self.Domains = params.get("Domains")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6847,6 +6882,9 @@ class RuleOutput(AbstractModel):
         :param QuicStatus: QUIC状态
 注意：此字段可能返回 null，表示取不到有效值。
         :type QuicStatus: str
+        :param Domains: 转发规则的域名列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domains: list of str
         """
         self.LocationId = None
         self.Domain = None
@@ -6869,6 +6907,7 @@ class RuleOutput(AbstractModel):
         self.TrpcCallee = None
         self.TrpcFunc = None
         self.QuicStatus = None
+        self.Domains = None
 
 
     def _deserialize(self, params):
@@ -6901,6 +6940,7 @@ class RuleOutput(AbstractModel):
         self.TrpcCallee = params.get("TrpcCallee")
         self.TrpcFunc = params.get("TrpcFunc")
         self.QuicStatus = params.get("QuicStatus")
+        self.Domains = params.get("Domains")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

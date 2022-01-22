@@ -178,6 +178,9 @@ class ClbClient(AbstractClient):
         不支持后端类型为 目标组、SCF云函数
         个性化配置、重定向配置、安全组默认放通开关 将不会被克隆，须手工配置
 
+        权限说明：
+        调用克隆接口用户需要具有：CreateLoadBalancer、CreateLoadBalancerListeners、CreateListenerRules、BatchRegisterTargets、SetLoadBalancerSecurityGroups、ModifyLoadBalancerAttributes、SetLoadBalancerClsLog、DeleteLoadBalancer权限，其中DeleteLoadBalancer用于克隆失败回滚流程，如果没有该接口权限，克隆失败后可能会残留克隆失败的CLB数据。
+
         通过接口调用：
         BGP带宽包必须传带宽包id
         独占集群克隆必须传对应的参数，否则按共享型创建
@@ -297,6 +300,7 @@ class ClbClient(AbstractClient):
 
     def CreateLoadBalancerSnatIps(self, request):
         """针对SnatPro负载均衡，这个接口用于添加SnatIp，如果负载均衡没有开启SnatPro，添加SnatIp后会自动开启。
+        本接口为异步接口，接口返回成功后，需以得到的 RequestID 为入参，调用 DescribeTaskStatus 接口查询本次任务是否成功。
 
         :param request: Request instance for CreateLoadBalancerSnatIps.
         :type request: :class:`tencentcloud.clb.v20180317.models.CreateLoadBalancerSnatIpsRequest`
@@ -497,6 +501,7 @@ class ClbClient(AbstractClient):
 
     def DeleteLoadBalancerSnatIps(self, request):
         """这个接口用于删除SnatPro的负载均衡的SnatIp。
+        本接口为异步接口，接口返回成功后，需以得到的 RequestID 为入参，调用 DescribeTaskStatus 接口查询本次任务是否成功。
 
         :param request: Request instance for DeleteLoadBalancerSnatIps.
         :type request: :class:`tencentcloud.clb.v20180317.models.DeleteLoadBalancerSnatIpsRequest`
@@ -1656,6 +1661,7 @@ class ClbClient(AbstractClient):
 
     def ModifyLoadBalancerAttributes(self, request):
         """修改负载均衡实例的属性。支持修改负载均衡实例的名称、设置负载均衡的跨域属性。
+        本接口为异步接口，接口返回成功后，需以得到的 RequestID 为入参，调用 DescribeTaskStatus 接口查询本次任务是否成功。
 
         :param request: Request instance for ModifyLoadBalancerAttributes.
         :type request: :class:`tencentcloud.clb.v20180317.models.ModifyLoadBalancerAttributesRequest`

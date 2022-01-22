@@ -231,6 +231,64 @@ class AttachInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class AttachLoadBalancersRequest(AbstractModel):
+    """AttachLoadBalancers请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AutoScalingGroupId: 伸缩组ID
+        :type AutoScalingGroupId: str
+        :param LoadBalancerIds: 传统型负载均衡器ID列表，每个伸缩组绑定传统型负载均衡器数量上限为20，LoadBalancerIds 和 ForwardLoadBalancers 二者同时最多只能指定一个
+        :type LoadBalancerIds: list of str
+        :param ForwardLoadBalancers: 应用型负载均衡器列表，每个伸缩组绑定应用型负载均衡器数量上限为50，LoadBalancerIds 和 ForwardLoadBalancers 二者同时最多只能指定一个
+        :type ForwardLoadBalancers: list of ForwardLoadBalancer
+        """
+        self.AutoScalingGroupId = None
+        self.LoadBalancerIds = None
+        self.ForwardLoadBalancers = None
+
+
+    def _deserialize(self, params):
+        self.AutoScalingGroupId = params.get("AutoScalingGroupId")
+        self.LoadBalancerIds = params.get("LoadBalancerIds")
+        if params.get("ForwardLoadBalancers") is not None:
+            self.ForwardLoadBalancers = []
+            for item in params.get("ForwardLoadBalancers"):
+                obj = ForwardLoadBalancer()
+                obj._deserialize(item)
+                self.ForwardLoadBalancers.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AttachLoadBalancersResponse(AbstractModel):
+    """AttachLoadBalancers返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ActivityId: 伸缩活动ID
+        :type ActivityId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ActivityId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ActivityId = params.get("ActivityId")
+        self.RequestId = params.get("RequestId")
+
+
 class AutoScalingAdvice(AbstractModel):
     """伸缩组配置建议。
 
@@ -734,13 +792,12 @@ class CreateAutoScalingGroupRequest(AbstractModel):
         :type Ipv6AddressCount: int
         :param MultiZoneSubnetPolicy: 多可用区/子网策略，取值包括 PRIORITY 和 EQUALITY，默认为 PRIORITY。
 <br><li> PRIORITY，按照可用区/子网列表的顺序，作为优先级来尝试创建实例，如果优先级最高的可用区/子网可以创建成功，则总在该可用区/子网创建。
-<br><li> EQUALITY：每次选择当前实例数最少的可用区/子网进行扩容，使得每个可用区/子网都有机会发生扩容，多次扩容出的实例会打散到多个可用区/子网。
+<br><li> EQUALITY：扩容出的实例会打散到多个可用区/子网，保证扩容后的各个可用区/子网实例数相对均衡。
 
 与本策略相关的注意点：
 <br><li> 当伸缩组为基础网络时，本策略适用于多可用区；当伸缩组为VPC网络时，本策略适用于多子网，此时不再考虑可用区因素，例如四个子网ABCD，其中ABC处于可用区1，D处于可用区2，此时考虑子网ABCD进行排序，而不考虑可用区1、2。
 <br><li> 本策略适用于多可用区/子网，不适用于启动配置的多机型。多机型按照优先级策略进行选择。
-<br><li> 创建实例时，先保证多机型的策略，后保证多可用区/子网的策略。例如多机型A、B，多子网1、2、3（按照PRIORITY策略），会按照A1、A2、A3、B1、B2、B3 进行尝试，如果A1售罄，会尝试A2（而非B1）。
-<br><li> 无论使用哪种策略，单次伸缩活动总是优先保持使用一种具体配置（机型 * 可用区/子网）。
+<br><li> 按照 PRIORITY 策略创建实例时，先保证多机型的策略，后保证多可用区/子网的策略。例如多机型A、B，多子网1、2、3，会按照A1、A2、A3、B1、B2、B3 进行尝试，如果A1售罄，会尝试A2（而非B1）。
         :type MultiZoneSubnetPolicy: str
         :param HealthCheckType: 伸缩组实例健康检查类型，取值如下：<br><li>CVM：根据实例网络状态判断实例是否处于不健康状态，不健康的网络状态即发生实例 PING 不可达事件，详细判断标准可参考[实例健康检查](https://cloud.tencent.com/document/product/377/8553)<br><li>CLB：根据 CLB 的健康检查状态判断实例是否处于不健康状态，CLB健康检查原理可参考[健康检查](https://cloud.tencent.com/document/product/214/6097) <br>如果选择了`CLB`类型，伸缩组将同时检查实例网络状态与CLB健康检查状态，如果出现实例网络状态不健康，实例将被标记为 UNHEALTHY 状态；如果出现 CLB 健康检查状态异常，实例将被标记为CLB_UNHEALTHY 状态，如果两个异常状态同时出现，实例`HealthStatus`字段将返回 UNHEALTHY|CLB_UNHEALTHY。默认值：CLB
         :type HealthCheckType: str
@@ -1916,7 +1973,7 @@ class DescribeAutoScalingInstancesRequest(AbstractModel):
         :type Filters: list of Filter
         :param Offset: 偏移量，默认为0。关于`Offset`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
         :type Offset: int
-        :param Limit: 返回数量，默认为20，最大值为100。关于`Limit`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
+        :param Limit: 返回数量，默认为20，最大值为2000。关于`Limit`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
         :type Limit: int
         """
         self.InstanceIds = None
@@ -2467,6 +2524,64 @@ class DetachInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DetachLoadBalancersRequest(AbstractModel):
+    """DetachLoadBalancers请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AutoScalingGroupId: 伸缩组ID
+        :type AutoScalingGroupId: str
+        :param LoadBalancerIds: 传统负载均衡器ID列表，列表长度上限为20，LoadBalancerIds 和 ForwardLoadBalancerIdentifications 二者同时最多只能指定一个
+        :type LoadBalancerIds: list of str
+        :param ForwardLoadBalancerIdentifications: 应用型负载均衡器标识信息列表，列表长度上限为50，LoadBalancerIds 和 ForwardLoadBalancerIdentifications二者同时最多只能指定一个
+        :type ForwardLoadBalancerIdentifications: list of ForwardLoadBalancerIdentification
+        """
+        self.AutoScalingGroupId = None
+        self.LoadBalancerIds = None
+        self.ForwardLoadBalancerIdentifications = None
+
+
+    def _deserialize(self, params):
+        self.AutoScalingGroupId = params.get("AutoScalingGroupId")
+        self.LoadBalancerIds = params.get("LoadBalancerIds")
+        if params.get("ForwardLoadBalancerIdentifications") is not None:
+            self.ForwardLoadBalancerIdentifications = []
+            for item in params.get("ForwardLoadBalancerIdentifications"):
+                obj = ForwardLoadBalancerIdentification()
+                obj._deserialize(item)
+                self.ForwardLoadBalancerIdentifications.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DetachLoadBalancersResponse(AbstractModel):
+    """DetachLoadBalancers返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ActivityId: 伸缩活动ID
+        :type ActivityId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ActivityId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ActivityId = params.get("ActivityId")
+        self.RequestId = params.get("RequestId")
+
+
 class DetailedStatusMessage(AbstractModel):
     """伸缩活动状态详细描述。
 
@@ -2757,6 +2872,38 @@ class ForwardLoadBalancer(AbstractModel):
                 self.TargetAttributes.append(obj)
         self.LocationId = params.get("LocationId")
         self.Region = params.get("Region")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ForwardLoadBalancerIdentification(AbstractModel):
+    """应用型负载均衡器标识信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LoadBalancerId: 负载均衡器ID
+        :type LoadBalancerId: str
+        :param ListenerId: 应用型负载均衡监听器 ID
+        :type ListenerId: str
+        :param LocationId: 转发规则ID，注意：针对七层监听器此参数必填
+        :type LocationId: str
+        """
+        self.LoadBalancerId = None
+        self.ListenerId = None
+        self.LocationId = None
+
+
+    def _deserialize(self, params):
+        self.LoadBalancerId = params.get("LoadBalancerId")
+        self.ListenerId = params.get("ListenerId")
+        self.LocationId = params.get("LocationId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3466,15 +3613,14 @@ class ModifyAutoScalingGroupRequest(AbstractModel):
         :type ServiceSettings: :class:`tencentcloud.autoscaling.v20180419.models.ServiceSettings`
         :param Ipv6AddressCount: 实例具有IPv6地址数量的配置，取值包括0、1。
         :type Ipv6AddressCount: int
-        :param MultiZoneSubnetPolicy: 多可用区/子网策略，取值包括 PRIORITY 和 EQUALITY。
+        :param MultiZoneSubnetPolicy: 多可用区/子网策略，取值包括 PRIORITY 和 EQUALITY，默认为 PRIORITY。
 <br><li> PRIORITY，按照可用区/子网列表的顺序，作为优先级来尝试创建实例，如果优先级最高的可用区/子网可以创建成功，则总在该可用区/子网创建。
-<br><li> EQUALITY：每次选择当前实例数最少的可用区/子网进行扩容，使得每个可用区/子网都有机会发生扩容，多次扩容出的实例会打散到多个可用区/子网。
+<br><li> EQUALITY：扩容出的实例会打散到多个可用区/子网，保证扩容后的各个可用区/子网实例数相对均衡。
 
 与本策略相关的注意点：
 <br><li> 当伸缩组为基础网络时，本策略适用于多可用区；当伸缩组为VPC网络时，本策略适用于多子网，此时不再考虑可用区因素，例如四个子网ABCD，其中ABC处于可用区1，D处于可用区2，此时考虑子网ABCD进行排序，而不考虑可用区1、2。
 <br><li> 本策略适用于多可用区/子网，不适用于启动配置的多机型。多机型按照优先级策略进行选择。
-<br><li> 创建实例时，先保证多机型的策略，后保证多可用区/子网的策略。例如多机型A、B，多子网1、2、3（按照PRIORITY策略），会按照A1、A2、A3、B1、B2、B3 进行尝试，如果A1售罄，会尝试A2（而非B1）。
-<br><li> 无论使用哪种策略，单次伸缩活动总是优先保持使用一种具体配置（机型 * 可用区/子网）。
+<br><li> 按照 PRIORITY 策略创建实例时，先保证多机型的策略，后保证多可用区/子网的策略。例如多机型A、B，多子网1、2、3，会按照A1、A2、A3、B1、B2、B3 进行尝试，如果A1售罄，会尝试A2（而非B1）。
         :type MultiZoneSubnetPolicy: str
         :param HealthCheckType: 伸缩组实例健康检查类型，取值如下：<br><li>CVM：根据实例网络状态判断实例是否处于不健康状态，不健康的网络状态即发生实例 PING 不可达事件，详细判断标准可参考[实例健康检查](https://cloud.tencent.com/document/product/377/8553)<br><li>CLB：根据 CLB 的健康检查状态判断实例是否处于不健康状态，CLB健康检查原理可参考[健康检查](https://cloud.tencent.com/document/product/214/6097)
         :type HealthCheckType: str
@@ -3680,6 +3826,8 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
         :type InstanceNameSettings: :class:`tencentcloud.autoscaling.v20180419.models.InstanceNameSettings`
         :param EnhancedService: 增强服务。通过该参数可以指定是否开启云安全、云监控等服务。
         :type EnhancedService: :class:`tencentcloud.autoscaling.v20180419.models.EnhancedService`
+        :param CamRoleName: CAM角色名称。可通过DescribeRoleList接口返回值中的roleName获取。
+        :type CamRoleName: str
         """
         self.LaunchConfigurationId = None
         self.ImageId = None
@@ -3698,6 +3846,7 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
         self.HostNameSettings = None
         self.InstanceNameSettings = None
         self.EnhancedService = None
+        self.CamRoleName = None
 
 
     def _deserialize(self, params):
@@ -3737,6 +3886,7 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
         if params.get("EnhancedService") is not None:
             self.EnhancedService = EnhancedService()
             self.EnhancedService._deserialize(params.get("EnhancedService"))
+        self.CamRoleName = params.get("CamRoleName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3760,6 +3910,60 @@ class ModifyLaunchConfigurationAttributesResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyLoadBalancerTargetAttributesRequest(AbstractModel):
+    """ModifyLoadBalancerTargetAttributes请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AutoScalingGroupId: 伸缩组ID
+        :type AutoScalingGroupId: str
+        :param ForwardLoadBalancers: 需修改目标规则属性的应用型负载均衡器列表，列表长度上限为50
+        :type ForwardLoadBalancers: list of ForwardLoadBalancer
+        """
+        self.AutoScalingGroupId = None
+        self.ForwardLoadBalancers = None
+
+
+    def _deserialize(self, params):
+        self.AutoScalingGroupId = params.get("AutoScalingGroupId")
+        if params.get("ForwardLoadBalancers") is not None:
+            self.ForwardLoadBalancers = []
+            for item in params.get("ForwardLoadBalancers"):
+                obj = ForwardLoadBalancer()
+                obj._deserialize(item)
+                self.ForwardLoadBalancers.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyLoadBalancerTargetAttributesResponse(AbstractModel):
+    """ModifyLoadBalancerTargetAttributes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ActivityId: 伸缩活动ID
+        :type ActivityId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ActivityId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ActivityId = params.get("ActivityId")
         self.RequestId = params.get("RequestId")
 
 

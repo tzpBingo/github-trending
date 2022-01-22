@@ -308,21 +308,21 @@ class Cdc(AbstractModel):
         :param CageId: 独享集群围笼ID。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CageId: str
-        :param CdcState: 独享集群状态。取值范围：<br><li>NORMAL:正常<br><li>CLOSED：关闭售卖<br><li>FAULT：状态异常<br><li>ISOLATED：已隔离。
+        :param CdcState: 独享集群状态。取值范围：<br><li>NORMAL：正常；<br><li>CLOSED：关闭，此时将不可使用该独享集群创建新的云硬盘；<br><li>FAULT：独享集群状态异常，此时独享集群将不可操作，腾讯云运维团队将会及时修复该集群；<br><li>ISOLATED：因未及时续费导致独享集群被隔离，此时将不可使用该独享集群创建新的云硬盘，对应的云硬盘也将不可操作。
         :type CdcState: str
-        :param Zone: 独享集群所属的[可用区](/document/api/213/9452#zone)ID。
+        :param Zone: 独享集群所属的[可用区](/document/product/213/15753#ZoneInfo)ID。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Zone: str
         :param CdcName: 独享集群实例名称。
         :type CdcName: str
-        :param CdcResource: 独享集群的资源大小。
+        :param CdcResource: 独享集群的资源容量大小。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CdcResource: :class:`tencentcloud.cbs.v20170312.models.CdcSize`
         :param CdcId: 独享集群实例id。
         :type CdcId: str
         :param DiskType: 独享集群类型。取值范围：<br><li>CLOUD_BASIC：表示普通云硬盘集群<br><li>CLOUD_PREMIUM：表示高性能云硬盘集群<br><li>CLOUD_SSD：SSD表示SSD云硬盘集群。
         :type DiskType: str
-        :param ExpiredTime: 独享集群过期时间。
+        :param ExpiredTime: 独享集群到期时间。
         :type ExpiredTime: str
         """
         self.CageId = None
@@ -580,7 +580,7 @@ class CreateSnapshotRequest(AbstractModel):
         :type DiskId: str
         :param SnapshotName: 快照名称，不传则新快照名称默认为“未命名”。
         :type SnapshotName: str
-        :param Deadline: 快照的到期时间，到期后该快照将会自动删除
+        :param Deadline: 快照的到期时间，到期后该快照将会自动删除,需要传入UTC时间下的ISO-8601标准时间格式,例如:2022-01-08T09:47:55+00:00
         :type Deadline: str
         """
         self.DiskId = None
@@ -994,7 +994,7 @@ class DescribeDiskStoragePoolRequest(AbstractModel):
         :type Limit: int
         :param CdcIds: 指定需要查询的独享集群ID列表，该入参不能与Filters一起使用。
         :type CdcIds: list of str
-        :param Filters: 过滤条件。参数不支持同时指定`CdcIds`和`Filters`。<br><li>cdc-id - Array of String - 是否必填：否 -（过滤条件）按独享集群ID过滤。<br><li>zone - Array of String - 是否必填：否 -（过滤条件）按独享集群所在[可用区](/document/api/213/9452#zone)过滤。<br><li>cage-id - Array of String - 是否必填：否 -（过滤条件）按独享集群所在围笼的ID过滤。<br><li>disk-type - Array of String - 是否必填：否 -（过滤条件）按照云盘介质类型过滤。(CLOUD_BASIC：表示普通云硬盘 | CLOUD_PREMIUM：表示高性能云硬盘。| CLOUD_SSD：SSD表示SSD云硬盘。)
+        :param Filters: 过滤条件。参数不支持同时指定`CdcIds`和`Filters`。<br><li>cdc-id - Array of String - 是否必填：否 -（过滤条件）按独享集群ID过滤。<br><li>zone - Array of String - 是否必填：否 -（过滤条件）按独享集群所在[可用区](/document/product/213/15753#ZoneInfo)过滤。<br><li>cage-id - Array of String - 是否必填：否 -（过滤条件）按独享集群所在围笼的ID过滤。<br><li>disk-type - Array of String - 是否必填：否 -（过滤条件）按照云盘介质类型过滤。(CLOUD_BASIC：表示普通云硬盘 | CLOUD_PREMIUM：表示高性能云硬盘。| CLOUD_SSD：SSD表示SSD云硬盘。)
         :type Filters: list of Filter
         :param Offset: 偏移量，默认为0。关于`Offset`的更进一步介绍请参考API[简介](/document/product/362/15633)中的相关小节。
         :type Offset: int
@@ -1517,6 +1517,8 @@ class Disk(AbstractModel):
         :type Shareable: bool
         :param CreateTime: 云硬盘的创建时间。
         :type CreateTime: str
+        :param DeleteSnapshot: 销毁云盘时删除关联的非永久保留快照。0 表示非永久快照不随云盘销毁而销毁，1表示非永久快照随云盘销毁而销毁，默认取0。快照是否永久保留可以通过DescribeSnapshots接口返回的快照详情的IsPermanent字段来判断，true表示永久快照，false表示非永久快照。
+        :type DeleteSnapshot: int
         """
         self.DeleteWithInstance = None
         self.RenewFlag = None
@@ -1553,6 +1555,7 @@ class Disk(AbstractModel):
         self.ReturnFailCode = None
         self.Shareable = None
         self.CreateTime = None
+        self.DeleteSnapshot = None
 
 
     def _deserialize(self, params):
@@ -1598,6 +1601,7 @@ class Disk(AbstractModel):
         self.ReturnFailCode = params.get("ReturnFailCode")
         self.Shareable = params.get("Shareable")
         self.CreateTime = params.get("CreateTime")
+        self.DeleteSnapshot = params.get("DeleteSnapshot")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1846,6 +1850,47 @@ class Image(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class InitializeDisksRequest(AbstractModel):
+    """InitializeDisks请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskIds: 待重新初始化的云硬盘ID列表， 单次初始化限制20块以内
+        :type DiskIds: list of str
+        """
+        self.DiskIds = None
+
+
+    def _deserialize(self, params):
+        self.DiskIds = params.get("DiskIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InitializeDisksResponse(AbstractModel):
+    """InitializeDisks返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class InquirePriceModifyDiskExtraPerformanceRequest(AbstractModel):
@@ -2981,12 +3026,16 @@ class TerminateDisksRequest(AbstractModel):
         r"""
         :param DiskIds: 需退还的云盘ID列表。
         :type DiskIds: list of str
+        :param DeleteSnapshot: 销毁云盘时删除关联的非永久保留快照。0 表示非永久快照不随云盘销毁而销毁，1表示非永久快照随云盘销毁而销毁，默认取0。快照是否永久保留可以通过DescribeSnapshots接口返回的快照详情的IsPermanent字段来判断，true表示永久快照，false表示非永久快照。
+        :type DeleteSnapshot: int
         """
         self.DiskIds = None
+        self.DeleteSnapshot = None
 
 
     def _deserialize(self, params):
         self.DiskIds = params.get("DiskIds")
+        self.DeleteSnapshot = params.get("DeleteSnapshot")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

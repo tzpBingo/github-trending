@@ -218,8 +218,14 @@ INVALIDPARAMETERVALUE_CFSPARAMETERDUPLICATE = 'InvalidParameterValue.CfsParamete
 # cfs配置项取值与规范不符。
 INVALIDPARAMETERVALUE_CFSPARAMETERERROR = 'InvalidParameterValue.CfsParameterError'
 
+# cfs参数格式与规范不符。
+INVALIDPARAMETERVALUE_CFSSTRUCTIONERROR = 'InvalidParameterValue.CfsStructionError'
+
 # Ckafka传入错误。
 INVALIDPARAMETERVALUE_CKAFKA = 'InvalidParameterValue.Ckafka'
+
+# 运行函数时的参数传入有误。
+INVALIDPARAMETERVALUE_CLIENTCONTEXT = 'InvalidParameterValue.ClientContext'
 
 # Cls传入错误。
 INVALIDPARAMETERVALUE_CLS = 'InvalidParameterValue.Cls'
@@ -362,6 +368,12 @@ INVALIDPARAMETERVALUE_NAMESPACE = 'InvalidParameterValue.Namespace'
 # 规则不正确，Namespace为英文字母、数字、-_ 符号组成，长度30。
 INVALIDPARAMETERVALUE_NAMESPACEINVALID = 'InvalidParameterValue.NamespaceInvalid'
 
+# NodeSpec 参数传入错误。
+INVALIDPARAMETERVALUE_NODESPEC = 'InvalidParameterValue.NodeSpec'
+
+# NodeType 参数传入错误。
+INVALIDPARAMETERVALUE_NODETYPE = 'InvalidParameterValue.NodeType'
+
 # 偏移量不合法。
 INVALIDPARAMETERVALUE_OFFSET = 'InvalidParameterValue.Offset'
 
@@ -436,6 +448,9 @@ INVALIDPARAMETERVALUE_TEMPCOSOBJECTNAME = 'InvalidParameterValue.TempCosObjectNa
 
 # TraceEnable取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_TRACEENABLE = 'InvalidParameterValue.TraceEnable'
+
+# TrackingTarget 参数输入错误。
+INVALIDPARAMETERVALUE_TRACKINGTARGET = 'InvalidParameterValue.TrackingTarget'
 
 # TriggerCronConfig参数传入错误。
 INVALIDPARAMETERVALUE_TRIGGERCRONCONFIG = 'InvalidParameterValue.TriggerCronConfig'
@@ -596,6 +611,9 @@ RESOURCENOTFOUND_CDN = 'ResourceNotFound.Cdn'
 # 指定的cfs下未找到您所指定的挂载点。
 RESOURCENOTFOUND_CFSMOUNTINSNOTMATCH = 'ResourceNotFound.CfsMountInsNotMatch'
 
+# 检测cfs状态为不可用。
+RESOURCENOTFOUND_CFSSTATUSERROR = 'ResourceNotFound.CfsStatusError'
+
 # cfs与云函数所处vpc不一致。
 RESOURCENOTFOUND_CFSVPCNOTMATCH = 'ResourceNotFound.CfsVpcNotMatch'
 
@@ -643,6 +661,9 @@ RESOURCENOTFOUND_QUALIFIER = 'ResourceNotFound.Qualifier'
 
 # 角色不存在。
 RESOURCENOTFOUND_ROLE = 'ResourceNotFound.Role'
+
+# Role不存在。
+RESOURCENOTFOUND_ROLECHECK = 'ResourceNotFound.RoleCheck'
 
 # Timer不存在。
 RESOURCENOTFOUND_TIMER = 'ResourceNotFound.Timer'

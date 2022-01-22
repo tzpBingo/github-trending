@@ -28,11 +28,15 @@ from pyee import AsyncIOEventEmitter
 from websockets.client import connect as websocket_connect
 
 from playwright._impl._api_types import Error
+from playwright._impl._driver import get_driver_env
 from playwright._impl._helper import ParsedMessagePayload
 
 
 # Sourced from: https://github.com/pytest-dev/pytest/blob/da01ee0a4bb0af780167ecd228ab3ad249511302/src/_pytest/faulthandler.py#L69-L77
 def _get_stderr_fileno() -> Optional[int]:
+    if sys.stderr.closed:
+        return None
+
     try:
         return sys.stderr.fileno()
     except (AttributeError, io.UnsupportedOperation):
@@ -113,7 +117,7 @@ class PipeTransport(Transport):
 
         try:
             # For pyinstaller
-            env = os.environ.copy()
+            env = get_driver_env()
             if getattr(sys, "frozen", False):
                 env.setdefault("PLAYWRIGHT_BROWSERS_PATH", "0")
 

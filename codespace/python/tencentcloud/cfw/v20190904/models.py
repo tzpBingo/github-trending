@@ -666,13 +666,17 @@ class CreateNatFwInstanceResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param CfwInsId: 防火墙实例id
+        :type CfwInsId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.CfwInsId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.CfwInsId = params.get("CfwInsId")
         self.RequestId = params.get("RequestId")
 
 
@@ -745,13 +749,18 @@ class CreateNatFwInstanceWithDomainResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param CfwInsId: nat实例信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CfwInsId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.CfwInsId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.CfwInsId = params.get("CfwInsId")
         self.RequestId = params.get("RequestId")
 
 
@@ -3010,17 +3019,22 @@ class DescribeVpcRuleOverviewResponse(AbstractModel):
         :param StartRuleNum: 启用规则数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type StartRuleNum: int
+        :param Total: 规则总量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.StrategyNum = None
         self.StartRuleNum = None
+        self.Total = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.StrategyNum = params.get("StrategyNum")
         self.StartRuleNum = params.get("StartRuleNum")
+        self.Total = params.get("Total")
         self.RequestId = params.get("RequestId")
 
 
@@ -4047,6 +4061,51 @@ class ModifyResourceGroupResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyRunSyncAssetRequest(AbstractModel):
+    """ModifyRunSyncAsset请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 0: 互联网防火墙开关，1：vpc 防火墙开关
+        :type Type: int
+        """
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyRunSyncAssetResponse(AbstractModel):
+    """ModifyRunSyncAsset返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: 0：同步成功，1：资产更新中，2：后台同步调用失败
+        :type Status: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Status = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
         self.RequestId = params.get("RequestId")
 
 
