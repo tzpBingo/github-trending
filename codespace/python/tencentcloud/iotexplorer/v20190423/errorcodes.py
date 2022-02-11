@@ -302,6 +302,9 @@ RESOURCENOTFOUND_DEVICEDUPKEYEXIST = 'ResourceNotFound.DeviceDupKeyExist'
 # 固件不存在。
 RESOURCENOTFOUND_DEVICEHASNOFIRMWARE = 'ResourceNotFound.DeviceHasNoFirmware'
 
+# 设备未绑定家庭。
+RESOURCENOTFOUND_DEVICENOTBIND = 'ResourceNotFound.DeviceNotBind'
+
 # 设备不存在。
 RESOURCENOTFOUND_DEVICENOTEXIST = 'ResourceNotFound.DeviceNotExist'
 
@@ -415,6 +418,9 @@ UNSUPPORTEDOPERATION_DEVICEEXCEEDLIMIT = 'UnsupportedOperation.DeviceExceedLimit
 
 # 设备ota升级中。
 UNSUPPORTEDOPERATION_DEVICEOTATASKINPROGRESS = 'UnsupportedOperation.DeviceOtaTaskInProgress'
+
+# 设备类型错误。
+UNSUPPORTEDOPERATION_DEVICETYPE = 'UnsupportedOperation.DeviceType'
 
 # 产品下还存在未删除的设备。
 UNSUPPORTEDOPERATION_DEVICESEXISTUNDERPRODUCT = 'UnsupportedOperation.DevicesExistUnderProduct'

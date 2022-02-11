@@ -104,7 +104,7 @@ INTERNALERROR_DBOPERATIONFAILED = 'InternalError.DbOperationFailed'
 # 查询独享集群信息失败。
 INTERNALERROR_FENCEERROR = 'InternalError.FenceError'
 
-# 获取指标数据。
+# 获取监控数据失败。
 INTERNALERROR_FETCHMETRICDATAFAILED = 'InternalError.FetchMetricDataFailed'
 
 # 获取数据库实例参数失败。
@@ -130,6 +130,9 @@ INTERNALERROR_GETSLOWLOGFAILED = 'InternalError.GetSlowLogFailed'
 
 # 查询虚拟私有网络子网信息失败。
 INTERNALERROR_GETSUBNETFAILED = 'InternalError.GetSubnetFailed'
+
+# 获取表结构失败。
+INTERNALERROR_GETTABLEINFOFAILED = 'InternalError.GetTableInfoFailed'
 
 # 获取账号列表失败。
 INTERNALERROR_GETUSERLISTFAILED = 'InternalError.GetUserListFailed'
@@ -206,7 +209,7 @@ INVALIDPARAMETER_ACTIONNOTFOUND = 'InvalidParameter.ActionNotFound'
 # 密码包含了非法字符。
 INVALIDPARAMETER_CHARACTERERROR = 'InvalidParameter.CharacterError'
 
-# 参数检测为通过。
+# 入参校验失败。
 INVALIDPARAMETER_CHECKPARAMNOTPASS = 'InvalidParameter.CheckParamNotPass'
 
 # 未指定需要查询的订单ID。

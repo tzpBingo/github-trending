@@ -359,6 +359,9 @@ INVALIDPARAMETERVALUE_MEMORY = 'InvalidParameterValue.Memory'
 # MemorySize错误。
 INVALIDPARAMETERVALUE_MEMORYSIZE = 'InvalidParameterValue.MemorySize'
 
+# MinCapacity 参数传入错误。
+INVALIDPARAMETERVALUE_MINCAPACITY = 'InvalidParameterValue.MinCapacity'
+
 # Name参数传入错误。
 INVALIDPARAMETERVALUE_NAME = 'InvalidParameterValue.Name'
 
@@ -739,6 +742,9 @@ UNSUPPORTEDOPERATION_REGION = 'UnsupportedOperation.Region'
 
 # Trigger操作不支持。
 UNSUPPORTEDOPERATION_TRIGGER = 'UnsupportedOperation.Trigger'
+
+# 指定的配置暂不支持，请修正后再试。
+UNSUPPORTEDOPERATION_UPDATEFUNCTIONEVENTINVOKECONFIG = 'UnsupportedOperation.UpdateFunctionEventInvokeConfig'
 
 # 指定的配置VpcConfig暂不支持。
 UNSUPPORTEDOPERATION_VPCCONFIG = 'UnsupportedOperation.VpcConfig'

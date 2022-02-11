@@ -59,9 +59,6 @@ FAILEDOPERATION_CUSTOMGROUPALREADYEXIST = 'FailedOperation.CustomGroupAlreadyExi
 # 内部DB连接失败。
 FAILEDOPERATION_DBCONNECTIONERROR = 'FailedOperation.DBConnectionError'
 
-# 内部DB操作错误。
-FAILEDOPERATION_DBOPERATIONERROR = 'FailedOperation.DBOperationError'
-
 # 媒资文件下载失败。
 FAILEDOPERATION_DOWNLOADFAILED = 'FailedOperation.DownloadFailed'
 
@@ -76,6 +73,9 @@ FAILEDOPERATION_GETTASKLISTFAILED = 'FailedOperation.GetTaskListFailed'
 
 # 获取媒资信息失败。
 FAILEDOPERATION_GETVIDEOMETADATAFAILED = 'FailedOperation.GetVideoMetadataFailed'
+
+# 图片数量过多。
+FAILEDOPERATION_IMAGENUMEXCEEDED = 'FailedOperation.ImageNumExceeded'
 
 # MD5不匹配。
 FAILEDOPERATION_MD5MISMATCH = 'FailedOperation.MD5Mismatch'
@@ -104,6 +104,9 @@ FAILEDOPERATION_PERSONDUPLICATED = 'FailedOperation.PersonDuplicated'
 # 人脸图片不属于已知人物。
 FAILEDOPERATION_PERSONNOTMATCHED = 'FailedOperation.PersonNotMatched'
 
+# 自定义人物数量过多。
+FAILEDOPERATION_PERSONNUMEXCEEDED = 'FailedOperation.PersonNumExceeded'
+
 # 图片质量分检测失败。
 FAILEDOPERATION_QUALITYALGOFAILED = 'FailedOperation.QualityAlgoFailed'
 
@@ -127,6 +130,9 @@ FAILEDOPERATION_TRANSCODEFAILED = 'FailedOperation.TranscodeFailed'
 
 # 上传文件失败。
 FAILEDOPERATION_UPLOADFAILED = 'FailedOperation.UploadFailed'
+
+# 内部错误。
+INTERNALERROR = 'InternalError'
 
 # 内部DB连接失败。
 INTERNALERROR_DBCONNECTIONERROR = 'InternalError.DBConnectionError'
@@ -194,7 +200,7 @@ INVALIDPARAMETER_INVALIDPAGENUMBER = 'InvalidParameter.InvalidPageNumber'
 # 分页大小不合法。
 INVALIDPARAMETER_INVALIDPAGESIZE = 'InvalidParameter.InvalidPageSize'
 
-# 输入字段不合法。
+# 输入字段 %!s(MISSING) 不合法。
 INVALIDPARAMETER_INVALIDPARAM = 'InvalidParameter.InvalidParam'
 
 # 人物ID不合法。
