@@ -100,11 +100,15 @@ class ApplicationBasicInfo(AbstractModel):
         :type Description: str
         :param CreateTime: 创建时间
         :type CreateTime: str
+        :param AllowVisualModify: 是否允许可视化修改
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AllowVisualModify: bool
         """
         self.Name = None
         self.ManageUrl = None
         self.Description = None
         self.CreateTime = None
+        self.AllowVisualModify = None
 
 
     def _deserialize(self, params):
@@ -112,6 +116,7 @@ class ApplicationBasicInfo(AbstractModel):
         self.ManageUrl = params.get("ManageUrl")
         self.Description = params.get("Description")
         self.CreateTime = params.get("CreateTime")
+        self.AllowVisualModify = params.get("AllowVisualModify")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -790,7 +795,7 @@ class CreateEdgeNodeUnitTemplateRequest(AbstractModel):
         r"""
         :param EdgeUnitId: IECP边缘单元ID
         :type EdgeUnitId: int
-        :param Name: NodeUnit模版名称
+        :param Name: NodeUnit模板名称
         :type Name: str
         :param Namespace: 命名空间，默认default
         :type Namespace: str
@@ -1454,7 +1459,7 @@ class DeleteEdgeNodeUnitTemplatesRequest(AbstractModel):
         r"""
         :param EdgeUnitId: IECP边缘单元ID
         :type EdgeUnitId: int
-        :param NodeUnitTemplateIDs: 删除的NodeUnit模版ID列表
+        :param NodeUnitTemplateIDs: 删除的NodeUnit模板ID列表
         :type NodeUnitTemplateIDs: list of int non-negative
         """
         self.EdgeUnitId = None
@@ -4198,7 +4203,7 @@ class DescribeEdgeUnitNodeUnitTemplatesResponse(AbstractModel):
         r"""
         :param Total: 符合查询条件的记录总数
         :type Total: int
-        :param NodeUnitTemplates: NodeUnit模版列表
+        :param NodeUnitTemplates: NodeUnit模板列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type NodeUnitTemplates: list of NodeUnitTemplate
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -4687,7 +4692,7 @@ class DescribeNodeUnitTemplateOnNodeGroupResponse(AbstractModel):
         r"""
         :param Total: 记录总数
         :type Total: int
-        :param NodeUnitTemplates: NodeUnit模版
+        :param NodeUnitTemplates: NodeUnit模板
 注意：此字段可能返回 null，表示取不到有效值。
         :type NodeUnitTemplates: list of NodeGroupNodeUnitTemplateInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -6838,7 +6843,7 @@ class ModifyNodeUnitTemplateRequest(AbstractModel):
         r"""
         :param EdgeUnitId: IECP边缘单元ID
         :type EdgeUnitId: int
-        :param NodeUnitTemplateID: NodeUnit模版ID
+        :param NodeUnitTemplateID: NodeUnit模板ID
         :type NodeUnitTemplateID: int
         :param Nodes: 包含的节点列表
         :type Nodes: list of str

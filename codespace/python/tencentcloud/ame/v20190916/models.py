@@ -2603,21 +2603,29 @@ class SearchKTVMusicsRequest(AbstractModel):
         :param KeyWord: 搜索关键词
         :type KeyWord: str
         :param Offset: 分页返回的起始偏移量，默认值：0。将返回第 Offset 到第 Offset+Limit-1 条。
-取值范围：Offset + Limit 不超过5000。取值范围：小于5000
+取值范围：Offset + Limit 不超过5000。
         :type Offset: int
         :param Limit: 分页返回的起始偏移量，默认值：50。将返回第 Offset 到第 Offset+Limit-1 条。
-取值范围：Offset + Limit 不超过5000。
         :type Limit: int
+        :param Sort: 排序方式。默认按照匹配度排序
+<li> Sort.Field 可选 CreateTime</li>
+<li> Sort.Order 可选 Desc </li>
+<li> 当 KeyWord 不为空时，Sort.Field 字段无效， 搜索结果将以匹配度排序。</li>
+        :type Sort: :class:`tencentcloud.ame.v20190916.models.SortBy`
         """
         self.KeyWord = None
         self.Offset = None
         self.Limit = None
+        self.Sort = None
 
 
     def _deserialize(self, params):
         self.KeyWord = params.get("KeyWord")
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
+        if params.get("Sort") is not None:
+            self.Sort = SortBy()
+            self.Sort._deserialize(params.get("Sort"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2733,6 +2741,37 @@ class SetAudioParamCommandInput(AbstractModel):
     def _deserialize(self, params):
         self.Definition = params.get("Definition")
         self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetDestroyModeCommandInput(AbstractModel):
+    """设置销毁模式
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DestroyMode: 销毁模式，取值有：
+<li>Auto：房间没人时自动销毁</li>
+<li>Expire：房间没人时过期自动销毁</li>
+<li>Never：不自动销毁，需手动销毁</li>默认为：Auto。
+        :type DestroyMode: str
+        :param DestroyExpireTime: 过期销毁时间，单位：秒，当DestroyMode取Expire时必填。
+        :type DestroyExpireTime: int
+        """
+        self.DestroyMode = None
+        self.DestroyExpireTime = None
+
+
+    def _deserialize(self, params):
+        self.DestroyMode = params.get("DestroyMode")
+        self.DestroyExpireTime = params.get("DestroyExpireTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2902,6 +2941,7 @@ class SyncKTVRobotCommandRequest(AbstractModel):
 <li>SetPlaylist：歌单变更</li>
 <li>SetAudioParam：音频参数变更</li>
 <li>SendMessage：发送自定义消息</li>
+<li>SetDestroyMode：设置销毁模式</li>
         :type Command: str
         :param PlayCommandInput: 播放参数。
         :type PlayCommandInput: :class:`tencentcloud.ame.v20190916.models.PlayCommandInput`
@@ -2915,6 +2955,8 @@ class SyncKTVRobotCommandRequest(AbstractModel):
         :type SendMessageCommandInput: :class:`tencentcloud.ame.v20190916.models.SendMessageCommandInput`
         :param SetPlayModeCommandInput: 播放模式，当Command取SetPlayMode时，必填。
         :type SetPlayModeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetPlayModeCommandInput`
+        :param SetDestroyModeCommandInput: 销毁模式，当Command取SetDestroyMode时，必填。
+        :type SetDestroyModeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetDestroyModeCommandInput`
         """
         self.RobotId = None
         self.Command = None
@@ -2924,6 +2966,7 @@ class SyncKTVRobotCommandRequest(AbstractModel):
         self.SetAudioParamCommandInput = None
         self.SendMessageCommandInput = None
         self.SetPlayModeCommandInput = None
+        self.SetDestroyModeCommandInput = None
 
 
     def _deserialize(self, params):
@@ -2947,6 +2990,9 @@ class SyncKTVRobotCommandRequest(AbstractModel):
         if params.get("SetPlayModeCommandInput") is not None:
             self.SetPlayModeCommandInput = SetPlayModeCommandInput()
             self.SetPlayModeCommandInput._deserialize(params.get("SetPlayModeCommandInput"))
+        if params.get("SetDestroyModeCommandInput") is not None:
+            self.SetDestroyModeCommandInput = SetDestroyModeCommandInput()
+            self.SetDestroyModeCommandInput._deserialize(params.get("SetDestroyModeCommandInput"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
