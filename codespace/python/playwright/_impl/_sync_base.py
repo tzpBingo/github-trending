@@ -15,18 +15,7 @@
 import asyncio
 import traceback
 from types import TracebackType
-from typing import (
-    Any,
-    Awaitable,
-    Callable,
-    Dict,
-    Generic,
-    List,
-    Optional,
-    Type,
-    TypeVar,
-    cast,
-)
+from typing import Any, Awaitable, Callable, Dict, Generic, List, Type, TypeVar, cast
 
 import greenlet
 
@@ -42,29 +31,19 @@ Self = TypeVar("Self", bound="SyncContextManager")
 class EventInfo(Generic[T]):
     def __init__(self, sync_base: "SyncBase", future: "asyncio.Future[T]") -> None:
         self._sync_base = sync_base
-        self._value: Optional[T] = None
-        self._exception: Optional[Exception] = None
         self._future = future
         g_self = greenlet.getcurrent()
-
-        def done_callback(task: "asyncio.Future[T]") -> None:
-            try:
-                self._value = mapping.from_maybe_impl(self._future.result())
-            except Exception as e:
-                self._exception = e
-            finally:
-                g_self.switch()
-
-        self._future.add_done_callback(done_callback)
+        self._future.add_done_callback(lambda _: g_self.switch())
 
     @property
     def value(self) -> T:
         while not self._future.done():
             self._sync_base._dispatcher_fiber.switch()
         asyncio._set_running_loop(self._sync_base._loop)
-        if self._exception:
-            raise self._exception
-        return cast(T, self._value)
+        exception = self._future.exception()
+        if exception:
+            raise exception
+        return cast(T, mapping.from_maybe_impl(self._future.result()))
 
     def is_done(self) -> bool:
         return self._future.done()
@@ -96,15 +75,13 @@ class SyncBase(ImplWrapper):
         return self._impl_obj.__str__()
 
     def _sync(self, api_name: str, coro: Awaitable) -> Any:
+        __tracebackhide__ = True
         g_self = greenlet.getcurrent()
         task = self._loop.create_task(coro)
         setattr(task, "__pw_api_name__", api_name)
         setattr(task, "__pw_stack_trace__", traceback.extract_stack())
 
-        def callback(result: Any) -> None:
-            g_self.switch()
-
-        task.add_done_callback(callback)
+        task.add_done_callback(lambda _: g_self.switch())
         while not task.done():
             self._dispatcher_fiber.switch()
         asyncio._set_running_loop(self._loop)

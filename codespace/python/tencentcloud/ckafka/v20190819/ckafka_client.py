@@ -26,6 +26,34 @@ class CkafkaClient(AbstractClient):
     _service = 'ckafka'
 
 
+    def AuthorizeToken(self, request):
+        """给实例授权token
+
+        :param request: Request instance for AuthorizeToken.
+        :type request: :class:`tencentcloud.ckafka.v20190819.models.AuthorizeTokenRequest`
+        :rtype: :class:`tencentcloud.ckafka.v20190819.models.AuthorizeTokenResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("AuthorizeToken", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.AuthorizeTokenResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def BatchCreateAcl(self, request):
         """批量添加ACL策略
 
@@ -110,6 +138,34 @@ class CkafkaClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CancelAuthorizationToken(self, request):
+        """取消授权token
+
+        :param request: Request instance for CancelAuthorizationToken.
+        :type request: :class:`tencentcloud.ckafka.v20190819.models.CancelAuthorizationTokenRequest`
+        :rtype: :class:`tencentcloud.ckafka.v20190819.models.CancelAuthorizationTokenResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("CancelAuthorizationToken", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CancelAuthorizationTokenResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateAcl(self, request):
         """添加 ACL 策略
 
@@ -139,7 +195,7 @@ class CkafkaClient(AbstractClient):
 
 
     def CreateConsumer(self, request):
-        """创建消费者
+        """创建消费者组
 
         :param request: Request instance for CreateConsumer.
         :type request: :class:`tencentcloud.ckafka.v20190819.models.CreateConsumerRequest`
@@ -236,6 +292,34 @@ class CkafkaClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateRouteResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateToken(self, request):
+        """创建最高权限的token
+
+        :param request: Request instance for CreateToken.
+        :type request: :class:`tencentcloud.ckafka.v20190819.models.CreateTokenRequest`
+        :rtype: :class:`tencentcloud.ckafka.v20190819.models.CreateTokenResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("CreateToken", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateTokenResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

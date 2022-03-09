@@ -130,6 +130,60 @@ class AuthInfo(AbstractModel):
         
 
 
+class BatchDescribeKTVMusicDetailsRequest(AbstractModel):
+    """BatchDescribeKTVMusicDetails请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MusicIds: 歌曲Id列表，注：列表最大长度为50
+        :type MusicIds: list of str
+        """
+        self.MusicIds = None
+
+
+    def _deserialize(self, params):
+        self.MusicIds = params.get("MusicIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchDescribeKTVMusicDetailsResponse(AbstractModel):
+    """BatchDescribeKTVMusicDetails返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param KTVMusicDetailInfoSet: 歌曲详情列表信息
+        :type KTVMusicDetailInfoSet: list of KTVMusicDetailInfo
+        :param NotExistMusicIdSet: 不存在的歌曲 ID 列表。
+        :type NotExistMusicIdSet: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.KTVMusicDetailInfoSet = None
+        self.NotExistMusicIdSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("KTVMusicDetailInfoSet") is not None:
+            self.KTVMusicDetailInfoSet = []
+            for item in params.get("KTVMusicDetailInfoSet"):
+                obj = KTVMusicDetailInfo()
+                obj._deserialize(item)
+                self.KTVMusicDetailInfoSet.append(obj)
+        self.NotExistMusicIdSet = params.get("NotExistMusicIdSet")
+        self.RequestId = params.get("RequestId")
+
+
 class ChorusClip(AbstractModel):
     """副歌片段信息
 
@@ -617,6 +671,8 @@ class DescribeKTVMusicDetailResponse(AbstractModel):
         :type MidiJsonUrl: str
         :param ChorusClipSet: 副歌片段数据列表
         :type ChorusClipSet: list of ChorusClip
+        :param PreludeInterval: 前奏间隔，单位：毫秒；注：若参数返回为0则无人声部分
+        :type PreludeInterval: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -626,6 +682,7 @@ class DescribeKTVMusicDetailResponse(AbstractModel):
         self.DefinitionInfoSet = None
         self.MidiJsonUrl = None
         self.ChorusClipSet = None
+        self.PreludeInterval = None
         self.RequestId = None
 
 
@@ -648,6 +705,7 @@ class DescribeKTVMusicDetailResponse(AbstractModel):
                 obj = ChorusClip()
                 obj._deserialize(item)
                 self.ChorusClipSet.append(obj)
+        self.PreludeInterval = params.get("PreludeInterval")
         self.RequestId = params.get("RequestId")
 
 
@@ -1754,6 +1812,66 @@ class KTVMusicDefinitionInfo(AbstractModel):
         
 
 
+class KTVMusicDetailInfo(AbstractModel):
+    """即使广播曲库歌曲信息详情列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param KTVMusicBaseInfo: 即使广播曲库歌曲基础信息
+        :type KTVMusicBaseInfo: :class:`tencentcloud.ame.v20190916.models.KTVMusicBaseInfo`
+        :param PlayToken: 播放凭证
+        :type PlayToken: str
+        :param LyricsUrl: 歌词下载地址
+        :type LyricsUrl: str
+        :param DefinitionInfoSet: 歌曲规格信息列表
+        :type DefinitionInfoSet: list of KTVMusicDefinitionInfo
+        :param MidiJsonUrl: 音高数据文件下载地址
+        :type MidiJsonUrl: str
+        :param ChorusClipSet: 副歌片段数据列表
+        :type ChorusClipSet: list of ChorusClip
+        :param PreludeInterval: 前奏间隔，单位：毫秒；注：若参数返回为0则无人声部分
+        :type PreludeInterval: int
+        """
+        self.KTVMusicBaseInfo = None
+        self.PlayToken = None
+        self.LyricsUrl = None
+        self.DefinitionInfoSet = None
+        self.MidiJsonUrl = None
+        self.ChorusClipSet = None
+        self.PreludeInterval = None
+
+
+    def _deserialize(self, params):
+        if params.get("KTVMusicBaseInfo") is not None:
+            self.KTVMusicBaseInfo = KTVMusicBaseInfo()
+            self.KTVMusicBaseInfo._deserialize(params.get("KTVMusicBaseInfo"))
+        self.PlayToken = params.get("PlayToken")
+        self.LyricsUrl = params.get("LyricsUrl")
+        if params.get("DefinitionInfoSet") is not None:
+            self.DefinitionInfoSet = []
+            for item in params.get("DefinitionInfoSet"):
+                obj = KTVMusicDefinitionInfo()
+                obj._deserialize(item)
+                self.DefinitionInfoSet.append(obj)
+        self.MidiJsonUrl = params.get("MidiJsonUrl")
+        if params.get("ChorusClipSet") is not None:
+            self.ChorusClipSet = []
+            for item in params.get("ChorusClipSet"):
+                obj = ChorusClip()
+                obj._deserialize(item)
+                self.ChorusClipSet.append(obj)
+        self.PreludeInterval = params.get("PreludeInterval")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class KTVMusicTopInfo(AbstractModel):
     """排行榜结构
 
@@ -2819,22 +2937,29 @@ class SetPlaylistCommandInput(AbstractModel):
         :param Type: 变更类型，取值有：
 <li>Add：添加</li>
 <li>Delete：删除</li>
+<li>ClearList：清空歌曲列表</li>
+<li>Move：移动歌曲</li>
         :type Type: str
         :param Index: 歌单索引位置，
 当 Type 取 Add 时，-1表示添加在列表最后位置，大于-1表示要添加的位置；
-当 Type 取 Delete 时，表示要删除的位置。
+当 Type 取 Delete 时，表示待删除歌曲的位置；
+当 Type 取 Move 时，表示待调整歌曲的位置。
         :type Index: int
+        :param ChangedIndex: 当 Type 取 Move 时，必填，表示移动歌曲的目标位置。
+        :type ChangedIndex: int
         :param MusicIds: 歌曲 ID 列表，当 Type 取 Add 时，必填。
         :type MusicIds: list of str
         """
         self.Type = None
         self.Index = None
+        self.ChangedIndex = None
         self.MusicIds = None
 
 
     def _deserialize(self, params):
         self.Type = params.get("Type")
         self.Index = params.get("Index")
+        self.ChangedIndex = params.get("ChangedIndex")
         self.MusicIds = params.get("MusicIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():

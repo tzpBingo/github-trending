@@ -637,6 +637,8 @@ class AddAssetImageRegistryRegistryDetailRequest(AbstractModel):
         :type RegistryRegion: str
         :param SpeedLimit: 限速
         :type SpeedLimit: int
+        :param Insecure: 安全模式（证书校验）：0（默认） 非安全模式（跳过证书校验）：1
+        :type Insecure: int
         """
         self.Name = None
         self.Username = None
@@ -647,6 +649,7 @@ class AddAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self.RegistryVersion = None
         self.RegistryRegion = None
         self.SpeedLimit = None
+        self.Insecure = None
 
 
     def _deserialize(self, params):
@@ -659,6 +662,7 @@ class AddAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self.RegistryVersion = params.get("RegistryVersion")
         self.RegistryRegion = params.get("RegistryRegion")
         self.SpeedLimit = params.get("SpeedLimit")
+        self.Insecure = params.get("Insecure")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6143,6 +6147,9 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         :param SpeedLimit: 限速
 注意：此字段可能返回 null，表示取不到有效值。
         :type SpeedLimit: int
+        :param Insecure: 安全模式（证书校验）：0（默认） 非安全模式（跳过证书校验）：1
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Insecure: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -6155,6 +6162,7 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         self.NetType = None
         self.RegistryRegion = None
         self.SpeedLimit = None
+        self.Insecure = None
         self.RequestId = None
 
 
@@ -6168,6 +6176,7 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         self.NetType = params.get("NetType")
         self.RegistryRegion = params.get("RegistryRegion")
         self.SpeedLimit = params.get("SpeedLimit")
+        self.Insecure = params.get("Insecure")
         self.RequestId = params.get("RequestId")
 
 
@@ -8637,11 +8646,17 @@ class DescribeComplianceWhitelistItemListRequest(AbstractModel):
         :type AssetTypeSet: list of str
         :param Filters: 查询过滤器
         :type Filters: list of ComplianceFilters
+        :param By: 排序字段
+        :type By: str
+        :param Order: 排序方式 desc asc
+        :type Order: str
         """
         self.Offset = None
         self.Limit = None
         self.AssetTypeSet = None
         self.Filters = None
+        self.By = None
+        self.Order = None
 
 
     def _deserialize(self, params):
@@ -8654,6 +8669,8 @@ class DescribeComplianceWhitelistItemListRequest(AbstractModel):
                 obj = ComplianceFilters()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.By = params.get("By")
+        self.Order = params.get("Order")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12626,6 +12643,8 @@ class ImagesInfo(AbstractModel):
         :type IsSuggest: int
         :param IsAuthorized: 是否授权，1是0否
         :type IsAuthorized: int
+        :param ComponentCnt: 组件个数
+        :type ComponentCnt: int
         """
         self.ImageID = None
         self.ImageName = None
@@ -12647,6 +12666,7 @@ class ImagesInfo(AbstractModel):
         self.ScanRiskError = None
         self.IsSuggest = None
         self.IsAuthorized = None
+        self.ComponentCnt = None
 
 
     def _deserialize(self, params):
@@ -12670,6 +12690,7 @@ class ImagesInfo(AbstractModel):
         self.ScanRiskError = params.get("ScanRiskError")
         self.IsSuggest = params.get("IsSuggest")
         self.IsAuthorized = params.get("IsAuthorized")
+        self.ComponentCnt = params.get("ComponentCnt")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15225,6 +15246,8 @@ class UpdateAssetImageRegistryRegistryDetailRequest(AbstractModel):
         :type RegistryRegion: str
         :param SpeedLimit: 限速
         :type SpeedLimit: int
+        :param Insecure: 安全模式（证书校验）：0（默认） 非安全模式（跳过证书校验）：1
+        :type Insecure: int
         """
         self.Name = None
         self.Username = None
@@ -15235,6 +15258,7 @@ class UpdateAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self.RegistryVersion = None
         self.RegistryRegion = None
         self.SpeedLimit = None
+        self.Insecure = None
 
 
     def _deserialize(self, params):
@@ -15247,6 +15271,7 @@ class UpdateAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self.RegistryVersion = params.get("RegistryVersion")
         self.RegistryRegion = params.get("RegistryRegion")
         self.SpeedLimit = params.get("SpeedLimit")
+        self.Insecure = params.get("Insecure")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

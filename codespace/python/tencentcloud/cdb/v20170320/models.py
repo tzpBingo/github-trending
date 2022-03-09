@@ -512,6 +512,9 @@ class AuditPolicy(AbstractModel):
         :param RuleName: 审计规则名称。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RuleName: str
+        :param InstanceName: 数据库实例名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceName: str
         """
         self.PolicyId = None
         self.Status = None
@@ -521,6 +524,7 @@ class AuditPolicy(AbstractModel):
         self.PolicyName = None
         self.RuleId = None
         self.RuleName = None
+        self.InstanceName = None
 
 
     def _deserialize(self, params):
@@ -532,6 +536,7 @@ class AuditPolicy(AbstractModel):
         self.PolicyName = params.get("PolicyName")
         self.RuleId = params.get("RuleId")
         self.RuleName = params.get("RuleName")
+        self.InstanceName = params.get("InstanceName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10247,7 +10252,7 @@ class RoInstanceInfo(AbstractModel):
         :type Zone: str
         :param InstanceId: RO实例ID，格式如：cdbro-c1nl9rpv
         :type InstanceId: str
-        :param Status: RO实例状态，可能返回值：0-创建中，1-运行中，4-删除中
+        :param Status: RO实例状态，可能返回值：0-创建中，1-运行中，3-异地RO（仅在使用DescribeDBInstances查询主实例信息时，返回值中异地RO的状态恒等于3，其他场景下无此值），4-删除中
         :type Status: int
         :param InstanceType: 实例类型，可能返回值：1-主实例，2-灾备实例，3-只读实例
         :type InstanceType: int

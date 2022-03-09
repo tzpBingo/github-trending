@@ -29,6 +29,9 @@ INTERNALERROR_CREATESERVICEERROR = 'InternalError.CreateServiceError'
 # 服务器繁忙,请稍后再试。
 INTERNALERROR_DEFAULTINTERNALERROR = 'InternalError.DefaultInternalError'
 
+# 删除应用失败。
+INTERNALERROR_DELETESERVICEERROR = 'InternalError.DeleteServiceError'
+
 # 版本部署调用失败。
 INTERNALERROR_DEPLOYVERSIONERROR = 'InternalError.DeployVersionError'
 
@@ -50,6 +53,9 @@ INVALIDPARAMETERVALUE_NAMESPACEDUPLICATEERROR = 'InvalidParameterValue.Namespace
 # 环境创建失败，达到上限。
 INVALIDPARAMETERVALUE_NAMESPACEREACHMAXIMUM = 'InvalidParameterValue.NamespaceReachMaximum'
 
+# 环境资源创建失败，达到上限。
+INVALIDPARAMETERVALUE_NAMESPACERESOURCEREACHMAXIMUM = 'InvalidParameterValue.NamespaceResourceReachMaximum'
+
 # 应用存在正在运行的实例。
 INVALIDPARAMETERVALUE_SERVICEFOUNDRUNNINGVERSION = 'InvalidParameterValue.ServiceFoundRunningVersion'
 
@@ -70,6 +76,9 @@ MISSINGPARAMETER_NAMESPACEIDNULL = 'MissingParameter.NamespaceIdNull'
 
 # 目标微服务已离线。
 RESOURCENOTFOUND_MICROSERVICEOFFLINE = 'ResourceNotFound.MicroserviceOffline'
+
+# 环境不存在。
+RESOURCENOTFOUND_NAMESPACENOTFOUND = 'ResourceNotFound.NamespaceNotFound'
 
 # 找不到应用。
 RESOURCENOTFOUND_SERVICENOTFOUND = 'ResourceNotFound.ServiceNotFound'

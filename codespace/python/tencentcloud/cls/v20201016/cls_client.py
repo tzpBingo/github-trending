@@ -83,7 +83,7 @@ class ClsClient(AbstractClient):
 
 
     def CreateAlarmNotice(self, request):
-        """该接口用户创建通知渠道组。
+        """该接口用于创建通知渠道组。
 
         :param request: Request instance for CreateAlarmNotice.
         :type request: :class:`tencentcloud.cls.v20201016.models.CreateAlarmNoticeRequest`
@@ -167,7 +167,7 @@ class ClsClient(AbstractClient):
 
 
     def CreateExport(self, request):
-        """本接口用于创建日志下载任务
+        """本接口用于创建日志下载任务，导出原始日志
 
         :param request: Request instance for CreateExport.
         :type request: :class:`tencentcloud.cls.v20201016.models.CreateExportRequest`
@@ -1427,7 +1427,7 @@ class ClsClient(AbstractClient):
 
 
     def SearchLog(self, request):
-        """本接口用于搜索日志, 该接口除受默认接口请求频率限制外，针对单个日志主题，并发数不能超过15
+        """本接口用于检索分析日志, 该接口除受默认接口请求频率限制外，针对单个日志主题，查询并发数不能超过15。
 
         :param request: Request instance for SearchLog.
         :type request: :class:`tencentcloud.cls.v20201016.models.SearchLogRequest`

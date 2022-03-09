@@ -2978,7 +2978,7 @@ class CreateClsLogTopicRequest(AbstractModel):
         :type TopicName: str
         :param LogsetId: 日志集ID
         :type LogsetId: str
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         :param DomainAreaConfigs: 域名区域信息
         :type DomainAreaConfigs: list of DomainAreaConfig
@@ -3613,7 +3613,7 @@ class DeleteClsLogTopicRequest(AbstractModel):
         :type TopicId: str
         :param LogsetId: 日志集ID
         :type LogsetId: str
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         """
         self.TopicId = None
@@ -5235,11 +5235,14 @@ class DescribePayTypeResponse(AbstractModel):
 flux：流量计费
 bandwidth：带宽计费
 request：请求数计费
+flux_sep：动静分离流量计费
+bandwidth_sep：动静分离带宽计费
 日结计费方式切换时，若当日产生消耗，则此字段表示第二天即将生效的计费方式，若未产生消耗，则表示已经生效的计费方式。
         :type PayType: str
         :param BillingCycle: 计费周期：
 day：日结计费
 month：月结计费
+hour：小时结计费
         :type BillingCycle: str
         :param StatType: monthMax：日峰值月平均，月结模式
 day95：日 95 带宽，月结模式
@@ -5255,6 +5258,8 @@ multiple：分地区计费
 flux：流量计费
 bandwidth：带宽计费
 request：请求数计费
+flux_sep：动静分离流量计费
+bandwidth_sep：动静分离带宽计费
         :type CurrentPayType: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -7177,7 +7182,7 @@ class DisableClsLogTopicRequest(AbstractModel):
         :type LogsetId: str
         :param TopicId: 日志主题ID
         :type TopicId: str
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         """
         self.LogsetId = None
@@ -7371,7 +7376,7 @@ class DomainFilter(AbstractModel):
 - domain：域名。
 - resourceId：域名id。
 - status：域名状态，online，offline或processing。
-- serviceType：业务类型，web，download或media。
+- serviceType：业务类型，web，download，media，hybrid或dynamic。
 - projectId：项目ID。
 - domainType：主源站类型，cname表示自有源，cos表示cos接入，third_party表示第三方对象存储。
 - fullUrlCache：全路径缓存，on或off。
@@ -7594,7 +7599,7 @@ class EnableClsLogTopicRequest(AbstractModel):
         :type LogsetId: str
         :param TopicId: 日志主题ID
         :type TopicId: str
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         """
         self.LogsetId = None
@@ -8537,7 +8542,7 @@ class ListClsLogTopicsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         """
         self.Channel = None
@@ -8608,7 +8613,7 @@ class ListClsTopicDomainsRequest(AbstractModel):
         :type LogsetId: str
         :param TopicId: 日志主题ID
         :type TopicId: str
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         """
         self.LogsetId = None
@@ -9114,7 +9119,7 @@ class ListTopClsLogDataRequest(AbstractModel):
 /files/* 表示所有以/files/开头的请求
 *.jpg 表示所有以.jpg结尾的请求
         :type Url: str
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         :param Limit: 要查询的Top条数，最大值为100，默认为10
         :type Limit: int
@@ -9794,7 +9799,7 @@ class ManageClsTopicDomainsRequest(AbstractModel):
         :type LogsetId: str
         :param TopicId: 日志主题ID
         :type TopicId: str
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         :param DomainAreaConfigs: 域名区域配置，注意：如果此字段为空，则表示解绑对应主题下的所有域名
         :type DomainAreaConfigs: list of DomainAreaConfig
@@ -12799,7 +12804,7 @@ class SearchClsLogRequest(AbstractModel):
         :type EndTime: str
         :param Limit: 单次要返回的日志条数，单次返回的最大条数为100
         :type Limit: int
-        :param Channel: 接入渠道，默认值为cdn
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
         :type Channel: str
         :param Query: 需要查询的内容，详情请参考https://cloud.tencent.com/document/product/614/16982
         :type Query: str
