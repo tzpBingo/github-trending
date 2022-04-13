@@ -1209,7 +1209,7 @@ class LiveClient(AbstractClient):
 
 
     def DescribeBillBandwidthAndFluxList(self, request):
-        """直播计费带宽和流量数据查询。
+        """直播播放带宽和流量数据查询。
 
         :param request: Request instance for DescribeBillBandwidthAndFluxList.
         :type request: :class:`tencentcloud.live.v20180801.models.DescribeBillBandwidthAndFluxListRequest`
@@ -2841,6 +2841,7 @@ class LiveClient(AbstractClient):
 
     def DropLiveStream(self, request):
         """断开推流连接，但可以重新推流。
+        注：对已经不活跃的流，调用该断流接口时，接口返回成功。
 
         :param request: Request instance for DropLiveStream.
         :type request: :class:`tencentcloud.live.v20180801.models.DropLiveStreamRequest`

@@ -379,6 +379,30 @@ class AutoScalingGroupRange(AbstractModel):
         
 
 
+class AutoUpgradeClusterLevel(AbstractModel):
+    """自动变配集群等级
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IsAutoUpgrade: 是否开启自动变配集群等级
+        :type IsAutoUpgrade: bool
+        """
+        self.IsAutoUpgrade = None
+
+
+    def _deserialize(self, params):
+        self.IsAutoUpgrade = params.get("IsAutoUpgrade")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AutoscalingAdded(AbstractModel):
     """自动扩所容的节点
 
@@ -590,7 +614,7 @@ class Cluster(AbstractModel):
         :param TagSpecification: 标签描述列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TagSpecification: list of TagSpecification
-        :param ClusterStatus: 集群状态 (Running 运行中  Creating 创建中 Abnormal 异常  )
+        :param ClusterStatus: 集群状态 (Running 运行中  Creating 创建中 Idling 闲置中  Abnormal 异常  )
         :type ClusterStatus: str
         :param Property: 集群属性(包括集群不同属性的MAP，属性字段包括NodeNameType (lan-ip模式和hostname 模式，默认无lan-ip模式))
 注意：此字段可能返回 null，表示取不到有效值。
@@ -615,6 +639,12 @@ class Cluster(AbstractModel):
         :param EnableExternalNode: 集群是否开启第三方节点支持
 注意：此字段可能返回 null，表示取不到有效值。
         :type EnableExternalNode: bool
+        :param ClusterLevel: 集群等级，针对托管集群生效
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterLevel: str
+        :param AutoUpgradeClusterLevel: 自动变配集群等级，针对托管集群生效
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoUpgradeClusterLevel: bool
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -635,6 +665,8 @@ class Cluster(AbstractModel):
         self.CreatedTime = None
         self.DeletionProtection = None
         self.EnableExternalNode = None
+        self.ClusterLevel = None
+        self.AutoUpgradeClusterLevel = None
 
 
     def _deserialize(self, params):
@@ -664,6 +696,8 @@ class Cluster(AbstractModel):
         self.CreatedTime = params.get("CreatedTime")
         self.DeletionProtection = params.get("DeletionProtection")
         self.EnableExternalNode = params.get("EnableExternalNode")
+        self.ClusterLevel = params.get("ClusterLevel")
+        self.AutoUpgradeClusterLevel = params.get("AutoUpgradeClusterLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -962,6 +996,10 @@ class ClusterBasicSettings(AbstractModel):
         :type NeedWorkSecurityGroup: bool
         :param SubnetId: 当选择Cilium Overlay网络插件时，TKE会从该子网获取2个IP用来创建内网负载均衡
         :type SubnetId: str
+        :param ClusterLevel: 集群等级，针对托管集群生效
+        :type ClusterLevel: str
+        :param AutoUpgradeClusterLevel: 自动变配集群等级，针对托管集群生效
+        :type AutoUpgradeClusterLevel: :class:`tencentcloud.tke.v20180525.models.AutoUpgradeClusterLevel`
         """
         self.ClusterOs = None
         self.ClusterVersion = None
@@ -973,6 +1011,8 @@ class ClusterBasicSettings(AbstractModel):
         self.OsCustomizeType = None
         self.NeedWorkSecurityGroup = None
         self.SubnetId = None
+        self.ClusterLevel = None
+        self.AutoUpgradeClusterLevel = None
 
 
     def _deserialize(self, params):
@@ -991,6 +1031,10 @@ class ClusterBasicSettings(AbstractModel):
         self.OsCustomizeType = params.get("OsCustomizeType")
         self.NeedWorkSecurityGroup = params.get("NeedWorkSecurityGroup")
         self.SubnetId = params.get("SubnetId")
+        self.ClusterLevel = params.get("ClusterLevel")
+        if params.get("AutoUpgradeClusterLevel") is not None:
+            self.AutoUpgradeClusterLevel = AutoUpgradeClusterLevel()
+            self.AutoUpgradeClusterLevel._deserialize(params.get("AutoUpgradeClusterLevel"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1135,6 +1179,115 @@ class ClusterInternalLB(AbstractModel):
     def _deserialize(self, params):
         self.Enabled = params.get("Enabled")
         self.SubnetId = params.get("SubnetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ClusterLevelAttribute(AbstractModel):
+    """托管集群等级属性
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 集群等级
+        :type Name: str
+        :param Alias: 等级名称
+        :type Alias: str
+        :param NodeCount: 节点数量
+        :type NodeCount: int
+        :param PodCount: Pod数量
+        :type PodCount: int
+        :param ConfigMapCount: Configmap数量
+        :type ConfigMapCount: int
+        :param CRDCount: CRD数量
+        :type CRDCount: int
+        :param Enable: 是否启用
+        :type Enable: bool
+        :param OtherCount: 其他资源数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OtherCount: int
+        """
+        self.Name = None
+        self.Alias = None
+        self.NodeCount = None
+        self.PodCount = None
+        self.ConfigMapCount = None
+        self.CRDCount = None
+        self.Enable = None
+        self.OtherCount = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Alias = params.get("Alias")
+        self.NodeCount = params.get("NodeCount")
+        self.PodCount = params.get("PodCount")
+        self.ConfigMapCount = params.get("ConfigMapCount")
+        self.CRDCount = params.get("CRDCount")
+        self.Enable = params.get("Enable")
+        self.OtherCount = params.get("OtherCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ClusterLevelChangeRecord(AbstractModel):
+    """集群等级变配记录
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ID: 记录ID
+        :type ID: str
+        :param ClusterID: 集群ID
+        :type ClusterID: str
+        :param Status: 变配状态：trading 发货中,upgrading 变配中,success 变配成功,failed 变配失败。
+        :type Status: str
+        :param Message: 状态描述
+        :type Message: str
+        :param OldLevel: 变配前规模
+        :type OldLevel: str
+        :param NewLevel: 变配后规模
+        :type NewLevel: str
+        :param TriggerType: 变配触发类型：manual 手动,auto 自动
+        :type TriggerType: str
+        :param StartedAt: 开始时间
+        :type StartedAt: str
+        :param EndedAt: 结束时间
+        :type EndedAt: str
+        """
+        self.ID = None
+        self.ClusterID = None
+        self.Status = None
+        self.Message = None
+        self.OldLevel = None
+        self.NewLevel = None
+        self.TriggerType = None
+        self.StartedAt = None
+        self.EndedAt = None
+
+
+    def _deserialize(self, params):
+        self.ID = params.get("ID")
+        self.ClusterID = params.get("ClusterID")
+        self.Status = params.get("Status")
+        self.Message = params.get("Message")
+        self.OldLevel = params.get("OldLevel")
+        self.NewLevel = params.get("NewLevel")
+        self.TriggerType = params.get("TriggerType")
+        self.StartedAt = params.get("StartedAt")
+        self.EndedAt = params.get("EndedAt")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1413,6 +1566,9 @@ class Container(AbstractModel):
         :param GpuLimit: Gpu限制
 注意：此字段可能返回 null，表示取不到有效值。
         :type GpuLimit: int
+        :param SecurityContext: 容器的安全上下文
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SecurityContext: :class:`tencentcloud.tke.v20180525.models.SecurityContext`
         """
         self.Image = None
         self.Name = None
@@ -1428,6 +1584,7 @@ class Container(AbstractModel):
         self.LivenessProbe = None
         self.ReadinessProbe = None
         self.GpuLimit = None
+        self.SecurityContext = None
 
 
     def _deserialize(self, params):
@@ -1461,6 +1618,9 @@ class Container(AbstractModel):
             self.ReadinessProbe = LivenessOrReadinessProbe()
             self.ReadinessProbe._deserialize(params.get("ReadinessProbe"))
         self.GpuLimit = params.get("GpuLimit")
+        if params.get("SecurityContext") is not None:
+            self.SecurityContext = SecurityContext()
+            self.SecurityContext._deserialize(params.get("SecurityContext"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2383,6 +2543,99 @@ class CreateEKSContainerInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateImageCacheRequest(AbstractModel):
+    """CreateImageCache请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Images: 用于制作镜像缓存的容器镜像列表
+        :type Images: list of str
+        :param SubnetId: 实例所属子网Id
+        :type SubnetId: str
+        :param VpcId: 实例所属VPC Id
+        :type VpcId: str
+        :param ImageCacheName: 镜像缓存名称
+        :type ImageCacheName: str
+        :param SecurityGroupIds: 安全组Id
+        :type SecurityGroupIds: list of str
+        :param ImageRegistryCredentials: 镜像仓库凭证数组
+        :type ImageRegistryCredentials: list of ImageRegistryCredential
+        :param ExistedEipId: 用来绑定容器实例的已有EIP
+        :type ExistedEipId: str
+        :param AutoCreateEip: 是否为容器实例自动创建EIP，默认为false。若传true，则此参数和ExistedEipIds互斥
+        :type AutoCreateEip: bool
+        :param AutoCreateEipAttribute: 自动创建EIP的可选参数。若传此参数，则会自动创建EIP。
+另外此参数和ExistedEipIds互斥
+        :type AutoCreateEipAttribute: :class:`tencentcloud.tke.v20180525.models.EipAttribute`
+        :param ImageCacheSize: 镜像缓存的大小。默认为20 GiB。取值范围参考[云硬盘类型](https://cloud.tencent.com/document/product/362/2353)中的高性能云盘类型的大小限制。
+        :type ImageCacheSize: int
+        :param RetentionDays: 镜像缓存保留时间天数，过期将会自动清理，默认为0，永不过期。
+        :type RetentionDays: int
+        """
+        self.Images = None
+        self.SubnetId = None
+        self.VpcId = None
+        self.ImageCacheName = None
+        self.SecurityGroupIds = None
+        self.ImageRegistryCredentials = None
+        self.ExistedEipId = None
+        self.AutoCreateEip = None
+        self.AutoCreateEipAttribute = None
+        self.ImageCacheSize = None
+        self.RetentionDays = None
+
+
+    def _deserialize(self, params):
+        self.Images = params.get("Images")
+        self.SubnetId = params.get("SubnetId")
+        self.VpcId = params.get("VpcId")
+        self.ImageCacheName = params.get("ImageCacheName")
+        self.SecurityGroupIds = params.get("SecurityGroupIds")
+        if params.get("ImageRegistryCredentials") is not None:
+            self.ImageRegistryCredentials = []
+            for item in params.get("ImageRegistryCredentials"):
+                obj = ImageRegistryCredential()
+                obj._deserialize(item)
+                self.ImageRegistryCredentials.append(obj)
+        self.ExistedEipId = params.get("ExistedEipId")
+        self.AutoCreateEip = params.get("AutoCreateEip")
+        if params.get("AutoCreateEipAttribute") is not None:
+            self.AutoCreateEipAttribute = EipAttribute()
+            self.AutoCreateEipAttribute._deserialize(params.get("AutoCreateEipAttribute"))
+        self.ImageCacheSize = params.get("ImageCacheSize")
+        self.RetentionDays = params.get("RetentionDays")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateImageCacheResponse(AbstractModel):
+    """CreateImageCache返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageCacheId: 镜像缓存Id
+        :type ImageCacheId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ImageCacheId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ImageCacheId = params.get("ImageCacheId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreatePrometheusAlertRuleRequest(AbstractModel):
     """CreatePrometheusAlertRule请求参数结构体
 
@@ -2623,7 +2876,7 @@ class DataDisk(AbstractModel):
         :param MountTarget: 挂载目录
 注意：此字段可能返回 null，表示取不到有效值。
         :type MountTarget: str
-        :param DiskPartition: 挂载设备名或分区名
+        :param DiskPartition: 挂载设备名或分区名，当且仅当添加已有节点时需要
 注意：此字段可能返回 null，表示取不到有效值。
         :type DiskPartition: str
         """
@@ -3118,6 +3371,47 @@ class DeleteEKSContainerInstancesRequest(AbstractModel):
 
 class DeleteEKSContainerInstancesResponse(AbstractModel):
     """DeleteEKSContainerInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteImageCachesRequest(AbstractModel):
+    """DeleteImageCaches请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageCacheIds: 镜像缓存Id数组
+        :type ImageCacheIds: list of str
+        """
+        self.ImageCacheIds = None
+
+
+    def _deserialize(self, params):
+        self.ImageCacheIds = params.get("ImageCacheIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteImageCachesResponse(AbstractModel):
+    """DeleteImageCaches返回参数结构体
 
     """
 
@@ -3837,6 +4131,130 @@ class DescribeClusterKubeconfigResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeClusterLevelAttributeRequest(AbstractModel):
+    """DescribeClusterLevelAttribute请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群ID，变配时使用
+        :type ClusterID: str
+        """
+        self.ClusterID = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeClusterLevelAttributeResponse(AbstractModel):
+    """DescribeClusterLevelAttribute返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总数
+        :type TotalCount: int
+        :param Items: 集群规模
+        :type Items: list of ClusterLevelAttribute
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Items = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Items") is not None:
+            self.Items = []
+            for item in params.get("Items"):
+                obj = ClusterLevelAttribute()
+                obj._deserialize(item)
+                self.Items.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeClusterLevelChangeRecordsRequest(AbstractModel):
+    """DescribeClusterLevelChangeRecords请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群ID
+        :type ClusterID: str
+        :param StartAt: 开始时间
+        :type StartAt: str
+        :param EndAt: 结束时间
+        :type EndAt: str
+        :param Offset: 偏移量,默认0
+        :type Offset: int
+        :param Limit: 最大输出条数，默认20
+        :type Limit: int
+        """
+        self.ClusterID = None
+        self.StartAt = None
+        self.EndAt = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        self.StartAt = params.get("StartAt")
+        self.EndAt = params.get("EndAt")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeClusterLevelChangeRecordsResponse(AbstractModel):
+    """DescribeClusterLevelChangeRecords返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总数
+        :type TotalCount: int
+        :param Items: 集群规模
+        :type Items: list of ClusterLevelChangeRecord
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Items = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Items") is not None:
+            self.Items = []
+            for item in params.get("Items"):
+                obj = ClusterLevelChangeRecord()
+                obj._deserialize(item)
+                self.Items.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeClusterNodePoolDetailRequest(AbstractModel):
     """DescribeClusterNodePoolDetail请求参数结构体
 
@@ -4358,6 +4776,8 @@ class DescribeEKSClusterCredentialResponse(AbstractModel):
         :type InternalLB: :class:`tencentcloud.tke.v20180525.models.ClusterInternalLB`
         :param ProxyLB: 标记是否新的内外网功能
         :type ProxyLB: bool
+        :param Kubeconfig: 连接用户集群k8s 的Config
+        :type Kubeconfig: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4366,6 +4786,7 @@ class DescribeEKSClusterCredentialResponse(AbstractModel):
         self.PublicLB = None
         self.InternalLB = None
         self.ProxyLB = None
+        self.Kubeconfig = None
         self.RequestId = None
 
 
@@ -4386,6 +4807,7 @@ class DescribeEKSClusterCredentialResponse(AbstractModel):
             self.InternalLB = ClusterInternalLB()
             self.InternalLB._deserialize(params.get("InternalLB"))
         self.ProxyLB = params.get("ProxyLB")
+        self.Kubeconfig = params.get("Kubeconfig")
         self.RequestId = params.get("RequestId")
 
 
@@ -4912,6 +5334,84 @@ class DescribeExternalClusterSpecResponse(AbstractModel):
     def _deserialize(self, params):
         self.Spec = params.get("Spec")
         self.Expiration = params.get("Expiration")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeImageCachesRequest(AbstractModel):
+    """DescribeImageCaches请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageCacheIds: 镜像缓存Id数组
+        :type ImageCacheIds: list of str
+        :param ImageCacheNames: 镜像缓存名称数组
+        :type ImageCacheNames: list of str
+        :param Limit: 限定此次返回资源的数量。如果不设定，默认返回20，最大不能超过50
+        :type Limit: int
+        :param Offset: 偏移量,默认0
+        :type Offset: int
+        :param Filters: 过滤条件，可选条件：
+(1)实例名称
+KeyName: image-cache-name
+类型：String
+        :type Filters: list of Filter
+        """
+        self.ImageCacheIds = None
+        self.ImageCacheNames = None
+        self.Limit = None
+        self.Offset = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.ImageCacheIds = params.get("ImageCacheIds")
+        self.ImageCacheNames = params.get("ImageCacheNames")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeImageCachesResponse(AbstractModel):
+    """DescribeImageCaches返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 镜像缓存总数
+        :type TotalCount: int
+        :param ImageCaches: 镜像缓存信息列表
+        :type ImageCaches: list of ImageCache
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.ImageCaches = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("ImageCaches") is not None:
+            self.ImageCaches = []
+            for item in params.get("ImageCaches"):
+                obj = ImageCache()
+                obj._deserialize(item)
+                self.ImageCaches.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -5584,6 +6084,67 @@ class DescribeRegionsResponse(AbstractModel):
                 obj = RegionInstance()
                 obj._deserialize(item)
                 self.RegionInstanceSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeResourceUsageRequest(AbstractModel):
+    """DescribeResourceUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeResourceUsageResponse(AbstractModel):
+    """DescribeResourceUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CRDUsage: CRD使用量
+        :type CRDUsage: :class:`tencentcloud.tke.v20180525.models.ResourceUsage`
+        :param PodUsage: Pod使用量
+        :type PodUsage: int
+        :param ConfigMapUsage: ConfigMap使用量
+        :type ConfigMapUsage: int
+        :param OtherUsage: 其他资源使用量
+        :type OtherUsage: :class:`tencentcloud.tke.v20180525.models.ResourceUsage`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.CRDUsage = None
+        self.PodUsage = None
+        self.ConfigMapUsage = None
+        self.OtherUsage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("CRDUsage") is not None:
+            self.CRDUsage = ResourceUsage()
+            self.CRDUsage._deserialize(params.get("CRDUsage"))
+        self.PodUsage = params.get("PodUsage")
+        self.ConfigMapUsage = params.get("ConfigMapUsage")
+        if params.get("OtherUsage") is not None:
+            self.OtherUsage = ResourceUsage()
+            self.OtherUsage._deserialize(params.get("OtherUsage"))
         self.RequestId = params.get("RequestId")
 
 
@@ -6807,6 +7368,107 @@ class ForwardApplicationRequestV3Response(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class GetClusterLevelPriceRequest(AbstractModel):
+    """GetClusterLevelPrice请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterLevel: 集群规格，托管集群询价
+        :type ClusterLevel: str
+        """
+        self.ClusterLevel = None
+
+
+    def _deserialize(self, params):
+        self.ClusterLevel = params.get("ClusterLevel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetClusterLevelPriceResponse(AbstractModel):
+    """GetClusterLevelPrice返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Cost: 询价结果，单位：分，打折后
+        :type Cost: int
+        :param TotalCost: 询价结果，单位：分，折扣前
+        :type TotalCost: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Cost = None
+        self.TotalCost = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Cost = params.get("Cost")
+        self.TotalCost = params.get("TotalCost")
+        self.RequestId = params.get("RequestId")
+
+
+class GetMostSuitableImageCacheRequest(AbstractModel):
+    """GetMostSuitableImageCache请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Images: 容器镜像列表
+        :type Images: list of str
+        """
+        self.Images = None
+
+
+    def _deserialize(self, params):
+        self.Images = params.get("Images")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetMostSuitableImageCacheResponse(AbstractModel):
+    """GetMostSuitableImageCache返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Found: 是否有匹配的镜像缓存
+        :type Found: bool
+        :param ImageCache: 匹配的镜像缓存
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImageCache: :class:`tencentcloud.tke.v20180525.models.ImageCache`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Found = None
+        self.ImageCache = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Found = params.get("Found")
+        if params.get("ImageCache") is not None:
+            self.ImageCache = ImageCache()
+            self.ImageCache._deserialize(params.get("ImageCache"))
+        self.RequestId = params.get("RequestId")
+
+
 class GetTkeAppChartListRequest(AbstractModel):
     """GetTkeAppChartList请求参数结构体
 
@@ -7006,6 +7668,121 @@ class IPAddress(AbstractModel):
         self.Type = params.get("Type")
         self.Ip = params.get("Ip")
         self.Port = params.get("Port")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ImageCache(AbstractModel):
+    """镜像缓存的信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageCacheId: 镜像缓存Id
+        :type ImageCacheId: str
+        :param ImageCacheName: 镜像缓存名称
+        :type ImageCacheName: str
+        :param ImageCacheSize: 镜像缓存大小。单位：GiB
+        :type ImageCacheSize: int
+        :param Images: 镜像缓存包含的镜像列表
+        :type Images: list of str
+        :param CreationTime: 创建时间
+        :type CreationTime: str
+        :param ExpireDateTime: 到期时间
+        :type ExpireDateTime: str
+        :param Events: 镜像缓存事件信息
+        :type Events: list of ImageCacheEvent
+        :param LastMatchedTime: 最新一次匹配到镜像缓存的时间
+        :type LastMatchedTime: str
+        :param SnapshotId: 镜像缓存对应的快照Id
+        :type SnapshotId: str
+        :param Status: 镜像缓存状态，可能取值：
+Pending：创建中
+Ready：创建完成
+Failed：创建失败
+Updating：更新中
+UpdateFailed：更新失败
+只有状态为Ready时，才能正常使用镜像缓存
+        :type Status: str
+        """
+        self.ImageCacheId = None
+        self.ImageCacheName = None
+        self.ImageCacheSize = None
+        self.Images = None
+        self.CreationTime = None
+        self.ExpireDateTime = None
+        self.Events = None
+        self.LastMatchedTime = None
+        self.SnapshotId = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.ImageCacheId = params.get("ImageCacheId")
+        self.ImageCacheName = params.get("ImageCacheName")
+        self.ImageCacheSize = params.get("ImageCacheSize")
+        self.Images = params.get("Images")
+        self.CreationTime = params.get("CreationTime")
+        self.ExpireDateTime = params.get("ExpireDateTime")
+        if params.get("Events") is not None:
+            self.Events = []
+            for item in params.get("Events"):
+                obj = ImageCacheEvent()
+                obj._deserialize(item)
+                self.Events.append(obj)
+        self.LastMatchedTime = params.get("LastMatchedTime")
+        self.SnapshotId = params.get("SnapshotId")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ImageCacheEvent(AbstractModel):
+    """镜像缓存的事件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageCacheId: 镜像缓存Id
+        :type ImageCacheId: str
+        :param Type: 事件类型, Normal或者Warning
+        :type Type: str
+        :param Reason: 事件原因简述
+        :type Reason: str
+        :param Message: 事件原因详述
+        :type Message: str
+        :param FirstTimestamp: 事件第一次出现时间
+        :type FirstTimestamp: str
+        :param LastTimestamp: 事件最后一次出现时间
+        :type LastTimestamp: str
+        """
+        self.ImageCacheId = None
+        self.Type = None
+        self.Reason = None
+        self.Message = None
+        self.FirstTimestamp = None
+        self.LastTimestamp = None
+
+
+    def _deserialize(self, params):
+        self.ImageCacheId = params.get("ImageCacheId")
+        self.Type = params.get("Type")
+        self.Reason = params.get("Reason")
+        self.Message = params.get("Message")
+        self.FirstTimestamp = params.get("FirstTimestamp")
+        self.LastTimestamp = params.get("LastTimestamp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7722,11 +8499,17 @@ class ModifyClusterAttributeRequest(AbstractModel):
         :type ClusterName: str
         :param ClusterDesc: 集群描述
         :type ClusterDesc: str
+        :param ClusterLevel: 集群等级
+        :type ClusterLevel: str
+        :param AutoUpgradeClusterLevel: 自动变配集群等级
+        :type AutoUpgradeClusterLevel: :class:`tencentcloud.tke.v20180525.models.AutoUpgradeClusterLevel`
         """
         self.ClusterId = None
         self.ProjectId = None
         self.ClusterName = None
         self.ClusterDesc = None
+        self.ClusterLevel = None
+        self.AutoUpgradeClusterLevel = None
 
 
     def _deserialize(self, params):
@@ -7734,6 +8517,10 @@ class ModifyClusterAttributeRequest(AbstractModel):
         self.ProjectId = params.get("ProjectId")
         self.ClusterName = params.get("ClusterName")
         self.ClusterDesc = params.get("ClusterDesc")
+        self.ClusterLevel = params.get("ClusterLevel")
+        if params.get("AutoUpgradeClusterLevel") is not None:
+            self.AutoUpgradeClusterLevel = AutoUpgradeClusterLevel()
+            self.AutoUpgradeClusterLevel._deserialize(params.get("AutoUpgradeClusterLevel"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7759,12 +8546,20 @@ class ModifyClusterAttributeResponse(AbstractModel):
         :param ClusterDesc: 集群描述
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterDesc: str
+        :param ClusterLevel: 集群等级
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterLevel: str
+        :param AutoUpgradeClusterLevel: 自动变配集群等级
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoUpgradeClusterLevel: :class:`tencentcloud.tke.v20180525.models.AutoUpgradeClusterLevel`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.ProjectId = None
         self.ClusterName = None
         self.ClusterDesc = None
+        self.ClusterLevel = None
+        self.AutoUpgradeClusterLevel = None
         self.RequestId = None
 
 
@@ -7772,6 +8567,10 @@ class ModifyClusterAttributeResponse(AbstractModel):
         self.ProjectId = params.get("ProjectId")
         self.ClusterName = params.get("ClusterName")
         self.ClusterDesc = params.get("ClusterDesc")
+        self.ClusterLevel = params.get("ClusterLevel")
+        if params.get("AutoUpgradeClusterLevel") is not None:
+            self.AutoUpgradeClusterLevel = AutoUpgradeClusterLevel()
+            self.AutoUpgradeClusterLevel._deserialize(params.get("AutoUpgradeClusterLevel"))
         self.RequestId = params.get("RequestId")
 
 
@@ -9455,6 +10254,71 @@ class ResourceDeleteOption(AbstractModel):
         
 
 
+class ResourceUsage(AbstractModel):
+    """集群资源使用量
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 资源类型
+        :type Name: str
+        :param Usage: 资源使用量
+        :type Usage: int
+        :param Details: 资源使用详情
+        :type Details: list of ResourceUsageDetail
+        """
+        self.Name = None
+        self.Usage = None
+        self.Details = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Usage = params.get("Usage")
+        if params.get("Details") is not None:
+            self.Details = []
+            for item in params.get("Details"):
+                obj = ResourceUsageDetail()
+                obj._deserialize(item)
+                self.Details.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResourceUsageDetail(AbstractModel):
+    """资源使用明细
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 资源名称
+        :type Name: str
+        :param Usage: 资源使用量
+        :type Usage: int
+        """
+        self.Name = None
+        self.Usage = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Usage = params.get("Usage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RestartEKSContainerInstancesRequest(AbstractModel):
     """RestartEKSContainerInstances请求参数结构体
 
@@ -10440,6 +11304,51 @@ class UpdateEKSContainerInstanceResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.EksCiId = params.get("EksCiId")
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateImageCacheRequest(AbstractModel):
+    """UpdateImageCache请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageCacheId: 镜像缓存Id
+        :type ImageCacheId: str
+        :param ImageCacheName: 镜像缓存名称
+        :type ImageCacheName: str
+        """
+        self.ImageCacheId = None
+        self.ImageCacheName = None
+
+
+    def _deserialize(self, params):
+        self.ImageCacheId = params.get("ImageCacheId")
+        self.ImageCacheName = params.get("ImageCacheName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateImageCacheResponse(AbstractModel):
+    """UpdateImageCache返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 

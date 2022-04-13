@@ -146,6 +146,9 @@ INVALIDPARAMETERVALUE_BLUEPRINTIDMALFORMED = 'InvalidParameterValue.BlueprintIdM
 # 云联网实例ID格式非法。
 INVALIDPARAMETERVALUE_CCNIDMALFORMED = 'InvalidParameterValue.CcnIdMalformed'
 
+# 磁盘名称长度超出限制。
+INVALIDPARAMETERVALUE_DISKNAMETOOLONG = 'InvalidParameterValue.DiskNameTooLong'
+
 # 磁盘大小发生改变。
 INVALIDPARAMETERVALUE_DISKSIZENOTMATCH = 'InvalidParameterValue.DiskSizeNotMatch'
 
@@ -310,6 +313,9 @@ RESOURCENOTFOUND_FIREWALLNOTFOUND = 'ResourceNotFound.FirewallNotFound'
 
 # 防火墙规则不存在。
 RESOURCENOTFOUND_FIREWALLRULESNOTFOUND = 'ResourceNotFound.FirewallRulesNotFound'
+
+# 实例不存在挂载的数据盘。
+RESOURCENOTFOUND_INSTANCEDATADISKNOTFOUND = 'ResourceNotFound.InstanceDataDiskNotFound'
 
 # 实例 ID 不存在。
 RESOURCENOTFOUND_INSTANCEIDNOTFOUND = 'ResourceNotFound.InstanceIdNotFound'

@@ -47,7 +47,7 @@ class AgentAuditedClient(AbstractModel):
         :type ThisMonthAmt: int
         :param HasOverdueBill: 是否欠费,0：不欠费；1：欠费
         :type HasOverdueBill: int
-        :param ClientType: 客户类型：可以为new(新拓)/assign(指定)/old(存量已关联)/old_newchecking(存量-新关联考核中)/old_newnotpass(存量-新关联未达标)/direct(直销)/direct_newopp(直销(新商机))/空
+        :param ClientType: 客户类型：可以为new(自拓)/assign(指派)/old(官网)/direct(直销)/direct_newopp(直销(新商机))/空
         :type ClientType: str
         :param ProjectType: 项目类型：可以为self(自拓项目)/platform(合作项目)/repeat(复算项目  )/空
         :type ProjectType: str
@@ -132,7 +132,7 @@ class AgentBillElem(AbstractModel):
         :type Amt: int
         :param PayerMode: agentpay：代付；selfpay：自付
         :type PayerMode: str
-        :param ClientType: 客户类型：可以为new(新拓)/assign(指定)/old(存量)/空
+        :param ClientType: 客户类型：可以为new(自拓)/assign(指定)/old(官网)/direct(直销)/direct_newopp(直销(新商机))/空
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClientType: str
         :param ProjectType: 项目类型：可以为self(自拓项目)/platform(合作项目)/repeat(复算项目  )/空
@@ -307,7 +307,7 @@ class AgentDealElem(AbstractModel):
         :param BigDealId: 大订单号
 注意：此字段可能返回 null，表示取不到有效值。
         :type BigDealId: str
-        :param ClientType: 客户类型（new：新拓；old：存量；assign：指派）
+        :param ClientType: 客户类型（new：自拓；old：官网；assign：指派；direct：直销；direct_newopp：直销(新商机)）
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClientType: str
         :param ProjectType: 项目类型（self：自拓；repeat：直销；platform：官网合作）
@@ -470,7 +470,7 @@ class AgentDealNewElem(AbstractModel):
         :param BigDealId: 大订单号
 注意：此字段可能返回 null，表示取不到有效值。
         :type BigDealId: str
-        :param ClientType: 客户类型（new：新拓；old：存量；assign：指派）
+        :param ClientType: 客户类型（new：自拓；old：官网；assign：指派；direct：直销；direct_newopp：直销(新商机)）
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClientType: str
         :param ProjectType: 项目类型（self：自拓；repeat：直销；platform：官网合作）
@@ -1205,8 +1205,10 @@ class DescribeAgentDealsByCacheRequest(AbstractModel):
         :type Status: int
         :param OwnerUins: 下单人账号ID列表
         :type OwnerUins: list of str
-        :param DealNames: 订单号列表
+        :param DealNames: 子订单号列表
         :type DealNames: list of str
+        :param BigDealIds: 大订单号列表
+        :type BigDealIds: list of str
         :param PayerMode: 支付方式，0：自付；1：代付
         :type PayerMode: int
         """
@@ -1218,6 +1220,7 @@ class DescribeAgentDealsByCacheRequest(AbstractModel):
         self.Status = None
         self.OwnerUins = None
         self.DealNames = None
+        self.BigDealIds = None
         self.PayerMode = None
 
 
@@ -1230,6 +1233,7 @@ class DescribeAgentDealsByCacheRequest(AbstractModel):
         self.Status = params.get("Status")
         self.OwnerUins = params.get("OwnerUins")
         self.DealNames = params.get("DealNames")
+        self.BigDealIds = params.get("BigDealIds")
         self.PayerMode = params.get("PayerMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -1459,8 +1463,10 @@ class DescribeAgentPayDealsV2Request(AbstractModel):
         :type Status: int
         :param OwnerUins: 下单人账号ID列表
         :type OwnerUins: list of str
-        :param DealNames: 订单号列表
+        :param DealNames: 子订单号列表
         :type DealNames: list of str
+        :param BigDealIds: 大订单号列表
+        :type BigDealIds: list of str
         """
         self.Offset = None
         self.Limit = None
@@ -1470,6 +1476,7 @@ class DescribeAgentPayDealsV2Request(AbstractModel):
         self.Status = None
         self.OwnerUins = None
         self.DealNames = None
+        self.BigDealIds = None
 
 
     def _deserialize(self, params):
@@ -1481,6 +1488,7 @@ class DescribeAgentPayDealsV2Request(AbstractModel):
         self.Status = params.get("Status")
         self.OwnerUins = params.get("OwnerUins")
         self.DealNames = params.get("DealNames")
+        self.BigDealIds = params.get("BigDealIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1623,8 +1631,10 @@ class DescribeAgentSelfPayDealsV2Request(AbstractModel):
         :type Order: int
         :param Status: 订单的状态(1：未支付;2：已支付;3：发货中;4：已发货;5：发货失败;6：已退款;7：已关单;8：订单过期;9：订单已失效;10：产品已失效;11：代付拒绝;12：支付中)
         :type Status: int
-        :param DealNames: 订单号列表
+        :param DealNames: 子订单号列表
         :type DealNames: list of str
+        :param BigDealIds: 大订单号列表
+        :type BigDealIds: list of str
         """
         self.OwnerUin = None
         self.Offset = None
@@ -1634,6 +1644,7 @@ class DescribeAgentSelfPayDealsV2Request(AbstractModel):
         self.Order = None
         self.Status = None
         self.DealNames = None
+        self.BigDealIds = None
 
 
     def _deserialize(self, params):
@@ -1645,6 +1656,7 @@ class DescribeAgentSelfPayDealsV2Request(AbstractModel):
         self.Order = params.get("Order")
         self.Status = params.get("Status")
         self.DealNames = params.get("DealNames")
+        self.BigDealIds = params.get("BigDealIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

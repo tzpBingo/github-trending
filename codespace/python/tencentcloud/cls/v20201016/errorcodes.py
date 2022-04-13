@@ -98,11 +98,23 @@ INVALIDPARAMETER_CONFIGCONFLICT = 'InvalidParameter.ConfigConflict'
 # 无效的Content。
 INVALIDPARAMETER_CONTENT = 'InvalidParameter.Content'
 
+# 数据加工任务冲突。
+INVALIDPARAMETER_DATAFROMTASKCONFLICT = 'InvalidParameter.DataFromTaskConflict'
+
+# 数据加工任务不存在。
+INVALIDPARAMETER_DATAFROMTASKNOTEXIST = 'InvalidParameter.DataFromTaskNotExist'
+
+# 数据库唯一键冲突。
+INVALIDPARAMETER_DBDUPLICATION = 'InvalidParameter.DbDuplication'
+
 # 低频不支持配置kv和tag索引。
 INVALIDPARAMETER_INVALIDINDEXRULEFORSEARCHLOW = 'InvalidParameter.InValidIndexRuleForSearchLow'
 
 # 指定日志主题已经存在索引规则。
 INVALIDPARAMETER_INDEXCONFLICT = 'InvalidParameter.IndexConflict'
+
+# 无效的数据加工语句。
+INVALIDPARAMETER_INVALIDETLCONTENT = 'InvalidParameter.InvalidEtlContent'
 
 # 相同的日志集已存在。
 INVALIDPARAMETER_LOGSETCONFLICT = 'InvalidParameter.LogsetConflict'

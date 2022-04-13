@@ -47,8 +47,14 @@ INTERNALERROR_UPDATEINGRESSERROR = 'InternalError.UpdateIngressError'
 # 版本号格式非法。
 INVALIDPARAMETERVALUE_INVALIDDEPLOYVERSION = 'InvalidParameterValue.InvalidDeployVersion'
 
+# 应用名格式非法。
+INVALIDPARAMETERVALUE_INVALIDSERVICENAME = 'InvalidParameterValue.InvalidServiceName'
+
 # 环境重复。
 INVALIDPARAMETERVALUE_NAMESPACEDUPLICATEERROR = 'InvalidParameterValue.NamespaceDuplicateError'
+
+# 命名空间不属于用户。
+INVALIDPARAMETERVALUE_NAMESPACENOTBELONGTOAPPID = 'InvalidParameterValue.NamespaceNotBelongToAppid'
 
 # 环境创建失败，达到上限。
 INVALIDPARAMETERVALUE_NAMESPACEREACHMAXIMUM = 'InvalidParameterValue.NamespaceReachMaximum'
@@ -56,8 +62,14 @@ INVALIDPARAMETERVALUE_NAMESPACEREACHMAXIMUM = 'InvalidParameterValue.NamespaceRe
 # 环境资源创建失败，达到上限。
 INVALIDPARAMETERVALUE_NAMESPACERESOURCEREACHMAXIMUM = 'InvalidParameterValue.NamespaceResourceReachMaximum'
 
+# 公有镜像参数错误。
+INVALIDPARAMETERVALUE_PUBLICREPOTYPEPARAMETERERROR = 'InvalidParameterValue.PublicRepoTypeParameterError'
+
 # 应用存在正在运行的实例。
 INVALIDPARAMETERVALUE_SERVICEFOUNDRUNNINGVERSION = 'InvalidParameterValue.ServiceFoundRunningVersion'
+
+# 服务名必须小写。
+INVALIDPARAMETERVALUE_SERVICELOWERCASE = 'InvalidParameterValue.ServiceLowerCase'
 
 # 应用名已存在。
 INVALIDPARAMETERVALUE_SERVICENAMEDUPLICATEERROR = 'InvalidParameterValue.ServiceNameDuplicateError'
@@ -71,8 +83,17 @@ INVALIDPARAMETERVALUE_VERSIONLOWERCASE = 'InvalidParameterValue.VersionLowerCase
 # 版本的路由流量不为0。
 INVALIDPARAMETERVALUE_VERSIONROUTERATENOTZERO = 'InvalidParameterValue.VersionRouteRateNotZero'
 
+# 部署版本不能为空。
+MISSINGPARAMETER_DEPLOYVERSIONNULL = 'MissingParameter.DeployVersionNull'
+
 # 环境ID不能为空。
 MISSINGPARAMETER_NAMESPACEIDNULL = 'MissingParameter.NamespaceIdNull'
+
+# 服务ID不能为空。
+MISSINGPARAMETER_SERVICEIDNULL = 'MissingParameter.ServiceIdNull'
+
+# 资源已绑定。
+RESOURCEINUSE_RESOURCEALREADYUSED = 'ResourceInUse.ResourceAlreadyUsed'
 
 # 目标微服务已离线。
 RESOURCENOTFOUND_MICROSERVICEOFFLINE = 'ResourceNotFound.MicroserviceOffline'

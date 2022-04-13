@@ -102,7 +102,10 @@ class CFSOption(AbstractModel):
         :type LocalPath: str
         :param RemotePath: 文件系统远程挂载ip及路径
         :type RemotePath: str
-        :param Protocol: 文件系统协议类型，默认值NFS 3.0
+        :param Protocol: 文件系统协议类型，默认值NFS 3.0。
+<li>NFS 3.0。
+<li>NFS 4.0。
+<li>TURBO。
         :type Protocol: str
         :param StorageType: 文件系统存储类型，默认值SD；其中 SD 为通用标准型标准型存储， HP为通用性能型存储， TB为turbo标准型， TP 为turbo性能型。
         :type StorageType: str
@@ -154,6 +157,10 @@ class ClusterOverview(AbstractModel):
         :type ManagerNodeCount: int
         :param ManagerNodeSet: 管控节点概览。
         :type ManagerNodeSet: list of ManagerNodeOverview
+        :param LoginNodeSet: 登录节点概览。
+        :type LoginNodeSet: list of LoginNodeOverview
+        :param LoginNodeCount: 登录节点数量。
+        :type LoginNodeCount: int
         """
         self.ClusterId = None
         self.ClusterStatus = None
@@ -165,6 +172,8 @@ class ClusterOverview(AbstractModel):
         self.ComputeNodeSet = None
         self.ManagerNodeCount = None
         self.ManagerNodeSet = None
+        self.LoginNodeSet = None
+        self.LoginNodeCount = None
 
 
     def _deserialize(self, params):
@@ -190,6 +199,13 @@ class ClusterOverview(AbstractModel):
                 obj = ManagerNodeOverview()
                 obj._deserialize(item)
                 self.ManagerNodeSet.append(obj)
+        if params.get("LoginNodeSet") is not None:
+            self.LoginNodeSet = []
+            for item in params.get("LoginNodeSet"):
+                obj = LoginNodeOverview()
+                obj._deserialize(item)
+                self.LoginNodeSet.append(obj)
+        self.LoginNodeCount = params.get("LoginNodeCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -217,13 +233,11 @@ class ComputeNode(AbstractModel):
         :type SystemDisk: :class:`tencentcloud.thpc.v20211109.models.SystemDisk`
         :param DataDisks: 节点数据盘配置信息。若不指定该参数，则默认不购买数据盘。支持购买的时候指定21块数据盘，其中最多包含1块LOCAL_BASIC数据盘或者LOCAL_SSD数据盘，最多包含20块CLOUD_BASIC数据盘、CLOUD_PREMIUM数据盘或者CLOUD_SSD数据盘。
         :type DataDisks: list of DataDisk
-        :param InternetAccessible: 公网带宽相关信息设置。若不指定该参数，则默认公网带宽为0Mbps。
+        :param InternetAccessible: 节点数据盘配置信息。若不指定该参数，则默认不购买数据盘。支持购买的时候指定21块数据盘，其中最多包含1块LOCAL_BASIC数据盘或者LOCAL_SSD数据盘，最多包含20块CLOUD_BASIC数据盘、CLOUD_PREMIUM数据盘或者CLOUD_SSD数据盘。
         :type InternetAccessible: :class:`tencentcloud.thpc.v20211109.models.InternetAccessible`
         :param InstanceName: 节点显示名称。<br><li>
 不指定节点显示名称则默认显示‘未命名’。
-</li><li>购买多个节点，如果指定模式串`{R:x}`，表示生成数字[`[x, x+n-1]`，其中`n`表示购买节点的数量，例如`server_{R:3}`，购买1个时，节点显示名称为`server_3`；购买2个时，节点显示名称分别为`server_3`，`server_4`。支持指定多个模式串`{R:x}`。
-购买多个节点，如果不指定模式串，则在节点显示名称添加后缀`1、2...n`，其中`n`表示购买节点的数量，例如`server_`，购买2个时，节点显示名称分别为`server_1`，`server_2`。</li><li>
-最多支持60个字符（包含模式串）。
+最多支持60个字符。
         :type InstanceName: str
         """
         self.InstanceChargeType = None
@@ -299,15 +313,15 @@ class CreateClusterRequest(AbstractModel):
         :type Placement: :class:`tencentcloud.thpc.v20211109.models.Placement`
         :param ManagerNode: 指定管理节点。
         :type ManagerNode: :class:`tencentcloud.thpc.v20211109.models.ManagerNode`
-        :param ManagerNodeCount: 指定管理节点的数量。目前仅支持一个管理节点。
+        :param ManagerNodeCount: 指定管理节点的数量。默认取值：1。取值范围：1～2。
         :type ManagerNodeCount: int
         :param ComputeNode: 指定计算节点。
         :type ComputeNode: :class:`tencentcloud.thpc.v20211109.models.ComputeNode`
         :param ComputeNodeCount: 指定计算节点的数量。默认取值：0。
         :type ComputeNodeCount: int
-        :param SchedulerType: 调度器类型。<br><li>SGE：SGE调度器。
+        :param SchedulerType: 调度器类型。<br><li>SGE：SGE调度器。<br><li>SLURM：SLURM调度器。
         :type SchedulerType: str
-        :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前仅支持公有镜像和自定义镜像。
+        :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前仅支持公有镜像。
         :type ImageId: str
         :param VirtualPrivateCloud: 私有网络相关信息配置。
         :type VirtualPrivateCloud: :class:`tencentcloud.thpc.v20211109.models.VirtualPrivateCloud`
@@ -323,12 +337,21 @@ true：发送检查请求，不会创建实例。检查项包括是否填写了�
 如果检查通过，则返回RequestId.
 false（默认）：发送正常请求，通过检查后直接创建实例
         :type DryRun: bool
-        :param AccountType: 域名字服务类型。<br><li>NIS：NIS域名字服务。
+        :param AccountType: 域名字服务类型。默认值：NIS
+<li>NIS：NIS域名字服务。
         :type AccountType: str
         :param ClusterName: 集群显示名称。
         :type ClusterName: str
         :param StorageOption: 集群存储选项
         :type StorageOption: :class:`tencentcloud.thpc.v20211109.models.StorageOption`
+        :param LoginNode: 已废弃。
+指定登录节点。
+        :type LoginNode: list of LoginNode
+        :param LoginNodeCount: 已废弃。
+指定登录节点的数量。默认取值：0。取值范围：0～10。
+        :type LoginNodeCount: int
+        :param Tags: 创建集群时同时绑定的标签对说明。
+        :type Tags: list of Tag
         """
         self.Placement = None
         self.ManagerNode = None
@@ -345,6 +368,9 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         self.AccountType = None
         self.ClusterName = None
         self.StorageOption = None
+        self.LoginNode = None
+        self.LoginNodeCount = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -375,6 +401,19 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         if params.get("StorageOption") is not None:
             self.StorageOption = StorageOption()
             self.StorageOption._deserialize(params.get("StorageOption"))
+        if params.get("LoginNode") is not None:
+            self.LoginNode = []
+            for item in params.get("LoginNode"):
+                obj = LoginNode()
+                obj._deserialize(item)
+                self.LoginNode.append(obj)
+        self.LoginNodeCount = params.get("LoginNodeCount")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -635,6 +674,98 @@ BANDWIDTH_PACKAGE：带宽包用户
         
 
 
+class LoginNode(AbstractModel):
+    """登录节点信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceChargeType: 节点[计费类型](https://cloud.tencent.com/document/product/213/2180)。<br><li>PREPAID：预付费，即包年包月<br><li>POSTPAID_BY_HOUR：按小时后付费<br><li>SPOTPAID：竞价付费<br>默认值：POSTPAID_BY_HOUR。
+        :type InstanceChargeType: str
+        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月节点的购买时长、是否设置自动续费等属性。若指定节点的付费模式为预付费则该参数必传。
+        :type InstanceChargePrepaid: :class:`tencentcloud.thpc.v20211109.models.InstanceChargePrepaid`
+        :param InstanceType: 节点机型。不同实例机型指定了不同的资源规格。
+<br><li>具体取值可通过调用接口[DescribeInstanceTypeConfigs](https://cloud.tencent.com/document/api/213/15749)来获得最新的规格表或参见[实例规格](https://cloud.tencent.com/document/product/213/11518)描述。
+        :type InstanceType: str
+        :param SystemDisk: 节点系统盘配置信息。若不指定该参数，则按照系统默认值进行分配。
+        :type SystemDisk: list of SystemDisk
+        :param DataDisks: 节点数据盘配置信息。若不指定该参数，则默认不购买数据盘。支持购买的时候指定21块数据盘，其中最多包含1块LOCAL_BASIC数据盘或者LOCAL_SSD数据盘，最多包含20块CLOUD_BASIC数据盘、CLOUD_PREMIUM数据盘或者CLOUD_SSD数据盘。
+        :type DataDisks: list of DataDisk
+        :param InternetAccessible: 节点数据盘配置信息。若不指定该参数，则默认不购买数据盘。支持购买的时候指定21块数据盘，其中最多包含1块LOCAL_BASIC数据盘或者LOCAL_SSD数据盘，最多包含20块CLOUD_BASIC数据盘、CLOUD_PREMIUM数据盘或者CLOUD_SSD数据盘。
+        :type InternetAccessible: list of InternetAccessible
+        :param InstanceName: 节点显示名称。<br><li>
+不指定节点显示名称则默认显示‘未命名’。
+最多支持60个字符。
+        :type InstanceName: str
+        """
+        self.InstanceChargeType = None
+        self.InstanceChargePrepaid = None
+        self.InstanceType = None
+        self.SystemDisk = None
+        self.DataDisks = None
+        self.InternetAccessible = None
+        self.InstanceName = None
+
+
+    def _deserialize(self, params):
+        self.InstanceChargeType = params.get("InstanceChargeType")
+        if params.get("InstanceChargePrepaid") is not None:
+            self.InstanceChargePrepaid = InstanceChargePrepaid()
+            self.InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        self.InstanceType = params.get("InstanceType")
+        if params.get("SystemDisk") is not None:
+            self.SystemDisk = []
+            for item in params.get("SystemDisk"):
+                obj = SystemDisk()
+                obj._deserialize(item)
+                self.SystemDisk.append(obj)
+        if params.get("DataDisks") is not None:
+            self.DataDisks = []
+            for item in params.get("DataDisks"):
+                obj = DataDisk()
+                obj._deserialize(item)
+                self.DataDisks.append(obj)
+        if params.get("InternetAccessible") is not None:
+            self.InternetAccessible = []
+            for item in params.get("InternetAccessible"):
+                obj = InternetAccessible()
+                obj._deserialize(item)
+                self.InternetAccessible.append(obj)
+        self.InstanceName = params.get("InstanceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LoginNodeOverview(AbstractModel):
+    """登录节点概览。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NodeId: 登录节点ID。
+        :type NodeId: str
+        """
+        self.NodeId = None
+
+
+    def _deserialize(self, params):
+        self.NodeId = params.get("NodeId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LoginSettings(AbstractModel):
     """描述了实例登录相关配置与信息。
 
@@ -836,6 +967,34 @@ CLOUD_PREMIUM：高性能云硬盘
     def _deserialize(self, params):
         self.DiskType = params.get("DiskType")
         self.DiskSize = params.get("DiskSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Tag(AbstractModel):
+    """标签键值对。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 标签键
+        :type Key: str
+        :param Value: 标签值
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

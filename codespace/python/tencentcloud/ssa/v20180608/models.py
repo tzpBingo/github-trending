@@ -125,7 +125,7 @@ class AlertType(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AlertTime: 时间戳
+        :param AlertTime: 标准时间格式
 注意：此字段可能返回 null，表示取不到有效值。
         :type AlertTime: str
         :param AlertId: 唯一id
@@ -702,6 +702,69 @@ class AssetList(AbstractModel):
         
 
 
+class AssetQueryFilter(AbstractModel):
+    """资产查询过滤参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filter: 查询参数
+        :type Filter: list of QueryFilter
+        :param Logic: 查询连接符，1 and  ，2 or
+        :type Logic: int
+        """
+        self.Filter = None
+        self.Logic = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filter") is not None:
+            self.Filter = []
+            for item in params.get("Filter"):
+                obj = QueryFilter()
+                obj._deserialize(item)
+                self.Filter.append(obj)
+        self.Logic = params.get("Logic")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AssetTypeStatistic(AbstractModel):
+    """资产测绘结果统计
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AssetType: 资产类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetType: str
+        :param AssetCount: 统计计数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetCount: int
+        """
+        self.AssetType = None
+        self.AssetCount = None
+
+
+    def _deserialize(self, params):
+        self.AssetType = params.get("AssetType")
+        self.AssetCount = params.get("AssetCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Bucket(AbstractModel):
     """es聚合数据类型
 
@@ -1017,11 +1080,31 @@ class ConcernInfo(AbstractModel):
         :param StatisticsCount: 最近数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type StatisticsCount: int
+        :param SearchData: 可疑关注点字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SearchData: str
+        :param IpCountryIso: 可疑关注点字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpCountryIso: str
+        :param IpProvinceIso: 可疑关注点字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpProvinceIso: str
+        :param IpCity: 可疑关注点字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpCity: str
+        :param EventSubType: 可疑关注点字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EventSubType: str
         """
         self.ConcernType = None
         self.EntityType = None
         self.Concern = None
         self.StatisticsCount = None
+        self.SearchData = None
+        self.IpCountryIso = None
+        self.IpProvinceIso = None
+        self.IpCity = None
+        self.EventSubType = None
 
 
     def _deserialize(self, params):
@@ -1029,6 +1112,11 @@ class ConcernInfo(AbstractModel):
         self.EntityType = params.get("EntityType")
         self.Concern = params.get("Concern")
         self.StatisticsCount = params.get("StatisticsCount")
+        self.SearchData = params.get("SearchData")
+        self.IpCountryIso = params.get("IpCountryIso")
+        self.IpProvinceIso = params.get("IpProvinceIso")
+        self.IpCity = params.get("IpCity")
+        self.EventSubType = params.get("EventSubType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2173,6 +2261,81 @@ class DescribeLeakDetectionListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeMappingResultsRequest(AbstractModel):
+    """DescribeMappingResults请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filter: 过滤条件，FilterKey 取值范围：AssetId，AssetIp，PrivateIp，Protocol，Service，OS，Process，Component，AssetType，Domain，Port，LastMappingTime，MappingType，Disposal，Vpc
+        :type Filter: list of AssetQueryFilter
+        :param Sorter: 排序条件，SortKey取值范围：CreateTime，LastMappingTime
+        :type Sorter: list of QuerySort
+        :param PageIndex: 页码
+        :type PageIndex: int
+        :param PageSize: 页大小，默认大小20
+        :type PageSize: int
+        """
+        self.Filter = None
+        self.Sorter = None
+        self.PageIndex = None
+        self.PageSize = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filter") is not None:
+            self.Filter = []
+            for item in params.get("Filter"):
+                obj = AssetQueryFilter()
+                obj._deserialize(item)
+                self.Filter.append(obj)
+        if params.get("Sorter") is not None:
+            self.Sorter = []
+            for item in params.get("Sorter"):
+                obj = QuerySort()
+                obj._deserialize(item)
+                self.Sorter.append(obj)
+        self.PageIndex = params.get("PageIndex")
+        self.PageSize = params.get("PageSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeMappingResultsResponse(AbstractModel):
+    """DescribeMappingResults返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 总记录数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        :param Data: 列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.ssa.v20180608.models.Results`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        if params.get("Data") is not None:
+            self.Data = Results()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeSafetyEventListRequest(AbstractModel):
     """DescribeSafetyEventList请求参数结构体
 
@@ -2324,12 +2487,15 @@ class DescribeSocAlertListRequest(AbstractModel):
         :type Filter: list of QueryFilter
         :param Sorter: 排序参数
         :type Sorter: list of QuerySort
+        :param ExportFlag: 是否导出
+        :type ExportFlag: bool
         """
         self.PageSize = None
         self.PageIndex = None
         self.Scenes = None
         self.Filter = None
         self.Sorter = None
+        self.ExportFlag = None
 
 
     def _deserialize(self, params):
@@ -2348,6 +2514,7 @@ class DescribeSocAlertListRequest(AbstractModel):
                 obj = QuerySort()
                 obj._deserialize(item)
                 self.Sorter.append(obj)
+        self.ExportFlag = params.get("ExportFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2377,6 +2544,29 @@ class DescribeSocAlertListResponse(AbstractModel):
         if params.get("Data") is not None:
             self.Data = AlertListData()
             self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSocCheckItemListRequest(AbstractModel):
+    """DescribeSocCheckItemList请求参数结构体
+
+    """
+
+
+class DescribeSocCheckItemListResponse(AbstractModel):
+    """DescribeSocCheckItemList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -2508,6 +2698,9 @@ class DescribeVulDetailResponse(AbstractModel):
         :param SsaAssetCategory: 资产归属
 注意：此字段可能返回 null，表示取不到有效值。
         :type SsaAssetCategory: int
+        :param VulPath: 资产文件路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VulPath: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -2532,6 +2725,7 @@ class DescribeVulDetailResponse(AbstractModel):
         self.Source = None
         self.VulUrl = None
         self.SsaAssetCategory = None
+        self.VulPath = None
         self.RequestId = None
 
 
@@ -2557,6 +2751,7 @@ class DescribeVulDetailResponse(AbstractModel):
         self.Source = params.get("Source")
         self.VulUrl = params.get("VulUrl")
         self.SsaAssetCategory = params.get("SsaAssetCategory")
+        self.VulPath = params.get("VulPath")
         self.RequestId = params.get("RequestId")
 
 
@@ -2642,6 +2837,121 @@ class Filter(AbstractModel):
         
 
 
+class MappingResult(AbstractModel):
+    """测绘记录
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AssetName: 资产名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetName: str
+        :param AssetIp: 公网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetIp: str
+        :param PrivateIp: 内网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrivateIp: str
+        :param AssetId: 资产id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetId: str
+        :param Protocol: 协议
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Protocol: str
+        :param Port: 端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Port: str
+        :param Service: 服务
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Service: str
+        :param Component: 组件
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Component: str
+        :param Process: 进程
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Process: str
+        :param OS: 操作系统
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OS: str
+        :param LastMappingTime: 测绘时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastMappingTime: str
+        :param DisposalRecommendations: 处置建议
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DisposalRecommendations: str
+        :param DisposalRecommendationDetails: 处置建议详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DisposalRecommendationDetails: str
+        :param AssetType: 资产类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssetType: str
+        :param Domain: 域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
+        :param MappingStatus: 测绘状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MappingStatus: int
+        :param Region: 区域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param SecurityStatus: 安全防护状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SecurityStatus: list of SecurityStatus
+        """
+        self.AssetName = None
+        self.AssetIp = None
+        self.PrivateIp = None
+        self.AssetId = None
+        self.Protocol = None
+        self.Port = None
+        self.Service = None
+        self.Component = None
+        self.Process = None
+        self.OS = None
+        self.LastMappingTime = None
+        self.DisposalRecommendations = None
+        self.DisposalRecommendationDetails = None
+        self.AssetType = None
+        self.Domain = None
+        self.MappingStatus = None
+        self.Region = None
+        self.SecurityStatus = None
+
+
+    def _deserialize(self, params):
+        self.AssetName = params.get("AssetName")
+        self.AssetIp = params.get("AssetIp")
+        self.PrivateIp = params.get("PrivateIp")
+        self.AssetId = params.get("AssetId")
+        self.Protocol = params.get("Protocol")
+        self.Port = params.get("Port")
+        self.Service = params.get("Service")
+        self.Component = params.get("Component")
+        self.Process = params.get("Process")
+        self.OS = params.get("OS")
+        self.LastMappingTime = params.get("LastMappingTime")
+        self.DisposalRecommendations = params.get("DisposalRecommendations")
+        self.DisposalRecommendationDetails = params.get("DisposalRecommendationDetails")
+        self.AssetType = params.get("AssetType")
+        self.Domain = params.get("Domain")
+        self.MappingStatus = params.get("MappingStatus")
+        self.Region = params.get("Region")
+        if params.get("SecurityStatus") is not None:
+            self.SecurityStatus = []
+            for item in params.get("SecurityStatus"):
+                obj = SecurityStatus()
+                obj._deserialize(item)
+                self.SecurityStatus.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class QueryFilter(AbstractModel):
     """查询参数
 
@@ -2653,7 +2963,7 @@ class QueryFilter(AbstractModel):
         :type FilterKey: str
         :param FilterValue: 查询的值
         :type FilterValue: str
-        :param FilterOperatorType: 匹配类型，枚举见pb
+        :param FilterOperatorType: 匹配类型，1等于；2大于；3小于；4大于等于；5小于等于；6不等于；7in；8not in；9模糊匹配
         :type FilterOperatorType: int
         """
         self.FilterKey = None
@@ -2693,6 +3003,56 @@ class QuerySort(AbstractModel):
     def _deserialize(self, params):
         self.SortKey = params.get("SortKey")
         self.SortType = params.get("SortType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Results(AbstractModel):
+    """测绘结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Statistics: 测绘类型统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statistics: list of AssetTypeStatistic
+        :param Result: 测绘结果列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: list of MappingResult
+        :param TaskCount: 测绘任务数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskCount: int
+        :param TaskMaxCount: 最大测绘任务数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskMaxCount: int
+        """
+        self.Statistics = None
+        self.Result = None
+        self.TaskCount = None
+        self.TaskMaxCount = None
+
+
+    def _deserialize(self, params):
+        if params.get("Statistics") is not None:
+            self.Statistics = []
+            for item in params.get("Statistics"):
+                obj = AssetTypeStatistic()
+                obj._deserialize(item)
+                self.Statistics.append(obj)
+        if params.get("Result") is not None:
+            self.Result = []
+            for item in params.get("Result"):
+                obj = MappingResult()
+                obj._deserialize(item)
+                self.Result.append(obj)
+        self.TaskCount = params.get("TaskCount")
+        self.TaskMaxCount = params.get("TaskMaxCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2826,11 +3186,11 @@ class SaDivulgeDataQueryPubRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param QueryKey: 模糊查询字段
+        :param QueryKey: 模糊查询字段(针对appid或者uin)
         :type QueryKey: str
         :param EventName: 安全事件名称
         :type EventName: str
-        :param DivulgeSoure: 监控源
+        :param DivulgeSoure: 监控源  0:全部 1:GitHub 2:暗网 默认值1
         :type DivulgeSoure: str
         :param Asset: 受影响资产
         :type Asset: str
@@ -2838,9 +3198,9 @@ class SaDivulgeDataQueryPubRequest(AbstractModel):
         :type RuleName: str
         :param RuleId: 命中主题集下的规则topic唯一id
         :type RuleId: str
-        :param Level: 风险等级
+        :param Level: 风险等级 -1:未知 1:低危 2:中危 3:高危 4:严重
         :type Level: str
-        :param Status: 安全事件状态
+        :param Status: 安全事件处理状态 -1:未知 1:待处理 2:已处理 3:误报 4:已忽略 5:已知晓 6:已信任
         :type Status: str
         :param StartTime: 起始时间
         :type StartTime: str
@@ -2894,7 +3254,7 @@ class SaDivulgeDataQueryPubResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Data: 结果
+        :param Data: 自定义泄露事件列表
         :type Data: :class:`tencentcloud.ssa.v20180608.models.SaDivulgeDataQueryPubList`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -2908,6 +3268,12 @@ class SaDivulgeDataQueryPubResponse(AbstractModel):
             self.Data = SaDivulgeDataQueryPubList()
             self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
+
+
+class SecurityStatus(AbstractModel):
+    """安全放回状态
+
+    """
 
 
 class SocCheckItem(AbstractModel):
@@ -3197,6 +3563,9 @@ class VulItem(AbstractModel):
         :param VulRepairPlan: 漏洞描述
 注意：此字段可能返回 null，表示取不到有效值。
         :type VulRepairPlan: str
+        :param VulPath: 漏洞文件路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VulPath: str
         """
         self.Id = None
         self.VulName = None
@@ -3229,6 +3598,7 @@ class VulItem(AbstractModel):
         self.IsOpen = None
         self.YzHostId = None
         self.VulRepairPlan = None
+        self.VulPath = None
 
 
     def _deserialize(self, params):
@@ -3263,6 +3633,7 @@ class VulItem(AbstractModel):
         self.IsOpen = params.get("IsOpen")
         self.YzHostId = params.get("YzHostId")
         self.VulRepairPlan = params.get("VulRepairPlan")
+        self.VulPath = params.get("VulPath")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

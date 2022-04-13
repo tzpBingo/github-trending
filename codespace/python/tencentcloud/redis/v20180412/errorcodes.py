@@ -92,6 +92,9 @@ INTERNALERROR_NETWORKERR = 'InternalError.NetWorkErr'
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
+# 没有找到对应接口。
+INVALIDPARAMETER_ACTIONNOTFOUND = 'InvalidParameter.ActionNotFound'
+
 # 参数为空。
 INVALIDPARAMETER_EMPTYPARAM = 'InvalidParameter.EmptyParam'
 
@@ -173,6 +176,9 @@ INVALIDPARAMETERVALUE_UNVPCIDNOTEXISTS = 'InvalidParameterValue.UnVpcIdNotExists
 # weekday输入无效数据。
 INVALIDPARAMETERVALUE_WEEKDAYSISINVALID = 'InvalidParameterValue.WeekDaysIsInvalid'
 
+# 超过配额限制。
+LIMITEXCEEDED = 'LimitExceeded'
+
 # 绑定超过上限。
 LIMITEXCEEDED_EXCEEDUPPERLIMIT = 'LimitExceeded.ExceedUpperLimit'
 
@@ -199,6 +205,9 @@ LIMITEXCEEDED_REPLICATIONGROUPLOCKED = 'LimitExceeded.ReplicationGroupLocked'
 
 # 实例被其它流程锁住。
 RESOURCEINUSE_INSTANCEBEENLOCKED = 'ResourceInUse.InstanceBeenLocked'
+
+# 资源不足。
+RESOURCEINSUFFICIENT = 'ResourceInsufficient'
 
 # uin 值为空。
 RESOURCENOTFOUND_ACCOUNTDOESNOTEXISTS = 'ResourceNotFound.AccountDoesNotExists'

@@ -1447,11 +1447,11 @@ class DescribeAddrTemplateListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Total: 模版总数
+        :param Total: 模板总数
         :type Total: int
-        :param Data: 模版列表数据
+        :param Data: 模板列表数据
         :type Data: list of TemplateListInfo
-        :param NameList: 模版名称列表
+        :param NameList: 模板名称列表
         :type NameList: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1577,6 +1577,10 @@ class DescribeBlockByIpTimesListRequest(AbstractModel):
         :type Direction: str
         :param Source: 来源
         :type Source: str
+        :param EdgeId: vpc间防火墙开关边id
+        :type EdgeId: str
+        :param LogSource: 日志来源 move：vpc间防火墙
+        :type LogSource: str
         """
         self.StartTime = None
         self.EndTime = None
@@ -1584,6 +1588,8 @@ class DescribeBlockByIpTimesListRequest(AbstractModel):
         self.Zone = None
         self.Direction = None
         self.Source = None
+        self.EdgeId = None
+        self.LogSource = None
 
 
     def _deserialize(self, params):
@@ -1593,6 +1599,8 @@ class DescribeBlockByIpTimesListRequest(AbstractModel):
         self.Zone = params.get("Zone")
         self.Direction = params.get("Direction")
         self.Source = params.get("Source")
+        self.EdgeId = params.get("EdgeId")
+        self.LogSource = params.get("LogSource")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1899,6 +1907,64 @@ class DescribeGuideScanInfoResponse(AbstractModel):
         if params.get("Data") is not None:
             self.Data = ScanInfo()
             self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeIPStatusListRequest(AbstractModel):
+    """DescribeIPStatusList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IPList: 资产Id
+        :type IPList: list of str
+        """
+        self.IPList = None
+
+
+    def _deserialize(self, params):
+        self.IPList = params.get("IPList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeIPStatusListResponse(AbstractModel):
+    """DescribeIPStatusList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StatusList: ip状态信息
+        :type StatusList: list of IPDefendStatus
+        :param ReturnCode: 状态码
+        :type ReturnCode: int
+        :param ReturnMsg: 状态信息
+        :type ReturnMsg: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.StatusList = None
+        self.ReturnCode = None
+        self.ReturnMsg = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("StatusList") is not None:
+            self.StatusList = []
+            for item in params.get("StatusList"):
+                obj = IPDefendStatus()
+                obj._deserialize(item)
+                self.StatusList.append(obj)
+        self.ReturnCode = params.get("ReturnCode")
+        self.ReturnMsg = params.get("ReturnMsg")
         self.RequestId = params.get("RequestId")
 
 
@@ -3113,6 +3179,34 @@ class ExpandCfwVerticalResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class IPDefendStatus(AbstractModel):
+    """ip防护状态
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IP: ip地址
+        :type IP: str
+        :param Status: 防护状态   1:防护打开; -1:地址错误; 其他:未防护
+        :type Status: int
+        """
+        self.IP = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.IP = params.get("IP")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class InstanceInfo(AbstractModel):
@@ -5929,11 +6023,15 @@ class UnHandleEvent(AbstractModel):
         :type BaseLineInSwitch: int
         :param BaseLineOutSwitch: 1 打开 0 关闭
         :type BaseLineOutSwitch: int
+        :param VpcFwCount: vpc间防火墙实例数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcFwCount: int
         """
         self.EventTableListStruct = None
         self.BaseLineUser = None
         self.BaseLineInSwitch = None
         self.BaseLineOutSwitch = None
+        self.VpcFwCount = None
 
 
     def _deserialize(self, params):
@@ -5946,6 +6044,7 @@ class UnHandleEvent(AbstractModel):
         self.BaseLineUser = params.get("BaseLineUser")
         self.BaseLineInSwitch = params.get("BaseLineInSwitch")
         self.BaseLineOutSwitch = params.get("BaseLineOutSwitch")
+        self.VpcFwCount = params.get("VpcFwCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

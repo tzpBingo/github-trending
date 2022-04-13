@@ -59,6 +59,9 @@ INTERNALERROR = 'InternalError'
 # DB操作错误。
 INTERNALERROR_DBOPERTAIONERROR = 'InternalError.DBOpertaionError'
 
+# 内部LoRaServer错误。
+INTERNALERROR_INTERNALLORASERVERERROR = 'InternalError.InternalLoRaServerError'
+
 # 内部RPC错误。
 INTERNALERROR_INTERNALRPCERROR = 'InternalError.InternalRPCError'
 
@@ -223,6 +226,9 @@ INVALIDPARAMETERVALUE_REPUBLISHTOPICFORMATERROR = 'InvalidParameterValue.Republi
 
 # 规则数量超过限制。
 INVALIDPARAMETERVALUE_RULENUMBERBEYONDLIMIT = 'InvalidParameterValue.RuleNumberBeyondLimit'
+
+# 二进制数据格式只可利用 * 将数据进行转发。
+INVALIDPARAMETERVALUE_SELECTKEYFROMBINARYPAYLOAD = 'InvalidParameterValue.SelectKeyFromBinaryPayload'
 
 # 开始时间晚于结束时间。
 INVALIDPARAMETERVALUE_STARTTIMELATERENDTIME = 'InvalidParameterValue.StartTimeLaterEndTime'

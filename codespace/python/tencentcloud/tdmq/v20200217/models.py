@@ -315,6 +315,9 @@ class AMQPQueueDetail(AbstractModel):
         :param DeadLetterRoutingKey: 死信交换机路由键
 注意：此字段可能返回 null，表示取不到有效值。
         :type DeadLetterRoutingKey: str
+        :param TopicName: Queue对应的Topic名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicName: str
         """
         self.Name = None
         self.Remark = None
@@ -327,6 +330,7 @@ class AMQPQueueDetail(AbstractModel):
         self.AutoDelete = None
         self.DeadLetterExchange = None
         self.DeadLetterRoutingKey = None
+        self.TopicName = None
 
 
     def _deserialize(self, params):
@@ -341,6 +345,7 @@ class AMQPQueueDetail(AbstractModel):
         self.AutoDelete = params.get("AutoDelete")
         self.DeadLetterExchange = params.get("DeadLetterExchange")
         self.DeadLetterRoutingKey = params.get("DeadLetterRoutingKey")
+        self.TopicName = params.get("TopicName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -945,6 +950,9 @@ class CmqQueue(AbstractModel):
         :param MaxMsgBacklogSize: 最大消息堆积大小（字节）
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxMsgBacklogSize: int
+        :param RetentionSizeInMB: 队列可回溯存储空间，取值范围1024MB - 10240MB，0表示不开启
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RetentionSizeInMB: int
         """
         self.QueueId = None
         self.QueueName = None
@@ -976,6 +984,7 @@ class CmqQueue(AbstractModel):
         self.Status = None
         self.MaxUnackedMsgNum = None
         self.MaxMsgBacklogSize = None
+        self.RetentionSizeInMB = None
 
 
     def _deserialize(self, params):
@@ -1023,6 +1032,7 @@ class CmqQueue(AbstractModel):
         self.Status = params.get("Status")
         self.MaxUnackedMsgNum = params.get("MaxUnackedMsgNum")
         self.MaxMsgBacklogSize = params.get("MaxMsgBacklogSize")
+        self.RetentionSizeInMB = params.get("RetentionSizeInMB")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1167,6 +1177,9 @@ FilterType = 2表示用户使用 BindingKey 过滤。
         :param NamespaceName: 命名空间名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type NamespaceName: str
+        :param Status: 集群状态，0:创建中，1:正常，2:销毁中，3:已删除，4: 隔离中，5:创建失败，6: 删除失败
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
         """
         self.TopicId = None
         self.TopicName = None
@@ -1182,6 +1195,7 @@ FilterType = 2表示用户使用 BindingKey 过滤。
         self.Trace = None
         self.TenantId = None
         self.NamespaceName = None
+        self.Status = None
 
 
     def _deserialize(self, params):
@@ -1204,6 +1218,7 @@ FilterType = 2表示用户使用 BindingKey 过滤。
         self.Trace = params.get("Trace")
         self.TenantId = params.get("TenantId")
         self.NamespaceName = params.get("NamespaceName")
+        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1716,9 +1731,9 @@ class CreateCmqQueueRequest(AbstractModel):
         :type VisibilityTimeout: int
         :param MaxMsgSize: 消息最大长度。取值范围 1024-65536 Byte（即1-64K），默认值 65536。
         :type MaxMsgSize: int
-        :param MsgRetentionSeconds: 消息保留周期。取值范围 60-1296000 秒（1min-15天），默认值 345600 (4 天)。
+        :param MsgRetentionSeconds: 消息最长未确认时间。取值范围 30-43200 秒（30秒~12小时），默认值 3600 (1 小时)。
         :type MsgRetentionSeconds: int
-        :param RewindSeconds: 队列是否开启回溯消息能力，该参数取值范围0-msgRetentionSeconds,即最大的回溯时间为消息在队列中的保留周期，0表示不开启。
+        :param RewindSeconds: 队列是否开启回溯消息能力，该参数取值范围0-1296000，0表示不开启。
         :type RewindSeconds: int
         :param Transaction: 1 表示事务队列，0 表示普通队列
         :type Transaction: int
@@ -1738,6 +1753,8 @@ class CreateCmqQueueRequest(AbstractModel):
         :type Trace: bool
         :param Tags: 标签数组
         :type Tags: list of Tag
+        :param RetentionSizeInMB: 队列可回溯存储空间，取值范围1024MB - 10240MB，0表示不开启
+        :type RetentionSizeInMB: int
         """
         self.QueueName = None
         self.MaxMsgHeapNum = None
@@ -1755,6 +1772,7 @@ class CreateCmqQueueRequest(AbstractModel):
         self.MaxTimeToLive = None
         self.Trace = None
         self.Tags = None
+        self.RetentionSizeInMB = None
 
 
     def _deserialize(self, params):
@@ -1779,6 +1797,7 @@ class CreateCmqQueueRequest(AbstractModel):
                 obj = Tag()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.RetentionSizeInMB = params.get("RetentionSizeInMB")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6305,9 +6324,9 @@ class ModifyCmqQueueAttributeRequest(AbstractModel):
         :type VisibilityTimeout: int
         :param MaxMsgSize: 消息最大长度。取值范围 1024-65536 Byte（即1-64K），默认值 65536。
         :type MaxMsgSize: int
-        :param MsgRetentionSeconds: 消息保留周期。取值范围 60-1296000 秒（1min-15天），默认值 345600 (4 天)。
+        :param MsgRetentionSeconds: 消息最长未确认时间。取值范围 30-43200 秒（30秒~12小时），默认值 3600 (1 小时)。
         :type MsgRetentionSeconds: int
-        :param RewindSeconds: 消息最长回溯时间，取值范围0-msgRetentionSeconds，消息的最大回溯之间为消息在队列中的保存周期，0表示不开启消息回溯。
+        :param RewindSeconds: 队列是否开启回溯消息能力，该参数取值范围0-1296000，0表示不开启。
         :type RewindSeconds: int
         :param FirstQueryInterval: 第一次查询时间
         :type FirstQueryInterval: int
@@ -6325,6 +6344,8 @@ class ModifyCmqQueueAttributeRequest(AbstractModel):
         :type Trace: bool
         :param Transaction: 是否开启事务，1开启，0不开启
         :type Transaction: int
+        :param RetentionSizeInMB: 队列可回溯存储空间，取值范围1024MB - 10240MB，0表示不开启
+        :type RetentionSizeInMB: int
         """
         self.QueueName = None
         self.MaxMsgHeapNum = None
@@ -6341,6 +6362,7 @@ class ModifyCmqQueueAttributeRequest(AbstractModel):
         self.Policy = None
         self.Trace = None
         self.Transaction = None
+        self.RetentionSizeInMB = None
 
 
     def _deserialize(self, params):
@@ -6359,6 +6381,7 @@ class ModifyCmqQueueAttributeRequest(AbstractModel):
         self.Policy = params.get("Policy")
         self.Trace = params.get("Trace")
         self.Transaction = params.get("Transaction")
+        self.RetentionSizeInMB = params.get("RetentionSizeInMB")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7321,6 +7344,67 @@ class ResetMsgSubOffsetByTimestampResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ResetRocketMQConsumerOffSetRequest(AbstractModel):
+    """ResetRocketMQConsumerOffSet请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param NamespaceId: 命名空间名称
+        :type NamespaceId: str
+        :param GroupId: 消费组名称
+        :type GroupId: str
+        :param Topic: 主题名称
+        :type Topic: str
+        :param Type: 重置方式，0表示从最新位点开始，1表示从指定时间点开始
+        :type Type: int
+        :param ResetTimestamp: 重置指定的时间戳，仅在 Type 为1是生效，以毫秒为单位
+        :type ResetTimestamp: int
+        """
+        self.ClusterId = None
+        self.NamespaceId = None
+        self.GroupId = None
+        self.Topic = None
+        self.Type = None
+        self.ResetTimestamp = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.NamespaceId = params.get("NamespaceId")
+        self.GroupId = params.get("GroupId")
+        self.Topic = params.get("Topic")
+        self.Type = params.get("Type")
+        self.ResetTimestamp = params.get("ResetTimestamp")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResetRocketMQConsumerOffSetResponse(AbstractModel):
+    """ResetRocketMQConsumerOffSet返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class RetentionPolicy(AbstractModel):
     """消息保留策略
 
@@ -7509,6 +7593,9 @@ class RocketMQClusterInfo(AbstractModel):
         :type PublicEndPoint: str
         :param VpcEndPoint: VPC接入地址
         :type VpcEndPoint: str
+        :param SupportNamespaceEndpoint: 是否支持命名空间接入点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SupportNamespaceEndpoint: bool
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -7517,6 +7604,7 @@ class RocketMQClusterInfo(AbstractModel):
         self.Remark = None
         self.PublicEndPoint = None
         self.VpcEndPoint = None
+        self.SupportNamespaceEndpoint = None
 
 
     def _deserialize(self, params):
@@ -7527,6 +7615,7 @@ class RocketMQClusterInfo(AbstractModel):
         self.Remark = params.get("Remark")
         self.PublicEndPoint = params.get("PublicEndPoint")
         self.VpcEndPoint = params.get("VpcEndPoint")
+        self.SupportNamespaceEndpoint = params.get("SupportNamespaceEndpoint")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7663,11 +7752,19 @@ class RocketMQNamespace(AbstractModel):
         :param Remark: 说明
 注意：此字段可能返回 null，表示取不到有效值。
         :type Remark: str
+        :param PublicEndpoint: 公网接入点地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PublicEndpoint: str
+        :param VpcEndpoint: VPC接入点地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcEndpoint: str
         """
         self.NamespaceId = None
         self.Ttl = None
         self.RetentionTime = None
         self.Remark = None
+        self.PublicEndpoint = None
+        self.VpcEndpoint = None
 
 
     def _deserialize(self, params):
@@ -7675,6 +7772,8 @@ class RocketMQNamespace(AbstractModel):
         self.Ttl = params.get("Ttl")
         self.RetentionTime = params.get("RetentionTime")
         self.Remark = params.get("Remark")
+        self.PublicEndpoint = params.get("PublicEndpoint")
+        self.VpcEndpoint = params.get("VpcEndpoint")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

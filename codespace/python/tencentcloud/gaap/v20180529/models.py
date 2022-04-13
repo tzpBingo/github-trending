@@ -1538,7 +1538,7 @@ class CreateRuleRequest(AbstractModel):
         :param ForwardProtocol: 加速通道转发到源站的协议类型：支持HTTP或HTTPS。
 不传递该字段时表示使用对应监听器的ForwardProtocol。
         :type ForwardProtocol: str
-        :param ForwardHost: 回源Host。加速通道转发到远照的host，不设置该参数时，使用默认的host设置，即客户端发起的http请求的host。
+        :param ForwardHost: 回源Host。加速通道转发到源站的host，不设置该参数时，使用默认的host设置，即客户端发起的http请求的host。
         :type ForwardHost: str
         :param ServerNameIndicationSwitch: 服务器名称指示（ServerNameIndication，简称SNI）开关。ON表示开启，OFF表示关闭。
         :type ServerNameIndicationSwitch: str
@@ -6688,7 +6688,8 @@ CLOSED表示已关闭；
 ADJUSTING表示配置变更中；
 ISOLATING表示隔离中；
 ISOLATED表示已隔离；
-CLONING表示复制中。
+CLONING表示复制中；
+RECOVERING表示通道维护中。
         :type Status: str
         :param Domain: 接入域名。
         :type Domain: str

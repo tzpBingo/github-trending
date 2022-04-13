@@ -1643,6 +1643,9 @@ class ContainGroup(AbstractModel):
         :param Alias: 部署组备注
 注意：此字段可能返回 null，表示取不到有效值。
         :type Alias: str
+        :param KubeInjectEnable: KubeInjectEnable值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeInjectEnable: bool
         """
         self.GroupId = None
         self.GroupName = None
@@ -1659,6 +1662,7 @@ class ContainGroup(AbstractModel):
         self.MemRequest = None
         self.MemLimit = None
         self.Alias = None
+        self.KubeInjectEnable = None
 
 
     def _deserialize(self, params):
@@ -1677,6 +1681,7 @@ class ContainGroup(AbstractModel):
         self.MemRequest = params.get("MemRequest")
         self.MemLimit = params.get("MemLimit")
         self.Alias = params.get("Alias")
+        self.KubeInjectEnable = params.get("KubeInjectEnable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1889,6 +1894,9 @@ class ContainerGroupDeploy(AbstractModel):
         :param VolumeMountInfos: 数据卷挂载信息，list
 注意：此字段可能返回 null，表示取不到有效值。
         :type VolumeMountInfos: list of VolumeMountInfo
+        :param KubeInjectEnable: KubeInjectEnable值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeInjectEnable: bool
         """
         self.GroupId = None
         self.GroupName = None
@@ -1924,6 +1932,7 @@ class ContainerGroupDeploy(AbstractModel):
         self.TcrRepoInfo = None
         self.VolumeInfos = None
         self.VolumeMountInfos = None
+        self.KubeInjectEnable = None
 
 
     def _deserialize(self, params):
@@ -1985,6 +1994,7 @@ class ContainerGroupDeploy(AbstractModel):
                 obj = VolumeMountInfo()
                 obj._deserialize(item)
                 self.VolumeMountInfos.append(obj)
+        self.KubeInjectEnable = params.get("KubeInjectEnable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7667,6 +7677,67 @@ class DescribeInovcationIndicatorsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeInstancesRequest(AbstractModel):
+    """DescribeInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件
+        :type Filters: list of Filter
+        :param Offset: 偏移量，默认为0
+        :type Offset: int
+        :param Limit: 分页个数，默认为20，最大100
+        :type Limit: int
+        """
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeInstancesResponse(AbstractModel):
+    """DescribeInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 机器列表信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.InstanceEnrichedInfoPage`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = InstanceEnrichedInfoPage()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeInvocationMetricDataCurveRequest(AbstractModel):
     """DescribeInvocationMetricDataCurve请求参数结构体
 
@@ -11116,6 +11187,34 @@ class FileConfigRelease(AbstractModel):
         
 
 
+class Filter(AbstractModel):
+    """用于请求参数中的条件过滤字段
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 过滤条件名
+        :type Name: str
+        :param Values: 过滤条件匹配值，几个条件间是或关系
+        :type Values: list of str
+        """
+        self.Name = None
+        self.Values = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Values = params.get("Values")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class GatewayApiGroupVo(AbstractModel):
     """网关分组简单信息
 
@@ -12048,9 +12147,12 @@ class ImageRepository(AbstractModel):
         :param ApplicationId: applicationid值
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApplicationId: str
-        :param ApplicationName: ApplicationName值
+        :param ApplicationName: ApplicationName值（废弃）
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApplicationName: :class:`tencentcloud.tsf.v20180326.models.ScalableRule`
+        :param ApplicationNameReal: ApplicationName值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApplicationNameReal: str
         """
         self.Reponame = None
         self.Repotype = None
@@ -12067,6 +12169,7 @@ class ImageRepository(AbstractModel):
         self.TcrBindingId = None
         self.ApplicationId = None
         self.ApplicationName = None
+        self.ApplicationNameReal = None
 
 
     def _deserialize(self, params):
@@ -12089,6 +12192,7 @@ class ImageRepository(AbstractModel):
         if params.get("ApplicationName") is not None:
             self.ApplicationName = ScalableRule()
             self.ApplicationName._deserialize(params.get("ApplicationName"))
+        self.ApplicationNameReal = params.get("ApplicationNameReal")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12526,6 +12630,146 @@ class InstanceAdvancedSettings(AbstractModel):
     def _deserialize(self, params):
         self.MountTarget = params.get("MountTarget")
         self.DockerGraphPath = params.get("DockerGraphPath")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstanceEnrichedInfo(AbstractModel):
+    """包含虚拟机所在TSF中的位置信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 机器ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceId: str
+        :param InstanceName: 机器名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceName: str
+        :param LanIp: 机器内网IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LanIp: str
+        :param WanIp: 机器外网IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WanIp: str
+        :param VpcId: 机器所在VPC
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param InstanceStatus: 机器运行状态 Pending Running Stopped Rebooting Starting Stopping Abnormal Unknown
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceStatus: str
+        :param InstanceAvailableStatus: 机器可用状态（表示机器上的Agent在线）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceAvailableStatus: str
+        :param ApplicationId: 应用ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApplicationId: str
+        :param ApplicationName: 应用名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApplicationName: str
+        :param ApplicationType: 应用类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApplicationType: str
+        :param ClusterId: 集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        :param ClusterName: 集群名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterName: str
+        :param ClusterType: 集群类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterType: str
+        :param NamespaceId: 命名空间ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NamespaceId: str
+        :param NamespaceName: 命名空间名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NamespaceName: str
+        :param GroupId: 机器所在部署组ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupId: str
+        :param GroupName: 部署组名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupName: str
+        """
+        self.InstanceId = None
+        self.InstanceName = None
+        self.LanIp = None
+        self.WanIp = None
+        self.VpcId = None
+        self.InstanceStatus = None
+        self.InstanceAvailableStatus = None
+        self.ApplicationId = None
+        self.ApplicationName = None
+        self.ApplicationType = None
+        self.ClusterId = None
+        self.ClusterName = None
+        self.ClusterType = None
+        self.NamespaceId = None
+        self.NamespaceName = None
+        self.GroupId = None
+        self.GroupName = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.InstanceName = params.get("InstanceName")
+        self.LanIp = params.get("LanIp")
+        self.WanIp = params.get("WanIp")
+        self.VpcId = params.get("VpcId")
+        self.InstanceStatus = params.get("InstanceStatus")
+        self.InstanceAvailableStatus = params.get("InstanceAvailableStatus")
+        self.ApplicationId = params.get("ApplicationId")
+        self.ApplicationName = params.get("ApplicationName")
+        self.ApplicationType = params.get("ApplicationType")
+        self.ClusterId = params.get("ClusterId")
+        self.ClusterName = params.get("ClusterName")
+        self.ClusterType = params.get("ClusterType")
+        self.NamespaceId = params.get("NamespaceId")
+        self.NamespaceName = params.get("NamespaceName")
+        self.GroupId = params.get("GroupId")
+        self.GroupName = params.get("GroupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstanceEnrichedInfoPage(AbstractModel):
+    """InstanceEnrichedInfo列表结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param Content: 列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: list of InstanceEnrichedInfo
+        """
+        self.TotalCount = None
+        self.Content = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Content") is not None:
+            self.Content = []
+            for item in params.get("Content"):
+                obj = InstanceEnrichedInfo()
+                obj._deserialize(item)
+                self.Content.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14360,6 +14604,9 @@ class Namespace(AbstractModel):
         :param IsHaEnable: 是否开启高可用
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsHaEnable: str
+        :param KubeInjectEnable: KubeInjectEnable值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeInjectEnable: bool
         """
         self.NamespaceId = None
         self.NamespaceCode = None
@@ -14375,6 +14622,7 @@ class Namespace(AbstractModel):
         self.NamespaceResourceType = None
         self.NamespaceType = None
         self.IsHaEnable = None
+        self.KubeInjectEnable = None
 
 
     def _deserialize(self, params):
@@ -14397,6 +14645,7 @@ class Namespace(AbstractModel):
         self.NamespaceResourceType = params.get("NamespaceResourceType")
         self.NamespaceType = params.get("NamespaceType")
         self.IsHaEnable = params.get("IsHaEnable")
+        self.KubeInjectEnable = params.get("KubeInjectEnable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16291,6 +16540,30 @@ class ServiceStatisticsResult(AbstractModel):
         :param DbType: 数据库类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type DbType: str
+        :param Apdex: Apdex值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Apdex: float
+        :param Qps: Qps值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Qps: float
+        :param InstanceOnlineCount: 实例在线数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceOnlineCount: int
+        :param InstanceTotalCount: 实例总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceTotalCount: int
+        :param Status: normal/error
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param ErrorRateLevel: normal/warn/error
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorRateLevel: str
+        :param AvgTimeConsumingLevel: normal/warn/error
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AvgTimeConsumingLevel: str
+        :param ApdexLevel: normal/warn/error
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApdexLevel: str
         """
         self.Path = None
         self.Method = None
@@ -16314,6 +16587,14 @@ class ServiceStatisticsResult(AbstractModel):
         self.DbName = None
         self.Script = None
         self.DbType = None
+        self.Apdex = None
+        self.Qps = None
+        self.InstanceOnlineCount = None
+        self.InstanceTotalCount = None
+        self.Status = None
+        self.ErrorRateLevel = None
+        self.AvgTimeConsumingLevel = None
+        self.ApdexLevel = None
 
 
     def _deserialize(self, params):
@@ -16344,6 +16625,14 @@ class ServiceStatisticsResult(AbstractModel):
         self.DbName = params.get("DbName")
         self.Script = params.get("Script")
         self.DbType = params.get("DbType")
+        self.Apdex = params.get("Apdex")
+        self.Qps = params.get("Qps")
+        self.InstanceOnlineCount = params.get("InstanceOnlineCount")
+        self.InstanceTotalCount = params.get("InstanceTotalCount")
+        self.Status = params.get("Status")
+        self.ErrorRateLevel = params.get("ErrorRateLevel")
+        self.AvgTimeConsumingLevel = params.get("AvgTimeConsumingLevel")
+        self.ApdexLevel = params.get("ApdexLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

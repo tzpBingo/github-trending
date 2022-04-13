@@ -1090,7 +1090,7 @@ class Mouse(SyncBase):
         x : float
         y : float
         steps : Union[int, NoneType]
-            defaults to 1. Sends intermediate `mousemove` events.
+            Defaults to 1. Sends intermediate `mousemove` events.
         """
 
         return mapping.from_maybe_impl(
@@ -1539,7 +1539,7 @@ class ElementHandle(JSHandle):
     def is_disabled(self) -> bool:
         """ElementHandle.is_disabled
 
-        Returns whether the element is disabled, the opposite of [enabled](./actionability.md#enabled).
+        Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Returns
         -------
@@ -1553,7 +1553,7 @@ class ElementHandle(JSHandle):
     def is_editable(self) -> bool:
         """ElementHandle.is_editable
 
-        Returns whether the element is [editable](./actionability.md#editable).
+        Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
         Returns
         -------
@@ -1567,7 +1567,7 @@ class ElementHandle(JSHandle):
     def is_enabled(self) -> bool:
         """ElementHandle.is_enabled
 
-        Returns whether the element is [enabled](./actionability.md#enabled).
+        Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Returns
         -------
@@ -1581,7 +1581,7 @@ class ElementHandle(JSHandle):
     def is_hidden(self) -> bool:
         """ElementHandle.is_hidden
 
-        Returns whether the element is hidden, the opposite of [visible](./actionability.md#visible).
+        Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).
 
         Returns
         -------
@@ -1595,7 +1595,7 @@ class ElementHandle(JSHandle):
     def is_visible(self) -> bool:
         """ElementHandle.is_visible
 
-        Returns whether the element is [visible](./actionability.md#visible).
+        Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible).
 
         Returns
         -------
@@ -1657,7 +1657,7 @@ class ElementHandle(JSHandle):
     def scroll_into_view_if_needed(self, *, timeout: float = None) -> NoneType:
         """ElementHandle.scroll_into_view_if_needed
 
-        This method waits for [actionability](./actionability.md) checks, then tries to scroll element into view, unless it is
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then tries to scroll element into view, unless it is
         completely visible as defined by
         [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)'s `ratio`.
 
@@ -1692,7 +1692,7 @@ class ElementHandle(JSHandle):
         """ElementHandle.hover
 
         This method hovers over the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to hover over the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -1714,9 +1714,9 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -1751,7 +1751,7 @@ class ElementHandle(JSHandle):
         """ElementHandle.click
 
         This method clicks the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -1779,13 +1779,13 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -1823,7 +1823,7 @@ class ElementHandle(JSHandle):
         """ElementHandle.dblclick
 
         This method double clicks the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to double click in the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the
@@ -1852,13 +1852,13 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -1891,7 +1891,7 @@ class ElementHandle(JSHandle):
     ) -> typing.List[str]:
         """ElementHandle.select_option
 
-        This method waits for [actionability](./actionability.md) checks, waits until all specified options are present in the
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, waits until all specified options are present in the
         `<select>` element and selects these options.
 
         If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
@@ -1938,7 +1938,7 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -1979,7 +1979,7 @@ class ElementHandle(JSHandle):
         """ElementHandle.tap
 
         This method taps the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.touchscreen` to tap the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -2003,13 +2003,13 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -2037,7 +2037,7 @@ class ElementHandle(JSHandle):
     ) -> NoneType:
         """ElementHandle.fill
 
-        This method waits for [actionability](./actionability.md) checks, focuses the element, fills it and triggers an `input`
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the element, fills it and triggers an `input`
         event after filling. Note that you can pass an empty string to clear the input field.
 
         If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error.
@@ -2059,7 +2059,7 @@ class ElementHandle(JSHandle):
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         """
 
         return mapping.from_maybe_impl(
@@ -2074,13 +2074,13 @@ class ElementHandle(JSHandle):
     def select_text(self, *, force: bool = None, timeout: float = None) -> NoneType:
         """ElementHandle.select_text
 
-        This method waits for [actionability](./actionability.md) checks, then focuses the element and selects all its text
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then focuses the element and selects all its text
         content.
 
         Parameters
         ----------
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         timeout : Union[float, NoneType]
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
@@ -2289,7 +2289,7 @@ class ElementHandle(JSHandle):
         This method checks or unchecks an element by performing the following steps:
         1. Ensure that element is a checkbox or a radio input. If not, this method throws.
         1. If the element already has the right checked state, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -2310,13 +2310,13 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -2348,7 +2348,7 @@ class ElementHandle(JSHandle):
         This method checks the element by performing the following steps:
         1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already checked,
            this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -2368,13 +2368,13 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -2405,7 +2405,7 @@ class ElementHandle(JSHandle):
         This method checks the element by performing the following steps:
         1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already
            unchecked, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -2425,13 +2425,13 @@ class ElementHandle(JSHandle):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -2486,14 +2486,16 @@ class ElementHandle(JSHandle):
         path: typing.Union[str, pathlib.Path] = None,
         quality: int = None,
         omit_background: bool = None,
-        disable_animations: bool = None,
+        animations: Literal["allow", "disabled"] = None,
+        caret: Literal["hide", "initial"] = None,
+        scale: Literal["css", "device"] = None,
         mask: typing.List["Locator"] = None
     ) -> bytes:
         """ElementHandle.screenshot
 
         Returns the buffer with the captured screenshot.
 
-        This method waits for the [actionability](./actionability.md) checks, then scrolls element into view before taking a
+        This method waits for the [actionability](https://playwright.dev/python/docs/actionability) checks, then scrolls element into view before taking a
         screenshot. If the element is detached from DOM, the method throws an error.
 
         Parameters
@@ -2512,9 +2514,20 @@ class ElementHandle(JSHandle):
         omit_background : Union[bool, NoneType]
             Hides default white background and allows capturing screenshots with transparency. Not applicable to `jpeg` images.
             Defaults to `false`.
-        disable_animations : Union[bool, NoneType]
-            When true, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on
-            their duration:
+        animations : Union["allow", "disabled", NoneType]
+            When set to `"disabled"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment
+            depending on their duration:
+            - finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.
+            - infinite animations are canceled to initial state, and then played over after the screenshot.
+
+            Defaults to `"allow"` that leaves animations untouched.
+        caret : Union["hide", "initial", NoneType]
+            When set to `"hide"`, screenshot will hide text caret. When set to `"initial"`, text caret behavior will not be changed.
+            Defaults to `"hide"`.
+        scale : Union["css", "device", NoneType]
+            When set to `"css"`, screenshot will have a single pixel per each css pixel on the page. For high-dpi devices, this will
+            keep screenshots small. Using `"device"` option will produce a single pixel per each device pixel, so screenhots of
+            high-dpi devices will be twice as large or even larger. Defaults to `"device"`.
         mask : Union[List[Locator], NoneType]
             Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box
             `#FF00FF` that completely covers its bounding box.
@@ -2533,7 +2546,9 @@ class ElementHandle(JSHandle):
                     path=path,
                     quality=quality,
                     omitBackground=omit_background,
-                    disableAnimations=disable_animations,
+                    animations=animations,
+                    caret=caret,
+                    scale=scale,
                     mask=mapping.to_impl(mask),
                 ),
             )
@@ -2543,12 +2558,12 @@ class ElementHandle(JSHandle):
         """ElementHandle.query_selector
 
         The method finds an element matching the specified selector in the `ElementHandle`'s subtree. See
-        [Working with selectors](./selectors.md) for more details. If no elements match the selector, returns `null`.
+        [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, returns `null`.
 
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -2566,12 +2581,12 @@ class ElementHandle(JSHandle):
         """ElementHandle.query_selector_all
 
         The method finds all elements matching the specified selector in the `ElementHandle`s subtree. See
-        [Working with selectors](./selectors.md) for more details. If no elements match the selector, returns empty array.
+        [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, returns empty array.
 
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -2593,7 +2608,7 @@ class ElementHandle(JSHandle):
         Returns the return value of `expression`.
 
         The method finds an element matching the specified selector in the `ElementHandle`s subtree and passes it as a first
-        argument to `expression`. See [Working with selectors](./selectors.md) for more details. If no elements match the
+        argument to `expression`. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the
         selector, the method throws an error.
 
         If `expression` returns a [Promise], then `element_handle.eval_on_selector()` would wait for the promise to resolve
@@ -2610,7 +2625,7 @@ class ElementHandle(JSHandle):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         expression : str
             JavaScript expression to be evaluated in the browser context. If it looks like a function declaration, it is interpreted
             as a function. Otherwise, evaluated as an expression.
@@ -2639,7 +2654,7 @@ class ElementHandle(JSHandle):
         Returns the return value of `expression`.
 
         The method finds all elements matching the specified selector in the `ElementHandle`'s subtree and passes an array of
-        matched elements as a first argument to `expression`. See [Working with selectors](./selectors.md) for more details.
+        matched elements as a first argument to `expression`. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more details.
 
         If `expression` returns a [Promise], then `element_handle.eval_on_selector_all()` would wait for the promise to
         resolve and return its value.
@@ -2661,7 +2676,7 @@ class ElementHandle(JSHandle):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         expression : str
             JavaScript expression to be evaluated in the browser context. If it looks like a function declaration, it is interpreted
             as a function. Otherwise, evaluated as an expression.
@@ -2694,16 +2709,16 @@ class ElementHandle(JSHandle):
 
         Returns when the element satisfies the `state`.
 
-        Depending on the `state` parameter, this method waits for one of the [actionability](./actionability.md) checks to pass.
-        This method throws when the element is detached while waiting, unless waiting for the `\"hidden\"` state.
-        - `\"visible\"` Wait until the element is [visible](./actionability.md#visible).
-        - `\"hidden\"` Wait until the element is [not visible](./actionability.md#visible) or
-          [not attached](./actionability.md#attached). Note that waiting for hidden does not throw when the element detaches.
-        - `\"stable\"` Wait until the element is both [visible](./actionability.md#visible) and
-          [stable](./actionability.md#stable).
-        - `\"enabled\"` Wait until the element is [enabled](./actionability.md#enabled).
-        - `\"disabled\"` Wait until the element is [not enabled](./actionability.md#enabled).
-        - `\"editable\"` Wait until the element is [editable](./actionability.md#editable).
+        Depending on the `state` parameter, this method waits for one of the [actionability](https://playwright.dev/python/docs/actionability) checks to
+        pass. This method throws when the element is detached while waiting, unless waiting for the `\"hidden\"` state.
+        - `\"visible\"` Wait until the element is [visible](https://playwright.dev/python/docs/actionability#visible).
+        - `\"hidden\"` Wait until the element is [not visible](https://playwright.dev/python/docs/actionability#visible) or
+          [not attached](https://playwright.dev/python/docs/actionability#attached). Note that waiting for hidden does not throw when the element detaches.
+        - `\"stable\"` Wait until the element is both [visible](https://playwright.dev/python/docs/actionability#visible) and
+          [stable](https://playwright.dev/python/docs/actionability#stable).
+        - `\"enabled\"` Wait until the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
+        - `\"disabled\"` Wait until the element is [not enabled](https://playwright.dev/python/docs/actionability#enabled).
+        - `\"editable\"` Wait until the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
         If the element does not satisfy the condition for the `timeout` milliseconds, this method will throw.
 
@@ -2753,7 +2768,7 @@ class ElementHandle(JSHandle):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         state : Union["attached", "detached", "hidden", "visible", NoneType]
             Defaults to `'visible'`. Can be either:
             - `'attached'` - wait for element to be present in DOM.
@@ -2814,7 +2829,8 @@ class Accessibility(SyncBase):
                 return node
             for child in (node.get(\"children\") or []):
                 found_node = find_focused_node(child)
-                return found_node
+                if (found_node)
+                    return found_node
             return None
 
         snapshot = page.accessibility.snapshot()
@@ -3084,7 +3100,7 @@ class Frame(SyncBase):
         ----------
         url : Union[Callable[[str], bool], Pattern, str, NoneType]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
-            parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to
+            parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
         wait_until : Union["commit", "domcontentloaded", "load", "networkidle", NoneType]
             When to consider operation succeeded, defaults to `load`. Events can be either:
@@ -3129,7 +3145,7 @@ class Frame(SyncBase):
         ----------
         url : Union[Callable[[str], bool], Pattern, str]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
-            parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to
+            parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
         wait_until : Union["commit", "domcontentloaded", "load", "networkidle", NoneType]
             When to consider operation succeeded, defaults to `load`. Events can be either:
@@ -3336,12 +3352,12 @@ class Frame(SyncBase):
         > NOTE: The use of `ElementHandle` is discouraged, use `Locator` objects and web-first assertions instead.
 
         The method finds an element matching the specified selector within the frame. See
-        [Working with selectors](./selectors.md) for more details. If no elements match the selector, returns `null`.
+        [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, returns `null`.
 
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3366,12 +3382,12 @@ class Frame(SyncBase):
         > NOTE: The use of `ElementHandle` is discouraged, use `Locator` objects instead.
 
         The method finds all elements matching the specified selector within the frame. See
-        [Working with selectors](./selectors.md) for more details. If no elements match the selector, returns empty array.
+        [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, returns empty array.
 
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -3427,7 +3443,7 @@ class Frame(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3468,7 +3484,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3495,13 +3511,13 @@ class Frame(SyncBase):
     ) -> bool:
         """Frame.is_disabled
 
-        Returns whether the element is disabled, the opposite of [enabled](./actionability.md#enabled).
+        Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3528,13 +3544,13 @@ class Frame(SyncBase):
     ) -> bool:
         """Frame.is_editable
 
-        Returns whether the element is [editable](./actionability.md#editable).
+        Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3561,13 +3577,13 @@ class Frame(SyncBase):
     ) -> bool:
         """Frame.is_enabled
 
-        Returns whether the element is [enabled](./actionability.md#enabled).
+        Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3594,14 +3610,14 @@ class Frame(SyncBase):
     ) -> bool:
         """Frame.is_hidden
 
-        Returns whether the element is hidden, the opposite of [visible](./actionability.md#visible).  `selector` that does not
+        Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).  `selector` that does not
         match any elements is considered hidden.
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3628,14 +3644,14 @@ class Frame(SyncBase):
     ) -> bool:
         """Frame.is_visible
 
-        Returns whether the element is [visible](./actionability.md#visible). `selector` that does not match any elements is
+        Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible). `selector` that does not match any elements is
         considered not visible.
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -3700,7 +3716,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         type : str
             DOM event type: `"click"`, `"dragstart"`, etc.
         event_init : Union[Dict, NoneType]
@@ -3742,7 +3758,7 @@ class Frame(SyncBase):
         tests. Use `locator.evaluate()`, other `Locator` helper methods or web-first assertions instead.
 
         The method finds an element matching the specified selector within the frame and passes it as a first argument to
-        `expression`. See [Working with selectors](./selectors.md) for more details. If no elements match the selector, the
+        `expression`. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, the
         method throws an error.
 
         If `expression` returns a [Promise], then `frame.eval_on_selector()` would wait for the promise to resolve and
@@ -3759,7 +3775,7 @@ class Frame(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         expression : str
             JavaScript expression to be evaluated in the browser context. If it looks like a function declaration, it is interpreted
             as a function. Otherwise, evaluated as an expression.
@@ -3797,7 +3813,7 @@ class Frame(SyncBase):
         better job.
 
         The method finds all elements matching the specified selector within the frame and passes an array of matched elements
-        as a first argument to `expression`. See [Working with selectors](./selectors.md) for more details.
+        as a first argument to `expression`. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more details.
 
         If `expression` returns a [Promise], then `frame.eval_on_selector_all()` would wait for the promise to resolve and
         return its value.
@@ -3811,7 +3827,7 @@ class Frame(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         expression : str
             JavaScript expression to be evaluated in the browser context. If it looks like a function declaration, it is interpreted
             as a function. Otherwise, evaluated as an expression.
@@ -3991,7 +4007,7 @@ class Frame(SyncBase):
 
         This method clicks an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element, or the specified `position`.
@@ -4004,7 +4020,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -4021,7 +4037,7 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -4030,7 +4046,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -4073,7 +4089,7 @@ class Frame(SyncBase):
 
         This method double clicks an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to double click in the center of the element, or the specified `position`.
@@ -4089,7 +4105,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -4104,7 +4120,7 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -4113,7 +4129,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -4153,7 +4169,7 @@ class Frame(SyncBase):
 
         This method taps an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.touchscreen` to tap the center of the element, or the specified `position`.
@@ -4168,7 +4184,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -4179,7 +4195,7 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -4188,7 +4204,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -4220,7 +4236,7 @@ class Frame(SyncBase):
     ) -> NoneType:
         """Frame.fill
 
-        This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, focuses the
+        This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the
         element, fills it and triggers an `input` event after filling. Note that you can pass an empty string to clear the input
         field.
 
@@ -4235,7 +4251,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         value : str
             Value to fill for the `<input>`, `<textarea>` or `[contenteditable]` element.
         timeout : Union[float, NoneType]
@@ -4249,7 +4265,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         """
 
         return mapping.from_maybe_impl(
@@ -4282,10 +4298,11 @@ class Frame(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
         has_text : Union[Pattern, str, NoneType]
-            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. For example,
-            `"Playwright"` matches `<article><div>Playwright</div></article>`.
+            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
+            [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
+            `<article><div>Playwright</div></article>`.
         has : Union[Locator, NoneType]
             Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.
             For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.
@@ -4318,7 +4335,7 @@ class Frame(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -4339,7 +4356,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -4366,7 +4383,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -4399,7 +4416,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -4432,7 +4449,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -4465,7 +4482,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         name : str
             Attribute name to get the value for.
         strict : Union[bool, NoneType]
@@ -4506,7 +4523,7 @@ class Frame(SyncBase):
 
         This method hovers over an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to hover over the center of the element, or the specified `position`.
@@ -4519,7 +4536,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -4530,12 +4547,12 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -4580,7 +4597,7 @@ class Frame(SyncBase):
             Drops on the target element at this point relative to the top-left corner of the element's padding box. If not
             specified, some visible point of the element is used.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -4592,7 +4609,7 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -4628,7 +4645,7 @@ class Frame(SyncBase):
     ) -> typing.List[str]:
         """Frame.select_option
 
-        This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until
+        This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, waits until
         all specified options are present in the `<select>` element and selects these options.
 
         If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
@@ -4651,7 +4668,7 @@ class Frame(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         value : Union[List[str], str, NoneType]
             Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise
             only the first option matching one of the passed options is selected. Optional.
@@ -4673,7 +4690,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
 
         Returns
         -------
@@ -4708,7 +4725,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -4757,7 +4774,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         files : Union[List[Union[pathlib.Path, str]], List[{name: str, mimeType: str, buffer: bytes}], pathlib.Path, str, {name: str, mimeType: str, buffer: bytes}]
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
@@ -4810,7 +4827,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         text : str
             A text to type into a focused element.
         delay : Union[float, NoneType]
@@ -4874,7 +4891,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         key : str
             Name of the key to press or a character to generate, such as `ArrowLeft` or `a`.
         delay : Union[float, NoneType]
@@ -4922,7 +4939,7 @@ class Frame(SyncBase):
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
         1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already
            checked, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -4936,7 +4953,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         position : Union[{x: float, y: float}, NoneType]
             A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the
             element.
@@ -4944,7 +4961,7 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -4953,7 +4970,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -4989,7 +5006,7 @@ class Frame(SyncBase):
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
         1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already
            unchecked, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -5003,7 +5020,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         position : Union[{x: float, y: float}, NoneType]
             A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the
             element.
@@ -5011,7 +5028,7 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -5020,7 +5037,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -5159,7 +5176,7 @@ class Frame(SyncBase):
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
         1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
         1. If the element already has the right checked state, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -5173,7 +5190,7 @@ class Frame(SyncBase):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         checked : bool
             Whether to check or uncheck the checkbox.
         position : Union[{x: float, y: float}, NoneType]
@@ -5183,7 +5200,7 @@ class Frame(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -5192,7 +5209,7 @@ class Frame(SyncBase):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -5255,10 +5272,11 @@ class FrameLocator(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
         has_text : Union[Pattern, str, NoneType]
-            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. For example,
-            `"Playwright"` matches `<article><div>Playwright</div></article>`.
+            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
+            [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
+            `<article><div>Playwright</div></article>`.
         has : Union[Locator, NoneType]
             Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.
             For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.
@@ -5285,7 +5303,7 @@ class FrameLocator(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -5297,7 +5315,7 @@ class FrameLocator(SyncBase):
     def nth(self, index: int) -> "FrameLocator":
         """FrameLocator.nth
 
-        Returns locator to the n-th matching frame.
+        Returns locator to the n-th matching frame. It's zero based, `nth(0)` selects the first frame.
 
         Parameters
         ----------
@@ -5818,6 +5836,10 @@ class Page(SyncContextManager):
         [freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#never_blocking) waiting for the dialog, and
         actions like click will never finish.
 
+        ```python
+        page.on(\"dialog\", lambda dialog: dialog.accept())
+        ```
+
         > NOTE: When no `page.on('dialog')` listeners are present, all dialogs are automatically dismissed."""
 
     @typing.overload
@@ -5879,7 +5901,15 @@ class Page(SyncContextManager):
         self, event: Literal["pageerror"], f: typing.Callable[["Error"], "None"]
     ) -> None:
         """
-        Emitted when an uncaught exception happens within the page."""
+        Emitted when an uncaught exception happens within the page.
+
+        ```py
+        # Log all uncaught errors to the terminal
+        page.on(\"pageerror\", lambda exc: print(f\"uncaught exception: {exc}\"))
+
+        # Navigate to a page with an exception.
+        page.goto(\"data:text/html,<script>throw new Error('test')</script>\")
+        ```"""
 
     @typing.overload
     def on(self, event: Literal["popup"], f: typing.Callable[["Page"], "None"]) -> None:
@@ -5915,6 +5945,10 @@ class Page(SyncContextManager):
     ) -> None:
         """
         Emitted when a request fails, for example by timing out.
+
+        ```python
+        page.on(\"requestfailed\", lambda request: print(request.url + \" \" + request.failure.error_text))
+        ```
 
         > NOTE: HTTP Error responses, such as 404 or 503, are still successful responses from HTTP standpoint, so request will
         complete with `page.on('request_finished')` event and not with `page.on('request_failed')`. A request will only be
@@ -6013,6 +6047,10 @@ class Page(SyncContextManager):
         [freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#never_blocking) waiting for the dialog, and
         actions like click will never finish.
 
+        ```python
+        page.on(\"dialog\", lambda dialog: dialog.accept())
+        ```
+
         > NOTE: When no `page.on('dialog')` listeners are present, all dialogs are automatically dismissed."""
 
     @typing.overload
@@ -6076,7 +6114,15 @@ class Page(SyncContextManager):
         self, event: Literal["pageerror"], f: typing.Callable[["Error"], "None"]
     ) -> None:
         """
-        Emitted when an uncaught exception happens within the page."""
+        Emitted when an uncaught exception happens within the page.
+
+        ```py
+        # Log all uncaught errors to the terminal
+        page.on(\"pageerror\", lambda exc: print(f\"uncaught exception: {exc}\"))
+
+        # Navigate to a page with an exception.
+        page.goto(\"data:text/html,<script>throw new Error('test')</script>\")
+        ```"""
 
     @typing.overload
     def once(
@@ -6114,6 +6160,10 @@ class Page(SyncContextManager):
     ) -> None:
         """
         Emitted when a request fails, for example by timing out.
+
+        ```python
+        page.on(\"requestfailed\", lambda request: print(request.url + \" \" + request.failure.error_text))
+        ```
 
         > NOTE: HTTP Error responses, such as 404 or 503, are still successful responses from HTTP standpoint, so request will
         complete with `page.on('request_finished')` event and not with `page.on('request_failed')`. A request will only be
@@ -6271,7 +6321,8 @@ class Page(SyncContextManager):
     def request(self) -> "APIRequestContext":
         """Page.request
 
-        API testing helper associated with this page. Requests made with this API will use page cookies.
+        API testing helper associated with this page. This method returns the same instance as
+        `browser_context.request` on the page's context. See `browser_context.request` for more details.
 
         Returns
         -------
@@ -6396,7 +6447,7 @@ class Page(SyncContextManager):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -6426,7 +6477,7 @@ class Page(SyncContextManager):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -6482,7 +6533,7 @@ class Page(SyncContextManager):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         timeout : Union[float, NoneType]
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
@@ -6523,7 +6574,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -6550,13 +6601,13 @@ class Page(SyncContextManager):
     ) -> bool:
         """Page.is_disabled
 
-        Returns whether the element is disabled, the opposite of [enabled](./actionability.md#enabled).
+        Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -6583,13 +6634,13 @@ class Page(SyncContextManager):
     ) -> bool:
         """Page.is_editable
 
-        Returns whether the element is [editable](./actionability.md#editable).
+        Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -6616,13 +6667,13 @@ class Page(SyncContextManager):
     ) -> bool:
         """Page.is_enabled
 
-        Returns whether the element is [enabled](./actionability.md#enabled).
+        Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -6649,14 +6700,14 @@ class Page(SyncContextManager):
     ) -> bool:
         """Page.is_hidden
 
-        Returns whether the element is hidden, the opposite of [visible](./actionability.md#visible).  `selector` that does not
+        Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).  `selector` that does not
         match any elements is considered hidden.
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -6683,14 +6734,14 @@ class Page(SyncContextManager):
     ) -> bool:
         """Page.is_visible
 
-        Returns whether the element is [visible](./actionability.md#visible). `selector` that does not match any elements is
+        Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible). `selector` that does not match any elements is
         considered not visible.
 
         Parameters
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -6755,7 +6806,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         type : str
             DOM event type: `"click"`, `"dragstart"`, etc.
         event_init : Union[Dict, NoneType]
@@ -6925,7 +6976,7 @@ class Page(SyncContextManager):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         expression : str
             JavaScript expression to be evaluated in the browser context. If it looks like a function declaration, it is interpreted
             as a function. Otherwise, evaluated as an expression.
@@ -6975,7 +7026,7 @@ class Page(SyncContextManager):
         Parameters
         ----------
         selector : str
-            A selector to query for. See [working with selectors](./selectors.md) for more details.
+            A selector to query for. See [working with selectors](../selectors.md) for more details.
         expression : str
             JavaScript expression to be evaluated in the browser context. If it looks like a function declaration, it is interpreted
             as a function. Otherwise, evaluated as an expression.
@@ -7457,7 +7508,7 @@ class Page(SyncContextManager):
         ----------
         url : Union[Callable[[str], bool], Pattern, str]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
-            parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to
+            parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
         wait_until : Union["commit", "domcontentloaded", "load", "networkidle", NoneType]
             When to consider operation succeeded, defaults to `load`. Events can be either:
@@ -7865,7 +7916,9 @@ class Page(SyncContextManager):
         omit_background: bool = None,
         full_page: bool = None,
         clip: FloatRect = None,
-        disable_animations: bool = None,
+        animations: Literal["allow", "disabled"] = None,
+        caret: Literal["hide", "initial"] = None,
+        scale: Literal["css", "device"] = None,
         mask: typing.List["Locator"] = None
     ) -> bytes:
         """Page.screenshot
@@ -7893,9 +7946,20 @@ class Page(SyncContextManager):
             `false`.
         clip : Union[{x: float, y: float, width: float, height: float}, NoneType]
             An object which specifies clipping of the resulting image. Should have the following fields:
-        disable_animations : Union[bool, NoneType]
-            When true, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on
-            their duration:
+        animations : Union["allow", "disabled", NoneType]
+            When set to `"disabled"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment
+            depending on their duration:
+            - finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.
+            - infinite animations are canceled to initial state, and then played over after the screenshot.
+
+            Defaults to `"allow"` that leaves animations untouched.
+        caret : Union["hide", "initial", NoneType]
+            When set to `"hide"`, screenshot will hide text caret. When set to `"initial"`, text caret behavior will not be changed.
+            Defaults to `"hide"`.
+        scale : Union["css", "device", NoneType]
+            When set to `"css"`, screenshot will have a single pixel per each css pixel on the page. For high-dpi devices, this will
+            keep screenshots small. Using `"device"` option will produce a single pixel per each device pixel, so screenhots of
+            high-dpi devices will be twice as large or even larger. Defaults to `"device"`.
         mask : Union[List[Locator], NoneType]
             Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box
             `#FF00FF` that completely covers its bounding box.
@@ -7916,7 +7980,9 @@ class Page(SyncContextManager):
                     omitBackground=omit_background,
                     fullPage=full_page,
                     clip=clip,
-                    disableAnimations=disable_animations,
+                    animations=animations,
+                    caret=caret,
+                    scale=scale,
                     mask=mapping.to_impl(mask),
                 ),
             )
@@ -7991,7 +8057,7 @@ class Page(SyncContextManager):
 
         This method clicks an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element, or the specified `position`.
@@ -8006,7 +8072,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -8023,13 +8089,13 @@ class Page(SyncContextManager):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
@@ -8075,7 +8141,7 @@ class Page(SyncContextManager):
 
         This method double clicks an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to double click in the center of the element, or the specified `position`.
@@ -8093,7 +8159,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -8108,7 +8174,7 @@ class Page(SyncContextManager):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -8117,7 +8183,7 @@ class Page(SyncContextManager):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -8157,7 +8223,7 @@ class Page(SyncContextManager):
 
         This method taps an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.touchscreen` to tap the center of the element, or the specified `position`.
@@ -8174,7 +8240,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -8185,7 +8251,7 @@ class Page(SyncContextManager):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -8194,7 +8260,7 @@ class Page(SyncContextManager):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -8226,7 +8292,7 @@ class Page(SyncContextManager):
     ) -> NoneType:
         """Page.fill
 
-        This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, focuses the
+        This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the
         element, fills it and triggers an `input` event after filling. Note that you can pass an empty string to clear the input
         field.
 
@@ -8243,7 +8309,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         value : str
             Value to fill for the `<input>`, `<textarea>` or `[contenteditable]` element.
         timeout : Union[float, NoneType]
@@ -8257,7 +8323,7 @@ class Page(SyncContextManager):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         """
 
         return mapping.from_maybe_impl(
@@ -8292,10 +8358,11 @@ class Page(SyncContextManager):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
         has_text : Union[Pattern, str, NoneType]
-            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. For example,
-            `"Playwright"` matches `<article><div>Playwright</div></article>`.
+            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
+            [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
+            `<article><div>Playwright</div></article>`.
         has : Union[Locator, NoneType]
             Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.
             For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.
@@ -8328,7 +8395,7 @@ class Page(SyncContextManager):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -8351,7 +8418,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -8378,7 +8445,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -8411,7 +8478,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -8444,7 +8511,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -8477,7 +8544,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         name : str
             Attribute name to get the value for.
         strict : Union[bool, NoneType]
@@ -8518,7 +8585,7 @@ class Page(SyncContextManager):
 
         This method hovers over an element matching `selector` by performing the following steps:
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to hover over the center of the element, or the specified `position`.
@@ -8533,7 +8600,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         modifiers : Union[List[Union["Alt", "Control", "Meta", "Shift"]], NoneType]
             Modifier keys to press. Ensures that only these modifiers are pressed during the operation, and then restores current
             modifiers back. If not specified, currently pressed modifiers are used.
@@ -8544,12 +8611,12 @@ class Page(SyncContextManager):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -8594,7 +8661,7 @@ class Page(SyncContextManager):
             Drops on the target element at this point relative to the top-left corner of the element's padding box. If not
             specified, some visible point of the element is used.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -8606,7 +8673,7 @@ class Page(SyncContextManager):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -8642,7 +8709,7 @@ class Page(SyncContextManager):
     ) -> typing.List[str]:
         """Page.select_option
 
-        This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until
+        This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, waits until
         all specified options are present in the `<select>` element and selects these options.
 
         If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
@@ -8668,7 +8735,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         value : Union[List[str], str, NoneType]
             Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise
             only the first option matching one of the passed options is selected. Optional.
@@ -8687,7 +8754,7 @@ class Page(SyncContextManager):
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -8725,7 +8792,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         strict : Union[bool, NoneType]
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
@@ -8774,7 +8841,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         files : Union[List[Union[pathlib.Path, str]], List[{name: str, mimeType: str, buffer: bytes}], pathlib.Path, str, {name: str, mimeType: str, buffer: bytes}]
         timeout : Union[float, NoneType]
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
@@ -8829,7 +8896,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         text : str
             A text to type into a focused element.
         delay : Union[float, NoneType]
@@ -8907,7 +8974,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         key : str
             Name of the key to press or a character to generate, such as `ArrowLeft` or `a`.
         delay : Union[float, NoneType]
@@ -8955,7 +9022,7 @@ class Page(SyncContextManager):
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
         1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already
            checked, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -8971,7 +9038,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         position : Union[{x: float, y: float}, NoneType]
             A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the
             element.
@@ -8979,7 +9046,7 @@ class Page(SyncContextManager):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -8988,7 +9055,7 @@ class Page(SyncContextManager):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -9024,7 +9091,7 @@ class Page(SyncContextManager):
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
         1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already
            unchecked, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -9040,7 +9107,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         position : Union[{x: float, y: float}, NoneType]
             A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the
             element.
@@ -9048,7 +9115,7 @@ class Page(SyncContextManager):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -9057,7 +9124,7 @@ class Page(SyncContextManager):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -9476,7 +9543,7 @@ class Page(SyncContextManager):
         ----------
         url : Union[Callable[[str], bool], Pattern, str, NoneType]
             A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the
-            parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to
+            parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to
             the string.
         wait_until : Union["commit", "domcontentloaded", "load", "networkidle", NoneType]
             When to consider operation succeeded, defaults to `load`. Events can be either:
@@ -9542,7 +9609,7 @@ class Page(SyncContextManager):
     ) -> EventContextManager["Request"]:
         """Page.expect_request
 
-        Waits for the matching request and returns it. See [waiting for event](./events.md#waiting-for-event) for more details
+        Waits for the matching request and returns it. See [waiting for event](https://playwright.dev/python/docs/events#waiting-for-event) for more details
         about events.
 
         ```py
@@ -9618,7 +9685,7 @@ class Page(SyncContextManager):
     ) -> EventContextManager["Response"]:
         """Page.expect_response
 
-        Returns the matched response. See [waiting for event](./events.md#waiting-for-event) for more details about events.
+        Returns the matched response. See [waiting for event](https://playwright.dev/python/docs/events#waiting-for-event) for more details about events.
 
         ```py
         with page.expect_response(\"https://example.com/resource\") as response_info:
@@ -9734,7 +9801,7 @@ class Page(SyncContextManager):
         1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
         1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
         1. If the element already has the right checked state, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -9750,7 +9817,7 @@ class Page(SyncContextManager):
         ----------
         selector : str
             A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See
-            [working with selectors](./selectors.md) for more details.
+            [working with selectors](../selectors.md) for more details.
         checked : bool
             Whether to check or uncheck the checkbox.
         position : Union[{x: float, y: float}, NoneType]
@@ -9760,7 +9827,7 @@ class Page(SyncContextManager):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -9769,7 +9836,7 @@ class Page(SyncContextManager):
             When true, the call requires selector to resolve to a single element. If given selector resolves to more then one
             element, the call throws an exception.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -10187,7 +10254,6 @@ class BrowserContext(SyncContextManager):
             - `'midi'`
             - `'midi-sysex'` (system-exclusive midi)
             - `'notifications'`
-            - `'push'`
             - `'camera'`
             - `'microphone'`
             - `'background-sync'`
@@ -10756,9 +10822,9 @@ class CDPSession(SyncBase):
         Parameters
         ----------
         method : str
-            protocol method name
+            Protocol method name.
         params : Union[Dict, NoneType]
-            Optional method parameters
+            Optional method parameters.
 
         Returns
         -------
@@ -11252,8 +11318,8 @@ class Browser(SyncContextManager):
         """Browser.start_tracing
 
         > NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)
-        which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be
-        found [here](./class-tracing).
+        which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be
+        found [here](https://playwright.dev/python/docs/api/class-tracing).
 
         You can use `browser.start_tracing()` and `browser.stop_tracing()` to create a trace file that can be
         opened in Chrome DevTools performance panel.
@@ -11292,8 +11358,8 @@ class Browser(SyncContextManager):
         """Browser.stop_tracing
 
         > NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)
-        which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be
-        found [here](./class-tracing).
+        which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be
+        found [here](https://playwright.dev/python/docs/api/class-tracing).
 
         Returns the buffer with trace data.
 
@@ -11394,7 +11460,7 @@ class BrowserType(SyncBase):
         channel : Union[str, NoneType]
             Browser distribution channel.  Supported values are "chrome", "chrome-beta", "chrome-dev", "chrome-canary", "msedge",
             "msedge-beta", "msedge-dev", "msedge-canary". Read more about using
-            [Google Chrome and Microsoft Edge](./browsers.md#google-chrome--microsoft-edge).
+            [Google Chrome and Microsoft Edge](../browsers.md#google-chrome--microsoft-edge).
         args : Union[List[str], NoneType]
             Additional arguments to pass to the browser instance. The list of Chromium flags can be found
             [here](http://peter.sh/experiments/chromium-command-line-switches/).
@@ -11532,7 +11598,7 @@ class BrowserType(SyncBase):
         channel : Union[str, NoneType]
             Browser distribution channel.  Supported values are "chrome", "chrome-beta", "chrome-dev", "chrome-canary", "msedge",
             "msedge-beta", "msedge-dev", "msedge-canary". Read more about using
-            [Google Chrome and Microsoft Edge](./browsers.md#google-chrome--microsoft-edge).
+            [Google Chrome and Microsoft Edge](../browsers.md#google-chrome--microsoft-edge).
         executable_path : Union[pathlib.Path, str, NoneType]
             Path to a browser executable to run instead of the bundled one. If `executablePath` is a relative path, then it is
             resolved relative to the current working directory. Note that Playwright only works with the bundled Chromium, Firefox
@@ -11720,7 +11786,7 @@ class BrowserType(SyncBase):
     ) -> "Browser":
         """BrowserType.connect_over_cdp
 
-        This methods attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.
+        This method attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.
 
         The default browser context is accessible via `browser.contexts()`.
 
@@ -11767,15 +11833,14 @@ class BrowserType(SyncBase):
     ) -> "Browser":
         """BrowserType.connect
 
-        This methods attaches Playwright to an existing browser instance.
+        This method attaches Playwright to an existing browser instance.
 
         Parameters
         ----------
         ws_endpoint : str
             A browser websocket endpoint to connect to.
         timeout : Union[float, NoneType]
-            Maximum time in milliseconds to wait for the connection to be established. Defaults to `30000` (30 seconds). Pass `0` to
-            disable timeout.
+            Maximum time in milliseconds to wait for the connection to be established. Defaults to `0` (no timeout).
         slow_mo : Union[float, NoneType]
             Slows down Playwright operations by the specified amount of milliseconds. Useful so that you can see what is going on.
             Defaults to 0.
@@ -11837,7 +11902,7 @@ class Playwright(SyncBase):
     def selectors(self) -> "Selectors":
         """Playwright.selectors
 
-        Selectors can be used to install custom selector engines. See [Working with selectors](./selectors.md) for more
+        Selectors can be used to install custom selector engines. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more
         information.
 
         Returns
@@ -12132,7 +12197,7 @@ class Locator(SyncBase):
         This method checks the element by performing the following steps:
         1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already checked,
            this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -12152,13 +12217,13 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -12193,7 +12258,7 @@ class Locator(SyncBase):
         """Locator.click
 
         This method clicks the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -12221,13 +12286,13 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -12265,7 +12330,7 @@ class Locator(SyncBase):
         """Locator.dblclick
 
         This method double clicks the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to double click in the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the
@@ -12294,13 +12359,13 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -12506,7 +12571,7 @@ class Locator(SyncBase):
     ) -> NoneType:
         """Locator.fill
 
-        This method waits for [actionability](./actionability.md) checks, focuses the element, fills it and triggers an `input`
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the element, fills it and triggers an `input`
         event after filling. Note that you can pass an empty string to clear the input field.
 
         If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error.
@@ -12528,7 +12593,7 @@ class Locator(SyncBase):
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         """
 
         return mapping.from_maybe_impl(
@@ -12554,10 +12619,11 @@ class Locator(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
         has_text : Union[Pattern, str, NoneType]
-            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. For example,
-            `"Playwright"` matches `<article><div>Playwright</div></article>`.
+            Matches elements containing specified text somewhere inside, possibly in a child or a descendant element. When passed a
+            [string], matching is case-insensitive and searches for a substring. For example, `"Playwright"` matches
+            `<article><div>Playwright</div></article>`.
         has : Union[Locator, NoneType]
             Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.
             For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.
@@ -12589,7 +12655,7 @@ class Locator(SyncBase):
         Parameters
         ----------
         selector : str
-            A selector to use when resolving DOM element. See [working with selectors](./selectors.md) for more details.
+            A selector to use when resolving DOM element. See [working with selectors](../selectors.md) for more details.
 
         Returns
         -------
@@ -12638,7 +12704,7 @@ class Locator(SyncBase):
     def nth(self, index: int) -> "Locator":
         """Locator.nth
 
-        Returns locator to the n-th matching element.
+        Returns locator to the n-th matching element. It's zero based, `nth(0)` selects the first element.
 
         Parameters
         ----------
@@ -12699,7 +12765,7 @@ class Locator(SyncBase):
         target : Locator
             Locator of the element to drag to.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
@@ -12708,7 +12774,7 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         source_position : Union[{x: float, y: float}, NoneType]
             Clicks on the source element at this point relative to the top-left corner of the element's padding box. If not
@@ -12774,7 +12840,7 @@ class Locator(SyncBase):
         """Locator.hover
 
         This method hovers over the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to hover over the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -12796,9 +12862,9 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -12900,7 +12966,7 @@ class Locator(SyncBase):
     def is_disabled(self, *, timeout: float = None) -> bool:
         """Locator.is_disabled
 
-        Returns whether the element is disabled, the opposite of [enabled](./actionability.md#enabled).
+        Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Parameters
         ----------
@@ -12922,7 +12988,7 @@ class Locator(SyncBase):
     def is_editable(self, *, timeout: float = None) -> bool:
         """Locator.is_editable
 
-        Returns whether the element is [editable](./actionability.md#editable).
+        Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
         Parameters
         ----------
@@ -12944,7 +13010,7 @@ class Locator(SyncBase):
     def is_enabled(self, *, timeout: float = None) -> bool:
         """Locator.is_enabled
 
-        Returns whether the element is [enabled](./actionability.md#enabled).
+        Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
         Parameters
         ----------
@@ -12964,7 +13030,7 @@ class Locator(SyncBase):
     def is_hidden(self, *, timeout: float = None) -> bool:
         """Locator.is_hidden
 
-        Returns whether the element is hidden, the opposite of [visible](./actionability.md#visible).
+        Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).
 
         Parameters
         ----------
@@ -12984,7 +13050,7 @@ class Locator(SyncBase):
     def is_visible(self, *, timeout: float = None) -> bool:
         """Locator.is_visible
 
-        Returns whether the element is [visible](./actionability.md#visible).
+        Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible).
 
         Parameters
         ----------
@@ -13062,14 +13128,16 @@ class Locator(SyncBase):
         path: typing.Union[str, pathlib.Path] = None,
         quality: int = None,
         omit_background: bool = None,
-        disable_animations: bool = None,
+        animations: Literal["allow", "disabled"] = None,
+        caret: Literal["hide", "initial"] = None,
+        scale: Literal["css", "device"] = None,
         mask: typing.List["Locator"] = None
     ) -> bytes:
         """Locator.screenshot
 
         Returns the buffer with the captured screenshot.
 
-        This method waits for the [actionability](./actionability.md) checks, then scrolls element into view before taking a
+        This method waits for the [actionability](https://playwright.dev/python/docs/actionability) checks, then scrolls element into view before taking a
         screenshot. If the element is detached from DOM, the method throws an error.
 
         Parameters
@@ -13088,9 +13156,20 @@ class Locator(SyncBase):
         omit_background : Union[bool, NoneType]
             Hides default white background and allows capturing screenshots with transparency. Not applicable to `jpeg` images.
             Defaults to `false`.
-        disable_animations : Union[bool, NoneType]
-            When true, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on
-            their duration:
+        animations : Union["allow", "disabled", NoneType]
+            When set to `"disabled"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment
+            depending on their duration:
+            - finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.
+            - infinite animations are canceled to initial state, and then played over after the screenshot.
+
+            Defaults to `"allow"` that leaves animations untouched.
+        caret : Union["hide", "initial", NoneType]
+            When set to `"hide"`, screenshot will hide text caret. When set to `"initial"`, text caret behavior will not be changed.
+            Defaults to `"hide"`.
+        scale : Union["css", "device", NoneType]
+            When set to `"css"`, screenshot will have a single pixel per each css pixel on the page. For high-dpi devices, this will
+            keep screenshots small. Using `"device"` option will produce a single pixel per each device pixel, so screenhots of
+            high-dpi devices will be twice as large or even larger. Defaults to `"device"`.
         mask : Union[List[Locator], NoneType]
             Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box
             `#FF00FF` that completely covers its bounding box.
@@ -13109,7 +13188,9 @@ class Locator(SyncBase):
                     path=path,
                     quality=quality,
                     omitBackground=omit_background,
-                    disableAnimations=disable_animations,
+                    animations=animations,
+                    caret=caret,
+                    scale=scale,
                     mask=mapping.to_impl(mask),
                 ),
             )
@@ -13118,7 +13199,7 @@ class Locator(SyncBase):
     def scroll_into_view_if_needed(self, *, timeout: float = None) -> NoneType:
         """Locator.scroll_into_view_if_needed
 
-        This method waits for [actionability](./actionability.md) checks, then tries to scroll element into view, unless it is
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then tries to scroll element into view, unless it is
         completely visible as defined by
         [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)'s `ratio`.
 
@@ -13149,7 +13230,7 @@ class Locator(SyncBase):
     ) -> typing.List[str]:
         """Locator.select_option
 
-        This method waits for [actionability](./actionability.md) checks, waits until all specified options are present in the
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, waits until all specified options are present in the
         `<select>` element and selects these options.
 
         If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
@@ -13200,7 +13281,7 @@ class Locator(SyncBase):
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
 
         Returns
         -------
@@ -13225,13 +13306,13 @@ class Locator(SyncBase):
     def select_text(self, *, force: bool = None, timeout: float = None) -> NoneType:
         """Locator.select_text
 
-        This method waits for [actionability](./actionability.md) checks, then focuses the element and selects all its text
+        This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then focuses the element and selects all its text
         content.
 
         Parameters
         ----------
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         timeout : Union[float, NoneType]
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
@@ -13303,7 +13384,7 @@ class Locator(SyncBase):
         """Locator.tap
 
         This method taps the element by performing the following steps:
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.touchscreen` to tap the center of the element, or the specified `position`.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -13327,13 +13408,13 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -13438,7 +13519,7 @@ class Locator(SyncBase):
         This method checks the element by performing the following steps:
         1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already
            unchecked, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
         1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -13458,13 +13539,13 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -13564,7 +13645,7 @@ class Locator(SyncBase):
         This method checks or unchecks an element by performing the following steps:
         1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
         1. If the element already has the right checked state, this method returns immediately.
-        1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the
+        1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
            element is detached during the checks, the whole action is retried.
         1. Scroll the element into view if needed.
         1. Use `page.mouse` to click in the center of the element.
@@ -13585,13 +13666,13 @@ class Locator(SyncBase):
             Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by
             using the `browser_context.set_default_timeout()` or `page.set_default_timeout()` methods.
         force : Union[bool, NoneType]
-            Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.
+            Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.
         no_wait_after : Union[bool, NoneType]
             Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can
             opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to
             inaccessible pages. Defaults to `false`.
         trial : Union[bool, NoneType]
-            When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to
+            When set, this method only performs the [actionability](../actionability.md) checks and skips the action. Defaults to
             `false`. Useful to wait until the element is ready for the action without performing it.
         """
 
@@ -15313,7 +15394,7 @@ class LocatorAssertions(SyncBase):
     def to_be_hidden(self, *, timeout: float = None) -> NoneType:
         """LocatorAssertions.to_be_hidden
 
-        Ensures the `Locator` points to a hidden DOM node, which is the opposite of [visible](./actionability.md#visible).
+        Ensures the `Locator` points to a hidden DOM node, which is the opposite of [visible](https://playwright.dev/python/docs/api/actionability#visible).
 
         ```py
         from playwright.sync_api import expect
@@ -15358,7 +15439,7 @@ class LocatorAssertions(SyncBase):
     def to_be_visible(self, *, timeout: float = None) -> NoneType:
         """LocatorAssertions.to_be_visible
 
-        Ensures the `Locator` points to a [visible](./actionability.md#visible) DOM node.
+        Ensures the `Locator` points to a [visible](https://playwright.dev/python/docs/api/actionability#visible) DOM node.
 
         ```py
         from playwright.sync_api import expect

@@ -543,6 +543,36 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateStorageRegion(self, request):
+        """该接口用于开通某地域的存储。
+          1. 用户开通点播业务时，系统默认为用户开通了部分地域的存储，用户如果需要开通其它地域的存储，可以通过该接口进行开通。
+          2. 通过 DescribeStorageRegions 接口可以查询到所有存储地域及已经开通的地域。
+
+        :param request: Request instance for CreateStorageRegion.
+        :type request: :class:`tencentcloud.vod.v20180717.models.CreateStorageRegionRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.CreateStorageRegionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("CreateStorageRegion", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateStorageRegionResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateSubAppId(self, request):
         """该接口用于创建点播子应用。
 
@@ -1822,6 +1852,37 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeMediaPlayStatDetails(self, request):
+        """该接口用于查询媒体文件按指定时间粒度统计的播放数据
+        * 可以查询最近一年的播放统计数据。
+        * 时间粒度为小时，结束时间和起始时间的跨度最大为7天。
+        * 时间粒度为天，结束时间和起始时间的跨度最大为90天。
+
+        :param request: Request instance for DescribeMediaPlayStatDetails.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DescribeMediaPlayStatDetailsRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DescribeMediaPlayStatDetailsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DescribeMediaPlayStatDetails", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeMediaPlayStatDetailsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeMediaProcessUsageData(self, request):
         """该接口返回查询时间范围内每天使用的视频处理用量信息。
            1. 可以查询最近365天内的视频处理统计数据。
@@ -2072,6 +2133,37 @@ class VodClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeStorageDetailsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeStorageRegions(self, request):
+        """该接口用于：
+          1. 查询点播可开通的所有存储园区列表。
+          2. 查询已经开通的园区列表。
+          3. 查询默认使用的存储园区。
+
+        :param request: Request instance for DescribeStorageRegions.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DescribeStorageRegionsRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DescribeStorageRegionsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DescribeStorageRegions", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeStorageRegionsResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -2660,6 +2752,34 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyDefaultStorageRegion(self, request):
+        """该接口用于设置默认的存储地域。上传文件时如果没有指定地域，将上传到默认地域。
+
+        :param request: Request instance for ModifyDefaultStorageRegion.
+        :type request: :class:`tencentcloud.vod.v20180717.models.ModifyDefaultStorageRegionRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.ModifyDefaultStorageRegionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("ModifyDefaultStorageRegion", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyDefaultStorageRegionResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyEventConfig(self, request):
         """腾讯云点播为客户提供了媒体上传、媒体管理、媒体处理等等服务，在这些服务执行过程或执行结束时，腾讯云点播也提供各种对应的事件通知，方便开发者感知服务处理状态，并做下一步的业务操作。
 
@@ -2763,6 +2883,46 @@ class VodClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyMediaInfoResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyMediaStorageClass(self, request):
+        """修改媒体文件的存储类型。
+        当媒体文件的存储类型为标准存储时，可以修改为以下类型：
+        <li>低频存储</li>
+        <li>归档存储</li>
+        <li>深度归档存储</li>
+        当媒体文件的当前存储类型为低频存储时，可以修改为以下类型：
+        <li>标准存储</li>
+        <li>归档存储</li>
+        <li>深度归档存储</li>
+        当媒体文件的当前存储类型为归档存储时，可以修改为以下类型：
+        <li>标准存储</li>
+        当媒体文件的当前存储类型为深度归档存储时，可以修改为以下类型：
+        <li>标准存储</li>
+
+        :param request: Request instance for ModifyMediaStorageClass.
+        :type request: :class:`tencentcloud.vod.v20180717.models.ModifyMediaStorageClassRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.ModifyMediaStorageClassResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("ModifyMediaStorageClass", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyMediaStorageClassResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -3101,6 +3261,40 @@ class VodClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ParseStreamingManifestResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ProcessImage(self, request):
+        """对点播中的图片文件发起处理任务，功能包括：
+
+        1. 智能识别（令人反感的信息、不安全的信息、不适宜的信息）;
+
+        ><li>图片文件大小支持：文件 < 5M；</li>
+        ><li>图片文件分辨率支持：建议分辨率大于256x256，否则可能会影响识别效果；</li>
+        ><li>图片文件支持格式：PNG、JPG、JPEG、BMP、GIF、WEBP格式。</li>
+
+        :param request: Request instance for ProcessImage.
+        :type request: :class:`tencentcloud.vod.v20180717.models.ProcessImageRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.ProcessImageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("ProcessImage", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ProcessImageResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

@@ -2041,6 +2041,8 @@ global：全球锁定
         :type Readonly: str
         :param Product: 域名所属产品，cdn/ecdn
         :type Product: str
+        :param ParentHost: 主域名
+        :type ParentHost: str
         """
         self.ResourceId = None
         self.AppId = None
@@ -2056,6 +2058,7 @@ global：全球锁定
         self.Area = None
         self.Readonly = None
         self.Product = None
+        self.ParentHost = None
 
 
     def _deserialize(self, params):
@@ -2075,6 +2078,7 @@ global：全球锁定
         self.Area = params.get("Area")
         self.Readonly = params.get("Readonly")
         self.Product = params.get("Product")
+        self.ParentHost = params.get("ParentHost")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4439,6 +4443,9 @@ class DescribeDiagnoseReportResponse(AbstractModel):
         :type MidNodeInfo: :class:`tencentcloud.cdn.v20180606.models.DiagnoseData`
         :param OriginInfo: 源站检测信息
         :type OriginInfo: :class:`tencentcloud.cdn.v20180606.models.DiagnoseData`
+        :param PurgeInfo: 刷新检测信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PurgeInfo: :class:`tencentcloud.cdn.v20180606.models.DiagnoseData`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4450,6 +4457,7 @@ class DescribeDiagnoseReportResponse(AbstractModel):
         self.OcNodeInfo = None
         self.MidNodeInfo = None
         self.OriginInfo = None
+        self.PurgeInfo = None
         self.RequestId = None
 
 
@@ -4478,6 +4486,9 @@ class DescribeDiagnoseReportResponse(AbstractModel):
         if params.get("OriginInfo") is not None:
             self.OriginInfo = DiagnoseData()
             self.OriginInfo._deserialize(params.get("OriginInfo"))
+        if params.get("PurgeInfo") is not None:
+            self.PurgeInfo = DiagnoseData()
+            self.PurgeInfo._deserialize(params.get("PurgeInfo"))
         self.RequestId = params.get("RequestId")
 
 
@@ -6163,10 +6174,14 @@ class DescribeTopDataRequest(AbstractModel):
     def __init__(self):
         r"""
         :param StartTime: 查询起始日期：yyyy-MM-dd HH:mm:ss
-当前仅支持按天粒度的数据查询，参数需为某天的起点时刻
+仅支持按天粒度的数据查询，取入参中的天信息作为起始日期
+返回大于等于起始日期当天 00:00:00 点产生的数据，如 StartTime为2018-09-04 10:40:00，返回数据的起始时间为2018-09-04 00:00:00
+仅支持 90 天内数据查询
         :type StartTime: str
-        :param EndTime: 查询起始日期：yyyy-MM-dd HH:mm:ss
-当前仅支持按天粒度的数据查询，参数需为某天的结束时刻
+        :param EndTime: 查询结束日期：yyyy-MM-dd HH:mm:ss
+仅支持按天粒度的数据查询，取入参中的天信息作为结束日期
+返回小于等于结束日期当天 23:59:59 产生的数据，如EndTime为2018-09-05 22:40:00，返回数据的结束时间为2018-09-05 23:59:59
+EndTime 需要大于等于 StartTime
         :type EndTime: str
         :param Metric: 排序对象，支持以下几种形式：
 ip、ua_device、ua_browser、ua_os、referer
@@ -6181,9 +6196,11 @@ request：Metric 为 host 时指代访问请求数
         :type Project: int
         :param Detail: 是否详细显示每个域名的的具体数值
         :type Detail: bool
-        :param Area: 地域，目前可不填，默认是大陆
+        :param Area: 指定服务地域查询，不填充表示查询中国境内 CDN 数据
+mainland：指定查询中国境内 CDN 数据
+overseas：指定查询中国境外 CDN 数据
         :type Area: str
-        :param Product: 产品名，目前仅可使用cdn
+        :param Product: 指定查询的产品数据，目前仅可使用cdn
         :type Product: str
         """
         self.StartTime = None
@@ -6253,14 +6270,24 @@ class DescribeTrafficPackagesRequest(AbstractModel):
         :type Offset: int
         :param Limit: 分页查询记录个数，默认100，最大1000
         :type Limit: int
+        :param SortBy: 流量包排序方式，支持以下值：
+expireTimeDesc：默认值，按过期时间倒序
+expireTimeAsc：按过期时间正序
+createTimeDesc：按创建时间倒序
+createTimeAsc：按创建时间正序
+status：按状态排序，正常抵扣>未生效>已用尽>已过期
+channel：按来源排序，主动购买>自动续订>CDN赠送
+        :type SortBy: str
         """
         self.Offset = None
         self.Limit = None
+        self.SortBy = None
 
 
     def _deserialize(self, params):
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
+        self.SortBy = params.get("SortBy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6285,6 +6312,8 @@ class DescribeTrafficPackagesResponse(AbstractModel):
         :type ExpiringCount: int
         :param EnabledCount: 有效流量包个数
         :type EnabledCount: int
+        :param PaidCount: 付费流量包个数
+        :type PaidCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -6292,6 +6321,7 @@ class DescribeTrafficPackagesResponse(AbstractModel):
         self.TrafficPackages = None
         self.ExpiringCount = None
         self.EnabledCount = None
+        self.PaidCount = None
         self.RequestId = None
 
 
@@ -6305,6 +6335,7 @@ class DescribeTrafficPackagesResponse(AbstractModel):
                 self.TrafficPackages.append(obj)
         self.ExpiringCount = params.get("ExpiringCount")
         self.EnabledCount = params.get("EnabledCount")
+        self.PaidCount = params.get("PaidCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -6689,6 +6720,9 @@ off：不支持
         :param RuleEngine: 规则引擎
 注意：此字段可能返回 null，表示取不到有效值。
         :type RuleEngine: :class:`tencentcloud.cdn.v20180606.models.RuleEngine`
+        :param ParentHost: 主域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ParentHost: str
         """
         self.ResourceId = None
         self.AppId = None
@@ -6751,6 +6785,7 @@ off：不支持
         self.RemoteAuthentication = None
         self.ShareCname = None
         self.RuleEngine = None
+        self.ParentHost = None
 
 
     def _deserialize(self, params):
@@ -6915,6 +6950,7 @@ off：不支持
         if params.get("RuleEngine") is not None:
             self.RuleEngine = RuleEngine()
             self.RuleEngine._deserialize(params.get("RuleEngine"))
+        self.ParentHost = params.get("ParentHost")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9271,12 +9307,12 @@ class ListTopDataRequest(AbstractModel):
         r"""
         :param StartTime: 查询起始日期：yyyy-MM-dd HH:mm:ss
 仅支持按天粒度的数据查询，取入参中的天信息作为起始日期
-返回大于等于起始日期当天 00:00:00 点产生的数据
+返回大于等于起始日期当天 00:00:00 点产生的数据，如 StartTime为2018-09-04 10:40:00，返回数据的起始时间为2018-09-04 00:00:00
 仅支持 90 天内数据查询
         :type StartTime: str
         :param EndTime: 查询结束日期：yyyy-MM-dd HH:mm:ss
 仅支持按天粒度的数据查询，取入参中的天信息作为结束日期
-返回小于等于结束日期当天 23:59:59 产生的数据
+返回小于等于结束日期当天 23:59:59 产生的数据，如EndTime为2018-09-05 22:40:00，返回数据的结束时间为2018-09-05 23:59:59
 EndTime 需要大于等于 StartTime
         :type EndTime: str
         :param Metric: 排序对象，支持以下几种形式：
@@ -10060,13 +10096,21 @@ class Origin(AbstractModel):
         :param OriginType: 主源站类型
 入参支持以下几种类型：
 domain：域名类型
+domainv6：域名解析V6类型
 cos：对象存储源站
 ip：IP 列表作为源站
 ipv6：源站列表为一个单独的 IPv6 地址
 ip_ipv6：源站列表为多个 IPv4 地址和IPv6 地址
 ip_domain: 支持IP和域名形式源站混填（白名单功能）
+ip_domainv6：源站列表为多个 IPv4 地址以及域名解析v6地址
 ipv6_domain: 源站列表为多个 IPv6 地址以及域名
+ipv6_domainv6：源站列表为多个 IPv6 地址以及域名解析v6地址
+domain_domainv6：源站列表为多个域名解析v4 地址以及域名解析v6地址
 ip_ipv6_domain：源站列表为多个 IPv4 地址IPv6 地址以及域名
+ip_ipv6_domainv6：源站列表为多个 IPv4 地址IPv6 地址以及域名解析v6地址
+ip_domain_domainv6：源站列表为多个 IPv4 地址域名解析v4 地址以及域名解析v6地址
+ipv6_domain_domainv6：源站列表为多个 域名解析v4 地址IPv6 地址以及域名解析v6地址
+ip_ipv6_domain_domainv6：源站列表为多个 IPv4 地址IPv6 地址 域名解析v4 地址以及域名解析v6地址
 出参增加以下几种类型：
 image：数据万象源站
 ftp：历史 FTP 托管源源站，现已不维护
@@ -10963,12 +11007,17 @@ global：预热全球节点
 2. 当前只支持递归解析一级索引和子索引中的ts分片，递归深度不超过3层
 3. 解析获取的ts分片会正常累加每日预热用量，当用量超出配额时，会静默处理，不再执行预热
         :type ParseM3U8: bool
+        :param DisableRange: 是否关闭Range回源
+注意事项：
+此功能灰度发布中，敬请期待
+        :type DisableRange: bool
         """
         self.Urls = None
         self.UserAgent = None
         self.Area = None
         self.Layer = None
         self.ParseM3U8 = None
+        self.DisableRange = None
 
 
     def _deserialize(self, params):
@@ -10977,6 +11026,7 @@ global：预热全球节点
         self.Area = params.get("Area")
         self.Layer = params.get("Layer")
         self.ParseM3U8 = params.get("ParseM3U8")
+        self.DisableRange = params.get("DisableRange")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13894,14 +13944,14 @@ class UpdateDomainConfigRequest(AbstractModel):
         :type Referer: :class:`tencentcloud.cdn.v20180606.models.Referer`
         :param MaxAge: 浏览器缓存配置（功能灰度中，尚未全量）
         :type MaxAge: :class:`tencentcloud.cdn.v20180606.models.MaxAge`
+        :param SpecificConfig: 地域属性特殊配置
+适用于域名境内加速、境外加速配置不一致场景
+        :type SpecificConfig: :class:`tencentcloud.cdn.v20180606.models.SpecificConfig`
         :param ServiceType: 域名业务类型
 web：静态加速
 download：下载加速
 media：流媒体点播加速
         :type ServiceType: str
-        :param SpecificConfig: 地域属性特殊配置
-适用于域名境内加速、境外加速配置不一致场景
-        :type SpecificConfig: :class:`tencentcloud.cdn.v20180606.models.SpecificConfig`
         :param Area: 域名加速区域
 mainland：中国境内加速
 overseas：中国境外加速
@@ -13966,8 +14016,8 @@ global：全球加速
         self.ForceRedirect = None
         self.Referer = None
         self.MaxAge = None
-        self.ServiceType = None
         self.SpecificConfig = None
+        self.ServiceType = None
         self.Area = None
         self.OriginPullTimeout = None
         self.AwsPrivateAccess = None
@@ -14059,10 +14109,10 @@ global：全球加速
         if params.get("MaxAge") is not None:
             self.MaxAge = MaxAge()
             self.MaxAge._deserialize(params.get("MaxAge"))
-        self.ServiceType = params.get("ServiceType")
         if params.get("SpecificConfig") is not None:
             self.SpecificConfig = SpecificConfig()
             self.SpecificConfig._deserialize(params.get("SpecificConfig"))
+        self.ServiceType = params.get("ServiceType")
         self.Area = params.get("Area")
         if params.get("OriginPullTimeout") is not None:
             self.OriginPullTimeout = OriginPullTimeout()

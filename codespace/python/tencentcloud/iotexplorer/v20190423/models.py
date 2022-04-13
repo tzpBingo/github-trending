@@ -483,7 +483,8 @@ class ControlDeviceDataResponse(AbstractModel):
         :param Data: 返回信息
         :type Data: str
         :param Result: JSON字符串， 返回下发控制的结果信息, 
-Sent = 1 表示设备已经在线并且订阅了控制下发的mqtt topic
+Sent = 1 表示设备已经在线并且订阅了控制下发的mqtt topic.
+pushResult 是表示发送结果，其中 0 表示成功， 23101 表示设备未在线或没有订阅相关的 MQTT Topic。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Result: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1872,17 +1873,22 @@ class DescribeDeviceBindGatewayResponse(AbstractModel):
         :param GatewayDeviceName: 网关设备名
 注意：此字段可能返回 null，表示取不到有效值。
         :type GatewayDeviceName: str
+        :param GatewayName: 网关产品名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GatewayName: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.GatewayProductId = None
         self.GatewayDeviceName = None
+        self.GatewayName = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.GatewayProductId = params.get("GatewayProductId")
         self.GatewayDeviceName = params.get("GatewayDeviceName")
+        self.GatewayName = params.get("GatewayName")
         self.RequestId = params.get("RequestId")
 
 
@@ -3973,7 +3979,7 @@ class GetDeviceListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProductId: 需要查看设备列表的产品 ID
+        :param ProductId: 需要查看设备列表的产品ID, -1代表ProjectId来筛选
         :type ProductId: str
         :param Offset: 分页偏移
         :type Offset: int
@@ -4368,7 +4374,7 @@ class GetProjectListRequest(AbstractModel):
         :type Limit: int
         :param InstanceId: 实例ID
         :type InstanceId: str
-        :param ProjectId: 按项目D搜索
+        :param ProjectId: 按项目ID搜索
         :type ProjectId: str
         :param ProductId: 按产品ID搜索
         :type ProductId: str
@@ -4446,9 +4452,9 @@ class GetStudioProductListRequest(AbstractModel):
         :type ProjectId: str
         :param DevStatus: 产品DevStatus
         :type DevStatus: str
-        :param Offset: Offset
+        :param Offset: 偏移量
         :type Offset: int
-        :param Limit: Limit
+        :param Limit: 数量限制
         :type Limit: int
         """
         self.ProjectId = None
@@ -4907,26 +4913,26 @@ class LoRaGatewayLocation(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Accuracy: 准确度
-        :type Accuracy: float
-        :param Altitude: 海拔
-        :type Altitude: float
         :param Latitude: 纬度
         :type Latitude: float
         :param Longitude: 精度
         :type Longitude: float
+        :param Accuracy: 准确度
+        :type Accuracy: float
+        :param Altitude: 海拔
+        :type Altitude: float
         """
-        self.Accuracy = None
-        self.Altitude = None
         self.Latitude = None
         self.Longitude = None
+        self.Accuracy = None
+        self.Altitude = None
 
 
     def _deserialize(self, params):
-        self.Accuracy = params.get("Accuracy")
-        self.Altitude = params.get("Altitude")
         self.Latitude = params.get("Latitude")
         self.Longitude = params.get("Longitude")
+        self.Accuracy = params.get("Accuracy")
+        self.Altitude = params.get("Altitude")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

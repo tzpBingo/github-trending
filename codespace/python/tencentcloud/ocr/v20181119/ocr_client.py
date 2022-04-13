@@ -1628,6 +1628,34 @@ class OcrClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def RecognizeTravelCardOCR(self, request):
+        """本接口支持通信大数据行程卡识别，包括行程卡颜色、更新时间、途经地、存在中高风险地区的城市、电话号码，五个字段的识别结果输出。
+
+        :param request: Request instance for RecognizeTravelCardOCR.
+        :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeTravelCardOCRRequest`
+        :rtype: :class:`tencentcloud.ocr.v20181119.models.RecognizeTravelCardOCRResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("RecognizeTravelCardOCR", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.RecognizeTravelCardOCRResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ResidenceBookletOCR(self, request):
         """本接口支持居民户口簿户主页及成员页关键字段的识别，包括姓名、户别、地址、籍贯、身份证号码等。
 
@@ -1969,7 +1997,7 @@ class OcrClient(AbstractClient):
 
 
     def VatInvoiceVerify(self, request):
-        """本接口支持增值税发票的准确性核验，您可以通过输入增值税发票的关键字段提供所需的验证信息，接口返回真实的票面相关信息，包括发票代码、发票号码、开票日期、金额、消费类型、购方名称、购方税号、销方名称、销方税号等多个常用字段。支持多种发票类型核验，包括增值税专用发票、增值税普通发票（含电子普通发票、卷式发票、通行费发票）、机动车销售统一发票、货物运输业增值税专用发票、二手车销售统一发票。
+        """本接口支持增值税发票的准确性核验，您可以通过输入增值税发票的关键字段提供所需的验证信息，接口返回真实的票面相关信息，包括发票代码、发票号码、开票日期、金额、消费类型、购方名称、购方税号、销方名称、销方税号等多个常用字段。支持多种发票类型核验，包括增值税专用发票、增值税普通发票（含电子普通发票、卷式发票、通行费发票）、全电发票、机动车销售统一发票、货物运输业增值税专用发票、二手车销售统一发票。
 
         :param request: Request instance for VatInvoiceVerify.
         :type request: :class:`tencentcloud.ocr.v20181119.models.VatInvoiceVerifyRequest`

@@ -2912,7 +2912,7 @@ class BashEvent(AbstractModel):
         :type RuleName: str
         :param RuleLevel: 规则等级：1-高 2-中 3-低
         :type RuleLevel: int
-        :param Status: 处理状态： 0 = 待处理 1= 已处理, 2 = 已加白
+        :param Status: 处理状态： 0 = 待处理 1= 已处理, 2 = 已加白， 3 = 已忽略
         :type Status: int
         :param CreateTime: 发生时间
         :type CreateTime: str
@@ -3136,6 +3136,9 @@ class BruteAttackInfo(AbstractModel):
         :param InstanceId: 实例ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceId: str
+        :param DataStatus: 0：待处理，1：忽略，5：已处理，6：加入白名单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataStatus: int
         """
         self.Id = None
         self.Uuid = None
@@ -3157,6 +3160,7 @@ class BruteAttackInfo(AbstractModel):
         self.Port = None
         self.ModifyTime = None
         self.InstanceId = None
+        self.DataStatus = None
 
 
     def _deserialize(self, params):
@@ -3180,6 +3184,7 @@ class BruteAttackInfo(AbstractModel):
         self.Port = params.get("Port")
         self.ModifyTime = params.get("ModifyTime")
         self.InstanceId = params.get("InstanceId")
+        self.DataStatus = params.get("DataStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8280,6 +8285,7 @@ class DescribeBruteAttackListRequest(AbstractModel):
         :param Filters: 过滤条件。
 <li>IpOrAlias - String - 是否必填：否 - 主机ip或别名筛选</li>
 <li>Uuid - String - 是否必填：否 - 云镜唯一Uuid</li>
+<li>Quuid - String - 是否必填：否 - 云服务器uuid</li>
 <li>Status - String - 是否必填：否 - 状态筛选：失败：FAILED 成功：SUCCESS</li>
 <li>UserName - String - 是否必填：否 - UserName筛选</li>
 <li>SrcIp - String - 是否必填：否 - 来源ip筛选</li>
@@ -9163,11 +9169,12 @@ class DescribeHostLoginListRequest(AbstractModel):
         :param Filters: 过滤条件。
 <li>IpOrAlias - String - 是否必填：否 - 主机ip或别名筛选</li>
 <li>Uuid - String - 是否必填：否 - 云镜唯一Uuid</li>
+<li>Quuid - String - 是否必填：否 - 云服务器uuid</li>
 <li>UserName - String - 是否必填：否 - 用户名筛选</li>
 <li>LoginTimeBegin - String - 是否必填：否 - 按照修改时间段筛选，开始时间</li>
 <li>LoginTimeEnd - String - 是否必填：否 - 按照修改时间段筛选，结束时间</li>
 <li>SrcIp - String - 是否必填：否 - 来源ip筛选</li>
-<li>Status - int - 是否必填：否 - 状态筛选1:正常登录；5：已加白</li>
+<li>Status - int - 是否必填：否 - 状态筛选1:正常登录；5：已加白,14:已处理，15：已忽略</li>
 <li>RiskLevel - int - 是否必填：否 - 状态筛选0:高危；1：可疑</li>
         :type Filters: list of Filter
         """
@@ -9418,7 +9425,7 @@ class DescribeImportMachineInfoResponse(AbstractModel):
         :param EffectiveMachineInfoList: 有效的机器信息列表：机器名称、机器公网/内网ip、机器标签
 注意：此字段可能返回 null，表示取不到有效值。
         :type EffectiveMachineInfoList: list of EffectiveMachineInfo
-        :param InvalidMachineList: 用户批量导入失败的机器列表（比如机器不存在等...）
+        :param InvalidMachineList: 用户批量导入失败的机器列表（例如机器不存在等...）
 注意：此字段可能返回 null，表示取不到有效值。
         :type InvalidMachineList: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -9702,7 +9709,7 @@ class DescribeMachineInfoResponse(AbstractModel):
         :type IsProVersion: bool
         :param ProVersionOpenDate: 专业版开通时间。
         :type ProVersionOpenDate: str
-        :param MachineType: 云主机类型。
+        :param MachineType: 云服务器类型。
 <li>CVM: 腾讯云服务器</li>
 <li>BM: 黑石物理机</li>
 <li>ECM: 边缘计算服务器</li>
@@ -11984,6 +11991,178 @@ class DescribeSecurityDynamicsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeSecurityEventStatRequest(AbstractModel):
+    """DescribeSecurityEventStat请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 该接口无过滤条件
+        :type Filters: list of Filter
+        """
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSecurityEventStatResponse(AbstractModel):
+    """DescribeSecurityEventStat返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MalwareStat: 木马事件统计
+        :type MalwareStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param HostLoginStat: 异地事件统计
+        :type HostLoginStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param BruteAttackStat: 爆破事件统计
+        :type BruteAttackStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param MaliciousRequestStat: 恶意请求事件统计
+        :type MaliciousRequestStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param PrivilegeStat: 本地提权事件统计
+        :type PrivilegeStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param ReverseShellStat: 反弹Shell事件统计
+        :type ReverseShellStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param HighRiskBashStat: 高危命令事件统计
+        :type HighRiskBashStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param AttackLogsStat: 网络攻击事件统计
+        :type AttackLogsStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param VulHighStat: 高危漏洞事件统计
+        :type VulHighStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param VulNormalStat: 中危漏洞事件统计
+        :type VulNormalStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param VulLowStat: 低危漏洞事件统计
+        :type VulLowStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param BaselineHighStat: 高危基线漏洞事件统计
+        :type BaselineHighStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param BaselineNormalStat: 中危基线漏事件统计
+        :type BaselineNormalStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param BaselineLowStat: 低危基线漏事件统计
+        :type BaselineLowStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param MachineTotalAffectNum: 有未处理安全事件的机器总数
+        :type MachineTotalAffectNum: int
+        :param InvasionTotalAffectNum: 有未处理入侵安全事件的机器总数
+        :type InvasionTotalAffectNum: int
+        :param VulTotalAffectNum: 有未处理漏洞安全事件的机器总数
+        :type VulTotalAffectNum: int
+        :param BaseLineTotalAffectNum: 有未处理基线安全事件的机器总数
+        :type BaseLineTotalAffectNum: int
+        :param CyberAttackTotalAffectNum: 有未处理网络攻击安全事件的机器总数
+        :type CyberAttackTotalAffectNum: int
+        :param VulRiskStat: 严重漏洞事件统计
+        :type VulRiskStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param BaselineRiskStat: 严重基线漏洞事件统计
+        :type BaselineRiskStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param VulStat: 漏洞数统计
+        :type VulStat: :class:`tencentcloud.cwp.v20180228.models.EventStat`
+        :param Score: 安全得分
+        :type Score: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.MalwareStat = None
+        self.HostLoginStat = None
+        self.BruteAttackStat = None
+        self.MaliciousRequestStat = None
+        self.PrivilegeStat = None
+        self.ReverseShellStat = None
+        self.HighRiskBashStat = None
+        self.AttackLogsStat = None
+        self.VulHighStat = None
+        self.VulNormalStat = None
+        self.VulLowStat = None
+        self.BaselineHighStat = None
+        self.BaselineNormalStat = None
+        self.BaselineLowStat = None
+        self.MachineTotalAffectNum = None
+        self.InvasionTotalAffectNum = None
+        self.VulTotalAffectNum = None
+        self.BaseLineTotalAffectNum = None
+        self.CyberAttackTotalAffectNum = None
+        self.VulRiskStat = None
+        self.BaselineRiskStat = None
+        self.VulStat = None
+        self.Score = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("MalwareStat") is not None:
+            self.MalwareStat = EventStat()
+            self.MalwareStat._deserialize(params.get("MalwareStat"))
+        if params.get("HostLoginStat") is not None:
+            self.HostLoginStat = EventStat()
+            self.HostLoginStat._deserialize(params.get("HostLoginStat"))
+        if params.get("BruteAttackStat") is not None:
+            self.BruteAttackStat = EventStat()
+            self.BruteAttackStat._deserialize(params.get("BruteAttackStat"))
+        if params.get("MaliciousRequestStat") is not None:
+            self.MaliciousRequestStat = EventStat()
+            self.MaliciousRequestStat._deserialize(params.get("MaliciousRequestStat"))
+        if params.get("PrivilegeStat") is not None:
+            self.PrivilegeStat = EventStat()
+            self.PrivilegeStat._deserialize(params.get("PrivilegeStat"))
+        if params.get("ReverseShellStat") is not None:
+            self.ReverseShellStat = EventStat()
+            self.ReverseShellStat._deserialize(params.get("ReverseShellStat"))
+        if params.get("HighRiskBashStat") is not None:
+            self.HighRiskBashStat = EventStat()
+            self.HighRiskBashStat._deserialize(params.get("HighRiskBashStat"))
+        if params.get("AttackLogsStat") is not None:
+            self.AttackLogsStat = EventStat()
+            self.AttackLogsStat._deserialize(params.get("AttackLogsStat"))
+        if params.get("VulHighStat") is not None:
+            self.VulHighStat = EventStat()
+            self.VulHighStat._deserialize(params.get("VulHighStat"))
+        if params.get("VulNormalStat") is not None:
+            self.VulNormalStat = EventStat()
+            self.VulNormalStat._deserialize(params.get("VulNormalStat"))
+        if params.get("VulLowStat") is not None:
+            self.VulLowStat = EventStat()
+            self.VulLowStat._deserialize(params.get("VulLowStat"))
+        if params.get("BaselineHighStat") is not None:
+            self.BaselineHighStat = EventStat()
+            self.BaselineHighStat._deserialize(params.get("BaselineHighStat"))
+        if params.get("BaselineNormalStat") is not None:
+            self.BaselineNormalStat = EventStat()
+            self.BaselineNormalStat._deserialize(params.get("BaselineNormalStat"))
+        if params.get("BaselineLowStat") is not None:
+            self.BaselineLowStat = EventStat()
+            self.BaselineLowStat._deserialize(params.get("BaselineLowStat"))
+        self.MachineTotalAffectNum = params.get("MachineTotalAffectNum")
+        self.InvasionTotalAffectNum = params.get("InvasionTotalAffectNum")
+        self.VulTotalAffectNum = params.get("VulTotalAffectNum")
+        self.BaseLineTotalAffectNum = params.get("BaseLineTotalAffectNum")
+        self.CyberAttackTotalAffectNum = params.get("CyberAttackTotalAffectNum")
+        if params.get("VulRiskStat") is not None:
+            self.VulRiskStat = EventStat()
+            self.VulRiskStat._deserialize(params.get("VulRiskStat"))
+        if params.get("BaselineRiskStat") is not None:
+            self.BaselineRiskStat = EventStat()
+            self.BaselineRiskStat._deserialize(params.get("BaselineRiskStat"))
+        if params.get("VulStat") is not None:
+            self.VulStat = EventStat()
+            self.VulStat._deserialize(params.get("VulStat"))
+        self.Score = params.get("Score")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeSecurityEventsCntRequest(AbstractModel):
     """DescribeSecurityEventsCnt请求参数结构体
 
@@ -13774,6 +13953,34 @@ class EmergencyVul(AbstractModel):
         
 
 
+class EventStat(AbstractModel):
+    """未处理的安全事件统计信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventsNum: 事件数
+        :type EventsNum: int
+        :param MachineAffectNum: 受影响的主机数
+        :type MachineAffectNum: int
+        """
+        self.EventsNum = None
+        self.MachineAffectNum = None
+
+
+    def _deserialize(self, params):
+        self.EventsNum = params.get("EventsNum")
+        self.MachineAffectNum = params.get("MachineAffectNum")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ExpertServiceOrderInfo(AbstractModel):
     """专家服务订单信息
 
@@ -15341,7 +15548,7 @@ class HostLoginList(AbstractModel):
         :param SrcIp: 来源ip
 注意：此字段可能返回 null，表示取不到有效值。
         :type SrcIp: str
-        :param Status: 1:正常登录；2异地登录； 5已加白
+        :param Status: 1:正常登录；2异地登录； 5已加白； 14：已处理；15：已忽略。
         :type Status: int
         :param Country: 国家id
 注意：此字段可能返回 null，表示取不到有效值。
@@ -16871,7 +17078,7 @@ class OpenProVersionRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param MachineType: 云主机类型。(当前参数已作废,可以留空值 )
+        :param MachineType: 云服务器类型。(当前参数已作废,可以留空值 )
         :type MachineType: str
         :param MachineRegion: 机器所属地域。(当前参数已作废,可以留空值 )
         :type MachineRegion: str
@@ -17019,7 +17226,7 @@ class PrivilegeEscalationProcess(AbstractModel):
         :type ParentProcPath: str
         :param ProcTree: 进程树
         :type ProcTree: str
-        :param Status: 处理状态：0-待处理 2-白名单
+        :param Status: 处理状态：0-待处理 2-白名单 3-已处理 4-已忽略
         :type Status: int
         :param CreateTime: 发生时间
         :type CreateTime: str
@@ -17763,7 +17970,7 @@ class ReverseShell(AbstractModel):
         :type ParentProcGroup: str
         :param ParentProcPath: 父进程路径
         :type ParentProcPath: str
-        :param Status: 处理状态：0-待处理 2-白名单
+        :param Status: 处理状态：0-待处理 2-白名单 3-已处理 4-已忽略
         :type Status: int
         :param CreateTime: 产生时间
         :type CreateTime: str
@@ -17909,7 +18116,7 @@ class RiskDnsList(AbstractModel):
         :type GlobalRuleId: int
         :param UserRuleId: 用户规则id
         :type UserRuleId: int
-        :param Status: 状态；0-待处理，2-已加白，3-非信任状态
+        :param Status: 状态；0-待处理，2-已加白，3-非信任状态，4-已处理，5-已忽略
         :type Status: int
         :param CreateTime: 首次访问时间
         :type CreateTime: str

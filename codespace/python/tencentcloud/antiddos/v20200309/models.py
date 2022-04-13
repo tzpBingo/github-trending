@@ -550,11 +550,19 @@ class BGPInstanceSpecification(AbstractModel):
 1：开启了自动续费
 ]
         :type AutoRenewFlag: int
+        :param UnionPackFlag: 联合产品标记，0代表普通高防包，1代表联合高防包
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnionPackFlag: int
+        :param ServiceBandWidth: 业务带宽
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceBandWidth: int
         """
         self.ProtectBandwidth = None
         self.ProtectCountLimit = None
         self.ProtectIPNumberLimit = None
         self.AutoRenewFlag = None
+        self.UnionPackFlag = None
+        self.ServiceBandWidth = None
 
 
     def _deserialize(self, params):
@@ -562,6 +570,8 @@ class BGPInstanceSpecification(AbstractModel):
         self.ProtectCountLimit = params.get("ProtectCountLimit")
         self.ProtectIPNumberLimit = params.get("ProtectIPNumberLimit")
         self.AutoRenewFlag = params.get("AutoRenewFlag")
+        self.UnionPackFlag = params.get("UnionPackFlag")
+        self.ServiceBandWidth = params.get("ServiceBandWidth")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2230,6 +2240,26 @@ class CreateSchedulingDomainRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param Product: 代表是否混合云本地化的产品。
+hybrid: 宙斯盾本地化
+不填写：其他
+        :type Product: str
+        """
+        self.Product = None
+
+
+    def _deserialize(self, params):
+        self.Product = params.get("Product")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class CreateSchedulingDomainResponse(AbstractModel):
     """CreateSchedulingDomain返回参数结构体
@@ -2384,7 +2414,7 @@ class DDoSGeoIPBlockConfig(AbstractModel):
     def __init__(self):
         r"""
         :param RegionType: 区域类型，取值[
-oversea(海外)
+oversea(境外)
 china(国内)
 customized(自定义地区)
 ]
@@ -3567,7 +3597,7 @@ class DescribeCCPrecisionPlyListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Business: 大禹子产品代号（bgpip-multip：表示高防包；bgpip：表示高防ip）
+        :param Business: 大禹子产品代号（bgpip-multip：表示高防包；bgpip：表示高防IP）
         :type Business: str
         :param Offset: 页起始偏移，取值为(页码-1)*一页条数
         :type Offset: int
@@ -3575,11 +3605,11 @@ class DescribeCCPrecisionPlyListRequest(AbstractModel):
         :type Limit: int
         :param InstanceId: 指定特定实例Id
         :type InstanceId: str
-        :param Ip: ip地址，普通高防ip要传该字段
+        :param Ip: IP地址，普通高防IP要传该字段
         :type Ip: str
-        :param Domain: 域名，普通高防ip要传该字段
+        :param Domain: 域名，普通高防IP要传该字段
         :type Domain: str
-        :param Protocol: 协议，普通高防ip要传该字段
+        :param Protocol: 协议，普通高防IP要传该字段
         :type Protocol: str
         """
         self.Business = None
@@ -3645,7 +3675,7 @@ class DescribeCCReqLimitPolicyListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Business: 大禹子产品代号（bgp-multip表示高防包，bgpip表示高防ip）
+        :param Business: 大禹子产品代号（bgp-multip表示高防包，bgpip表示高防IP）
         :type Business: str
         :param Offset: 页起始偏移，取值为(页码-1)*一页条数
         :type Offset: int
@@ -3653,11 +3683,11 @@ class DescribeCCReqLimitPolicyListRequest(AbstractModel):
         :type Limit: int
         :param InstanceId: 指定实例Id
         :type InstanceId: str
-        :param Ip: Ip地址，普通高防ip要传该字段
+        :param Ip: IP地址，普通高防IP要传该字段
         :type Ip: str
-        :param Domain: 域名，普通高防ip要传该字段
+        :param Domain: 域名，普通高防IP要传该字段
         :type Domain: str
-        :param Protocol: 协议，普通高防ip要传该字段
+        :param Protocol: 协议，普通高防IP要传该字段
         :type Protocol: str
         """
         self.Business = None
@@ -3895,7 +3925,7 @@ class DescribeCcBlackWhiteIpListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Business: 大禹子产品代号（bgp-multip：表示高防包；bgpip：表示高防ip）
+        :param Business: 大禹子产品代号（bgp-multip：表示高防包；bgpip：表示高防IP）
         :type Business: str
         :param InstanceId: 指定特定实例Id
         :type InstanceId: str
@@ -3903,13 +3933,13 @@ class DescribeCcBlackWhiteIpListRequest(AbstractModel):
         :type Offset: int
         :param Limit: 一页条数
         :type Limit: int
-        :param Ip: Ip地址，普通高防ip要传该字段
+        :param Ip: IP地址，普通高防IP要传该字段
         :type Ip: str
-        :param Domain: 域名，普通高防ip要传该字段
+        :param Domain: 域名，普通高防IP要传该字段
         :type Domain: str
-        :param Protocol: 协议，普通高防ip要传该字段
+        :param Protocol: 协议，普通高防IP要传该字段
         :type Protocol: str
-        :param FilterIp: 筛选ip，需要筛选黑白名单ip时传该字段
+        :param FilterIp: 筛选IP，需要筛选黑白名单IP时传该字段
         :type FilterIp: str
         :param FilterType: 黑白名单筛选字段，需要筛选黑白名单列表时传该字段
         :type FilterType: str
@@ -3981,19 +4011,19 @@ class DescribeCcGeoIPBlockConfigListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Business: 大禹子产品代号（bgpip-multip：表示高防包；bgpip：表示高防ip）
+        :param Business: 大禹子产品代号（bgpip-multip：表示高防包；bgpip：表示高防IP）
         :type Business: str
         :param Offset: 页起始偏移，取值为(页码-1)*一页条数
         :type Offset: int
         :param Limit: 一页条数
         :type Limit: int
-        :param InstanceId: 指定特定实例Id
+        :param InstanceId: 指定特定实例ID
         :type InstanceId: str
-        :param Ip: Ip地址，普通高防ip要传该字段
+        :param Ip: IP地址，普通高防IP要传该字段
         :type Ip: str
-        :param Domain: 域名，普通高防ip要传该字段
+        :param Domain: 域名，普通高防IP要传该字段
         :type Domain: str
-        :param Protocol: 协议，普通高防ip要传该字段
+        :param Protocol: 协议，普通高防IP要传该字段
         :type Protocol: str
         """
         self.Business = None
@@ -4518,6 +4548,8 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         :type FilterStatus: str
         :param FilterBoundStatus: 高防包绑定状态搜索，bounding：绑定中； failed：绑定失败
         :type FilterBoundStatus: str
+        :param FilterInstanceIdList: 实例id数组
+        :type FilterInstanceIdList: list of str
         """
         self.Offset = None
         self.Limit = None
@@ -4528,6 +4560,7 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterLine = None
         self.FilterStatus = None
         self.FilterBoundStatus = None
+        self.FilterInstanceIdList = None
 
 
     def _deserialize(self, params):
@@ -4540,6 +4573,7 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterLine = params.get("FilterLine")
         self.FilterStatus = params.get("FilterStatus")
         self.FilterBoundStatus = params.get("FilterBoundStatus")
+        self.FilterInstanceIdList = params.get("FilterInstanceIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6059,7 +6093,7 @@ class ModifyCCLevelPolicyRequest(AbstractModel):
         r"""
         :param InstanceId: 实例Id
         :type InstanceId: str
-        :param Ip: Ip地址
+        :param Ip: IP地址
         :type Ip: str
         :param Domain: 域名
         :type Domain: str
@@ -6225,7 +6259,7 @@ class ModifyCCThresholdPolicyRequest(AbstractModel):
         r"""
         :param InstanceId: 实例Id
         :type InstanceId: str
-        :param Ip: Ip地址
+        :param Ip: IP地址
         :type Ip: str
         :param Domain: 域名
         :type Domain: str

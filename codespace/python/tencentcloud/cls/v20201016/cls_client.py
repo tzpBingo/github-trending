@@ -54,6 +54,34 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CloseKafkaConsumer(self, request):
+        """关闭Kafka协议消费
+
+        :param request: Request instance for CloseKafkaConsumer.
+        :type request: :class:`tencentcloud.cls.v20201016.models.CloseKafkaConsumerRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.CloseKafkaConsumerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("CloseKafkaConsumer", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CloseKafkaConsumerResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateAlarm(self, request):
         """本接口用于创建告警策略。
 
@@ -138,6 +166,34 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateConfigExtra(self, request):
+        """本接口用于创建特殊采集配置任务
+
+        :param request: Request instance for CreateConfigExtra.
+        :type request: :class:`tencentcloud.cls.v20201016.models.CreateConfigExtraRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.CreateConfigExtraResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("CreateConfigExtra", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateConfigExtraResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateConsumer(self, request):
         """本接口用于创建投递任务
 
@@ -152,6 +208,34 @@ class ClsClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateConsumerResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateDataTransform(self, request):
+        """本接口用于创建数据加工任务。
+
+        :param request: Request instance for CreateDataTransform.
+        :type request: :class:`tencentcloud.cls.v20201016.models.CreateDataTransformRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.CreateDataTransformResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("CreateDataTransform", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateDataTransformResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -279,7 +363,7 @@ class ClsClient(AbstractClient):
 
 
     def CreateShipper(self, request):
-        """创建新的投递规则，客户如果使用此接口，需要自行处理CLS对指定bucket的写权限。
+        """创建新的投递规则，【！！！注意】使用此接口，需要检查是否配置了投递COS的角色和权限。如果没有配置，请参考文档投递权限查看和配置https://cloud.tencent.com/document/product/614/71623。
 
         :param request: Request instance for CreateShipper.
         :type request: :class:`tencentcloud.cls.v20201016.models.CreateShipperRequest`
@@ -418,6 +502,34 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteConfigExtra(self, request):
+        """本接口用于删除特殊采集规则配置
+
+        :param request: Request instance for DeleteConfigExtra.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DeleteConfigExtraRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DeleteConfigExtraResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DeleteConfigExtra", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DeleteConfigExtraResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteConfigFromMachineGroup(self, request):
         """删除应用到机器组的采集配置
 
@@ -460,6 +572,34 @@ class ClsClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeleteConsumerResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteDataTransform(self, request):
+        """本接口用于删除数据加工任务
+
+        :param request: Request instance for DeleteDataTransform.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DeleteDataTransformRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DeleteDataTransformResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DeleteDataTransform", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DeleteDataTransformResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -698,6 +838,34 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeConfigExtras(self, request):
+        """本接口用于获取特殊采集配置
+
+        :param request: Request instance for DescribeConfigExtras.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeConfigExtrasRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeConfigExtrasResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DescribeConfigExtras", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeConfigExtrasResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeConfigMachineGroups(self, request):
         """获取采集规则配置所绑定的机器组
 
@@ -782,6 +950,34 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeDataTransformInfo(self, request):
+        """本接口用于获取数据加工任务列表基本信息
+
+        :param request: Request instance for DescribeDataTransformInfo.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeDataTransformInfoRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeDataTransformInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DescribeDataTransformInfo", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeDataTransformInfoResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeExports(self, request):
         """本接口用于获取日志下载任务列表
 
@@ -852,6 +1048,34 @@ class ClsClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeLogContextResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeLogHistogram(self, request):
+        """本接口用于构建直方图
+
+        :param request: Request instance for DescribeLogHistogram.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeLogHistogramRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeLogHistogramResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("DescribeLogHistogram", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeLogHistogramResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -1230,6 +1454,34 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyConfigExtra(self, request):
+        """本接口用于修改特殊采集配置任务
+
+        :param request: Request instance for ModifyConfigExtra.
+        :type request: :class:`tencentcloud.cls.v20201016.models.ModifyConfigExtraRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.ModifyConfigExtraResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("ModifyConfigExtra", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyConfigExtraResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyConsumer(self, request):
         """本接口用于修改投递任务
 
@@ -1244,6 +1496,34 @@ class ClsClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyConsumerResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyDataTransform(self, request):
+        """本接口用于修改数据加工任务
+
+        :param request: Request instance for ModifyDataTransform.
+        :type request: :class:`tencentcloud.cls.v20201016.models.ModifyDataTransformRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.ModifyDataTransformResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("ModifyDataTransform", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyDataTransformResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -1398,6 +1678,34 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def OpenKafkaConsumer(self, request):
+        """打开kafka协议消费
+
+        :param request: Request instance for OpenKafkaConsumer.
+        :type request: :class:`tencentcloud.cls.v20201016.models.OpenKafkaConsumerRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.OpenKafkaConsumerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            body = self.call("OpenKafkaConsumer", params)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.OpenKafkaConsumerResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def RetryShipperTask(self, request):
         """重试失败的投递任务
 
@@ -1483,7 +1791,14 @@ class ClsClient(AbstractClient):
 
 
     def UploadLog(self, request, body):
-        """## 功能描述
+        """## 提示
+        为了保障您日志数据的可靠性以及更高效地使用日志服务，建议您使用CLS优化后的接口[上传结构化日志](https://cloud.tencent.com/document/api/614/16873)上传日志。
+
+        同时我们给此接口专门优化定制了多个语言版本的SDK供您选择，SDK提供统一的异步发送、资源控制、自动重试、优雅关闭、感知上报等功能，使上报日志功能更完善，详情请参考[SDK采集](https://cloud.tencent.com/document/product/614/67157)。
+
+        同时云API上传日志接口也支持同步上传日志数据，如果您选继续使用此接口请参考下文。
+
+        ## 功能描述
 
         本接口用于将日志写入到指定的日志主题。
 

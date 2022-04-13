@@ -254,6 +254,9 @@ INVALIDPARAMETER_ECDNINTERFACEERROR = 'InvalidParameter.EcdnInterfaceError'
 # 参数错误。
 INVALIDPARAMETER_PARAMERROR = 'InvalidParameter.ParamError'
 
+# 正则子模式超出上限。
+INVALIDPARAMETER_PATHREGEXTOOMANYSUBPATTERN = 'InvalidParameter.PathRegexTooManySubPattern'
+
 # 域名所在平台不支持远程鉴权。
 INVALIDPARAMETER_REMOTEAUTHINVALIDPLATFORM = 'InvalidParameter.RemoteAuthInvalidPlatform'
 
@@ -362,6 +365,9 @@ RESOURCEINUSE_TCBHOSTEXISTS = 'ResourceInUse.TcbHostExists'
 # 资源不存在。
 RESOURCENOTFOUND = 'ResourceNotFound'
 
+# 标签键不存在。
+RESOURCENOTFOUND_CAMTAGKEYNOTEXIST = 'ResourceNotFound.CamTagKeyNotExist'
+
 # 账号下无此域名，请确认后重试。
 RESOURCENOTFOUND_CDNHOSTNOTEXISTS = 'ResourceNotFound.CdnHostNotExists'
 
@@ -418,6 +424,9 @@ RESOURCEUNAVAILABLE_CDNHOSTNOICP = 'ResourceUnavailable.CdnHostNoIcp'
 
 # SCDN服务未生效，请购买或续费SCDN套餐后重试。
 RESOURCEUNAVAILABLE_SCDNUSERNOPACKAGE = 'ResourceUnavailable.ScdnUserNoPackage'
+
+# SCDN服务未生效，请购买或续费SCDN套餐后重试。
+RESOURCEUNAVAILABLE_SCDNUSERSUSPEND = 'ResourceUnavailable.ScdnUserSuspend'
 
 # 未授权操作。
 UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
@@ -496,6 +505,9 @@ UNAUTHORIZEDOPERATION_CSRFERROR = 'UnauthorizedOperation.CsrfError'
 
 # 鉴权域名为空。
 UNAUTHORIZEDOPERATION_DOMAINEMPTY = 'UnauthorizedOperation.DomainEmpty'
+
+# 请前往CDN控制台进行操作。
+UNAUTHORIZEDOPERATION_ECDNMIGRATEDCDN = 'UnauthorizedOperation.EcdnMigratedCdn'
 
 # 未授权的操作。
 UNAUTHORIZEDOPERATION_NOPERMISSION = 'UnauthorizedOperation.NoPermission'

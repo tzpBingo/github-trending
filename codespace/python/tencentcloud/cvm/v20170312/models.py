@@ -625,6 +625,8 @@ false（默认）：发送正常请求，通过检查后直接创建实例。
         :type InstanceChargeType: str
         :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。若指定实例的付费模式为预付费则该参数必传。
         :type InstanceChargePrepaid: :class:`tencentcloud.cvm.v20170312.models.InstanceChargePrepaid`
+        :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
+        :type DisableApiTermination: bool
         """
         self.LaunchTemplateName = None
         self.Placement = None
@@ -652,6 +654,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例。
         self.HpcClusterId = None
         self.InstanceChargeType = None
         self.InstanceChargePrepaid = None
+        self.DisableApiTermination = None
 
 
     def _deserialize(self, params):
@@ -709,6 +712,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例。
         if params.get("InstanceChargePrepaid") is not None:
             self.InstanceChargePrepaid = InstanceChargePrepaid()
             self.InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        self.DisableApiTermination = params.get("DisableApiTermination")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -933,6 +937,7 @@ class DataDisk(AbstractModel):
         :param DiskType: 数据盘类型。数据盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>LOCAL_NVME：本地NVME硬盘，与InstanceType强相关，不支持指定<br><li>LOCAL_PRO：本地HDD硬盘，与InstanceType强相关，不支持指定<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_HSSD：增强型SSD云硬盘<br><li>CLOUD_TSSD：极速型SSD云硬盘<br><br>默认取值：LOCAL_BASIC。<br><br>该参数对`ResizeInstanceDisk`接口无效。
         :type DiskType: str
         :param DiskId: 数据盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID，暂时不支持该参数。
+该参数目前仅用于`DescribeInstances`接口。
         :type DiskId: str
         :param DeleteWithInstance: 数据盘是否随子机销毁。取值范围：
 <li>TRUE：子机销毁时，销毁数据盘，只支持按小时后付费云盘
@@ -1742,7 +1747,7 @@ class DescribeInstanceTypeConfigsRequest(AbstractModel):
         :param Filters: <li><strong>zone</strong></li>
 <p style="padding-left: 30px;">按照【<strong>可用区</strong>】进行过滤。可用区形如：ap-guangzhou-1。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p><p style="padding-left: 30px;">可选项：<a href="https://cloud.tencent.com/document/product/213/6091">可用区列表</a></p>
 <li><strong>instance-family</strong></li>
-<p style="padding-left: 30px;">按照【<strong>实例机型系列</strong>】进行过滤。实例机型系列形如：S1、I1、M1等。</p><p style="padding-left: 30px;">类型：Integer</p><p style="padding-left: 30px;">必选：否</p>
+<p style="padding-left: 30px;">按照【<strong>实例机型系列</strong>】进行过滤。实例机型系列形如：S1、I1、M1等。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 每次请求的`Filters`的上限为10，`Filter.Values`的上限为1。
         :type Filters: list of Filter
         """
@@ -3586,14 +3591,17 @@ class InquiryPriceModifyInstancesChargeTypeRequest(AbstractModel):
         r"""
         :param InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728)接口返回值中的`InstanceId`获取。每次请求批量实例的上限为100。
         :type InstanceIds: list of str
-        :param InstanceChargeType: 实例[计费类型](https://cloud.tencent.com/document/product/213/2180)。<br><li>PREPAID：预付费，即包年包月。
+        :param InstanceChargeType: 实例[计费类型](https://cloud.tencent.com/document/product/213/2180)。<br><li>PREPAID：预付费，即包年包月。<br><li>POSTPAID_BY_HOUR：后付费，即按量付费。
         :type InstanceChargeType: str
-        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的续费时长、是否设置自动续费等属性。
+        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。<dx-alert infotype="explain" title="">若指定实例的付费模式为预付费则该参数必传。</dx-alert>
         :type InstanceChargePrepaid: :class:`tencentcloud.cvm.v20170312.models.InstanceChargePrepaid`
+        :param ModifyPortableDataDisk: 是否同时切换弹性数据云盘计费模式。取值范围：<br><li>TRUE：表示切换弹性数据云盘计费模式<br><li>FALSE：表示不切换弹性数据云盘计费模式<br><br>默认取值：FALSE。
+        :type ModifyPortableDataDisk: bool
         """
         self.InstanceIds = None
         self.InstanceChargeType = None
         self.InstanceChargePrepaid = None
+        self.ModifyPortableDataDisk = None
 
 
     def _deserialize(self, params):
@@ -3602,6 +3610,7 @@ class InquiryPriceModifyInstancesChargeTypeRequest(AbstractModel):
         if params.get("InstanceChargePrepaid") is not None:
             self.InstanceChargePrepaid = InstanceChargePrepaid()
             self.InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        self.ModifyPortableDataDisk = params.get("ModifyPortableDataDisk")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5634,14 +5643,17 @@ class ModifyInstancesChargeTypeRequest(AbstractModel):
         r"""
         :param InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728)接口返回值中的`InstanceId`获取。每次请求批量实例的上限为100。
         :type InstanceIds: list of str
-        :param InstanceChargeType: 实例[计费类型](https://cloud.tencent.com/document/product/213/2180)。<br><li>PREPAID：预付费，即包年包月。
+        :param InstanceChargeType: 实例[计费类型](https://cloud.tencent.com/document/product/213/2180)。<br><li>PREPAID：预付费，即包年包月。<br><li>POSTPAID_BY_HOUR：后付费，即按量付费。
         :type InstanceChargeType: str
         :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。<dx-alert infotype="explain" title="">若指定实例的付费模式为预付费则该参数必传。</dx-alert>
         :type InstanceChargePrepaid: :class:`tencentcloud.cvm.v20170312.models.InstanceChargePrepaid`
+        :param ModifyPortableDataDisk: 是否同时切换弹性数据云盘计费模式。取值范围：<br><li>TRUE：表示切换弹性数据云盘计费模式<br><li>FALSE：表示不切换弹性数据云盘计费模式<br><br>默认取值：FALSE。
+        :type ModifyPortableDataDisk: bool
         """
         self.InstanceIds = None
         self.InstanceChargeType = None
         self.InstanceChargePrepaid = None
+        self.ModifyPortableDataDisk = None
 
 
     def _deserialize(self, params):
@@ -5650,6 +5662,7 @@ class ModifyInstancesChargeTypeRequest(AbstractModel):
         if params.get("InstanceChargePrepaid") is not None:
             self.InstanceChargePrepaid = InstanceChargePrepaid()
             self.InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        self.ModifyPortableDataDisk = params.get("ModifyPortableDataDisk")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6679,7 +6692,7 @@ class ReservedInstances(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ReservedInstancesId: 已购买的预留实例计费ID。形如：650c138f-ae7e-4750-952a-96841d6e9fc1。
+        :param ReservedInstancesId: （此字段已废弃，建议使用字段：ReservedInstanceId）已购买的预留实例计费ID。形如：ri-rtbh4han。
         :type ReservedInstancesId: str
         :param InstanceType: 预留实例计费的规格。形如：S3.MEDIUM4。
 返回项：<a href="https://cloud.tencent.com/document/product/213/11518">预留实例计费规格列表</a>
@@ -6711,6 +6724,10 @@ class ReservedInstances(AbstractModel):
         :param InstanceFamily: 预留实例计费的类型。形如：S3。
 返回项：<a href="https://cloud.tencent.com/document/product/213/11518">预留实例计费类型列表</a>
         :type InstanceFamily: str
+        :param ReservedInstanceId: 已购买的预留实例计费ID。形如：ri-rtbh4han。
+        :type ReservedInstanceId: str
+        :param ReservedInstanceName: 预留实例显示名称。形如：riname-01
+        :type ReservedInstanceName: str
         """
         self.ReservedInstancesId = None
         self.InstanceType = None
@@ -6724,6 +6741,8 @@ class ReservedInstances(AbstractModel):
         self.CurrencyCode = None
         self.OfferingType = None
         self.InstanceFamily = None
+        self.ReservedInstanceId = None
+        self.ReservedInstanceName = None
 
 
     def _deserialize(self, params):
@@ -6739,6 +6758,8 @@ class ReservedInstances(AbstractModel):
         self.CurrencyCode = params.get("CurrencyCode")
         self.OfferingType = params.get("OfferingType")
         self.InstanceFamily = params.get("InstanceFamily")
+        self.ReservedInstanceId = params.get("ReservedInstanceId")
+        self.ReservedInstanceName = params.get("ReservedInstanceName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7194,6 +7215,8 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         :type LaunchTemplate: :class:`tencentcloud.cvm.v20170312.models.LaunchTemplate`
         :param ChcIds: 指定CHC物理服务器来创建CHC云主机。
         :type ChcIds: list of str
+        :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
+        :type DisableApiTermination: bool
         """
         self.InstanceChargeType = None
         self.InstanceChargePrepaid = None
@@ -7221,6 +7244,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         self.HpcClusterId = None
         self.LaunchTemplate = None
         self.ChcIds = None
+        self.DisableApiTermination = None
 
 
     def _deserialize(self, params):
@@ -7280,6 +7304,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
             self.LaunchTemplate = LaunchTemplate()
             self.LaunchTemplate._deserialize(params.get("LaunchTemplate"))
         self.ChcIds = params.get("ChcIds")
+        self.DisableApiTermination = params.get("DisableApiTermination")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

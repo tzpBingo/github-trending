@@ -210,10 +210,16 @@ class Page(ChannelOwner):
         )
         self._closed_or_crashed_future: asyncio.Future = asyncio.Future()
         self.on(
-            Page.Events.Close, lambda _: self._closed_or_crashed_future.set_result(True)
+            Page.Events.Close,
+            lambda _: self._closed_or_crashed_future.set_result(True)
+            if not self._closed_or_crashed_future.done()
+            else None,
         )
         self.on(
-            Page.Events.Crash, lambda _: self._closed_or_crashed_future.set_result(True)
+            Page.Events.Crash,
+            lambda _: self._closed_or_crashed_future.set_result(True)
+            if not self._closed_or_crashed_future.done()
+            else None,
         )
 
     def __repr__(self) -> str:
@@ -604,7 +610,9 @@ class Page(ChannelOwner):
         omitBackground: bool = None,
         fullPage: bool = None,
         clip: FloatRect = None,
-        disableAnimations: bool = None,
+        animations: Literal["allow", "disabled"] = None,
+        caret: Literal["hide", "initial"] = None,
+        scale: Literal["css", "device"] = None,
         mask: List["Locator"] = None,
     ) -> bytes:
         params = locals_to_params(locals())
