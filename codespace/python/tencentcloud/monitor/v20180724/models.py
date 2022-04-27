@@ -5308,7 +5308,12 @@ class DescribeStatisticDataRequest(AbstractModel):
         :type MetricNames: list of str
         :param Conditions: 维度条件，操作符支持=、in
         :type Conditions: list of MidQueryCondition
-        :param Period: 统计粒度。默认取值为300，单位为s
+        :param Period: 统计粒度。默认取值为300，单位为s；可选的值为60、300、3600、86400
+受存储时长限制，统计粒度与统计的时间范围有关：
+60s：EndTime-StartTime<12小时，且StartTime距当前时间不能超过15天；
+300s：EndTime-StartTime<3天，且StartTime距当前时间不能超过31天；
+3600s：EndTime-StartTime<30天，且StartTime距当前时间不能超过93天；
+86400s：EndTime-StartTime<186天，且StartTime距当前时间不能超过186天。
         :type Period: int
         :param StartTime: 起始时间，默认为当前时间，如2020-12-08T19:51:23+08:00
         :type StartTime: str
@@ -7710,12 +7715,16 @@ class URLNotice(AbstractModel):
         :param EndTime: 通知结束时间 一天开始的秒数
 注意：此字段可能返回 null，表示取不到有效值。
         :type EndTime: int
+        :param Weekday: 通知周期 1-7表示周一到周日
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Weekday: list of int
         """
         self.URL = None
         self.IsValid = None
         self.ValidationCode = None
         self.StartTime = None
         self.EndTime = None
+        self.Weekday = None
 
 
     def _deserialize(self, params):
@@ -7724,6 +7733,7 @@ class URLNotice(AbstractModel):
         self.ValidationCode = params.get("ValidationCode")
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
+        self.Weekday = params.get("Weekday")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8098,6 +8108,9 @@ class UserNotice(AbstractModel):
         :param PhoneCallType: 电话拨打类型 SYNC=同时拨打 CIRCLE=轮询拨打 不指定时默认是轮询
 注意：此字段可能返回 null，表示取不到有效值。
         :type PhoneCallType: str
+        :param Weekday: 通知周期 1-7表示周一到周日
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Weekday: list of int
         """
         self.ReceiverType = None
         self.StartTime = None
@@ -8111,6 +8124,7 @@ class UserNotice(AbstractModel):
         self.PhoneCircleInterval = None
         self.NeedPhoneArriveNotice = None
         self.PhoneCallType = None
+        self.Weekday = None
 
 
     def _deserialize(self, params):
@@ -8126,6 +8140,7 @@ class UserNotice(AbstractModel):
         self.PhoneCircleInterval = params.get("PhoneCircleInterval")
         self.NeedPhoneArriveNotice = params.get("NeedPhoneArriveNotice")
         self.PhoneCallType = params.get("PhoneCallType")
+        self.Weekday = params.get("Weekday")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

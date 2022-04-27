@@ -36,7 +36,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("AnalyzeDenseLandmarks", params)
+            headers = request.headers
+            body = self.call("AnalyzeDenseLandmarks", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.AnalyzeDenseLandmarksResponse()
@@ -67,48 +68,11 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("AnalyzeFace", params)
+            headers = request.headers
+            body = self.call("AnalyzeFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.AnalyzeFaceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def CheckSimilarPerson(self, request):
-        """对指定的人员库进行人员查重，给出疑似相同人的信息。
-
-        可以使用本接口对已有的单个人员库进行人员查重，避免同一人在单个人员库中拥有多个身份；也可以使用本接口对已有的多个人员库进行人员查重，查询同一人是否同时存在多个人员库中。
-
-        不支持跨算法模型版本查重，且目前仅支持算法模型为3.0的人员库使用查重功能。
-
-        >
-        - 若对完全相同的指定人员库进行查重操作，需等待上次操作完成才可。即，若两次请求输入的 GroupIds 相同，第一次请求若未完成，第二次请求将返回失败。
-
-        >
-        - 查重的人员库状态为腾讯云开始进行查重任务的那一刻，即您可以理解为当您发起查重请求后，若您的查重任务需要排队，在排队期间您对人员库的增删操作均会会影响查重的结果。腾讯云将以开始进行查重任务的那一刻人员库的状态进行查重。查重任务开始后，您对人员库的任何操作均不影响查重任务的进行。但建议查重任务开始后，请不要对人员库中人员和人脸进行增删操作。
-
-        :param request: Request instance for CheckSimilarPerson.
-        :type request: :class:`tencentcloud.iai.v20200303.models.CheckSimilarPersonRequest`
-        :rtype: :class:`tencentcloud.iai.v20200303.models.CheckSimilarPersonResponse`
-
-        """
-        try:
-            params = request._serialize()
-            body = self.call("CheckSimilarPerson", params)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CheckSimilarPersonResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -138,7 +102,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CompareFace", params)
+            headers = request.headers
+            body = self.call("CompareFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CompareFaceResponse()
@@ -159,9 +124,9 @@ class IaiClient(AbstractClient):
     def CompareMaskFace(self, request):
         """对两张图片中的人脸进行相似度比对，返回人脸相似度分数。
 
-        戴口罩人脸比对接口可在人脸戴口罩情况下使用，口罩遮挡程度最高可以遮挡鼻尖。
+        防疫场景人脸比对接口可在人脸戴口罩情况下使用，口罩遮挡程度最高可以遮挡鼻尖。
 
-        如图片人脸不存在戴口罩情况，建议使用人脸比对服务。
+        如图片人脸不存在防疫场景下戴口罩的情况，建议使用人脸比对服务。
 
         :param request: Request instance for CompareMaskFace.
         :type request: :class:`tencentcloud.iai.v20200303.models.CompareMaskFaceRequest`
@@ -170,7 +135,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CompareMaskFace", params)
+            headers = request.headers
+            body = self.call("CompareMaskFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CompareMaskFaceResponse()
@@ -200,7 +166,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CopyPerson", params)
+            headers = request.headers
+            body = self.call("CopyPerson", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CopyPersonResponse()
@@ -231,7 +198,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateFace", params)
+            headers = request.headers
+            body = self.call("CreateFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateFaceResponse()
@@ -264,7 +232,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateGroup", params)
+            headers = request.headers
+            body = self.call("CreateGroup", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateGroupResponse()
@@ -295,7 +264,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreatePerson", params)
+            headers = request.headers
+            body = self.call("CreatePerson", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreatePersonResponse()
@@ -323,7 +293,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DeleteFace", params)
+            headers = request.headers
+            body = self.call("DeleteFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeleteFaceResponse()
@@ -351,7 +322,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DeleteGroup", params)
+            headers = request.headers
+            body = self.call("DeleteGroup", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeleteGroupResponse()
@@ -379,7 +351,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DeletePerson", params)
+            headers = request.headers
+            body = self.call("DeletePerson", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeletePersonResponse()
@@ -407,7 +380,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DeletePersonFromGroup", params)
+            headers = request.headers
+            body = self.call("DeletePersonFromGroup", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeletePersonFromGroupResponse()
@@ -450,7 +424,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DetectFace", params)
+            headers = request.headers
+            body = self.call("DetectFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DetectFaceResponse()
@@ -498,7 +473,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DetectFaceAttributes", params)
+            headers = request.headers
+            body = self.call("DetectFaceAttributes", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DetectFaceAttributesResponse()
@@ -537,7 +513,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DetectLiveFace", params)
+            headers = request.headers
+            body = self.call("DetectLiveFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DetectLiveFaceResponse()
@@ -567,72 +544,11 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DetectLiveFaceAccurate", params)
+            headers = request.headers
+            body = self.call("DetectLiveFaceAccurate", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DetectLiveFaceAccurateResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def EstimateCheckSimilarPersonCostTime(self, request):
-        """获取若要开始一个人员查重任务，这个任务结束的预估时间。
-
-        若EndTimestamp符合您预期，请您尽快发起人员查重请求，否则导致可能需要更多处理时间。
-
-        若预估时间超过5小时，则无法使用人员查重功能。
-
-        :param request: Request instance for EstimateCheckSimilarPersonCostTime.
-        :type request: :class:`tencentcloud.iai.v20200303.models.EstimateCheckSimilarPersonCostTimeRequest`
-        :rtype: :class:`tencentcloud.iai.v20200303.models.EstimateCheckSimilarPersonCostTimeResponse`
-
-        """
-        try:
-            params = request._serialize()
-            body = self.call("EstimateCheckSimilarPersonCostTime", params)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EstimateCheckSimilarPersonCostTimeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def GetCheckSimilarPersonJobIdList(self, request):
-        """获取人员查重任务列表，按任务创建时间逆序（最新的在前面）。
-
-        只保留最近1年的数据。
-
-        :param request: Request instance for GetCheckSimilarPersonJobIdList.
-        :type request: :class:`tencentcloud.iai.v20200303.models.GetCheckSimilarPersonJobIdListRequest`
-        :rtype: :class:`tencentcloud.iai.v20200303.models.GetCheckSimilarPersonJobIdListResponse`
-
-        """
-        try:
-            params = request._serialize()
-            body = self.call("GetCheckSimilarPersonJobIdList", params)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.GetCheckSimilarPersonJobIdListResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -657,7 +573,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetGroupInfo", params)
+            headers = request.headers
+            body = self.call("GetGroupInfo", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetGroupInfoResponse()
@@ -685,7 +602,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetGroupList", params)
+            headers = request.headers
+            body = self.call("GetGroupList", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetGroupListResponse()
@@ -713,7 +631,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetPersonBaseInfo", params)
+            headers = request.headers
+            body = self.call("GetPersonBaseInfo", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetPersonBaseInfoResponse()
@@ -741,7 +660,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetPersonGroupInfo", params)
+            headers = request.headers
+            body = self.call("GetPersonGroupInfo", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetPersonGroupInfoResponse()
@@ -769,7 +689,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetPersonList", params)
+            headers = request.headers
+            body = self.call("GetPersonList", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetPersonListResponse()
@@ -797,38 +718,11 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetPersonListNum", params)
+            headers = request.headers
+            body = self.call("GetPersonListNum", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetPersonListNumResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def GetSimilarPersonResult(self, request):
-        """获取人员查重接口（CheckSimilarPerson）结果。
-
-        :param request: Request instance for GetSimilarPersonResult.
-        :type request: :class:`tencentcloud.iai.v20200303.models.GetSimilarPersonResultRequest`
-        :rtype: :class:`tencentcloud.iai.v20200303.models.GetSimilarPersonResultResponse`
-
-        """
-        try:
-            params = request._serialize()
-            body = self.call("GetSimilarPersonResult", params)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.GetSimilarPersonResultResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -853,7 +747,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetUpgradeGroupFaceModelVersionJobList", params)
+            headers = request.headers
+            body = self.call("GetUpgradeGroupFaceModelVersionJobList", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetUpgradeGroupFaceModelVersionJobListResponse()
@@ -881,7 +776,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetUpgradeGroupFaceModelVersionResult", params)
+            headers = request.headers
+            body = self.call("GetUpgradeGroupFaceModelVersionResult", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetUpgradeGroupFaceModelVersionResultResponse()
@@ -909,7 +805,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("ModifyGroup", params)
+            headers = request.headers
+            body = self.call("ModifyGroup", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyGroupResponse()
@@ -937,7 +834,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("ModifyPersonBaseInfo", params)
+            headers = request.headers
+            body = self.call("ModifyPersonBaseInfo", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyPersonBaseInfoResponse()
@@ -965,7 +863,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("ModifyPersonGroupInfo", params)
+            headers = request.headers
+            body = self.call("ModifyPersonGroupInfo", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyPersonGroupInfoResponse()
@@ -995,7 +894,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("RevertGroupFaceModelVersion", params)
+            headers = request.headers
+            body = self.call("RevertGroupFaceModelVersion", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.RevertGroupFaceModelVersionResponse()
@@ -1038,7 +938,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("SearchFaces", params)
+            headers = request.headers
+            body = self.call("SearchFaces", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.SearchFacesResponse()
@@ -1080,7 +981,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("SearchFacesReturnsByGroup", params)
+            headers = request.headers
+            body = self.call("SearchFacesReturnsByGroup", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.SearchFacesReturnsByGroupResponse()
@@ -1118,7 +1020,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("SearchPersons", params)
+            headers = request.headers
+            body = self.call("SearchPersons", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.SearchPersonsResponse()
@@ -1155,7 +1058,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("SearchPersonsReturnsByGroup", params)
+            headers = request.headers
+            body = self.call("SearchPersonsReturnsByGroup", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.SearchPersonsReturnsByGroupResponse()
@@ -1188,7 +1092,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("UpgradeGroupFaceModelVersion", params)
+            headers = request.headers
+            body = self.call("UpgradeGroupFaceModelVersion", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.UpgradeGroupFaceModelVersionResponse()
@@ -1223,7 +1128,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("VerifyFace", params)
+            headers = request.headers
+            body = self.call("VerifyFace", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.VerifyFaceResponse()
@@ -1259,7 +1165,8 @@ class IaiClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("VerifyPerson", params)
+            headers = request.headers
+            body = self.call("VerifyPerson", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.VerifyPersonResponse()

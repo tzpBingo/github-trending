@@ -1119,6 +1119,130 @@ class ApplyDeclareResult(AbstractModel):
         
 
 
+class ApplyOpenBankOrderDetailReceiptRequest(AbstractModel):
+    """ApplyOpenBankOrderDetailReceipt请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OutApplyId: 外部回单申请编号
+        :type OutApplyId: str
+        :param ChannelMerchantId: 渠道商户ID
+        :type ChannelMerchantId: str
+        :param ChannelSubMerchantId: 渠道子商户ID
+        :type ChannelSubMerchantId: str
+        :param ChannelName: 渠道名称，目前只支持ALIPAY
+        :type ChannelName: str
+        :param PaymentMethod: 支付方式，目前只支持SAFT_ISV
+        :type PaymentMethod: str
+        :param ChannelOrderId: 云企付平台订单号
+        :type ChannelOrderId: str
+        """
+        self.OutApplyId = None
+        self.ChannelMerchantId = None
+        self.ChannelSubMerchantId = None
+        self.ChannelName = None
+        self.PaymentMethod = None
+        self.ChannelOrderId = None
+
+
+    def _deserialize(self, params):
+        self.OutApplyId = params.get("OutApplyId")
+        self.ChannelMerchantId = params.get("ChannelMerchantId")
+        self.ChannelSubMerchantId = params.get("ChannelSubMerchantId")
+        self.ChannelName = params.get("ChannelName")
+        self.PaymentMethod = params.get("PaymentMethod")
+        self.ChannelOrderId = params.get("ChannelOrderId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ApplyOpenBankOrderDetailReceiptResponse(AbstractModel):
+    """ApplyOpenBankOrderDetailReceipt返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ErrCode: 错误码。
+        :type ErrCode: str
+        :param ErrMessage: 错误消息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrMessage: str
+        :param Result: 返回结果。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.cpdp.v20190820.models.ApplyOpenBankOrderDetailReceiptResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ErrCode = None
+        self.ErrMessage = None
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ErrCode = params.get("ErrCode")
+        self.ErrMessage = params.get("ErrMessage")
+        if params.get("Result") is not None:
+            self.Result = ApplyOpenBankOrderDetailReceiptResult()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class ApplyOpenBankOrderDetailReceiptResult(AbstractModel):
+    """申请单笔交易回单结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelApplyId: 渠道回单申请ID
+        :type ChannelApplyId: str
+        :param ReceiptStatus: 申请状态。
+SUCCESS：申请成功；
+FAILED：申请失败；
+PROCESSING：申请中。
+注意：若返回申请中，需要再次调用回单申请结果查询接口，查询结果。
+        :type ReceiptStatus: str
+        :param ReceiptMessage: 申请返回描述，例如失败原因等。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReceiptMessage: str
+        :param DownloadUrl: 回单下载链接，申请成功时返回。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DownloadUrl: str
+        :param ExpireTime: 过期时间，yyyy-MM-dd HH:mm:ss格式。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExpireTime: str
+        """
+        self.ChannelApplyId = None
+        self.ReceiptStatus = None
+        self.ReceiptMessage = None
+        self.DownloadUrl = None
+        self.ExpireTime = None
+
+
+    def _deserialize(self, params):
+        self.ChannelApplyId = params.get("ChannelApplyId")
+        self.ReceiptStatus = params.get("ReceiptStatus")
+        self.ReceiptMessage = params.get("ReceiptMessage")
+        self.DownloadUrl = params.get("DownloadUrl")
+        self.ExpireTime = params.get("ExpireTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ApplyOutwardOrderData(AbstractModel):
     """汇出指令申请数据
 
@@ -3081,6 +3205,62 @@ class ClearItem(AbstractModel):
         
 
 
+class CloseCloudOrderRequest(AbstractModel):
+    """CloseCloudOrder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MidasAppId: 米大师分配的支付主MidasAppId
+        :type MidasAppId: str
+        :param UserId: 用户Id，长度不小于5位，仅支持字母和数字的组合
+        :type UserId: str
+        :param OutTradeNo: 开发者订单号
+        :type OutTradeNo: str
+        :param MidasEnvironment: 环境类型
+__release__:生产环境
+__sandbox__:沙箱环境
+_不填默认为生产环境_
+        :type MidasEnvironment: str
+        """
+        self.MidasAppId = None
+        self.UserId = None
+        self.OutTradeNo = None
+        self.MidasEnvironment = None
+
+
+    def _deserialize(self, params):
+        self.MidasAppId = params.get("MidasAppId")
+        self.UserId = params.get("UserId")
+        self.OutTradeNo = params.get("OutTradeNo")
+        self.MidasEnvironment = params.get("MidasEnvironment")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloseCloudOrderResponse(AbstractModel):
+    """CloseCloudOrder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CloseOpenBankPaymentOrderRequest(AbstractModel):
     """CloseOpenBankPaymentOrder请求参数结构体
 
@@ -3248,6 +3428,762 @@ class CloseOrderResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class CloudAttachmentInfo(AbstractModel):
+    """附加项信息对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AttachmentAmount: 附加项金额。
+附加项的金额（必须是正数，单位：分），代表积分的数量、抵扣的金额、溢价的金额、补贴的金额
+        :type AttachmentAmount: int
+        :param AttachmentType: 附加项类型。
+Add：加项；
+Sub：减项；
+Point：积分项；
+Subsidy：补贴项。
+        :type AttachmentType: str
+        :param AttachmentName: 附加项名称。
+当银行作为收单机构可能会对该字段有要求，请向米大师确认。
+        :type AttachmentName: str
+        :param AttachmentCode: 附加项编号。
+当银行作为收单机构可能会对该字段有要求，请向米大师确认。
+        :type AttachmentCode: str
+        """
+        self.AttachmentAmount = None
+        self.AttachmentType = None
+        self.AttachmentName = None
+        self.AttachmentCode = None
+
+
+    def _deserialize(self, params):
+        self.AttachmentAmount = params.get("AttachmentAmount")
+        self.AttachmentType = params.get("AttachmentType")
+        self.AttachmentName = params.get("AttachmentName")
+        self.AttachmentCode = params.get("AttachmentCode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudChannelExternalUserInfo(AbstractModel):
+    """渠道方用户信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelExternalUserType: 渠道方用户类型，枚举值:
+WX_OPENID 微信支付类型
+ALIPAY_BUYERID 支付宝支付类型
+        :type ChannelExternalUserType: str
+        :param ChannelExternalUserId: 渠道方用户Id
+        :type ChannelExternalUserId: str
+        """
+        self.ChannelExternalUserType = None
+        self.ChannelExternalUserId = None
+
+
+    def _deserialize(self, params):
+        self.ChannelExternalUserType = params.get("ChannelExternalUserType")
+        self.ChannelExternalUserId = params.get("ChannelExternalUserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudClientInfo(AbstractModel):
+    """客户端信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClientType: 场景类型。
+wechat_ecommerce渠道 - h5支付方式，此字段必填；
+枚举值：
+CLIENT_TYPE_UNKNOWN 未知;
+CLIENT_TYPE_IOS ios系统;
+CLIENT_TYPE_ANDROID 安卓系统;
+CLIENT_TYPE_WAP WAP场景;
+CLIENT_TYPE_H5 H5场景;
+        :type ClientType: str
+        :param AppName: 应用名称。
+        :type AppName: str
+        :param AppUrl: 网站URL。
+        :type AppUrl: str
+        :param BundleId: IOS平台BundleID。
+        :type BundleId: str
+        :param PackageName: Android平台PackageName
+        :type PackageName: str
+        """
+        self.ClientType = None
+        self.AppName = None
+        self.AppUrl = None
+        self.BundleId = None
+        self.PackageName = None
+
+
+    def _deserialize(self, params):
+        self.ClientType = params.get("ClientType")
+        self.AppName = params.get("AppName")
+        self.AppUrl = params.get("AppUrl")
+        self.BundleId = params.get("BundleId")
+        self.PackageName = params.get("PackageName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudExternalChannelData(AbstractModel):
+    """第三方渠道数据信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ExternalChannelDataName: 第三方渠道数据名。
+PAYMENT_ORDER_EXTERNAL_REQUEST_DATA: 支付下单请求数据
+PAYMENT_ORDER_EXTERNAL_RETURN_DATA: 支付下单返回数据
+PAYMENT_ORDER_EXTERNAL_NOTIFY_DATA: 支付通知数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExternalChannelDataName: str
+        :param ExternalChannelDataValue: 第三方渠道数据值。
+当ExternalChannelDataType=PAYMENT时，反序列化格式请参考[ExternalChannelPaymentDataValue](https://dev.tke.midas.qq.com/juxin-doc-next/apidocs/external-channel-data/QueryExternalChannelData.html#externalchannelpaymentdatavalue)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExternalChannelDataValue: str
+        """
+        self.ExternalChannelDataName = None
+        self.ExternalChannelDataValue = None
+
+
+    def _deserialize(self, params):
+        self.ExternalChannelDataName = params.get("ExternalChannelDataName")
+        self.ExternalChannelDataValue = params.get("ExternalChannelDataValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudExternalPromptGroup(AbstractModel):
+    """渠道扩展促销信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelName: 渠道名。
+为米大师定义的枚举值：
+wechat 微信渠道
+        :type ChannelName: str
+        :param ExternalPromptInfoList: 渠道扩展促销信息列表，由各个渠道自行定义。
+ChannelName为wechat时，组成为 <Wechat-ExternalPromptInfo>
+        :type ExternalPromptInfoList: list of CloudExternalPromptInfo
+        """
+        self.ChannelName = None
+        self.ExternalPromptInfoList = None
+
+
+    def _deserialize(self, params):
+        self.ChannelName = params.get("ChannelName")
+        if params.get("ExternalPromptInfoList") is not None:
+            self.ExternalPromptInfoList = []
+            for item in params.get("ExternalPromptInfoList"):
+                obj = CloudExternalPromptInfo()
+                obj._deserialize(item)
+                self.ExternalPromptInfoList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudExternalPromptInfo(AbstractModel):
+    """渠道扩展促销信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ExternalPromptType: 优惠商品信息类型。
+        :type ExternalPromptType: str
+        :param ExternalPromptValue: 优惠商品信息数据。
+        :type ExternalPromptValue: str
+        :param ExternalPromptName: 优惠商品名称。
+        :type ExternalPromptName: str
+        """
+        self.ExternalPromptType = None
+        self.ExternalPromptValue = None
+        self.ExternalPromptName = None
+
+
+    def _deserialize(self, params):
+        self.ExternalPromptType = params.get("ExternalPromptType")
+        self.ExternalPromptValue = params.get("ExternalPromptValue")
+        self.ExternalPromptName = params.get("ExternalPromptName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudGlobalPayTimeInfo(AbstractModel):
+    """全局支付时间信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTimestamp: 订单开始时间。
+不指定时默认为当前时间。
+        :type StartTimestamp: int
+        :param ExpireTimestamp: 订单结束时间。
+逾期将会拒绝下单。不指定时默认为当前时间的7天后结束。
+        :type ExpireTimestamp: int
+        :param TimeOffset: 时区。
+不指定时默认为28800，表示北京时间（东八区）。
+        :type TimeOffset: int
+        """
+        self.StartTimestamp = None
+        self.ExpireTimestamp = None
+        self.TimeOffset = None
+
+
+    def _deserialize(self, params):
+        self.StartTimestamp = params.get("StartTimestamp")
+        self.ExpireTimestamp = params.get("ExpireTimestamp")
+        self.TimeOffset = params.get("TimeOffset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudOrderReturn(AbstractModel):
+    """返回订单信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppId: 米大师分配的支付主MidasAppId
+        :type AppId: str
+        :param OutTradeNo: 开发者支付订单号
+        :type OutTradeNo: str
+        :param SubOrderList: 调用下单接口传进来的子单列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubOrderList: list of CloudSubOrderReturn
+        :param TransactionId: 调用下单接口获取的米大师交易订单号
+        :type TransactionId: str
+        :param UserId: 用户Id
+        :type UserId: str
+        :param Channel: 支付渠道
+wechat:微信支付
+        :type Channel: str
+        :param ProductId: 物品Id
+        :type ProductId: str
+        :param Metadata: 发货标识，由开发者在调用下单接口的时候传入
+        :type Metadata: str
+        :param CurrencyType: ISO货币代码
+        :type CurrencyType: str
+        :param Amt: 支付金额，单位：分
+        :type Amt: int
+        :param OrderState: 订单状态
+0:初始状态，获取米大师交易订单成功
+1:拉起米大师支付页面成功，用户未支付
+2:用户支付成功，正在发货
+3:用户支付成功，发货失败
+4:用户支付成功，发货成功
+5:关单中
+6:已关单
+        :type OrderState: str
+        :param OrderTime: 下单时间，unix时间戳
+        :type OrderTime: str
+        :param PayTime: 支付时间，unix时间戳
+        :type PayTime: str
+        :param CallBackTime: 支付回调时间，unix时间戳
+        :type CallBackTime: str
+        :param ChannelExternalOrderId: 支付机构订单号
+        :type ChannelExternalOrderId: str
+        :param ChannelOrderId: 米大师内部渠道订单号
+        :type ChannelOrderId: str
+        :param RefundFlag: 是否曾退款
+        :type RefundFlag: str
+        :param CashAmt: 用户支付金额
+        :type CashAmt: str
+        :param CouponAmt: 抵扣券金额
+        :type CouponAmt: str
+        :param ProductName: 商品名称
+        :type ProductName: str
+        :param SettleInfo: 结算信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SettleInfo: :class:`tencentcloud.cpdp.v20190820.models.CloudSettleInfo`
+        :param AttachmentInfoList: 附加项信息列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttachmentInfoList: list of CloudAttachmentInfo
+        :param ChannelExternalUserInfoList: 渠道方返回的用户信息列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelExternalUserInfoList: list of CloudChannelExternalUserInfo
+        :param ExternalReturnPromptGroupList: 渠道扩展促销列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExternalReturnPromptGroupList: list of CloudExternalPromptGroup
+        :param SceneInfo: 场景扩展信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SceneInfo: str
+        """
+        self.AppId = None
+        self.OutTradeNo = None
+        self.SubOrderList = None
+        self.TransactionId = None
+        self.UserId = None
+        self.Channel = None
+        self.ProductId = None
+        self.Metadata = None
+        self.CurrencyType = None
+        self.Amt = None
+        self.OrderState = None
+        self.OrderTime = None
+        self.PayTime = None
+        self.CallBackTime = None
+        self.ChannelExternalOrderId = None
+        self.ChannelOrderId = None
+        self.RefundFlag = None
+        self.CashAmt = None
+        self.CouponAmt = None
+        self.ProductName = None
+        self.SettleInfo = None
+        self.AttachmentInfoList = None
+        self.ChannelExternalUserInfoList = None
+        self.ExternalReturnPromptGroupList = None
+        self.SceneInfo = None
+
+
+    def _deserialize(self, params):
+        self.AppId = params.get("AppId")
+        self.OutTradeNo = params.get("OutTradeNo")
+        if params.get("SubOrderList") is not None:
+            self.SubOrderList = []
+            for item in params.get("SubOrderList"):
+                obj = CloudSubOrderReturn()
+                obj._deserialize(item)
+                self.SubOrderList.append(obj)
+        self.TransactionId = params.get("TransactionId")
+        self.UserId = params.get("UserId")
+        self.Channel = params.get("Channel")
+        self.ProductId = params.get("ProductId")
+        self.Metadata = params.get("Metadata")
+        self.CurrencyType = params.get("CurrencyType")
+        self.Amt = params.get("Amt")
+        self.OrderState = params.get("OrderState")
+        self.OrderTime = params.get("OrderTime")
+        self.PayTime = params.get("PayTime")
+        self.CallBackTime = params.get("CallBackTime")
+        self.ChannelExternalOrderId = params.get("ChannelExternalOrderId")
+        self.ChannelOrderId = params.get("ChannelOrderId")
+        self.RefundFlag = params.get("RefundFlag")
+        self.CashAmt = params.get("CashAmt")
+        self.CouponAmt = params.get("CouponAmt")
+        self.ProductName = params.get("ProductName")
+        if params.get("SettleInfo") is not None:
+            self.SettleInfo = CloudSettleInfo()
+            self.SettleInfo._deserialize(params.get("SettleInfo"))
+        if params.get("AttachmentInfoList") is not None:
+            self.AttachmentInfoList = []
+            for item in params.get("AttachmentInfoList"):
+                obj = CloudAttachmentInfo()
+                obj._deserialize(item)
+                self.AttachmentInfoList.append(obj)
+        if params.get("ChannelExternalUserInfoList") is not None:
+            self.ChannelExternalUserInfoList = []
+            for item in params.get("ChannelExternalUserInfoList"):
+                obj = CloudChannelExternalUserInfo()
+                obj._deserialize(item)
+                self.ChannelExternalUserInfoList.append(obj)
+        if params.get("ExternalReturnPromptGroupList") is not None:
+            self.ExternalReturnPromptGroupList = []
+            for item in params.get("ExternalReturnPromptGroupList"):
+                obj = CloudExternalPromptGroup()
+                obj._deserialize(item)
+                self.ExternalReturnPromptGroupList.append(obj)
+        self.SceneInfo = params.get("SceneInfo")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudSettleInfo(AbstractModel):
+    """结算信息对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NeedToBeConfirmed: 是否需要支付确认。
+0: 不需要支付确认
+1: 需要支付确认
+传1时，需要在支付完成后成功调用了《支付确认》接口，该笔订单才会被清分出去
+        :type NeedToBeConfirmed: int
+        :param ProfitSharing: 是否指定分账。
+0: 不指定分账
+1: 指定分账
+        :type ProfitSharing: int
+        """
+        self.NeedToBeConfirmed = None
+        self.ProfitSharing = None
+
+
+    def _deserialize(self, params):
+        self.NeedToBeConfirmed = params.get("NeedToBeConfirmed")
+        self.ProfitSharing = params.get("ProfitSharing")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudStoreInfo(AbstractModel):
+    """门店信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StoreId: 门店ID。
+        :type StoreId: str
+        :param StoreName: 门店名称。
+        :type StoreName: str
+        :param StoreAddress: 门店地址。
+        :type StoreAddress: str
+        :param StoreAreaCode: 门店地区代码。
+        :type StoreAreaCode: str
+        :param StoreDeviceId: 设备ID。
+wechat_ecommerce渠道 - h5支付方式，此字段必填。
+        :type StoreDeviceId: str
+        """
+        self.StoreId = None
+        self.StoreName = None
+        self.StoreAddress = None
+        self.StoreAreaCode = None
+        self.StoreDeviceId = None
+
+
+    def _deserialize(self, params):
+        self.StoreId = params.get("StoreId")
+        self.StoreName = params.get("StoreName")
+        self.StoreAddress = params.get("StoreAddress")
+        self.StoreAreaCode = params.get("StoreAreaCode")
+        self.StoreDeviceId = params.get("StoreDeviceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudSubOrder(AbstractModel):
+    """子订单对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubOutTradeNo: 子订单号。
+长度32个字符供参考，部分渠道存在长度更短的情况接入时请联系开发咨询。
+        :type SubOutTradeNo: str
+        :param SubAppId: 支付子商户ID。
+米大师计费SubAppId，代表子商户。
+        :type SubAppId: str
+        :param ProductName: 商品名称。
+业务自定义的子订单商品名称，无需URL编码，长度限制以具体所接入渠道为准。
+        :type ProductName: str
+        :param ProductDetail: 商品详情。
+业务自定义的子订单商品详情，无需URL编码，长度限制以具体所接入渠道为准。
+        :type ProductDetail: str
+        :param PlatformIncome: 平台应收。
+子订单平台应收金额，单位：分，需要注意的是Amt = PlatformIncome+SubMchIncome。
+        :type PlatformIncome: int
+        :param SubMchIncome: 商户应收。
+子订单结算应收金额，单位：分，需要注意的是Amt = PlatformIncome+SubMchIncome。
+        :type SubMchIncome: int
+        :param Metadata: 透传字段。
+发货标识，由开发者在调用米大师下单接口的 时候下发。
+        :type Metadata: str
+        :param Amt: 支付金额。
+子订单支付金额，需要注意的是Amt = PlatformIncome+SubMchIncome。
+        :type Amt: int
+        :param OriginalAmt: 原始金额。
+子订单原始金额，OriginalAmt>=Amt。
+        :type OriginalAmt: int
+        :param WxSubMchId: 微信子商户号。
+        :type WxSubMchId: str
+        :param SettleInfo: 结算信息。
+例如是否需要分账、是否需要支付确认等。
+        :type SettleInfo: :class:`tencentcloud.cpdp.v20190820.models.CloudSettleInfo`
+        :param AttachmentInfoList: 附加项信息列表。
+例如溢价信息、抵扣信息、积分信息、补贴信息
+通过该字段可以实现渠道方的优惠抵扣补贴等营销功能。
+        :type AttachmentInfoList: list of CloudAttachmentInfo
+        """
+        self.SubOutTradeNo = None
+        self.SubAppId = None
+        self.ProductName = None
+        self.ProductDetail = None
+        self.PlatformIncome = None
+        self.SubMchIncome = None
+        self.Metadata = None
+        self.Amt = None
+        self.OriginalAmt = None
+        self.WxSubMchId = None
+        self.SettleInfo = None
+        self.AttachmentInfoList = None
+
+
+    def _deserialize(self, params):
+        self.SubOutTradeNo = params.get("SubOutTradeNo")
+        self.SubAppId = params.get("SubAppId")
+        self.ProductName = params.get("ProductName")
+        self.ProductDetail = params.get("ProductDetail")
+        self.PlatformIncome = params.get("PlatformIncome")
+        self.SubMchIncome = params.get("SubMchIncome")
+        self.Metadata = params.get("Metadata")
+        self.Amt = params.get("Amt")
+        self.OriginalAmt = params.get("OriginalAmt")
+        self.WxSubMchId = params.get("WxSubMchId")
+        if params.get("SettleInfo") is not None:
+            self.SettleInfo = CloudSettleInfo()
+            self.SettleInfo._deserialize(params.get("SettleInfo"))
+        if params.get("AttachmentInfoList") is not None:
+            self.AttachmentInfoList = []
+            for item in params.get("AttachmentInfoList"):
+                obj = CloudAttachmentInfo()
+                obj._deserialize(item)
+                self.AttachmentInfoList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudSubOrderRefund(AbstractModel):
+    """退款子单
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RefundAmt: 子订单退款金额
+        :type RefundAmt: int
+        :param PlatformRefundAmt: 平台应退金额
+        :type PlatformRefundAmt: int
+        :param SubMchRefundAmt: 商家应退金额
+        :type SubMchRefundAmt: int
+        :param SubOutTradeNo: 子订单号
+        :type SubOutTradeNo: str
+        :param SubRefundId: 子退款单号，调用方需要保证全局唯一性
+        :type SubRefundId: str
+        """
+        self.RefundAmt = None
+        self.PlatformRefundAmt = None
+        self.SubMchRefundAmt = None
+        self.SubOutTradeNo = None
+        self.SubRefundId = None
+
+
+    def _deserialize(self, params):
+        self.RefundAmt = params.get("RefundAmt")
+        self.PlatformRefundAmt = params.get("PlatformRefundAmt")
+        self.SubMchRefundAmt = params.get("SubMchRefundAmt")
+        self.SubOutTradeNo = params.get("SubOutTradeNo")
+        self.SubRefundId = params.get("SubRefundId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudSubOrderReturn(AbstractModel):
+    """子订单详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubOutTradeNo: 子订单号
+        :type SubOutTradeNo: str
+        :param SubAppId: 米大师计费SubAppId，代表子商户
+        :type SubAppId: str
+        :param ProductName: 子订单商品名称
+        :type ProductName: str
+        :param ProductDetail: 子订单商品详情
+        :type ProductDetail: str
+        :param PlatformIncome: 子订单平台应收金额，单位：分
+        :type PlatformIncome: int
+        :param SubMchIncome: 子订单结算应收金额，单位：分
+        :type SubMchIncome: int
+        :param Amt: 子订单支付金额
+        :type Amt: int
+        :param OriginalAmt: 子订单原始金额
+        :type OriginalAmt: int
+        :param SettleCheck: 核销状态，1表示核销，0表示未核销
+        :type SettleCheck: int
+        :param SettleInfo: 结算信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SettleInfo: :class:`tencentcloud.cpdp.v20190820.models.CloudSettleInfo`
+        :param Metadata: 透传字段，由开发者在调用米大师下单接口的时候下发
+        :type Metadata: str
+        :param AttachmentInfoList: 附加项信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttachmentInfoList: :class:`tencentcloud.cpdp.v20190820.models.CloudAttachmentInfo`
+        :param ChannelExternalSubOrderId: 渠道方应答的订单号，透传处理
+        :type ChannelExternalSubOrderId: str
+        :param WxSubMchId: 微信子商户号
+        :type WxSubMchId: str
+        """
+        self.SubOutTradeNo = None
+        self.SubAppId = None
+        self.ProductName = None
+        self.ProductDetail = None
+        self.PlatformIncome = None
+        self.SubMchIncome = None
+        self.Amt = None
+        self.OriginalAmt = None
+        self.SettleCheck = None
+        self.SettleInfo = None
+        self.Metadata = None
+        self.AttachmentInfoList = None
+        self.ChannelExternalSubOrderId = None
+        self.WxSubMchId = None
+
+
+    def _deserialize(self, params):
+        self.SubOutTradeNo = params.get("SubOutTradeNo")
+        self.SubAppId = params.get("SubAppId")
+        self.ProductName = params.get("ProductName")
+        self.ProductDetail = params.get("ProductDetail")
+        self.PlatformIncome = params.get("PlatformIncome")
+        self.SubMchIncome = params.get("SubMchIncome")
+        self.Amt = params.get("Amt")
+        self.OriginalAmt = params.get("OriginalAmt")
+        self.SettleCheck = params.get("SettleCheck")
+        if params.get("SettleInfo") is not None:
+            self.SettleInfo = CloudSettleInfo()
+            self.SettleInfo._deserialize(params.get("SettleInfo"))
+        self.Metadata = params.get("Metadata")
+        if params.get("AttachmentInfoList") is not None:
+            self.AttachmentInfoList = CloudAttachmentInfo()
+            self.AttachmentInfoList._deserialize(params.get("AttachmentInfoList"))
+        self.ChannelExternalSubOrderId = params.get("ChannelExternalSubOrderId")
+        self.WxSubMchId = params.get("WxSubMchId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudSubRefundItem(AbstractModel):
+    """子单退款信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelExternalRefundId: 渠道方应答的退款ID，透传处理
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelExternalRefundId: str
+        :param ChannelExternalOrderId: 渠道方应答的订单号，透传处理
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelExternalOrderId: str
+        :param RefundAmt: 子单退款金额
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RefundAmt: int
+        :param SubOutTradeNo: 子单订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubOutTradeNo: str
+        :param SubRefundId: 子单退款id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubRefundId: str
+        :param SubAppId: 子应用ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubAppId: str
+        :param ChannelSubOrderId: 渠道子单支付订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelSubOrderId: str
+        :param ChannelSubRefundId: 渠道子退款订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelSubRefundId: str
+        """
+        self.ChannelExternalRefundId = None
+        self.ChannelExternalOrderId = None
+        self.RefundAmt = None
+        self.SubOutTradeNo = None
+        self.SubRefundId = None
+        self.SubAppId = None
+        self.ChannelSubOrderId = None
+        self.ChannelSubRefundId = None
+
+
+    def _deserialize(self, params):
+        self.ChannelExternalRefundId = params.get("ChannelExternalRefundId")
+        self.ChannelExternalOrderId = params.get("ChannelExternalOrderId")
+        self.RefundAmt = params.get("RefundAmt")
+        self.SubOutTradeNo = params.get("SubOutTradeNo")
+        self.SubRefundId = params.get("SubRefundId")
+        self.SubAppId = params.get("SubAppId")
+        self.ChannelSubOrderId = params.get("ChannelSubOrderId")
+        self.ChannelSubRefundId = params.get("ChannelSubRefundId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class ConfirmOrderRequest(AbstractModel):
@@ -4339,6 +5275,93 @@ class CreateBatchPaymentResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateCloudSubMerchantRequest(AbstractModel):
+    """CreateCloudSubMerchant请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MidasAppId: 米大师分配的支付主MidasAppId，根应用Id。
+        :type MidasAppId: str
+        :param ParentAppId: 父应用Id。
+        :type ParentAppId: str
+        :param SubMchName: 子商户名。
+        :type SubMchName: str
+        :param SubMchDescription: 子商户描述。
+        :type SubMchDescription: str
+        :param MidasEnvironment: 环境类型
+__release__:生产环境
+__sandbox__:沙箱环境
+_不填默认为生产环境_
+        :type MidasEnvironment: str
+        :param SubAppId: 子应用Id，为空则自动创建子应用id。
+        :type SubAppId: str
+        :param SubMchShortName: 子商户名缩写。
+        :type SubMchShortName: str
+        :param OutSubMerchantId: 业务平台自定义的子商户Id，唯一。
+        :type OutSubMerchantId: str
+        """
+        self.MidasAppId = None
+        self.ParentAppId = None
+        self.SubMchName = None
+        self.SubMchDescription = None
+        self.MidasEnvironment = None
+        self.SubAppId = None
+        self.SubMchShortName = None
+        self.OutSubMerchantId = None
+
+
+    def _deserialize(self, params):
+        self.MidasAppId = params.get("MidasAppId")
+        self.ParentAppId = params.get("ParentAppId")
+        self.SubMchName = params.get("SubMchName")
+        self.SubMchDescription = params.get("SubMchDescription")
+        self.MidasEnvironment = params.get("MidasEnvironment")
+        self.SubAppId = params.get("SubAppId")
+        self.SubMchShortName = params.get("SubMchShortName")
+        self.OutSubMerchantId = params.get("OutSubMerchantId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCloudSubMerchantResponse(AbstractModel):
+    """CreateCloudSubMerchant返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubAppId: 子应用Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubAppId: str
+        :param ChannelSubMerchantId: 渠道子商户Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelSubMerchantId: str
+        :param Level: 层级，从0开始。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Level: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SubAppId = None
+        self.ChannelSubMerchantId = None
+        self.Level = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.SubAppId = params.get("SubAppId")
+        self.ChannelSubMerchantId = params.get("ChannelSubMerchantId")
+        self.Level = params.get("Level")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateCustAcctIdRequest(AbstractModel):
     """CreateCustAcctId请求参数结构体
 
@@ -4456,6 +5479,48 @@ class CreateCustAcctIdResponse(AbstractModel):
         self.TxnReturnMsg = params.get("TxnReturnMsg")
         self.CnsmrSeqNo = params.get("CnsmrSeqNo")
         self.RequestId = params.get("RequestId")
+
+
+class CreateExternalAccountBookResult(AbstractModel):
+    """创建第三方电子记账本返回值
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealStatus: 处理状态。
+__SUCCESS__: 成功
+__FAILED__: 失败
+__PROCESSING__: 进行中。
+        :type DealStatus: str
+        :param DealMessage: 处理返回描述，例如失败原因等
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DealMessage: str
+        :param ChannelAccountBookId: 渠道电子记账本ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelAccountBookId: str
+        :param CollectMoneyAccountInfo: 电子记账本对外收款的账户信息。为JSON格式字符串（成功状态下返回）。详情见附录-复杂类型。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CollectMoneyAccountInfo: str
+        """
+        self.DealStatus = None
+        self.DealMessage = None
+        self.ChannelAccountBookId = None
+        self.CollectMoneyAccountInfo = None
+
+
+    def _deserialize(self, params):
+        self.DealStatus = params.get("DealStatus")
+        self.DealMessage = params.get("DealMessage")
+        self.ChannelAccountBookId = params.get("ChannelAccountBookId")
+        self.CollectMoneyAccountInfo = params.get("CollectMoneyAccountInfo")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class CreateExternalAnchorData(AbstractModel):
@@ -5333,6 +6398,86 @@ class CreateMerchantResultData(AbstractModel):
         
 
 
+class CreateOpenBankExternalSubMerchantAccountBookRequest(AbstractModel):
+    """CreateOpenBankExternalSubMerchantAccountBook请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OutAccountBookId: 外部账本ID
+        :type OutAccountBookId: str
+        :param ChannelMerchantId: 渠道商户ID
+        :type ChannelMerchantId: str
+        :param ChannelSubMerchantId: 渠道子商户ID
+        :type ChannelSubMerchantId: str
+        :param ChannelName: 渠道名称。目前只支持支付宝
+__TENPAY__: 商企付
+__WECHAT__: 微信支付
+__ALIPAY__: 支付宝
+        :type ChannelName: str
+        :param PaymentMethod: 支付方式。目前只支持安心发支付
+__EBANK_PAYMENT__: ebank支付
+__OPENBANK_PAYMENT__: openbank支付
+__SAFT_ISV__: 安心发支付
+        :type PaymentMethod: str
+        """
+        self.OutAccountBookId = None
+        self.ChannelMerchantId = None
+        self.ChannelSubMerchantId = None
+        self.ChannelName = None
+        self.PaymentMethod = None
+
+
+    def _deserialize(self, params):
+        self.OutAccountBookId = params.get("OutAccountBookId")
+        self.ChannelMerchantId = params.get("ChannelMerchantId")
+        self.ChannelSubMerchantId = params.get("ChannelSubMerchantId")
+        self.ChannelName = params.get("ChannelName")
+        self.PaymentMethod = params.get("PaymentMethod")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateOpenBankExternalSubMerchantAccountBookResponse(AbstractModel):
+    """CreateOpenBankExternalSubMerchantAccountBook返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ErrCode: 错误码。
+__SUCCESS__: 成功
+__其他__: 见附录-错误码表
+        :type ErrCode: str
+        :param ErrMessage: 错误消息。
+        :type ErrMessage: str
+        :param Result: 返回结果。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.cpdp.v20190820.models.CreateExternalAccountBookResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ErrCode = None
+        self.ErrMessage = None
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ErrCode = params.get("ErrCode")
+        self.ErrMessage = params.get("ErrMessage")
+        if params.get("Result") is not None:
+            self.Result = CreateExternalAccountBookResult()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class CreateOpenBankExternalSubMerchantRegistrationRequest(AbstractModel):
     """CreateOpenBankExternalSubMerchantRegistration请求参数结构体
 
@@ -5645,6 +6790,46 @@ class CreateOpenBankOrderPaymentResult(AbstractModel):
         
 
 
+class CreateOpenBankOrderRechargeResult(AbstractModel):
+    """云企付-充值下单返回响应
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelOrderId: 云企付平台订单号。
+        :type ChannelOrderId: str
+        :param ThirdPayOrderId: 第三方支付平台返回支付订单号。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ThirdPayOrderId: str
+        :param RedirectInfo: 跳转参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RedirectInfo: :class:`tencentcloud.cpdp.v20190820.models.OpenBankRechargeRedirectInfo`
+        :param OutOrderId: 外部商户订单号，只能是数字、大小写字母，且在同一个接入平台下唯一。
+        :type OutOrderId: str
+        """
+        self.ChannelOrderId = None
+        self.ThirdPayOrderId = None
+        self.RedirectInfo = None
+        self.OutOrderId = None
+
+
+    def _deserialize(self, params):
+        self.ChannelOrderId = params.get("ChannelOrderId")
+        self.ThirdPayOrderId = params.get("ThirdPayOrderId")
+        if params.get("RedirectInfo") is not None:
+            self.RedirectInfo = OpenBankRechargeRedirectInfo()
+            self.RedirectInfo._deserialize(params.get("RedirectInfo"))
+        self.OutOrderId = params.get("OutOrderId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CreateOpenBankPaymentOrderRequest(AbstractModel):
     """CreateOpenBankPaymentOrder请求参数结构体
 
@@ -5662,6 +6847,7 @@ __ALIPAY__: 支付宝
         :param PaymentMethod: 付款方式。如
 __EBANK_PAYMENT__:B2B EBank付款
 __OPENBANK_PAYMENT__:B2C  openbank付款
+__SAFT_ISV__:支付宝安心发
         :type PaymentMethod: str
         :param PaymentMode: 付款模式。默认直接支付，如
 __DIRECT__:直接支付
@@ -5802,6 +6988,111 @@ class CreateOpenBankPaymentOrderResponse(AbstractModel):
         self.ErrMessage = params.get("ErrMessage")
         if params.get("Result") is not None:
             self.Result = CreateOpenBankOrderPaymentResult()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreateOpenBankRechargeOrderRequest(AbstractModel):
+    """CreateOpenBankRechargeOrder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelMerchantId: 云企付渠道商户号。外部接入平台入驻云企付平台后下发。
+        :type ChannelMerchantId: str
+        :param OutOrderId: 外部订单号,只能是数字、大小写字母，且在同一个接入平台下唯一，限定长度40位。
+        :type OutOrderId: str
+        :param TotalAmount: 付款金额，单位分。
+        :type TotalAmount: int
+        :param Currency: 固定值CNY。
+        :type Currency: str
+        :param ExpireTime: 订单过期时间，yyyy-MM-dd HH:mm:ss格式。
+        :type ExpireTime: str
+        :param ChannelName: 渠道名称。
+__TENPAY__: 商企付
+__WECHAT__: 微信支付
+__ALIPAY__: 支付宝
+        :type ChannelName: str
+        :param PaymentMethod: 渠道名称。
+__TENPAY__: 商企付
+__WECHAT__: 微信支付
+__ALIPAY__: 支付宝
+        :type PaymentMethod: str
+        :param PayeeInfo: 收款方信息。
+        :type PayeeInfo: :class:`tencentcloud.cpdp.v20190820.models.OpenBankRechargePayeeInfo`
+        :param ChannelSubMerchantId: 渠道子商户号
+        :type ChannelSubMerchantId: str
+        :param NotifyUrl: 通知地址，如www.test.com。
+        :type NotifyUrl: str
+        :param Remark: 备注信息。
+        :type Remark: str
+        """
+        self.ChannelMerchantId = None
+        self.OutOrderId = None
+        self.TotalAmount = None
+        self.Currency = None
+        self.ExpireTime = None
+        self.ChannelName = None
+        self.PaymentMethod = None
+        self.PayeeInfo = None
+        self.ChannelSubMerchantId = None
+        self.NotifyUrl = None
+        self.Remark = None
+
+
+    def _deserialize(self, params):
+        self.ChannelMerchantId = params.get("ChannelMerchantId")
+        self.OutOrderId = params.get("OutOrderId")
+        self.TotalAmount = params.get("TotalAmount")
+        self.Currency = params.get("Currency")
+        self.ExpireTime = params.get("ExpireTime")
+        self.ChannelName = params.get("ChannelName")
+        self.PaymentMethod = params.get("PaymentMethod")
+        if params.get("PayeeInfo") is not None:
+            self.PayeeInfo = OpenBankRechargePayeeInfo()
+            self.PayeeInfo._deserialize(params.get("PayeeInfo"))
+        self.ChannelSubMerchantId = params.get("ChannelSubMerchantId")
+        self.NotifyUrl = params.get("NotifyUrl")
+        self.Remark = params.get("Remark")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateOpenBankRechargeOrderResponse(AbstractModel):
+    """CreateOpenBankRechargeOrder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ErrCode: 业务系统返回码，SUCCESS表示成功，其他表示失败。
+        :type ErrCode: str
+        :param ErrMessage: 业务系统返回消息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrMessage: str
+        :param Result: 充值响应对象
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.cpdp.v20190820.models.CreateOpenBankOrderRechargeResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ErrCode = None
+        self.ErrMessage = None
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ErrCode = params.get("ErrCode")
+        self.ErrMessage = params.get("ErrMessage")
+        if params.get("Result") is not None:
+            self.Result = CreateOpenBankOrderRechargeResult()
             self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
@@ -9408,7 +10699,7 @@ class OpenBankPayeeInfo(AbstractModel):
         :param PayeeId: 收款方唯一标识。当渠道为TENPAY，付款方式为EBANK_PAYMENT，必填，上送收款方入驻云企付商户ID；付款方式为OPENBANK_PAYMENT时，非必填，输入外部收款方的标识ID
         :type PayeeId: str
         :param PayeeName: 收款方名称。当渠道为TENPAY，付款方式为EBANK_PAYMENT时，上送收款方入驻云企付的商户名称；
-渠道为TENPAY，付款方式为OPENBANK_PAYMENT时必选，上送收款方账户名称
+渠道为TENPAY，付款方式为OPENBANK_PAYMENT时必选，上送收款方账户名称；渠道为ALIPAY，付款方式为SAFT_ISV时，收款账户标识类型为ALIPAY_LOGON_ID时必传，上送收款方真实姓名。
         :type PayeeName: str
         :param BankAccountNumber: 银行账号。渠道为TENPAY，付款方式为OPENBANK_PAYMENT时必选
         :type BankAccountNumber: str
@@ -9417,8 +10708,15 @@ class OpenBankPayeeInfo(AbstractModel):
         :param BankBranchId: 联行号。渠道为TENPAY，付款方式为OPENBANK_PAYMENT时必选
         :type BankBranchId: str
         :param BindSerialNo: 收款方绑卡序列号。
-当渠道为TENPAY，付款方式为EBANK_PAYMENT时，必填，上送收款方入驻云企付平台时，下发的绑卡序列号。
+当渠道为TENPAY，付款方式为EBANK_PAYMENT时，必填，上送收款方入驻云企付平台时，下发的绑卡序列号；当渠道为ALIPAY，付款方式为SAFT_ISV时，必填，根据收款账户标识类型上送。
         :type BindSerialNo: str
+        :param AccountType: 收款账户标识类型
+BANK_ACCOUNT：绑定银行账户
+ACCOUNT_BOOK_ID：电子记账本ID
+ALIPAY_USER_ID：支付宝的会员ID
+ALIPAY_LOGON_ID：支付宝登录号。
+付款方式为SAFT_ISV时，必填。
+        :type AccountType: str
         """
         self.PayeeId = None
         self.PayeeName = None
@@ -9426,6 +10724,7 @@ class OpenBankPayeeInfo(AbstractModel):
         self.BankBranchName = None
         self.BankBranchId = None
         self.BindSerialNo = None
+        self.AccountType = None
 
 
     def _deserialize(self, params):
@@ -9435,6 +10734,7 @@ class OpenBankPayeeInfo(AbstractModel):
         self.BankBranchName = params.get("BankBranchName")
         self.BankBranchId = params.get("BankBranchId")
         self.BindSerialNo = params.get("BindSerialNo")
+        self.AccountType = params.get("AccountType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9456,18 +10756,26 @@ class OpenBankPayerInfo(AbstractModel):
         :type PayerId: str
         :param PayerName: 付款方名称。当TENPAY上送付款方入驻云企付的商户名称。
         :type PayerName: str
-        :param BindSerialNo: 付款方付款账户标识，当付款方式为OPENBANK_PAYMENT时，必输表示企业账户ID。
+        :param BindSerialNo: 付款方付款账户标识。
+当付款方式为OPENBANK_PAYMENT时，必输表示企业账户ID；当付款方式为SAFT_ISV时，必须上送付款方的渠道电子记账本ID。
         :type BindSerialNo: str
+        :param AccountType: 付款账户标识类型
+BANK_ACCOUNT：绑定银行账户
+ACCOUNT_BOOK_ID：电子记账本ID。
+当付款方式为SAFT_ISV时，必须上送类型为ACCOUNT_BOOK_ID。
+        :type AccountType: str
         """
         self.PayerId = None
         self.PayerName = None
         self.BindSerialNo = None
+        self.AccountType = None
 
 
     def _deserialize(self, params):
         self.PayerId = params.get("PayerId")
         self.PayerName = params.get("PayerName")
         self.BindSerialNo = params.get("BindSerialNo")
+        self.AccountType = params.get("AccountType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9496,6 +10804,65 @@ class OpenBankProfitShareInfo(AbstractModel):
     def _deserialize(self, params):
         self.RecvId = params.get("RecvId")
         self.ProfitShareFee = params.get("ProfitShareFee")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OpenBankRechargePayeeInfo(AbstractModel):
+    """云企付-充值单收款人信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PayeeId: 收款方标识
+收款方类型为电子记账本时，上送渠道电子记账本ID
+        :type PayeeId: str
+        :param PayeeIdType: 收款方标识类型
+ACCOUNT_BOOK_ID：电子记账本ID
+        :type PayeeIdType: str
+        :param PayeeName: 收款方名称
+        :type PayeeName: str
+        """
+        self.PayeeId = None
+        self.PayeeIdType = None
+        self.PayeeName = None
+
+
+    def _deserialize(self, params):
+        self.PayeeId = params.get("PayeeId")
+        self.PayeeIdType = params.get("PayeeIdType")
+        self.PayeeName = params.get("PayeeName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OpenBankRechargeRedirectInfo(AbstractModel):
+    """云企付-充值跳转参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Url: 跳转URL
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Url: str
+        """
+        self.Url = None
+
+
+    def _deserialize(self, params):
+        self.Url = params.get("Url")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10374,7 +11741,7 @@ class QueryAcctItem(AbstractModel):
         :type SubMchType: str
         :param SubMchName: 子商户名称
         :type SubMchName: str
-        :param SubAcctNo: 子账号号
+        :param SubAcctNo: 子账号
         :type SubAcctNo: str
         :param ShortName: 不填则默认子商户名称
         :type ShortName: str
@@ -11484,6 +12851,309 @@ class QueryCityCodeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class QueryCloudChannelDataRequest(AbstractModel):
+    """QueryCloudChannelData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MidasAppId: 米大师分配的支付主MidasAppId
+        :type MidasAppId: str
+        :param OutOrderNo: 业务订单号，外部订单号
+        :type OutOrderNo: str
+        :param ExternalChannelDataType: 数据类型
+PAYMENT:支付
+        :type ExternalChannelDataType: str
+        :param MidasEnvironment: 环境类型
+__release__:生产环境
+__sandbox__:沙箱环境
+_不填默认为生产环境_
+        :type MidasEnvironment: str
+        :param SubAppId: 子应用ID
+        :type SubAppId: str
+        :param ChannelOrderId: 渠道订单号
+        :type ChannelOrderId: str
+        :param Channel: 渠道名称，指定渠道查询
+wechat:微信支付
+        :type Channel: str
+        """
+        self.MidasAppId = None
+        self.OutOrderNo = None
+        self.ExternalChannelDataType = None
+        self.MidasEnvironment = None
+        self.SubAppId = None
+        self.ChannelOrderId = None
+        self.Channel = None
+
+
+    def _deserialize(self, params):
+        self.MidasAppId = params.get("MidasAppId")
+        self.OutOrderNo = params.get("OutOrderNo")
+        self.ExternalChannelDataType = params.get("ExternalChannelDataType")
+        self.MidasEnvironment = params.get("MidasEnvironment")
+        self.SubAppId = params.get("SubAppId")
+        self.ChannelOrderId = params.get("ChannelOrderId")
+        self.Channel = params.get("Channel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryCloudChannelDataResponse(AbstractModel):
+    """QueryCloudChannelData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OutOrderNo: 外部订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OutOrderNo: str
+        :param ChannelOrderId: 渠道订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelOrderId: str
+        :param ExternalChannelDataType: 第三方渠道数据类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExternalChannelDataType: str
+        :param Channel: 渠道名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Channel: str
+        :param ExternalChannelDataList: 第三方渠道数据列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExternalChannelDataList: list of CloudExternalChannelData
+        :param SubAppId: 子应用ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubAppId: str
+        :param AppId: 米大师分配的支付主MidasAppId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AppId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.OutOrderNo = None
+        self.ChannelOrderId = None
+        self.ExternalChannelDataType = None
+        self.Channel = None
+        self.ExternalChannelDataList = None
+        self.SubAppId = None
+        self.AppId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.OutOrderNo = params.get("OutOrderNo")
+        self.ChannelOrderId = params.get("ChannelOrderId")
+        self.ExternalChannelDataType = params.get("ExternalChannelDataType")
+        self.Channel = params.get("Channel")
+        if params.get("ExternalChannelDataList") is not None:
+            self.ExternalChannelDataList = []
+            for item in params.get("ExternalChannelDataList"):
+                obj = CloudExternalChannelData()
+                obj._deserialize(item)
+                self.ExternalChannelDataList.append(obj)
+        self.SubAppId = params.get("SubAppId")
+        self.AppId = params.get("AppId")
+        self.RequestId = params.get("RequestId")
+
+
+class QueryCloudOrderRequest(AbstractModel):
+    """QueryCloudOrder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MidasAppId: 米大师分配的支付主MidasAppId
+        :type MidasAppId: str
+        :param UserId: 用户Id，长度不小于5位，仅支持字母和数字的组合
+        :type UserId: str
+        :param Type: 查询类型
+by_order:根据订单号查订单
+        :type Type: str
+        :param MidasEnvironment: 环境类型
+__release__:生产环境
+__sandbox__:沙箱环境
+_不填默认为生产环境_
+        :type MidasEnvironment: str
+        :param OutTradeNo: 开发者的主订单号
+        :type OutTradeNo: str
+        """
+        self.MidasAppId = None
+        self.UserId = None
+        self.Type = None
+        self.MidasEnvironment = None
+        self.OutTradeNo = None
+
+
+    def _deserialize(self, params):
+        self.MidasAppId = params.get("MidasAppId")
+        self.UserId = params.get("UserId")
+        self.Type = params.get("Type")
+        self.MidasEnvironment = params.get("MidasEnvironment")
+        self.OutTradeNo = params.get("OutTradeNo")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryCloudOrderResponse(AbstractModel):
+    """QueryCloudOrder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalNum: 订单数量
+        :type TotalNum: int
+        :param OrderList: 订单列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OrderList: list of CloudOrderReturn
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalNum = None
+        self.OrderList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalNum = params.get("TotalNum")
+        if params.get("OrderList") is not None:
+            self.OrderList = []
+            for item in params.get("OrderList"):
+                obj = CloudOrderReturn()
+                obj._deserialize(item)
+                self.OrderList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class QueryCloudRefundOrderRequest(AbstractModel):
+    """QueryCloudRefundOrder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MidasAppId: 米大师分配的支付主MidasAppId
+        :type MidasAppId: str
+        :param UserId: 用户Id，长度不小于5位，仅支持字母和数字的组合
+        :type UserId: str
+        :param RefundId: 退款订单号，仅支持数字、字母、下划线（_）、横杠字符（-）、点（.）的组合
+        :type RefundId: str
+        :param MidasEnvironment: 环境类型
+__release__:生产环境
+__sandbox__:沙箱环境
+_不填默认为生产环境_
+        :type MidasEnvironment: str
+        """
+        self.MidasAppId = None
+        self.UserId = None
+        self.RefundId = None
+        self.MidasEnvironment = None
+
+
+    def _deserialize(self, params):
+        self.MidasAppId = params.get("MidasAppId")
+        self.UserId = params.get("UserId")
+        self.RefundId = params.get("RefundId")
+        self.MidasEnvironment = params.get("MidasEnvironment")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryCloudRefundOrderResponse(AbstractModel):
+    """QueryCloudRefundOrder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OutTradeNo: 该笔退款订单对应的UnifiedOrder下单时传入的OutTradeNo
+        :type OutTradeNo: str
+        :param ChannelExternalOrderId: 该笔退款订单对应的支付成功后支付机构返回的支付订单号
+        :type ChannelExternalOrderId: str
+        :param ChannelExternalRefundId: 该笔退款订单退款后支付机构返回的退款单号
+        :type ChannelExternalRefundId: str
+        :param ChannelOrderId: 内部请求微信支付、银行等支付机构的订单号
+        :type ChannelOrderId: str
+        :param RefundId: 请求退款时传的退款ID后查询退款时传的RefundId
+        :type RefundId: str
+        :param UsedRefundId: 被使用的RefundId，业务可忽略该字段
+        :type UsedRefundId: str
+        :param TotalRefundAmt: 退款总金额
+        :type TotalRefundAmt: int
+        :param CurrencyType: ISO货币代码
+        :type CurrencyType: str
+        :param State: 退款状态码，退款提交成功后返回
+1:退款中
+2:退款成功
+3:退款失败
+        :type State: str
+        :param SubRefundList: 子单退款信息列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubRefundList: list of CloudSubRefundItem
+        :param Metadata: 透传字段，退款成功回调透传给应用，用于开发者透传自定义内容
+        :type Metadata: str
+        :param AppId: 米大师分配的支付主MidasAppId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AppId: str
+        :param ChannelRefundId: 该笔退款订单退款后内部返回的退款单号
+        :type ChannelRefundId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.OutTradeNo = None
+        self.ChannelExternalOrderId = None
+        self.ChannelExternalRefundId = None
+        self.ChannelOrderId = None
+        self.RefundId = None
+        self.UsedRefundId = None
+        self.TotalRefundAmt = None
+        self.CurrencyType = None
+        self.State = None
+        self.SubRefundList = None
+        self.Metadata = None
+        self.AppId = None
+        self.ChannelRefundId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.OutTradeNo = params.get("OutTradeNo")
+        self.ChannelExternalOrderId = params.get("ChannelExternalOrderId")
+        self.ChannelExternalRefundId = params.get("ChannelExternalRefundId")
+        self.ChannelOrderId = params.get("ChannelOrderId")
+        self.RefundId = params.get("RefundId")
+        self.UsedRefundId = params.get("UsedRefundId")
+        self.TotalRefundAmt = params.get("TotalRefundAmt")
+        self.CurrencyType = params.get("CurrencyType")
+        self.State = params.get("State")
+        if params.get("SubRefundList") is not None:
+            self.SubRefundList = []
+            for item in params.get("SubRefundList"):
+                obj = CloudSubRefundItem()
+                obj._deserialize(item)
+                self.SubRefundList.append(obj)
+        self.Metadata = params.get("Metadata")
+        self.AppId = params.get("AppId")
+        self.ChannelRefundId = params.get("ChannelRefundId")
+        self.RequestId = params.get("RequestId")
+
+
 class QueryCommonTransferRechargeRequest(AbstractModel):
     """QueryCommonTransferRecharge请求参数结构体
 
@@ -12576,6 +14246,40 @@ class QueryExchangerateResult(AbstractModel):
                 obj = QueryExchangerateData()
                 obj._deserialize(item)
                 self.Data.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryExternalAccountBookResult(AbstractModel):
+    """查询第三方电子记账本余额返回值
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelAccountBookId: 渠道记账本ID
+        :type ChannelAccountBookId: str
+        :param AvailableBalance: 可用余额。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AvailableBalance: str
+        :param CollectMoneyAccountInfo: 电子记账本对外收款的账户信息。为JSON格式字符串（成功状态下返回）。详情见附录-复杂类型。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CollectMoneyAccountInfo: str
+        """
+        self.ChannelAccountBookId = None
+        self.AvailableBalance = None
+        self.CollectMoneyAccountInfo = None
+
+
+    def _deserialize(self, params):
+        self.ChannelAccountBookId = params.get("ChannelAccountBookId")
+        self.AvailableBalance = params.get("AvailableBalance")
+        self.CollectMoneyAccountInfo = params.get("CollectMoneyAccountInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14456,6 +16160,8 @@ class QueryOpenBankDownLoadUrlRequest(AbstractModel):
     def __init__(self):
         r"""
         :param ChannelMerchantId: 渠道商户号，外部接入平台方入驻云企付平台后下发。
+EBANK_PAYMENT支付方式下，填写渠道商户号；
+SAFT_ISV支付方式下，填写渠道子商户号。
         :type ChannelMerchantId: str
         :param BillDate: 账单日期,yyyy-MM-dd。
         :type BillDate: str
@@ -14463,11 +16169,23 @@ class QueryOpenBankDownLoadUrlRequest(AbstractModel):
         :type BillType: str
         :param Environment: 接入环境。沙箱环境填 sandbox。缺省默认调用生产环境。
         :type Environment: str
+        :param ChannelName: 渠道名称。不填默认为商企付。
+__TENPAY__: 商企付
+__WECHAT__: 微信支付
+__ALIPAY__: 支付宝
+        :type ChannelName: str
+        :param PaymentMethod: 支付方式。不填默认为ebank支付。
+__EBANK_PAYMENT__: ebank支付
+__OPENBANK_PAYMENT__: openbank支付
+__SAFT_ISV__: 人资ISV支付
+        :type PaymentMethod: str
         """
         self.ChannelMerchantId = None
         self.BillDate = None
         self.BillType = None
         self.Environment = None
+        self.ChannelName = None
+        self.PaymentMethod = None
 
 
     def _deserialize(self, params):
@@ -14475,6 +16193,8 @@ class QueryOpenBankDownLoadUrlRequest(AbstractModel):
         self.BillDate = params.get("BillDate")
         self.BillType = params.get("BillType")
         self.Environment = params.get("Environment")
+        self.ChannelName = params.get("ChannelName")
+        self.PaymentMethod = params.get("PaymentMethod")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14546,6 +16266,90 @@ class QueryOpenBankDownLoadUrlResult(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class QueryOpenBankExternalSubAccountBookBalanceRequest(AbstractModel):
+    """QueryOpenBankExternalSubAccountBookBalance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelMerchantId: 渠道商户ID
+        :type ChannelMerchantId: str
+        :param ChannelSubMerchantId: 渠道子商户ID
+        :type ChannelSubMerchantId: str
+        :param ChannelName: 渠道名称。目前只支持支付宝
+__TENPAY__: 商企付
+__WECHAT__: 微信支付
+__ALIPAY__: 支付宝
+        :type ChannelName: str
+        :param PaymentMethod: 支付方式。目前只支持安心发支付
+__EBANK_PAYMENT__: ebank支付
+__OPENBANK_PAYMENT__: openbank支付
+__SAFT_ISV__: 安心发支付
+        :type PaymentMethod: str
+        :param OutAccountBookId: 外部账本号ID。与ChannelAccountBookId二者选填其一。
+        :type OutAccountBookId: str
+        :param ChannelAccountBookId: 渠道账本号ID。与OutAccountBookId二者选填其一。
+        :type ChannelAccountBookId: str
+        """
+        self.ChannelMerchantId = None
+        self.ChannelSubMerchantId = None
+        self.ChannelName = None
+        self.PaymentMethod = None
+        self.OutAccountBookId = None
+        self.ChannelAccountBookId = None
+
+
+    def _deserialize(self, params):
+        self.ChannelMerchantId = params.get("ChannelMerchantId")
+        self.ChannelSubMerchantId = params.get("ChannelSubMerchantId")
+        self.ChannelName = params.get("ChannelName")
+        self.PaymentMethod = params.get("PaymentMethod")
+        self.OutAccountBookId = params.get("OutAccountBookId")
+        self.ChannelAccountBookId = params.get("ChannelAccountBookId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryOpenBankExternalSubAccountBookBalanceResponse(AbstractModel):
+    """QueryOpenBankExternalSubAccountBookBalance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ErrCode: 错误码。
+__SUCCESS__: 成功
+__其他__: 见附录-错误码表
+        :type ErrCode: str
+        :param ErrMessage: 错误消息。
+        :type ErrMessage: str
+        :param Result: 返回结果。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.cpdp.v20190820.models.QueryExternalAccountBookResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ErrCode = None
+        self.ErrMessage = None
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ErrCode = params.get("ErrCode")
+        self.ErrMessage = params.get("ErrMessage")
+        if params.get("Result") is not None:
+            self.Result = QueryExternalAccountBookResult()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
 
 
 class QueryOpenBankExternalSubMerchantBankAccountData(AbstractModel):
@@ -14843,6 +16647,130 @@ __OPENBANK_PAYMENT__: openbank支付
         self.BusinessLicenseNumber = params.get("BusinessLicenseNumber")
         self.LegalName = params.get("LegalName")
         self.ExternalReturnData = params.get("ExternalReturnData")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryOpenBankOrderDetailReceiptInfoRequest(AbstractModel):
+    """QueryOpenBankOrderDetailReceiptInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelMerchantId: 渠道商户ID
+        :type ChannelMerchantId: str
+        :param ChannelSubMerchantId: 渠道子商户ID
+        :type ChannelSubMerchantId: str
+        :param ChannelName: 渠道名称，目前只支持ALIPAY
+        :type ChannelName: str
+        :param PaymentMethod: 支付方式，目前只支持SAFT_ISV
+        :type PaymentMethod: str
+        :param OutApplyId: 外部回单申请ID，与渠道回单申请ID二者选填其一
+        :type OutApplyId: str
+        :param ChannelApplyId: 渠道回单申请ID，与外部回单申请ID二者选填其一
+        :type ChannelApplyId: str
+        """
+        self.ChannelMerchantId = None
+        self.ChannelSubMerchantId = None
+        self.ChannelName = None
+        self.PaymentMethod = None
+        self.OutApplyId = None
+        self.ChannelApplyId = None
+
+
+    def _deserialize(self, params):
+        self.ChannelMerchantId = params.get("ChannelMerchantId")
+        self.ChannelSubMerchantId = params.get("ChannelSubMerchantId")
+        self.ChannelName = params.get("ChannelName")
+        self.PaymentMethod = params.get("PaymentMethod")
+        self.OutApplyId = params.get("OutApplyId")
+        self.ChannelApplyId = params.get("ChannelApplyId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryOpenBankOrderDetailReceiptInfoResponse(AbstractModel):
+    """QueryOpenBankOrderDetailReceiptInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ErrCode: 错误码。
+        :type ErrCode: str
+        :param ErrMessage: 错误消息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrMessage: str
+        :param Result: 返回结果。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.cpdp.v20190820.models.QueryOpenBankOrderDetailReceiptInfoResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ErrCode = None
+        self.ErrMessage = None
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ErrCode = params.get("ErrCode")
+        self.ErrMessage = params.get("ErrMessage")
+        if params.get("Result") is not None:
+            self.Result = QueryOpenBankOrderDetailReceiptInfoResult()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class QueryOpenBankOrderDetailReceiptInfoResult(AbstractModel):
+    """单笔交易回单申请结果查询
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChannelApplyId: 渠道回单申请ID
+        :type ChannelApplyId: str
+        :param ReceiptStatus: 申请状态。
+SUCCESS：申请成功；
+FAILED：申请失败；
+PROCESSING：申请中。
+注意：若返回申请中，需要再次调用回单申请结果查询接口，查询结果。
+        :type ReceiptStatus: str
+        :param ReceiptMessage: 申请返回描述，例如失败原因等。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReceiptMessage: str
+        :param DownloadUrl: 回单下载链接，申请成功时返回。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DownloadUrl: str
+        :param ExpireTime: 过期时间，yyyy-MM-dd HH:mm:ss格式。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExpireTime: str
+        """
+        self.ChannelApplyId = None
+        self.ReceiptStatus = None
+        self.ReceiptMessage = None
+        self.DownloadUrl = None
+        self.ExpireTime = None
+
+
+    def _deserialize(self, params):
+        self.ChannelApplyId = params.get("ChannelApplyId")
+        self.ReceiptStatus = params.get("ReceiptStatus")
+        self.ReceiptMessage = params.get("ReceiptMessage")
+        self.DownloadUrl = params.get("DownloadUrl")
+        self.ExpireTime = params.get("ExpireTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17935,6 +19863,106 @@ class RechargeMemberThirdPayResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class RefundCloudOrderRequest(AbstractModel):
+    """RefundCloudOrder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MidasAppId: 米大师分配的支付主MidasAppId
+        :type MidasAppId: str
+        :param UserId: 用户Id，长度不小于5位，仅支持字母和数字的组合
+        :type UserId: str
+        :param RefundId: 退款订单号，仅支持数字、字母、下划线（_）、横杠字符（-）、点（.）的组合
+        :type RefundId: str
+        :param TotalRefundAmt: 退款金额，单位：分
+当该字段为空或者为0时，系统会默认使用订单当实付金额作为退款金额
+        :type TotalRefundAmt: int
+        :param OutTradeNo: 商品订单，仅支持数字、字母、下划线（_）、横杠字符（-）、点（.）的组合
+        :type OutTradeNo: str
+        :param MidasEnvironment: 环境类型
+__release__:生产环境
+__sandbox__:沙箱环境
+_不填默认为生产环境_
+        :type MidasEnvironment: str
+        :param PlatformRefundAmt: 平台应收金额，单位：分
+        :type PlatformRefundAmt: int
+        :param MchRefundAmt: 结算应收金额，单位：分
+        :type MchRefundAmt: int
+        :param SubOrderRefundList: 支持多个子订单批量退款单个子订单退款支持传SubOutTradeNo
+也支持传SubOrderRefundList，都传的时候以SubOrderRefundList为准。
+如果传了子单退款细节，外部不需要再传退款金额，平台应退，商户应退金额
+        :type SubOrderRefundList: list of CloudSubOrderRefund
+        :param ChannelOrderId: 渠道订单号，当出现重复支付时，可以将重复支付订单的渠道订单号传入，以进行退款（注意：目前该重复支付订单的渠道订单号仅能通过米大师内部获取），更多重复支付订单退款说明，请参考[重复支付订单退款说明](https://dev.tke.midas.qq.com/juxin-doc-next/apidocs/receive-order/Refund.html#%E9%87%8D%E5%A4%8D%E6%94%AF%E4%BB%98%E8%AE%A2%E5%8D%95%E9%80%80%E6%AC%BE%E8%AF%B4%E6%98%8E)
+        :type ChannelOrderId: str
+        :param RefundNotifyUrl: 通知地址
+        :type RefundNotifyUrl: str
+        :param Metadata: 透传字段，退款成功回调透传给应用，用于开发者透传自定义内容
+        :type Metadata: str
+        :param ExternalRefundPromptGroupList: 渠道扩展退款促销列表，可将各个渠道的退款促销信息放于该列表
+        :type ExternalRefundPromptGroupList: str
+        """
+        self.MidasAppId = None
+        self.UserId = None
+        self.RefundId = None
+        self.TotalRefundAmt = None
+        self.OutTradeNo = None
+        self.MidasEnvironment = None
+        self.PlatformRefundAmt = None
+        self.MchRefundAmt = None
+        self.SubOrderRefundList = None
+        self.ChannelOrderId = None
+        self.RefundNotifyUrl = None
+        self.Metadata = None
+        self.ExternalRefundPromptGroupList = None
+
+
+    def _deserialize(self, params):
+        self.MidasAppId = params.get("MidasAppId")
+        self.UserId = params.get("UserId")
+        self.RefundId = params.get("RefundId")
+        self.TotalRefundAmt = params.get("TotalRefundAmt")
+        self.OutTradeNo = params.get("OutTradeNo")
+        self.MidasEnvironment = params.get("MidasEnvironment")
+        self.PlatformRefundAmt = params.get("PlatformRefundAmt")
+        self.MchRefundAmt = params.get("MchRefundAmt")
+        if params.get("SubOrderRefundList") is not None:
+            self.SubOrderRefundList = []
+            for item in params.get("SubOrderRefundList"):
+                obj = CloudSubOrderRefund()
+                obj._deserialize(item)
+                self.SubOrderRefundList.append(obj)
+        self.ChannelOrderId = params.get("ChannelOrderId")
+        self.RefundNotifyUrl = params.get("RefundNotifyUrl")
+        self.Metadata = params.get("Metadata")
+        self.ExternalRefundPromptGroupList = params.get("ExternalRefundPromptGroupList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RefundCloudOrderResponse(AbstractModel):
+    """RefundCloudOrder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class RefundMemberTransactionRequest(AbstractModel):
     """RefundMemberTransaction请求参数结构体
 
@@ -20437,6 +22465,310 @@ class UnbindRelateAcctResponse(AbstractModel):
         self.CnsmrSeqNo = params.get("CnsmrSeqNo")
         self.FrontSeqNo = params.get("FrontSeqNo")
         self.ReservedMsg = params.get("ReservedMsg")
+        self.RequestId = params.get("RequestId")
+
+
+class UnifiedCloudOrderRequest(AbstractModel):
+    """UnifiedCloudOrder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MidasAppId: 米大师分配的支付主MidasAppId
+        :type MidasAppId: str
+        :param UserId: 用户ID
+长度不小于5位，仅支持字母和数字的组合，长度限制以具体接入渠道为准
+        :type UserId: str
+        :param OutTradeNo: 开发者主订单号
+支付订单号，仅支持数字、字母、下划线（_）、横杠字符（-）、点（.）的组合，长度供参考，部分渠道存在长度更短的情况接入时请联系开发咨询
+        :type OutTradeNo: str
+        :param CurrencyType: 货币类型
+ISO货币代码，CNY
+        :type CurrencyType: str
+        :param ProductId: 商品ID
+业务自定义的商品id，仅支持数字、字母、下划线（_）、横杠字符（-）、点（.）的组合。
+        :type ProductId: str
+        :param ProductName: 商品名称
+业务自定义的商品名称，无需URL编码，长度限制以具体所接入渠道为准。
+        :type ProductName: str
+        :param ProductDetail: 商品详情
+业务自定义的商品详情，无需URL编码，长度限制以具体所接入渠道为准。
+        :type ProductDetail: str
+        :param OriginalAmt: 原始金额
+单位：分，需要注意的是，OriginalAmt>=TotalAmt
+        :type OriginalAmt: int
+        :param TotalAmt: 支付金额
+单位：分，需要注意的是，TotalAmt=TotalPlatformIncome+TotalMchIncome。
+        :type TotalAmt: int
+        :param MidasEnvironment: 环境类型
+__release__:生产环境
+__sandbox__:沙箱环境
+_不填默认为生产环境_
+        :type MidasEnvironment: str
+        :param SubAppId: 支付SubAppId
+米大师计费SubAppId，代表子商户。指定使用该商户的商户号下单时必传。
+        :type SubAppId: str
+        :param RealChannel: 顶层支付渠道
+银行收单:
+openbank_ccb: 建设银行
+openbank_icbc: 工商银行
+openbank_cmb: 招商银行
+openbank_ping: 平安银行
+openbank_icbc_jft：工商银行聚付通
+非银行收单，可以为空
+        :type RealChannel: str
+        :param Channel: 支付渠道
+wechat：微信支付
+wechat_ecommerce: 微信电商收付通
+open_alipay: 支付宝
+open_quickpass: 银联云闪付
+icbc_epay: 工银e支付
+foreign_cardpay: 外卡支付
+icbc_jft_wechat: 工行聚付通-微信
+icbc_jft_alipay: 工行聚付通-支付宝
+icbc_jft_epay: 工行聚付通-e支付
+指定渠道下单时必传
+        :type Channel: str
+        :param Metadata: 透传字段
+支付成功回调透传给应用，用于开发者透传自定义内容。
+        :type Metadata: str
+        :param Quantity: 数量
+购买数量,不传默认为1。
+        :type Quantity: int
+        :param CallbackUrl: Web端回调地址
+Web端网页回调地址，仅当Web端SDK使用页面跳转方式时有效。
+        :type CallbackUrl: str
+        :param CancelUrl: 支付取消地址
+        :type CancelUrl: str
+        :param WxAppId: 微信AppId
+wechat渠道或wchat_ecommerce渠道可以指定下单时的wxappid。
+        :type WxAppId: str
+        :param WxSubAppId: 微信SubAppId
+wechat渠道可以指定下单时的sub_appid。
+        :type WxSubAppId: str
+        :param WxOpenId: 微信公众号/小程序OpenId
+微信公众号/小程序支付时为必选，需要传微信下的openid。
+        :type WxOpenId: str
+        :param WxSubOpenId: 微信公众号/小程序SubOpenId
+在服务商模式下，微信公众号/小程序支付时wx_sub_openid和wx_openid二选一。
+        :type WxSubOpenId: str
+        :param TotalPlatformIncome: 平台应收金额
+单位：分，需要注意的是，TotalAmt=TotalPlatformIncome+TotalMchIncome
+        :type TotalPlatformIncome: int
+        :param TotalMchIncome: 结算应收金额
+单位：分，需要注意的是，TotalAmt=TotalPlatformIncome+TotalMchIncome
+        :type TotalMchIncome: int
+        :param SubOrderList: 子订单列表
+格式：子订单号、子应用Id、金额。压缩后最长不可超过32K字节(去除空格，换行，制表符等无意义字符)。
+        :type SubOrderList: list of CloudSubOrder
+        :param SettleInfo: 结算信息
+例如是否需要分账、是否需要支付确认等，
+注意：如果子单列表中传入了SettleInfo，在主单中不可再传入SettleInfo字段。
+        :type SettleInfo: :class:`tencentcloud.cpdp.v20190820.models.CloudSettleInfo`
+        :param AttachmentInfoList: 附加项信息列表
+例如溢价信息、抵扣信息、积分信息、补贴信息
+通过该字段可以实现渠道方的优惠抵扣补贴等营销功能
+注意：当传SubOrderList时，请在子单信息中传附加项信息，不要在主单中传该字段。
+        :type AttachmentInfoList: list of CloudAttachmentInfo
+        :param PaymentNotifyUrl: 支付通知地址
+调用方可通过该字段传入自定义支付通知地址。
+        :type PaymentNotifyUrl: str
+        :param PayScene: 支付场景
+需要结合 RealChannel和Channel字段使用可选值:
+wechat-app 微信APP支付方式
+wechat-mini 微信小程序支付，示例：当 RealChannel=wechat Channel=wechat PayScene=wechat-mini时，内部会直接以小程序方式调用微信统一下单接口。
+        :type PayScene: str
+        :param LocaleCode: 语言代码
+取值请参考[ISO 639-1代码表](https://zh.wikipedia.org/zh-cn/ISO_639-1%E4%BB%A3%E7%A0%81%E8%A1%A8)
+        :type LocaleCode: str
+        :param RegionCode: 地区代码
+取值请参考[ISO 3166-1二位字母代码表](https://zh.wikipedia.org/zh-cn/ISO_3166-1%E4%BA%8C%E4%BD%8D%E5%AD%97%E6%AF%8D%E4%BB%A3%E7%A0%81#%E6%AD%A3%E5%BC%8F%E5%88%86%E9%85%8D%E4%BB%A3%E7%A0%81)
+        :type RegionCode: str
+        :param UserClientIp: 用户IP
+请求用户的IP地址，特定的渠道或特定的支付方式，此字段为必填
+wechat_ecommerce渠道 - h5支付方式，此字段必填。
+        :type UserClientIp: str
+        :param ChannelOrderIdMode: 渠道订单号生成模式
+枚举值。决定请求渠道方时的订单号的生成模式，详情请联系米大师沟通。不指定时默认为由米大师自行生成。
+        :type ChannelOrderIdMode: str
+        :param GlobalPayTimeInfo: 全局支付时间信息
+        :type GlobalPayTimeInfo: :class:`tencentcloud.cpdp.v20190820.models.CloudGlobalPayTimeInfo`
+        :param ChannelAppIdPolicy: 渠道应用ID取用方式
+USE_APPID 使用渠道应用Id;
+USE_SUB_APPID 使用子渠道应用Id;
+USE_APPID_AND_SUB_APPID 既使用渠道应用Id也使用子渠道应用ID。
+        :type ChannelAppIdPolicy: str
+        :param StoreInfo: 门店信息
+特定的渠道或特定的支付方式，此字段为必填
+wechat_ecommerce渠道 - h5支付方式，此字段必填
+        :type StoreInfo: :class:`tencentcloud.cpdp.v20190820.models.CloudStoreInfo`
+        :param ClientInfo: 客户端信息
+特定的渠道或特定的支付方式，此字段为必填
+wechat_ecommerce渠道 - h5支付方式，此字段必填
+        :type ClientInfo: :class:`tencentcloud.cpdp.v20190820.models.CloudClientInfo`
+        :param ExternalPromptGroupList: 渠道扩展促销列表
+可将各个渠道的促销信息放于该列表。
+        :type ExternalPromptGroupList: list of CloudExternalPromptGroup
+        :param OrderReceiveMode: 收单模式
+ORDER_RECEIVE_MODE_COMMON - 普通支付
+ORDER_RECEIVE_MODE_COMBINE - 合单支付
+ORDER_RECEIVE_MODE_V_COMBINE - 虚拟合单支付
+若不传入该字段，则会根据是否传入子单来判断是 普通支付 还是 合单支付
+        :type OrderReceiveMode: str
+        """
+        self.MidasAppId = None
+        self.UserId = None
+        self.OutTradeNo = None
+        self.CurrencyType = None
+        self.ProductId = None
+        self.ProductName = None
+        self.ProductDetail = None
+        self.OriginalAmt = None
+        self.TotalAmt = None
+        self.MidasEnvironment = None
+        self.SubAppId = None
+        self.RealChannel = None
+        self.Channel = None
+        self.Metadata = None
+        self.Quantity = None
+        self.CallbackUrl = None
+        self.CancelUrl = None
+        self.WxAppId = None
+        self.WxSubAppId = None
+        self.WxOpenId = None
+        self.WxSubOpenId = None
+        self.TotalPlatformIncome = None
+        self.TotalMchIncome = None
+        self.SubOrderList = None
+        self.SettleInfo = None
+        self.AttachmentInfoList = None
+        self.PaymentNotifyUrl = None
+        self.PayScene = None
+        self.LocaleCode = None
+        self.RegionCode = None
+        self.UserClientIp = None
+        self.ChannelOrderIdMode = None
+        self.GlobalPayTimeInfo = None
+        self.ChannelAppIdPolicy = None
+        self.StoreInfo = None
+        self.ClientInfo = None
+        self.ExternalPromptGroupList = None
+        self.OrderReceiveMode = None
+
+
+    def _deserialize(self, params):
+        self.MidasAppId = params.get("MidasAppId")
+        self.UserId = params.get("UserId")
+        self.OutTradeNo = params.get("OutTradeNo")
+        self.CurrencyType = params.get("CurrencyType")
+        self.ProductId = params.get("ProductId")
+        self.ProductName = params.get("ProductName")
+        self.ProductDetail = params.get("ProductDetail")
+        self.OriginalAmt = params.get("OriginalAmt")
+        self.TotalAmt = params.get("TotalAmt")
+        self.MidasEnvironment = params.get("MidasEnvironment")
+        self.SubAppId = params.get("SubAppId")
+        self.RealChannel = params.get("RealChannel")
+        self.Channel = params.get("Channel")
+        self.Metadata = params.get("Metadata")
+        self.Quantity = params.get("Quantity")
+        self.CallbackUrl = params.get("CallbackUrl")
+        self.CancelUrl = params.get("CancelUrl")
+        self.WxAppId = params.get("WxAppId")
+        self.WxSubAppId = params.get("WxSubAppId")
+        self.WxOpenId = params.get("WxOpenId")
+        self.WxSubOpenId = params.get("WxSubOpenId")
+        self.TotalPlatformIncome = params.get("TotalPlatformIncome")
+        self.TotalMchIncome = params.get("TotalMchIncome")
+        if params.get("SubOrderList") is not None:
+            self.SubOrderList = []
+            for item in params.get("SubOrderList"):
+                obj = CloudSubOrder()
+                obj._deserialize(item)
+                self.SubOrderList.append(obj)
+        if params.get("SettleInfo") is not None:
+            self.SettleInfo = CloudSettleInfo()
+            self.SettleInfo._deserialize(params.get("SettleInfo"))
+        if params.get("AttachmentInfoList") is not None:
+            self.AttachmentInfoList = []
+            for item in params.get("AttachmentInfoList"):
+                obj = CloudAttachmentInfo()
+                obj._deserialize(item)
+                self.AttachmentInfoList.append(obj)
+        self.PaymentNotifyUrl = params.get("PaymentNotifyUrl")
+        self.PayScene = params.get("PayScene")
+        self.LocaleCode = params.get("LocaleCode")
+        self.RegionCode = params.get("RegionCode")
+        self.UserClientIp = params.get("UserClientIp")
+        self.ChannelOrderIdMode = params.get("ChannelOrderIdMode")
+        if params.get("GlobalPayTimeInfo") is not None:
+            self.GlobalPayTimeInfo = CloudGlobalPayTimeInfo()
+            self.GlobalPayTimeInfo._deserialize(params.get("GlobalPayTimeInfo"))
+        self.ChannelAppIdPolicy = params.get("ChannelAppIdPolicy")
+        if params.get("StoreInfo") is not None:
+            self.StoreInfo = CloudStoreInfo()
+            self.StoreInfo._deserialize(params.get("StoreInfo"))
+        if params.get("ClientInfo") is not None:
+            self.ClientInfo = CloudClientInfo()
+            self.ClientInfo._deserialize(params.get("ClientInfo"))
+        if params.get("ExternalPromptGroupList") is not None:
+            self.ExternalPromptGroupList = []
+            for item in params.get("ExternalPromptGroupList"):
+                obj = CloudExternalPromptGroup()
+                obj._deserialize(item)
+                self.ExternalPromptGroupList.append(obj)
+        self.OrderReceiveMode = params.get("OrderReceiveMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UnifiedCloudOrderResponse(AbstractModel):
+    """UnifiedCloudOrder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TransactionId: 米大师的交易订单号。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TransactionId: str
+        :param OutTradeNo: 开发者的支付订单号。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OutTradeNo: str
+        :param PayInfo: SDK的支付参数。
+支付参数透传给米大师SDK（原文透传给SDK即可，不需要解码）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PayInfo: str
+        :param TotalAmt: 支付金额，单位：分。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalAmt: int
+        :param ChannelInfo: 渠道信息，用于拉起渠道支付。j
+son字符串，注意此字段仅会在传入正确的PayScene入参时才会有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelInfo: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TransactionId = None
+        self.OutTradeNo = None
+        self.PayInfo = None
+        self.TotalAmt = None
+        self.ChannelInfo = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TransactionId = params.get("TransactionId")
+        self.OutTradeNo = params.get("OutTradeNo")
+        self.PayInfo = params.get("PayInfo")
+        self.TotalAmt = params.get("TotalAmt")
+        self.ChannelInfo = params.get("ChannelInfo")
         self.RequestId = params.get("RequestId")
 
 

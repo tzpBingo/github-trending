@@ -36,7 +36,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CloseAsyncRecognitionTask", params)
+            headers = request.headers
+            body = self.call("CloseAsyncRecognitionTask", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CloseAsyncRecognitionTaskResponse()
@@ -69,7 +70,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateAsrVocab", params)
+            headers = request.headers
+            body = self.call("CreateAsrVocab", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateAsrVocabResponse()
@@ -102,7 +104,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateAsyncRecognitionTask", params)
+            headers = request.headers
+            body = self.call("CreateAsyncRecognitionTask", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateAsyncRecognitionTaskResponse()
@@ -130,7 +133,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateCustomization", params)
+            headers = request.headers
+            body = self.call("CreateCustomization", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateCustomizationResponse()
@@ -156,7 +160,7 @@ class AsrClient(AbstractClient):
         • 支持语音 URL 和本地语音文件两种请求方式
         • 语音 URL 的音频时长不能长于5小时，文件大小不超过512MB
         • 本地语音文件不能大于5MB
-        • 提交录音文件识别请求后，在5小时内完成识别（半小时内发送超过1000小时录音或者2万条识别任务的除外），识别结果在服务端可保存7天
+        • 提交录音文件识别请求后，在3小时内完成识别（半小时内发送超过1000小时录音或者2万条识别任务的除外），识别结果在服务端可保存7天
         • 支持回调或轮询的方式获取结果，结果获取请参考[ 录音文件识别结果查询](https://cloud.tencent.com/document/product/1093/37822)。
         •   请求方法为 HTTP POST , Content-Type为"application/json; charset=utf-8"
         •   签名方法参考 [公共参数](https://cloud.tencent.com/document/api/1093/35640) 中签名方法v3。
@@ -169,7 +173,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateRecTask", params)
+            headers = request.headers
+            body = self.call("CreateRecTask", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateRecTaskResponse()
@@ -197,7 +202,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DeleteAsrVocab", params)
+            headers = request.headers
+            body = self.call("DeleteAsrVocab", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeleteAsrVocabResponse()
@@ -225,7 +231,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DeleteCustomization", params)
+            headers = request.headers
+            body = self.call("DeleteCustomization", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeleteCustomizationResponse()
@@ -254,7 +261,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeAsyncRecognitionTasks", params)
+            headers = request.headers
+            body = self.call("DescribeAsyncRecognitionTasks", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeAsyncRecognitionTasksResponse()
@@ -287,7 +295,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeTaskStatus", params)
+            headers = request.headers
+            body = self.call("DescribeTaskStatus", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeTaskStatusResponse()
@@ -315,7 +324,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DownloadAsrVocab", params)
+            headers = request.headers
+            body = self.call("DownloadAsrVocab", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DownloadAsrVocabResponse()
@@ -343,7 +353,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DownloadCustomization", params)
+            headers = request.headers
+            body = self.call("DownloadCustomization", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DownloadCustomizationResponse()
@@ -371,7 +382,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetAsrVocab", params)
+            headers = request.headers
+            body = self.call("GetAsrVocab", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetAsrVocabResponse()
@@ -399,7 +411,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetAsrVocabList", params)
+            headers = request.headers
+            body = self.call("GetAsrVocabList", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetAsrVocabListResponse()
@@ -427,7 +440,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetCustomizationList", params)
+            headers = request.headers
+            body = self.call("GetCustomizationList", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetCustomizationListResponse()
@@ -455,7 +469,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("ModifyCustomization", params)
+            headers = request.headers
+            body = self.call("ModifyCustomization", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyCustomizationResponse()
@@ -483,7 +498,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("ModifyCustomizationState", params)
+            headers = request.headers
+            body = self.call("ModifyCustomizationState", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyCustomizationStateResponse()
@@ -511,7 +527,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("SentenceRecognition", params)
+            headers = request.headers
+            body = self.call("SentenceRecognition", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.SentenceRecognitionResponse()
@@ -539,7 +556,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("SetVocabState", params)
+            headers = request.headers
+            body = self.call("SetVocabState", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.SetVocabStateResponse()
@@ -567,7 +585,8 @@ class AsrClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("UpdateAsrVocab", params)
+            headers = request.headers
+            body = self.call("UpdateAsrVocab", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.UpdateAsrVocabResponse()

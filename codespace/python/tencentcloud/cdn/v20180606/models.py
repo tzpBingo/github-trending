@@ -188,6 +188,10 @@ global：全球加速
         :type AwsPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.AwsPrivateAccess`
         :param OssPrivateAccess: 回源OSS私有鉴权
         :type OssPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.OssPrivateAccess`
+        :param HwPrivateAccess: 华为云对象存储回源鉴权
+        :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
+        :param QnPrivateAccess: 七牛云对象存储回源鉴权
+        :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
         """
         self.Domain = None
         self.ServiceType = None
@@ -225,6 +229,8 @@ global：全球加速
         self.Quic = None
         self.AwsPrivateAccess = None
         self.OssPrivateAccess = None
+        self.HwPrivateAccess = None
+        self.QnPrivateAccess = None
 
 
     def _deserialize(self, params):
@@ -331,6 +337,12 @@ global：全球加速
         if params.get("OssPrivateAccess") is not None:
             self.OssPrivateAccess = OssPrivateAccess()
             self.OssPrivateAccess._deserialize(params.get("OssPrivateAccess"))
+        if params.get("HwPrivateAccess") is not None:
+            self.HwPrivateAccess = HwPrivateAccess()
+            self.HwPrivateAccess._deserialize(params.get("HwPrivateAccess"))
+        if params.get("QnPrivateAccess") is not None:
+            self.QnPrivateAccess = QnPrivateAccess()
+            self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1581,16 +1593,26 @@ class AwsPrivateAccess(AbstractModel):
         :param SecretKey: 密钥。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SecretKey: str
+        :param Region: 地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param Bucket: Bucketname
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
         """
         self.Switch = None
         self.AccessKey = None
         self.SecretKey = None
+        self.Region = None
+        self.Bucket = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.AccessKey = params.get("AccessKey")
         self.SecretKey = params.get("SecretKey")
+        self.Region = params.get("Region")
+        self.Bucket = params.get("Bucket")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1638,6 +1660,9 @@ off：关闭
 流量：flux
 注意：此字段可能返回 null，表示取不到有效值。
         :type Metric: str
+        :param StatisticItems: 累计用量配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatisticItems: list of StatisticItem
         """
         self.Switch = None
         self.BpsThreshold = None
@@ -1647,6 +1672,7 @@ off：关闭
         self.AlertPercentage = None
         self.LastTriggerTimeOverseas = None
         self.Metric = None
+        self.StatisticItems = None
 
 
     def _deserialize(self, params):
@@ -1658,6 +1684,12 @@ off：关闭
         self.AlertPercentage = params.get("AlertPercentage")
         self.LastTriggerTimeOverseas = params.get("LastTriggerTimeOverseas")
         self.Metric = params.get("Metric")
+        if params.get("StatisticItems") is not None:
+            self.StatisticItems = []
+            for item in params.get("StatisticItems"):
+                obj = StatisticItem()
+                obj._deserialize(item)
+                self.StatisticItems.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2134,6 +2166,35 @@ class Cache(AbstractModel):
         
 
 
+class CacheConfig(AbstractModel):
+    """启发式自定义时间缓存配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param HeuristicCacheTimeSwitch: on 代表开启自定义启发式缓存时间
+off 代表关闭自定义启发式缓存时间
+        :type HeuristicCacheTimeSwitch: str
+        :param HeuristicCacheTime: 单位 秒.
+        :type HeuristicCacheTime: int
+        """
+        self.HeuristicCacheTimeSwitch = None
+        self.HeuristicCacheTime = None
+
+
+    def _deserialize(self, params):
+        self.HeuristicCacheTimeSwitch = params.get("HeuristicCacheTimeSwitch")
+        self.HeuristicCacheTime = params.get("HeuristicCacheTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CacheConfigCache(AbstractModel):
     """路径缓存缓存配置
 
@@ -2202,12 +2263,19 @@ class CacheConfigFollowOrigin(AbstractModel):
 on：开启
 off：关闭
         :type Switch: str
+        :param HeuristicCache: 启发式缓存配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HeuristicCache: :class:`tencentcloud.cdn.v20180606.models.HeuristicCache`
         """
         self.Switch = None
+        self.HeuristicCache = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
+        if params.get("HeuristicCache") is not None:
+            self.HeuristicCache = HeuristicCache()
+            self.HeuristicCache._deserialize(params.get("HeuristicCache"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3420,12 +3488,16 @@ class CreateVerifyRecordResponse(AbstractModel):
         :type Record: str
         :param RecordType: 解析类型
         :type RecordType: str
+        :param FileVerifyUrl: 文件验证 URL 指引
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileVerifyUrl: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.SubDomain = None
         self.Record = None
         self.RecordType = None
+        self.FileVerifyUrl = None
         self.RequestId = None
 
 
@@ -3433,6 +3505,7 @@ class CreateVerifyRecordResponse(AbstractModel):
         self.SubDomain = params.get("SubDomain")
         self.Record = params.get("Record")
         self.RecordType = params.get("RecordType")
+        self.FileVerifyUrl = params.get("FileVerifyUrl")
         self.RequestId = params.get("RequestId")
 
 
@@ -3744,6 +3817,8 @@ bandwidth：计费带宽
         :type Metric: str
         :param Product: 指定查询的产品数据，可选为cdn或者ecdn，默认为cdn
         :type Product: str
+        :param TimeZone: 指定查询时间的时区，默认UTC+08:00
+        :type TimeZone: str
         """
         self.StartTime = None
         self.EndTime = None
@@ -3754,6 +3829,7 @@ bandwidth：计费带宽
         self.District = None
         self.Metric = None
         self.Product = None
+        self.TimeZone = None
 
 
     def _deserialize(self, params):
@@ -3766,6 +3842,7 @@ bandwidth：计费带宽
         self.District = params.get("District")
         self.Metric = params.get("Metric")
         self.Product = params.get("Product")
+        self.TimeZone = params.get("TimeZone")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4012,6 +4089,8 @@ client：指定查询客户端地区（用户请求终端所在地区）数据
         :type AreaType: str
         :param Product: 指定查询的产品数据，可选为cdn或者ecdn，默认为cdn
         :type Product: str
+        :param TimeZone: 指定查询时间的时区，默认UTC+08:00
+        :type TimeZone: str
         """
         self.StartTime = None
         self.EndTime = None
@@ -4028,6 +4107,7 @@ client：指定查询客户端地区（用户请求终端所在地区）数据
         self.Area = None
         self.AreaType = None
         self.Product = None
+        self.TimeZone = None
 
 
     def _deserialize(self, params):
@@ -4046,6 +4126,7 @@ client：指定查询客户端地区（用户请求终端所在地区）数据
         self.Area = params.get("Area")
         self.AreaType = params.get("AreaType")
         self.Product = params.get("Product")
+        self.TimeZone = params.get("TimeZone")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5145,6 +5226,8 @@ day：天粒度，指定查询区间大于 31 天，可返回天粒度明细数�
 mainland：指定查询中国境内 CDN 数据
 overseas：指定查询中国境外 CDN 数据
         :type Area: str
+        :param TimeZone: 指定查询时间的时区，默认UTC+08:00
+        :type TimeZone: str
         """
         self.StartTime = None
         self.EndTime = None
@@ -5154,6 +5237,7 @@ overseas：指定查询中国境外 CDN 数据
         self.Interval = None
         self.Detail = None
         self.Area = None
+        self.TimeZone = None
 
 
     def _deserialize(self, params):
@@ -5165,6 +5249,7 @@ overseas：指定查询中国境外 CDN 数据
         self.Interval = params.get("Interval")
         self.Detail = params.get("Detail")
         self.Area = params.get("Area")
+        self.TimeZone = params.get("TimeZone")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6723,6 +6808,12 @@ off：不支持
         :param ParentHost: 主域名
 注意：此字段可能返回 null，表示取不到有效值。
         :type ParentHost: str
+        :param HwPrivateAccess: 华为云对象存储回源鉴权
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
+        :param QnPrivateAccess: 七牛云对象存储回源鉴权
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
         """
         self.ResourceId = None
         self.AppId = None
@@ -6786,6 +6877,8 @@ off：不支持
         self.ShareCname = None
         self.RuleEngine = None
         self.ParentHost = None
+        self.HwPrivateAccess = None
+        self.QnPrivateAccess = None
 
 
     def _deserialize(self, params):
@@ -6951,6 +7044,12 @@ off：不支持
             self.RuleEngine = RuleEngine()
             self.RuleEngine._deserialize(params.get("RuleEngine"))
         self.ParentHost = params.get("ParentHost")
+        if params.get("HwPrivateAccess") is not None:
+            self.HwPrivateAccess = HwPrivateAccess()
+            self.HwPrivateAccess._deserialize(params.get("HwPrivateAccess"))
+        if params.get("QnPrivateAccess") is not None:
+            self.QnPrivateAccess = QnPrivateAccess()
+            self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8018,6 +8117,37 @@ class HeaderKey(AbstractModel):
         
 
 
+class HeuristicCache(AbstractModel):
+    """启发式缓存配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: on 代表开启启发式缓存
+off 代表关闭启发式缓存
+        :type Switch: str
+        :param CacheConfig: 自定义启发式缓存时间配置
+        :type CacheConfig: :class:`tencentcloud.cdn.v20180606.models.CacheConfig`
+        """
+        self.Switch = None
+        self.CacheConfig = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        if params.get("CacheConfig") is not None:
+            self.CacheConfig = CacheConfig()
+            self.CacheConfig._deserialize(params.get("CacheConfig"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Hsts(AbstractModel):
     """HSTS 配置。
 
@@ -8227,6 +8357,45 @@ failed：部署失败
             self.Hsts = Hsts()
             self.Hsts._deserialize(params.get("Hsts"))
         self.TlsVersion = params.get("TlsVersion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class HwPrivateAccess(AbstractModel):
+    """华为云对象存储回源鉴权
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 开关 on/off
+        :type Switch: str
+        :param AccessKey: 访问 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccessKey: str
+        :param SecretKey: 密钥
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SecretKey: str
+        :param Bucket: bucketname
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
+        """
+        self.Switch = None
+        self.AccessKey = None
+        self.SecretKey = None
+        self.Bucket = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.AccessKey = params.get("AccessKey")
+        self.SecretKey = params.get("SecretKey")
+        self.Bucket = params.get("Bucket")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9709,6 +9878,12 @@ class MainlandConfig(AbstractModel):
         :param OssPrivateAccess: 回源OSS私有鉴权。
 注意：此字段可能返回 null，表示取不到有效值。
         :type OssPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.OssPrivateAccess`
+        :param HwPrivateAccess: 华为云对象存储回源鉴权
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
+        :param QnPrivateAccess: 七牛云对象存储回源鉴权
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
         """
         self.Authentication = None
         self.BandwidthAlert = None
@@ -9736,6 +9911,8 @@ class MainlandConfig(AbstractModel):
         self.VideoSeek = None
         self.AwsPrivateAccess = None
         self.OssPrivateAccess = None
+        self.HwPrivateAccess = None
+        self.QnPrivateAccess = None
 
 
     def _deserialize(self, params):
@@ -9815,6 +9992,12 @@ class MainlandConfig(AbstractModel):
         if params.get("OssPrivateAccess") is not None:
             self.OssPrivateAccess = OssPrivateAccess()
             self.OssPrivateAccess._deserialize(params.get("OssPrivateAccess"))
+        if params.get("HwPrivateAccess") is not None:
+            self.HwPrivateAccess = HwPrivateAccess()
+            self.HwPrivateAccess._deserialize(params.get("HwPrivateAccess"))
+        if params.get("QnPrivateAccess") is not None:
+            self.QnPrivateAccess = QnPrivateAccess()
+            self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10162,6 +10345,9 @@ ip_ipv6_domain：源站列表为多个 IPv4 地址IPv6 地址以及域名
         :param AdvanceHttps: HTTPS回源高级配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type AdvanceHttps: :class:`tencentcloud.cdn.v20180606.models.AdvanceHttps`
+        :param OriginCompany: 对象存储回源厂商
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginCompany: str
         """
         self.Origins = None
         self.OriginType = None
@@ -10175,6 +10361,7 @@ ip_ipv6_domain：源站列表为多个 IPv4 地址IPv6 地址以及域名
         self.PathRules = None
         self.PathBasedOrigin = None
         self.AdvanceHttps = None
+        self.OriginCompany = None
 
 
     def _deserialize(self, params):
@@ -10202,6 +10389,7 @@ ip_ipv6_domain：源站列表为多个 IPv4 地址IPv6 地址以及域名
         if params.get("AdvanceHttps") is not None:
             self.AdvanceHttps = AdvanceHttps()
             self.AdvanceHttps._deserialize(params.get("AdvanceHttps"))
+        self.OriginCompany = params.get("OriginCompany")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10394,16 +10582,26 @@ class OssPrivateAccess(AbstractModel):
         :param SecretKey: 密钥。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SecretKey: str
+        :param Region: 地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param Bucket: Bucketname
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
         """
         self.Switch = None
         self.AccessKey = None
         self.SecretKey = None
+        self.Region = None
+        self.Bucket = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.AccessKey = params.get("AccessKey")
         self.SecretKey = params.get("SecretKey")
+        self.Region = params.get("Region")
+        self.Bucket = params.get("Bucket")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10504,6 +10702,12 @@ class OverseaConfig(AbstractModel):
         :param OssPrivateAccess: 回源OSS私有鉴权。
 注意：此字段可能返回 null，表示取不到有效值。
         :type OssPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.OssPrivateAccess`
+        :param HwPrivateAccess: 华为云对象存储鉴权
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
+        :param QnPrivateAccess: 七牛云对象存储鉴权
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
         """
         self.Authentication = None
         self.BandwidthAlert = None
@@ -10531,6 +10735,8 @@ class OverseaConfig(AbstractModel):
         self.VideoSeek = None
         self.AwsPrivateAccess = None
         self.OssPrivateAccess = None
+        self.HwPrivateAccess = None
+        self.QnPrivateAccess = None
 
 
     def _deserialize(self, params):
@@ -10610,6 +10816,12 @@ class OverseaConfig(AbstractModel):
         if params.get("OssPrivateAccess") is not None:
             self.OssPrivateAccess = OssPrivateAccess()
             self.OssPrivateAccess._deserialize(params.get("OssPrivateAccess"))
+        if params.get("HwPrivateAccess") is not None:
+            self.HwPrivateAccess = HwPrivateAccess()
+            self.HwPrivateAccess._deserialize(params.get("HwPrivateAccess"))
+        if params.get("QnPrivateAccess") is not None:
+            self.QnPrivateAccess = QnPrivateAccess()
+            self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11055,6 +11267,39 @@ class PushUrlsCacheResponse(AbstractModel):
     def _deserialize(self, params):
         self.TaskId = params.get("TaskId")
         self.RequestId = params.get("RequestId")
+
+
+class QnPrivateAccess(AbstractModel):
+    """七牛元对象存储回源鉴权配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 开关 on/off
+        :type Switch: str
+        :param AccessKey: 访问 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccessKey: str
+        :param SecretKey: 密钥
+        :type SecretKey: str
+        """
+        self.Switch = None
+        self.AccessKey = None
+        self.SecretKey = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.AccessKey = params.get("AccessKey")
+        self.SecretKey = params.get("SecretKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class QueryStringKey(AbstractModel):
@@ -13334,6 +13579,71 @@ class StartScdnDomainResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class StatisticItem(AbstractModel):
+    """累计用量封顶的配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 封顶类型，累计用量total，瞬时用量moment
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param UnBlockTime: 自动解封时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnBlockTime: int
+        :param BpsThreshold: 带宽、流量阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BpsThreshold: int
+        :param CounterMeasure: 关闭方式 返回404:RETURN_404, dns回源：RESOLVE_DNS_TO_ORIGIN
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CounterMeasure: str
+        :param AlertPercentage: 触发提醒阈值百分比
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlertPercentage: int
+        :param AlertSwitch: 提醒开关 on/off
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlertSwitch: str
+        :param Metric: 指标类型，流量flux或带宽bandwidth
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Metric: str
+        :param Cycle: 检测周期，单位分钟，60或1440
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Cycle: int
+        :param Switch: 是否开启该选项，on/off
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Switch: str
+        """
+        self.Type = None
+        self.UnBlockTime = None
+        self.BpsThreshold = None
+        self.CounterMeasure = None
+        self.AlertPercentage = None
+        self.AlertSwitch = None
+        self.Metric = None
+        self.Cycle = None
+        self.Switch = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.UnBlockTime = params.get("UnBlockTime")
+        self.BpsThreshold = params.get("BpsThreshold")
+        self.CounterMeasure = params.get("CounterMeasure")
+        self.AlertPercentage = params.get("AlertPercentage")
+        self.AlertSwitch = params.get("AlertSwitch")
+        self.Metric = params.get("Metric")
+        self.Cycle = params.get("Cycle")
+        self.Switch = params.get("Switch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class StatusCodeCache(AbstractModel):
     """状态码缓存过期配置，默认情况下会对 404 状态码缓存 10 秒
 
@@ -13980,6 +14290,8 @@ global：全球加速
         :type OfflineCache: :class:`tencentcloud.cdn.v20180606.models.OfflineCache`
         :param OriginCombine: 合并回源
         :type OriginCombine: :class:`tencentcloud.cdn.v20180606.models.OriginCombine`
+        :param PostMaxSize: POST请求传输配置
+        :type PostMaxSize: :class:`tencentcloud.cdn.v20180606.models.PostSize`
         :param Quic: Quic访问（收费服务，详见计费说明和产品文档）
         :type Quic: :class:`tencentcloud.cdn.v20180606.models.Quic`
         :param OssPrivateAccess: 回源OSS私有鉴权
@@ -13990,6 +14302,10 @@ global：全球加速
         :type RemoteAuthentication: :class:`tencentcloud.cdn.v20180606.models.RemoteAuthentication`
         :param ShareCname: 共享CNAME配置，白名单功能
         :type ShareCname: :class:`tencentcloud.cdn.v20180606.models.ShareCname`
+        :param HwPrivateAccess: 华为云对象存储回源鉴权
+        :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
+        :param QnPrivateAccess: 七牛云对象存储回源鉴权
+        :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
         """
         self.Domain = None
         self.ProjectId = None
@@ -14030,11 +14346,14 @@ global：全球加速
         self.Ipv6Access = None
         self.OfflineCache = None
         self.OriginCombine = None
+        self.PostMaxSize = None
         self.Quic = None
         self.OssPrivateAccess = None
         self.WebSocket = None
         self.RemoteAuthentication = None
         self.ShareCname = None
+        self.HwPrivateAccess = None
+        self.QnPrivateAccess = None
 
 
     def _deserialize(self, params):
@@ -14145,6 +14464,9 @@ global：全球加速
         if params.get("OriginCombine") is not None:
             self.OriginCombine = OriginCombine()
             self.OriginCombine._deserialize(params.get("OriginCombine"))
+        if params.get("PostMaxSize") is not None:
+            self.PostMaxSize = PostSize()
+            self.PostMaxSize._deserialize(params.get("PostMaxSize"))
         if params.get("Quic") is not None:
             self.Quic = Quic()
             self.Quic._deserialize(params.get("Quic"))
@@ -14160,6 +14482,12 @@ global：全球加速
         if params.get("ShareCname") is not None:
             self.ShareCname = ShareCname()
             self.ShareCname._deserialize(params.get("ShareCname"))
+        if params.get("HwPrivateAccess") is not None:
+            self.HwPrivateAccess = HwPrivateAccess()
+            self.HwPrivateAccess._deserialize(params.get("HwPrivateAccess"))
+        if params.get("QnPrivateAccess") is not None:
+            self.QnPrivateAccess = QnPrivateAccess()
+            self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14571,12 +14899,18 @@ class VerifyDomainRecordRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
+        :param VerifyType: 验证方式
+dns: DNS 解析验证（默认值）
+file: 文件验证
+        :type VerifyType: str
         """
         self.Domain = None
+        self.VerifyType = None
 
 
     def _deserialize(self, params):
         self.Domain = params.get("Domain")
+        self.VerifyType = params.get("VerifyType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

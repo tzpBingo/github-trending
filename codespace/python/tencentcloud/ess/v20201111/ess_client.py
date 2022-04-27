@@ -36,7 +36,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CancelFlow", params)
+            headers = request.headers
+            body = self.call("CancelFlow", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CancelFlowResponse()
@@ -64,7 +65,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateDocument", params)
+            headers = request.headers
+            body = self.call("CreateDocument", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateDocumentResponse()
@@ -92,7 +94,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateFlow", params)
+            headers = request.headers
+            body = self.call("CreateFlow", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateFlowResponse()
@@ -120,7 +123,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateFlowByFiles", params)
+            headers = request.headers
+            body = self.call("CreateFlowByFiles", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateFlowByFilesResponse()
@@ -148,7 +152,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateSchemeUrl", params)
+            headers = request.headers
+            body = self.call("CreateSchemeUrl", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateSchemeUrlResponse()
@@ -176,7 +181,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeFileUrls", params)
+            headers = request.headers
+            body = self.call("DescribeFileUrls", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeFileUrlsResponse()
@@ -204,7 +210,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeFlowBriefs", params)
+            headers = request.headers
+            body = self.call("DescribeFlowBriefs", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeFlowBriefsResponse()
@@ -232,7 +239,8 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeThirdPartyAuthCode", params)
+            headers = request.headers
+            body = self.call("DescribeThirdPartyAuthCode", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeThirdPartyAuthCodeResponse()
@@ -260,10 +268,41 @@ class EssClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("StartFlow", params)
+            headers = request.headers
+            body = self.call("StartFlow", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.StartFlowResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def UploadFiles(self, request):
+        """此接口（UploadFiles）用于文件上传。
+        调用时需要设置Domain 为 file.ess.tencent.cn，设置Version为2020-12-22
+
+        :param request: Request instance for UploadFiles.
+        :type request: :class:`tencentcloud.ess.v20201111.models.UploadFilesRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.UploadFilesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UploadFiles", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.UploadFilesResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

@@ -117,6 +117,8 @@ class AddTimeWindowRequest(AbstractModel):
         :type Saturday: list of str
         :param Sunday: 星期日的可维护时间窗口。 一周中应至少设置一天的时间窗。
         :type Sunday: list of str
+        :param MaxDelayTime: 最大延迟阈值，仅对主实例和灾备实例有效
+        :type MaxDelayTime: int
         """
         self.InstanceId = None
         self.Monday = None
@@ -126,6 +128,7 @@ class AddTimeWindowRequest(AbstractModel):
         self.Friday = None
         self.Saturday = None
         self.Sunday = None
+        self.MaxDelayTime = None
 
 
     def _deserialize(self, params):
@@ -137,6 +140,7 @@ class AddTimeWindowRequest(AbstractModel):
         self.Friday = params.get("Friday")
         self.Saturday = params.get("Saturday")
         self.Sunday = params.get("Sunday")
+        self.MaxDelayTime = params.get("MaxDelayTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -673,6 +677,8 @@ class BackupInfo(AbstractModel):
         :type Way: str
         :param ManualBackupName: 手动备份别名
         :type ManualBackupName: str
+        :param SaveMode: 备份保留类型，save_mode_regular - 常规保存备份，save_mode_period - 定期保存备份
+        :type SaveMode: str
         """
         self.Name = None
         self.Size = None
@@ -688,6 +694,7 @@ class BackupInfo(AbstractModel):
         self.Method = None
         self.Way = None
         self.ManualBackupName = None
+        self.SaveMode = None
 
 
     def _deserialize(self, params):
@@ -705,6 +712,7 @@ class BackupInfo(AbstractModel):
         self.Method = params.get("Method")
         self.Way = params.get("Way")
         self.ManualBackupName = params.get("ManualBackupName")
+        self.SaveMode = params.get("SaveMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1823,7 +1831,7 @@ class CreateDBInstanceHourRequest(AbstractModel):
         :type ResourceTags: list of TagInfo
         :param DeployGroupId: 置放群组 ID。
         :type DeployGroupId: str
-        :param ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间在当天内唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
+        :param ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间在48小时内唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
         :type ClientToken: str
         :param DeviceType: 实例隔离类型。支持值包括： "UNIVERSAL" - 通用型实例， "EXCLUSIVE" - 独享型实例， "BASIC" - 基础版实例。 不指定则默认为通用型实例。
         :type DeviceType: str
@@ -1839,12 +1847,14 @@ class CreateDBInstanceHourRequest(AbstractModel):
         :type AutoSyncFlag: int
         :param CageId: 金融围拢 ID 。
         :type CageId: str
-        :param ParamTemplateType: 默认参数模板类型。支持值包括："HIGH_STABILITY" - 高稳定模板，"HIGH_PERFORMANCE" - 高性能模板。
+        :param ParamTemplateType: 默认参数模板类型。支持值包括："HIGH_STABILITY" - 高稳定模板，"HIGH_PERFORMANCE" - 高性能模板，默认值是："HIGH_STABILITY"。
         :type ParamTemplateType: str
         :param AlarmPolicyIdList: 告警策略名数组，例如:["policy-uyoee9wg"]，AlarmPolicyList不为空时该参数无效。
         :type AlarmPolicyIdList: list of str
         :param DryRun: 是否只预检此次请求。true：发送检查请求，不会创建实例。检查项包括是否填写了必需参数，请求格式，业务限制等。如果检查不通过，则返回对应错误码；如果检查通过，则返回RequestId.默认为false：发送正常请求，通过检查后直接创建实例。
         :type DryRun: bool
+        :param Vips: 指定实例的IP列表。仅支持主实例指定，按实例顺序，不足则按未指定处理。
+        :type Vips: list of str
         """
         self.GoodsNum = None
         self.Memory = None
@@ -1881,6 +1891,7 @@ class CreateDBInstanceHourRequest(AbstractModel):
         self.ParamTemplateType = None
         self.AlarmPolicyIdList = None
         self.DryRun = None
+        self.Vips = None
 
 
     def _deserialize(self, params):
@@ -1931,6 +1942,7 @@ class CreateDBInstanceHourRequest(AbstractModel):
         self.ParamTemplateType = params.get("ParamTemplateType")
         self.AlarmPolicyIdList = params.get("AlarmPolicyIdList")
         self.DryRun = params.get("DryRun")
+        self.Vips = params.get("Vips")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2022,7 +2034,7 @@ class CreateDBInstanceRequest(AbstractModel):
         :type ResourceTags: list of TagInfo
         :param DeployGroupId: 置放群组 ID。
         :type DeployGroupId: str
-        :param ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间在当天内唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
+        :param ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间在48小时内唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
         :type ClientToken: str
         :param DeviceType: 实例隔离类型。支持值包括： "UNIVERSAL" - 通用型实例， "EXCLUSIVE" - 独享型实例， "BASIC" - 基础版实例。 不指定则默认为通用型实例。
         :type DeviceType: str
@@ -2044,6 +2056,8 @@ class CreateDBInstanceRequest(AbstractModel):
         :type AlarmPolicyIdList: list of str
         :param DryRun: 是否只预检此次请求。true：发送检查请求，不会创建实例。检查项包括是否填写了必需参数，请求格式，业务限制等。如果检查不通过，则返回对应错误码；如果检查通过，则返回RequestId.默认为false：发送正常请求，通过检查后直接创建实例。
         :type DryRun: bool
+        :param Vips: 指定实例的IP列表。仅支持主实例指定，按实例顺序，不足则按未指定处理。
+        :type Vips: list of str
         """
         self.Memory = None
         self.Volume = None
@@ -2081,6 +2095,7 @@ class CreateDBInstanceRequest(AbstractModel):
         self.ParamTemplateType = None
         self.AlarmPolicyIdList = None
         self.DryRun = None
+        self.Vips = None
 
 
     def _deserialize(self, params):
@@ -2132,6 +2147,7 @@ class CreateDBInstanceRequest(AbstractModel):
         self.ParamTemplateType = params.get("ParamTemplateType")
         self.AlarmPolicyIdList = params.get("AlarmPolicyIdList")
         self.DryRun = params.get("DryRun")
+        self.Vips = params.get("Vips")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3439,6 +3455,16 @@ class DescribeBackupConfigResponse(AbstractModel):
         :type BinlogExpireDays: int
         :param BackupTimeWindow: 实例自动备份的时间窗。
         :type BackupTimeWindow: :class:`tencentcloud.cdb.v20170320.models.CommonTimeWindow`
+        :param EnableBackupPeriodSave: 定期保留开关，off - 不开启定期保留策略，on - 开启定期保留策略，默认为off
+        :type EnableBackupPeriodSave: str
+        :param BackupPeriodSaveDays: 定期保留最长天数，最小值：90，最大值：3650，默认值：1080
+        :type BackupPeriodSaveDays: int
+        :param BackupPeriodSaveInterval: 定期保留策略周期，可取值：weekly - 周，monthly - 月， quarterly - 季度，yearly - 年，默认为monthly
+        :type BackupPeriodSaveInterval: str
+        :param BackupPeriodSaveCount: 定期保留的备份数量，最小值为1，最大值不超过定期保留策略周期内常规备份个数，默认值为1
+        :type BackupPeriodSaveCount: int
+        :param StartBackupPeriodSaveDate: 定期保留策略周期起始日期，格式：YYYY-MM-dd HH:mm:ss
+        :type StartBackupPeriodSaveDate: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -3448,6 +3474,11 @@ class DescribeBackupConfigResponse(AbstractModel):
         self.BackupMethod = None
         self.BinlogExpireDays = None
         self.BackupTimeWindow = None
+        self.EnableBackupPeriodSave = None
+        self.BackupPeriodSaveDays = None
+        self.BackupPeriodSaveInterval = None
+        self.BackupPeriodSaveCount = None
+        self.StartBackupPeriodSaveDate = None
         self.RequestId = None
 
 
@@ -3460,6 +3491,11 @@ class DescribeBackupConfigResponse(AbstractModel):
         if params.get("BackupTimeWindow") is not None:
             self.BackupTimeWindow = CommonTimeWindow()
             self.BackupTimeWindow._deserialize(params.get("BackupTimeWindow"))
+        self.EnableBackupPeriodSave = params.get("EnableBackupPeriodSave")
+        self.BackupPeriodSaveDays = params.get("BackupPeriodSaveDays")
+        self.BackupPeriodSaveInterval = params.get("BackupPeriodSaveInterval")
+        self.BackupPeriodSaveCount = params.get("BackupPeriodSaveCount")
+        self.StartBackupPeriodSaveDate = params.get("StartBackupPeriodSaveDate")
         self.RequestId = params.get("RequestId")
 
 
@@ -6488,6 +6524,8 @@ class DescribeTimeWindowResponse(AbstractModel):
         :type Saturday: list of str
         :param Sunday: 星期日的可维护时间列表。
         :type Sunday: list of str
+        :param MaxDelayTime: 最大数据延迟阈值
+        :type MaxDelayTime: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -6498,6 +6536,7 @@ class DescribeTimeWindowResponse(AbstractModel):
         self.Friday = None
         self.Saturday = None
         self.Sunday = None
+        self.MaxDelayTime = None
         self.RequestId = None
 
 
@@ -6509,6 +6548,7 @@ class DescribeTimeWindowResponse(AbstractModel):
         self.Friday = params.get("Friday")
         self.Saturday = params.get("Saturday")
         self.Sunday = params.get("Sunday")
+        self.MaxDelayTime = params.get("MaxDelayTime")
         self.RequestId = params.get("RequestId")
 
 
@@ -7200,7 +7240,7 @@ class InstanceInfo(AbstractModel):
         :type Vip: str
         :param Vport: 端口号
         :type Vport: int
-        :param CdbError: 是否锁定标记
+        :param CdbError: 磁盘写入是否被锁定（实例数据写入量已经超过磁盘配额）。0 -未被锁定 1 -已被锁定
         :type CdbError: int
         :param UniqVpcId: 私有网络描述符，例如：“vpc-5v8wn9mg”
         :type UniqVpcId: str
@@ -7854,16 +7894,16 @@ class ModifyAccountPrivilegesRequest(AbstractModel):
         :param Accounts: 数据库的账号，包括用户名和域名。
         :type Accounts: list of Account
         :param GlobalPrivileges: 全局权限。其中，GlobalPrivileges 中权限的可选值为："SELECT","INSERT","UPDATE","DELETE","CREATE", "PROCESS", "DROP","REFERENCES","INDEX","ALTER","SHOW DATABASES","CREATE TEMPORARY TABLES","LOCK TABLES","EXECUTE","CREATE VIEW","SHOW VIEW","CREATE ROUTINE","ALTER ROUTINE","EVENT","TRIGGER","CREATE USER","RELOAD","REPLICATION CLIENT","REPLICATION SLAVE","UPDATE"。
-注意，不传该参数表示清除该权限。
+注意，ModifyAction为空时，不传该参数表示清除该权限。
         :type GlobalPrivileges: list of str
         :param DatabasePrivileges: 数据库的权限。Privileges 权限的可选值为："SELECT","INSERT","UPDATE","DELETE","CREATE",	"DROP","REFERENCES","INDEX","ALTER","CREATE TEMPORARY TABLES","LOCK TABLES","EXECUTE","CREATE VIEW","SHOW VIEW","CREATE ROUTINE","ALTER ROUTINE","EVENT","TRIGGER"。
-注意，不传该参数表示清除该权限。
+注意，ModifyAction为空时，不传该参数表示清除该权限。
         :type DatabasePrivileges: list of DatabasePrivilege
         :param TablePrivileges: 数据库中表的权限。Privileges 权限的可选值为：权限的可选值为："SELECT","INSERT","UPDATE","DELETE","CREATE",	"DROP","REFERENCES","INDEX","ALTER","CREATE VIEW","SHOW VIEW", "TRIGGER"。
-注意，不传该参数表示清除该权限。
+注意，ModifyAction为空时，不传该参数表示清除该权限。
         :type TablePrivileges: list of TablePrivilege
         :param ColumnPrivileges: 数据库表中列的权限。Privileges 权限的可选值为："SELECT","INSERT","UPDATE","REFERENCES"。
-注意，不传该参数表示清除该权限。
+注意，ModifyAction为空时，不传该参数表示清除该权限。
         :type ColumnPrivileges: list of ColumnPrivilege
         :param ModifyAction: 该参数不为空时，为批量修改权限。可选值为：grant - 授予权限，revoke - 回收权限。
         :type ModifyAction: str
@@ -8108,16 +8148,28 @@ class ModifyBackupConfigRequest(AbstractModel):
         r"""
         :param InstanceId: 实例 ID，格式如：cdb-c1nl9rpv。与云数据库控制台页面中显示的实例ID相同。
         :type InstanceId: str
-        :param ExpireDays: 备份文件的保留时间，单位为天。最小值为7天，最大值为732天。
+        :param ExpireDays: 备份文件的保留时间，单位为天。最小值为7天，最大值为1830天。
         :type ExpireDays: int
         :param StartTime: (将废弃，建议使用 BackupTimeWindow 参数) 备份时间范围，格式为：02:00-06:00，起点和终点时间目前限制为整点，目前可以选择的范围为： 00:00-12:00，02:00-06:00，06：00-10：00，10:00-14:00，14:00-18:00，18:00-22:00，22:00-02:00。
         :type StartTime: str
         :param BackupMethod: 自动备份方式，仅支持：physical - 物理冷备
         :type BackupMethod: str
-        :param BinlogExpireDays: binlog的保留时间，单位为天。最小值为7天，最大值为732天。该值的设置不能大于备份文件的保留时间。
+        :param BinlogExpireDays: binlog的保留时间，单位为天。最小值为7天，最大值为1830天。该值的设置不能大于备份文件的保留时间。
         :type BinlogExpireDays: int
         :param BackupTimeWindow: 备份时间窗，比如要设置每周二和周日 10:00-14:00之间备份，该参数如下：{"Monday": "", "Tuesday": "10:00-14:00", "Wednesday": "", "Thursday": "", "Friday": "", "Saturday": "", "Sunday": "10:00-14:00"}    （注：可以设置一周的某几天备份，但是每天的备份时间需要设置为相同的时间段。 如果设置了该字段，将忽略StartTime字段的设置）
         :type BackupTimeWindow: :class:`tencentcloud.cdb.v20170320.models.CommonTimeWindow`
+        :param EnableBackupPeriodSave: 定期保留开关，off - 不开启定期保留策略，on - 开启定期保留策略，默认为off
+        :type EnableBackupPeriodSave: str
+        :param EnableBackupPeriodLongTermSave: 长期保留开关,该字段功能暂未上线，可忽略。off - 不开启长期保留策略，on - 开启长期保留策略，默认为off，如果开启，则BackupPeriodSaveDays，BackupPeriodSaveInterval，BackupPeriodSaveCount参数无效
+        :type EnableBackupPeriodLongTermSave: str
+        :param BackupPeriodSaveDays: 定期保留最长天数，最小值：90，最大值：3650，默认值：1080
+        :type BackupPeriodSaveDays: int
+        :param BackupPeriodSaveInterval: 定期保留策略周期，可取值：weekly - 周，monthly - 月， quarterly - 季度，yearly - 年，默认为monthly
+        :type BackupPeriodSaveInterval: str
+        :param BackupPeriodSaveCount: 定期保留的备份数量，最小值为1，最大值不超过定期保留策略周期内常规备份个数，默认值为1
+        :type BackupPeriodSaveCount: int
+        :param StartBackupPeriodSaveDate: 定期保留策略周期起始日期，格式：YYYY-MM-dd HH:mm:ss
+        :type StartBackupPeriodSaveDate: str
         """
         self.InstanceId = None
         self.ExpireDays = None
@@ -8125,6 +8177,12 @@ class ModifyBackupConfigRequest(AbstractModel):
         self.BackupMethod = None
         self.BinlogExpireDays = None
         self.BackupTimeWindow = None
+        self.EnableBackupPeriodSave = None
+        self.EnableBackupPeriodLongTermSave = None
+        self.BackupPeriodSaveDays = None
+        self.BackupPeriodSaveInterval = None
+        self.BackupPeriodSaveCount = None
+        self.StartBackupPeriodSaveDate = None
 
 
     def _deserialize(self, params):
@@ -8136,6 +8194,12 @@ class ModifyBackupConfigRequest(AbstractModel):
         if params.get("BackupTimeWindow") is not None:
             self.BackupTimeWindow = CommonTimeWindow()
             self.BackupTimeWindow._deserialize(params.get("BackupTimeWindow"))
+        self.EnableBackupPeriodSave = params.get("EnableBackupPeriodSave")
+        self.EnableBackupPeriodLongTermSave = params.get("EnableBackupPeriodLongTermSave")
+        self.BackupPeriodSaveDays = params.get("BackupPeriodSaveDays")
+        self.BackupPeriodSaveInterval = params.get("BackupPeriodSaveInterval")
+        self.BackupPeriodSaveCount = params.get("BackupPeriodSaveCount")
+        self.StartBackupPeriodSaveDate = params.get("StartBackupPeriodSaveDate")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9029,16 +9093,20 @@ class ModifyTimeWindowRequest(AbstractModel):
         :type TimeRanges: list of str
         :param Weekdays: 指定修改哪一天的客户时间段，可能的取值为：monday，tuesday，wednesday，thursday，friday，saturday，sunday。如果不指定该值或者为空，则默认一周七天都修改。
         :type Weekdays: list of str
+        :param MaxDelayTime: 数据延迟阈值，仅对主实例和灾备实例有效，不传默认修改为10
+        :type MaxDelayTime: int
         """
         self.InstanceId = None
         self.TimeRanges = None
         self.Weekdays = None
+        self.MaxDelayTime = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.TimeRanges = params.get("TimeRanges")
         self.Weekdays = params.get("Weekdays")
+        self.MaxDelayTime = params.get("MaxDelayTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10065,6 +10133,47 @@ class RenewDBInstanceResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.DealId = params.get("DealId")
+        self.RequestId = params.get("RequestId")
+
+
+class ResetRootAccountRequest(AbstractModel):
+    """ResetRootAccount请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResetRootAccountResponse(AbstractModel):
+    """ResetRootAccount返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -11820,9 +11929,9 @@ class UpgradeCDBProxyRequest(AbstractModel):
         :type InstanceId: str
         :param ProxyGroupId: 数据库代理ID
         :type ProxyGroupId: str
-        :param ProxyCount: 代理节点个数，实际规格支持数
+        :param ProxyCount: 代理节点个数
         :type ProxyCount: int
-        :param Cpu: 代理节点核数，实际规格支持数
+        :param Cpu: 代理节点核数
         :type Cpu: int
         :param Mem: 代理节点内存大小
         :type Mem: int

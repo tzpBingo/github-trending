@@ -36,7 +36,8 @@ class StsClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("AssumeRole", params)
+            headers = request.headers
+            body = self.call("AssumeRole", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.AssumeRoleResponse()
@@ -64,10 +65,40 @@ class StsClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("AssumeRoleWithSAML", params)
+            headers = request.headers
+            body = self.call("AssumeRoleWithSAML", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.AssumeRoleWithSAMLResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def AssumeRoleWithWebIdentity(self, request):
+        """申请OIDC角色临时密钥
+
+        :param request: Request instance for AssumeRoleWithWebIdentity.
+        :type request: :class:`tencentcloud.sts.v20180813.models.AssumeRoleWithWebIdentityRequest`
+        :rtype: :class:`tencentcloud.sts.v20180813.models.AssumeRoleWithWebIdentityResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AssumeRoleWithWebIdentity", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.AssumeRoleWithWebIdentityResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -93,7 +124,8 @@ class StsClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetCallerIdentity", params)
+            headers = request.headers
+            body = self.call("GetCallerIdentity", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetCallerIdentityResponse()
@@ -121,7 +153,8 @@ class StsClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("GetFederationToken", params)
+            headers = request.headers
+            body = self.call("GetFederationToken", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GetFederationTokenResponse()
@@ -149,7 +182,8 @@ class StsClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("QueryApiKey", params)
+            headers = request.headers
+            body = self.call("QueryApiKey", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.QueryApiKeyResponse()

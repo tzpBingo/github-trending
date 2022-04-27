@@ -9789,6 +9789,7 @@ class DescribeMediaProcessUsageDataRequest(AbstractModel):
 <li> Transcoding: 普通转码</li>
 <li> Transcoding-TESHD: 极速高清转码</li>
 <li> Editing: 视频编辑</li>
+<li> Editing-TESHD: 极速高清视频编辑</li>
 <li> AdaptiveBitrateStreaming: 自适应码流</li>
 <li> ContentAudit: 内容审核</li>
 <li> RemoveWatermark: 去除水印</li>
@@ -10633,6 +10634,7 @@ class DescribeTaskDetailResponse(AbstractModel):
 <li>WechatPublish：微信发布任务；</li>
 <li>WechatMiniProgramPublish：微信小程序视频发布任务；</li>
 <li>PullUpload：拉取上传媒体文件任务。</li>
+<li>FastClipMedia：快速剪辑任务。</li>
 
 兼容 2017 版的任务类型：
 <li>Transcode：视频转码任务；</li>
@@ -11257,12 +11259,20 @@ class DrmStreamingsInfo(AbstractModel):
         r"""
         :param SimpleAesDefinition: 保护类型为 SimpleAES 的转自适应码流模板 ID。
         :type SimpleAesDefinition: int
+        :param WidevineDefinition: 保护类型为 Widevine 的转自适应码流模板 ID。
+        :type WidevineDefinition: int
+        :param FairPlayDefinition: 保护类型为 FairPlay 的转自适应码流模板 ID。
+        :type FairPlayDefinition: int
         """
         self.SimpleAesDefinition = None
+        self.WidevineDefinition = None
+        self.FairPlayDefinition = None
 
 
     def _deserialize(self, params):
         self.SimpleAesDefinition = params.get("SimpleAesDefinition")
+        self.WidevineDefinition = params.get("WidevineDefinition")
+        self.FairPlayDefinition = params.get("FairPlayDefinition")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11281,12 +11291,20 @@ class DrmStreamingsInfoForUpdate(AbstractModel):
         r"""
         :param SimpleAesDefinition: 保护类型为 SimpleAES 的转自适应码流模板 ID。
         :type SimpleAesDefinition: int
+        :param WidevineDefinition: 保护类型为 Widevine 的转自适应码流模板 ID。
+        :type WidevineDefinition: int
+        :param FairPlayDefinition: 保护类型为 FairPlay 的转自适应码流模板 ID。
+        :type FairPlayDefinition: int
         """
         self.SimpleAesDefinition = None
+        self.WidevineDefinition = None
+        self.FairPlayDefinition = None
 
 
     def _deserialize(self, params):
         self.SimpleAesDefinition = params.get("SimpleAesDefinition")
+        self.WidevineDefinition = params.get("WidevineDefinition")
+        self.FairPlayDefinition = params.get("FairPlayDefinition")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -20016,7 +20034,7 @@ class SearchMediaRequest(AbstractModel):
         :param SourceTypes: 媒体文件来源集合，来源取值参见 [SourceType](https://cloud.tencent.com/document/product/266/31773#MediaSourceData)。
 <li>数组长度限制：10。</li>
         :type SourceTypes: list of str
-        :param StreamIds: 推流 [直播码](https://cloud.tencent.com/document/product/267/5959) 集合。匹配集合中的任意元素。
+        :param StreamIds: 推流直播码集合。匹配集合中的任意元素。
 <li>数组长度限制：10。</li>
         :type StreamIds: list of str
         :param Vids: 直播录制文件的唯一标识。匹配集合中的任意元素。
@@ -20069,7 +20087,7 @@ class SearchMediaRequest(AbstractModel):
 媒体文件来源，来源取值参见 [SourceType](https://cloud.tencent.com/document/product/266/31773#MediaSourceData)。
         :type SourceType: str
         :param StreamId: （不推荐：应使用 StreamIds 替代）
-推流 [直播码](https://cloud.tencent.com/document/product/267/5959)。
+推流直播码。
         :type StreamId: str
         :param Vid: （不推荐：应使用 Vids 替代）
 直播录制文件的唯一标识。
@@ -21452,6 +21470,7 @@ class TaskStatData(AbstractModel):
 <li> Transcoding: 普通转码</li>
 <li> Transcoding-TESHD: 极速高清转码</li>
 <li> Editing: 视频编辑</li>
+<li> Editing-TESHD: 极速高清视频编辑</li>
 <li> AdaptiveBitrateStreaming: 自适应码流</li>
 <li> ContentAudit: 智能识别</li>
 <li> RemoveWatermark: 去水印</li>
@@ -21494,6 +21513,16 @@ class TaskStatData(AbstractModel):
 <li>Edit.H265.FHD: H.265编码方式全高清视频编辑</li>
 <li>Edit.H265.2K: H.265编码方式2K视频编辑</li>
 <li>Edit.H265.4K: H.265编码方式4K视频编辑</li>
+<li>Edit.TESHD-10.H264.SD: H.264编码方式标清极速高清视频编辑</li>
+<li>Edit.TESHD-10.H264.HD: H.264编码方式高清极速高清视频编辑</li>
+<li>Edit.TESHD-10.H264.FHD: H.264编码方式全高清极速高清视频编辑</li>
+<li>Edit.TESHD-10.H264.2K: H.264编码方式2K极速高清视频编辑</li>
+<li>Edit.TESHD-10.H264.4K: H.264编码方式4K极速高清视频编辑</li>
+<li>Edit.TESHD-10.H265.SD: H.265编码方式标清极速高清视频编辑</li>
+<li>Edit.TESHD-10.H265.HD: H.265编码方式高清极速高清视频编辑</li>
+<li>Edit.TESHD-10.H265.FHD: H.265编码方式全高清极速高清视频编辑</li>
+<li>Edit.TESHD-10.H265.2K: H.265编码方式2K极速高清视频编辑</li>
+<li>Edit.TESHD-10.H265.4K: H.265编码方式4K极速高清视频编辑</li>
 去水印规格：
 <li>480P: 分辨率640*480及以下</li>
 <li>720P: 分辨率1280*720及以下</li>

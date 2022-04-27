@@ -1199,7 +1199,8 @@ class CreateInstancePreRequest(AbstractModel):
         :type ZoneId: int
         :param Period: 预付费购买时长，例如 "1m",就是一个月
         :type Period: str
-        :param InstanceType: 实例规格，专业版默认填写1。1：入门型 ，2： 标准型，3 ：进阶型，4 ：容量型，5： 高阶型1，6：高阶性2, 7： 高阶型3,8： 高阶型4， 9 ：独占型。
+        :param InstanceType: 实例规格说明 专业版实例[所有规格]填写1.
+标准版实例 ([入门型]填写1，[标准型]填写2，[进阶型]填写3，[容量型]填写4，[高阶型1]填写5，[高阶性2]填写6,[高阶型3]填写7,[高阶型4]填写8，[独占型]填写9。
         :type InstanceType: int
         :param VpcId: vpcId，不填默认基础网络
         :type VpcId: str
@@ -1211,9 +1212,9 @@ class CreateInstancePreRequest(AbstractModel):
         :type ClusterId: int
         :param RenewFlag: 预付费自动续费标记，0表示默认状态(用户未设置，即初始状态)， 1表示自动续费，2表示明确不自动续费(用户设置)
         :type RenewFlag: int
-        :param KafkaVersion: 支持指定版本Kafka版本（0.10.2/1.1.1/2.4.1） 。指定专业版参数specificationsType=pro
+        :param KafkaVersion: CKafka版本号[0.10.2、1.1.1、2.4.1], 默认是1.1.1
         :type KafkaVersion: str
-        :param SpecificationsType: 专业版必须填写 （专业版：profession、标准版：standard） 默认是standard。专业版填profession
+        :param SpecificationsType: 实例类型: [标准版实例]填写 standard(默认), [专业版实例]填写 profession
         :type SpecificationsType: str
         :param DiskSize: 磁盘大小,专业版不填写默认最小磁盘,填写后根据磁盘带宽分区数弹性计算
         :type DiskSize: int
@@ -1612,10 +1613,12 @@ class CreateTopicRequest(AbstractModel):
         :type MinInsyncReplicas: int
         :param UncleanLeaderElectionEnable: 是否允许未同步的副本选为leader，false:不允许，true:允许，默认不允许
         :type UncleanLeaderElectionEnable: int
-        :param RetentionMs: 可消息选。保留时间，单位ms，当前最小值为60000ms
+        :param RetentionMs: 可选参数。消息保留时间，单位ms，当前最小值为60000ms
         :type RetentionMs: int
         :param SegmentMs: Segment分片滚动的时长，单位ms，当前最小为3600000ms
         :type SegmentMs: int
+        :param MaxMessageBytes: 主题消息最大值，单位为 Byte，最小值1024Byte(即1KB)，最大值为8388608Byte（即8MB）。
+        :type MaxMessageBytes: int
         :param EnableAclRule: 预设ACL规则, 1:打开  0:关闭，默认不打开
         :type EnableAclRule: int
         :param AclRuleName: 预设ACL规则的名称
@@ -1637,6 +1640,7 @@ class CreateTopicRequest(AbstractModel):
         self.UncleanLeaderElectionEnable = None
         self.RetentionMs = None
         self.SegmentMs = None
+        self.MaxMessageBytes = None
         self.EnableAclRule = None
         self.AclRuleName = None
         self.RetentionBytes = None
@@ -1656,6 +1660,7 @@ class CreateTopicRequest(AbstractModel):
         self.UncleanLeaderElectionEnable = params.get("UncleanLeaderElectionEnable")
         self.RetentionMs = params.get("RetentionMs")
         self.SegmentMs = params.get("SegmentMs")
+        self.MaxMessageBytes = params.get("MaxMessageBytes")
         self.EnableAclRule = params.get("EnableAclRule")
         self.AclRuleName = params.get("AclRuleName")
         self.RetentionBytes = params.get("RetentionBytes")
@@ -2677,10 +2682,12 @@ class DescribeInstancesDetailRequest(AbstractModel):
         :type Limit: int
         :param TagKey: 匹配标签key值。
         :type TagKey: str
-        :param Filters: 过滤器。
+        :param Filters: 过滤器。filter.Name 支持('Ip', 'VpcId', 'SubNetId', 'InstanceType','InstanceId') ,filter.Values最多传递10个值.
         :type Filters: list of Filter
         :param InstanceIds: 已经废弃， 使用InstanceIdList
         :type InstanceIds: str
+        :param InstanceIdList: 按照实例ID过滤
+        :type InstanceIdList: list of str
         """
         self.InstanceId = None
         self.SearchWord = None
@@ -2690,6 +2697,7 @@ class DescribeInstancesDetailRequest(AbstractModel):
         self.TagKey = None
         self.Filters = None
         self.InstanceIds = None
+        self.InstanceIdList = None
 
 
     def _deserialize(self, params):
@@ -2706,6 +2714,7 @@ class DescribeInstancesDetailRequest(AbstractModel):
                 obj._deserialize(item)
                 self.Filters.append(obj)
         self.InstanceIds = params.get("InstanceIds")
+        self.InstanceIdList = params.get("InstanceIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4562,7 +4571,7 @@ class ModifyTopicAttributesRequest(AbstractModel):
         :type RetentionMs: int
         :param SegmentMs: Segment 分片滚动的时长，单位：ms，当前最小为86400000ms。
         :type SegmentMs: int
-        :param MaxMessageBytes: 主题消息最大值，单位为 Byte，最大值为8388608Byte（即8MB）。
+        :param MaxMessageBytes: 主题消息最大值，单位为 Byte，最大值为12582912Byte（即12MB）。
         :type MaxMessageBytes: int
         :param CleanUpPolicy: 消息删除策略，可以选择delete 或者compact
         :type CleanUpPolicy: str

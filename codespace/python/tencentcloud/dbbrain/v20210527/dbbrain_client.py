@@ -36,10 +36,40 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("AddUserContact", params)
+            headers = request.headers
+            body = self.call("AddUserContact", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.AddUserContactResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CancelKillTask(self, request):
+        """终止中断会话任务。
+
+        :param request: Request instance for CancelKillTask.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.CancelKillTaskRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.CancelKillTaskResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CancelKillTask", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CancelKillTaskResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -64,7 +94,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateDBDiagReportTask", params)
+            headers = request.headers
+            body = self.call("CreateDBDiagReportTask", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateDBDiagReportTaskResponse()
@@ -92,7 +123,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateDBDiagReportUrl", params)
+            headers = request.headers
+            body = self.call("CreateDBDiagReportUrl", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateDBDiagReportUrlResponse()
@@ -120,7 +152,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateKillTask", params)
+            headers = request.headers
+            body = self.call("CreateKillTask", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateKillTaskResponse()
@@ -148,7 +181,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateMailProfile", params)
+            headers = request.headers
+            body = self.call("CreateMailProfile", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateMailProfileResponse()
@@ -176,7 +210,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateProxySessionKillTask", params)
+            headers = request.headers
+            body = self.call("CreateProxySessionKillTask", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateProxySessionKillTaskResponse()
@@ -204,7 +239,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateSchedulerMailProfile", params)
+            headers = request.headers
+            body = self.call("CreateSchedulerMailProfile", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateSchedulerMailProfileResponse()
@@ -232,10 +268,40 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("CreateSecurityAuditLogExportTask", params)
+            headers = request.headers
+            body = self.call("CreateSecurityAuditLogExportTask", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateSecurityAuditLogExportTaskResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateSqlFilter(self, request):
+        """创建实例SQL限流任务。
+
+        :param request: Request instance for CreateSqlFilter.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.CreateSqlFilterRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.CreateSqlFilterResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateSqlFilter", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateSqlFilterResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -260,10 +326,40 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DeleteSecurityAuditLogExportTasks", params)
+            headers = request.headers
+            body = self.call("DeleteSecurityAuditLogExportTasks", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeleteSecurityAuditLogExportTasksResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteSqlFilters(self, request):
+        """删除实例SQL限流任务。
+
+        :param request: Request instance for DeleteSqlFilters.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DeleteSqlFiltersRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DeleteSqlFiltersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteSqlFilters", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DeleteSqlFiltersResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -288,7 +384,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeAllUserContact", params)
+            headers = request.headers
+            body = self.call("DescribeAllUserContact", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeAllUserContactResponse()
@@ -316,7 +413,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeAllUserGroup", params)
+            headers = request.headers
+            body = self.call("DescribeAllUserGroup", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeAllUserGroupResponse()
@@ -344,7 +442,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeDBDiagEvent", params)
+            headers = request.headers
+            body = self.call("DescribeDBDiagEvent", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeDBDiagEventResponse()
@@ -372,7 +471,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeDBDiagEvents", params)
+            headers = request.headers
+            body = self.call("DescribeDBDiagEvents", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeDBDiagEventsResponse()
@@ -400,7 +500,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeDBDiagHistory", params)
+            headers = request.headers
+            body = self.call("DescribeDBDiagHistory", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeDBDiagHistoryResponse()
@@ -428,7 +529,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeDBDiagReportTasks", params)
+            headers = request.headers
+            body = self.call("DescribeDBDiagReportTasks", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeDBDiagReportTasksResponse()
@@ -456,7 +558,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeDBSpaceStatus", params)
+            headers = request.headers
+            body = self.call("DescribeDBSpaceStatus", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeDBSpaceStatusResponse()
@@ -484,7 +587,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeDiagDBInstances", params)
+            headers = request.headers
+            body = self.call("DescribeDiagDBInstances", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeDiagDBInstancesResponse()
@@ -512,7 +616,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeHealthScore", params)
+            headers = request.headers
+            body = self.call("DescribeHealthScore", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeHealthScoreResponse()
@@ -540,7 +645,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeMailProfile", params)
+            headers = request.headers
+            body = self.call("DescribeMailProfile", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeMailProfileResponse()
@@ -568,10 +674,40 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeMySqlProcessList", params)
+            headers = request.headers
+            body = self.call("DescribeMySqlProcessList", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeMySqlProcessListResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeNoPrimaryKeyTables(self, request):
+        """查询实例无主键表。
+
+        :param request: Request instance for DescribeNoPrimaryKeyTables.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeNoPrimaryKeyTablesRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeNoPrimaryKeyTablesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNoPrimaryKeyTables", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeNoPrimaryKeyTablesResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -596,10 +732,40 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeProxySessionKillTasks", params)
+            headers = request.headers
+            body = self.call("DescribeProxySessionKillTasks", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeProxySessionKillTasksResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeRedisTopBigKeys(self, request):
+        """查询redis实例大key列表。
+
+        :param request: Request instance for DescribeRedisTopBigKeys.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeRedisTopBigKeysRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeRedisTopBigKeysResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRedisTopBigKeys", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeRedisTopBigKeysResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -624,7 +790,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeSecurityAuditLogDownloadUrls", params)
+            headers = request.headers
+            body = self.call("DescribeSecurityAuditLogDownloadUrls", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeSecurityAuditLogDownloadUrlsResponse()
@@ -652,7 +819,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeSecurityAuditLogExportTasks", params)
+            headers = request.headers
+            body = self.call("DescribeSecurityAuditLogExportTasks", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeSecurityAuditLogExportTasksResponse()
@@ -680,7 +848,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeSlowLogTimeSeriesStats", params)
+            headers = request.headers
+            body = self.call("DescribeSlowLogTimeSeriesStats", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeSlowLogTimeSeriesStatsResponse()
@@ -708,7 +877,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeSlowLogTopSqls", params)
+            headers = request.headers
+            body = self.call("DescribeSlowLogTopSqls", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeSlowLogTopSqlsResponse()
@@ -736,10 +906,69 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeSlowLogUserHostStats", params)
+            headers = request.headers
+            body = self.call("DescribeSlowLogUserHostStats", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeSlowLogUserHostStatsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSqlFilters(self, request):
+        """查询实例SQL限流任务列表。
+
+        :param request: Request instance for DescribeSqlFilters.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSqlFiltersRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSqlFiltersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSqlFilters", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeSqlFiltersResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSqlTemplate(self, request):
+        """查询SQL模板。
+
+        :param request: Request instance for DescribeSqlTemplate.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSqlTemplateRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSqlTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSqlTemplate", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeSqlTemplateResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -764,7 +993,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeTopSpaceSchemaTimeSeries", params)
+            headers = request.headers
+            body = self.call("DescribeTopSpaceSchemaTimeSeries", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeTopSpaceSchemaTimeSeriesResponse()
@@ -792,7 +1022,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeTopSpaceSchemas", params)
+            headers = request.headers
+            body = self.call("DescribeTopSpaceSchemas", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeTopSpaceSchemasResponse()
@@ -820,7 +1051,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeTopSpaceTableTimeSeries", params)
+            headers = request.headers
+            body = self.call("DescribeTopSpaceTableTimeSeries", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeTopSpaceTableTimeSeriesResponse()
@@ -848,7 +1080,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeTopSpaceTables", params)
+            headers = request.headers
+            body = self.call("DescribeTopSpaceTables", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeTopSpaceTablesResponse()
@@ -876,7 +1109,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("DescribeUserSqlAdvice", params)
+            headers = request.headers
+            body = self.call("DescribeUserSqlAdvice", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeUserSqlAdviceResponse()
@@ -904,7 +1138,8 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("KillMySqlThreads", params)
+            headers = request.headers
+            body = self.call("KillMySqlThreads", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.KillMySqlThreadsResponse()
@@ -932,10 +1167,69 @@ class DbbrainClient(AbstractClient):
         """
         try:
             params = request._serialize()
-            body = self.call("ModifyDiagDBInstanceConf", params)
+            headers = request.headers
+            body = self.call("ModifyDiagDBInstanceConf", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyDiagDBInstanceConfResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifySqlFilters(self, request):
+        """更改实例限流任务状态，目前仅用于终止限流。
+
+        :param request: Request instance for ModifySqlFilters.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.ModifySqlFiltersRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.ModifySqlFiltersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifySqlFilters", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifySqlFiltersResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def VerifyUserAccount(self, request):
+        """验证用户数据库账号权限，获取会话token。
+
+        :param request: Request instance for VerifyUserAccount.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.VerifyUserAccountRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.VerifyUserAccountResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("VerifyUserAccount", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.VerifyUserAccountResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
