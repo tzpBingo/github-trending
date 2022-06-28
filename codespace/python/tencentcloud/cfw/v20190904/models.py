@@ -245,10 +245,13 @@ class AddEnterpriseSecurityGroupRulesRequest(AbstractModel):
         :type Type: int
         :param ClientToken: 保证请求幂等性。从您的客户端生成一个参数值，确保不同请求间该参数值唯一。ClientToken只支持ASCII字符，且不能超过64个字符。
         :type ClientToken: str
+        :param IsDelay: 是否延迟下发，1则延迟下发，否则立即下发
+        :type IsDelay: int
         """
         self.Data = None
         self.Type = None
         self.ClientToken = None
+        self.IsDelay = None
 
 
     def _deserialize(self, params):
@@ -260,6 +263,7 @@ class AddEnterpriseSecurityGroupRulesRequest(AbstractModel):
                 self.Data.append(obj)
         self.Type = params.get("Type")
         self.ClientToken = params.get("ClientToken")
+        self.IsDelay = params.get("IsDelay")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1318,7 +1322,7 @@ class DescribeAcListsRequest(AbstractModel):
         :type Limit: int
         :param Offset: 偏移值
         :type Offset: int
-        :param Direction: 出站还是入站，0：入站，1：出站
+        :param Direction: 出站还是入站，1：入站，0：出站
         :type Direction: int
         :param EdgeId: EdgeId值
         :type EdgeId: str

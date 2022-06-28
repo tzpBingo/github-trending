@@ -23,8 +23,14 @@ FAILEDOPERATION_ILLEGALTEXTERROR = 'FailedOperation.IllegalTextError'
 # 后端服务超时。
 FAILEDOPERATION_REQUESTTIMEOUT = 'FailedOperation.RequestTimeout'
 
+# RPC请求失败，一般为算法微服务故障。
+FAILEDOPERATION_RPCFAIL = 'FailedOperation.RpcFail'
+
 # 文本向量化失败
 FAILEDOPERATION_TEXTEMBEDDINGFAILED = 'FailedOperation.TextEmbeddingFailed'
+
+# 未知错误。
+FAILEDOPERATION_UNKNOWN = 'FailedOperation.Unknown'
 
 # 查找不到词语
 FAILEDOPERATION_WORDNOTFOUND = 'FailedOperation.WordNotFound'

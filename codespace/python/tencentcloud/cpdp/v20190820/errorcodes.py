@@ -26,6 +26,9 @@ AUTHFAILURE_MIDAS = 'AuthFailure.Midas'
 # 未找到密钥。
 AUTHFAILURE_SECRETKEYNOTFOUND = 'AuthFailure.SecretKeyNotFound'
 
+# 账户尚未签约。
+AUTHFAILURE_SIGN = 'AuthFailure.Sign'
+
 # 验证失败。
 AUTHFAILURE_VERIFYERROR = 'AuthFailure.VerifyError'
 
@@ -88,6 +91,9 @@ FAILEDOPERATION_CHANNELERROR = 'FailedOperation.ChannelError'
 
 # 渠道方退款失败。
 FAILEDOPERATION_CHANNELREFUNDFAILED = 'FailedOperation.ChannelRefundFailed'
+
+# 渠道退款频率受限。
+FAILEDOPERATION_CHANNELREFUNDFREQUENCYLIMITED = 'FailedOperation.ChannelRefundFrequencyLimited'
 
 # 终止合约失败。
 FAILEDOPERATION_CLOSECONTRACTDBFAILED = 'FailedOperation.CloseContractDbFailed'
@@ -194,6 +200,9 @@ FAILEDOPERATION_MERCHANTEXIST = 'FailedOperation.MerchantExist'
 # 查无此商户。
 FAILEDOPERATION_MERCHANTNOTEXIST = 'FailedOperation.MerchantNotExist'
 
+# 商户不存在。
+FAILEDOPERATION_MERCHANTNOTEXISTS = 'FailedOperation.MerchantNotExists'
+
 # 商户权限错误。
 FAILEDOPERATION_MERCHANTPERMISSIONERROR = 'FailedOperation.MerchantPermissionError'
 
@@ -286,6 +295,15 @@ FAILEDOPERATION_QUERYRESULTNULL = 'FailedOperation.QueryResultNull'
 
 # 超出商户单日转账额度。
 FAILEDOPERATION_QUOTAEXCEED = 'FailedOperation.QuotaExceed'
+
+# 退款信息重复。
+FAILEDOPERATION_REFUNDINFODUPLICATE = 'FailedOperation.RefundInfoDuplicate'
+
+# 不可重试退款。
+FAILEDOPERATION_REFUNDNOTRETRIEABLE = 'FailedOperation.RefundNotRetrieable'
+
+# 退款处理中。
+FAILEDOPERATION_REFUNDPROCESSING = 'FailedOperation.RefundProcessIng'
 
 # 退款交易已结束。
 FAILEDOPERATION_REFUNDTRANSACTIONCLOSED = 'FailedOperation.RefundTransactionClosed'
@@ -487,6 +505,9 @@ RESOURCENOTFOUND_BATCHINFONOTFOUND = 'ResourceNotFound.BatchInfoNotFound'
 
 # 发票信息不存在。
 RESOURCENOTFOUND_INVOICENOTFOUND = 'ResourceNotFound.InvoiceNotFound'
+
+# 密钥不匹配或不存在。
+RESOURCENOTFOUND_KEY = 'ResourceNotFound.Key'
 
 # 商户信息不存在。
 RESOURCENOTFOUND_MERCHANTINFONOTFOUND = 'ResourceNotFound.MerchantInfoNotFound'

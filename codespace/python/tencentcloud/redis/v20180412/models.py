@@ -676,6 +676,8 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         :type ZoneName: str
         :param TemplateId: 创建实例需要应用的参数模板ID，不传则应用默认的参数模板
         :type TemplateId: str
+        :param DryRun: false ：默认值,发送正常请求，通过检查后直接创建实例 true：发送检查请求，不会创建实例。
+        :type DryRun: bool
         """
         self.TypeId = None
         self.MemSize = None
@@ -699,6 +701,7 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         self.ResourceTags = None
         self.ZoneName = None
         self.TemplateId = None
+        self.DryRun = None
 
 
     def _deserialize(self, params):
@@ -734,6 +737,7 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
                 self.ResourceTags.append(obj)
         self.ZoneName = params.get("ZoneName")
         self.TemplateId = params.get("TemplateId")
+        self.DryRun = params.get("DryRun")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3314,6 +3318,10 @@ class DescribeTaskListRequest(AbstractModel):
         :type EndTime: str
         :param TaskStatus: 任务状态
         :type TaskStatus: list of int
+        :param Result: 任务状态
+        :type Result: list of int
+        :param OperatorUin: 操作者Uin
+        :type OperatorUin: list of int
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -3324,6 +3332,8 @@ class DescribeTaskListRequest(AbstractModel):
         self.BeginTime = None
         self.EndTime = None
         self.TaskStatus = None
+        self.Result = None
+        self.OperatorUin = None
 
 
     def _deserialize(self, params):
@@ -3336,6 +3346,8 @@ class DescribeTaskListRequest(AbstractModel):
         self.BeginTime = params.get("BeginTime")
         self.EndTime = params.get("EndTime")
         self.TaskStatus = params.get("TaskStatus")
+        self.Result = params.get("Result")
+        self.OperatorUin = params.get("OperatorUin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5429,6 +5441,55 @@ class ModifyInstanceParamsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyInstanceReadOnlyRequest(AbstractModel):
+    """ModifyInstanceReadOnly请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param InputMode: 实例输入模式，0：读写 1：只读
+        :type InputMode: str
+        """
+        self.InstanceId = None
+        self.InputMode = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.InputMode = params.get("InputMode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyInstanceReadOnlyResponse(AbstractModel):
+    """ModifyInstanceReadOnly返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务ID
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyInstanceRequest(AbstractModel):
     """ModifyInstance请求参数结构体
 
@@ -5568,7 +5629,7 @@ class ModifyNetworkConfigRequest(AbstractModel):
         :type VpcId: str
         :param SubnetId: 子网ID，changeVpc、changeBaseToVpc的时候需要提供
         :type SubnetId: str
-        :param Recycle: vip保留时间，单位：天，注：需要最新版SDK支持
+        :param Recycle: 原VIP保留时间，单位：天，注：需要最新版SDK，否则原VIP立即释放，查看SDK版本，详见 [SDK中心](https://cloud.tencent.com/document/sdk)
         :type Recycle: int
         """
         self.InstanceId = None
@@ -7134,6 +7195,120 @@ class UpgradeInstanceVersionResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.DealId = params.get("DealId")
+        self.RequestId = params.get("RequestId")
+
+
+class UpgradeProxyVersionRequest(AbstractModel):
+    """UpgradeProxyVersion请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param CurrentProxyVersion: 当前proxy版本
+        :type CurrentProxyVersion: str
+        :param UpgradeProxyVersion: 可升级的redis版本
+        :type UpgradeProxyVersion: str
+        :param InstanceTypeUpgradeNow: 1-立即升级   0-维护时间窗口升级
+        :type InstanceTypeUpgradeNow: int
+        """
+        self.InstanceId = None
+        self.CurrentProxyVersion = None
+        self.UpgradeProxyVersion = None
+        self.InstanceTypeUpgradeNow = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.CurrentProxyVersion = params.get("CurrentProxyVersion")
+        self.UpgradeProxyVersion = params.get("UpgradeProxyVersion")
+        self.InstanceTypeUpgradeNow = params.get("InstanceTypeUpgradeNow")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpgradeProxyVersionResponse(AbstractModel):
+    """UpgradeProxyVersion返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 异步流程ID
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
+
+
+class UpgradeSmallVersionRequest(AbstractModel):
+    """UpgradeSmallVersion请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param CurrentRedisVersion: 当前redis版本
+        :type CurrentRedisVersion: str
+        :param UpgradeRedisVersion: 可升级的redis版本
+        :type UpgradeRedisVersion: str
+        :param InstanceTypeUpgradeNow: 1-立即升级   0-维护时间窗口升级
+        :type InstanceTypeUpgradeNow: int
+        """
+        self.InstanceId = None
+        self.CurrentRedisVersion = None
+        self.UpgradeRedisVersion = None
+        self.InstanceTypeUpgradeNow = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.CurrentRedisVersion = params.get("CurrentRedisVersion")
+        self.UpgradeRedisVersion = params.get("UpgradeRedisVersion")
+        self.InstanceTypeUpgradeNow = params.get("InstanceTypeUpgradeNow")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpgradeSmallVersionResponse(AbstractModel):
+    """UpgradeSmallVersion返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 异步流程ID
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
         self.RequestId = params.get("RequestId")
 
 

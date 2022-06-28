@@ -26,6 +26,9 @@ FAILEDOPERATION_STARTJOBFAILED = 'FailedOperation.StartJobFailed'
 # 当前状态冲突，不能执行该操作。
 FAILEDOPERATION_STATUSINCONFLICT = 'FailedOperation.StatusInConflict'
 
+# 当前状态不允许操作。
+FAILEDOPERATION_STATUSINCONFLICTERROR = 'FailedOperation.StatusInConflictError'
+
 # 内部错误。
 INTERNALERROR = 'InternalError'
 
@@ -43,6 +46,12 @@ INTERNALERROR_DATABASEERROR = 'InternalError.DatabaseError'
 
 # 迁移任务冲突。
 INTERNALERROR_DUPLICATEJOB = 'InternalError.DuplicateJob'
+
+# http请求访问出错。
+INTERNALERROR_INTERNALHTTPSERVERERROR = 'InternalError.InternalHttpServerError'
+
+# 内部组件访问错误。
+INTERNALERROR_INTERNALINNERCOMMONERROR = 'InternalError.InternalInnerCommonError'
 
 # 锁冲突。
 INTERNALERROR_LOCKERROR = 'InternalError.LockError'
@@ -65,8 +74,17 @@ INVALIDPARAMETER_BIZINVALIDPARAMETERVALUEERROR = 'InvalidParameter.BizInvalidPar
 # 实例不存在。
 INVALIDPARAMETER_INSTANCENOTFOUND = 'InvalidParameter.InstanceNotFound'
 
+# 业务参数错误。
+INVALIDPARAMETERVALUE_BIZINVALIDPARAMETERVALUEERROR = 'InvalidParameterValue.BizInvalidParameterValueError'
+
+# 数据转换错误。
+INVALIDPARAMETERVALUE_DATACONVERTERROR = 'InvalidParameterValue.DataConvertError'
+
 # 参数值错误。
 INVALIDPARAMETERVALUE_INVALIDPARAMETERVALUE = 'InvalidParameterValue.InvalidParameterValue'
+
+# 非法参数。
+INVALIDPARAMETERVALUE_INVALIDPARAMETERVALUEERROR = 'InvalidParameterValue.InvalidParameterValueError'
 
 # 闲置迁移任务数目超过限制。
 LIMITEXCEEDED_MAXUNUSEDJOBS = 'LimitExceeded.MaxUnusedJobs'
@@ -103,3 +121,6 @@ UNAUTHORIZEDOPERATION_NOTENOUGHPRIVILEGES = 'UnauthorizedOperation.NotEnoughPriv
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
+
+# 自研上云用户创建迁移任务时未指定标签，需要补齐“运营部门”、“运营产品”、“负责人”这三类标签。
+UNSUPPORTEDOPERATION_INTRANETUSERNOTTAGGEDERROR = 'UnsupportedOperation.IntraNetUserNotTaggedError'

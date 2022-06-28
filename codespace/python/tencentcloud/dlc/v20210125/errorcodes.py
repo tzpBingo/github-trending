@@ -23,8 +23,23 @@ FAILEDOPERATION = 'FailedOperation'
 # 另一个请求正在处理中，请稍后再试。
 FAILEDOPERATION_ANOTHERREQUESTPROCESSING = 'FailedOperation.AnotherRequestProcessing'
 
+# 获取鉴权策略失败。
+FAILEDOPERATION_GETPOLICYFAILED = 'FailedOperation.GetPolicyFailed'
+
+# 获取用户信息失败。
+FAILEDOPERATION_GETUSERINFOFAILED = 'FailedOperation.GetUserInfoFailed'
+
+# 获取工作组信息失败。
+FAILEDOPERATION_GETWORKGROUPINFOFAILED = 'FailedOperation.GetWorkGroupInfoFailed'
+
+# 授权失败。
+FAILEDOPERATION_GRANTPOLICYFAILED = 'FailedOperation.GrantPolicyFailed'
+
 # HTTP客户端请求失败。
 FAILEDOPERATION_HTTPCLIENTDOREQUESTFAILED = 'FailedOperation.HttpClientDoRequestFailed'
+
+# 取消授权失败。
+FAILEDOPERATION_REVOKEPOLICYFAILED = 'FailedOperation.RevokePolicyFailed'
 
 # 内部错误。
 INTERNALERROR = 'InternalError'
@@ -74,6 +89,9 @@ INVALIDPARAMETER_INVALIDSTORELOCATION = 'InvalidParameter.InvalidStoreLocation'
 # 无效的taskid。
 INVALIDPARAMETER_INVALIDTASKID = 'InvalidParameter.InvalidTaskId'
 
+# 无效的任务类型。
+INVALIDPARAMETER_INVALIDTASKTYPE = 'InvalidParameter.InvalidTaskType'
+
 # 无效用户名称。
 INVALIDPARAMETER_INVALIDUSERALIAS = 'InvalidParameter.InvalidUserAlias'
 
@@ -100,6 +118,9 @@ RESOURCENOTFOUND = 'ResourceNotFound'
 
 # 指定数据源连接没有找到。
 RESOURCENOTFOUND_DATASOURCENOTFOUND = 'ResourceNotFound.DatasourceNotFound'
+
+# 资源不可用。
+RESOURCEUNAVAILABLE = 'ResourceUnavailable'
 
 # 账号余额不足，无法执行SQL任务。
 RESOURCEUNAVAILABLE_BALANCEINSUFFICIENT = 'ResourceUnavailable.BalanceInsufficient'
@@ -157,6 +178,9 @@ UNAUTHORIZEDOPERATION_USECOMPUTINGENGINE = 'UnauthorizedOperation.UseComputingEn
 
 # 子用户不存在。
 UNAUTHORIZEDOPERATION_USERNOTEXIST = 'UnauthorizedOperation.UserNotExist'
+
+# 操作不支持。
+UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
 # 无法修改主账号。
 UNSUPPORTEDOPERATION_MODIFYOWNERUNSUPPORTED = 'UnsupportedOperation.ModifyOwnerUnsupported'

@@ -158,6 +158,102 @@ class BatchRecordInfo(AbstractModel):
         
 
 
+class CreateDealRequest(AbstractModel):
+    """CreateDeal请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealType: 询价类型，1 新购，2 续费，3 套餐升级（增值服务暂时只支持新购）
+        :type DealType: int
+        :param GoodsType: 商品类型，1 域名套餐 2 增值服务
+        :type GoodsType: int
+        :param GoodsChildType: 套餐类型：
+DP_PLUS：专业版
+DP_EXPERT：企业版
+DP_ULTRA：尊享版
+
+增值服务类型
+LB：负载均衡
+URL：URL转发
+DMONITOR_TASKS：D监控任务数
+DMONITOR_IP：D监控备用 IP 数
+CUSTOMLINE：自定义线路数
+        :type GoodsChildType: str
+        :param GoodsNum: 增值服务购买数量，如果是域名套餐固定为1，如果是增值服务则按以下规则：
+负载均衡、D监控任务数、D监控备用 IP 数、自定义线路数、URL 转发（必须是5的正整数倍，如 5、10、15 等）
+        :type GoodsNum: int
+        :param AutoRenew: 是否开启自动续费，1 开启，2 不开启（增值服务暂不支持自动续费），默认值为 2 不开启
+        :type AutoRenew: int
+        :param Domain: 需要绑定套餐的域名，如 dnspod.cn，如果是续费或升级，domain 参数必须要传，新购可不传。
+        :type Domain: str
+        :param TimeSpan: 套餐时长：
+1. 套餐以月为单位（按月只能是 3、6 还有 12 的倍数），套餐例如购买一年则传12，最大120 。（续费最低一年）
+2. 升级套餐时不需要传。
+3. 增值服务的时长单位为年，买一年传1（增值服务新购按年只能是 1，增值服务续费最大为 10）
+        :type TimeSpan: int
+        :param NewPackageType: 套餐类型，需要升级到的套餐类型，只有升级时需要。
+        :type NewPackageType: str
+        """
+        self.DealType = None
+        self.GoodsType = None
+        self.GoodsChildType = None
+        self.GoodsNum = None
+        self.AutoRenew = None
+        self.Domain = None
+        self.TimeSpan = None
+        self.NewPackageType = None
+
+
+    def _deserialize(self, params):
+        self.DealType = params.get("DealType")
+        self.GoodsType = params.get("GoodsType")
+        self.GoodsChildType = params.get("GoodsChildType")
+        self.GoodsNum = params.get("GoodsNum")
+        self.AutoRenew = params.get("AutoRenew")
+        self.Domain = params.get("Domain")
+        self.TimeSpan = params.get("TimeSpan")
+        self.NewPackageType = params.get("NewPackageType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateDealResponse(AbstractModel):
+    """CreateDeal返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BigDealId: 大订单号，一个大订单号下可以有多个子订单，说明是同一次下单
+        :type BigDealId: str
+        :param DealList: 子订单列表
+        :type DealList: list of Deals
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BigDealId = None
+        self.DealList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.BigDealId = params.get("BigDealId")
+        if params.get("DealList") is not None:
+            self.DealList = []
+            for item in params.get("DealList"):
+                obj = Deals()
+                obj._deserialize(item)
+                self.DealList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class CreateDomainAliasRequest(AbstractModel):
     """CreateDomainAlias请求参数结构体
 
@@ -773,6 +869,34 @@ class CreateRecordResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class Deals(AbstractModel):
+    """子订单号列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealId: 子订单ID
+        :type DealId: str
+        :param DealName: 子订单号
+        :type DealName: str
+        """
+        self.DealId = None
+        self.DealName = None
+
+
+    def _deserialize(self, params):
+        self.DealId = params.get("DealId")
+        self.DealName = params.get("DealName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DeleteDomainAliasRequest(AbstractModel):
     """DeleteDomainAlias请求参数结构体
 
@@ -1150,6 +1274,87 @@ class DescribeDomainAliasListResponse(AbstractModel):
                 obj = DomainAliasInfo()
                 obj._deserialize(item)
                 self.DomainAliasList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeDomainAnalyticsRequest(AbstractModel):
+    """DescribeDomainAnalytics请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 要查询解析量的域名
+        :type Domain: str
+        :param StartDate: 查询的开始时间，格式：YYYY-MM-DD
+        :type StartDate: str
+        :param EndDate: 查询的结束时间，格式：YYYY-MM-DD
+        :type EndDate: str
+        :param DnsFormat: DATE:按天维度统计 HOUR:按小时维度统计
+        :type DnsFormat: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.StartDate = None
+        self.EndDate = None
+        self.DnsFormat = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.StartDate = params.get("StartDate")
+        self.EndDate = params.get("EndDate")
+        self.DnsFormat = params.get("DnsFormat")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDomainAnalyticsResponse(AbstractModel):
+    """DescribeDomainAnalytics返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 当前统计维度解析量小计
+        :type Data: list of DomainAnalyticsDetail
+        :param Info: 域名解析量统计查询信息
+        :type Info: :class:`tencentcloud.dnspod.v20210323.models.DomainAnalyticsInfo`
+        :param AliasData: 域名别名解析量统计信息
+        :type AliasData: list of DomainAliasAnalyticsItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.Info = None
+        self.AliasData = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = DomainAnalyticsDetail()
+                obj._deserialize(item)
+                self.Data.append(obj)
+        if params.get("Info") is not None:
+            self.Info = DomainAnalyticsInfo()
+            self.Info._deserialize(params.get("Info"))
+        if params.get("AliasData") is not None:
+            self.AliasData = []
+            for item in params.get("AliasData"):
+                obj = DomainAliasAnalyticsItem()
+                obj._deserialize(item)
+                self.AliasData.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -1725,6 +1930,91 @@ class DescribeRecordTypeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeSubdomainAnalyticsRequest(AbstractModel):
+    """DescribeSubdomainAnalytics请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 要查询解析量的域名
+        :type Domain: str
+        :param StartDate: 查询的开始时间，格式：YYYY-MM-DD
+        :type StartDate: str
+        :param EndDate: 查询的结束时间，格式：YYYY-MM-DD
+        :type EndDate: str
+        :param Subdomain: 要查询解析量的子域名
+        :type Subdomain: str
+        :param DnsFormat: DATE:按天维度统计 HOUR:按小时维度统计
+        :type DnsFormat: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.StartDate = None
+        self.EndDate = None
+        self.Subdomain = None
+        self.DnsFormat = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.StartDate = params.get("StartDate")
+        self.EndDate = params.get("EndDate")
+        self.Subdomain = params.get("Subdomain")
+        self.DnsFormat = params.get("DnsFormat")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSubdomainAnalyticsResponse(AbstractModel):
+    """DescribeSubdomainAnalytics返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 当前统计维度解析量小计
+        :type Data: list of DomainAnalyticsDetail
+        :param Info: 子域名解析量统计查询信息
+        :type Info: :class:`tencentcloud.dnspod.v20210323.models.SubdomainAnalyticsInfo`
+        :param AliasData: 子域名别名解析量统计信息
+        :type AliasData: list of SubdomainAliasAnalyticsItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.Info = None
+        self.AliasData = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = DomainAnalyticsDetail()
+                obj._deserialize(item)
+                self.Data.append(obj)
+        if params.get("Info") is not None:
+            self.Info = SubdomainAnalyticsInfo()
+            self.Info._deserialize(params.get("Info"))
+        if params.get("AliasData") is not None:
+            self.AliasData = []
+            for item in params.get("AliasData"):
+                obj = SubdomainAliasAnalyticsItem()
+                obj._deserialize(item)
+                self.AliasData.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeUserDetailRequest(AbstractModel):
     """DescribeUserDetail请求参数结构体
 
@@ -1754,6 +2044,41 @@ class DescribeUserDetailResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DomainAliasAnalyticsItem(AbstractModel):
+    """域名别名解析量统计信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 域名解析量统计查询信息
+        :type Info: :class:`tencentcloud.dnspod.v20210323.models.DomainAnalyticsInfo`
+        :param Data: 当前统计维度解析量小计
+        :type Data: list of DomainAnalyticsDetail
+        """
+        self.Info = None
+        self.Data = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = DomainAnalyticsInfo()
+            self.Info._deserialize(params.get("Info"))
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = DomainAnalyticsDetail()
+                obj._deserialize(item)
+                self.Data.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DomainAliasInfo(AbstractModel):
     """域名别名信息
 
@@ -1773,6 +2098,79 @@ class DomainAliasInfo(AbstractModel):
     def _deserialize(self, params):
         self.Id = params.get("Id")
         self.DomainAlias = params.get("DomainAlias")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DomainAnalyticsDetail(AbstractModel):
+    """当前统计维度解析量小计
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Num: 当前统计维度解析量小计
+        :type Num: int
+        :param DateKey: 按天统计时，为统计日期
+        :type DateKey: str
+        :param HourKey: 按小时统计时，为统计的当前时间的小时数(0-23)，例：HourKey为23时，统计周期为22点-23点的解析量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HourKey: int
+        """
+        self.Num = None
+        self.DateKey = None
+        self.HourKey = None
+
+
+    def _deserialize(self, params):
+        self.Num = params.get("Num")
+        self.DateKey = params.get("DateKey")
+        self.HourKey = params.get("HourKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DomainAnalyticsInfo(AbstractModel):
+    """域名解析量统计查询信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DnsFormat: DATE:按天维度统计 HOUR:按小时维度统计
+        :type DnsFormat: str
+        :param DnsTotal: 当前统计周期解析量总计
+        :type DnsTotal: int
+        :param Domain: 当前查询的域名
+        :type Domain: str
+        :param StartDate: 当前统计周期开始时间
+        :type StartDate: str
+        :param EndDate: 当前统计周期结束时间
+        :type EndDate: str
+        """
+        self.DnsFormat = None
+        self.DnsTotal = None
+        self.Domain = None
+        self.StartDate = None
+        self.EndDate = None
+
+
+    def _deserialize(self, params):
+        self.DnsFormat = params.get("DnsFormat")
+        self.DnsTotal = params.get("DnsTotal")
+        self.Domain = params.get("Domain")
+        self.StartDate = params.get("StartDate")
+        self.EndDate = params.get("EndDate")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2509,6 +2907,8 @@ class ModifyDynamicDNSRequest(AbstractModel):
         :type SubDomain: str
         :param RecordLineId: 线路的 ID，通过 API 记录线路获得，英文字符串，比如：10=1。参数RecordLineId优先级高于RecordLine，如果同时传递二者，优先使用RecordLineId参数。
         :type RecordLineId: str
+        :param Ttl: TTL值，如果不传，默认为域名的TTL值。
+        :type Ttl: int
         """
         self.Domain = None
         self.RecordId = None
@@ -2517,6 +2917,7 @@ class ModifyDynamicDNSRequest(AbstractModel):
         self.DomainId = None
         self.SubDomain = None
         self.RecordLineId = None
+        self.Ttl = None
 
 
     def _deserialize(self, params):
@@ -2527,6 +2928,7 @@ class ModifyDynamicDNSRequest(AbstractModel):
         self.DomainId = params.get("DomainId")
         self.SubDomain = params.get("SubDomain")
         self.RecordLineId = params.get("RecordLineId")
+        self.Ttl = params.get("Ttl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2554,6 +2956,51 @@ class ModifyDynamicDNSResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RecordId = params.get("RecordId")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyPackageAutoRenewRequest(AbstractModel):
+    """ModifyPackageAutoRenew请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResourceId: 资源ID
+        :type ResourceId: str
+        :param Status: enable 开启自动续费；disable 关闭自动续费
+        :type Status: str
+        """
+        self.ResourceId = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.ResourceId = params.get("ResourceId")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyPackageAutoRenewResponse(AbstractModel):
+    """ModifyPackageAutoRenew返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -2947,6 +3394,108 @@ class ModifySubdomainStatusResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyVasAutoRenewStatusRequest(AbstractModel):
+    """ModifyVasAutoRenewStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResourceId: 资源ID
+        :type ResourceId: str
+        :param Status: enable 开启自动续费；disable 关闭自动续费
+        :type Status: str
+        """
+        self.ResourceId = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.ResourceId = params.get("ResourceId")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyVasAutoRenewStatusResponse(AbstractModel):
+    """ModifyVasAutoRenewStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class PayOrderWithBalanceRequest(AbstractModel):
+    """PayOrderWithBalance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BigDealIdList: 需要支付的大订单号数组
+        :type BigDealIdList: list of str
+        :param VoucherIdList: 代金券ID数组
+        :type VoucherIdList: list of str
+        """
+        self.BigDealIdList = None
+        self.VoucherIdList = None
+
+
+    def _deserialize(self, params):
+        self.BigDealIdList = params.get("BigDealIdList")
+        self.VoucherIdList = params.get("VoucherIdList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PayOrderWithBalanceResponse(AbstractModel):
+    """PayOrderWithBalance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealIdList: 此次操作支付成功的订单id数组
+        :type DealIdList: list of str
+        :param BigDealIdList: 此次操作支付成功的大订单号数组
+        :type BigDealIdList: list of str
+        :param DealNameList: 此次操作支付成功的订单号数组
+        :type DealNameList: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DealIdList = None
+        self.BigDealIdList = None
+        self.DealNameList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DealIdList = params.get("DealIdList")
+        self.BigDealIdList = params.get("BigDealIdList")
+        self.DealNameList = params.get("DealNameList")
+        self.RequestId = params.get("RequestId")
+
+
 class PurviewInfo(AbstractModel):
     """域名权限项
 
@@ -3154,6 +3703,85 @@ class RecordListItem(AbstractModel):
         self.Remark = params.get("Remark")
         self.TTL = params.get("TTL")
         self.MX = params.get("MX")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SubdomainAliasAnalyticsItem(AbstractModel):
+    """子域名别名解析量统计信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 子域名解析量统计查询信息
+        :type Info: :class:`tencentcloud.dnspod.v20210323.models.SubdomainAnalyticsInfo`
+        :param Data: 当前统计维度解析量小计
+        :type Data: list of DomainAnalyticsDetail
+        """
+        self.Info = None
+        self.Data = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = SubdomainAnalyticsInfo()
+            self.Info._deserialize(params.get("Info"))
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = DomainAnalyticsDetail()
+                obj._deserialize(item)
+                self.Data.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SubdomainAnalyticsInfo(AbstractModel):
+    """子域名解析量统计查询信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DnsFormat: DATE:按天维度统计 HOUR:按小时维度统计
+        :type DnsFormat: str
+        :param DnsTotal: 当前统计周期解析量总计
+        :type DnsTotal: int
+        :param Domain: 当前查询的域名
+        :type Domain: str
+        :param StartDate: 当前统计周期开始时间
+        :type StartDate: str
+        :param EndDate: 当前统计周期结束时间
+        :type EndDate: str
+        :param Subdomain: 当前统计的子域名
+        :type Subdomain: str
+        """
+        self.DnsFormat = None
+        self.DnsTotal = None
+        self.Domain = None
+        self.StartDate = None
+        self.EndDate = None
+        self.Subdomain = None
+
+
+    def _deserialize(self, params):
+        self.DnsFormat = params.get("DnsFormat")
+        self.DnsTotal = params.get("DnsTotal")
+        self.Domain = params.get("Domain")
+        self.StartDate = params.get("StartDate")
+        self.EndDate = params.get("EndDate")
+        self.Subdomain = params.get("Subdomain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

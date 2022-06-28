@@ -236,7 +236,7 @@ class Locator:
     def nth(self, index: int) -> "Locator":
         return Locator(self._frame, f"{self._selector} >> nth={index}")
 
-    def that(
+    def filter(
         self,
         has_text: Union[str, Pattern] = None,
         has: "Locator" = None,

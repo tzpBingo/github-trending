@@ -32,6 +32,15 @@ FAILEDOPERATION_AGENOTACHIEVENORMALLEGAL = 'FailedOperation.AgeNotAchieveNormalL
 # 流程已关联文档。
 FAILEDOPERATION_FLOWHASDOCUMENT = 'FailedOperation.FlowHasDocument'
 
+# 发起签署存在填写控件。
+FAILEDOPERATION_QRCODECREATORSIGNCOMPONENTS = 'FailedOperation.QrCodeCreatorSignComponents'
+
+# 模板签署人不存在。
+FAILEDOPERATION_QRCODESIGNUSERS = 'FailedOperation.QrCodeSignUsers'
+
+# 一码多人二维码模板有误。
+FAILEDOPERATION_QRCODETEMPLATEID = 'FailedOperation.QrCodeTemplateId'
+
 # 模板无资源信息。
 FAILEDOPERATION_TEMPLATEHASNORESOURCE = 'FailedOperation.TemplateHasNoResource'
 
@@ -124,6 +133,9 @@ LIMITEXCEEDED = 'LimitExceeded'
 
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
+
+# 缺少签署控件参数。
+MISSINGPARAMETER_SIGNCOMPONENTS = 'MissingParameter.SignComponents'
 
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'

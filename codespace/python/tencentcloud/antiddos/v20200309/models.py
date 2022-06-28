@@ -277,6 +277,12 @@ class BGPIPInstance(AbstractModel):
         :param V6Flag: 是否Ipv6版本的IP, 是为1，否为0
 注意：此字段可能返回 null，表示取不到有效值。
         :type V6Flag: int
+        :param BGPIPChannelFlag: 是否渠道版高防IP，是为1，否为0
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BGPIPChannelFlag: int
+        :param TagInfoList: 资源关联标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagInfoList: list of TagInfo
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -297,6 +303,8 @@ class BGPIPInstance(AbstractModel):
         self.Domain = None
         self.DamDDoSStatus = None
         self.V6Flag = None
+        self.BGPIPChannelFlag = None
+        self.TagInfoList = None
 
 
     def _deserialize(self, params):
@@ -335,6 +343,13 @@ class BGPIPInstance(AbstractModel):
         self.Domain = params.get("Domain")
         self.DamDDoSStatus = params.get("DamDDoSStatus")
         self.V6Flag = params.get("V6Flag")
+        self.BGPIPChannelFlag = params.get("BGPIPChannelFlag")
+        if params.get("TagInfoList") is not None:
+            self.TagInfoList = []
+            for item in params.get("TagInfoList"):
+                obj = TagInfo()
+                obj._deserialize(item)
+                self.TagInfoList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -478,6 +493,8 @@ class BGPInstance(AbstractModel):
         :type DDoSLevel: str
         :param CCEnable: CC防护开关
         :type CCEnable: int
+        :param TagInfoList: 资源关联标签
+        :type TagInfoList: list of TagInfo
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -492,6 +509,7 @@ class BGPInstance(AbstractModel):
         self.BoundStatus = None
         self.DDoSLevel = None
         self.CCEnable = None
+        self.TagInfoList = None
 
 
     def _deserialize(self, params):
@@ -523,6 +541,12 @@ class BGPInstance(AbstractModel):
         self.BoundStatus = params.get("BoundStatus")
         self.DDoSLevel = params.get("DDoSLevel")
         self.CCEnable = params.get("CCEnable")
+        if params.get("TagInfoList") is not None:
+            self.TagInfoList = []
+            for item in params.get("TagInfoList"):
+                obj = TagInfo()
+                obj._deserialize(item)
+                self.TagInfoList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -562,6 +586,12 @@ class BGPInstanceSpecification(AbstractModel):
         :param ChannelEditionFlag: 渠道版标记，0表示普通高防包，1表示渠道版高防包
 注意：此字段可能返回 null，表示取不到有效值。
         :type ChannelEditionFlag: int
+        :param EnterpriseFlag: 高防包企业版标记，0表示普通高防包；1表示企业版高防包
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnterpriseFlag: int
+        :param ElasticLimit: 高防包企业版弹性阈值，0表示未开启；大于0为弹性防护阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ElasticLimit: int
         """
         self.ProtectBandwidth = None
         self.ProtectCountLimit = None
@@ -571,6 +601,8 @@ class BGPInstanceSpecification(AbstractModel):
         self.ServiceBandWidth = None
         self.BattleEditionFlag = None
         self.ChannelEditionFlag = None
+        self.EnterpriseFlag = None
+        self.ElasticLimit = None
 
 
     def _deserialize(self, params):
@@ -582,6 +614,8 @@ class BGPInstanceSpecification(AbstractModel):
         self.ServiceBandWidth = params.get("ServiceBandWidth")
         self.BattleEditionFlag = params.get("BattleEditionFlag")
         self.ChannelEditionFlag = params.get("ChannelEditionFlag")
+        self.EnterpriseFlag = params.get("EnterpriseFlag")
+        self.ElasticLimit = params.get("ElasticLimit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -638,11 +672,14 @@ class BlackWhiteIpRelation(AbstractModel):
         :type InstanceDetailList: list of InstanceRelation
         :param Mask: ip掩码，0表示32位完整ip
         :type Mask: int
+        :param ModifyTime: 修改时间
+        :type ModifyTime: str
         """
         self.Ip = None
         self.Type = None
         self.InstanceDetailList = None
         self.Mask = None
+        self.ModifyTime = None
 
 
     def _deserialize(self, params):
@@ -655,6 +692,7 @@ class BlackWhiteIpRelation(AbstractModel):
                 obj._deserialize(item)
                 self.InstanceDetailList.append(obj)
         self.Mask = params.get("Mask")
+        self.ModifyTime = params.get("ModifyTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1495,12 +1533,15 @@ class CreateCCReqLimitPolicyRequest(AbstractModel):
         :type Domain: str
         :param Policy: 策略项
         :type Policy: :class:`tencentcloud.antiddos.v20200309.models.CCReqLimitPolicyRecord`
+        :param IsGlobal: 是否为兜底频控
+        :type IsGlobal: int
         """
         self.InstanceId = None
         self.Ip = None
         self.Protocol = None
         self.Domain = None
         self.Policy = None
+        self.IsGlobal = None
 
 
     def _deserialize(self, params):
@@ -1511,6 +1552,7 @@ class CreateCCReqLimitPolicyRequest(AbstractModel):
         if params.get("Policy") is not None:
             self.Policy = CCReqLimitPolicyRecord()
             self.Policy._deserialize(params.get("Policy"))
+        self.IsGlobal = params.get("IsGlobal")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3522,7 +3564,7 @@ class DescribeCCLevelListResponse(AbstractModel):
         r"""
         :param Total: 分级策略列表总数
         :type Total: int
-        :param LevelList: 分级策略列表详情
+        :param LevelList: 分级策略列表总数
         :type LevelList: list of CCLevelPolicy
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -4468,6 +4510,12 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         :type FilterDamDDoSStatus: int
         :param FilterStatus: 获取特定状态的资源，运行中填idle，攻击中填attacking，封堵中填blocking
         :type FilterStatus: str
+        :param FilterCname: 获取特定的实例Cname
+        :type FilterCname: str
+        :param FilterInstanceIdList: 批量查询实例ID对应的高防IP实例资源
+        :type FilterInstanceIdList: list of str
+        :param FilterTag: 标签搜索
+        :type FilterTag: :class:`tencentcloud.antiddos.v20200309.models.TagFilter`
         """
         self.Offset = None
         self.Limit = None
@@ -4480,6 +4528,9 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         self.FilterEipEipAddressStatus = None
         self.FilterDamDDoSStatus = None
         self.FilterStatus = None
+        self.FilterCname = None
+        self.FilterInstanceIdList = None
+        self.FilterTag = None
 
 
     def _deserialize(self, params):
@@ -4494,6 +4545,11 @@ class DescribeListBGPIPInstancesRequest(AbstractModel):
         self.FilterEipEipAddressStatus = params.get("FilterEipEipAddressStatus")
         self.FilterDamDDoSStatus = params.get("FilterDamDDoSStatus")
         self.FilterStatus = params.get("FilterStatus")
+        self.FilterCname = params.get("FilterCname")
+        self.FilterInstanceIdList = params.get("FilterInstanceIdList")
+        if params.get("FilterTag") is not None:
+            self.FilterTag = TagFilter()
+            self.FilterTag._deserialize(params.get("FilterTag"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4560,6 +4616,10 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         :type FilterBoundStatus: str
         :param FilterInstanceIdList: 实例id数组
         :type FilterInstanceIdList: list of str
+        :param FilterEnterpriseFlag: 企业版搜索
+        :type FilterEnterpriseFlag: int
+        :param FilterTag: 标签搜索
+        :type FilterTag: :class:`tencentcloud.antiddos.v20200309.models.TagFilter`
         """
         self.Offset = None
         self.Limit = None
@@ -4571,6 +4631,8 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterStatus = None
         self.FilterBoundStatus = None
         self.FilterInstanceIdList = None
+        self.FilterEnterpriseFlag = None
+        self.FilterTag = None
 
 
     def _deserialize(self, params):
@@ -4584,6 +4646,10 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterStatus = params.get("FilterStatus")
         self.FilterBoundStatus = params.get("FilterBoundStatus")
         self.FilterInstanceIdList = params.get("FilterInstanceIdList")
+        self.FilterEnterpriseFlag = params.get("FilterEnterpriseFlag")
+        if params.get("FilterTag") is not None:
+            self.FilterTag = TagFilter()
+            self.FilterTag._deserialize(params.get("FilterTag"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4907,12 +4973,15 @@ class DescribeListIPAlarmConfigRequest(AbstractModel):
         :type FilterAlarmType: int
         :param FilterIp: IP搜索
         :type FilterIp: str
+        :param FilterCname: 高防IP实例资源的cname
+        :type FilterCname: str
         """
         self.Offset = None
         self.Limit = None
         self.FilterInstanceId = None
         self.FilterAlarmType = None
         self.FilterIp = None
+        self.FilterCname = None
 
 
     def _deserialize(self, params):
@@ -4921,6 +4990,7 @@ class DescribeListIPAlarmConfigRequest(AbstractModel):
         self.FilterInstanceId = params.get("FilterInstanceId")
         self.FilterAlarmType = params.get("FilterAlarmType")
         self.FilterIp = params.get("FilterIp")
+        self.FilterCname = params.get("FilterCname")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5401,6 +5471,388 @@ class DescribeListWaterPrintConfigResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeOverviewAttackTrendRequest(AbstractModel):
+    """DescribeOverviewAttackTrend请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 攻击类型，取值ddos， cc
+        :type Type: str
+        :param Dimension: 纬度，当前仅支持attackcount
+        :type Dimension: str
+        :param Period: 周期，当前仅支持86400
+        :type Period: int
+        :param StartTime: 起始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        """
+        self.Type = None
+        self.Dimension = None
+        self.Period = None
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.Dimension = params.get("Dimension")
+        self.Period = params.get("Period")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOverviewAttackTrendResponse(AbstractModel):
+    """DescribeOverviewAttackTrend返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 攻击类型
+        :type Type: str
+        :param StartTime: 起始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param Period: 周期
+        :type Period: int
+        :param Data: 每个周期点的攻击次数
+        :type Data: list of int non-negative
+        :param Count: 包含的周期点数
+        :type Count: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Type = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Period = None
+        self.Data = None
+        self.Count = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Period = params.get("Period")
+        self.Data = params.get("Data")
+        self.Count = params.get("Count")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeOverviewCCTrendRequest(AbstractModel):
+    """DescribeOverviewCCTrend请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Business: 大禹子产品代号（bgpip表示高防IP；bgp-multip表示共享包；basic表示DDoS基础防护）
+        :type Business: str
+        :param Period: 统计粒度，取值[300(5分钟)，3600(小时)，86400(天)]
+        :type Period: int
+        :param StartTime: 统计开始时间
+        :type StartTime: str
+        :param EndTime: 统计结束时间
+        :type EndTime: str
+        :param MetricName: 指标，取值[inqps(总请求峰值，dropqps(攻击请求峰值))，incount(请求次数), dropcount(攻击次数)]
+        :type MetricName: str
+        :param IpList: 资源的IP
+        :type IpList: list of str
+        :param Id: 资源实例ID
+        :type Id: str
+        """
+        self.Business = None
+        self.Period = None
+        self.StartTime = None
+        self.EndTime = None
+        self.MetricName = None
+        self.IpList = None
+        self.Id = None
+
+
+    def _deserialize(self, params):
+        self.Business = params.get("Business")
+        self.Period = params.get("Period")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.MetricName = params.get("MetricName")
+        self.IpList = params.get("IpList")
+        self.Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOverviewCCTrendResponse(AbstractModel):
+    """DescribeOverviewCCTrend返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Count: 值个数
+        :type Count: int
+        :param Data: 值数组
+        :type Data: list of int non-negative
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Count = None
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Count = params.get("Count")
+        self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeOverviewDDoSEventListRequest(AbstractModel):
+    """DescribeOverviewDDoSEventList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 起始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param AttackStatus: 可选按攻击状态过滤，start：攻击中；end：攻击结束
+        :type AttackStatus: str
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Limit: 记录条数
+        :type Limit: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.AttackStatus = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.AttackStatus = params.get("AttackStatus")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOverviewDDoSEventListResponse(AbstractModel):
+    """DescribeOverviewDDoSEventList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 记录总数
+        :type Total: int
+        :param EventList: 事件列表
+        :type EventList: list of OverviewDDoSEvent
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.EventList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        if params.get("EventList") is not None:
+            self.EventList = []
+            for item in params.get("EventList"):
+                obj = OverviewDDoSEvent()
+                obj._deserialize(item)
+                self.EventList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeOverviewDDoSTrendRequest(AbstractModel):
+    """DescribeOverviewDDoSTrend请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Business: 大禹子产品代号（bgpip表示高防IP；bgp-multip表示高防包；basic表示DDoS基础防护）
+        :type Business: str
+        :param Period: 统计粒度，取值[300(5分钟)，3600(小时)，86400(天)]
+        :type Period: int
+        :param StartTime: 统计开始时间
+        :type StartTime: str
+        :param EndTime: 统计结束时间
+        :type EndTime: str
+        :param MetricName: 指标，取值[bps(攻击流量带宽，pps(攻击包速率))]
+        :type MetricName: str
+        :param IpList: 资源实例的IP列表
+        :type IpList: list of str
+        :param Id: 资源实例ID
+        :type Id: str
+        """
+        self.Business = None
+        self.Period = None
+        self.StartTime = None
+        self.EndTime = None
+        self.MetricName = None
+        self.IpList = None
+        self.Id = None
+
+
+    def _deserialize(self, params):
+        self.Business = params.get("Business")
+        self.Period = params.get("Period")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.MetricName = params.get("MetricName")
+        self.IpList = params.get("IpList")
+        self.Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOverviewDDoSTrendResponse(AbstractModel):
+    """DescribeOverviewDDoSTrend返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Count: 值个数
+        :type Count: int
+        :param Data: 值数组，攻击流量带宽单位为Mbps，包速率单位为pps
+        :type Data: list of int non-negative
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Count = None
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Count = params.get("Count")
+        self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeOverviewIndexRequest(AbstractModel):
+    """DescribeOverviewIndex请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 拉取指标起始时间
+        :type StartTime: str
+        :param EndTime: 拉取指标结束时间
+        :type EndTime: str
+        """
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOverviewIndexResponse(AbstractModel):
+    """DescribeOverviewIndex返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AllIpCount: IP总数
+        :type AllIpCount: int
+        :param AntiddosIpCount: 高防IP总数（包含高防包+高防IP）
+        :type AntiddosIpCount: int
+        :param AttackIpCount: 攻击IP总数
+        :type AttackIpCount: int
+        :param BlockIpCount: 封堵IP总数
+        :type BlockIpCount: int
+        :param AntiddosDomainCount: 高防域名总数
+        :type AntiddosDomainCount: int
+        :param AttackDomainCount: 攻击域名总数
+        :type AttackDomainCount: int
+        :param MaxAttackFlow: 攻击流量峰值
+        :type MaxAttackFlow: int
+        :param NewAttackTime: 当前最近一条攻击中的起始时间
+        :type NewAttackTime: str
+        :param NewAttackIp: 当前最近一条攻击中的IP
+        :type NewAttackIp: str
+        :param NewAttackType: 当前最近一条攻击中的攻击类型
+        :type NewAttackType: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.AllIpCount = None
+        self.AntiddosIpCount = None
+        self.AttackIpCount = None
+        self.BlockIpCount = None
+        self.AntiddosDomainCount = None
+        self.AttackDomainCount = None
+        self.MaxAttackFlow = None
+        self.NewAttackTime = None
+        self.NewAttackIp = None
+        self.NewAttackType = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.AllIpCount = params.get("AllIpCount")
+        self.AntiddosIpCount = params.get("AntiddosIpCount")
+        self.AttackIpCount = params.get("AttackIpCount")
+        self.BlockIpCount = params.get("BlockIpCount")
+        self.AntiddosDomainCount = params.get("AntiddosDomainCount")
+        self.AttackDomainCount = params.get("AttackDomainCount")
+        self.MaxAttackFlow = params.get("MaxAttackFlow")
+        self.NewAttackTime = params.get("NewAttackTime")
+        self.NewAttackIp = params.get("NewAttackIp")
+        self.NewAttackType = params.get("NewAttackType")
+        self.RequestId = params.get("RequestId")
+
+
 class DisassociateDDoSEipAddressRequest(AbstractModel):
     """DisassociateDDoSEipAddress请求参数结构体
 
@@ -5661,14 +6113,22 @@ class IPLineInfo(AbstractModel):
         :type Type: str
         :param Eip: 线路IP
         :type Eip: str
+        :param Cname: 实例对应的cname
+        :type Cname: str
+        :param ResourceFlag: 资源flag，0：高防包资源，1：高防IP资源，2：非高防资源IP
+        :type ResourceFlag: int
         """
         self.Type = None
         self.Eip = None
+        self.Cname = None
+        self.ResourceFlag = None
 
 
     def _deserialize(self, params):
         self.Type = params.get("Type")
         self.Eip = params.get("Eip")
+        self.Cname = params.get("Cname")
+        self.ResourceFlag = params.get("ResourceFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5972,14 +6432,17 @@ UDP(UDP协议)
         :type Protocol: str
         :param RealServers: 源站列表
         :type RealServers: list of SourceServer
-        :param InstanceDetails: 规则所属的资源实例
+        :param InstanceDetails: 资源实例
         :type InstanceDetails: list of InstanceRelation
+        :param InstanceDetailRule: 规则所属的资源实例
+        :type InstanceDetailRule: list of RuleInstanceRelation
         """
         self.BackendPort = None
         self.FrontendPort = None
         self.Protocol = None
         self.RealServers = None
         self.InstanceDetails = None
+        self.InstanceDetailRule = None
 
 
     def _deserialize(self, params):
@@ -5998,6 +6461,12 @@ UDP(UDP协议)
                 obj = InstanceRelation()
                 obj._deserialize(item)
                 self.InstanceDetails.append(obj)
+        if params.get("InstanceDetailRule") is not None:
+            self.InstanceDetailRule = []
+            for item in params.get("InstanceDetailRule"):
+                obj = RuleInstanceRelation()
+                obj._deserialize(item)
+                self.InstanceDetailRule.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6020,13 +6489,16 @@ class Layer7Rule(AbstractModel):
         :type ProxyTypeList: list of ProxyTypeInfo
         :param RealServers: 源站列表
         :type RealServers: list of SourceServer
-        :param InstanceDetails: 规则所属的资源实例
+        :param InstanceDetails: 资源实例
         :type InstanceDetails: list of InstanceRelation
+        :param InstanceDetailRule: 规则所属的资源实例
+        :type InstanceDetailRule: list of RuleInstanceRelation
         """
         self.Domain = None
         self.ProxyTypeList = None
         self.RealServers = None
         self.InstanceDetails = None
+        self.InstanceDetailRule = None
 
 
     def _deserialize(self, params):
@@ -6049,6 +6521,12 @@ class Layer7Rule(AbstractModel):
                 obj = InstanceRelation()
                 obj._deserialize(item)
                 self.InstanceDetails.append(obj)
+        if params.get("InstanceDetailRule") is not None:
+            self.InstanceDetailRule = []
+            for item in params.get("InstanceDetailRule"):
+                obj = RuleInstanceRelation()
+                obj._deserialize(item)
+                self.InstanceDetailRule.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6067,7 +6545,7 @@ class ListenerCcThreholdConfig(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param Protocol: 协议（可取值htttps）
+        :param Protocol: 协议（可取值https）
         :type Protocol: str
         :param CCEnable: 开关状态（0：关闭，1：开启）
         :type CCEnable: int
@@ -6162,7 +6640,7 @@ class ModifyCCPrecisionPolicyRequest(AbstractModel):
         :type InstanceId: str
         :param PolicyId: 策略Id
         :type PolicyId: str
-        :param PolicyAction: 策略方式，可取值alg表示验证码，drop表示丢弃
+        :param PolicyAction: 策略方式。可取值：alg、drop。alg指返回验证码方式验证，drop表示该访问丢弃。
         :type PolicyAction: str
         :param PolicyList: 策略记录
         :type PolicyList: list of CCPrecisionPlyRecord
@@ -7036,6 +7514,70 @@ class NewL7RuleEntry(AbstractModel):
         
 
 
+class OverviewDDoSEvent(AbstractModel):
+    """防护概览DDoS攻击事件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 事件Id
+        :type Id: str
+        :param Vip: ip
+        :type Vip: str
+        :param StartTime: 开始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param AttackType: 攻击类型
+        :type AttackType: str
+        :param AttackStatus: 攻击状态，0：攻击中；1：攻击结束
+        :type AttackStatus: int
+        :param Mbps: 攻击流量，单位Mbps
+        :type Mbps: int
+        :param Pps: 攻击包量，单位pps
+        :type Pps: int
+        :param Business: 业务类型，bgp-multip：高防包；bgpip：高防ip；basic：基础防护
+        :type Business: str
+        :param InstanceId: 高防实例Id
+        :type InstanceId: str
+        :param InstanceName: 高防实例名称
+        :type InstanceName: str
+        """
+        self.Id = None
+        self.Vip = None
+        self.StartTime = None
+        self.EndTime = None
+        self.AttackType = None
+        self.AttackStatus = None
+        self.Mbps = None
+        self.Pps = None
+        self.Business = None
+        self.InstanceId = None
+        self.InstanceName = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.Vip = params.get("Vip")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.AttackType = params.get("AttackType")
+        self.AttackStatus = params.get("AttackStatus")
+        self.Mbps = params.get("Mbps")
+        self.Pps = params.get("Pps")
+        self.Business = params.get("Business")
+        self.InstanceId = params.get("InstanceId")
+        self.InstanceName = params.get("InstanceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PackInfo(AbstractModel):
     """套餐包信息
 
@@ -7222,9 +7764,12 @@ class PacketFilterRelation(AbstractModel):
         :type PacketFilterConfig: :class:`tencentcloud.antiddos.v20200309.models.PacketFilterConfig`
         :param InstanceDetailList: 特征过滤配置所属的实例
         :type InstanceDetailList: list of InstanceRelation
+        :param ModifyTime: 修改时间
+        :type ModifyTime: str
         """
         self.PacketFilterConfig = None
         self.InstanceDetailList = None
+        self.ModifyTime = None
 
 
     def _deserialize(self, params):
@@ -7237,6 +7782,7 @@ class PacketFilterRelation(AbstractModel):
                 obj = InstanceRelation()
                 obj._deserialize(item)
                 self.InstanceDetailList.append(obj)
+        self.ModifyTime = params.get("ModifyTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7500,6 +8046,38 @@ class RegionInfo(AbstractModel):
         
 
 
+class RuleInstanceRelation(AbstractModel):
+    """四七层规则的
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EipList: 资源实例的IP
+        :type EipList: list of str
+        :param InstanceId: 资源实例的ID
+        :type InstanceId: str
+        :param Cname: 资源实例的Cname
+        :type Cname: str
+        """
+        self.EipList = None
+        self.InstanceId = None
+        self.Cname = None
+
+
+    def _deserialize(self, params):
+        self.EipList = params.get("EipList")
+        self.InstanceId = params.get("InstanceId")
+        self.Cname = params.get("Cname")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SchedulingDomainInfo(AbstractModel):
     """调度域名信息
 
@@ -7744,6 +8322,62 @@ class SwitchWaterPrintConfigResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class TagFilter(AbstractModel):
+    """标签类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKey: 标签键
+        :type TagKey: str
+        :param TagValue: 标签键值列表
+        :type TagValue: list of str
+        """
+        self.TagKey = None
+        self.TagValue = None
+
+
+    def _deserialize(self, params):
+        self.TagKey = params.get("TagKey")
+        self.TagValue = params.get("TagValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TagInfo(AbstractModel):
+    """标签信息，用于资源列表返回关联的标签
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKey: 标签键
+        :type TagKey: str
+        :param TagValue: 标签值
+        :type TagValue: str
+        """
+        self.TagKey = None
+        self.TagValue = None
+
+
+    def _deserialize(self, params):
+        self.TagKey = params.get("TagKey")
+        self.TagValue = params.get("TagValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class WaterPrintConfig(AbstractModel):

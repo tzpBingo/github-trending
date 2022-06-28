@@ -68,6 +68,9 @@ FAILEDOPERATION_UPDATEINSTANCEINFOFAILED = 'FailedOperation.UpdateInstanceInfoFa
 # 更新安全组失败。
 FAILEDOPERATION_UPDATESECURITYGROUPSFAILED = 'FailedOperation.UpdateSecurityGroupsFailed'
 
+# 内部错误。
+INTERNALERROR = 'InternalError'
+
 # cam鉴权错误。
 INTERNALERROR_CAMAUTHOSSRESPONSERETURNCODEERROR = 'InternalError.CamAuthOssResponseReturnCodeError'
 
@@ -100,6 +103,9 @@ INVALIDPARAMETER_EMPTYPARAM = 'InvalidParameter.EmptyParam'
 
 # 非法参数错误。
 INVALIDPARAMETER_ILLEGALPARAMETERERROR = 'InvalidParameter.IllegalParameterError'
+
+# 实例安全组超过限制。
+INVALIDPARAMETER_INSTANCESGOVERLIMITERROR = 'InvalidParameter.InstanceSGOverLimitError'
 
 # 业务参数错误。
 INVALIDPARAMETER_INVALIDPARAMETER = 'InvalidParameter.InvalidParameter'
@@ -209,6 +215,9 @@ RESOURCEINUSE_INSTANCEBEENLOCKED = 'ResourceInUse.InstanceBeenLocked'
 # 资源不足。
 RESOURCEINSUFFICIENT = 'ResourceInsufficient'
 
+# 资源不存在。
+RESOURCENOTFOUND = 'ResourceNotFound'
+
 # uin 值为空。
 RESOURCENOTFOUND_ACCOUNTDOESNOTEXISTS = 'ResourceNotFound.AccountDoesNotExists'
 
@@ -269,6 +278,9 @@ RESOURCEUNAVAILABLE_NOREDISSERVICE = 'ResourceUnavailable.NoRedisService'
 # 请求的区域暂时不提供请求类型的redis服务。
 RESOURCEUNAVAILABLE_NOTYPEIDREDISSERVICE = 'ResourceUnavailable.NoTypeIdRedisService'
 
+# 地域对应类型已售罄。
+RESOURCEUNAVAILABLE_SALEOUT = 'ResourceUnavailable.SaleOut'
+
 # 产品还没有接入安全组。
 RESOURCEUNAVAILABLE_SECURITYGROUPNOTSUPPORTED = 'ResourceUnavailable.SecurityGroupNotSupported'
 
@@ -280,6 +292,9 @@ UNAUTHORIZEDOPERATION_NOCAMAUTHED = 'UnauthorizedOperation.NoCAMAuthed'
 
 # 用户不在白名单中。
 UNAUTHORIZEDOPERATION_USERNOTINWHITELIST = 'UnauthorizedOperation.UserNotInWhiteList'
+
+# 操作不支持。
+UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
 # redis 集群版不允许接入安全组。
 UNSUPPORTEDOPERATION_CLUSTERINSTANCEACCESSEDDENY = 'UnsupportedOperation.ClusterInstanceAccessedDeny'

@@ -398,6 +398,9 @@ RESOURCEUNAVAILABLE_CMQTOPICHASNOSUBSCRIBER = 'ResourceUnavailable.CmqTopicHasNo
 # 实例和伸缩组Vpc不一致。
 RESOURCEUNAVAILABLE_CVMVPCINCONSISTENT = 'ResourceUnavailable.CvmVpcInconsistent'
 
+# 实例无法添加至伸缩组。
+RESOURCEUNAVAILABLE_INSTANCECANNOTATTACH = 'ResourceUnavailable.InstanceCannotAttach'
+
 # 指定的实例正在活动中。
 RESOURCEUNAVAILABLE_INSTANCEINOPERATION = 'ResourceUnavailable.InstanceInOperation'
 
@@ -436,3 +439,6 @@ RESOURCEUNAVAILABLE_TDMQCMQTOPICHASNOSUBSCRIBER = 'ResourceUnavailable.TDMQCMQTo
 
 # 指定的可用区不可用。
 RESOURCEUNAVAILABLE_ZONEUNAVAILABLE = 'ResourceUnavailable.ZoneUnavailable'
+
+# 操作不支持。
+UNSUPPORTEDOPERATION = 'UnsupportedOperation'

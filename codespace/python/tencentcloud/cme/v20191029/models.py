@@ -3207,15 +3207,22 @@ class HandleStreamConnectProjectResponse(AbstractModel):
         r"""
         :param StreamInputRtmpPushUrl: 输入源推流地址，当 Operation 取值 AddInput 且 InputType 为 RtmpPush 类型时有效。
         :type StreamInputRtmpPushUrl: str
+        :param VodPullInputPlayInfo: 点播输入源播放进度信息，当 Operation 取值 DescribeInputPlayInfo 且 InputType 为 VodPull 类型时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VodPullInputPlayInfo: :class:`tencentcloud.cme.v20191029.models.VodPullInputPlayInfo`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.StreamInputRtmpPushUrl = None
+        self.VodPullInputPlayInfo = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.StreamInputRtmpPushUrl = params.get("StreamInputRtmpPushUrl")
+        if params.get("VodPullInputPlayInfo") is not None:
+            self.VodPullInputPlayInfo = VodPullInputPlayInfo()
+            self.VodPullInputPlayInfo._deserialize(params.get("VodPullInputPlayInfo"))
         self.RequestId = params.get("RequestId")
 
 
@@ -5221,16 +5228,32 @@ class ProjectStreamConnectStatusChangedEvent(AbstractModel):
         :type ProjectId: str
         :param Status: 项目状态，取值有：
 <li>Working：云转推推流开始；</li>
-<li>Stopped：云转推推流结束。</li>
+<li>Stopped：云转推推流结束；</li>
+<li>InputInterrupted：云转推输入断流；</li>
+<li>OutputInterrupted：云转推输出断流。</li>
         :type Status: str
+        :param InputInterruptInfo: 云转推输入断流信息，仅当 Status 取值 InputInterrupted 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InputInterruptInfo: :class:`tencentcloud.cme.v20191029.models.StreamConnectInputInterruptInfo`
+        :param OutputInterruptInfo: 云转推输出断流信息，仅当 Status 取值 OutputInterrupted 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OutputInterruptInfo: :class:`tencentcloud.cme.v20191029.models.StreamConnectOutputInterruptInfo`
         """
         self.ProjectId = None
         self.Status = None
+        self.InputInterruptInfo = None
+        self.OutputInterruptInfo = None
 
 
     def _deserialize(self, params):
         self.ProjectId = params.get("ProjectId")
         self.Status = params.get("Status")
+        if params.get("InputInterruptInfo") is not None:
+            self.InputInterruptInfo = StreamConnectInputInterruptInfo()
+            self.InputInterruptInfo._deserialize(params.get("InputInterruptInfo"))
+        if params.get("OutputInterruptInfo") is not None:
+            self.OutputInterruptInfo = StreamConnectOutputInterruptInfo()
+            self.OutputInterruptInfo._deserialize(params.get("OutputInterruptInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5802,6 +5825,32 @@ class StorageNewFileCreatedEvent(AbstractModel):
         
 
 
+class StreamConnectInputInterruptInfo(AbstractModel):
+    """云转推输入断流信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EndPoint: 云转推输入源标识，取值有：
+<li>Main：主源；</li>
+<li>Backup：备源。</li>
+        :type EndPoint: str
+        """
+        self.EndPoint = None
+
+
+    def _deserialize(self, params):
+        self.EndPoint = params.get("EndPoint")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class StreamConnectOutput(AbstractModel):
     """云转推输出源。
 
@@ -5864,6 +5913,38 @@ class StreamConnectOutputInfo(AbstractModel):
             self.StreamConnectOutput = StreamConnectOutput()
             self.StreamConnectOutput._deserialize(params.get("StreamConnectOutput"))
         self.PushSwitch = params.get("PushSwitch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StreamConnectOutputInterruptInfo(AbstractModel):
+    """云转推输出断流信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 云转推输出标识。
+        :type Id: str
+        :param Name: 云转推输出名称。
+        :type Name: str
+        :param Url: 云转推输出地址。
+        :type Url: str
+        """
+        self.Id = None
+        self.Name = None
+        self.Url = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.Name = params.get("Name")
+        self.Url = params.get("Url")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7097,6 +7178,34 @@ class VodPullInputInfo(AbstractModel):
     def _deserialize(self, params):
         self.InputUrls = params.get("InputUrls")
         self.LoopTimes = params.get("LoopTimes")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VodPullInputPlayInfo(AbstractModel):
+    """点播文件播放信息，包含当前在播地址和该地址已播时长 。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Url: 当前正在播放文件 Url 。
+        :type Url: str
+        :param TimeOffset: 点播文件已播放时长，单位：秒。
+        :type TimeOffset: float
+        """
+        self.Url = None
+        self.TimeOffset = None
+
+
+    def _deserialize(self, params):
+        self.Url = params.get("Url")
+        self.TimeOffset = params.get("TimeOffset")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

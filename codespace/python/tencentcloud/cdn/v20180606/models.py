@@ -99,6 +99,64 @@ off ：字面匹配
         
 
 
+class AddCLSTopicDomainsRequest(AbstractModel):
+    """AddCLSTopicDomains请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LogsetId: 日志集ID
+        :type LogsetId: str
+        :param TopicId: 日志主题ID
+        :type TopicId: str
+        :param DomainAreaConfigs: 域名区域配置
+        :type DomainAreaConfigs: list of DomainAreaConfig
+        :param Channel: 接入渠道，cdn或者ecdn，默认值为cdn
+        :type Channel: str
+        """
+        self.LogsetId = None
+        self.TopicId = None
+        self.DomainAreaConfigs = None
+        self.Channel = None
+
+
+    def _deserialize(self, params):
+        self.LogsetId = params.get("LogsetId")
+        self.TopicId = params.get("TopicId")
+        if params.get("DomainAreaConfigs") is not None:
+            self.DomainAreaConfigs = []
+            for item in params.get("DomainAreaConfigs"):
+                obj = DomainAreaConfig()
+                obj._deserialize(item)
+                self.DomainAreaConfigs.append(obj)
+        self.Channel = params.get("Channel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AddCLSTopicDomainsResponse(AbstractModel):
+    """AddCLSTopicDomains返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class AddCdnDomainRequest(AbstractModel):
     """AddCdnDomain请求参数结构体
 
@@ -3491,6 +3549,12 @@ class CreateVerifyRecordResponse(AbstractModel):
         :param FileVerifyUrl: 文件验证 URL 指引
 注意：此字段可能返回 null，表示取不到有效值。
         :type FileVerifyUrl: str
+        :param FileVerifyDomains: 文件校验域名列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileVerifyDomains: list of str
+        :param FileVerifyName: 文件校验文件名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileVerifyName: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -3498,6 +3562,8 @@ class CreateVerifyRecordResponse(AbstractModel):
         self.Record = None
         self.RecordType = None
         self.FileVerifyUrl = None
+        self.FileVerifyDomains = None
+        self.FileVerifyName = None
         self.RequestId = None
 
 
@@ -3506,6 +3572,8 @@ class CreateVerifyRecordResponse(AbstractModel):
         self.Record = params.get("Record")
         self.RecordType = params.get("RecordType")
         self.FileVerifyUrl = params.get("FileVerifyUrl")
+        self.FileVerifyDomains = params.get("FileVerifyDomains")
+        self.FileVerifyName = params.get("FileVerifyName")
         self.RequestId = params.get("RequestId")
 
 
@@ -10301,12 +10369,13 @@ ftp：历史 FTP 托管源源站，现已不维护
 IPv6 功能目前尚未全量，需要先申请试用
 注意：此字段可能返回 null，表示取不到有效值。
         :type OriginType: str
-        :param ServerName: 回主源站时 Host 头部，不填充则默认为加速域名
+        :param ServerName: 当源站类型为cos或者第三方存储加速时,ServerName字段必填
+回主源站时 Host 头部，不填充则默认为加速域名
 若接入的是泛域名，则回源 Host 默认为访问时的子域名
 注意：此字段可能返回 null，表示取不到有效值。
         :type ServerName: str
         :param CosPrivateAccess: OriginType 为对象存储（COS）时，可以指定是否允许访问私有 bucket
-注意：需要先授权 CDN 访问该私有 Bucket 的权限后，才可开启此配置。
+注意：需要先授权 CDN 访问该私有 Bucket 的权限后，才可开启此配置。取值范围: on/off
 注意：此字段可能返回 null，表示取不到有效值。
         :type CosPrivateAccess: str
         :param OriginPullProtocol: 回源协议配置
@@ -11210,8 +11279,8 @@ overseas：预热至境外节点
 global：预热全球节点
 不填充情况下，默认为 mainland， URL 中域名必须在对应区域启用了加速服务才能提交对应区域的预热任务
         :type Area: str
-        :param Layer: 填写"middle"或不填充时预热至中间层节点。
-注意：中国境外区域预热，资源默认加载至中国境外边缘节点，所产生的边缘层流量会计入计费流量。
+        :param Layer: 中国境内区域默认预热至中间层节点，中国境外区域默认预热至边缘节点。预热至边缘产生的边缘层流量会计入计费流量。
+填写"middle"或不填充时，可指定预热至中间层节点。
         :type Layer: str
         :param ParseM3U8: 是否递归解析m3u8文件中的ts分片预热
 注意事项：
@@ -14148,6 +14217,12 @@ disabled：未启用
         :param ExtensionMode: 流量包当前续订模式，0 未续订、1到期续订、2用完续订、3到期或用完续订
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExtensionMode: int
+        :param TrueEnableTime: 流量包实际生效时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TrueEnableTime: str
+        :param TrueExpireTime: 流量包实际过期时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TrueExpireTime: str
         """
         self.Id = None
         self.Type = None
@@ -14167,6 +14242,8 @@ disabled：未启用
         self.Region = None
         self.ConfigId = None
         self.ExtensionMode = None
+        self.TrueEnableTime = None
+        self.TrueExpireTime = None
 
 
     def _deserialize(self, params):
@@ -14188,6 +14265,8 @@ disabled：未启用
         self.Region = params.get("Region")
         self.ConfigId = params.get("ConfigId")
         self.ExtensionMode = params.get("ExtensionMode")
+        self.TrueEnableTime = params.get("TrueEnableTime")
+        self.TrueExpireTime = params.get("TrueExpireTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15053,9 +15132,9 @@ class WebSocket(AbstractModel):
         r"""
         :param Switch: WebSocket 超时配置开关, 开关为off时，平台仍支持WebSocket连接，此时超时时间默认为15秒，若需要调整超时时间，将开关置为on.
 
-* WebSocket 为内测功能,如需使用,请联系腾讯云工程师开白.
+* WebSocket 为ECDN产品功能，如需使用请通过ECDN域名配置.
         :type Switch: str
-        :param Timeout: 设置超时时间，单位为秒，最大超时时间65秒。
+        :param Timeout: 设置超时时间，单位为秒，最大超时时间300秒。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Timeout: int
         """

@@ -143,6 +143,12 @@ FAILEDOPERATION_TKECLUSTERCREATEFAILED = 'FailedOperation.TkeClusterCreateFailed
 # TKE 集群查询失败。
 FAILEDOPERATION_TKECLUSTERQUERYFAILED = 'FailedOperation.TkeClusterQueryFailed'
 
+# TSF应用性能管理业务日志配置解析规则查询失败。
+FAILEDOPERATION_TSFAPMBUSILOGCFGSCHEMAQUERYERROR = 'FailedOperation.TsfApmBusiLogCfgSchemaQueryError'
+
+# TSF应用性能管理业务日志配置数据库写入失败。
+FAILEDOPERATION_TSFAPMBUSILOGCFGWRITEERROR = 'FailedOperation.TsfApmBusiLogCfgWriteError'
+
 # TSF应用性能管理CTSDB客户端调用失败。
 FAILEDOPERATION_TSFAPMCTSDBCLIENTREQUESTERROR = 'FailedOperation.TsfApmCtsdbClientRequestError'
 
@@ -239,7 +245,7 @@ INTERNALERROR_INSTANCECOMMONERROR = 'InternalError.InstanceCommonError'
 # 创建kubernetes命名空间失败。
 INTERNALERROR_KUBERNETESAPICREATENAMESPACESERROR = 'InternalError.KubernetesApiCreateNamespacesError'
 
-# 创建kubernetes秘钥失败。
+# 创建kubernetes密钥失败。
 INTERNALERROR_KUBERNETESAPICREATESECRETERROR = 'InternalError.KubernetesApiCreateSecretError'
 
 # kubernetes api 调用失败。
@@ -259,6 +265,12 @@ INTERNALERROR_TASKINTERNALERROR = 'InternalError.TaskInternalError'
 
 # 调用 TKE 接口失败，%s。
 INTERNALERROR_TKEAPIFAILEDOPERATION = 'InternalError.TkeApiFailedOperation'
+
+# TSF应用性能管理业务日志配置与应用关联处理错误。
+INTERNALERROR_TSFAPMBUSILOGCFGAPPRELATIONMASTERERROR = 'InternalError.TsfApmBusiLogCfgAppRelationMasterError'
+
+# TSF应用性能管理通用异常。
+INTERNALERROR_TSFAPMCOMMONERROR = 'InternalError.TsfApmCommonError'
 
 # TSF应用性能管理ES客户端响应状态异常。
 INTERNALERROR_TSFAPMESRESPONSESTATUSEXCEPTION = 'InternalError.TsfApmEsResponseStatusException'
@@ -364,6 +376,15 @@ INVALIDPARAMETER_REPOSITORYNOTEMPTY = 'InvalidParameter.RepositoryNotEmpty'
 
 # TSF应用性能管理业务日志配置与应用关联参数错误。
 INVALIDPARAMETER_TSFAPMBUSILOGCFGAPPRELATIONPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgAppRelationParamError'
+
+# TSF应用性能管理业务日志配置云账户参数错误。
+INVALIDPARAMETER_TSFAPMBUSILOGCFGCLOUDPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgCloudParamError'
+
+# TSF应用性能管理业务日志配置标识参数错误。
+INVALIDPARAMETER_TSFAPMBUSILOGCFGIDPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgIdParamError'
+
+# TSF应用性能管理业务日志配置数目参数错误。
+INVALIDPARAMETER_TSFAPMBUSILOGCFGLIMITPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgLimitParamError'
 
 # TSF应用性能管理业务日志搜索请求参数错误。
 INVALIDPARAMETER_TSFAPMBUSILOGSEARCHREQUESTPARAMERROR = 'InvalidParameter.TsfApmBusiLogSearchRequestParamError'
@@ -506,6 +527,12 @@ INVALIDPARAMETERVALUE_CONTAINERGROUPPORTSREPEAT = 'InvalidParameterValue.Contain
 # 协议值非法,限定:TCP/UDP。
 INVALIDPARAMETERVALUE_CONTAINERGROUPPROTOCOLINVALID = 'InvalidParameterValue.ContainergroupProtocolInvalid'
 
+# 公网访问方式下，协议需要一致。
+INVALIDPARAMETERVALUE_CONTAINERGROUPPROTOCOLMIXERROR = 'InvalidParameterValue.ContainergroupProtocolMixError'
+
+# 协议不能为空。
+INVALIDPARAMETERVALUE_CONTAINERGROUPPROTOCOLNULL = 'InvalidParameterValue.ContainergroupProtocolNull'
+
 # 协议端口不能为空。
 INVALIDPARAMETERVALUE_CONTAINERGROUPPROTOCOLPORTSNULL = 'InvalidParameterValue.ContainergroupProtocolPortsNull'
 
@@ -583,6 +610,9 @@ INVALIDPARAMETERVALUE_GROUPBATCHPARAMETERINVALID = 'InvalidParameterValue.GroupB
 
 # 部署组的集群未绑定该命名空间。
 INVALIDPARAMETERVALUE_GROUPCLUSTERNAMESPACENOTBOUND = 'InvalidParameterValue.GroupClusterNamespaceNotBound'
+
+# 创建分组， 集群类型不匹配。
+INVALIDPARAMETERVALUE_GROUPCLUSTERTYPEMISMATCH = 'InvalidParameterValue.GroupClusterTypeMismatch'
 
 # 删除分组，集群类型不匹配。
 INVALIDPARAMETERVALUE_GROUPDELETECLUSTERTYPEMISMATCH = 'InvalidParameterValue.GroupDeleteClusterTypeMismatch'
@@ -743,6 +773,9 @@ MISSINGPARAMETER_APPLICATIONIDREQUIRED = 'MissingParameter.ApplicationIdRequired
 # 应用类型不能为空。
 MISSINGPARAMETER_APPLICATIONTYPENULL = 'MissingParameter.ApplicationTypeNull'
 
+# 集群ID未填写。
+MISSINGPARAMETER_CLUSTERIDREQUIRED = 'MissingParameter.ClusterIdRequired'
+
 # 集群所属子网不能为空。
 MISSINGPARAMETER_CLUSTERSUBNETREQUIRED = 'MissingParameter.ClusterSubnetRequired'
 
@@ -775,6 +808,9 @@ MISSINGPARAMETER_GROUPAPPLICATIONNULL = 'MissingParameter.GroupApplicationNull'
 
 # 分组ID不能为空。
 MISSINGPARAMETER_GROUPIDNULL = 'MissingParameter.GroupIdNull'
+
+# 分组所属命名空间不能为空。
+MISSINGPARAMETER_GROUPNAMESPACENULL = 'MissingParameter.GroupNamespaceNull'
 
 # 命名空间ID不能为空。
 MISSINGPARAMETER_NAMESPACEIDREQUIRED = 'MissingParameter.NamespaceIdRequired'
@@ -859,6 +895,9 @@ RESOURCENOTFOUND_GROUPNOTEXIST = 'ResourceNotFound.GroupNotExist'
 
 # 无法获取机器信息。
 RESOURCENOTFOUND_INSTANCENOTEXIST = 'ResourceNotFound.InstanceNotExist'
+
+# [%s]模块未提供该接口[%s]。。
+RESOURCENOTFOUND_INTERFACENOTFOUND = 'ResourceNotFound.InterfaceNotFound'
 
 # 无法找到License服务器。
 RESOURCENOTFOUND_LICENSESERVERNOTFOUND = 'ResourceNotFound.LicenseServerNotFound'

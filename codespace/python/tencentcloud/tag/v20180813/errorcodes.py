@@ -26,6 +26,9 @@ FAILEDOPERATION_RESOURCEAPPIDNOTSAME = 'FailedOperation.ResourceAppIdNotSame'
 # 资源标签正在处理中。
 FAILEDOPERATION_RESOURCETAGPROCESSING = 'FailedOperation.ResourceTagProcessing'
 
+# 标签已经关联配额。
+FAILEDOPERATION_TAGATTACHEDQUOTA = 'FailedOperation.TagAttachedQuota'
+
 # 已关联资源的标签无法删除。
 FAILEDOPERATION_TAGATTACHEDRESOURCE = 'FailedOperation.TagAttachedResource'
 
@@ -101,6 +104,9 @@ INVALIDPARAMETERVALUE_UININVALID = 'InvalidParameterValue.UinInvalid'
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'
 
+# 超过配额限制。
+LIMITEXCEEDED_QUOTA = 'LimitExceeded.Quota'
+
 # 资源关联的标签数超过限制。
 LIMITEXCEEDED_RESOURCEATTACHEDTAGS = 'LimitExceeded.ResourceAttachedTags'
 
@@ -133,3 +139,6 @@ RESOURCENOTFOUND_ATTACHEDTAGKEYNOTFOUND = 'ResourceNotFound.AttachedTagKeyNotFou
 
 # 标签不存在。
 RESOURCENOTFOUND_TAGNONEXIST = 'ResourceNotFound.TagNonExist'
+
+# 操作不支持。
+UNSUPPORTEDOPERATION = 'UnsupportedOperation'

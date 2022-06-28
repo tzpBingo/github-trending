@@ -29,6 +29,9 @@ FAILEDOPERATION_ACCOUNTALREADYEXISTS = 'FailedOperation.AccountAlreadyExists'
 # 账号为当前用户
 FAILEDOPERATION_ACCOUNTISYOURSELF = 'FailedOperation.AccountIsYourSelf'
 
+# 自带许可镜像暂时不支持共享。
+FAILEDOPERATION_BYOLIMAGESHAREFAILED = 'FailedOperation.BYOLImageShareFailed'
+
 # 未找到指定的容灾组
 FAILEDOPERATION_DISASTERRECOVERGROUPNOTFOUND = 'FailedOperation.DisasterRecoverGroupNotFound'
 
@@ -218,6 +221,9 @@ INVALIDPARAMETER_HOSTIDSTATUSNOTSUPPORT = 'InvalidParameter.HostIdStatusNotSuppo
 # 指定的hostName不符合规范。
 INVALIDPARAMETER_HOSTNAMEILLEGAL = 'InvalidParameter.HostNameIllegal'
 
+# 参数ImageIds和SnapshotIds必须有且仅有一个。
+INVALIDPARAMETER_IMAGEIDSSNAPSHOTIDSMUSTONE = 'InvalidParameter.ImageIdsSnapshotIdsMustOne'
+
 # 当前接口不支持实例镜像。
 INVALIDPARAMETER_INSTANCEIMAGENOTSUPPORT = 'InvalidParameter.InstanceImageNotSupport'
 
@@ -281,6 +287,12 @@ INVALIDPARAMETERVALUE_BANDWIDTHPACKAGEIDMALFORMED = 'InvalidParameterValue.Bandw
 # 请确认指定的带宽包是否存在。
 INVALIDPARAMETERVALUE_BANDWIDTHPACKAGEIDNOTFOUND = 'InvalidParameterValue.BandwidthPackageIdNotFound'
 
+# 请确认存储桶是否存在。
+INVALIDPARAMETERVALUE_BUCKETNOTFOUND = 'InvalidParameterValue.BucketNotFound'
+
+# CamRoleName不合要求，只允许包含英文字母、数字或者 +=,.@_- 字符。
+INVALIDPARAMETERVALUE_CAMROLENAMEMALFORMED = 'InvalidParameterValue.CamRoleNameMalformed'
+
 # 找不到对应的CHC物理服务器。
 INVALIDPARAMETERVALUE_CHCHOSTSNOTFOUND = 'InvalidParameterValue.ChcHostsNotFound'
 
@@ -295,6 +307,9 @@ INVALIDPARAMETERVALUE_DISASTERRECOVERGROUPIDMALFORMED = 'InvalidParameterValue.D
 
 # 参数值重复。
 INVALIDPARAMETERVALUE_DUPLICATE = 'InvalidParameterValue.Duplicate'
+
+# 重复标签。
+INVALIDPARAMETERVALUE_DUPLICATETAGS = 'InvalidParameterValue.DuplicateTags'
 
 # 非GPU实例不允许转为GPU实例。
 INVALIDPARAMETERVALUE_GPUINSTANCEFAMILY = 'InvalidParameterValue.GPUInstanceFamily'
@@ -332,6 +347,12 @@ INVALIDPARAMETERVALUE_INSUFFICIENTPRICE = 'InvalidParameterValue.InsufficientPri
 # 无效的appid。
 INVALIDPARAMETERVALUE_INVALIDAPPIDFORMAT = 'InvalidParameterValue.InvalidAppIdFormat'
 
+# 请检查存储桶的写入权限是否已放通。
+INVALIDPARAMETERVALUE_INVALIDBUCKETPERMISSIONFOREXPORT = 'InvalidParameterValue.InvalidBucketPermissionForExport'
+
+# 参数 FileNamePrefixList 的长度与 ImageIds 或 SnapshotIds 不匹配。
+INVALIDPARAMETERVALUE_INVALIDFILENAMEPREFIXLIST = 'InvalidParameterValue.InvalidFileNamePrefixList'
+
 # 不支持转为非GPU或其他类型GPU实例。
 INVALIDPARAMETERVALUE_INVALIDGPUFAMILYCHANGE = 'InvalidParameterValue.InvalidGPUFamilyChange'
 
@@ -367,6 +388,9 @@ INVALIDPARAMETERVALUE_INVALIDLAUNCHTEMPLATENAME = 'InvalidParameterValue.Invalid
 
 # 实例启动模板描述格式错误。
 INVALIDPARAMETERVALUE_INVALIDLAUNCHTEMPLATEVERSIONDESCRIPTION = 'InvalidParameterValue.InvalidLaunchTemplateVersionDescription'
+
+# 许可证类型不可用。
+INVALIDPARAMETERVALUE_INVALIDLICENSETYPE = 'InvalidParameterValue.InvalidLicenseType'
 
 # 参数值错误。
 INVALIDPARAMETERVALUE_INVALIDPARAMETERVALUELIMIT = 'InvalidParameterValue.InvalidParameterValueLimit'
@@ -422,6 +446,9 @@ INVALIDPARAMETERVALUE_LOCALDISKSIZERANGE = 'InvalidParameterValue.LocalDiskSizeR
 # 参数值必须为开启DHCP的VPC
 INVALIDPARAMETERVALUE_MUSTDHCPENABLEDVPC = 'InvalidParameterValue.MustDhcpEnabledVpc'
 
+# 子网不属于该cdc集群。
+INVALIDPARAMETERVALUE_NOTCDCSUBNET = 'InvalidParameterValue.NotCdcSubnet'
+
 # 不支持的操作。
 INVALIDPARAMETERVALUE_NOTSUPPORTED = 'InvalidParameterValue.NotSupported'
 
@@ -439,6 +466,9 @@ INVALIDPARAMETERVALUE_SUBNETNOTEXIST = 'InvalidParameterValue.SubnetNotExist'
 
 # 指定的标签不存在。
 INVALIDPARAMETERVALUE_TAGKEYNOTFOUND = 'InvalidParameterValue.TagKeyNotFound'
+
+# 标签配额超限。
+INVALIDPARAMETERVALUE_TAGQUOTALIMITEXCEEDED = 'InvalidParameterValue.TagQuotaLimitExceeded'
 
 # 每核心线程数不合法。
 INVALIDPARAMETERVALUE_THREADPERCOREVALUE = 'InvalidParameterValue.ThreadPerCoreValue'
@@ -515,6 +545,9 @@ LIMITEXCEEDED_DISASTERRECOVERGROUP = 'LimitExceeded.DisasterRecoverGroup'
 # 特定实例当前ENI数量已超过目标实例类型的ENI允许的最大值，需删除部分ENI后重试。
 LIMITEXCEEDED_ENINUMLIMIT = 'LimitExceeded.EniNumLimit'
 
+# 正在运行中的镜像导出任务已达上限，请等待已有任务完成后，再次发起重试。
+LIMITEXCEEDED_EXPORTIMAGETASKLIMITEXCEEDED = 'LimitExceeded.ExportImageTaskLimitExceeded'
+
 # IP数量超过网卡上限。
 LIMITEXCEEDED_IPV6ADDRESSNUM = 'LimitExceeded.IPv6AddressNum'
 
@@ -541,6 +574,9 @@ LIMITEXCEEDED_SINGLEUSGQUOTA = 'LimitExceeded.SingleUSGQuota'
 
 # 竞价实例类型配额不足
 LIMITEXCEEDED_SPOTQUOTA = 'LimitExceeded.SpotQuota'
+
+# 标签绑定的资源数量已达到配额限制。
+LIMITEXCEEDED_TAGRESOURCEQUOTA = 'LimitExceeded.TagResourceQuota'
 
 # 退还失败，退还配额已达上限。
 LIMITEXCEEDED_USERRETURNQUOTA = 'LimitExceeded.UserReturnQuota'
@@ -605,6 +641,9 @@ RESOURCENOTFOUND_HPCCLUSTER = 'ResourceNotFound.HpcCluster'
 # 指定的置放群组不存在。
 RESOURCENOTFOUND_INVALIDPLACEMENTSET = 'ResourceNotFound.InvalidPlacementSet'
 
+# 可用区不支持此机型。
+RESOURCENOTFOUND_INVALIDZONEINSTANCETYPE = 'ResourceNotFound.InvalidZoneInstanceType'
+
 # 无可用的缺省类型的CBS资源。
 RESOURCENOTFOUND_NODEFAULTCBS = 'ResourceNotFound.NoDefaultCbs'
 
@@ -661,6 +700,9 @@ UNSUPPORTEDOPERATION_HETEROGENEOUSCHANGEINSTANCEFAMILY = 'UnsupportedOperation.H
 
 # IPv6实例不支持VPC迁移
 UNSUPPORTEDOPERATION_IPV6NOTSUPPORTVPCMIGRATE = 'UnsupportedOperation.IPv6NotSupportVpcMigrate'
+
+# 镜像大小超出限制，不支持导出。
+UNSUPPORTEDOPERATION_IMAGETOOLARGEEXPORTUNSUPPORTED = 'UnsupportedOperation.ImageTooLargeExportUnsupported'
 
 # 请求不支持该实例计费模式
 UNSUPPORTEDOPERATION_INSTANCECHARGETYPE = 'UnsupportedOperation.InstanceChargeType'
@@ -737,6 +779,9 @@ UNSUPPORTEDOPERATION_INVALIDDATADISK = 'UnsupportedOperation.InvalidDataDisk'
 # 不支持指定的磁盘
 UNSUPPORTEDOPERATION_INVALIDDISK = 'UnsupportedOperation.InvalidDisk'
 
+# 镜像许可类型与实例不符，请选择其他镜像。
+UNSUPPORTEDOPERATION_INVALIDIMAGELICENSETYPEFORRESET = 'UnsupportedOperation.InvalidImageLicenseTypeForReset'
+
 # 不支持已经设置了释放时间的实例，请在实例详情页撤销实例定时销毁后再试。
 UNSUPPORTEDOPERATION_INVALIDINSTANCENOTSUPPORTEDPROTECTEDINSTANCE = 'UnsupportedOperation.InvalidInstanceNotSupportedProtectedInstance'
 
@@ -754,6 +799,9 @@ UNSUPPORTEDOPERATION_LOCALDATADISKCHANGEINSTANCEFAMILY = 'UnsupportedOperation.L
 
 # 不支持正在本地盘转云盘的磁盘，请稍后发起请求。
 UNSUPPORTEDOPERATION_LOCALDISKMIGRATINGTOCLOUDDISK = 'UnsupportedOperation.LocalDiskMigratingToCloudDisk'
+
+# 从市场镜像创建的自定义镜像不支持导出。
+UNSUPPORTEDOPERATION_MARKETIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.MarketImageExportUnsupported'
 
 # 绑定负载均衡的实例，不支持修改vpc属性。
 UNSUPPORTEDOPERATION_MODIFYVPCWITHCLB = 'UnsupportedOperation.ModifyVPCWithCLB'
@@ -773,6 +821,12 @@ UNSUPPORTEDOPERATION_NOTSUPPORTINSTANCEIMAGE = 'UnsupportedOperation.NotSupportI
 # 该操作仅支持预付费账户
 UNSUPPORTEDOPERATION_ONLYFORPREPAIDACCOUNT = 'UnsupportedOperation.OnlyForPrepaidAccount'
 
+# 无效的原机型。
+UNSUPPORTEDOPERATION_ORIGINALINSTANCETYPEINVALID = 'UnsupportedOperation.OriginalInstanceTypeInvalid'
+
+# 公共镜像或市场镜像不支持导出。
+UNSUPPORTEDOPERATION_PUBLICIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.PublicImageExportUnsupported'
+
 # 当前镜像不支持对该实例的重装操作。
 UNSUPPORTEDOPERATION_RAWLOCALDISKINSREINSTALLTOQCOW2 = 'UnsupportedOperation.RawLocalDiskInsReinstalltoQcow2'
 
@@ -785,8 +839,14 @@ UNSUPPORTEDOPERATION_RESERVEDINSTANCEINVISIBLEFORUSER = 'UnsupportedOperation.Re
 # 用户预留实例计费配额已达上限。
 UNSUPPORTEDOPERATION_RESERVEDINSTANCEOUTOFQUATA = 'UnsupportedOperation.ReservedInstanceOutofQuata'
 
+# 共享镜像不支持导出。
+UNSUPPORTEDOPERATION_SHAREDIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.SharedImageExportUnsupported'
+
 # 请求不支持特殊机型的实例
 UNSUPPORTEDOPERATION_SPECIALINSTANCETYPE = 'UnsupportedOperation.SpecialInstanceType'
+
+# 该地域不支持竞价实例。
+UNSUPPORTEDOPERATION_SPOTUNSUPPORTEDREGION = 'UnsupportedOperation.SpotUnsupportedRegion'
 
 # 不支持关机不收费特性
 UNSUPPORTEDOPERATION_STOPPEDMODESTOPCHARGING = 'UnsupportedOperation.StoppedModeStopCharging'
@@ -811,6 +871,9 @@ UNSUPPORTEDOPERATION_UNSUPPORTEDINTERNATIONALUSER = 'UnsupportedOperation.Unsupp
 
 # 用户限额操作的配额不足。
 UNSUPPORTEDOPERATION_USERLIMITOPERATIONEXCEEDQUOTA = 'UnsupportedOperation.UserLimitOperationExceedQuota'
+
+# Windows镜像不支持导出。
+UNSUPPORTEDOPERATION_WINDOWSIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.WindowsImageExportUnsupported'
 
 # 私有网络ip不在子网内。
 VPCADDRNOTINSUBNET = 'VpcAddrNotInSubNet'

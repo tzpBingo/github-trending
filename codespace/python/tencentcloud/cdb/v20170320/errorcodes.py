@@ -356,6 +356,9 @@ OPERATIONDENIED_ACTIONINPROCESS = 'OperationDenied.ActionInProcess'
 # 不支持的操作。
 OPERATIONDENIED_ACTIONNOTSUPPORT = 'OperationDenied.ActionNotSupport'
 
+# 已开启安全审计，至少保留一个全审计。
+OPERATIONDENIED_ATLEASTALLRULEAUDITPOLICYERROR = 'OperationDenied.AtLeastAllRuleAuditPolicyError'
+
 # 至少保留一个审计策略。
 OPERATIONDENIED_ATLEASTAUDITPOLICYERROR = 'OperationDenied.AtLeastAuditPolicyError'
 
@@ -436,6 +439,9 @@ OPERATIONDENIED_OTHERODERINPROCESS = 'OperationDenied.OtherOderInProcess'
 
 # 资源配额超限。
 OPERATIONDENIED_OVERQUOTA = 'OperationDenied.OverQuota'
+
+# 数据库代理升级任务中，不允许该操作。
+OPERATIONDENIED_PROXYUPGRADETASKSTATUSERROR = 'OperationDenied.ProxyUpgradeTaskStatusError'
 
 # 结果集超过限制，请缩小检索范围。
 OPERATIONDENIED_RESULTOVERLIMIT = 'OperationDenied.ResultOverLimit'

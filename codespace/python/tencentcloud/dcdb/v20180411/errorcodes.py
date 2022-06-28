@@ -68,6 +68,9 @@ FAILEDOPERATION_SETRULELOCATIONFAILED = 'FailedOperation.SetRuleLocationFailed'
 # 标签键值校验或鉴权失败。
 FAILEDOPERATION_TAGDRYRUNERROR = 'FailedOperation.TagDryRunError'
 
+# 标签配额不足。
+FAILEDOPERATION_TAGQUOTAEXCEEDLIMIT = 'FailedOperation.TagQuotaExceedLimit'
+
 # 实例安全组信息更新失败。
 FAILEDOPERATION_UPDATEINSTANCEINFOFAILED = 'FailedOperation.UpdateInstanceInfoFailed'
 
@@ -167,6 +170,9 @@ INTERNALERROR_OPERATEDATABASEFAILED = 'InternalError.OperateDatabaseFailed'
 # 操作读DB数据错误。
 INTERNALERROR_QUERYDATABASEFAILED = 'InternalError.QueryDatabaseFailed'
 
+# 查询订单信息失败。
+INTERNALERROR_QUERYORDERFAILED = 'InternalError.QueryOrderFailed'
+
 # 查询价格失败。
 INTERNALERROR_QUERYPRICEFAILED = 'InternalError.QueryPriceFailed'
 
@@ -193,6 +199,9 @@ INVALIDPARAMETER_CHARACTERERROR = 'InvalidParameter.CharacterError'
 
 # 入参校验失败。
 INVALIDPARAMETER_CHECKPARAMNOTPASS = 'InvalidParameter.CheckParamNotPass'
+
+# 未指定需要查询的订单ID。
+INVALIDPARAMETER_DEALNAMENOTGIVEN = 'InvalidParameter.DealNameNotGiven'
 
 # 找不到指定的流程信息。
 INVALIDPARAMETER_FLOWNOTFOUND = 'InvalidParameter.FlowNotFound'
@@ -272,8 +281,14 @@ INVALIDPARAMETERVALUE_SUPERUSERFORBIDDEN = 'InvalidParameterValue.SuperUserForbi
 # 请求过于频繁。
 LIMITEXCEEDED_TOOFREQUENTLYCALLED = 'LimitExceeded.TooFrequentlyCalled'
 
+# 资源不足。
+RESOURCEINSUFFICIENT = 'ResourceInsufficient'
+
 # 指定的账号不存在。
 RESOURCENOTFOUND_ACCOUNTDOESNOTEXIST = 'ResourceNotFound.AccountDoesNotExist'
+
+# 实例不存在。
+RESOURCENOTFOUND_INSTANCENOTFOUND = 'ResourceNotFound.InstanceNotFound'
 
 # 找不到指定的数据库实例。
 RESOURCENOTFOUND_NOINSTANCEFOUND = 'ResourceNotFound.NoInstanceFound'

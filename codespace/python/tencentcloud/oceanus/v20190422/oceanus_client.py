@@ -26,6 +26,35 @@ class OceanusClient(AbstractClient):
     _service = 'oceanus'
 
 
+    def CheckSavepoint(self, request):
+        """检查快照是否可用
+
+        :param request: Request instance for CheckSavepoint.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.CheckSavepointRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.CheckSavepointResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CheckSavepoint", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CheckSavepointResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateJob(self, request):
         """新建作业接口，一个 AppId 最多允许创建1000个作业
 
@@ -258,6 +287,35 @@ class OceanusClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeJobSavepoint(self, request):
+        """查找Savepoint列表
+
+        :param request: Request instance for DescribeJobSavepoint.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.DescribeJobSavepointRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.DescribeJobSavepointResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeJobSavepoint", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeJobSavepointResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeJobs(self, request):
         """查询作业
 
@@ -403,6 +461,44 @@ class OceanusClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyJob(self, request):
+        """更新作业属性，仅允许以下3种操作，不支持组合操作：
+        (1)	更新作业名称
+        (2)	更新作业备注
+        (3)	更新作业最大并行度
+        变更前提：WorkerCuNum<=MaxParallelism
+        如果MaxParallelism变小，不重启作业，待下一次重启生效
+        如果MaxParallelism变大，则要求入参RestartAllowed必须为True
+        假设作业运行状态，则先停止作业，再启动作业，中间状态丢失
+        假设作业暂停状态，则将作业更改为停止状态，中间状态丢失
+
+
+        :param request: Request instance for ModifyJob.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.ModifyJobRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.ModifyJobResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyJob", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyJobResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def RunJobs(self, request):
         """批量启动或者恢复作业，批量操作数量上限20
 
@@ -447,6 +543,35 @@ class OceanusClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.StopJobsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def TriggerJobSavepoint(self, request):
+        """触发Savepoint
+
+        :param request: Request instance for TriggerJobSavepoint.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.TriggerJobSavepointRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.TriggerJobSavepointResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("TriggerJobSavepoint", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.TriggerJobSavepointResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

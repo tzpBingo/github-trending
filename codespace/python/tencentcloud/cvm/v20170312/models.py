@@ -809,6 +809,8 @@ false（默认）：发送正常请求，通过检查后直接创建实例。
         :type InstanceChargeType: str
         :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。若指定实例的付费模式为预付费则该参数必传。
         :type InstanceChargePrepaid: :class:`tencentcloud.cvm.v20170312.models.InstanceChargePrepaid`
+        :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
+        :type DisableApiTermination: bool
         """
         self.Placement = None
         self.LaunchTemplateId = None
@@ -837,6 +839,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例。
         self.HpcClusterId = None
         self.InstanceChargeType = None
         self.InstanceChargePrepaid = None
+        self.DisableApiTermination = None
 
 
     def _deserialize(self, params):
@@ -895,6 +898,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例。
         if params.get("InstanceChargePrepaid") is not None:
             self.InstanceChargePrepaid = InstanceChargePrepaid()
             self.InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        self.DisableApiTermination = params.get("DisableApiTermination")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1986,6 +1990,8 @@ class DescribeInstancesRequest(AbstractModel):
 <p style="padding-left: 30px;">按照【<strong>项目ID</strong>】进行过滤，可通过调用[DescribeProject](https://cloud.tencent.com/document/api/378/4400)查询已创建的项目列表或登录[控制台](https://console.cloud.tencent.com/cvm/index)进行查看；也可以调用[AddProject](https://cloud.tencent.com/document/api/378/4398)创建新的项目。项目ID形如：1002189。</p><p style="padding-left: 30px;">类型：Integer</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>host-id</strong></li>
 <p style="padding-left: 30px;">按照【<strong>[CDH](https://cloud.tencent.com/document/product/416) ID</strong>】进行过滤。[CDH](https://cloud.tencent.com/document/product/416) ID形如：host-xxxxxxxx。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>dedicated-cluster-id</strong></li>
+<p style="padding-left: 30px;">按照【<strong>[CDC](https://cloud.tencent.com/document/product/1346) ID</strong>】进行过滤。[CDC](https://cloud.tencent.com/document/product/1346) ID形如：cluster-xxxxxxx。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>vpc-id</strong></li>
 <p style="padding-left: 30px;">按照【<strong>VPC ID</strong>】进行过滤。VPC ID形如：vpc-xxxxxxxx。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>subnet-id</strong></li>
@@ -2181,7 +2187,11 @@ class DescribeKeyPairsRequest(AbstractModel):
         :type KeyIds: list of str
         :param Filters: 过滤条件。
 <li> project-id - Integer - 是否必填：否 -（过滤条件）按照项目ID过滤。可以通过[项目列表](https://console.cloud.tencent.com/project)查询项目ID，或者调用接口 [DescribeProject](https://cloud.tencent.com/document/api/378/4400)，取返回信息中的projectId获取项目ID。</li>
-<li> key-name - String - 是否必填：否 -（过滤条件）按照密钥对名称过滤。</li>参数不支持同时指定 `KeyIds` 和 `Filters`。
+<li> key-name - String - 是否必填：否 -（过滤条件）按照密钥对名称过滤。</li>
+<li> tag-key - String - 是否必填：否 -（过滤条件）按照标签键过滤。</li>
+<li> tag-value - String - 是否必填：否 -（过滤条件）按照标签值过滤。</li>
+<li> tag:tag-key - String - 是否必填：否 -（过滤条件）按照标签键值对过滤。tag-key使用具体的标签键进行替换。</li>
+参数不支持同时指定 `KeyIds` 和 `Filters`。
         :type Filters: list of Filter
         :param Offset: 偏移量，默认为0。关于 `Offset` 的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。返回数量，默认为20，最大值为100。关于 `Limit` 的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
         :type Offset: int
@@ -3007,6 +3017,75 @@ class EnhancedService(AbstractModel):
         
 
 
+class ExportImagesRequest(AbstractModel):
+    """ExportImages请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BucketName: COS存储桶名称
+        :type BucketName: str
+        :param ImageIds: 镜像ID列表
+        :type ImageIds: list of str
+        :param ExportFormat: 镜像文件导出格式。取值范围：RAW，QCOW2，VHD，VMDK。默认为RAW
+        :type ExportFormat: str
+        :param FileNamePrefixList: 导出文件的名称前缀列表
+        :type FileNamePrefixList: list of str
+        :param OnlyExportRootDisk: 是否只导出系统盘
+        :type OnlyExportRootDisk: bool
+        :param DryRun: 检测镜像是否支持导出
+        :type DryRun: bool
+        :param RoleName: 角色名称。默认为CVM_QcsRole，发起请求前请确认是否存在该角色，以及是否已正确配置COS写入权限。
+        :type RoleName: str
+        """
+        self.BucketName = None
+        self.ImageIds = None
+        self.ExportFormat = None
+        self.FileNamePrefixList = None
+        self.OnlyExportRootDisk = None
+        self.DryRun = None
+        self.RoleName = None
+
+
+    def _deserialize(self, params):
+        self.BucketName = params.get("BucketName")
+        self.ImageIds = params.get("ImageIds")
+        self.ExportFormat = params.get("ExportFormat")
+        self.FileNamePrefixList = params.get("FileNamePrefixList")
+        self.OnlyExportRootDisk = params.get("OnlyExportRootDisk")
+        self.DryRun = params.get("DryRun")
+        self.RoleName = params.get("RoleName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ExportImagesResponse(AbstractModel):
+    """ExportImages返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 导出镜像任务ID
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
 class Externals(AbstractModel):
     """扩展数据
 
@@ -3196,26 +3275,30 @@ class HostItem(AbstractModel):
 
 
 class HostResource(AbstractModel):
-    """cdh实例的资源信息
+    """专用宿主机实例的资源信息
 
     """
 
     def __init__(self):
         r"""
-        :param CpuTotal: cdh实例总cpu核数
+        :param CpuTotal: 专用宿主机实例总cpu核数
         :type CpuTotal: int
-        :param CpuAvailable: cdh实例可用cpu核数
+        :param CpuAvailable: 专用宿主机实例可用cpu核数
         :type CpuAvailable: int
-        :param MemTotal: cdh实例总内存大小（单位为:GiB）
+        :param MemTotal: 专用宿主机实例总内存大小（单位为:GiB）
         :type MemTotal: float
-        :param MemAvailable: cdh实例可用内存大小（单位为:GiB）
+        :param MemAvailable: 专用宿主机实例可用内存大小（单位为:GiB）
         :type MemAvailable: float
-        :param DiskTotal: cdh实例总磁盘大小（单位为:GiB）
+        :param DiskTotal: 专用宿主机实例总磁盘大小（单位为:GiB）
         :type DiskTotal: int
-        :param DiskAvailable: cdh实例可用磁盘大小（单位为:GiB）
+        :param DiskAvailable: 专用宿主机实例可用磁盘大小（单位为:GiB）
         :type DiskAvailable: int
-        :param DiskType: cdh实例磁盘类型
+        :param DiskType: 专用宿主机实例磁盘类型
         :type DiskType: str
+        :param GpuTotal: 专用宿主机实例总GPU卡数
+        :type GpuTotal: int
+        :param GpuAvailable: 专用宿主机实例可用GPU卡数
+        :type GpuAvailable: int
         """
         self.CpuTotal = None
         self.CpuAvailable = None
@@ -3224,6 +3307,8 @@ class HostResource(AbstractModel):
         self.DiskTotal = None
         self.DiskAvailable = None
         self.DiskType = None
+        self.GpuTotal = None
+        self.GpuAvailable = None
 
 
     def _deserialize(self, params):
@@ -3234,6 +3319,8 @@ class HostResource(AbstractModel):
         self.DiskTotal = params.get("DiskTotal")
         self.DiskAvailable = params.get("DiskAvailable")
         self.DiskType = params.get("DiskType")
+        self.GpuTotal = params.get("GpuTotal")
+        self.GpuAvailable = params.get("GpuAvailable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3293,6 +3380,8 @@ IMPORTFAILED-导入失败
         :param Tags: 镜像关联的标签列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tag
+        :param LicenseType: 镜像许可类型
+        :type LicenseType: str
         """
         self.ImageId = None
         self.OsName = None
@@ -3310,6 +3399,7 @@ IMPORTFAILED-导入失败
         self.IsSupportCloudinit = None
         self.SnapshotSet = None
         self.Tags = None
+        self.LicenseType = None
 
 
     def _deserialize(self, params):
@@ -3339,6 +3429,7 @@ IMPORTFAILED-导入失败
                 obj = Tag()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.LicenseType = params.get("LicenseType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4183,7 +4274,7 @@ class Instance(AbstractModel):
         :type RestrictState: str
         :param InstanceName: 实例名称。
         :type InstanceName: str
-        :param InstanceChargeType: 实例计费模式。取值范围：<br><li>`PREPAID`：表示预付费，即包年包月<br><li>`POSTPAID_BY_HOUR`：表示后付费，即按量计费<br><li>`CDHPAID`：`CDH`付费，即只对`CDH`计费，不对`CDH`上的实例计费。<br><li>`SPOTPAID`：表示竞价实例付费。
+        :param InstanceChargeType: 实例计费模式。取值范围：<br><li>`PREPAID`：表示预付费，即包年包月<br><li>`POSTPAID_BY_HOUR`：表示后付费，即按量计费<br><li>`CDHPAID`：`专用宿主机`付费，即只对`专用宿主机`计费，不对`专用宿主机`上的实例计费。<br><li>`SPOTPAID`：表示竞价实例付费。
         :type InstanceChargeType: str
         :param SystemDisk: 实例系统盘信息。
         :type SystemDisk: :class:`tencentcloud.cvm.v20170312.models.SystemDisk`
@@ -4252,6 +4343,8 @@ class Instance(AbstractModel):
         :param GPUInfo: GPU信息。如果是gpu类型子机，该值会返回GPU信息，如果是其他类型子机则不返回。
 注意：此字段可能返回 null，表示取不到有效值。
         :type GPUInfo: :class:`tencentcloud.cvm.v20170312.models.GPUInfo`
+        :param LicenseType: 实例的操作系统许可类型，默认为TencentCloud
+        :type LicenseType: str
         """
         self.Placement = None
         self.InstanceId = None
@@ -4288,6 +4381,7 @@ class Instance(AbstractModel):
         self.RdmaIpAddresses = None
         self.IsolatedSource = None
         self.GPUInfo = None
+        self.LicenseType = None
 
 
     def _deserialize(self, params):
@@ -4348,6 +4442,7 @@ class Instance(AbstractModel):
         if params.get("GPUInfo") is not None:
             self.GPUInfo = GPUInfo()
             self.GPUInfo._deserialize(params.get("GPUInfo"))
+        self.LicenseType = params.get("LicenseType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4601,7 +4696,7 @@ class InstanceTypeQuotaItem(AbstractModel):
         :type Zone: str
         :param InstanceType: 实例机型。
         :type InstanceType: str
-        :param InstanceChargeType: 实例计费模式。取值范围： <br><li>PREPAID：表示预付费，即包年包月<br><li>POSTPAID_BY_HOUR：表示后付费，即按量计费<br><li>CDHPAID：表示[CDH](https://cloud.tencent.com/document/product/416)付费，即只对CDH计费，不对CDH上的实例计费。<br><li>`SPOTPAID`：表示竞价实例付费。
+        :param InstanceChargeType: 实例计费模式。取值范围： <br><li>PREPAID：表示预付费，即包年包月<br><li>POSTPAID_BY_HOUR：表示后付费，即按量计费<br><li>CDHPAID：表示[专用宿主机](https://cloud.tencent.com/document/product/416)付费，即只对`专用宿主机`计费，不对`专用宿主机`上的实例计费。<br><li>`SPOTPAID`：表示竞价实例付费。
         :type InstanceChargeType: str
         :param NetworkCard: 网卡类型，例如：25代表25G网卡
         :type NetworkCard: int
@@ -4946,6 +5041,9 @@ class KeyPair(AbstractModel):
         :type AssociatedInstanceIds: list of str
         :param CreatedTime: 创建时间。按照`ISO8601`标准表示，并且使用`UTC`时间。格式为：`YYYY-MM-DDThh:mm:ssZ`。
         :type CreatedTime: str
+        :param Tags: 密钥关联的标签列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         """
         self.KeyId = None
         self.KeyName = None
@@ -4955,6 +5053,7 @@ class KeyPair(AbstractModel):
         self.PrivateKey = None
         self.AssociatedInstanceIds = None
         self.CreatedTime = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -4966,6 +5065,12 @@ class KeyPair(AbstractModel):
         self.PrivateKey = params.get("PrivateKey")
         self.AssociatedInstanceIds = params.get("AssociatedInstanceIds")
         self.CreatedTime = params.get("CreatedTime")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5074,7 +5179,7 @@ class LaunchTemplateVersionData(AbstractModel):
         :param InstanceName: 实例名称。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceName: str
-        :param InstanceChargeType: 实例计费模式。取值范围：<br><li>`PREPAID`：表示预付费，即包年包月<br><li>`POSTPAID_BY_HOUR`：表示后付费，即按量计费<br><li>`CDHPAID`：`CDH`付费，即只对`CDH`计费，不对`CDH`上的实例计费。<br><li>`SPOTPAID`：表示竞价实例付费。
+        :param InstanceChargeType: 实例计费模式。取值范围：<br><li>`PREPAID`：表示预付费，即包年包月<br><li>`POSTPAID_BY_HOUR`：表示后付费，即按量计费<br><li>`CDHPAID`：`专用宿主机`付费，即只对`专用宿主机`计费，不对`专用宿主机`上的实例计费。<br><li>`SPOTPAID`：表示竞价实例付费。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceChargeType: str
         :param SystemDisk: 实例系统盘信息。
@@ -5614,20 +5719,30 @@ class ModifyInstancesAttributeRequest(AbstractModel):
         :type InstanceName: str
         :param SecurityGroups: 指定实例的安全组Id列表，子机将重新关联指定列表的安全组，原本关联的安全组会被解绑。<dx-alert infotype="explain" title="">必须指定SecurityGroups与InstanceName的其中一个，但不能同时设置</dx-alert>
         :type SecurityGroups: list of str
+        :param CamRoleName: 给实例绑定用户角色，传空值为解绑操作
+        :type CamRoleName: str
         :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
         :type DisableApiTermination: bool
+        :param CamRoleType: 角色类别，与CamRoleName搭配使用，该值可从CAM DescribeRoleList, GetRole接口返回RoleType字段获取，当前只接受user、system和service_linked三种类别。
+举例：一般CamRoleName中包含“LinkedRoleIn”（如TKE_QCSLinkedRoleInPrometheusService）时，DescribeRoleList和GetRole返回的RoleType为service_linked，则本参数也需要传递service_linked。
+该参数默认值为user，若CameRoleName为非service_linked类型，本参数可不传递。
+        :type CamRoleType: str
         """
         self.InstanceIds = None
         self.InstanceName = None
         self.SecurityGroups = None
+        self.CamRoleName = None
         self.DisableApiTermination = None
+        self.CamRoleType = None
 
 
     def _deserialize(self, params):
         self.InstanceIds = params.get("InstanceIds")
         self.InstanceName = params.get("InstanceName")
         self.SecurityGroups = params.get("SecurityGroups")
+        self.CamRoleName = params.get("CamRoleName")
         self.DisableApiTermination = params.get("DisableApiTermination")
+        self.CamRoleType = params.get("CamRoleType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6017,7 +6132,7 @@ class OsVersion(AbstractModel):
 
 
 class Placement(AbstractModel):
-    """描述了实例的抽象位置，包括其所在的可用区，所属的项目，宿主机（仅CDH产品可用），母机ip等
+    """描述了实例的抽象位置，包括其所在的可用区，所属的项目，宿主机（仅专用宿主机产品可用），母机ip等
 
     """
 
@@ -7233,6 +7348,8 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         :type HpcClusterId: str
         :param LaunchTemplate: 实例启动模板。
         :type LaunchTemplate: :class:`tencentcloud.cvm.v20170312.models.LaunchTemplate`
+        :param DedicatedClusterId: 指定专用集群创建。
+        :type DedicatedClusterId: str
         :param ChcIds: 指定CHC物理服务器来创建CHC云主机。
         :type ChcIds: list of str
         :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
@@ -7263,6 +7380,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         self.CamRoleName = None
         self.HpcClusterId = None
         self.LaunchTemplate = None
+        self.DedicatedClusterId = None
         self.ChcIds = None
         self.DisableApiTermination = None
 
@@ -7323,6 +7441,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         if params.get("LaunchTemplate") is not None:
             self.LaunchTemplate = LaunchTemplate()
             self.LaunchTemplate._deserialize(params.get("LaunchTemplate"))
+        self.DedicatedClusterId = params.get("DedicatedClusterId")
         self.ChcIds = params.get("ChcIds")
         self.DisableApiTermination = params.get("DisableApiTermination")
         memeber_set = set(params.keys())
@@ -7780,7 +7899,7 @@ class TagSpecification(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ResourceType: 标签绑定的资源类型，云服务器为“instance”，专用宿主机为“host”
+        :param ResourceType: 标签绑定的资源类型，云服务器为“instance”，专用宿主机为“host”，镜像为“image”
         :type ResourceType: str
         :param Tags: 标签对列表
         :type Tags: list of Tag

@@ -18,6 +18,50 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class ApolloEnvParam(AbstractModel):
+    """Apollo 环境配置参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 环境名称
+        :type Name: str
+        :param EngineResourceSpec: 环境内引擎的节点规格 ID
+        :type EngineResourceSpec: str
+        :param EngineNodeNum: 环境内引擎的节点数量
+        :type EngineNodeNum: int
+        :param StorageCapacity: 配置存储空间大小，以GB为单位
+        :type StorageCapacity: int
+        :param VpcId: VPC ID。在 VPC 的子网内分配一个 IP 作为 ConfigServer 的访问地址
+        :type VpcId: str
+        :param SubnetId: 子网 ID。在 VPC 的子网内分配一个 IP 作为 ConfigServer 的访问地址
+        :type SubnetId: str
+        """
+        self.Name = None
+        self.EngineResourceSpec = None
+        self.EngineNodeNum = None
+        self.StorageCapacity = None
+        self.VpcId = None
+        self.SubnetId = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.EngineResourceSpec = params.get("EngineResourceSpec")
+        self.EngineNodeNum = params.get("EngineNodeNum")
+        self.StorageCapacity = params.get("StorageCapacity")
+        self.VpcId = params.get("VpcId")
+        self.SubnetId = params.get("SubnetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class BoundK8SInfo(AbstractModel):
     """服务治理引擎绑定的kubernetes信息
 
@@ -50,6 +94,336 @@ class BoundK8SInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class CreateEngineRequest(AbstractModel):
+    """CreateEngine请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EngineType: 引擎类型。参考值：
+- zookeeper
+- nacos
+- consul
+- apollo
+- eureka
+- polaris
+        :type EngineType: str
+        :param EngineVersion: 引擎的开源版本。每种引擎支持的开源版本不同，请参考产品文档或者控制台购买页
+        :type EngineVersion: str
+        :param EngineProductVersion: 引擎的产品版本。参考值：
+- STANDARD： 标准版
+
+引擎各版本及可选择的规格、节点数说明：
+apollo - STANDARD版本
+规格列表：spec-qcr53kf1t（1C2G）,spec-qdr53kf2w（2C4G）
+节点数：1，2，3，4，5
+
+eureka - STANDARD版本
+规格列表：spec-qvj6k7t4q（1C2G）,spec-qcr53kfjt（2C4G）,spec-qvj6k7t4m（4G8G）,spec-qcr54kfjt（8C16G）,spec-qcr55kfjt（16C32G）
+节点数：3，4，5
+        :type EngineProductVersion: str
+        :param EngineRegion: 引擎所在地域。参考值说明：
+中国区 参考值：
+- ap-guangzhou：广州
+- ap-beijing：北京
+- ap-chengdu：成都
+- ap-chongqing：重庆
+- ap-nanjing：南京
+- ap-shanghai：上海
+- ap-hongkong：香港
+- ap-taipei：台北
+亚太区 参考值：
+- ap-jakarta：雅加达
+- ap-singapore：新加坡
+北美区 参考值
+- na-toronto：多伦多
+金融专区 参考值
+- ap-beijing-fsi：北京金融
+- ap-shanghai-fsi：上海金融
+- ap-shenzhen-fsi：深圳金融
+        :type EngineRegion: str
+        :param EngineName: 引擎名称。参考值：
+- eurek-test
+        :type EngineName: str
+        :param TradeType: 付费类型。参考值：
+- 0：后付费
+- 1：预付费
+        :type TradeType: int
+        :param EngineResourceSpec: 引擎的节点规格 ID。参见EngineProductVersion字段说明
+        :type EngineResourceSpec: str
+        :param EngineNodeNum: 引擎的节点数量。参见EngineProductVersion字段说明
+        :type EngineNodeNum: int
+        :param VpcId: VPC ID。在 VPC 的子网内分配一个 IP 作为引擎的访问地址。参考值：
+- vpc-conz6aix
+        :type VpcId: str
+        :param SubnetId: 子网 ID。在 VPC 的子网内分配一个 IP 作为引擎的访问地址。参考值：
+- subnet-ahde9me9
+        :type SubnetId: str
+        :param ApolloEnvParams: Apollo 环境配置参数列表。参数说明：
+如果创建Apollo类型，此参数为必填的环境信息列表，最多可选4个环境。环境信息参数说明：
+- Name：环境名。参考值：prod, dev, fat, uat
+- EngineResourceSpec：环境内引擎的节点规格ID。参见EngineProductVersion参数说明
+- EngineNodeNum：环境内引擎的节点数量。参见EngineProductVersion参数说明，其中prod环境支持的节点数为2，3，4，5
+- StorageCapacity：配置存储空间大小，以GB为单位，步长为5.参考值：35
+- VpcId：VPC ID。参考值：vpc-conz6aix
+- SubnetId：子网 ID。参考值：subnet-ahde9me9
+        :type ApolloEnvParams: list of ApolloEnvParam
+        :param EngineTags: 引擎的标签列表。用户自定义的key/value形式，无参考值
+        :type EngineTags: list of InstanceTagInfo
+        :param EngineAdmin: 引擎的初始帐号信息。可设置参数：
+- Name：控制台初始用户名
+- Password：控制台初始密码
+- Token：引擎接口的管理员 Token
+        :type EngineAdmin: :class:`tencentcloud.tse.v20201207.models.EngineAdmin`
+        :param PrepaidPeriod: 预付费时长，以月为单位
+        :type PrepaidPeriod: int
+        :param PrepaidRenewFlag: 自动续费标记，仅预付费使用。参考值：
+- 0：不自动续费
+- 1：自动续费
+        :type PrepaidRenewFlag: int
+        """
+        self.EngineType = None
+        self.EngineVersion = None
+        self.EngineProductVersion = None
+        self.EngineRegion = None
+        self.EngineName = None
+        self.TradeType = None
+        self.EngineResourceSpec = None
+        self.EngineNodeNum = None
+        self.VpcId = None
+        self.SubnetId = None
+        self.ApolloEnvParams = None
+        self.EngineTags = None
+        self.EngineAdmin = None
+        self.PrepaidPeriod = None
+        self.PrepaidRenewFlag = None
+
+
+    def _deserialize(self, params):
+        self.EngineType = params.get("EngineType")
+        self.EngineVersion = params.get("EngineVersion")
+        self.EngineProductVersion = params.get("EngineProductVersion")
+        self.EngineRegion = params.get("EngineRegion")
+        self.EngineName = params.get("EngineName")
+        self.TradeType = params.get("TradeType")
+        self.EngineResourceSpec = params.get("EngineResourceSpec")
+        self.EngineNodeNum = params.get("EngineNodeNum")
+        self.VpcId = params.get("VpcId")
+        self.SubnetId = params.get("SubnetId")
+        if params.get("ApolloEnvParams") is not None:
+            self.ApolloEnvParams = []
+            for item in params.get("ApolloEnvParams"):
+                obj = ApolloEnvParam()
+                obj._deserialize(item)
+                self.ApolloEnvParams.append(obj)
+        if params.get("EngineTags") is not None:
+            self.EngineTags = []
+            for item in params.get("EngineTags"):
+                obj = InstanceTagInfo()
+                obj._deserialize(item)
+                self.EngineTags.append(obj)
+        if params.get("EngineAdmin") is not None:
+            self.EngineAdmin = EngineAdmin()
+            self.EngineAdmin._deserialize(params.get("EngineAdmin"))
+        self.PrepaidPeriod = params.get("PrepaidPeriod")
+        self.PrepaidRenewFlag = params.get("PrepaidRenewFlag")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateEngineResponse(AbstractModel):
+    """CreateEngine返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 引擎实例 ID
+        :type InstanceId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InstanceId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteEngineRequest(AbstractModel):
+    """DeleteEngine请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 引擎实例 ID
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteEngineResponse(AbstractModel):
+    """DeleteEngine返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeNacosReplicasRequest(AbstractModel):
+    """DescribeNacosReplicas请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 引擎实例ID
+        :type InstanceId: str
+        :param Limit: 副本列表Limit
+        :type Limit: int
+        :param Offset: 副本列表Offset
+        :type Offset: int
+        """
+        self.InstanceId = None
+        self.Limit = None
+        self.Offset = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeNacosReplicasResponse(AbstractModel):
+    """DescribeNacosReplicas返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Replicas: 引擎实例副本信息
+        :type Replicas: list of NacosReplica
+        :param TotalCount: 副本个数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Replicas = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Replicas") is not None:
+            self.Replicas = []
+            for item in params.get("Replicas"):
+                obj = NacosReplica()
+                obj._deserialize(item)
+                self.Replicas.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeNacosServerInterfacesRequest(AbstractModel):
+    """DescribeNacosServerInterfaces请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param Limit: 返回的列表个数
+        :type Limit: int
+        :param Offset: 返回的列表起始偏移量
+        :type Offset: int
+        """
+        self.InstanceId = None
+        self.Limit = None
+        self.Offset = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeNacosServerInterfacesResponse(AbstractModel):
+    """DescribeNacosServerInterfaces返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 接口总个数
+        :type TotalCount: int
+        :param Content: 接口列表
+        :type Content: list of NacosServerInterface
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Content = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Content") is not None:
+            self.Content = []
+            for item in params.get("Content"):
+                obj = NacosServerInterface()
+                obj._deserialize(item)
+                self.Content.append(obj)
+        self.RequestId = params.get("RequestId")
 
 
 class DescribeSREInstanceAccessAddressRequest(AbstractModel):
@@ -213,6 +587,163 @@ class DescribeSREInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeZookeeperReplicasRequest(AbstractModel):
+    """DescribeZookeeperReplicas请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 注册引擎实例ID
+        :type InstanceId: str
+        :param Limit: 副本列表Limit
+        :type Limit: int
+        :param Offset: 副本列表Offset
+        :type Offset: int
+        """
+        self.InstanceId = None
+        self.Limit = None
+        self.Offset = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeZookeeperReplicasResponse(AbstractModel):
+    """DescribeZookeeperReplicas返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Replicas: 注册引擎实例副本信息
+        :type Replicas: list of ZookeeperReplica
+        :param TotalCount: 副本个数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Replicas = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Replicas") is not None:
+            self.Replicas = []
+            for item in params.get("Replicas"):
+                obj = ZookeeperReplica()
+                obj._deserialize(item)
+                self.Replicas.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeZookeeperServerInterfacesRequest(AbstractModel):
+    """DescribeZookeeperServerInterfaces请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param Limit: 返回的列表个数
+        :type Limit: int
+        :param Offset: 返回的列表起始偏移量
+        :type Offset: int
+        """
+        self.InstanceId = None
+        self.Limit = None
+        self.Offset = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeZookeeperServerInterfacesResponse(AbstractModel):
+    """DescribeZookeeperServerInterfaces返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 接口总个数
+        :type TotalCount: int
+        :param Content: 接口列表
+        :type Content: list of ZookeeperServerInterface
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Content = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Content") is not None:
+            self.Content = []
+            for item in params.get("Content"):
+                obj = ZookeeperServerInterface()
+                obj._deserialize(item)
+                self.Content.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class EngineAdmin(AbstractModel):
+    """引擎的初始管理帐号
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 控制台初始用户名
+        :type Name: str
+        :param Password: 控制台初始密码
+        :type Password: str
+        :param Token: 引擎接口的管理员 Token
+        :type Token: str
+        """
+        self.Name = None
+        self.Password = None
+        self.Token = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Password = params.get("Password")
+        self.Token = params.get("Token")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class EnvAddressInfo(AbstractModel):
     """多环境网络信息
 
@@ -274,6 +805,8 @@ class EnvInfo(AbstractModel):
         :type EnvReplica: int
         :param RunningCount: 环境运行的节点数
         :type RunningCount: int
+        :param AliasEnvName: 环境别名
+        :type AliasEnvName: str
         """
         self.EnvName = None
         self.VpcInfos = None
@@ -286,6 +819,7 @@ class EnvInfo(AbstractModel):
         self.SpecId = None
         self.EnvReplica = None
         self.RunningCount = None
+        self.AliasEnvName = None
 
 
     def _deserialize(self, params):
@@ -305,6 +839,7 @@ class EnvInfo(AbstractModel):
         self.SpecId = params.get("SpecId")
         self.EnvReplica = params.get("EnvReplica")
         self.RunningCount = params.get("RunningCount")
+        self.AliasEnvName = params.get("AliasEnvName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -342,6 +877,34 @@ class Filter(AbstractModel):
         
 
 
+class InstanceTagInfo(AbstractModel):
+    """引擎实例的标签信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKey: 标签键
+        :type TagKey: str
+        :param TagValue: 标签值
+        :type TagValue: str
+        """
+        self.TagKey = None
+        self.TagValue = None
+
+
+    def _deserialize(self, params):
+        self.TagKey = params.get("TagKey")
+        self.TagValue = params.get("TagValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class KVPair(AbstractModel):
     """键值对
 
@@ -361,6 +924,78 @@ class KVPair(AbstractModel):
     def _deserialize(self, params):
         self.Key = params.get("Key")
         self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NacosReplica(AbstractModel):
+    """Nacos副本信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        :param Role: 角色
+        :type Role: str
+        :param Status: 状态
+        :type Status: str
+        :param SubnetId: 子网ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        :param Zone: 可用区ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Zone: str
+        :param ZoneId: 可用区ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ZoneId: str
+        """
+        self.Name = None
+        self.Role = None
+        self.Status = None
+        self.SubnetId = None
+        self.Zone = None
+        self.ZoneId = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Role = params.get("Role")
+        self.Status = params.get("Status")
+        self.SubnetId = params.get("SubnetId")
+        self.Zone = params.get("Zone")
+        self.ZoneId = params.get("ZoneId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NacosServerInterface(AbstractModel):
+    """nacos服务端接口列表，用于云监控
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Interface: 接口名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Interface: str
+        """
+        self.Interface = None
+
+
+    def _deserialize(self, params):
+        self.Interface = params.get("Interface")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -625,6 +1260,78 @@ class VpcInfo(AbstractModel):
         self.VpcId = params.get("VpcId")
         self.SubnetId = params.get("SubnetId")
         self.IntranetAddress = params.get("IntranetAddress")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ZookeeperReplica(AbstractModel):
+    """Zookeeper副本信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        :param Role: 角色
+        :type Role: str
+        :param Status: 状态
+        :type Status: str
+        :param SubnetId: 子网ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        :param Zone: 可用区ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Zone: str
+        :param ZoneId: 可用区ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ZoneId: str
+        """
+        self.Name = None
+        self.Role = None
+        self.Status = None
+        self.SubnetId = None
+        self.Zone = None
+        self.ZoneId = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Role = params.get("Role")
+        self.Status = params.get("Status")
+        self.SubnetId = params.get("SubnetId")
+        self.Zone = params.get("Zone")
+        self.ZoneId = params.get("ZoneId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ZookeeperServerInterface(AbstractModel):
+    """Zookeeper服务端接口列表，用于云监控
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Interface: 接口名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Interface: str
+        """
+        self.Interface = None
+
+
+    def _deserialize(self, params):
+        self.Interface = params.get("Interface")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

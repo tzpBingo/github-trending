@@ -902,11 +902,15 @@ class Event(AbstractModel):
         :type Type: str
         :param Subject: 事件来源详细描述，可自定义，选填。云服务默认为标准qcs资源表示语法：qcs::dts:ap-guangzhou:appid/uin:xxx
         :type Subject: str
+        :param Time: 事件发生的毫秒时间戳，
+time.Now().UnixNano()/1e6
+        :type Time: int
         """
         self.Source = None
         self.Data = None
         self.Type = None
         self.Subject = None
+        self.Time = None
 
 
     def _deserialize(self, params):
@@ -914,6 +918,7 @@ class Event(AbstractModel):
         self.Data = params.get("Data")
         self.Type = params.get("Type")
         self.Subject = params.get("Subject")
+        self.Time = params.get("Time")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1466,12 +1471,12 @@ class ListTargetsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param RuleId: 事件规则ID
-        :type RuleId: str
         :param EventBusId: 事件集ID
         :type EventBusId: str
         :param OrderBy: 根据哪个字段进行返回结果排序,支持以下字段：AddTime（创建时间）, ModTime（修改时间）
         :type OrderBy: str
+        :param RuleId: 事件规则ID
+        :type RuleId: str
         :param Limit: 返回数量，默认为20，最大值为100。
         :type Limit: int
         :param Offset: 分页偏移量，默认为0。
@@ -1479,18 +1484,18 @@ class ListTargetsRequest(AbstractModel):
         :param Order: 以升序还是降序的方式返回结果，可选值 ASC（升序） 和 DESC（降序）
         :type Order: str
         """
-        self.RuleId = None
         self.EventBusId = None
         self.OrderBy = None
+        self.RuleId = None
         self.Limit = None
         self.Offset = None
         self.Order = None
 
 
     def _deserialize(self, params):
-        self.RuleId = params.get("RuleId")
         self.EventBusId = params.get("EventBusId")
         self.OrderBy = params.get("OrderBy")
+        self.RuleId = params.get("RuleId")
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
         self.Order = params.get("Order")

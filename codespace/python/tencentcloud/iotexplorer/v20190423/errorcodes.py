@@ -47,6 +47,9 @@ FAILEDOPERATION_OTHERUPDATETASKEXIST = 'FailedOperation.OtherUpdateTaskExist'
 # 产品尚未发布。
 FAILEDOPERATION_PRODUCTNOTRELEASED = 'FailedOperation.ProductNotReleased'
 
+# RRPC接口未收到设备端响应。
+FAILEDOPERATION_RRPCTIMEOUT = 'FailedOperation.RRPCTimeout'
+
 # 转发已经停止。
 FAILEDOPERATION_RULEALREADYDISABLED = 'FailedOperation.RuleAlreadyDisabled'
 
@@ -61,6 +64,9 @@ FAILEDOPERATION_TIMEOUT = 'FailedOperation.Timeout'
 
 # 内部错误。
 INTERNALERROR = 'InternalError'
+
+# DB操作错误。
+INTERNALERROR_DBOPERATIONERROR = 'InternalError.DBOperationError'
 
 # DB操作错误。
 INTERNALERROR_DBOPERTAIONERROR = 'InternalError.DBOpertaionError'
@@ -443,6 +449,9 @@ UNSUPPORTEDOPERATION_DEVICETYPE = 'UnsupportedOperation.DeviceType'
 # 产品下还存在未删除的设备。
 UNSUPPORTEDOPERATION_DEVICESEXISTUNDERPRODUCT = 'UnsupportedOperation.DevicesExistUnderProduct'
 
+# 该项目下存在物联使能SaaS服务。
+UNSUPPORTEDOPERATION_ENABLESAASSERVICEEXISTUNDERPROJECT = 'UnsupportedOperation.EnableSaasServiceExistUnderProject'
+
 # 网关产品下存在设备绑定了子设备。
 UNSUPPORTEDOPERATION_EXISTBINDEDDEVICESUNDERGATEWAYPRODUCT = 'UnsupportedOperation.ExistBindedDevicesUnderGatewayProduct'
 
@@ -493,6 +502,9 @@ UNSUPPORTEDOPERATION_STAFFPOOLDUPNAMEEXIST = 'UnsupportedOperation.StaffPoolDupN
 
 # LoRa频点还被节点或网关使用。
 UNSUPPORTEDOPERATION_STUDIOLORAFREQINUSED = 'UnsupportedOperation.StudioLoRaFreqInUsed'
+
+# 账户有未支付订单。
+UNSUPPORTEDOPERATION_UNPAIDORDER = 'UnsupportedOperation.UnpaidOrder'
 
 # 存在重复VPN。
 UNSUPPORTEDOPERATION_VPNDUPKEYEXIST = 'UnsupportedOperation.VPNDupKeyExist'

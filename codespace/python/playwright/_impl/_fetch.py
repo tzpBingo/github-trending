@@ -39,6 +39,7 @@ from playwright._impl._helper import (
     is_safe_close_error,
     locals_to_params,
     object_to_array,
+    to_impl,
 )
 from playwright._impl._network import serialize_headers
 from playwright._impl._tracing import Tracing
@@ -77,7 +78,6 @@ class APIRequest:
             APIRequestContext,
             from_channel(await self.playwright._channel.send("newRequest", params)),
         )
-        context._tracing._local_utils = self.playwright._utils
         return context
 
 
@@ -242,7 +242,11 @@ class APIRequestContext(ChannelOwner):
         failOnStatusCode: bool = None,
         ignoreHTTPSErrors: bool = None,
     ) -> "APIResponse":
-        request = urlOrRequest if isinstance(urlOrRequest, network.Request) else None
+        request = (
+            cast(network.Request, to_impl(urlOrRequest))
+            if isinstance(to_impl(urlOrRequest), network.Request)
+            else None
+        )
         assert request or isinstance(
             urlOrRequest, str
         ), "First argument must be either URL string or Request"

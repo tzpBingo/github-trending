@@ -35,12 +35,15 @@ class AccountCreateInfo(AbstractModel):
         :type Remark: str
         :param IsAdmin: 是否为管理员账户，默认为否
         :type IsAdmin: bool
+        :param Authentication: win-windows鉴权,sql-sqlserver鉴权，不填默认值为sql-sqlserver鉴权
+        :type Authentication: str
         """
         self.UserName = None
         self.Password = None
         self.DBPrivileges = None
         self.Remark = None
         self.IsAdmin = None
+        self.Authentication = None
 
 
     def _deserialize(self, params):
@@ -54,6 +57,7 @@ class AccountCreateInfo(AbstractModel):
                 self.DBPrivileges.append(obj)
         self.Remark = params.get("Remark")
         self.IsAdmin = params.get("IsAdmin")
+        self.Authentication = params.get("Authentication")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -88,6 +92,10 @@ class AccountDetail(AbstractModel):
         :type Dbs: list of DBPrivilege
         :param IsAdmin: 是否为管理员账户
         :type IsAdmin: bool
+        :param Authentication: win-windows鉴权,sql-sqlserver鉴权
+        :type Authentication: str
+        :param Host: win-windows鉴权账户需要host
+        :type Host: str
         """
         self.Name = None
         self.Remark = None
@@ -98,6 +106,8 @@ class AccountDetail(AbstractModel):
         self.InternalStatus = None
         self.Dbs = None
         self.IsAdmin = None
+        self.Authentication = None
+        self.Host = None
 
 
     def _deserialize(self, params):
@@ -115,6 +125,8 @@ class AccountDetail(AbstractModel):
                 obj._deserialize(item)
                 self.Dbs.append(obj)
         self.IsAdmin = params.get("IsAdmin")
+        self.Authentication = params.get("Authentication")
+        self.Host = params.get("Host")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -191,9 +203,12 @@ class AccountPrivilegeModifyInfo(AbstractModel):
         :type UserName: str
         :param DBPrivileges: 账号权限变更信息
         :type DBPrivileges: list of DBPrivilegeModifyInfo
+        :param IsAdmin: 是否为管理员账户
+        :type IsAdmin: bool
         """
         self.UserName = None
         self.DBPrivileges = None
+        self.IsAdmin = None
 
 
     def _deserialize(self, params):
@@ -204,6 +219,7 @@ class AccountPrivilegeModifyInfo(AbstractModel):
                 obj = DBPrivilegeModifyInfo()
                 obj._deserialize(item)
                 self.DBPrivileges.append(obj)
+        self.IsAdmin = params.get("IsAdmin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -319,6 +335,8 @@ class Backup(AbstractModel):
         :type BackupName: str
         :param GroupId: 聚合Id，对于打包备份文件不返回此值。通过此值调用DescribeBackupFiles接口，获取单库备份文件的详细信息
         :type GroupId: str
+        :param BackupFormat: 备份文件形式（pkg-打包备份文件，single-单库备份文件）
+        :type BackupFormat: str
         """
         self.FileName = None
         self.Size = None
@@ -333,6 +351,7 @@ class Backup(AbstractModel):
         self.BackupWay = None
         self.BackupName = None
         self.GroupId = None
+        self.BackupFormat = None
 
 
     def _deserialize(self, params):
@@ -349,6 +368,7 @@ class Backup(AbstractModel):
         self.BackupWay = params.get("BackupWay")
         self.BackupName = params.get("BackupName")
         self.GroupId = params.get("GroupId")
+        self.BackupFormat = params.get("BackupFormat")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1563,6 +1583,17 @@ class DBInstance(AbstractModel):
         :param BackupModel: 备份模式，master_pkg-主节点打包备份(默认) ；master_no_pkg-主节点不打包备份；slave_pkg-从节点打包备份(always on集群有效)；slave_no_pkg-从节点不打包备份(always on集群有效)；只读副本对该值无效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type BackupModel: str
+        :param InstanceNote: 实例备份信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceNote: str
+        :param BackupCycle: 备份周期
+        :type BackupCycle: list of int
+        :param BackupCycleType: 备份周期类型，[daily、weekly、monthly]
+        :type BackupCycleType: str
+        :param BackupSaveDays: 数据(日志)备份保留时间
+        :type BackupSaveDays: int
+        :param InstanceType: 实例类型 HA-高可用 RO-只读实例 SI-基础版 BI-商业智能服务
+        :type InstanceType: str
         """
         self.InstanceId = None
         self.Name = None
@@ -1602,6 +1633,11 @@ class DBInstance(AbstractModel):
         self.HAFlag = None
         self.ResourceTags = None
         self.BackupModel = None
+        self.InstanceNote = None
+        self.BackupCycle = None
+        self.BackupCycleType = None
+        self.BackupSaveDays = None
+        self.InstanceType = None
 
 
     def _deserialize(self, params):
@@ -1648,6 +1684,11 @@ class DBInstance(AbstractModel):
                 obj._deserialize(item)
                 self.ResourceTags.append(obj)
         self.BackupModel = params.get("BackupModel")
+        self.InstanceNote = params.get("InstanceNote")
+        self.BackupCycle = params.get("BackupCycle")
+        self.BackupCycleType = params.get("BackupCycleType")
+        self.BackupSaveDays = params.get("BackupSaveDays")
+        self.InstanceType = params.get("InstanceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2534,12 +2575,15 @@ class DescribeBackupFilesRequest(AbstractModel):
         :type Offset: int
         :param DatabaseName: 按照备份的库名称筛选，不填则不筛选此项
         :type DatabaseName: str
+        :param OrderBy: 列表项排序，目前只按照备份大小排序（desc-降序，asc-升序），默认desc
+        :type OrderBy: str
         """
         self.InstanceId = None
         self.GroupId = None
         self.Limit = None
         self.Offset = None
         self.DatabaseName = None
+        self.OrderBy = None
 
 
     def _deserialize(self, params):
@@ -2548,6 +2592,7 @@ class DescribeBackupFilesRequest(AbstractModel):
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
         self.DatabaseName = params.get("DatabaseName")
+        self.OrderBy = params.get("OrderBy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2768,6 +2813,10 @@ class DescribeBackupsRequest(AbstractModel):
         :type DatabaseName: str
         :param Group: 是否分组查询，默认是0，单库备份情况下 0-兼容老方式不分组，1-单库备份分组后展示
         :type Group: int
+        :param Type: 备份类型，1-数据备份，2-日志备份，默认值为1
+        :type Type: int
+        :param BackupFormat: 按照备份文件形式筛选，pkg-打包备份文件，single-单库备份文件
+        :type BackupFormat: str
         """
         self.StartTime = None
         self.EndTime = None
@@ -2780,6 +2829,8 @@ class DescribeBackupsRequest(AbstractModel):
         self.BackupId = None
         self.DatabaseName = None
         self.Group = None
+        self.Type = None
+        self.BackupFormat = None
 
 
     def _deserialize(self, params):
@@ -2794,6 +2845,8 @@ class DescribeBackupsRequest(AbstractModel):
         self.BackupId = params.get("BackupId")
         self.DatabaseName = params.get("DatabaseName")
         self.Group = params.get("Group")
+        self.Type = params.get("Type")
+        self.BackupFormat = params.get("BackupFormat")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2976,6 +3029,8 @@ class DescribeDBInstancesRequest(AbstractModel):
         :type SearchKey: str
         :param UidSet: 实例唯一Uid列表
         :type UidSet: list of str
+        :param InstanceType: 实例类型 HA-高可用 RO-只读实例 SI-基础版 BI-商业智能服务
+        :type InstanceType: str
         """
         self.ProjectId = None
         self.Status = None
@@ -2992,6 +3047,7 @@ class DescribeDBInstancesRequest(AbstractModel):
         self.TagKeys = None
         self.SearchKey = None
         self.UidSet = None
+        self.InstanceType = None
 
 
     def _deserialize(self, params):
@@ -3010,6 +3066,7 @@ class DescribeDBInstancesRequest(AbstractModel):
         self.TagKeys = params.get("TagKeys")
         self.SearchKey = params.get("SearchKey")
         self.UidSet = params.get("UidSet")
+        self.InstanceType = params.get("InstanceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3557,6 +3614,7 @@ class DescribeMigrationDatabasesResponse(AbstractModel):
         :param Amount: 数据库数量
         :type Amount: int
         :param MigrateDBSet: 数据库名称数组
+注意：此字段可能返回 null，表示取不到有效值。
         :type MigrateDBSet: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -4055,6 +4113,8 @@ class DescribeReadOnlyGroupByReadOnlyInstanceResponse(AbstractModel):
         :type SubnetId: str
         :param MasterInstanceId: 主实例ID，形如mssql-sgeshe3th
         :type MasterInstanceId: str
+        :param MasterRegionId: 主实例的地域ID
+        :type MasterRegionId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4070,6 +4130,7 @@ class DescribeReadOnlyGroupByReadOnlyInstanceResponse(AbstractModel):
         self.VpcId = None
         self.SubnetId = None
         self.MasterInstanceId = None
+        self.MasterRegionId = None
         self.RequestId = None
 
 
@@ -4086,6 +4147,7 @@ class DescribeReadOnlyGroupByReadOnlyInstanceResponse(AbstractModel):
         self.VpcId = params.get("VpcId")
         self.SubnetId = params.get("SubnetId")
         self.MasterInstanceId = params.get("MasterInstanceId")
+        self.MasterRegionId = params.get("MasterRegionId")
         self.RequestId = params.get("RequestId")
 
 
@@ -5554,7 +5616,7 @@ class ModifyBackupStrategyRequest(AbstractModel):
         r"""
         :param InstanceId: 实例ID
         :type InstanceId: str
-        :param BackupType: 备份类型，当前只支持按天备份，取值为daily
+        :param BackupType: 备份类型，当length(BackupDay) <=7 && length(BackupDay) >=2时，取值为weekly，当length(BackupDay)=1时，取值daily，默认daily
         :type BackupType: str
         :param BackupTime: 备份时间点，取值为0-23的整数
         :type BackupTime: int
@@ -5562,12 +5624,18 @@ class ModifyBackupStrategyRequest(AbstractModel):
         :type BackupDay: int
         :param BackupModel: 备份模式，master_pkg-主节点上打包备份文件；master_no_pkg-主节点单库备份文件；slave_pkg-从节点上打包备份文件；slave_no_pkg-从节点上单库备份文件，从节点上备份只有在always on容灾模式下支持。
         :type BackupModel: str
+        :param BackupCycle: BackupType取值为weekly时，表示每周的星期N做备份。（如果数据备份保留时间<7天，则取值[1,2,3,4,5,6,7]。如果数据备份保留时间>=7天，则备份周期取值至少是一周的任意2天）
+        :type BackupCycle: list of int non-negative
+        :param BackupSaveDays: 数据(日志)备份保留时间，取值[3-1830]天，默认7天
+        :type BackupSaveDays: int
         """
         self.InstanceId = None
         self.BackupType = None
         self.BackupTime = None
         self.BackupDay = None
         self.BackupModel = None
+        self.BackupCycle = None
+        self.BackupSaveDays = None
 
 
     def _deserialize(self, params):
@@ -5576,6 +5644,8 @@ class ModifyBackupStrategyRequest(AbstractModel):
         self.BackupTime = params.get("BackupTime")
         self.BackupDay = params.get("BackupDay")
         self.BackupModel = params.get("BackupModel")
+        self.BackupCycle = params.get("BackupCycle")
+        self.BackupSaveDays = params.get("BackupSaveDays")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6888,6 +6958,10 @@ SyncNormal:正常
         :type EndTime: str
         :param IsolateTime: 只读副本隔离时间
         :type IsolateTime: str
+        :param RegionId: 只读副本所在地域
+        :type RegionId: str
+        :param ZoneId: 只读副本所在可用区
+        :type ZoneId: str
         """
         self.InstanceId = None
         self.Name = None
@@ -6911,6 +6985,8 @@ SyncNormal:正常
         self.StartTime = None
         self.EndTime = None
         self.IsolateTime = None
+        self.RegionId = None
+        self.ZoneId = None
 
 
     def _deserialize(self, params):
@@ -6936,6 +7012,8 @@ SyncNormal:正常
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
         self.IsolateTime = params.get("IsolateTime")
+        self.RegionId = params.get("RegionId")
+        self.ZoneId = params.get("ZoneId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7114,14 +7192,22 @@ class RemoveBackupsRequest(AbstractModel):
         :type InstanceId: str
         :param BackupNames: 待删除的备份名称，备份名称可通过DescribeBackups接口的FileName字段获得。单次请求批量删除备份数不能超过10个。
         :type BackupNames: list of str
+        :param StartTime: 批量删除手动备份起始时间
+        :type StartTime: str
+        :param EndTime: 批量删除手动备份截止时间
+        :type EndTime: str
         """
         self.InstanceId = None
         self.BackupNames = None
+        self.StartTime = None
+        self.EndTime = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.BackupNames = params.get("BackupNames")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8113,6 +8199,8 @@ class UpgradeDBInstanceRequest(AbstractModel):
         :type HAType: str
         :param MultiZones: 修改实例是否为跨可用区容灾，SameZones-修改为同可用区 MultiZones-修改为夸可用区
         :type MultiZones: str
+        :param WaitSwitch: 执行变配的方式，默认为 1。支持值包括：0 - 立刻执行，1 - 维护时间窗执行
+        :type WaitSwitch: int
         """
         self.InstanceId = None
         self.Memory = None
@@ -8123,6 +8211,7 @@ class UpgradeDBInstanceRequest(AbstractModel):
         self.DBVersion = None
         self.HAType = None
         self.MultiZones = None
+        self.WaitSwitch = None
 
 
     def _deserialize(self, params):
@@ -8135,6 +8224,7 @@ class UpgradeDBInstanceRequest(AbstractModel):
         self.DBVersion = params.get("DBVersion")
         self.HAType = params.get("HAType")
         self.MultiZones = params.get("MultiZones")
+        self.WaitSwitch = params.get("WaitSwitch")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

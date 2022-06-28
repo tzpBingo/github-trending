@@ -691,6 +691,63 @@ class CreateGroupResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateOIDCConfigRequest(AbstractModel):
+    """CreateOIDCConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IdentityUrl: 身份提供商URL
+        :type IdentityUrl: str
+        :param IdentityKey: 签名公钥，需要base64
+        :type IdentityKey: str
+        :param ClientId: 客户端ID
+        :type ClientId: list of str
+        :param Name: 名称
+        :type Name: str
+        :param Description: 描述
+        :type Description: str
+        """
+        self.IdentityUrl = None
+        self.IdentityKey = None
+        self.ClientId = None
+        self.Name = None
+        self.Description = None
+
+
+    def _deserialize(self, params):
+        self.IdentityUrl = params.get("IdentityUrl")
+        self.IdentityKey = params.get("IdentityKey")
+        self.ClientId = params.get("ClientId")
+        self.Name = params.get("Name")
+        self.Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateOIDCConfigResponse(AbstractModel):
+    """CreateOIDCConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CreatePolicyRequest(AbstractModel):
     """CreatePolicy请求参数结构体
 
@@ -815,12 +872,15 @@ class CreateRoleRequest(AbstractModel):
         :type ConsoleLogin: int
         :param SessionDuration: 申请角色临时密钥的最长有效期限制(范围：0~43200)
         :type SessionDuration: int
+        :param Tags: 角色绑定标签
+        :type Tags: list of RoleTags
         """
         self.RoleName = None
         self.PolicyDocument = None
         self.Description = None
         self.ConsoleLogin = None
         self.SessionDuration = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -829,6 +889,12 @@ class CreateRoleRequest(AbstractModel):
         self.Description = params.get("Description")
         self.ConsoleLogin = params.get("ConsoleLogin")
         self.SessionDuration = params.get("SessionDuration")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = RoleTags()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -926,16 +992,25 @@ class CreateServiceLinkedRoleRequest(AbstractModel):
         :type CustomSuffix: str
         :param Description: 角色说明。
         :type Description: str
+        :param Tags: 角色绑定标签。
+        :type Tags: list of RoleTags
         """
         self.QCSServiceName = None
         self.CustomSuffix = None
         self.Description = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
         self.QCSServiceName = params.get("QCSServiceName")
         self.CustomSuffix = params.get("CustomSuffix")
         self.Description = params.get("Description")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = RoleTags()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1107,6 +1182,47 @@ class DeleteGroupRequest(AbstractModel):
 
 class DeleteGroupResponse(AbstractModel):
     """DeleteGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteOIDCConfigRequest(AbstractModel):
+    """DeleteOIDCConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: OIDC身份提供商名称
+        :type Name: str
+        """
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteOIDCConfigResponse(AbstractModel):
+    """DeleteOIDCConfig返回参数结构体
 
     """
 
@@ -1470,6 +1586,75 @@ class DeleteUserResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeOIDCConfigRequest(AbstractModel):
+    """DescribeOIDCConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        """
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOIDCConfigResponse(AbstractModel):
+    """DescribeOIDCConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProviderType: 身份提供商类型 11角色身份提供商
+        :type ProviderType: int
+        :param IdentityUrl: 身份提供商URL
+        :type IdentityUrl: str
+        :param IdentityKey: 签名公钥
+        :type IdentityKey: str
+        :param ClientId: 客户端id
+        :type ClientId: list of str
+        :param Status: 状态：0:未设置，11:已开启，2:已禁用
+        :type Status: int
+        :param Description: 描述
+        :type Description: str
+        :param Name: 名称
+        :type Name: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ProviderType = None
+        self.IdentityUrl = None
+        self.IdentityKey = None
+        self.ClientId = None
+        self.Status = None
+        self.Description = None
+        self.Name = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ProviderType = params.get("ProviderType")
+        self.IdentityUrl = params.get("IdentityUrl")
+        self.IdentityKey = params.get("IdentityKey")
+        self.ClientId = params.get("ClientId")
+        self.Status = params.get("Status")
+        self.Description = params.get("Description")
+        self.Name = params.get("Name")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeRoleListRequest(AbstractModel):
     """DescribeRoleList请求参数结构体
 
@@ -1481,14 +1666,23 @@ class DescribeRoleListRequest(AbstractModel):
         :type Page: int
         :param Rp: 每页行数，不能大于200
         :type Rp: int
+        :param Tags: 标签筛选
+        :type Tags: list of RoleTags
         """
         self.Page = None
         self.Rp = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
         self.Page = params.get("Page")
         self.Rp = params.get("Rp")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = RoleTags()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4376,6 +4570,9 @@ class RoleInfo(AbstractModel):
         :param DeletionTaskId: 服务相关角色删除TaskId
 注意：此字段可能返回 null，表示取不到有效值。
         :type DeletionTaskId: str
+        :param Tags: 标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of RoleTags
         """
         self.RoleId = None
         self.RoleName = None
@@ -4387,6 +4584,7 @@ class RoleInfo(AbstractModel):
         self.RoleType = None
         self.SessionDuration = None
         self.DeletionTaskId = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -4400,6 +4598,40 @@ class RoleInfo(AbstractModel):
         self.RoleType = params.get("RoleType")
         self.SessionDuration = params.get("SessionDuration")
         self.DeletionTaskId = params.get("DeletionTaskId")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = RoleTags()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RoleTags(AbstractModel):
+    """角色标签类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 标签键
+        :type Key: str
+        :param Value: 标签值
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4778,6 +5010,109 @@ class SubAccountUser(AbstractModel):
         
 
 
+class TagRoleRequest(AbstractModel):
+    """TagRole请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Tags: 标签
+        :type Tags: list of RoleTags
+        :param RoleName: 角色名，与角色ID至少输入一个
+        :type RoleName: str
+        :param RoleId: 角色ID，与角色名至少输入一个
+        :type RoleId: str
+        """
+        self.Tags = None
+        self.RoleName = None
+        self.RoleId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = RoleTags()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        self.RoleName = params.get("RoleName")
+        self.RoleId = params.get("RoleId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TagRoleResponse(AbstractModel):
+    """TagRole返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class UntagRoleRequest(AbstractModel):
+    """UntagRole请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKeys: 标签键
+        :type TagKeys: list of str
+        :param RoleName: 角色名，与角色ID至少输入一个
+        :type RoleName: str
+        :param RoleId: 角色ID，与角色名至少输入一个
+        :type RoleId: str
+        """
+        self.TagKeys = None
+        self.RoleName = None
+        self.RoleId = None
+
+
+    def _deserialize(self, params):
+        self.TagKeys = params.get("TagKeys")
+        self.RoleName = params.get("RoleName")
+        self.RoleId = params.get("RoleId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UntagRoleResponse(AbstractModel):
+    """UntagRole返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class UpdateAssumeRolePolicyRequest(AbstractModel):
     """UpdateAssumeRolePolicy请求参数结构体
 
@@ -4861,6 +5196,63 @@ class UpdateGroupRequest(AbstractModel):
 
 class UpdateGroupResponse(AbstractModel):
     """UpdateGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateOIDCConfigRequest(AbstractModel):
+    """UpdateOIDCConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IdentityUrl: 身份提供商URL
+        :type IdentityUrl: str
+        :param IdentityKey: 签名公钥，需要base64
+        :type IdentityKey: str
+        :param ClientId: 客户端ID
+        :type ClientId: list of str
+        :param Name: 名称
+        :type Name: str
+        :param Description: 描述
+        :type Description: str
+        """
+        self.IdentityUrl = None
+        self.IdentityKey = None
+        self.ClientId = None
+        self.Name = None
+        self.Description = None
+
+
+    def _deserialize(self, params):
+        self.IdentityUrl = params.get("IdentityUrl")
+        self.IdentityKey = params.get("IdentityKey")
+        self.ClientId = params.get("ClientId")
+        self.Name = params.get("Name")
+        self.Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateOIDCConfigResponse(AbstractModel):
+    """UpdateOIDCConfig返回参数结构体
 
     """
 

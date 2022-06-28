@@ -137,6 +137,8 @@ class AddExistedInstancesRequest(AbstractModel):
 
 参数InstanceAdvancedSettingsOverride数组的长度应与InstanceIds数组一致；当长度大于InstanceIds数组长度时将报错；当长度小于InstanceIds数组时，没有对应配置的instace将使用默认配置。
         :type InstanceAdvancedSettingsOverrides: list of InstanceAdvancedSettings
+        :param ImageId: 节点镜像（节点选项时，该参数是必传参数）
+        :type ImageId: str
         """
         self.ClusterId = None
         self.InstanceIds = None
@@ -148,6 +150,7 @@ class AddExistedInstancesRequest(AbstractModel):
         self.NodePool = None
         self.SkipValidateOptions = None
         self.InstanceAdvancedSettingsOverrides = None
+        self.ImageId = None
 
 
     def _deserialize(self, params):
@@ -174,6 +177,7 @@ class AddExistedInstancesRequest(AbstractModel):
                 obj = InstanceAdvancedSettings()
                 obj._deserialize(item)
                 self.InstanceAdvancedSettingsOverrides.append(obj)
+        self.ImageId = params.get("ImageId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -495,6 +499,68 @@ class CbsVolume(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class CheckEdgeClusterCIDRRequest(AbstractModel):
+    """CheckEdgeClusterCIDR请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param VpcId: 集群的vpc-id
+        :type VpcId: str
+        :param PodCIDR: 集群的pod CIDR
+        :type PodCIDR: str
+        :param ServiceCIDR: 集群的service CIDR
+        :type ServiceCIDR: str
+        """
+        self.VpcId = None
+        self.PodCIDR = None
+        self.ServiceCIDR = None
+
+
+    def _deserialize(self, params):
+        self.VpcId = params.get("VpcId")
+        self.PodCIDR = params.get("PodCIDR")
+        self.ServiceCIDR = params.get("ServiceCIDR")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CheckEdgeClusterCIDRResponse(AbstractModel):
+    """CheckEdgeClusterCIDR返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConflictCode: 返回码，具体如下
+-1 内部错误
+0 没冲突
+1 vpc 和 serviceCIDR 冲突
+2 vpc 和 podCIDR 冲突
+3 serviceCIDR  和 podCIDR 冲突
+        :type ConflictCode: int
+        :param ConflictMsg: CIDR冲突描述信息。
+        :type ConflictMsg: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ConflictCode = None
+        self.ConflictMsg = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ConflictCode = params.get("ConflictCode")
+        self.ConflictMsg = params.get("ConflictMsg")
+        self.RequestId = params.get("RequestId")
 
 
 class CheckInstancesUpgradeAbleRequest(AbstractModel):
@@ -976,7 +1042,7 @@ class ClusterBasicSettings(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ClusterOs: 集群系统。centos7.2x86_64 或者 ubuntu16.04.1 LTSx86_64，默认取值为ubuntu16.04.1 LTSx86_64
+        :param ClusterOs: 集群操作系统，支持设置公共镜像(字段传相应镜像ID)和自定义镜像(字段传相应镜像Name)，详情参考：https://cloud.tencent.com/document/product/457/68289
         :type ClusterOs: str
         :param ClusterVersion: 集群版本,默认值为1.10.5
         :type ClusterVersion: str
@@ -1065,6 +1131,8 @@ class ClusterCIDRSettings(AbstractModel):
         :type EniSubnetIds: list of str
         :param ClaimExpiredSeconds: VPC-CNI网络模式下，弹性网卡IP的回收时间，取值范围[300,15768000)
         :type ClaimExpiredSeconds: int
+        :param IgnoreServiceCIDRConflict: 是否忽略 ServiceCIDR 冲突错误, 仅在 VPC-CNI 模式生效，默认不忽略
+        :type IgnoreServiceCIDRConflict: bool
         """
         self.ClusterCIDR = None
         self.IgnoreClusterCIDRConflict = None
@@ -1073,6 +1141,7 @@ class ClusterCIDRSettings(AbstractModel):
         self.ServiceCIDR = None
         self.EniSubnetIds = None
         self.ClaimExpiredSeconds = None
+        self.IgnoreServiceCIDRConflict = None
 
 
     def _deserialize(self, params):
@@ -1083,6 +1152,55 @@ class ClusterCIDRSettings(AbstractModel):
         self.ServiceCIDR = params.get("ServiceCIDR")
         self.EniSubnetIds = params.get("EniSubnetIds")
         self.ClaimExpiredSeconds = params.get("ClaimExpiredSeconds")
+        self.IgnoreServiceCIDRConflict = params.get("IgnoreServiceCIDRConflict")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ClusterCondition(AbstractModel):
+    """集群创建过程
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 集群创建过程类型
+        :type Type: str
+        :param Status: 集群创建过程状态
+        :type Status: str
+        :param LastProbeTime: 最后一次探测到该状态的时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastProbeTime: str
+        :param LastTransitionTime: 最后一次转换到该过程的时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastTransitionTime: str
+        :param Reason: 转换到该过程的简明原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Reason: str
+        :param Message: 转换到该过程的更多信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        """
+        self.Type = None
+        self.Status = None
+        self.LastProbeTime = None
+        self.LastTransitionTime = None
+        self.Reason = None
+        self.Message = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.Status = params.get("Status")
+        self.LastProbeTime = params.get("LastProbeTime")
+        self.LastTransitionTime = params.get("LastTransitionTime")
+        self.Reason = params.get("Reason")
+        self.Message = params.get("Message")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1327,6 +1445,9 @@ class ClusterNetworkSettings(AbstractModel):
         :param Subnets: 集群关联的容器子网
 注意：此字段可能返回 null，表示取不到有效值。
         :type Subnets: list of str
+        :param IgnoreServiceCIDRConflict: 是否忽略 ServiceCIDR 冲突错误, 仅在 VPC-CNI 模式生效，默认不忽略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IgnoreServiceCIDRConflict: bool
         """
         self.ClusterCIDR = None
         self.IgnoreClusterCIDRConflict = None
@@ -1338,6 +1459,7 @@ class ClusterNetworkSettings(AbstractModel):
         self.KubeProxyMode = None
         self.ServiceCIDR = None
         self.Subnets = None
+        self.IgnoreServiceCIDRConflict = None
 
 
     def _deserialize(self, params):
@@ -1351,6 +1473,7 @@ class ClusterNetworkSettings(AbstractModel):
         self.KubeProxyMode = params.get("KubeProxyMode")
         self.ServiceCIDR = params.get("ServiceCIDR")
         self.Subnets = params.get("Subnets")
+        self.IgnoreServiceCIDRConflict = params.get("IgnoreServiceCIDRConflict")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1712,78 +1835,6 @@ class ControllerStatus(AbstractModel):
         
 
 
-class CreateClusterAsGroupRequest(AbstractModel):
-    """CreateClusterAsGroup请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ClusterId: 集群ID
-        :type ClusterId: str
-        :param AutoScalingGroupPara: 伸缩组创建透传参数，json化字符串格式，详见[伸缩组创建实例](https://cloud.tencent.com/document/api/377/20440)接口。LaunchConfigurationId由LaunchConfigurePara参数创建，不支持填写
-        :type AutoScalingGroupPara: str
-        :param LaunchConfigurePara: 启动配置创建透传参数，json化字符串格式，详见[创建启动配置](https://cloud.tencent.com/document/api/377/20447)接口。另外ImageId参数由于集群维度已经有的ImageId信息，这个字段不需要填写。UserData字段设置通过UserScript设置，这个字段不需要填写。
-        :type LaunchConfigurePara: str
-        :param InstanceAdvancedSettings: 节点高级配置信息
-        :type InstanceAdvancedSettings: :class:`tencentcloud.tke.v20180525.models.InstanceAdvancedSettings`
-        :param Labels: 节点Label数组
-        :type Labels: list of Label
-        """
-        self.ClusterId = None
-        self.AutoScalingGroupPara = None
-        self.LaunchConfigurePara = None
-        self.InstanceAdvancedSettings = None
-        self.Labels = None
-
-
-    def _deserialize(self, params):
-        self.ClusterId = params.get("ClusterId")
-        self.AutoScalingGroupPara = params.get("AutoScalingGroupPara")
-        self.LaunchConfigurePara = params.get("LaunchConfigurePara")
-        if params.get("InstanceAdvancedSettings") is not None:
-            self.InstanceAdvancedSettings = InstanceAdvancedSettings()
-            self.InstanceAdvancedSettings._deserialize(params.get("InstanceAdvancedSettings"))
-        if params.get("Labels") is not None:
-            self.Labels = []
-            for item in params.get("Labels"):
-                obj = Label()
-                obj._deserialize(item)
-                self.Labels.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateClusterAsGroupResponse(AbstractModel):
-    """CreateClusterAsGroup返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LaunchConfigurationId: 启动配置ID
-        :type LaunchConfigurationId: str
-        :param AutoScalingGroupId: 伸缩组ID
-        :type AutoScalingGroupId: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.LaunchConfigurationId = None
-        self.AutoScalingGroupId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.LaunchConfigurationId = params.get("LaunchConfigurationId")
-        self.AutoScalingGroupId = params.get("AutoScalingGroupId")
-        self.RequestId = params.get("RequestId")
-
-
 class CreateClusterEndpointRequest(AbstractModel):
     """CreateClusterEndpoint请求参数结构体
 
@@ -1797,16 +1848,28 @@ class CreateClusterEndpointRequest(AbstractModel):
         :type SubnetId: str
         :param IsExtranet: 是否为外网访问（TRUE 外网访问 FALSE 内网访问，默认值： FALSE）
         :type IsExtranet: bool
+        :param Domain: 设置域名
+        :type Domain: str
+        :param SecurityGroup: 使用的安全组，只有外网访问需要传递
+        :type SecurityGroup: str
+        :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置
+        :type ExtensiveParameters: str
         """
         self.ClusterId = None
         self.SubnetId = None
         self.IsExtranet = None
+        self.Domain = None
+        self.SecurityGroup = None
+        self.ExtensiveParameters = None
 
 
     def _deserialize(self, params):
         self.ClusterId = params.get("ClusterId")
         self.SubnetId = params.get("SubnetId")
         self.IsExtranet = params.get("IsExtranet")
+        self.Domain = params.get("Domain")
+        self.SecurityGroup = params.get("SecurityGroup")
+        self.ExtensiveParameters = params.get("ExtensiveParameters")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2013,7 +2076,11 @@ class CreateClusterNodePoolRequest(AbstractModel):
         :type Labels: list of Label
         :param Taints: Taints互斥
         :type Taints: list of Taint
-        :param NodePoolOs: 节点池os
+        :param ContainerRuntime: 节点池纬度运行时类型及版本
+        :type ContainerRuntime: str
+        :param RuntimeVersion: 运行时版本
+        :type RuntimeVersion: str
+        :param NodePoolOs: 节点池os，当为自定义镜像时，传镜像id；否则为公共镜像的osName
         :type NodePoolOs: str
         :param OsCustomizeType: 容器的镜像版本，"DOCKER_CUSTOMIZE"(容器定制版),"GENERAL"(普通版本，默认值)
         :type OsCustomizeType: str
@@ -2028,6 +2095,8 @@ class CreateClusterNodePoolRequest(AbstractModel):
         self.Name = None
         self.Labels = None
         self.Taints = None
+        self.ContainerRuntime = None
+        self.RuntimeVersion = None
         self.NodePoolOs = None
         self.OsCustomizeType = None
         self.Tags = None
@@ -2054,6 +2123,8 @@ class CreateClusterNodePoolRequest(AbstractModel):
                 obj = Taint()
                 obj._deserialize(item)
                 self.Taints.append(obj)
+        self.ContainerRuntime = params.get("ContainerRuntime")
+        self.RuntimeVersion = params.get("RuntimeVersion")
         self.NodePoolOs = params.get("NodePoolOs")
         self.OsCustomizeType = params.get("OsCustomizeType")
         if params.get("Tags") is not None:
@@ -2299,6 +2370,102 @@ class CreateClusterRouteTableResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateECMInstancesRequest(AbstractModel):
+    """CreateECMInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群id
+        :type ClusterID: str
+        :param ModuleId: 模块id
+        :type ModuleId: str
+        :param ZoneInstanceCountISPSet: 需要创建实例的可用区及创建数目及运营商的列表
+        :type ZoneInstanceCountISPSet: list of ECMZoneInstanceCountISP
+        :param Password: 密码
+        :type Password: str
+        :param InternetMaxBandwidthOut: 公网带宽
+        :type InternetMaxBandwidthOut: int
+        :param ImageId: 镜像id
+        :type ImageId: str
+        :param InstanceName: 实例名称
+        :type InstanceName: str
+        :param HostName: 主机名称
+        :type HostName: str
+        :param EnhancedService: 增强服务，包括云镜和云监控
+        :type EnhancedService: :class:`tencentcloud.tke.v20180525.models.ECMEnhancedService`
+        :param UserData: 用户自定义脚本
+        :type UserData: str
+        :param External: 实例扩展信息
+        :type External: str
+        :param SecurityGroupIds: 实例所属安全组
+        :type SecurityGroupIds: list of str
+        """
+        self.ClusterID = None
+        self.ModuleId = None
+        self.ZoneInstanceCountISPSet = None
+        self.Password = None
+        self.InternetMaxBandwidthOut = None
+        self.ImageId = None
+        self.InstanceName = None
+        self.HostName = None
+        self.EnhancedService = None
+        self.UserData = None
+        self.External = None
+        self.SecurityGroupIds = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        self.ModuleId = params.get("ModuleId")
+        if params.get("ZoneInstanceCountISPSet") is not None:
+            self.ZoneInstanceCountISPSet = []
+            for item in params.get("ZoneInstanceCountISPSet"):
+                obj = ECMZoneInstanceCountISP()
+                obj._deserialize(item)
+                self.ZoneInstanceCountISPSet.append(obj)
+        self.Password = params.get("Password")
+        self.InternetMaxBandwidthOut = params.get("InternetMaxBandwidthOut")
+        self.ImageId = params.get("ImageId")
+        self.InstanceName = params.get("InstanceName")
+        self.HostName = params.get("HostName")
+        if params.get("EnhancedService") is not None:
+            self.EnhancedService = ECMEnhancedService()
+            self.EnhancedService._deserialize(params.get("EnhancedService"))
+        self.UserData = params.get("UserData")
+        self.External = params.get("External")
+        self.SecurityGroupIds = params.get("SecurityGroupIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateECMInstancesResponse(AbstractModel):
+    """CreateECMInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EcmIdSet: ecm id 列表
+        :type EcmIdSet: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.EcmIdSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.EcmIdSet = params.get("EcmIdSet")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateEKSClusterRequest(AbstractModel):
     """CreateEKSCluster请求参数结构体
 
@@ -2326,6 +2493,8 @@ class CreateEKSClusterRequest(AbstractModel):
         :type EnableVpcCoreDNS: bool
         :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到相应的资源实例，当前仅支持绑定标签到集群实例。
         :type TagSpecification: list of TagSpecification
+        :param SubnetInfos: 子网信息列表
+        :type SubnetInfos: list of SubnetInfos
         """
         self.K8SVersion = None
         self.VpcId = None
@@ -2337,6 +2506,7 @@ class CreateEKSClusterRequest(AbstractModel):
         self.ExtraParam = None
         self.EnableVpcCoreDNS = None
         self.TagSpecification = None
+        self.SubnetInfos = None
 
 
     def _deserialize(self, params):
@@ -2360,6 +2530,12 @@ class CreateEKSClusterRequest(AbstractModel):
                 obj = TagSpecification()
                 obj._deserialize(item)
                 self.TagSpecification.append(obj)
+        if params.get("SubnetInfos") is not None:
+            self.SubnetInfos = []
+            for item in params.get("SubnetInfos"):
+                obj = SubnetInfos()
+                obj._deserialize(item)
+                self.SubnetInfos.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2636,6 +2812,57 @@ class CreateImageCacheResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreatePrometheusAlertPolicyRequest(AbstractModel):
+    """CreatePrometheusAlertPolicy请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param AlertRule: 告警配置
+        :type AlertRule: :class:`tencentcloud.tke.v20180525.models.PrometheusAlertPolicyItem`
+        """
+        self.InstanceId = None
+        self.AlertRule = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        if params.get("AlertRule") is not None:
+            self.AlertRule = PrometheusAlertPolicyItem()
+            self.AlertRule._deserialize(params.get("AlertRule"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreatePrometheusAlertPolicyResponse(AbstractModel):
+    """CreatePrometheusAlertPolicy返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 告警id
+        :type Id: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Id = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.RequestId = params.get("RequestId")
+
+
 class CreatePrometheusAlertRuleRequest(AbstractModel):
     """CreatePrometheusAlertRule请求参数结构体
 
@@ -2737,6 +2964,105 @@ class CreatePrometheusDashboardResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreatePrometheusGlobalNotificationRequest(AbstractModel):
+    """CreatePrometheusGlobalNotification请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param Notification: 告警通知渠道
+        :type Notification: :class:`tencentcloud.tke.v20180525.models.PrometheusNotificationItem`
+        """
+        self.InstanceId = None
+        self.Notification = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        if params.get("Notification") is not None:
+            self.Notification = PrometheusNotificationItem()
+            self.Notification._deserialize(params.get("Notification"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreatePrometheusGlobalNotificationResponse(AbstractModel):
+    """CreatePrometheusGlobalNotification返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 全局告警通知渠道ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Id = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.RequestId = params.get("RequestId")
+
+
+class CreatePrometheusTempRequest(AbstractModel):
+    """CreatePrometheusTemp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Template: 模板设置
+        :type Template: :class:`tencentcloud.tke.v20180525.models.PrometheusTemp`
+        """
+        self.Template = None
+
+
+    def _deserialize(self, params):
+        if params.get("Template") is not None:
+            self.Template = PrometheusTemp()
+            self.Template._deserialize(params.get("Template"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreatePrometheusTempResponse(AbstractModel):
+    """CreatePrometheusTemp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板Id
+        :type TemplateId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TemplateId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreatePrometheusTemplateRequest(AbstractModel):
     """CreatePrometheusTemplate请求参数结构体
 
@@ -2781,6 +3107,87 @@ class CreatePrometheusTemplateResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.TemplateId = params.get("TemplateId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateTKEEdgeClusterRequest(AbstractModel):
+    """CreateTKEEdgeCluster请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param K8SVersion: k8s版本号
+        :type K8SVersion: str
+        :param VpcId: vpc 的Id
+        :type VpcId: str
+        :param ClusterName: 集群名称
+        :type ClusterName: str
+        :param PodCIDR: 集群pod cidr
+        :type PodCIDR: str
+        :param ServiceCIDR: 集群service cidr
+        :type ServiceCIDR: str
+        :param ClusterDesc: 集群描述信息
+        :type ClusterDesc: str
+        :param ClusterAdvancedSettings: 集群高级设置
+        :type ClusterAdvancedSettings: :class:`tencentcloud.tke.v20180525.models.EdgeClusterAdvancedSettings`
+        :param MaxNodePodNum: 节点上最大Pod数量
+        :type MaxNodePodNum: int
+        :param PublicLB: 边缘计算集群公网访问LB信息
+        :type PublicLB: :class:`tencentcloud.tke.v20180525.models.EdgeClusterPublicLB`
+        """
+        self.K8SVersion = None
+        self.VpcId = None
+        self.ClusterName = None
+        self.PodCIDR = None
+        self.ServiceCIDR = None
+        self.ClusterDesc = None
+        self.ClusterAdvancedSettings = None
+        self.MaxNodePodNum = None
+        self.PublicLB = None
+
+
+    def _deserialize(self, params):
+        self.K8SVersion = params.get("K8SVersion")
+        self.VpcId = params.get("VpcId")
+        self.ClusterName = params.get("ClusterName")
+        self.PodCIDR = params.get("PodCIDR")
+        self.ServiceCIDR = params.get("ServiceCIDR")
+        self.ClusterDesc = params.get("ClusterDesc")
+        if params.get("ClusterAdvancedSettings") is not None:
+            self.ClusterAdvancedSettings = EdgeClusterAdvancedSettings()
+            self.ClusterAdvancedSettings._deserialize(params.get("ClusterAdvancedSettings"))
+        self.MaxNodePodNum = params.get("MaxNodePodNum")
+        if params.get("PublicLB") is not None:
+            self.PublicLB = EdgeClusterPublicLB()
+            self.PublicLB._deserialize(params.get("PublicLB"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateTKEEdgeClusterResponse(AbstractModel):
+    """CreateTKEEdgeCluster返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 边缘计算集群Id
+        :type ClusterId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ClusterId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
         self.RequestId = params.get("RequestId")
 
 
@@ -3300,6 +3707,51 @@ class DeleteClusterRouteTableResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteECMInstancesRequest(AbstractModel):
+    """DeleteECMInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群ID
+        :type ClusterID: str
+        :param EcmIdSet: ecm id集合
+        :type EcmIdSet: list of str
+        """
+        self.ClusterID = None
+        self.EcmIdSet = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        self.EcmIdSet = params.get("EcmIdSet")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteECMInstancesResponse(AbstractModel):
+    """DeleteECMInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteEKSClusterRequest(AbstractModel):
     """DeleteEKSCluster请求参数结构体
 
@@ -3386,6 +3838,96 @@ class DeleteEKSContainerInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteEdgeCVMInstancesRequest(AbstractModel):
+    """DeleteEdgeCVMInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群ID
+        :type ClusterID: str
+        :param CvmIdSet: cvm id集合
+        :type CvmIdSet: list of str
+        """
+        self.ClusterID = None
+        self.CvmIdSet = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        self.CvmIdSet = params.get("CvmIdSet")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteEdgeCVMInstancesResponse(AbstractModel):
+    """DeleteEdgeCVMInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteEdgeClusterInstancesRequest(AbstractModel):
+    """DeleteEdgeClusterInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param InstanceIds: 待删除实例ID数组
+        :type InstanceIds: list of str
+        """
+        self.ClusterId = None
+        self.InstanceIds = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.InstanceIds = params.get("InstanceIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteEdgeClusterInstancesResponse(AbstractModel):
+    """DeleteEdgeClusterInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteImageCachesRequest(AbstractModel):
     """DeleteImageCaches请求参数结构体
 
@@ -3412,6 +3954,55 @@ class DeleteImageCachesRequest(AbstractModel):
 
 class DeleteImageCachesResponse(AbstractModel):
     """DeleteImageCaches返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeletePrometheusAlertPolicyRequest(AbstractModel):
+    """DeletePrometheusAlertPolicy请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param AlertIds: 告警策略id列表
+        :type AlertIds: list of str
+        :param Names: 告警策略名称
+        :type Names: list of str
+        """
+        self.InstanceId = None
+        self.AlertIds = None
+        self.Names = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.AlertIds = params.get("AlertIds")
+        self.Names = params.get("Names")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeletePrometheusAlertPolicyResponse(AbstractModel):
+    """DeletePrometheusAlertPolicy返回参数结构体
 
     """
 
@@ -3457,6 +4048,97 @@ class DeletePrometheusAlertRuleRequest(AbstractModel):
 
 class DeletePrometheusAlertRuleResponse(AbstractModel):
     """DeletePrometheusAlertRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeletePrometheusTempRequest(AbstractModel):
+    """DeletePrometheusTemp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板id
+        :type TemplateId: str
+        """
+        self.TemplateId = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeletePrometheusTempResponse(AbstractModel):
+    """DeletePrometheusTemp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeletePrometheusTempSyncRequest(AbstractModel):
+    """DeletePrometheusTempSync请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板id
+        :type TemplateId: str
+        :param Targets: 取消同步的对象列表
+        :type Targets: list of PrometheusTemplateSyncTarget
+        """
+        self.TemplateId = None
+        self.Targets = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        if params.get("Targets") is not None:
+            self.Targets = []
+            for item in params.get("Targets"):
+                obj = PrometheusTemplateSyncTarget()
+                obj._deserialize(item)
+                self.Targets.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeletePrometheusTempSyncResponse(AbstractModel):
+    """DeletePrometheusTempSync返回参数结构体
 
     """
 
@@ -3563,6 +4245,47 @@ class DeletePrometheusTemplateSyncResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteTKEEdgeClusterRequest(AbstractModel):
+    """DeleteTKEEdgeCluster请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteTKEEdgeClusterResponse(AbstractModel):
+    """DeleteTKEEdgeCluster返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeAvailableClusterVersionRequest(AbstractModel):
     """DescribeAvailableClusterVersion请求参数结构体
 
@@ -3620,6 +4343,33 @@ class DescribeAvailableClusterVersionResponse(AbstractModel):
                 obj = ClusterVersion()
                 obj._deserialize(item)
                 self.Clusters.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAvailableTKEEdgeVersionRequest(AbstractModel):
+    """DescribeAvailableTKEEdgeVersion请求参数结构体
+
+    """
+
+
+class DescribeAvailableTKEEdgeVersionResponse(AbstractModel):
+    """DescribeAvailableTKEEdgeVersion返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Versions: 版本列表
+        :type Versions: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Versions = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Versions = params.get("Versions")
         self.RequestId = params.get("RequestId")
 
 
@@ -4735,6 +5485,65 @@ class DescribeClustersResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeECMInstancesRequest(AbstractModel):
+    """DescribeECMInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群id
+        :type ClusterID: str
+        :param Filters: 过滤条件
+仅支持ecm-id过滤
+        :type Filters: list of Filter
+        """
+        self.ClusterID = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeECMInstancesResponse(AbstractModel):
+    """DescribeECMInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 返回的实例相关信息列表的长度
+        :type TotalCount: int
+        :param InstanceInfoSet: 返回的实例相关信息列表
+        :type InstanceInfoSet: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.InstanceInfoSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        self.InstanceInfoSet = params.get("InstanceInfoSet")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeEKSClusterCredentialRequest(AbstractModel):
     """DescribeEKSClusterCredential请求参数结构体
 
@@ -4768,7 +5577,7 @@ class DescribeEKSClusterCredentialResponse(AbstractModel):
         r"""
         :param Addresses: 集群的接入地址信息
         :type Addresses: list of IPAddress
-        :param Credential: 集群的认证信息
+        :param Credential: 集群的认证信息（token只有请求是主账号才返回，子账户请使用返回的kubeconfig）
         :type Credential: :class:`tencentcloud.tke.v20180525.models.ClusterCredential`
         :param PublicLB: 集群的公网访问信息
         :type PublicLB: :class:`tencentcloud.tke.v20180525.models.ClusterPublicLB`
@@ -5066,6 +5875,232 @@ class DescribeEKSContainerInstancesResponse(AbstractModel):
                 obj = EksCi()
                 obj._deserialize(item)
                 self.EksCis.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeEdgeAvailableExtraArgsRequest(AbstractModel):
+    """DescribeEdgeAvailableExtraArgs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterVersion: 集群版本
+        :type ClusterVersion: str
+        """
+        self.ClusterVersion = None
+
+
+    def _deserialize(self, params):
+        self.ClusterVersion = params.get("ClusterVersion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeEdgeAvailableExtraArgsResponse(AbstractModel):
+    """DescribeEdgeAvailableExtraArgs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterVersion: 集群版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterVersion: str
+        :param AvailableExtraArgs: 可用的自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AvailableExtraArgs: :class:`tencentcloud.tke.v20180525.models.EdgeAvailableExtraArgs`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ClusterVersion = None
+        self.AvailableExtraArgs = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterVersion = params.get("ClusterVersion")
+        if params.get("AvailableExtraArgs") is not None:
+            self.AvailableExtraArgs = EdgeAvailableExtraArgs()
+            self.AvailableExtraArgs._deserialize(params.get("AvailableExtraArgs"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeEdgeCVMInstancesRequest(AbstractModel):
+    """DescribeEdgeCVMInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群id
+        :type ClusterID: str
+        :param Filters: 过滤条件
+仅支持cvm-id过滤
+        :type Filters: list of Filter
+        """
+        self.ClusterID = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeEdgeCVMInstancesResponse(AbstractModel):
+    """DescribeEdgeCVMInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 返回的实例相关信息列表的长度
+        :type TotalCount: int
+        :param InstanceInfoSet: 返回的实例相关信息列表
+        :type InstanceInfoSet: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.InstanceInfoSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        self.InstanceInfoSet = params.get("InstanceInfoSet")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeEdgeClusterExtraArgsRequest(AbstractModel):
+    """DescribeEdgeClusterExtraArgs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeEdgeClusterExtraArgsResponse(AbstractModel):
+    """DescribeEdgeClusterExtraArgs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterExtraArgs: 集群自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterExtraArgs: :class:`tencentcloud.tke.v20180525.models.EdgeClusterExtraArgs`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ClusterExtraArgs = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("ClusterExtraArgs") is not None:
+            self.ClusterExtraArgs = EdgeClusterExtraArgs()
+            self.ClusterExtraArgs._deserialize(params.get("ClusterExtraArgs"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeEdgeClusterInstancesRequest(AbstractModel):
+    """DescribeEdgeClusterInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群id
+        :type ClusterID: str
+        :param Limit: 查询总数
+        :type Limit: int
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Filters: 过滤条件，仅支持NodeName过滤
+        :type Filters: list of Filter
+        """
+        self.ClusterID = None
+        self.Limit = None
+        self.Offset = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeEdgeClusterInstancesResponse(AbstractModel):
+    """DescribeEdgeClusterInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 该集群总数
+        :type TotalCount: int
+        :param InstanceInfoSet: 节点信息集合
+        :type InstanceInfoSet: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.InstanceInfoSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        self.InstanceInfoSet = params.get("InstanceInfoSet")
         self.RequestId = params.get("RequestId")
 
 
@@ -5640,6 +6675,79 @@ class DescribePrometheusAlertHistoryResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribePrometheusAlertPolicyRequest(AbstractModel):
+    """DescribePrometheusAlertPolicy请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param Offset: 分页
+        :type Offset: int
+        :param Limit: 分页
+        :type Limit: int
+        :param Filters: 过滤
+支持ID，Name
+        :type Filters: list of Filter
+        """
+        self.InstanceId = None
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusAlertPolicyResponse(AbstractModel):
+    """DescribePrometheusAlertPolicy返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AlertRules: 告警详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlertRules: list of PrometheusAlertPolicyItem
+        :param Total: 总数
+        :type Total: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.AlertRules = None
+        self.Total = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("AlertRules") is not None:
+            self.AlertRules = []
+            for item in params.get("AlertRules"):
+                obj = PrometheusAlertPolicyItem()
+                obj._deserialize(item)
+                self.AlertRules.append(obj)
+        self.Total = params.get("Total")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribePrometheusAlertRuleRequest(AbstractModel):
     """DescribePrometheusAlertRule请求参数结构体
 
@@ -5709,6 +6817,116 @@ class DescribePrometheusAlertRuleResponse(AbstractModel):
                 obj._deserialize(item)
                 self.AlertRules.append(obj)
         self.Total = params.get("Total")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribePrometheusClusterAgentsRequest(AbstractModel):
+    """DescribePrometheusClusterAgents请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param Offset: 用于分页
+        :type Offset: int
+        :param Limit: 用于分页
+        :type Limit: int
+        """
+        self.InstanceId = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusClusterAgentsResponse(AbstractModel):
+    """DescribePrometheusClusterAgents返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Agents: 被关联集群信息
+        :type Agents: list of PrometheusAgentOverview
+        :param Total: 被关联集群总量
+        :type Total: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Agents = None
+        self.Total = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Agents") is not None:
+            self.Agents = []
+            for item in params.get("Agents"):
+                obj = PrometheusAgentOverview()
+                obj._deserialize(item)
+                self.Agents.append(obj)
+        self.Total = params.get("Total")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribePrometheusGlobalNotificationRequest(AbstractModel):
+    """DescribePrometheusGlobalNotification请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusGlobalNotificationResponse(AbstractModel):
+    """DescribePrometheusGlobalNotification返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Notification: 全局告警通知渠道
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Notification: :class:`tencentcloud.tke.v20180525.models.PrometheusNotificationItem`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Notification = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Notification") is not None:
+            self.Notification = PrometheusNotificationItem()
+            self.Notification._deserialize(params.get("Notification"))
         self.RequestId = params.get("RequestId")
 
 
@@ -5789,6 +7007,76 @@ class DescribePrometheusInstanceResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribePrometheusInstancesOverviewRequest(AbstractModel):
+    """DescribePrometheusInstancesOverview请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Offset: 用于分页
+        :type Offset: int
+        :param Limit: 用于分页
+        :type Limit: int
+        :param Filters: 过滤实例，目前支持：
+ID: 通过实例ID来过滤 
+Name: 通过实例名称来过滤
+        :type Filters: list of Filter
+        """
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusInstancesOverviewResponse(AbstractModel):
+    """DescribePrometheusInstancesOverview返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Instances: 实例列表
+        :type Instances: list of PrometheusInstancesOverview
+        :param Total: 实例总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Instances = None
+        self.Total = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Instances") is not None:
+            self.Instances = []
+            for item in params.get("Instances"):
+                obj = PrometheusInstancesOverview()
+                obj._deserialize(item)
+                self.Instances.append(obj)
+        self.Total = params.get("Total")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribePrometheusOverviewsRequest(AbstractModel):
     """DescribePrometheusOverviews请求参数结构体
 
@@ -5859,6 +7147,77 @@ class DescribePrometheusOverviewsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribePrometheusRecordRulesRequest(AbstractModel):
+    """DescribePrometheusRecordRules请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param Offset: 分页
+        :type Offset: int
+        :param Limit: 分页
+        :type Limit: int
+        :param Filters: 过滤
+        :type Filters: list of Filter
+        """
+        self.InstanceId = None
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusRecordRulesResponse(AbstractModel):
+    """DescribePrometheusRecordRules返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Records: 聚合规则
+        :type Records: list of PrometheusRecordRuleYamlItem
+        :param Total: 总数
+        :type Total: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Records = None
+        self.Total = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Records") is not None:
+            self.Records = []
+            for item in params.get("Records"):
+                obj = PrometheusRecordRuleYamlItem()
+                obj._deserialize(item)
+                self.Records.append(obj)
+        self.Total = params.get("Total")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribePrometheusTargetsRequest(AbstractModel):
     """DescribePrometheusTargets请求参数结构体
 
@@ -5925,6 +7284,128 @@ class DescribePrometheusTargetsResponse(AbstractModel):
                 obj = PrometheusJobTargets()
                 obj._deserialize(item)
                 self.Jobs.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribePrometheusTempRequest(AbstractModel):
+    """DescribePrometheusTemp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 模糊过滤条件，支持
+Level 按模板级别过滤
+Name 按名称过滤
+Describe 按描述过滤
+ID 按templateId过滤
+        :type Filters: list of Filter
+        :param Offset: 分页偏移
+        :type Offset: int
+        :param Limit: 总数限制
+        :type Limit: int
+        """
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusTempResponse(AbstractModel):
+    """DescribePrometheusTemp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Templates: 模板列表
+        :type Templates: list of PrometheusTemp
+        :param Total: 总数
+        :type Total: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Templates = None
+        self.Total = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Templates") is not None:
+            self.Templates = []
+            for item in params.get("Templates"):
+                obj = PrometheusTemp()
+                obj._deserialize(item)
+                self.Templates.append(obj)
+        self.Total = params.get("Total")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribePrometheusTempSyncRequest(AbstractModel):
+    """DescribePrometheusTempSync请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板ID
+        :type TemplateId: str
+        """
+        self.TemplateId = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePrometheusTempSyncResponse(AbstractModel):
+    """DescribePrometheusTempSync返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Targets: 同步目标详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Targets: list of PrometheusTemplateSyncTarget
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Targets = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Targets") is not None:
+            self.Targets = []
+            for item in params.get("Targets"):
+                obj = PrometheusTemplateSyncTarget()
+                obj._deserialize(item)
+                self.Targets.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -6207,6 +7688,262 @@ class DescribeRouteTableConflictsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTKEEdgeClusterCredentialRequest(AbstractModel):
+    """DescribeTKEEdgeClusterCredential请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群Id
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTKEEdgeClusterCredentialResponse(AbstractModel):
+    """DescribeTKEEdgeClusterCredential返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Addresses: 集群的接入地址信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Addresses: list of IPAddress
+        :param Credential: 集群的认证信息
+        :type Credential: :class:`tencentcloud.tke.v20180525.models.ClusterCredential`
+        :param PublicLB: 集群的公网访问信息
+        :type PublicLB: :class:`tencentcloud.tke.v20180525.models.EdgeClusterPublicLB`
+        :param InternalLB: 集群的内网访问信息
+        :type InternalLB: :class:`tencentcloud.tke.v20180525.models.EdgeClusterInternalLB`
+        :param CoreDns: 集群的CoreDns部署信息
+        :type CoreDns: str
+        :param HealthRegion: 集群的健康检查多地域部署信息
+        :type HealthRegion: str
+        :param Health: 集群的健康检查部署信息
+        :type Health: str
+        :param GridDaemon: 是否部署GridDaemon以支持headless service
+        :type GridDaemon: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Addresses = None
+        self.Credential = None
+        self.PublicLB = None
+        self.InternalLB = None
+        self.CoreDns = None
+        self.HealthRegion = None
+        self.Health = None
+        self.GridDaemon = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Addresses") is not None:
+            self.Addresses = []
+            for item in params.get("Addresses"):
+                obj = IPAddress()
+                obj._deserialize(item)
+                self.Addresses.append(obj)
+        if params.get("Credential") is not None:
+            self.Credential = ClusterCredential()
+            self.Credential._deserialize(params.get("Credential"))
+        if params.get("PublicLB") is not None:
+            self.PublicLB = EdgeClusterPublicLB()
+            self.PublicLB._deserialize(params.get("PublicLB"))
+        if params.get("InternalLB") is not None:
+            self.InternalLB = EdgeClusterInternalLB()
+            self.InternalLB._deserialize(params.get("InternalLB"))
+        self.CoreDns = params.get("CoreDns")
+        self.HealthRegion = params.get("HealthRegion")
+        self.Health = params.get("Health")
+        self.GridDaemon = params.get("GridDaemon")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTKEEdgeClusterStatusRequest(AbstractModel):
+    """DescribeTKEEdgeClusterStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 边缘计算容器集群Id
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTKEEdgeClusterStatusResponse(AbstractModel):
+    """DescribeTKEEdgeClusterStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Phase: 集群当前状态
+        :type Phase: str
+        :param Conditions: 集群过程数组
+        :type Conditions: list of ClusterCondition
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Phase = None
+        self.Conditions = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Phase = params.get("Phase")
+        if params.get("Conditions") is not None:
+            self.Conditions = []
+            for item in params.get("Conditions"):
+                obj = ClusterCondition()
+                obj._deserialize(item)
+                self.Conditions.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTKEEdgeClustersRequest(AbstractModel):
+    """DescribeTKEEdgeClusters请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterIds: 集群ID列表(为空时，
+表示获取账号下所有集群)
+        :type ClusterIds: list of str
+        :param Offset: 偏移量,默认0
+        :type Offset: int
+        :param Limit: 最大输出条数，默认20
+        :type Limit: int
+        :param Filters: 过滤条件,当前只支持按照单个条件ClusterName进行过滤
+        :type Filters: list of Filter
+        """
+        self.ClusterIds = None
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.ClusterIds = params.get("ClusterIds")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTKEEdgeClustersResponse(AbstractModel):
+    """DescribeTKEEdgeClusters返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 集群总个数
+        :type TotalCount: int
+        :param Clusters: 集群信息列表
+        :type Clusters: list of EdgeCluster
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Clusters = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Clusters") is not None:
+            self.Clusters = []
+            for item in params.get("Clusters"):
+                obj = EdgeCluster()
+                obj._deserialize(item)
+                self.Clusters.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTKEEdgeExternalKubeconfigRequest(AbstractModel):
+    """DescribeTKEEdgeExternalKubeconfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群id
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTKEEdgeExternalKubeconfigResponse(AbstractModel):
+    """DescribeTKEEdgeExternalKubeconfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Kubeconfig: kubeconfig文件内容
+        :type Kubeconfig: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Kubeconfig = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Kubeconfig = params.get("Kubeconfig")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeTKEEdgeScriptRequest(AbstractModel):
     """DescribeTKEEdgeScript请求参数结构体
 
@@ -6362,6 +8099,47 @@ class DescribeVpcCniPodLimitsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DisableClusterAuditRequest(AbstractModel):
+    """DisableClusterAudit请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DisableClusterAuditResponse(AbstractModel):
+    """DisableClusterAudit返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DisableClusterDeletionProtectionRequest(AbstractModel):
     """DisableClusterDeletionProtection请求参数结构体
 
@@ -6388,6 +8166,47 @@ class DisableClusterDeletionProtectionRequest(AbstractModel):
 
 class DisableClusterDeletionProtectionResponse(AbstractModel):
     """DisableClusterDeletionProtection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DisableEventPersistenceRequest(AbstractModel):
+    """DisableEventPersistence请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DisableEventPersistenceResponse(AbstractModel):
+    """DisableEventPersistence返回参数结构体
 
     """
 
@@ -6463,6 +8282,414 @@ class DnsServerConf(AbstractModel):
     def _deserialize(self, params):
         self.Domain = params.get("Domain")
         self.DnsServers = params.get("DnsServers")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ECMEnhancedService(AbstractModel):
+    """ECM增强服务
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SecurityService: 是否开启云监控服务
+        :type SecurityService: :class:`tencentcloud.tke.v20180525.models.ECMRunMonitorServiceEnabled`
+        :param MonitorService: 是否开启云镜服务
+        :type MonitorService: :class:`tencentcloud.tke.v20180525.models.ECMRunSecurityServiceEnabled`
+        """
+        self.SecurityService = None
+        self.MonitorService = None
+
+
+    def _deserialize(self, params):
+        if params.get("SecurityService") is not None:
+            self.SecurityService = ECMRunMonitorServiceEnabled()
+            self.SecurityService._deserialize(params.get("SecurityService"))
+        if params.get("MonitorService") is not None:
+            self.MonitorService = ECMRunSecurityServiceEnabled()
+            self.MonitorService._deserialize(params.get("MonitorService"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ECMRunMonitorServiceEnabled(AbstractModel):
+    """ECM云监控服务
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Enabled: 是否开启
+        :type Enabled: bool
+        """
+        self.Enabled = None
+
+
+    def _deserialize(self, params):
+        self.Enabled = params.get("Enabled")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ECMRunSecurityServiceEnabled(AbstractModel):
+    """ECM云镜服务
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Enabled: 是否开启
+        :type Enabled: bool
+        :param Version: 云镜版本：0 基础版，1 专业版
+        :type Version: int
+        """
+        self.Enabled = None
+        self.Version = None
+
+
+    def _deserialize(self, params):
+        self.Enabled = params.get("Enabled")
+        self.Version = params.get("Version")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ECMZoneInstanceCountISP(AbstractModel):
+    """ECM实例可用区及对应的实例创建数目及运营商的组合
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Zone: 创建实例的可用区
+        :type Zone: str
+        :param InstanceCount: 在当前可用区欲创建的实例数目
+        :type InstanceCount: int
+        :param ISP: 运营商
+        :type ISP: str
+        """
+        self.Zone = None
+        self.InstanceCount = None
+        self.ISP = None
+
+
+    def _deserialize(self, params):
+        self.Zone = params.get("Zone")
+        self.InstanceCount = params.get("InstanceCount")
+        self.ISP = params.get("ISP")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgeArgsFlag(AbstractModel):
+    """边缘容器参数描述
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 参数名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param Type: 参数类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param Usage: 参数描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Usage: str
+        :param Default: 参数默认值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Default: str
+        :param Constraint: 参数可选范围（目前包含range和in两种，"[]"代表range，如"[1, 5]"表示参数必须>=1且 <=5, "()"代表in， 如"('aa', 'bb')"表示参数只能为字符串'aa'或者'bb'，该参数为空表示不校验）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Constraint: str
+        """
+        self.Name = None
+        self.Type = None
+        self.Usage = None
+        self.Default = None
+        self.Constraint = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Type = params.get("Type")
+        self.Usage = params.get("Usage")
+        self.Default = params.get("Default")
+        self.Constraint = params.get("Constraint")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgeAvailableExtraArgs(AbstractModel):
+    """边缘容器集群可用的自定义参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param KubeAPIServer: kube-apiserver可用的自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeAPIServer: list of EdgeArgsFlag
+        :param KubeControllerManager: kube-controller-manager可用的自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeControllerManager: list of EdgeArgsFlag
+        :param KubeScheduler: kube-scheduler可用的自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeScheduler: list of EdgeArgsFlag
+        :param Kubelet: kubelet可用的自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Kubelet: list of EdgeArgsFlag
+        """
+        self.KubeAPIServer = None
+        self.KubeControllerManager = None
+        self.KubeScheduler = None
+        self.Kubelet = None
+
+
+    def _deserialize(self, params):
+        if params.get("KubeAPIServer") is not None:
+            self.KubeAPIServer = []
+            for item in params.get("KubeAPIServer"):
+                obj = EdgeArgsFlag()
+                obj._deserialize(item)
+                self.KubeAPIServer.append(obj)
+        if params.get("KubeControllerManager") is not None:
+            self.KubeControllerManager = []
+            for item in params.get("KubeControllerManager"):
+                obj = EdgeArgsFlag()
+                obj._deserialize(item)
+                self.KubeControllerManager.append(obj)
+        if params.get("KubeScheduler") is not None:
+            self.KubeScheduler = []
+            for item in params.get("KubeScheduler"):
+                obj = EdgeArgsFlag()
+                obj._deserialize(item)
+                self.KubeScheduler.append(obj)
+        if params.get("Kubelet") is not None:
+            self.Kubelet = []
+            for item in params.get("Kubelet"):
+                obj = EdgeArgsFlag()
+                obj._deserialize(item)
+                self.Kubelet.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgeCluster(AbstractModel):
+    """边缘计算集群信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群Id
+        :type ClusterId: str
+        :param ClusterName: 集群名称
+        :type ClusterName: str
+        :param VpcId: Vpc Id
+        :type VpcId: str
+        :param PodCIDR: 集群pod cidr
+        :type PodCIDR: str
+        :param ServiceCIDR: 集群 service cidr
+        :type ServiceCIDR: str
+        :param K8SVersion: k8s 版本号
+        :type K8SVersion: str
+        :param Status: 集群状态
+        :type Status: str
+        :param ClusterDesc: 集群描述信息
+        :type ClusterDesc: str
+        :param CreatedTime: 集群创建时间
+        :type CreatedTime: str
+        :param EdgeClusterVersion: 边缘集群版本
+        :type EdgeClusterVersion: str
+        :param MaxNodePodNum: 节点最大Pod数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaxNodePodNum: int
+        """
+        self.ClusterId = None
+        self.ClusterName = None
+        self.VpcId = None
+        self.PodCIDR = None
+        self.ServiceCIDR = None
+        self.K8SVersion = None
+        self.Status = None
+        self.ClusterDesc = None
+        self.CreatedTime = None
+        self.EdgeClusterVersion = None
+        self.MaxNodePodNum = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.ClusterName = params.get("ClusterName")
+        self.VpcId = params.get("VpcId")
+        self.PodCIDR = params.get("PodCIDR")
+        self.ServiceCIDR = params.get("ServiceCIDR")
+        self.K8SVersion = params.get("K8SVersion")
+        self.Status = params.get("Status")
+        self.ClusterDesc = params.get("ClusterDesc")
+        self.CreatedTime = params.get("CreatedTime")
+        self.EdgeClusterVersion = params.get("EdgeClusterVersion")
+        self.MaxNodePodNum = params.get("MaxNodePodNum")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgeClusterAdvancedSettings(AbstractModel):
+    """边缘容器集群高级配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ExtraArgs: 集群自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExtraArgs: :class:`tencentcloud.tke.v20180525.models.EdgeClusterExtraArgs`
+        """
+        self.ExtraArgs = None
+
+
+    def _deserialize(self, params):
+        if params.get("ExtraArgs") is not None:
+            self.ExtraArgs = EdgeClusterExtraArgs()
+            self.ExtraArgs._deserialize(params.get("ExtraArgs"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgeClusterExtraArgs(AbstractModel):
+    """边缘容器集群master自定义参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param KubeAPIServer: kube-apiserver自定义参数，参数格式为["k1=v1", "k1=v2"]， 例如["max-requests-inflight=500","feature-gates=PodShareProcessNamespace=true,DynamicKubeletConfig=true"]
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeAPIServer: list of str
+        :param KubeControllerManager: kube-controller-manager自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeControllerManager: list of str
+        :param KubeScheduler: kube-scheduler自定义参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KubeScheduler: list of str
+        """
+        self.KubeAPIServer = None
+        self.KubeControllerManager = None
+        self.KubeScheduler = None
+
+
+    def _deserialize(self, params):
+        self.KubeAPIServer = params.get("KubeAPIServer")
+        self.KubeControllerManager = params.get("KubeControllerManager")
+        self.KubeScheduler = params.get("KubeScheduler")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgeClusterInternalLB(AbstractModel):
+    """边缘计算集群内网访问LB信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Enabled: 是否开启内网访问LB
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Enabled: bool
+        :param SubnetId: 内网访问LB关联的子网Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: list of str
+        """
+        self.Enabled = None
+        self.SubnetId = None
+
+
+    def _deserialize(self, params):
+        self.Enabled = params.get("Enabled")
+        self.SubnetId = params.get("SubnetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgeClusterPublicLB(AbstractModel):
+    """边缘计算集群公网访问负载均衡信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Enabled: 是否开启公网访问LB
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Enabled: bool
+        :param AllowFromCidrs: 允许访问的公网cidr
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AllowFromCidrs: list of str
+        """
+        self.Enabled = None
+        self.AllowFromCidrs = None
+
+
+    def _deserialize(self, params):
+        self.Enabled = params.get("Enabled")
+        self.AllowFromCidrs = params.get("AllowFromCidrs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6815,6 +9042,55 @@ class EksCluster(AbstractModel):
         
 
 
+class EnableClusterAuditRequest(AbstractModel):
+    """EnableClusterAudit请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param LogsetId: CLS日志集ID
+        :type LogsetId: str
+        :param TopicId: CLS日志主题ID
+        :type TopicId: str
+        """
+        self.ClusterId = None
+        self.LogsetId = None
+        self.TopicId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.LogsetId = params.get("LogsetId")
+        self.TopicId = params.get("TopicId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EnableClusterAuditResponse(AbstractModel):
+    """EnableClusterAudit返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class EnableClusterDeletionProtectionRequest(AbstractModel):
     """EnableClusterDeletionProtection请求参数结构体
 
@@ -6841,6 +9117,55 @@ class EnableClusterDeletionProtectionRequest(AbstractModel):
 
 class EnableClusterDeletionProtectionResponse(AbstractModel):
     """EnableClusterDeletionProtection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class EnableEventPersistenceRequest(AbstractModel):
+    """EnableEventPersistence请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param LogsetId: cls服务的logsetID
+        :type LogsetId: str
+        :param TopicId: cls服务的topicID
+        :type TopicId: str
+        """
+        self.ClusterId = None
+        self.LogsetId = None
+        self.TopicId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.LogsetId = params.get("LogsetId")
+        self.TopicId = params.get("TopicId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EnableEventPersistenceResponse(AbstractModel):
+    """EnableEventPersistence返回参数结构体
 
     """
 
@@ -7261,26 +9586,15 @@ class ExtensionAddon(AbstractModel):
 
 
 class Filter(AbstractModel):
-    """>描述键值对过滤器，用于条件过滤查询。例如过滤ID、名称、状态等
-    > * 若存在多个`Filter`时，`Filter`间的关系为逻辑与（`AND`）关系。
-    > * 若同一个`Filter`存在多个`Values`，同一`Filter`下`Values`间的关系为逻辑或（`OR`）关系。
-    >
-    > 以[DescribeInstances](https://cloud.tencent.com/document/api/213/15728)接口的`Filter`为例。若我们需要查询可用区（`zone`）为广州一区 ***并且*** 实例计费模式（`instance-charge-type`）为包年包月 ***或者*** 按量计费的实例时，可如下实现：
-    ```
-    Filters.0.Name=zone
-    &Filters.0.Values.0=ap-guangzhou-1
-    &Filters.1.Name=instance-charge-type
-    &Filters.1.Values.0=PREPAID
-    &Filters.1.Values.1=POSTPAID_BY_HOUR
-    ```
+    """过滤器
 
     """
 
     def __init__(self):
         r"""
-        :param Name: 需要过滤的字段。
+        :param Name: 属性名称, 若存在多个Filter时，Filter间的关系为逻辑与（AND）关系。
         :type Name: str
-        :param Values: 字段的过滤值。
+        :param Values: 属性值, 若同一个Filter存在多个Values，同一Filter下Values间的关系为逻辑或（OR）关系。
         :type Values: list of str
         """
         self.Name = None
@@ -7349,6 +9663,75 @@ class ForwardApplicationRequestV3Request(AbstractModel):
 
 class ForwardApplicationRequestV3Response(AbstractModel):
     """ForwardApplicationRequestV3返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResponseBody: 请求集群addon后返回的数据
+        :type ResponseBody: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ResponseBody = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ResponseBody = params.get("ResponseBody")
+        self.RequestId = params.get("RequestId")
+
+
+class ForwardTKEEdgeApplicationRequestV3Request(AbstractModel):
+    """ForwardTKEEdgeApplicationRequestV3请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Method: 请求集群addon的访问
+        :type Method: str
+        :param Path: 请求集群addon的路径
+        :type Path: str
+        :param Accept: 请求集群addon后允许接收的数据格式
+        :type Accept: str
+        :param ContentType: 请求集群addon的数据格式
+        :type ContentType: str
+        :param RequestBody: 请求集群addon的数据
+        :type RequestBody: str
+        :param ClusterName: 集群名称，例如cls-1234abcd
+        :type ClusterName: str
+        :param EncodedBody: 是否编码请求内容
+        :type EncodedBody: str
+        """
+        self.Method = None
+        self.Path = None
+        self.Accept = None
+        self.ContentType = None
+        self.RequestBody = None
+        self.ClusterName = None
+        self.EncodedBody = None
+
+
+    def _deserialize(self, params):
+        self.Method = params.get("Method")
+        self.Path = params.get("Path")
+        self.Accept = params.get("Accept")
+        self.ContentType = params.get("ContentType")
+        self.RequestBody = params.get("RequestBody")
+        self.ClusterName = params.get("ClusterName")
+        self.EncodedBody = params.get("EncodedBody")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ForwardTKEEdgeApplicationRequestV3Response(AbstractModel):
+    """ForwardTKEEdgeApplicationRequestV3返回参数结构体
 
     """
 
@@ -7868,6 +10251,51 @@ class ImageRegistryCredential(AbstractModel):
         
 
 
+class InstallLogAgentRequest(AbstractModel):
+    """InstallLogAgent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: TKE集群ID
+        :type ClusterId: str
+        :param KubeletRootDir: kubelet根目录
+        :type KubeletRootDir: str
+        """
+        self.ClusterId = None
+        self.KubeletRootDir = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.KubeletRootDir = params.get("KubeletRootDir")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstallLogAgentResponse(AbstractModel):
+    """InstallLogAgent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class Instance(AbstractModel):
     """集群的实例信息
 
@@ -7969,6 +10397,9 @@ class InstanceAdvancedSettings(AbstractModel):
         :param PreStartUserScript: base64 编码的用户脚本，在初始化节点之前执行，目前只对添加已有节点生效
 注意：此字段可能返回 null，表示取不到有效值。
         :type PreStartUserScript: str
+        :param Taints: 节点污点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Taints: list of Taint
         """
         self.MountTarget = None
         self.DockerGraphPath = None
@@ -7979,6 +10410,7 @@ class InstanceAdvancedSettings(AbstractModel):
         self.ExtraArgs = None
         self.DesiredPodNumber = None
         self.PreStartUserScript = None
+        self.Taints = None
 
 
     def _deserialize(self, params):
@@ -8003,6 +10435,12 @@ class InstanceAdvancedSettings(AbstractModel):
             self.ExtraArgs._deserialize(params.get("ExtraArgs"))
         self.DesiredPodNumber = params.get("DesiredPodNumber")
         self.PreStartUserScript = params.get("PreStartUserScript")
+        if params.get("Taints") is not None:
+            self.Taints = []
+            for item in params.get("Taints"):
+                obj = Taint()
+                obj._deserialize(item)
+                self.Taints.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8870,6 +11308,53 @@ class ModifyNodePoolInstanceTypesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyPrometheusAlertPolicyRequest(AbstractModel):
+    """ModifyPrometheusAlertPolicy请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param AlertRule: 告警配置
+        :type AlertRule: :class:`tencentcloud.tke.v20180525.models.PrometheusAlertPolicyItem`
+        """
+        self.InstanceId = None
+        self.AlertRule = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        if params.get("AlertRule") is not None:
+            self.AlertRule = PrometheusAlertPolicyItem()
+            self.AlertRule._deserialize(params.get("AlertRule"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyPrometheusAlertPolicyResponse(AbstractModel):
+    """ModifyPrometheusAlertPolicy返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyPrometheusAlertRuleRequest(AbstractModel):
     """ModifyPrometheusAlertRule请求参数结构体
 
@@ -8902,6 +11387,100 @@ class ModifyPrometheusAlertRuleRequest(AbstractModel):
 
 class ModifyPrometheusAlertRuleResponse(AbstractModel):
     """ModifyPrometheusAlertRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyPrometheusGlobalNotificationRequest(AbstractModel):
+    """ModifyPrometheusGlobalNotification请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param Notification: 告警通知渠道
+        :type Notification: :class:`tencentcloud.tke.v20180525.models.PrometheusNotificationItem`
+        """
+        self.InstanceId = None
+        self.Notification = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        if params.get("Notification") is not None:
+            self.Notification = PrometheusNotificationItem()
+            self.Notification._deserialize(params.get("Notification"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyPrometheusGlobalNotificationResponse(AbstractModel):
+    """ModifyPrometheusGlobalNotification返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyPrometheusTempRequest(AbstractModel):
+    """ModifyPrometheusTemp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板ID
+        :type TemplateId: str
+        :param Template: 修改内容
+        :type Template: :class:`tencentcloud.tke.v20180525.models.PrometheusTempModify`
+        """
+        self.TemplateId = None
+        self.Template = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        if params.get("Template") is not None:
+            self.Template = PrometheusTempModify()
+            self.Template._deserialize(params.get("Template"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyPrometheusTempResponse(AbstractModel):
+    """ModifyPrometheusTemp返回参数结构体
 
     """
 
@@ -9413,6 +11992,100 @@ class PrometheusAlertHistoryItem(AbstractModel):
         
 
 
+class PrometheusAlertManagerConfig(AbstractModel):
+    """告警渠道使用自建alertmanager的配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Url: alertmanager url
+        :type Url: str
+        :param ClusterType: alertmanager部署所在集群类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterType: str
+        :param ClusterId: alertmanager部署所在集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        """
+        self.Url = None
+        self.ClusterType = None
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.Url = params.get("Url")
+        self.ClusterType = params.get("ClusterType")
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PrometheusAlertPolicyItem(AbstractModel):
+    """托管prometheus告警策略实例
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 策略名称
+        :type Name: str
+        :param Rules: 规则列表
+        :type Rules: list of PrometheusAlertRule
+        :param Id: 告警策略 id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
+        :param TemplateId: 如果该告警来自模板下发，则TemplateId为模板id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TemplateId: str
+        :param Notification: 告警渠道，模板中使用可能返回null
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Notification: :class:`tencentcloud.tke.v20180525.models.PrometheusNotificationItem`
+        :param UpdatedAt: 最后修改时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedAt: str
+        :param ClusterId: 如果告警策略来源于用户集群CRD资源定义，则ClusterId为所属集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        """
+        self.Name = None
+        self.Rules = None
+        self.Id = None
+        self.TemplateId = None
+        self.Notification = None
+        self.UpdatedAt = None
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        if params.get("Rules") is not None:
+            self.Rules = []
+            for item in params.get("Rules"):
+                obj = PrometheusAlertRule()
+                obj._deserialize(item)
+                self.Rules.append(obj)
+        self.Id = params.get("Id")
+        self.TemplateId = params.get("TemplateId")
+        if params.get("Notification") is not None:
+            self.Notification = PrometheusNotificationItem()
+            self.Notification._deserialize(params.get("Notification"))
+        self.UpdatedAt = params.get("UpdatedAt")
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PrometheusAlertRule(AbstractModel):
     """Prometheus告警规则
 
@@ -9673,6 +12346,92 @@ running = 运行中
         
 
 
+class PrometheusInstancesOverview(AbstractModel):
+    """托管prometheusV2实例概览
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param InstanceName: 实例名
+        :type InstanceName: str
+        :param VpcId: VPC ID
+        :type VpcId: str
+        :param SubnetId: 子网ID
+        :type SubnetId: str
+        :param InstanceStatus: 运行状态（1:正在创建；2:运行中；3:异常；4:重启中；5:销毁中； 6:已停机； 7: 已删除）
+        :type InstanceStatus: int
+        :param ChargeStatus: 计费状态（1:正常；2:过期; 3:销毁; 4:分配中; 5:分配失败）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChargeStatus: int
+        :param EnableGrafana: 是否开启 Grafana（0:不开启，1:开启）
+        :type EnableGrafana: int
+        :param GrafanaURL: Grafana 面板 URL
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GrafanaURL: str
+        :param InstanceChargeType: 实例付费类型（1:试用版；2:预付费）
+        :type InstanceChargeType: int
+        :param SpecName: 规格名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SpecName: str
+        :param DataRetentionTime: 存储周期
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataRetentionTime: int
+        :param ExpireTime: 购买的实例过期时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExpireTime: str
+        :param AutoRenewFlag: 自动续费标记(0:不自动续费；1:开启自动续费；2:禁止自动续费；-1:无效)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoRenewFlag: int
+        :param BoundTotal: 绑定集群总数
+        :type BoundTotal: int
+        :param BoundNormal: 绑定集群正常状态总数
+        :type BoundNormal: int
+        """
+        self.InstanceId = None
+        self.InstanceName = None
+        self.VpcId = None
+        self.SubnetId = None
+        self.InstanceStatus = None
+        self.ChargeStatus = None
+        self.EnableGrafana = None
+        self.GrafanaURL = None
+        self.InstanceChargeType = None
+        self.SpecName = None
+        self.DataRetentionTime = None
+        self.ExpireTime = None
+        self.AutoRenewFlag = None
+        self.BoundTotal = None
+        self.BoundNormal = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.InstanceName = params.get("InstanceName")
+        self.VpcId = params.get("VpcId")
+        self.SubnetId = params.get("SubnetId")
+        self.InstanceStatus = params.get("InstanceStatus")
+        self.ChargeStatus = params.get("ChargeStatus")
+        self.EnableGrafana = params.get("EnableGrafana")
+        self.GrafanaURL = params.get("GrafanaURL")
+        self.InstanceChargeType = params.get("InstanceChargeType")
+        self.SpecName = params.get("SpecName")
+        self.DataRetentionTime = params.get("DataRetentionTime")
+        self.ExpireTime = params.get("ExpireTime")
+        self.AutoRenewFlag = params.get("AutoRenewFlag")
+        self.BoundTotal = params.get("BoundTotal")
+        self.BoundNormal = params.get("BoundNormal")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PrometheusJobTargets(AbstractModel):
     """prometheus一个job的targets
 
@@ -9803,6 +12562,143 @@ webhook
         
 
 
+class PrometheusNotificationItem(AbstractModel):
+    """告警通知渠道配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Enabled: 是否启用
+        :type Enabled: bool
+        :param Type: 通道类型，默认为amp，支持以下
+amp
+webhook
+alertmanager
+        :type Type: str
+        :param WebHook: 如果Type为webhook, 则该字段为必填项
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WebHook: str
+        :param AlertManager: 如果Type为alertmanager, 则该字段为必填项
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlertManager: :class:`tencentcloud.tke.v20180525.models.PrometheusAlertManagerConfig`
+        :param RepeatInterval: 收敛时间
+        :type RepeatInterval: str
+        :param TimeRangeStart: 生效起始时间
+        :type TimeRangeStart: str
+        :param TimeRangeEnd: 生效结束时间
+        :type TimeRangeEnd: str
+        :param NotifyWay: 告警通知方式。目前有SMS、EMAIL、CALL、WECHAT方式。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NotifyWay: list of str
+        :param ReceiverGroups: 告警接收组（用户组）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReceiverGroups: list of str
+        :param PhoneNotifyOrder: 电话告警顺序。
+注：NotifyWay选择CALL，采用该参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PhoneNotifyOrder: list of int non-negative
+        :param PhoneCircleTimes: 电话告警次数。
+注：NotifyWay选择CALL，采用该参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PhoneCircleTimes: int
+        :param PhoneInnerInterval: 电话告警轮内间隔。单位：秒
+注：NotifyWay选择CALL，采用该参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PhoneInnerInterval: int
+        :param PhoneCircleInterval: 电话告警轮外间隔。单位：秒
+注：NotifyWay选择CALL，采用该参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PhoneCircleInterval: int
+        :param PhoneArriveNotice: 电话告警触达通知
+注：NotifyWay选择CALL，采用该参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PhoneArriveNotice: bool
+        """
+        self.Enabled = None
+        self.Type = None
+        self.WebHook = None
+        self.AlertManager = None
+        self.RepeatInterval = None
+        self.TimeRangeStart = None
+        self.TimeRangeEnd = None
+        self.NotifyWay = None
+        self.ReceiverGroups = None
+        self.PhoneNotifyOrder = None
+        self.PhoneCircleTimes = None
+        self.PhoneInnerInterval = None
+        self.PhoneCircleInterval = None
+        self.PhoneArriveNotice = None
+
+
+    def _deserialize(self, params):
+        self.Enabled = params.get("Enabled")
+        self.Type = params.get("Type")
+        self.WebHook = params.get("WebHook")
+        if params.get("AlertManager") is not None:
+            self.AlertManager = PrometheusAlertManagerConfig()
+            self.AlertManager._deserialize(params.get("AlertManager"))
+        self.RepeatInterval = params.get("RepeatInterval")
+        self.TimeRangeStart = params.get("TimeRangeStart")
+        self.TimeRangeEnd = params.get("TimeRangeEnd")
+        self.NotifyWay = params.get("NotifyWay")
+        self.ReceiverGroups = params.get("ReceiverGroups")
+        self.PhoneNotifyOrder = params.get("PhoneNotifyOrder")
+        self.PhoneCircleTimes = params.get("PhoneCircleTimes")
+        self.PhoneInnerInterval = params.get("PhoneInnerInterval")
+        self.PhoneCircleInterval = params.get("PhoneCircleInterval")
+        self.PhoneArriveNotice = params.get("PhoneArriveNotice")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PrometheusRecordRuleYamlItem(AbstractModel):
+    """prometheus聚合规则实例详情，包含所属集群ID
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 实例名称
+        :type Name: str
+        :param UpdateTime: 最近更新时间
+        :type UpdateTime: str
+        :param TemplateId: Yaml内容
+        :type TemplateId: str
+        :param Content: 如果该聚合规则来至模板，则TemplateId为模板id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: str
+        :param ClusterId: 该聚合规则如果来源于用户集群crd资源定义，则ClusterId为所属集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        """
+        self.Name = None
+        self.UpdateTime = None
+        self.TemplateId = None
+        self.Content = None
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.UpdateTime = params.get("UpdateTime")
+        self.TemplateId = params.get("TemplateId")
+        self.Content = params.get("Content")
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PrometheusTarget(AbstractModel):
     """prometheus一个抓取目标的信息
 
@@ -9846,6 +12742,204 @@ unknown = 未知
         self.LastScrape = params.get("LastScrape")
         self.ScrapeDuration = params.get("ScrapeDuration")
         self.Error = params.get("Error")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PrometheusTemp(AbstractModel):
+    """模板实例
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 模板名称
+        :type Name: str
+        :param Level: 模板维度，支持以下类型
+instance 实例级别
+cluster 集群级别
+        :type Level: str
+        :param Describe: 模板描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Describe: str
+        :param RecordRules: 当Level为instance时有效，
+模板中的聚合规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecordRules: list of PrometheusConfigItem
+        :param ServiceMonitors: 当Level为cluster时有效，
+模板中的ServiceMonitor规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceMonitors: list of PrometheusConfigItem
+        :param PodMonitors: 当Level为cluster时有效，
+模板中的PodMonitors规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PodMonitors: list of PrometheusConfigItem
+        :param RawJobs: 当Level为cluster时有效，
+模板中的RawJobs规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RawJobs: list of PrometheusConfigItem
+        :param TemplateId: 模板的ID, 用于出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TemplateId: str
+        :param UpdateTime: 最近更新时间，用于出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        :param Version: 当前版本，用于出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Version: str
+        :param IsDefault: 是否系统提供的默认模板，用于出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsDefault: bool
+        :param AlertDetailRules: 当Level为instance时有效，
+模板中的告警配置列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlertDetailRules: list of PrometheusAlertPolicyItem
+        :param TargetsTotal: 关联实例数目
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TargetsTotal: int
+        """
+        self.Name = None
+        self.Level = None
+        self.Describe = None
+        self.RecordRules = None
+        self.ServiceMonitors = None
+        self.PodMonitors = None
+        self.RawJobs = None
+        self.TemplateId = None
+        self.UpdateTime = None
+        self.Version = None
+        self.IsDefault = None
+        self.AlertDetailRules = None
+        self.TargetsTotal = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Level = params.get("Level")
+        self.Describe = params.get("Describe")
+        if params.get("RecordRules") is not None:
+            self.RecordRules = []
+            for item in params.get("RecordRules"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.RecordRules.append(obj)
+        if params.get("ServiceMonitors") is not None:
+            self.ServiceMonitors = []
+            for item in params.get("ServiceMonitors"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.ServiceMonitors.append(obj)
+        if params.get("PodMonitors") is not None:
+            self.PodMonitors = []
+            for item in params.get("PodMonitors"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.PodMonitors.append(obj)
+        if params.get("RawJobs") is not None:
+            self.RawJobs = []
+            for item in params.get("RawJobs"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.RawJobs.append(obj)
+        self.TemplateId = params.get("TemplateId")
+        self.UpdateTime = params.get("UpdateTime")
+        self.Version = params.get("Version")
+        self.IsDefault = params.get("IsDefault")
+        if params.get("AlertDetailRules") is not None:
+            self.AlertDetailRules = []
+            for item in params.get("AlertDetailRules"):
+                obj = PrometheusAlertPolicyItem()
+                obj._deserialize(item)
+                self.AlertDetailRules.append(obj)
+        self.TargetsTotal = params.get("TargetsTotal")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PrometheusTempModify(AbstractModel):
+    """云原生Prometheus模板可修改项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 修改名称
+        :type Name: str
+        :param Describe: 修改描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Describe: str
+        :param ServiceMonitors: 当Level为cluster时有效，
+模板中的ServiceMonitor规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceMonitors: list of PrometheusConfigItem
+        :param PodMonitors: 当Level为cluster时有效，
+模板中的PodMonitors规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PodMonitors: list of PrometheusConfigItem
+        :param RawJobs: 当Level为cluster时有效，
+模板中的RawJobs规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RawJobs: list of PrometheusConfigItem
+        :param RecordRules: 当Level为instance时有效，
+模板中的聚合规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecordRules: list of PrometheusConfigItem
+        :param AlertDetailRules: 修改内容，只有当模板类型是Alert时生效
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlertDetailRules: list of PrometheusAlertPolicyItem
+        """
+        self.Name = None
+        self.Describe = None
+        self.ServiceMonitors = None
+        self.PodMonitors = None
+        self.RawJobs = None
+        self.RecordRules = None
+        self.AlertDetailRules = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Describe = params.get("Describe")
+        if params.get("ServiceMonitors") is not None:
+            self.ServiceMonitors = []
+            for item in params.get("ServiceMonitors"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.ServiceMonitors.append(obj)
+        if params.get("PodMonitors") is not None:
+            self.PodMonitors = []
+            for item in params.get("PodMonitors"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.PodMonitors.append(obj)
+        if params.get("RawJobs") is not None:
+            self.RawJobs = []
+            for item in params.get("RawJobs"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.RawJobs.append(obj)
+        if params.get("RecordRules") is not None:
+            self.RecordRules = []
+            for item in params.get("RecordRules"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.RecordRules.append(obj)
+        if params.get("AlertDetailRules") is not None:
+            self.AlertDetailRules = []
+            for item in params.get("AlertDetailRules"):
+                obj = PrometheusAlertPolicyItem()
+                obj._deserialize(item)
+                self.AlertDetailRules.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10850,6 +13944,84 @@ class SetNodePoolNodeProtectionResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class SubnetInfos(AbstractModel):
+    """子网信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubnetId: 子网id
+        :type SubnetId: str
+        :param Name: 子网节点名称
+        :type Name: str
+        """
+        self.SubnetId = None
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.SubnetId = params.get("SubnetId")
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SyncPrometheusTempRequest(AbstractModel):
+    """SyncPrometheusTemp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 实例id
+        :type TemplateId: str
+        :param Targets: 同步目标
+        :type Targets: list of PrometheusTemplateSyncTarget
+        """
+        self.TemplateId = None
+        self.Targets = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        if params.get("Targets") is not None:
+            self.Targets = []
+            for item in params.get("Targets"):
+                obj = PrometheusTemplateSyncTarget()
+                obj._deserialize(item)
+                self.Targets.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SyncPrometheusTempResponse(AbstractModel):
+    """SyncPrometheusTemp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class SyncPrometheusTemplateRequest(AbstractModel):
     """SyncPrometheusTemplate请求参数结构体
 
@@ -11065,6 +14237,47 @@ class TcpSocket(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class UninstallLogAgentRequest(AbstractModel):
+    """UninstallLogAgent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UninstallLogAgentResponse(AbstractModel):
+    """UninstallLogAgent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class UpdateClusterVersionRequest(AbstractModel):
@@ -11337,6 +14550,91 @@ class UpdateImageCacheRequest(AbstractModel):
 
 class UpdateImageCacheResponse(AbstractModel):
     """UpdateImageCache返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateTKEEdgeClusterRequest(AbstractModel):
+    """UpdateTKEEdgeCluster请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 边缘计算集群ID
+        :type ClusterId: str
+        :param ClusterName: 边缘计算集群名称
+        :type ClusterName: str
+        :param ClusterDesc: 边缘计算集群描述信息
+        :type ClusterDesc: str
+        :param PodCIDR: 边缘计算集群的pod cidr
+        :type PodCIDR: str
+        :param ServiceCIDR: 边缘计算集群的service cidr
+        :type ServiceCIDR: str
+        :param PublicLB: 边缘计算集群公网访问LB信息
+        :type PublicLB: :class:`tencentcloud.tke.v20180525.models.EdgeClusterPublicLB`
+        :param InternalLB: 边缘计算集群内网访问LB信息
+        :type InternalLB: :class:`tencentcloud.tke.v20180525.models.EdgeClusterInternalLB`
+        :param CoreDns: 边缘计算集群的CoreDns部署信息
+        :type CoreDns: str
+        :param HealthRegion: 边缘计算集群的健康检查多地域部署信息
+        :type HealthRegion: str
+        :param Health: 边缘计算集群的健康检查部署信息
+        :type Health: str
+        :param GridDaemon: 边缘计算集群的GridDaemon部署信息
+        :type GridDaemon: str
+        """
+        self.ClusterId = None
+        self.ClusterName = None
+        self.ClusterDesc = None
+        self.PodCIDR = None
+        self.ServiceCIDR = None
+        self.PublicLB = None
+        self.InternalLB = None
+        self.CoreDns = None
+        self.HealthRegion = None
+        self.Health = None
+        self.GridDaemon = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.ClusterName = params.get("ClusterName")
+        self.ClusterDesc = params.get("ClusterDesc")
+        self.PodCIDR = params.get("PodCIDR")
+        self.ServiceCIDR = params.get("ServiceCIDR")
+        if params.get("PublicLB") is not None:
+            self.PublicLB = EdgeClusterPublicLB()
+            self.PublicLB._deserialize(params.get("PublicLB"))
+        if params.get("InternalLB") is not None:
+            self.InternalLB = EdgeClusterInternalLB()
+            self.InternalLB._deserialize(params.get("InternalLB"))
+        self.CoreDns = params.get("CoreDns")
+        self.HealthRegion = params.get("HealthRegion")
+        self.Health = params.get("Health")
+        self.GridDaemon = params.get("GridDaemon")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateTKEEdgeClusterResponse(AbstractModel):
+    """UpdateTKEEdgeCluster返回参数结构体
 
     """
 

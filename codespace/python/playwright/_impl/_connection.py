@@ -13,18 +13,22 @@
 # limitations under the License.
 
 import asyncio
+import contextvars
+import inspect
 import sys
 import traceback
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Union, cast
 
 from greenlet import greenlet
 from pyee import AsyncIOEventEmitter, EventEmitter
 
+import playwright
 from playwright._impl._helper import ParsedMessagePayload, parse_error
 from playwright._impl._transport import Transport
 
 if TYPE_CHECKING:
+    from playwright._impl._local_utils import LocalUtils
     from playwright._impl._playwright import Playwright
 
 
@@ -36,10 +40,21 @@ class Channel(AsyncIOEventEmitter):
         self._object: Optional[ChannelOwner] = None
 
     async def send(self, method: str, params: Dict = None) -> Any:
-        return await self.inner_send(method, params, False)
+        return await self._connection.wrap_api_call(
+            lambda: self.inner_send(method, params, False)
+        )
 
     async def send_return_as_dict(self, method: str, params: Dict = None) -> Any:
-        return await self.inner_send(method, params, True)
+        return await self._connection.wrap_api_call(
+            lambda: self.inner_send(method, params, True)
+        )
+
+    def send_no_reply(self, method: str, params: Dict = None) -> None:
+        self._connection.wrap_api_call(
+            lambda: self._connection._send_message_to_server(
+                self._guid, method, {} if params is None else params
+            )
+        )
 
     async def inner_send(
         self, method: str, params: Optional[Dict], return_as_dict: bool
@@ -74,11 +89,6 @@ class Channel(AsyncIOEventEmitter):
         key = next(iter(result))
         return result[key]
 
-    def send_no_reply(self, method: str, params: Dict = None) -> None:
-        if params is None:
-            params = {}
-        self._connection._send_message_to_server(self._guid, method, params)
-
 
 class ChannelOwner(AsyncIOEventEmitter):
     def __init__(
@@ -100,7 +110,7 @@ class ChannelOwner(AsyncIOEventEmitter):
             parent if isinstance(parent, ChannelOwner) else None
         )
         self._objects: Dict[str, "ChannelOwner"] = {}
-        self._channel = Channel(self._connection, guid)
+        self._channel: Channel = Channel(self._connection, guid)
         self._channel._object = self
         self._initializer = initializer
 
@@ -122,7 +132,7 @@ class ChannelOwner(AsyncIOEventEmitter):
 
 class ProtocolCallback:
     def __init__(self, loop: asyncio.AbstractEventLoop) -> None:
-        self.stack_trace: traceback.StackSummary = traceback.StackSummary()
+        self.stack_trace: traceback.StackSummary
         self.future = loop.create_future()
         # The outer task can get cancelled by the user, this forwards the cancellation to the inner task.
         current_task = asyncio.current_task()
@@ -164,6 +174,7 @@ class Connection(EventEmitter):
         object_factory: Callable[[ChannelOwner, str, str, Dict], ChannelOwner],
         transport: Transport,
         loop: asyncio.AbstractEventLoop,
+        local_utils: Optional["LocalUtils"] = None,
     ) -> None:
         super().__init__()
         self._dispatcher_fiber = dispatcher_fiber
@@ -180,6 +191,16 @@ class Connection(EventEmitter):
         self.playwright_future: asyncio.Future["Playwright"] = loop.create_future()
         self._error: Optional[BaseException] = None
         self.is_remote = False
+        self._init_task: Optional[asyncio.Task] = None
+        self._api_zone: contextvars.ContextVar[Optional[Dict]] = contextvars.ContextVar(
+            "ApiZone", default=None
+        )
+        self._local_utils: Optional["LocalUtils"] = local_utils
+
+    @property
+    def local_utils(self) -> "LocalUtils":
+        assert self._local_utils
+        return self._local_utils
 
     def mark_as_remote(self) -> None:
         self.is_remote = True
@@ -196,12 +217,13 @@ class Connection(EventEmitter):
             self.playwright_future.set_result(await self._root_object.initialize())
 
         await self._transport.connect()
-        self._loop.create_task(init())
+        self._init_task = self._loop.create_task(init())
         await self._transport.run()
 
     def stop_sync(self) -> None:
         self._transport.request_stop()
         self._dispatcher_fiber.switch()
+        self._loop.run_until_complete(self._transport.wait_until_stopped())
         self.cleanup()
 
     async def stop_async(self) -> None:
@@ -210,6 +232,8 @@ class Connection(EventEmitter):
         self.cleanup()
 
     def cleanup(self) -> None:
+        if self._init_task and not self._init_task.done():
+            self._init_task.cancel()
         for ws_connection in self._child_ws_connections:
             ws_connection._transport.dispose()
         self.emit("close")
@@ -226,22 +250,17 @@ class Connection(EventEmitter):
         id = self._last_id
         callback = ProtocolCallback(self._loop)
         task = asyncio.current_task(self._loop)
-        stack_trace: Optional[traceback.StackSummary] = getattr(
-            task, "__pw_stack_trace__", None
+        callback.stack_trace = cast(
+            traceback.StackSummary,
+            getattr(task, "__pw_stack_trace__", traceback.extract_stack()),
         )
-        callback.stack_trace = stack_trace or traceback.extract_stack()
         self._callbacks[id] = callback
-        metadata = {"stack": serialize_call_stack(callback.stack_trace)}
-        api_name = getattr(task, "__pw_api_name__", None)
-        if api_name:
-            metadata["apiName"] = api_name
-
         message = {
             "id": id,
             "guid": guid,
             "method": method,
             "params": self._replace_channels_with_guids(params),
-            "metadata": metadata,
+            "metadata": self._api_zone.get(),
         }
         self._transport.send(message)
         self._callbacks[id] = callback
@@ -282,6 +301,9 @@ class Connection(EventEmitter):
         try:
             if self._is_sync:
                 for listener in object._channel.listeners(method):
+                    # Each event handler is a potentilly blocking context, create a fiber for each
+                    # and switch to them in order, until they block inside and pass control to each
+                    # other and then eventually back to dispatcher as listener functions return.
                     g = greenlet(listener)
                     g.switch(self._replace_guids_with_channels(params))
             else:
@@ -333,6 +355,27 @@ class Connection(EventEmitter):
             return result
         return payload
 
+    def wrap_api_call(self, cb: Callable[[], Any], is_internal: bool = False) -> Any:
+        if self._api_zone.get():
+            return cb()
+        task = asyncio.current_task(self._loop)
+        st: List[inspect.FrameInfo] = getattr(task, "__pw_stack__", inspect.stack())
+        metadata = _extract_metadata_from_stack(st, is_internal)
+        if metadata:
+            self._api_zone.set(metadata)
+        result = cb()
+
+        async def _() -> None:
+            try:
+                return await result
+            finally:
+                self._api_zone.set(None)
+
+        if asyncio.iscoroutine(result):
+            return _()
+        self._api_zone.set(None)
+        return result
+
 
 def from_channel(channel: Channel) -> Any:
     return channel._object
@@ -342,13 +385,40 @@ def from_nullable_channel(channel: Optional[Channel]) -> Optional[Any]:
     return channel._object if channel else None
 
 
-def serialize_call_stack(stack_trace: traceback.StackSummary) -> List[Dict]:
+def _extract_metadata_from_stack(
+    st: List[inspect.FrameInfo], is_internal: bool
+) -> Optional[Dict]:
+    playwright_module_path = str(Path(playwright.__file__).parents[0])
+    last_internal_api_name = ""
+    api_name = ""
     stack: List[Dict] = []
-    for frame in stack_trace:
-        if "_generated.py" in frame.filename:
-            break
-        stack.append(
-            {"file": frame.filename, "line": frame.lineno, "function": frame.name}
-        )
-    stack.reverse()
-    return stack
+    for frame in st:
+        is_playwright_internal = frame.filename.startswith(playwright_module_path)
+
+        method_name = ""
+        if "self" in frame[0].f_locals:
+            method_name = frame[0].f_locals["self"].__class__.__name__ + "."
+        method_name += frame[0].f_code.co_name
+
+        if not is_playwright_internal:
+            stack.append(
+                {
+                    "file": frame.filename,
+                    "line": frame.lineno,
+                    "function": method_name,
+                }
+            )
+        if is_playwright_internal:
+            last_internal_api_name = method_name
+        elif last_internal_api_name:
+            api_name = last_internal_api_name
+            last_internal_api_name = ""
+    if not api_name:
+        api_name = last_internal_api_name
+    if api_name:
+        return {
+            "apiName": api_name,
+            "stack": stack,
+            "isInternal": is_internal,
+        }
+    return None

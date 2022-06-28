@@ -77,6 +77,9 @@ FAILEDOPERATION_PROTOCOLCHECKERR = 'FailedOperation.ProtocolCheckErr'
 # 收件人已退订。
 FAILEDOPERATION_RECEIVERHASUNSUBSCRIBED = 'FailedOperation.ReceiverHasUnsubscribed'
 
+# 邮件被收信人拒绝。
+FAILEDOPERATION_REJECTEDBYRECIPIENTS = 'FailedOperation.RejectedByRecipients'
+
 # 您的发送遇到问题，请联系腾讯云提交工单沟通原因并解决。
 FAILEDOPERATION_SENDEMAILERR = 'FailedOperation.SendEmailErr'
 
@@ -98,7 +101,7 @@ FAILEDOPERATION_TOOMANYRECIPIENTS = 'FailedOperation.TooManyRecipients'
 # 不支持的邮箱类型。
 FAILEDOPERATION_UNSUPPORTMAILTYPE = 'FailedOperation.UnsupportMailType'
 
-# 未开通自定义发送权限，必须使用模板发送。
+# 仅支持使用模板发送邮件。
 FAILEDOPERATION_WITHOUTPERMISSION = 'FailedOperation.WithOutPermission'
 
 # TemplateData字段格式不正确，请保持为json格式。
@@ -130,6 +133,9 @@ INVALIDPARAMETERVALUE_EMAILCONTENTISWRONG = 'InvalidParameterValue.EmailContentI
 
 # 邮件地址不合法，请检查邮件地址格式。
 INVALIDPARAMETERVALUE_ILLEGALEMAILADDRESS = 'InvalidParameterValue.IllegalEmailAddress'
+
+# 收件人地址附带的模板参数不能包含html标签。
+INVALIDPARAMETERVALUE_INVALIDTEMPLATEDATA = 'InvalidParameterValue.InValidTemplateData'
 
 # 域名取值错误。
 INVALIDPARAMETERVALUE_INVALIDEMAILIDENTITY = 'InvalidParameterValue.InvalidEmailIdentity'
@@ -164,8 +170,11 @@ INVALIDPARAMETERVALUE_TEMPLATECONTENTISNULL = 'InvalidParameterValue.TemplateCon
 # 模板内容错误，请检查base64内容是否正确。
 INVALIDPARAMETERVALUE_TEMPLATECONTENTISWRONG = 'InvalidParameterValue.TemplateContentIsWrong'
 
-# 变量设置必须为json格式。
+# 模板参数必须为json格式。
 INVALIDPARAMETERVALUE_TEMPLATEDATAERROR = 'InvalidParameterValue.TemplateDataError'
+
+# 收件人地址附带的模板参数长度超过限制
+INVALIDPARAMETERVALUE_TEMPLATEDATALENLIMIT = 'InvalidParameterValue.TemplateDataLenLimit'
 
 # 模板名字不合法，请检查字符内容及大小。
 INVALIDPARAMETERVALUE_TEMPLATENAMEILLEGAL = 'InvalidParameterValue.TemplateNameIllegal'
@@ -175,6 +184,9 @@ INVALIDPARAMETERVALUE_TEMPLATENAMEISNULL = 'InvalidParameterValue.TemplateNameIs
 
 # 不存在该模板，请先创建模板。
 INVALIDPARAMETERVALUE_TEMPLATENOTEXIST = 'InvalidParameterValue.TemplateNotExist'
+
+# 模板变量与收件人列表参数不一一对应。
+INVALIDPARAMETERVALUE_TEMPLATENOTMATCHDATA = 'InvalidParameterValue.TemplateNotMatchData'
 
 # 搜索日期错误，请检查日期及格式是否有效。
 INVALIDPARAMETERVALUE_WRONGDATE = 'InvalidParameterValue.WrongDate'

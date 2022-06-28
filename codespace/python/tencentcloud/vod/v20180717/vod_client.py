@@ -1908,6 +1908,38 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeLicenseUsageData(self, request):
+        """该接口返回查询时间范围内每天 License 请求次数信息。
+           1. 可以查询最近365天内的 License 请求次数统计数据。
+           2. 查询时间跨度不超过90天。
+           3. 查询时间跨度超过1天的，返回以天为粒度的数据，否则，返回以5分钟为粒度的数据。
+
+        :param request: Request instance for DescribeLicenseUsageData.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DescribeLicenseUsageDataRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DescribeLicenseUsageDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeLicenseUsageData", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeLicenseUsageDataResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeMediaInfos(self, request):
         """1. 该接口可以获取多个媒体文件的多种信息，包括：
             1. 基础信息（basicInfo）：包括媒体名称、分类、播放地址、封面图片等。
@@ -3419,7 +3451,9 @@ class VodClient(AbstractClient):
 
 
     def ProcessImage(self, request):
-        """对点播中的图片文件发起处理任务，功能包括：
+        """该 API 已经<font color='red'>不再维护</font>，智能识别任务请使用图片智能识别 [ReviewImage](https://cloud.tencent.com/document/api/266/73217) 接口。
+
+        对点播中的图片文件发起处理任务，功能包括：
 
         1. 智能识别（令人反感的信息、不安全的信息、不适宜的信息）;
 
@@ -3467,6 +3501,12 @@ class VodClient(AbstractClient):
         10. 内容识别（视频片头片尾、人脸、文本全文、文本关键词、语音全文、语音关键词、物体）。
 
         如使用事件通知，事件通知的类型为 [任务流状态变更](https://cloud.tencent.com/document/product/266/9636)。
+
+        使用溯源水印存在以下限制条件：
+        <li> 溯源水印仅支持图片水印； </li>
+        <li> 溯源水印仅支持水印重复类型为水印循环播放； </li>
+        <li> 溯源水印仅支持输出文件封装格式为 HLS； </li>
+        <li> 溯源水印的位置仅支持位于视频的上半部分。 </li>
 
         :param request: Request instance for ProcessMedia.
         :type request: :class:`tencentcloud.vod.v20180717.models.ProcessMediaRequest`
@@ -3624,6 +3664,7 @@ class VodClient(AbstractClient):
         """1. 预热指定的 URL 列表。
         2. URL 的域名必须已在云点播中注册。
         3. 单次请求最多指定20个 URL。
+        4. 默认预热配额为每天10000个 URL。
 
         :param request: Request instance for PushUrlCache.
         :type request: :class:`tencentcloud.vod.v20180717.models.PushUrlCacheRequest`
@@ -3637,6 +3678,38 @@ class VodClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.PushUrlCacheResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RefreshUrlCache(self, request):
+        """1. 刷新指定的 URL 列表。
+        2. URL 的域名必须已在云点播中注册。
+        3. 单次请求最多指定20个 URL。
+        4. 默认刷新配额为每天100000个 URL。
+
+        :param request: Request instance for RefreshUrlCache.
+        :type request: :class:`tencentcloud.vod.v20180717.models.RefreshUrlCacheRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.RefreshUrlCacheResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RefreshUrlCache", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.RefreshUrlCacheResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -3666,6 +3739,35 @@ class VodClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ResetProcedureTemplateResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RestoreMedia(self, request):
+        """当媒体文件的存储类型是归档存储或深度归档存储时，是不可访问的。如需访问，则需要调用本接口进行解冻，解冻后可访问的媒体文件是临时的，在有效期过后，则不可访问。
+
+        :param request: Request instance for RestoreMedia.
+        :type request: :class:`tencentcloud.vod.v20180717.models.RestoreMediaRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.RestoreMediaResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RestoreMedia", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.RestoreMediaResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -3857,6 +3959,7 @@ class VodClient(AbstractClient):
 
     def WeChatMiniProgramPublish(self, request):
         """将点播视频发布到微信小程序，供微信小程序播放器播放。
+        本接口支持发布原始视频和转码后视频，暂不支持发布自适应码流。
 
         :param request: Request instance for WeChatMiniProgramPublish.
         :type request: :class:`tencentcloud.vod.v20180717.models.WeChatMiniProgramPublishRequest`

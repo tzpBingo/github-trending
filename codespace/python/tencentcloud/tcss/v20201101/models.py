@@ -175,6 +175,28 @@ RULE_MODE_HOLDUP 拦截
         :type MatchGroupName: str
         :param MatchRuleLevel: 命中规则等级，HIGH：高危，MIDDLE：中危，LOW：低危。
         :type MatchRuleLevel: str
+        :param ContainerNetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerNetStatus: str
+        :param ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+"NODE_DESTROYED"      //节点已销毁
+"CONTAINER_EXITED"    //容器已退出
+"CONTAINER_DESTROYED" //容器已销毁
+"SHARED_HOST"         // 容器与主机共享网络
+"RESOURCE_LIMIT"      //隔离操作资源超限
+"UNKNOW"              // 原因未知
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerNetSubStatus: str
+        :param ContainerIsolateOperationSrc: 容器隔离操作来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerIsolateOperationSrc: str
         """
         self.ProcessPath = None
         self.EventType = None
@@ -198,6 +220,9 @@ RULE_MODE_HOLDUP 拦截
         self.RuleId = None
         self.MatchGroupName = None
         self.MatchRuleLevel = None
+        self.ContainerNetStatus = None
+        self.ContainerNetSubStatus = None
+        self.ContainerIsolateOperationSrc = None
 
 
     def _deserialize(self, params):
@@ -223,6 +248,9 @@ RULE_MODE_HOLDUP 拦截
         self.RuleId = params.get("RuleId")
         self.MatchGroupName = params.get("MatchGroupName")
         self.MatchRuleLevel = params.get("MatchRuleLevel")
+        self.ContainerNetStatus = params.get("ContainerNetStatus")
+        self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -494,6 +522,25 @@ RULE_MODE_HOLDUP 拦截
         :type LatestFoundTime: str
         :param RuleId: 规则组id
         :type RuleId: str
+        :param ContainerNetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type ContainerNetStatus: str
+        :param ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+"NODE_DESTROYED"      //节点已销毁
+"CONTAINER_EXITED"    //容器已退出
+"CONTAINER_DESTROYED" //容器已销毁
+"SHARED_HOST"         // 容器与主机共享网络
+"RESOURCE_LIMIT"      //隔离操作资源超限
+"UNKNOW"              // 原因未知
+        :type ContainerNetSubStatus: str
+        :param ContainerIsolateOperationSrc: 容器隔离操作来源
+        :type ContainerIsolateOperationSrc: str
         """
         self.ProcessName = None
         self.MatchRuleName = None
@@ -518,6 +565,9 @@ RULE_MODE_HOLDUP 拦截
         self.EventCount = None
         self.LatestFoundTime = None
         self.RuleId = None
+        self.ContainerNetStatus = None
+        self.ContainerNetSubStatus = None
+        self.ContainerIsolateOperationSrc = None
 
 
     def _deserialize(self, params):
@@ -544,6 +594,9 @@ RULE_MODE_HOLDUP 拦截
         self.EventCount = params.get("EventCount")
         self.LatestFoundTime = params.get("LatestFoundTime")
         self.RuleId = params.get("RuleId")
+        self.ContainerNetStatus = params.get("ContainerNetStatus")
+        self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -934,9 +987,9 @@ class AddEditRiskSyscallWhiteListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param EventId: 仅在添加白名单时候使用
+        :param EventId: 仅在添加事件白名单时候使用
         :type EventId: str
-        :param WhiteListInfo: 增加白名单信息，白名单id为空，编辑白名单id不能为空
+        :param WhiteListInfo: 增加或编辑白名单信。新增白名单时WhiteListInfo.id为空，编辑白名单WhiteListInfo.id不能为空.
         :type WhiteListInfo: :class:`tencentcloud.tcss.v20201101.models.RiskSyscallWhiteListInfo`
         """
         self.EventId = None
@@ -1295,6 +1348,15 @@ class ClusterCheckItem(AbstractModel):
         :param AffectedVersion: 受影响的版本信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type AffectedVersion: str
+        :param IgnoredAssetNum: 忽略的资产数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IgnoredAssetNum: int
+        :param IsIgnored: 是否忽略该检测项
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsIgnored: bool
+        :param RiskAssessment: 受影响评估
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RiskAssessment: str
         """
         self.CheckItemId = None
         self.Name = None
@@ -1312,6 +1374,9 @@ class ClusterCheckItem(AbstractModel):
         self.RelateLink = None
         self.AffectedType = None
         self.AffectedVersion = None
+        self.IgnoredAssetNum = None
+        self.IsIgnored = None
+        self.RiskAssessment = None
 
 
     def _deserialize(self, params):
@@ -1331,6 +1396,9 @@ class ClusterCheckItem(AbstractModel):
         self.RelateLink = params.get("RelateLink")
         self.AffectedType = params.get("AffectedType")
         self.AffectedVersion = params.get("AffectedVersion")
+        self.IgnoredAssetNum = params.get("IgnoredAssetNum")
+        self.IsIgnored = params.get("IsIgnored")
+        self.RiskAssessment = params.get("RiskAssessment")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2586,6 +2654,22 @@ class ContainerInfo(AbstractModel):
         :type HostName: str
         :param PublicIp: 外网ip
         :type PublicIp: str
+        :param NetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type NetStatus: str
+        :param NetSubStatus: 网络子状态
+        :type NetSubStatus: str
+        :param IsolateSource: 隔离来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsolateSource: str
+        :param IsolateTime: 隔离时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsolateTime: str
         """
         self.ContainerID = None
         self.ContainerName = None
@@ -2603,6 +2687,10 @@ class ContainerInfo(AbstractModel):
         self.UpdateTime = None
         self.HostName = None
         self.PublicIp = None
+        self.NetStatus = None
+        self.NetSubStatus = None
+        self.IsolateSource = None
+        self.IsolateTime = None
 
 
     def _deserialize(self, params):
@@ -2622,6 +2710,10 @@ class ContainerInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.HostName = params.get("HostName")
         self.PublicIp = params.get("PublicIp")
+        self.NetStatus = params.get("NetStatus")
+        self.NetSubStatus = params.get("NetSubStatus")
+        self.IsolateSource = params.get("IsolateSource")
+        self.IsolateTime = params.get("IsolateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4138,8 +4230,6 @@ class DescribeAccessControlEventsExportRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ExportField: 导出字段
-        :type ExportField: list of str
         :param Limit: 需要返回的数量，默认为10，最大值为100
         :type Limit: int
         :param Offset: 偏移量，默认为0。
@@ -4150,17 +4240,18 @@ class DescribeAccessControlEventsExportRequest(AbstractModel):
         :type Order: str
         :param By: 排序字段
         :type By: str
+        :param ExportField: 导出字段
+        :type ExportField: list of str
         """
-        self.ExportField = None
         self.Limit = None
         self.Offset = None
         self.Filters = None
         self.Order = None
         self.By = None
+        self.ExportField = None
 
 
     def _deserialize(self, params):
-        self.ExportField = params.get("ExportField")
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
         if params.get("Filters") is not None:
@@ -4171,6 +4262,7 @@ class DescribeAccessControlEventsExportRequest(AbstractModel):
                 self.Filters.append(obj)
         self.Order = params.get("Order")
         self.By = params.get("By")
+        self.ExportField = params.get("ExportField")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4190,15 +4282,20 @@ class DescribeAccessControlEventsExportResponse(AbstractModel):
         :param DownloadUrl: execle下载地址
 注意：此字段可能返回 null，表示取不到有效值。
         :type DownloadUrl: str
+        :param JobId: 任务id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.DownloadUrl = None
+        self.JobId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.DownloadUrl = params.get("DownloadUrl")
+        self.JobId = params.get("JobId")
         self.RequestId = params.get("RequestId")
 
 
@@ -4897,6 +4994,22 @@ class DescribeAssetContainerDetailResponse(AbstractModel):
         :type ImageSize: int
         :param HostStatus: 主机状态 offline,online,pause
         :type HostStatus: str
+        :param NetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type NetStatus: str
+        :param NetSubStatus: 网络子状态
+        :type NetSubStatus: str
+        :param IsolateSource: 隔离来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsolateSource: str
+        :param IsolateTime: 隔离时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsolateTime: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4923,6 +5036,10 @@ class DescribeAssetContainerDetailResponse(AbstractModel):
         self.ImageCreateTime = None
         self.ImageSize = None
         self.HostStatus = None
+        self.NetStatus = None
+        self.NetSubStatus = None
+        self.IsolateSource = None
+        self.IsolateTime = None
         self.RequestId = None
 
 
@@ -4957,6 +5074,10 @@ class DescribeAssetContainerDetailResponse(AbstractModel):
         self.ImageCreateTime = params.get("ImageCreateTime")
         self.ImageSize = params.get("ImageSize")
         self.HostStatus = params.get("HostStatus")
+        self.NetStatus = params.get("NetStatus")
+        self.NetSubStatus = params.get("NetSubStatus")
+        self.IsolateSource = params.get("IsolateSource")
+        self.IsolateTime = params.get("IsolateTime")
         self.RequestId = params.get("RequestId")
 
 
@@ -4978,6 +5099,7 @@ class DescribeAssetContainerListRequest(AbstractModel):
 <li>ImageName- String - 是否必填：否 - 镜像名称搜索</li>
 <li>HostIP- string - 是否必填：否 - 主机ip搜索</li>
 <li>OrderBy - String 是否必填：否 -排序字段，支持：cpu_usage, mem_usage的动态排序 ["cpu_usage","+"]  '+'升序、'-'降序</li>
+<li>NetStatus - String -是否必填: 否 -  容器网络状态筛选 normal isolated isolating isolate_failed restoring restore_failed</li>
         :type Filters: list of AssetFilters
         :param By: 排序字段
         :type By: str
@@ -8004,6 +8126,22 @@ class DescribeClusterDetailResponse(AbstractModel):
         :type DefenderStatus: str
         :param TaskCreateTime: 扫描任务创建时间
         :type TaskCreateTime: str
+        :param NetworkType: 网络类型.PublicNetwork为公网类型,VPCNetwork为VPC网络
+        :type NetworkType: str
+        :param ApiServerAddress: API Server地址
+        :type ApiServerAddress: str
+        :param NodeCount: 节点数
+        :type NodeCount: int
+        :param NamespaceCount: 命名空间数
+        :type NamespaceCount: int
+        :param WorkloadCount: 工作负载数
+        :type WorkloadCount: int
+        :param PodCount: Pod数量
+        :type PodCount: int
+        :param ServiceCount: Service数量
+        :type ServiceCount: int
+        :param IngressCount: Ingress数量
+        :type IngressCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -8023,6 +8161,14 @@ class DescribeClusterDetailResponse(AbstractModel):
         self.CheckStatus = None
         self.DefenderStatus = None
         self.TaskCreateTime = None
+        self.NetworkType = None
+        self.ApiServerAddress = None
+        self.NodeCount = None
+        self.NamespaceCount = None
+        self.WorkloadCount = None
+        self.PodCount = None
+        self.ServiceCount = None
+        self.IngressCount = None
         self.RequestId = None
 
 
@@ -8043,6 +8189,14 @@ class DescribeClusterDetailResponse(AbstractModel):
         self.CheckStatus = params.get("CheckStatus")
         self.DefenderStatus = params.get("DefenderStatus")
         self.TaskCreateTime = params.get("TaskCreateTime")
+        self.NetworkType = params.get("NetworkType")
+        self.ApiServerAddress = params.get("ApiServerAddress")
+        self.NodeCount = params.get("NodeCount")
+        self.NamespaceCount = params.get("NamespaceCount")
+        self.WorkloadCount = params.get("WorkloadCount")
+        self.PodCount = params.get("PodCount")
+        self.ServiceCount = params.get("ServiceCount")
+        self.IngressCount = params.get("IngressCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -9834,8 +9988,6 @@ class DescribeReverseShellEventsExportRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ExportField: 导出字段
-        :type ExportField: list of str
         :param Limit: 需要返回的数量，默认为10，最大值为100
         :type Limit: int
         :param Offset: 偏移量，默认为0。
@@ -9846,17 +9998,18 @@ class DescribeReverseShellEventsExportRequest(AbstractModel):
         :type Order: str
         :param By: 排序字段
         :type By: str
+        :param ExportField: 导出字段
+        :type ExportField: list of str
         """
-        self.ExportField = None
         self.Limit = None
         self.Offset = None
         self.Filters = None
         self.Order = None
         self.By = None
+        self.ExportField = None
 
 
     def _deserialize(self, params):
-        self.ExportField = params.get("ExportField")
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
         if params.get("Filters") is not None:
@@ -9867,6 +10020,7 @@ class DescribeReverseShellEventsExportRequest(AbstractModel):
                 self.Filters.append(obj)
         self.Order = params.get("Order")
         self.By = params.get("By")
+        self.ExportField = params.get("ExportField")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9886,15 +10040,20 @@ class DescribeReverseShellEventsExportResponse(AbstractModel):
         :param DownloadUrl: execle下载地址
 注意：此字段可能返回 null，表示取不到有效值。
         :type DownloadUrl: str
+        :param JobId: 任务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.DownloadUrl = None
+        self.JobId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.DownloadUrl = params.get("DownloadUrl")
+        self.JobId = params.get("JobId")
         self.RequestId = params.get("RequestId")
 
 
@@ -10254,8 +10413,6 @@ class DescribeRiskSyscallEventsExportRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ExportField: 导出字段
-        :type ExportField: list of str
         :param Limit: 需要返回的数量，默认为10，最大值为100
         :type Limit: int
         :param Offset: 偏移量，默认为0。
@@ -10266,17 +10423,18 @@ class DescribeRiskSyscallEventsExportRequest(AbstractModel):
         :type Order: str
         :param By: 排序字段
         :type By: str
+        :param ExportField: 导出字段
+        :type ExportField: list of str
         """
-        self.ExportField = None
         self.Limit = None
         self.Offset = None
         self.Filters = None
         self.Order = None
         self.By = None
+        self.ExportField = None
 
 
     def _deserialize(self, params):
-        self.ExportField = params.get("ExportField")
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
         if params.get("Filters") is not None:
@@ -10287,6 +10445,7 @@ class DescribeRiskSyscallEventsExportRequest(AbstractModel):
                 self.Filters.append(obj)
         self.Order = params.get("Order")
         self.By = params.get("By")
+        self.ExportField = params.get("ExportField")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10306,15 +10465,20 @@ class DescribeRiskSyscallEventsExportResponse(AbstractModel):
         :param DownloadUrl: Excel下载地址
 注意：此字段可能返回 null，表示取不到有效值。
         :type DownloadUrl: str
+        :param JobId: 任务Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.DownloadUrl = None
+        self.JobId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.DownloadUrl = params.get("DownloadUrl")
+        self.JobId = params.get("JobId")
         self.RequestId = params.get("RequestId")
 
 
@@ -10955,6 +11119,15 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         :param OperationTime: 事件最后一次处理的时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type OperationTime: str
+        :param ContainerNetStatus: 容器隔离状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerNetStatus: str
+        :param ContainerNetSubStatus: 容器隔离子状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerNetSubStatus: str
+        :param ContainerIsolateOperationSrc: 容器隔离操作来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerIsolateOperationSrc: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -11001,6 +11174,9 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         self.AncestorProcessPath = None
         self.AncestorProcessParam = None
         self.OperationTime = None
+        self.ContainerNetStatus = None
+        self.ContainerNetSubStatus = None
+        self.ContainerIsolateOperationSrc = None
         self.RequestId = None
 
 
@@ -11048,6 +11224,9 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         self.AncestorProcessPath = params.get("AncestorProcessPath")
         self.AncestorProcessParam = params.get("AncestorProcessParam")
         self.OperationTime = params.get("OperationTime")
+        self.ContainerNetStatus = params.get("ContainerNetStatus")
+        self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
         self.RequestId = params.get("RequestId")
 
 
@@ -11072,6 +11251,8 @@ class DescribeVirusListRequest(AbstractModel):
 <li>ImageId- string - 是否必填：否 - 镜像id</li>
 <li>IsRealTime- int - 是否必填：否 - 过滤是否实时监控数据</li>
 <li>TaskId- string - 是否必填：否 - 任务ID</li>
+<li>ContainerNetStatus - String -是否必填: 否 -  容器网络状态筛选 NORMAL ISOLATED ISOLATING RESTORING RESTORE_FAILED</li>
+<li>TimeRange - string -是否必填: 否 - 时间范围筛选 ["2022-03-31 16:55:00", "2022-03-31 17:00:00"]</li>
         :type Filters: list of RunTimeFilters
         :param Order: 排序方式
         :type Order: str
@@ -11408,6 +11589,12 @@ class DescribeVirusSummaryResponse(AbstractModel):
         :param RiskIncrease: 待处理风险个数较昨日增长
 注意：此字段可能返回 null，表示取不到有效值。
         :type RiskIncrease: int
+        :param IsolateIncrease: 隔离事件个数较昨日新增
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsolateIncrease: int
+        :param IsolateCnt: 隔离事件总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsolateCnt: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -11417,6 +11604,8 @@ class DescribeVirusSummaryResponse(AbstractModel):
         self.VirusDataBaseModifyTime = None
         self.RiskContainerIncrease = None
         self.RiskIncrease = None
+        self.IsolateIncrease = None
+        self.IsolateCnt = None
         self.RequestId = None
 
 
@@ -11427,6 +11616,8 @@ class DescribeVirusSummaryResponse(AbstractModel):
         self.VirusDataBaseModifyTime = params.get("VirusDataBaseModifyTime")
         self.RiskContainerIncrease = params.get("RiskContainerIncrease")
         self.RiskIncrease = params.get("RiskIncrease")
+        self.IsolateIncrease = params.get("IsolateIncrease")
+        self.IsolateCnt = params.get("IsolateCnt")
         self.RequestId = params.get("RequestId")
 
 
@@ -11447,7 +11638,10 @@ class DescribeVirusTaskListRequest(AbstractModel):
 <li>ContainerName - String - 是否必填：否 - 容器名称</li>
 <li>ContainerId - String - 是否必填：否 - 容器id</li>
 <li>Hostname - String - 是否必填：否 - 主机名称</li>
-<li>HostIp- String - 是否必填：是 - 容器名称</li>
+<li>HostIp- String - 是否必填：否 - 主机IP</li>
+<li>ImageId- String - 是否必填：否 - 镜像ID</li>
+<li>ImageName- String - 是否必填：否 - 镜像名称</li>
+<li>Status- String - 是否必填：否 - 状态</li>
         :type Filters: list of RunTimeFilters
         :param By: 排序字段
         :type By: str
@@ -11638,6 +11832,28 @@ MountNamespace逃逸、
         :param HostID: 主机IP
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostID: str
+        :param ContainerNetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerNetStatus: str
+        :param ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+"NODE_DESTROYED"      //节点已销毁
+"CONTAINER_EXITED"    //容器已退出
+"CONTAINER_DESTROYED" //容器已销毁
+"SHARED_HOST"         // 容器与主机共享网络
+"RESOURCE_LIMIT"      //隔离操作资源超限
+"UNKNOW"              // 原因未知
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerNetSubStatus: str
+        :param ContainerIsolateOperationSrc: 容器隔离操作来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerIsolateOperationSrc: str
         """
         self.EventType = None
         self.ContainerName = None
@@ -11656,6 +11872,9 @@ MountNamespace逃逸、
         self.LatestFoundTime = None
         self.NodeIP = None
         self.HostID = None
+        self.ContainerNetStatus = None
+        self.ContainerNetSubStatus = None
+        self.ContainerIsolateOperationSrc = None
 
 
     def _deserialize(self, params):
@@ -11676,6 +11895,9 @@ MountNamespace逃逸、
         self.LatestFoundTime = params.get("LatestFoundTime")
         self.NodeIP = params.get("NodeIP")
         self.HostID = params.get("HostID")
+        self.ContainerNetStatus = params.get("ContainerNetStatus")
+        self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11782,6 +12004,10 @@ class ExportVirusListRequest(AbstractModel):
 <li>ContainerId- string - 是否必填：否 - 容器id</li>
 <li>ImageName- string - 是否必填：否 - 镜像名称</li>
 <li>ImageId- string - 是否必填：否 - 镜像id</li>
+<li>IsRealTime- int - 是否必填：否 - 过滤是否实时监控数据</li>
+<li>TaskId- string - 是否必填：否 - 任务ID</li>
+<li>NetStatus - String -是否必填: 否 -  容器网络状态筛选 NORMAL ISOLATED ISOLATING RESTORING RESTORE_FAILED</li>
+<li>TimeRange - string -是否必填: 否 - 时间范围筛选 ["2022-03-31 16:55:00", "2022-03-31 17:00:00"]</li>
         :type Filters: list of RunTimeFilters
         :param Order: 排序方式
         :type Order: str
@@ -13705,22 +13931,28 @@ class ModifyVirusFileStatusRequest(AbstractModel):
         :param Status: 标记事件的状态，   
     EVENT_DEALED:事件处理
     EVENT_INGNORE"：事件忽略
-     EVENT_DEL:事件删除
-     EVENT_ADD_WHITE:事件加白
-     EVENT_PENDING: 事件待处理
+    EVENT_DEL:事件删除
+    EVENT_ADD_WHITE:事件加白
+    EVENT_PENDING: 事件待处理
+	EVENT_ISOLATE_CONTAINER: 隔离容器
+	EVENT_RESOTRE_CONTAINER: 恢复容器
         :type Status: str
         :param Remark: 事件备注
         :type Remark: str
+        :param AutoIsolate: 是否后续自动隔离相同MD5文件
+        :type AutoIsolate: bool
         """
         self.EventIdSet = None
         self.Status = None
         self.Remark = None
+        self.AutoIsolate = None
 
 
     def _deserialize(self, params):
         self.EventIdSet = params.get("EventIdSet")
         self.Status = params.get("Status")
         self.Remark = params.get("Remark")
+        self.AutoIsolate = params.get("AutoIsolate")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14376,6 +14608,25 @@ class ReverseShellEventInfo(AbstractModel):
         :type LatestFoundTime: str
         :param DstAddress: 目标地址
         :type DstAddress: str
+        :param ContainerNetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type ContainerNetStatus: str
+        :param ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+	"NODE_DESTROYED"      //节点已销毁
+	"CONTAINER_EXITED"    //容器已退出
+	"CONTAINER_DESTROYED" //容器已销毁
+	"SHARED_HOST"         // 容器与主机共享网络
+	"RESOURCE_LIMIT"      //隔离操作资源超限
+	"UNKNOW"              // 原因未知
+        :type ContainerNetSubStatus: str
+        :param ContainerIsolateOperationSrc: 容器隔离操作来源
+        :type ContainerIsolateOperationSrc: str
         """
         self.ProcessName = None
         self.ProcessPath = None
@@ -14393,6 +14644,9 @@ class ReverseShellEventInfo(AbstractModel):
         self.EventCount = None
         self.LatestFoundTime = None
         self.DstAddress = None
+        self.ContainerNetStatus = None
+        self.ContainerNetSubStatus = None
+        self.ContainerIsolateOperationSrc = None
 
 
     def _deserialize(self, params):
@@ -14412,6 +14666,9 @@ class ReverseShellEventInfo(AbstractModel):
         self.EventCount = params.get("EventCount")
         self.LatestFoundTime = params.get("LatestFoundTime")
         self.DstAddress = params.get("DstAddress")
+        self.ContainerNetStatus = params.get("ContainerNetStatus")
+        self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14605,6 +14862,25 @@ class RiskSyscallEventInfo(AbstractModel):
         :type EventCount: int
         :param LatestFoundTime: 最近生成时间
         :type LatestFoundTime: str
+        :param ContainerNetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type ContainerNetStatus: str
+        :param ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+"NODE_DESTROYED"      //节点已销毁
+"CONTAINER_EXITED"    //容器已退出
+"CONTAINER_DESTROYED" //容器已销毁
+"SHARED_HOST"         // 容器与主机共享网络
+"RESOURCE_LIMIT"      //隔离操作资源超限
+"UNKNOW"              // 原因未知
+        :type ContainerNetSubStatus: str
+        :param ContainerIsolateOperationSrc: 容器隔离操作来源
+        :type ContainerIsolateOperationSrc: str
         """
         self.ProcessName = None
         self.ProcessPath = None
@@ -14624,6 +14900,9 @@ class RiskSyscallEventInfo(AbstractModel):
         self.RuleExist = None
         self.EventCount = None
         self.LatestFoundTime = None
+        self.ContainerNetStatus = None
+        self.ContainerNetSubStatus = None
+        self.ContainerIsolateOperationSrc = None
 
 
     def _deserialize(self, params):
@@ -14645,6 +14924,9 @@ class RiskSyscallEventInfo(AbstractModel):
         self.RuleExist = params.get("RuleExist")
         self.EventCount = params.get("EventCount")
         self.LatestFoundTime = params.get("LatestFoundTime")
+        self.ContainerNetStatus = params.get("ContainerNetStatus")
+        self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15706,6 +15988,28 @@ OFFLINE: 离线
 INTERNAL: 服务内部错误
 VALIDATION: 参数非法
         :type SubStatus: str
+        :param ContainerNetStatus: 网络状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type ContainerNetStatus: str
+        :param ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+	"NODE_DESTROYED"      //节点已销毁
+	"CONTAINER_EXITED"    //容器已退出
+	"CONTAINER_DESTROYED" //容器已销毁
+	"SHARED_HOST"         // 容器与主机共享网络
+	"RESOURCE_LIMIT"      //隔离操作资源超限
+	"UNKNOW"              // 原因未知
+        :type ContainerNetSubStatus: str
+        :param ContainerIsolateOperationSrc: 容器隔离操作来源
+        :type ContainerIsolateOperationSrc: str
+        :param MD5: md5值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MD5: str
         """
         self.FileName = None
         self.FilePath = None
@@ -15722,6 +16026,10 @@ VALIDATION: 参数非法
         self.HarmDescribe = None
         self.SuggestScheme = None
         self.SubStatus = None
+        self.ContainerNetStatus = None
+        self.ContainerNetSubStatus = None
+        self.ContainerIsolateOperationSrc = None
+        self.MD5 = None
 
 
     def _deserialize(self, params):
@@ -15740,6 +16048,10 @@ VALIDATION: 参数非法
         self.HarmDescribe = params.get("HarmDescribe")
         self.SuggestScheme = params.get("SuggestScheme")
         self.SubStatus = params.get("SubStatus")
+        self.ContainerNetStatus = params.get("ContainerNetStatus")
+        self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
+        self.MD5 = params.get("MD5")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

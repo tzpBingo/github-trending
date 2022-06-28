@@ -1304,7 +1304,7 @@ PullVodPushLive -点播。
 SourceType 为直播（PullLivePushLive）只可以填1个，
 SourceType 为点播（PullVodPushLive）可以填多个，上限30个。
 当前支持的文件格式：flv，mp4，hls。
-当前支持的拉流协议：http，https，rtmp。
+当前支持的拉流协议：http，https，rtmp，rtmps，rtsp，srt。
 注意：
 1. 建议优先使用 flv 文件，对于 mp4 未交织好的文件轮播推流易产生卡顿，可通过点播转码进行重新交织后再轮播。
 2. 拒绝内网域名等攻击性拉流地址，如有使用，则做账号封禁处理。
@@ -1377,6 +1377,11 @@ ContinueBreakPoint：播放完当前正在播放的点播 url 后再使用新的
         :type ExtraCmd: str
         :param Comment: 任务描述，限制 512 字节。
         :type Comment: str
+        :param ToUrl: 完整目标 URL 地址。
+用法注意：如果使用该参数来传完整目标地址，则 DomainName, AppName, StreamName 需要传入空值，任务将会使用该 ToUrl 参数指定的目标地址。
+
+注意：签名时间需要超过任务结束时间，避免因签名过期造成任务失败。
+        :type ToUrl: str
         :param BackupSourceType: 备源的类型：
 PullLivePushLive -直播，
 PullVodPushLive -点播。
@@ -1404,6 +1409,7 @@ PullVodPushLive -点播。
         self.CallbackUrl = None
         self.ExtraCmd = None
         self.Comment = None
+        self.ToUrl = None
         self.BackupSourceType = None
         self.BackupSourceUrl = None
 
@@ -1424,6 +1430,7 @@ PullVodPushLive -点播。
         self.CallbackUrl = params.get("CallbackUrl")
         self.ExtraCmd = params.get("ExtraCmd")
         self.Comment = params.get("Comment")
+        self.ToUrl = params.get("ToUrl")
         self.BackupSourceType = params.get("BackupSourceType")
         self.BackupSourceUrl = params.get("BackupSourceUrl")
         memeber_set = set(params.keys())
@@ -1637,6 +1644,8 @@ class CreateLiveRecordTemplateRequest(AbstractModel):
         :type Mp3Param: :class:`tencentcloud.live.v20180801.models.RecordParam`
         :param RemoveWatermark: 是否去除水印，类型为慢直播时此参数无效。
         :type RemoveWatermark: bool
+        :param FlvSpecialParam: FLV 录制特殊参数。
+        :type FlvSpecialParam: :class:`tencentcloud.live.v20180801.models.FlvSpecialParam`
         """
         self.TemplateName = None
         self.Description = None
@@ -1648,6 +1657,7 @@ class CreateLiveRecordTemplateRequest(AbstractModel):
         self.HlsSpecialParam = None
         self.Mp3Param = None
         self.RemoveWatermark = None
+        self.FlvSpecialParam = None
 
 
     def _deserialize(self, params):
@@ -1673,6 +1683,9 @@ class CreateLiveRecordTemplateRequest(AbstractModel):
             self.Mp3Param = RecordParam()
             self.Mp3Param._deserialize(params.get("Mp3Param"))
         self.RemoveWatermark = params.get("RemoveWatermark")
+        if params.get("FlvSpecialParam") is not None:
+            self.FlvSpecialParam = FlvSpecialParam()
+            self.FlvSpecialParam._deserialize(params.get("FlvSpecialParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1984,6 +1997,12 @@ baseline/main/high。默认baseline
         :type AdaptBitratePercent: float
         :param ShortEdgeAsHeight: 是否以短边作为高度，0：否，1：是。默认0。
         :type ShortEdgeAsHeight: int
+        :param DRMType: DRM 加密类型，可选值：fairplay、normalaes、widevine。
+不传递或着为空字符串，清空之前的DRM配置。
+        :type DRMType: str
+        :param DRMTracks: DRM 加密项，可选值：AUDIO、SD、HD、UHD1、UHD2，后四个为一组，同组中的内容只能选一个。
+不传递或着为空字符串，清空之前的DRM配置。
+        :type DRMTracks: str
         """
         self.TemplateName = None
         self.VideoBitrate = None
@@ -2005,6 +2024,8 @@ baseline/main/high。默认baseline
         self.AiTransCode = None
         self.AdaptBitratePercent = None
         self.ShortEdgeAsHeight = None
+        self.DRMType = None
+        self.DRMTracks = None
 
 
     def _deserialize(self, params):
@@ -2028,6 +2049,8 @@ baseline/main/high。默认baseline
         self.AiTransCode = params.get("AiTransCode")
         self.AdaptBitratePercent = params.get("AdaptBitratePercent")
         self.ShortEdgeAsHeight = params.get("ShortEdgeAsHeight")
+        self.DRMType = params.get("DRMType")
+        self.DRMTracks = params.get("DRMTracks")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5357,6 +5380,72 @@ forbid：禁播。
         self.RequestId = params.get("RequestId")
 
 
+class DescribeLiveTimeShiftBillInfoListRequest(AbstractModel):
+    """DescribeLiveTimeShiftBillInfoList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: UTC开始时间，支持最近三个月的查询，查询时间最长跨度为一个月。
+
+使用 UTC 格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type StartTime: str
+        :param EndTime: UTC结束时间，支持最近三个月的查询，查询时间最长跨度为一个月。
+
+使用 UTC 格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type EndTime: str
+        :param PushDomains: 推流域名列表，若不传递此参数，则表示查询总体数据。
+        :type PushDomains: list of str
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.PushDomains = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.PushDomains = params.get("PushDomains")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeLiveTimeShiftBillInfoListResponse(AbstractModel):
+    """DescribeLiveTimeShiftBillInfoList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DataInfoList: 时移计费明细数据。
+        :type DataInfoList: list of TimeShiftBillData
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DataInfoList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("DataInfoList") is not None:
+            self.DataInfoList = []
+            for item in params.get("DataInfoList"):
+                obj = TimeShiftBillData()
+                obj._deserialize(item)
+                self.DataInfoList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeLiveTranscodeDetailInfoRequest(AbstractModel):
     """DescribeLiveTranscodeDetailInfo请求参数结构体
 
@@ -7438,6 +7527,30 @@ class EnableLiveDomainResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class FlvSpecialParam(AbstractModel):
+    """flv格式特殊配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UploadInRecording: 是否开启边录边传，仅flv格式有效。
+        :type UploadInRecording: bool
+        """
+        self.UploadInRecording = None
+
+
+    def _deserialize(self, params):
+        self.UploadInRecording = params.get("UploadInRecording")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ForbidLiveDomainRequest(AbstractModel):
     """ForbidLiveDomain请求参数结构体
 
@@ -7494,7 +7607,7 @@ class ForbidLiveStreamRequest(AbstractModel):
         :type StreamName: str
         :param ResumeTime: 恢复流的时间。UTC 格式，例如：2018-11-29T19:00:00Z。
 注意：
-1. 默认禁播7天，且最长支持禁播90天。
+1. 默认禁推7天，且最长支持禁推90天。
 2. 北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type ResumeTime: str
         :param Reason: 禁推原因。
@@ -8436,6 +8549,8 @@ class ModifyLiveRecordTemplateRequest(AbstractModel):
         :type Mp3Param: :class:`tencentcloud.live.v20180801.models.RecordParam`
         :param RemoveWatermark: 是否去除水印，类型为慢直播时此参数无效。
         :type RemoveWatermark: bool
+        :param FlvSpecialParam: FLV 录制定制参数。
+        :type FlvSpecialParam: :class:`tencentcloud.live.v20180801.models.FlvSpecialParam`
         """
         self.TemplateId = None
         self.TemplateName = None
@@ -8447,6 +8562,7 @@ class ModifyLiveRecordTemplateRequest(AbstractModel):
         self.HlsSpecialParam = None
         self.Mp3Param = None
         self.RemoveWatermark = None
+        self.FlvSpecialParam = None
 
 
     def _deserialize(self, params):
@@ -8472,6 +8588,9 @@ class ModifyLiveRecordTemplateRequest(AbstractModel):
             self.Mp3Param = RecordParam()
             self.Mp3Param._deserialize(params.get("Mp3Param"))
         self.RemoveWatermark = params.get("RemoveWatermark")
+        if params.get("FlvSpecialParam") is not None:
+            self.FlvSpecialParam = FlvSpecialParam()
+            self.FlvSpecialParam._deserialize(params.get("FlvSpecialParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8655,6 +8774,12 @@ baseline/main/high。
         :type AdaptBitratePercent: float
         :param ShortEdgeAsHeight: 是否以短边作为高度，0：否，1：是。默认0。
         :type ShortEdgeAsHeight: int
+        :param DRMType: DRM 加密类型，可选值：fairplay、normalaes、widevine。
+不传递或着为空字符串，清空之前的DRM配置。
+        :type DRMType: str
+        :param DRMTracks: DRM 加密项，可选值：AUDIO、SD、HD、UHD1、UHD2，后四个为一组，同组中的内容只能选一个。
+不传递或着为空字符串，清空之前的DRM配置。
+        :type DRMTracks: str
         """
         self.TemplateId = None
         self.Vcodec = None
@@ -8675,6 +8800,8 @@ baseline/main/high。
         self.FpsToOrig = None
         self.AdaptBitratePercent = None
         self.ShortEdgeAsHeight = None
+        self.DRMType = None
+        self.DRMTracks = None
 
 
     def _deserialize(self, params):
@@ -8697,6 +8824,8 @@ baseline/main/high。
         self.FpsToOrig = params.get("FpsToOrig")
         self.AdaptBitratePercent = params.get("AdaptBitratePercent")
         self.ShortEdgeAsHeight = params.get("ShortEdgeAsHeight")
+        self.DRMType = params.get("DRMType")
+        self.DRMTracks = params.get("DRMTracks")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9840,13 +9969,16 @@ class RecordTemplateInfo(AbstractModel):
         :param IsDelayLive: 0：普通直播，
 1：慢直播。
         :type IsDelayLive: int
-        :param HlsSpecialParam: HLS 录制定制参数
+        :param HlsSpecialParam: HLS 录制定制参数。
         :type HlsSpecialParam: :class:`tencentcloud.live.v20180801.models.HlsSpecialParam`
         :param Mp3Param: MP3 录制参数。
         :type Mp3Param: :class:`tencentcloud.live.v20180801.models.RecordParam`
         :param RemoveWatermark: 是否去除水印。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RemoveWatermark: bool
+        :param FlvSpecialParam: FLV 录制定制参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FlvSpecialParam: :class:`tencentcloud.live.v20180801.models.FlvSpecialParam`
         """
         self.TemplateId = None
         self.TemplateName = None
@@ -9859,6 +9991,7 @@ class RecordTemplateInfo(AbstractModel):
         self.HlsSpecialParam = None
         self.Mp3Param = None
         self.RemoveWatermark = None
+        self.FlvSpecialParam = None
 
 
     def _deserialize(self, params):
@@ -9885,6 +10018,9 @@ class RecordTemplateInfo(AbstractModel):
             self.Mp3Param = RecordParam()
             self.Mp3Param._deserialize(params.get("Mp3Param"))
         self.RemoveWatermark = params.get("RemoveWatermark")
+        if params.get("FlvSpecialParam") is not None:
+            self.FlvSpecialParam = FlvSpecialParam()
+            self.FlvSpecialParam._deserialize(params.get("FlvSpecialParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10558,6 +10694,12 @@ baseline/main/high。默认baseline
         :param ShortEdgeAsHeight: 是否以短边作为高度，0：否，1：是。默认0。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ShortEdgeAsHeight: int
+        :param DRMType: DRM 加密类型，可选值：fairplay、normalaes、widevine。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DRMType: str
+        :param DRMTracks: DRM 加密项，多个用|分割，可选值：AUDIO、SD、HD、UHD1、UHD2，后四个为一组，同组中的内容只能选一个。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DRMTracks: str
         """
         self.Vcodec = None
         self.VideoBitrate = None
@@ -10580,6 +10722,8 @@ baseline/main/high。默认baseline
         self.AiTransCode = None
         self.AdaptBitratePercent = None
         self.ShortEdgeAsHeight = None
+        self.DRMType = None
+        self.DRMTracks = None
 
 
     def _deserialize(self, params):
@@ -10604,6 +10748,48 @@ baseline/main/high。默认baseline
         self.AiTransCode = params.get("AiTransCode")
         self.AdaptBitratePercent = params.get("AdaptBitratePercent")
         self.ShortEdgeAsHeight = params.get("ShortEdgeAsHeight")
+        self.DRMType = params.get("DRMType")
+        self.DRMTracks = params.get("DRMTracks")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TimeShiftBillData(AbstractModel):
+    """时移计费明细数据。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 推流域名。
+        :type Domain: str
+        :param Duration: 时移文件时长，单位分钟。
+        :type Duration: float
+        :param StoragePeriod: 时移配置天数，单位天。
+        :type StoragePeriod: float
+        :param Time: 时间点，格式: yyyy-mm-ddTHH:MM:SSZ。
+        :type Time: str
+        :param TotalDuration: 时移总时长，单位分钟。
+        :type TotalDuration: float
+        """
+        self.Domain = None
+        self.Duration = None
+        self.StoragePeriod = None
+        self.Time = None
+        self.TotalDuration = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.Duration = params.get("Duration")
+        self.StoragePeriod = params.get("StoragePeriod")
+        self.Time = params.get("Time")
+        self.TotalDuration = params.get("TotalDuration")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

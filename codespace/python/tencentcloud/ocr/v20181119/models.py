@@ -3370,7 +3370,7 @@ POLIS  警察证
 IKAD   劳工证
 MyKid 儿童卡
         :type Type: str
-        :param Birthday: 出生日期（目前该字段仅支持IKAD劳工证）
+        :param Birthday: 出生日期（目前该字段仅支持IKAD劳工证、MyKad 身份证）
         :type Birthday: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3691,9 +3691,11 @@ FailedOperation.UnKnowError：表示识别失败；
 8：通用机打发票
 9：汽车票
 10：轮船票
-11：增值税发票（卷票 ）
+11：增值税发票（卷票）
 12：购车发票
 13：过路过桥费发票
+15：非税发票
+16：全电发票
         :type Type: int
         :param Rect: 识别出的图片在混贴票据图片中的位置信息。与Angel结合可以得出原图位置，组成RotatedRect((X+0.5\*Width,Y+0.5\*Height), (Width, Height), Angle)，详情可参考OpenCV文档。
         :type Rect: :class:`tencentcloud.ocr.v20181119.models.Rect`
@@ -3761,17 +3763,25 @@ class MixedInvoiceOCRRequest(AbstractModel):
 11：增值税发票（卷票 ）
 12：购车发票
 13：过路过桥费发票
+15：非税发票
+16：全电发票
         :type Types: list of int
+        :param ReturnOther: 是否识别其他类型发票，默认为Yes
+Yes：识别其他类型发票
+No：不识别其他类型发票
+        :type ReturnOther: str
         """
         self.ImageBase64 = None
         self.ImageUrl = None
         self.Types = None
+        self.ReturnOther = None
 
 
     def _deserialize(self, params):
         self.ImageBase64 = params.get("ImageBase64")
         self.ImageUrl = params.get("ImageUrl")
         self.Types = params.get("Types")
+        self.ReturnOther = params.get("ReturnOther")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3902,6 +3912,46 @@ class OrgCodeCertOCRResponse(AbstractModel):
         self.Address = params.get("Address")
         self.ValidDate = params.get("ValidDate")
         self.RequestId = params.get("RequestId")
+
+
+class PassInvoiceInfo(AbstractModel):
+    """通行费发票信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NumberPlate: 通行费车牌号
+        :type NumberPlate: str
+        :param Type: 通行费类型
+        :type Type: str
+        :param PassDateBegin: 通行日期起
+        :type PassDateBegin: str
+        :param PassDateEnd: 通行日期止
+        :type PassDateEnd: str
+        :param TaxClassifyCode: 税收分类编码
+        :type TaxClassifyCode: str
+        """
+        self.NumberPlate = None
+        self.Type = None
+        self.PassDateBegin = None
+        self.PassDateEnd = None
+        self.TaxClassifyCode = None
+
+
+    def _deserialize(self, params):
+        self.NumberPlate = params.get("NumberPlate")
+        self.Type = params.get("Type")
+        self.PassDateBegin = params.get("PassDateBegin")
+        self.PassDateEnd = params.get("PassDateEnd")
+        self.TaxClassifyCode = params.get("TaxClassifyCode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class PassportOCRRequest(AbstractModel):
@@ -4834,14 +4884,6 @@ class RecognizeHealthCodeOCRRequest(AbstractModel):
         :type ImageUrl: str
         :param Type: 需要识别的健康码类型列表，为空或不填表示默认为自动识别。
 0:自动识别
-
-1:粤康码
-
-2:随申码
-
-3:健康宝
-
-4.穗康码
         :type Type: int
         """
         self.ImageBase64 = None
@@ -4869,20 +4911,22 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Name: 持码人姓名，如：王*
+        :param Name: 持码人姓名，如：王*（允许返回空值）
         :type Name: str
-        :param IDNumber: 持码人身份证号，如：11**************01
+        :param IDNumber: 持码人身份证号，如：11**************01（允许返回空值）
         :type IDNumber: str
-        :param Time: 健康码更新时间
+        :param Time: 健康码更新时间（允许返回空值）
         :type Time: str
-        :param Color: 健康码颜色：绿色、黄色、红色
+        :param Color: 健康码颜色：绿色、黄色、红色（允许返回空值）
         :type Color: str
-        :param TestingInterval: 核酸检测间隔时长：24小时、48小时、72小时、暂无核酸检测记录
+        :param TestingInterval: 核酸检测间隔时长（允许返回空值）
         :type TestingInterval: str
-        :param TestingResult: 核酸检测结果：阴性、阳性、暂无核酸检测记录
+        :param TestingResult: 核酸检测结果：阴性、阳性、暂无核酸检测记录（允许返回空值）
         :type TestingResult: str
-        :param TestingTime: 核酸检测时间
+        :param TestingTime: 核酸检测时间（允许返回空值）
         :type TestingTime: str
+        :param Vaccination: 疫苗接种信息，返回接种针数或接种情况（允许返回空值）
+        :type Vaccination: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4893,6 +4937,7 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         self.TestingInterval = None
         self.TestingResult = None
         self.TestingTime = None
+        self.Vaccination = None
         self.RequestId = None
 
 
@@ -4904,6 +4949,134 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         self.TestingInterval = params.get("TestingInterval")
         self.TestingResult = params.get("TestingResult")
         self.TestingTime = params.get("TestingTime")
+        self.Vaccination = params.get("Vaccination")
+        self.RequestId = params.get("RequestId")
+
+
+class RecognizeIndonesiaIDCardOCRRequest(AbstractModel):
+    """RecognizeIndonesiaIDCardOCR请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageBase64: 图片的 Base64 值。
+支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
+支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
+图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
+        :type ImageBase64: str
+        :param ImageUrl: 图片的 Url 地址。
+支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
+支持的图片大小：所下载图片经 Base64 编码后不超过 7M。图片下载时间不超过 3 秒。
+图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
+非腾讯云存储的 Url 速度和稳定性可能受一定影响。
+        :type ImageUrl: str
+        :param ReturnHeadImage: 是否返回人像照片。
+        :type ReturnHeadImage: bool
+        :param Scene: 场景参数，默认值为V1
+可选值：
+V1
+V2
+        :type Scene: str
+        """
+        self.ImageBase64 = None
+        self.ImageUrl = None
+        self.ReturnHeadImage = None
+        self.Scene = None
+
+
+    def _deserialize(self, params):
+        self.ImageBase64 = params.get("ImageBase64")
+        self.ImageUrl = params.get("ImageUrl")
+        self.ReturnHeadImage = params.get("ReturnHeadImage")
+        self.Scene = params.get("Scene")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RecognizeIndonesiaIDCardOCRResponse(AbstractModel):
+    """RecognizeIndonesiaIDCardOCR返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NIK: 证件号码
+        :type NIK: str
+        :param Nama: 姓名
+        :type Nama: str
+        :param TempatTglLahir: 出生地/出生时间
+        :type TempatTglLahir: str
+        :param JenisKelamin: 性别
+        :type JenisKelamin: str
+        :param GolDarah: 血型
+        :type GolDarah: str
+        :param Alamat: 地址
+        :type Alamat: str
+        :param RTRW: 街道
+        :type RTRW: str
+        :param KelDesa: 村
+        :type KelDesa: str
+        :param Kecamatan: 地区
+        :type Kecamatan: str
+        :param Agama: 宗教信仰
+        :type Agama: str
+        :param StatusPerkawinan: 婚姻状况
+        :type StatusPerkawinan: str
+        :param Perkerjaan: 职业
+        :type Perkerjaan: str
+        :param KewargaNegaraan: 国籍
+        :type KewargaNegaraan: str
+        :param BerlakuHingga: 身份证有效期限
+        :type BerlakuHingga: str
+        :param IssuedDate: 发证日期
+        :type IssuedDate: str
+        :param Photo: 人像截图
+        :type Photo: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.NIK = None
+        self.Nama = None
+        self.TempatTglLahir = None
+        self.JenisKelamin = None
+        self.GolDarah = None
+        self.Alamat = None
+        self.RTRW = None
+        self.KelDesa = None
+        self.Kecamatan = None
+        self.Agama = None
+        self.StatusPerkawinan = None
+        self.Perkerjaan = None
+        self.KewargaNegaraan = None
+        self.BerlakuHingga = None
+        self.IssuedDate = None
+        self.Photo = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.NIK = params.get("NIK")
+        self.Nama = params.get("Nama")
+        self.TempatTglLahir = params.get("TempatTglLahir")
+        self.JenisKelamin = params.get("JenisKelamin")
+        self.GolDarah = params.get("GolDarah")
+        self.Alamat = params.get("Alamat")
+        self.RTRW = params.get("RTRW")
+        self.KelDesa = params.get("KelDesa")
+        self.Kecamatan = params.get("Kecamatan")
+        self.Agama = params.get("Agama")
+        self.StatusPerkawinan = params.get("StatusPerkawinan")
+        self.Perkerjaan = params.get("Perkerjaan")
+        self.KewargaNegaraan = params.get("KewargaNegaraan")
+        self.BerlakuHingga = params.get("BerlakuHingga")
+        self.IssuedDate = params.get("IssuedDate")
+        self.Photo = params.get("Photo")
         self.RequestId = params.get("RequestId")
 
 
@@ -4973,6 +5146,244 @@ class RecognizeOnlineTaxiItineraryOCRResponse(AbstractModel):
                 obj = OnlineTaxiItineraryInfo()
                 obj._deserialize(item)
                 self.OnlineTaxiItineraryInfos.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class RecognizePhilippinesDrivingLicenseOCRRequest(AbstractModel):
+    """RecognizePhilippinesDrivingLicenseOCR请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ReturnHeadImage: 是否返回人像照片。
+        :type ReturnHeadImage: bool
+        :param ImageBase64: 图片的 Base64 值。
+支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
+支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
+图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
+        :type ImageBase64: str
+        :param ImageUrl: 图片的 Url 地址。
+支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
+支持的图片大小：所下载图片经 Base64 编码后不超过 7M。图片下载时间不超过 3 秒。
+图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
+非腾讯云存储的 Url 速度和稳定性可能受一定影响。
+        :type ImageUrl: str
+        """
+        self.ReturnHeadImage = None
+        self.ImageBase64 = None
+        self.ImageUrl = None
+
+
+    def _deserialize(self, params):
+        self.ReturnHeadImage = params.get("ReturnHeadImage")
+        self.ImageBase64 = params.get("ImageBase64")
+        self.ImageUrl = params.get("ImageUrl")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RecognizePhilippinesDrivingLicenseOCRResponse(AbstractModel):
+    """RecognizePhilippinesDrivingLicenseOCR返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param HeadPortrait: 人像照片Base64后的结果
+        :type HeadPortrait: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Name: 姓名
+        :type Name: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param LastName: 姓氏
+        :type LastName: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param FirstName: 首姓名
+        :type FirstName: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param MiddleName: 中间姓名
+        :type MiddleName: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Nationality: 国籍
+        :type Nationality: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Sex: 性别
+        :type Sex: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Address: 地址
+        :type Address: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param LicenseNo: 证号
+        :type LicenseNo: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param ExpiresDate: 有效期
+        :type ExpiresDate: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param AgencyCode: 机构代码
+        :type AgencyCode: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Birthday: 出生日期
+        :type Birthday: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.HeadPortrait = None
+        self.Name = None
+        self.LastName = None
+        self.FirstName = None
+        self.MiddleName = None
+        self.Nationality = None
+        self.Sex = None
+        self.Address = None
+        self.LicenseNo = None
+        self.ExpiresDate = None
+        self.AgencyCode = None
+        self.Birthday = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("HeadPortrait") is not None:
+            self.HeadPortrait = TextDetectionResult()
+            self.HeadPortrait._deserialize(params.get("HeadPortrait"))
+        if params.get("Name") is not None:
+            self.Name = TextDetectionResult()
+            self.Name._deserialize(params.get("Name"))
+        if params.get("LastName") is not None:
+            self.LastName = TextDetectionResult()
+            self.LastName._deserialize(params.get("LastName"))
+        if params.get("FirstName") is not None:
+            self.FirstName = TextDetectionResult()
+            self.FirstName._deserialize(params.get("FirstName"))
+        if params.get("MiddleName") is not None:
+            self.MiddleName = TextDetectionResult()
+            self.MiddleName._deserialize(params.get("MiddleName"))
+        if params.get("Nationality") is not None:
+            self.Nationality = TextDetectionResult()
+            self.Nationality._deserialize(params.get("Nationality"))
+        if params.get("Sex") is not None:
+            self.Sex = TextDetectionResult()
+            self.Sex._deserialize(params.get("Sex"))
+        if params.get("Address") is not None:
+            self.Address = TextDetectionResult()
+            self.Address._deserialize(params.get("Address"))
+        if params.get("LicenseNo") is not None:
+            self.LicenseNo = TextDetectionResult()
+            self.LicenseNo._deserialize(params.get("LicenseNo"))
+        if params.get("ExpiresDate") is not None:
+            self.ExpiresDate = TextDetectionResult()
+            self.ExpiresDate._deserialize(params.get("ExpiresDate"))
+        if params.get("AgencyCode") is not None:
+            self.AgencyCode = TextDetectionResult()
+            self.AgencyCode._deserialize(params.get("AgencyCode"))
+        if params.get("Birthday") is not None:
+            self.Birthday = TextDetectionResult()
+            self.Birthday._deserialize(params.get("Birthday"))
+        self.RequestId = params.get("RequestId")
+
+
+class RecognizePhilippinesVoteIDOCRRequest(AbstractModel):
+    """RecognizePhilippinesVoteIDOCR请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ReturnHeadImage: 是否返回人像照片。
+        :type ReturnHeadImage: bool
+        :param ImageBase64: 图片的 Base64 值。
+支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
+支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
+图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
+        :type ImageBase64: str
+        :param ImageUrl: 图片的 Url 地址。
+支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
+支持的图片大小：所下载图片经 Base64 编码后不超过 7M。图片下载时间不超过 3 秒。
+图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
+非腾讯云存储的 Url 速度和稳定性可能受一定影响。
+        :type ImageUrl: str
+        """
+        self.ReturnHeadImage = None
+        self.ImageBase64 = None
+        self.ImageUrl = None
+
+
+    def _deserialize(self, params):
+        self.ReturnHeadImage = params.get("ReturnHeadImage")
+        self.ImageBase64 = params.get("ImageBase64")
+        self.ImageUrl = params.get("ImageUrl")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RecognizePhilippinesVoteIDOCRResponse(AbstractModel):
+    """RecognizePhilippinesVoteIDOCR返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param HeadPortrait: 人像照片Base64后的结果
+        :type HeadPortrait: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param VIN: 菲律宾VoteID的VIN
+        :type VIN: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param FirstName: 姓名
+        :type FirstName: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param LastName: 姓氏
+        :type LastName: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Birthday: 出生日期
+        :type Birthday: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param CivilStatus: 婚姻状况
+        :type CivilStatus: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Citizenship: 国籍
+        :type Citizenship: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param Address: 地址
+        :type Address: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param PrecinctNo: 地区
+        :type PrecinctNo: :class:`tencentcloud.ocr.v20181119.models.TextDetectionResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.HeadPortrait = None
+        self.VIN = None
+        self.FirstName = None
+        self.LastName = None
+        self.Birthday = None
+        self.CivilStatus = None
+        self.Citizenship = None
+        self.Address = None
+        self.PrecinctNo = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("HeadPortrait") is not None:
+            self.HeadPortrait = TextDetectionResult()
+            self.HeadPortrait._deserialize(params.get("HeadPortrait"))
+        if params.get("VIN") is not None:
+            self.VIN = TextDetectionResult()
+            self.VIN._deserialize(params.get("VIN"))
+        if params.get("FirstName") is not None:
+            self.FirstName = TextDetectionResult()
+            self.FirstName._deserialize(params.get("FirstName"))
+        if params.get("LastName") is not None:
+            self.LastName = TextDetectionResult()
+            self.LastName._deserialize(params.get("LastName"))
+        if params.get("Birthday") is not None:
+            self.Birthday = TextDetectionResult()
+            self.Birthday._deserialize(params.get("Birthday"))
+        if params.get("CivilStatus") is not None:
+            self.CivilStatus = TextDetectionResult()
+            self.CivilStatus._deserialize(params.get("CivilStatus"))
+        if params.get("Citizenship") is not None:
+            self.Citizenship = TextDetectionResult()
+            self.Citizenship._deserialize(params.get("Citizenship"))
+        if params.get("Address") is not None:
+            self.Address = TextDetectionResult()
+            self.Address._deserialize(params.get("Address"))
+        if params.get("PrecinctNo") is not None:
+            self.PrecinctNo = TextDetectionResult()
+            self.PrecinctNo._deserialize(params.get("PrecinctNo"))
         self.RequestId = params.get("RequestId")
 
 
@@ -5547,6 +5958,40 @@ class RideHailingTransportLicenseOCRResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class SealInfo(AbstractModel):
+    """印章信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SealBody: 印章主体内容
+        :type SealBody: str
+        :param Location: 印章坐标
+        :type Location: :class:`tencentcloud.ocr.v20181119.models.Rect`
+        :param OtherTexts: 印章其它文本内容
+        :type OtherTexts: list of str
+        """
+        self.SealBody = None
+        self.Location = None
+        self.OtherTexts = None
+
+
+    def _deserialize(self, params):
+        self.SealBody = params.get("SealBody")
+        if params.get("Location") is not None:
+            self.Location = Rect()
+            self.Location._deserialize(params.get("Location"))
+        self.OtherTexts = params.get("OtherTexts")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SealOCRRequest(AbstractModel):
     """SealOCR请求参数结构体
 
@@ -5590,12 +6035,15 @@ class SealOCRResponse(AbstractModel):
         :type Location: :class:`tencentcloud.ocr.v20181119.models.Rect`
         :param OtherTexts: 其它文本内容
         :type OtherTexts: list of str
+        :param SealInfos: 全部印章信息
+        :type SealInfos: list of SealInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.SealBody = None
         self.Location = None
         self.OtherTexts = None
+        self.SealInfos = None
         self.RequestId = None
 
 
@@ -5605,6 +6053,12 @@ class SealOCRResponse(AbstractModel):
             self.Location = Rect()
             self.Location._deserialize(params.get("Location"))
         self.OtherTexts = params.get("OtherTexts")
+        if params.get("SealInfos") is not None:
+            self.SealInfos = []
+            for item in params.get("SealInfos"):
+                obj = SealInfo()
+                obj._deserialize(item)
+                self.SealInfos.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -5754,7 +6208,7 @@ class SmartStructuralOCRRequest(AbstractModel):
 支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
 图片的 ImageUrl、ImageBase64 必须提供一个，如果都提供，只使用 ImageUrl。
         :type ImageBase64: str
-        :param ItemNames: 需返回的字段名称，例：
+        :param ItemNames: 自定义结构化功能需返回的字段名称，例：
 若客户只想返回姓名、性别两个字段的识别结果，则输入
 ItemNames=["姓名","性别"]
         :type ItemNames: list of str
@@ -6422,6 +6876,39 @@ class TextDetectionEn(AbstractModel):
                 obj = Words()
                 obj._deserialize(item)
                 self.Words.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TextDetectionResult(AbstractModel):
+    """识别结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Value: 识别出的文本行内容
+        :type Value: str
+        :param Polygon: 坐标，以四个顶点坐标表示
+        :type Polygon: list of Coord
+        """
+        self.Value = None
+        self.Polygon = None
+
+
+    def _deserialize(self, params):
+        self.Value = params.get("Value")
+        if params.get("Polygon") is not None:
+            self.Polygon = []
+            for item in params.get("Polygon"):
+                obj = Coord()
+                obj._deserialize(item)
+                self.Polygon.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7228,15 +7715,17 @@ class VatInvoice(AbstractModel):
         :type Remark: str
         :param MachineNo: 机器编码
         :type MachineNo: str
-        :param Type: 发票类型
-01：专用发票 
-02：货运发票
-03：机动车发票 
-04：普通发票 
-10：电子发票 
-11：卷式发票 
-14：通行费发票 
-15：二手车发票
+        :param Type: 票种类型
+01：增值税专用发票，
+02：货运运输业增值税专用发票，
+03：机动车销售统一发票，
+04：增值税普通发票，
+08：增值税电子专用发票（含全电，全电仅新版接口支持），
+10：增值税电子普通发票（含全电，全电仅新版接口支持），
+11：增值税普通发票（卷式），
+14：增值税电子（通行费）发票，
+15：二手车销售统一发票，
+32：深圳区块链发票
         :type Type: str
         :param CheckCode: 检验码
         :type CheckCode: str
@@ -7551,6 +8040,95 @@ class VatInvoiceUserInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class VatInvoiceVerifyNewRequest(AbstractModel):
+    """VatInvoiceVerifyNew请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InvoiceNo: 发票号码，8位、20位（全电票）
+        :type InvoiceNo: str
+        :param InvoiceDate: 开票日期（不支持当天发票查询，支持五年以内开具的发票），格式：“YYYY-MM-DD”，如：2019-12-20。
+        :type InvoiceDate: str
+        :param InvoiceCode: 发票代码（10或12 位），全电发票为空。查验未成功超过5次后当日无法再查。
+        :type InvoiceCode: str
+        :param InvoiceKind: 票种类型 01:增值税专用发票， 02:货运运输业增值税专用发 票， 03:机动车销售统一发票， 04:增值税普通发票， 08:增值税电子专用发票(含全电)， 10:增值税电子普通发票(含全电)， 11:增值税普通发票(卷式)， 14:增值税电子(通行费)发 票， 15:二手车销售统一发票， 32:深圳区块链发票(云南区块链因业务调整现已下线)。
+        :type InvoiceKind: str
+        :param CheckCode: 校验码后 6 位，增值税普通发票、增值税电子普通发票、增值税普通发票(卷式)、增值税电子普通发票(通行费)时必填;
+区块链为 5 位
+        :type CheckCode: str
+        :param Amount: 不含税金额，增值税专用发票、增值税电子专用发票、机动车销售统一发票、二手车销售统一发票、区块链发票时必填; 全电发票为价税合计(含税金额)
+        :type Amount: str
+        """
+        self.InvoiceNo = None
+        self.InvoiceDate = None
+        self.InvoiceCode = None
+        self.InvoiceKind = None
+        self.CheckCode = None
+        self.Amount = None
+
+
+    def _deserialize(self, params):
+        self.InvoiceNo = params.get("InvoiceNo")
+        self.InvoiceDate = params.get("InvoiceDate")
+        self.InvoiceCode = params.get("InvoiceCode")
+        self.InvoiceKind = params.get("InvoiceKind")
+        self.CheckCode = params.get("CheckCode")
+        self.Amount = params.get("Amount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VatInvoiceVerifyNewResponse(AbstractModel):
+    """VatInvoiceVerifyNew返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Invoice: 增值税发票信息，详情请点击左侧链接。
+        :type Invoice: :class:`tencentcloud.ocr.v20181119.models.VatInvoice`
+        :param VehicleInvoiceInfo: 机动车销售统一发票信息
+        :type VehicleInvoiceInfo: :class:`tencentcloud.ocr.v20181119.models.VehicleInvoiceInfo`
+        :param UsedVehicleInvoiceInfo: 二手车销售统一发票信息
+        :type UsedVehicleInvoiceInfo: :class:`tencentcloud.ocr.v20181119.models.UsedVehicleInvoiceInfo`
+        :param PassInvoiceInfoList: 通行费发票信息
+        :type PassInvoiceInfoList: list of PassInvoiceInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Invoice = None
+        self.VehicleInvoiceInfo = None
+        self.UsedVehicleInvoiceInfo = None
+        self.PassInvoiceInfoList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Invoice") is not None:
+            self.Invoice = VatInvoice()
+            self.Invoice._deserialize(params.get("Invoice"))
+        if params.get("VehicleInvoiceInfo") is not None:
+            self.VehicleInvoiceInfo = VehicleInvoiceInfo()
+            self.VehicleInvoiceInfo._deserialize(params.get("VehicleInvoiceInfo"))
+        if params.get("UsedVehicleInvoiceInfo") is not None:
+            self.UsedVehicleInvoiceInfo = UsedVehicleInvoiceInfo()
+            self.UsedVehicleInvoiceInfo._deserialize(params.get("UsedVehicleInvoiceInfo"))
+        if params.get("PassInvoiceInfoList") is not None:
+            self.PassInvoiceInfoList = []
+            for item in params.get("PassInvoiceInfoList"):
+                obj = PassInvoiceInfo()
+                obj._deserialize(item)
+                self.PassInvoiceInfoList.append(obj)
+        self.RequestId = params.get("RequestId")
 
 
 class VatInvoiceVerifyRequest(AbstractModel):

@@ -26,6 +26,36 @@ class EmrClient(AbstractClient):
     _service = 'emr'
 
 
+    def AddUsersForUserManager(self, request):
+        """该接口支持安装了OpenLdap组件的集群。
+        新增用户列表（用户管理）。
+
+        :param request: Request instance for AddUsersForUserManager.
+        :type request: :class:`tencentcloud.emr.v20190103.models.AddUsersForUserManagerRequest`
+        :rtype: :class:`tencentcloud.emr.v20190103.models.AddUsersForUserManagerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AddUsersForUserManager", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.AddUsersForUserManagerResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateInstance(self, request):
         """创建EMR集群实例
 
@@ -171,6 +201,35 @@ class EmrClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeInstancesList(self, request):
+        """EMR集群实例列表查询
+
+        :param request: Request instance for DescribeInstancesList.
+        :type request: :class:`tencentcloud.emr.v20190103.models.DescribeInstancesListRequest`
+        :rtype: :class:`tencentcloud.emr.v20190103.models.DescribeInstancesListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeInstancesList", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeInstancesListResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeJobFlow(self, request):
         """查询流程任务
 
@@ -215,6 +274,36 @@ class EmrClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeResourceScheduleResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeUsersForUserManager(self, request):
+        """该接口支持安装了OpenLdap组件的集群。
+        批量导出用户。对于kerberos集群，如果需要kertab文件下载地址，可以将NeedKeytabInfo设置为true；注意SupportDownLoadKeyTab为true，但是DownLoadKeyTabUrl为空字符串，表示keytab文件在后台没有准备好（正在生成）。
+
+        :param request: Request instance for DescribeUsersForUserManager.
+        :type request: :class:`tencentcloud.emr.v20190103.models.DescribeUsersForUserManagerRequest`
+        :rtype: :class:`tencentcloud.emr.v20190103.models.DescribeUsersForUserManagerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUsersForUserManager", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeUsersForUserManagerResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

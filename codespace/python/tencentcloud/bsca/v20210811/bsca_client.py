@@ -140,3 +140,32 @@ class BscaClient(AbstractClient):
                 raise
             else:
                 raise TencentCloudSDKException(e.message, e.message)
+
+
+    def MatchKBPURLList(self, request):
+        """本接口(MatchKBPURLList)用于在知识库中匹配与特征对应的开源组件列表。
+
+        :param request: Request instance for MatchKBPURLList.
+        :type request: :class:`tencentcloud.bsca.v20210811.models.MatchKBPURLListRequest`
+        :rtype: :class:`tencentcloud.bsca.v20210811.models.MatchKBPURLListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("MatchKBPURLList", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.MatchKBPURLListResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)

@@ -152,6 +152,45 @@ class CancelCertificateOrderResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CertHostingInfo(AbstractModel):
+    """云资源配置详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CertId: 证书ID
+        :type CertId: str
+        :param RenewCertId: 已替换的新证书ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RenewCertId: str
+        :param ResourceType: 云资源托管 ，CDN或CLB：部分开启，CDN,CLB：已开启，null：未开启托管
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceType: str
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        """
+        self.CertId = None
+        self.RenewCertId = None
+        self.ResourceType = None
+        self.CreateTime = None
+
+
+    def _deserialize(self, params):
+        self.CertId = params.get("CertId")
+        self.RenewCertId = params.get("RenewCertId")
+        self.ResourceType = params.get("ResourceType")
+        self.CreateTime = params.get("CreateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CertificateExtra(AbstractModel):
     """获取证书列表（DescribeCertificates）返回参数键为 Certificates 数组下，key为CertificateExtra 的内容。
 
@@ -294,6 +333,9 @@ class Certificates(AbstractModel):
         :param Tags: 标签列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tags
+        :param IsIgnore: 是否已忽略到期通知
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsIgnore: bool
         """
         self.OwnerUin = None
         self.ProjectId = None
@@ -325,6 +367,7 @@ class Certificates(AbstractModel):
         self.BoundResource = None
         self.Deployable = None
         self.Tags = None
+        self.IsIgnore = None
 
 
     def _deserialize(self, params):
@@ -367,6 +410,7 @@ class Certificates(AbstractModel):
                 obj = Tags()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.IsIgnore = params.get("IsIgnore")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -888,6 +932,15 @@ class DescribeCertificateDetailResponse(AbstractModel):
         :param Tags: 关联标签列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tags
+        :param RootCert: 根证书。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RootCert: :class:`tencentcloud.ssl.v20191205.models.RootCertificates`
+        :param EncryptCert: 国密加密证书
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EncryptCert: str
+        :param EncryptPrivateKey: 国密加密私钥
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EncryptPrivateKey: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -925,6 +978,9 @@ class DescribeCertificateDetailResponse(AbstractModel):
         self.RenewAble = None
         self.Deployable = None
         self.Tags = None
+        self.RootCert = None
+        self.EncryptCert = None
+        self.EncryptPrivateKey = None
         self.RequestId = None
 
 
@@ -974,6 +1030,11 @@ class DescribeCertificateDetailResponse(AbstractModel):
                 obj = Tags()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        if params.get("RootCert") is not None:
+            self.RootCert = RootCertificates()
+            self.RootCert._deserialize(params.get("RootCert"))
+        self.EncryptCert = params.get("EncryptCert")
+        self.EncryptPrivateKey = params.get("EncryptPrivateKey")
         self.RequestId = params.get("RequestId")
 
 
@@ -1776,6 +1837,57 @@ class DvAuths(AbstractModel):
         
 
 
+class HostCertificateRequest(AbstractModel):
+    """HostCertificate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CertificateId: 证书ID
+        :type CertificateId: str
+        :param ResourceType: 资源类型：目前仅限于CLB,CDN
+        :type ResourceType: list of str
+        """
+        self.CertificateId = None
+        self.ResourceType = None
+
+
+    def _deserialize(self, params):
+        self.CertificateId = params.get("CertificateId")
+        self.ResourceType = params.get("ResourceType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class HostCertificateResponse(AbstractModel):
+    """HostCertificate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CertHostingInfo: 云资源配置详情
+        :type CertHostingInfo: :class:`tencentcloud.ssl.v20191205.models.CertHostingInfo`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.CertHostingInfo = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("CertHostingInfo") is not None:
+            self.CertHostingInfo = CertHostingInfo()
+            self.CertHostingInfo._deserialize(params.get("CertHostingInfo"))
+        self.RequestId = params.get("RequestId")
+
+
 class ManagerInfo(AbstractModel):
     """管理人信息
 
@@ -2205,6 +2317,41 @@ class RevokeDomainValidateAuths(AbstractModel):
         self.DomainValidateAuthKey = params.get("DomainValidateAuthKey")
         self.DomainValidateAuthValue = params.get("DomainValidateAuthValue")
         self.DomainValidateAuthDomain = params.get("DomainValidateAuthDomain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RootCertificates(AbstractModel):
+    """根证书
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Sign: 国密签名证书
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Sign: str
+        :param Encrypt: 国密加密证书
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Encrypt: str
+        :param Standard: 标准证书
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Standard: str
+        """
+        self.Sign = None
+        self.Encrypt = None
+        self.Standard = None
+
+
+    def _deserialize(self, params):
+        self.Sign = params.get("Sign")
+        self.Encrypt = params.get("Encrypt")
+        self.Standard = params.get("Standard")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

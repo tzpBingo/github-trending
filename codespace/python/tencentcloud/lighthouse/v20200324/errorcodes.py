@@ -362,6 +362,12 @@ UNAUTHORIZEDOPERATION_MFAEXPIRED = 'UnauthorizedOperation.MFAExpired'
 # MFA 不存在。
 UNAUTHORIZEDOPERATION_MFANOTFOUND = 'UnauthorizedOperation.MFANotFound'
 
+# 无权限。
+UNAUTHORIZEDOPERATION_NOPERMISSION = 'UnauthorizedOperation.NoPermission'
+
+# 未知参数错误。
+UNKNOWNPARAMETER = 'UnknownParameter'
+
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
@@ -442,6 +448,9 @@ UNSUPPORTEDOPERATION_RESOURCENOTRETURNABLE = 'UnsupportedOperation.ResourceNotRe
 
 # 快照忙。
 UNSUPPORTEDOPERATION_SNAPSHOTBUSY = 'UnsupportedOperation.SnapshotBusy'
+
+# 系统忙。
+UNSUPPORTEDOPERATION_SYSTEMBUSY = 'UnsupportedOperation.SystemBusy'
 
 # Windows实例不支持绑定密钥对。
 UNSUPPORTEDOPERATION_WINDOWSNOTALLOWTOASSOCIATEKEYPAIR = 'UnsupportedOperation.WindowsNotAllowToAssociateKeyPair'

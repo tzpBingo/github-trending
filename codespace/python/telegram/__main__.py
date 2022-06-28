@@ -16,12 +16,10 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-# pylint: disable=C0114
+# pylint: disable=missing-module-docstring
 import subprocess
 import sys
 from typing import Optional
-
-import certifi
 
 from . import __version__ as telegram_ver
 from .constants import BOT_API_VERSION
@@ -39,16 +37,15 @@ def _git_revision() -> Optional[str]:
 
 def print_ver_info() -> None:  # skipcq: PY-D0003
     git_revision = _git_revision()
-    print(f'python-telegram-bot {telegram_ver}' + (f' ({git_revision})' if git_revision else ''))
-    print(f'Bot API {BOT_API_VERSION}')
-    print(f'certifi {certifi.__version__}')  # type: ignore[attr-defined]
-    sys_version = sys.version.replace('\n', ' ')
-    print(f'Python {sys_version}')
+    print(f"python-telegram-bot {telegram_ver}" + (f" ({git_revision})" if git_revision else ""))
+    print(f"Bot API {BOT_API_VERSION}")
+    sys_version = sys.version.replace("\n", " ")
+    print(f"Python {sys_version}")
 
 
 def main() -> None:  # skipcq: PY-D0003
     print_ver_info()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

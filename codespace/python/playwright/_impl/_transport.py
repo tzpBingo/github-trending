@@ -110,7 +110,6 @@ class PipeTransport(Transport):
 
     async def wait_until_stopped(self) -> None:
         await self._stopped_future
-        await self._proc.wait()
 
     async def connect(self) -> None:
         self._stopped_future: asyncio.Future = asyncio.Future()
@@ -147,22 +146,30 @@ class PipeTransport(Transport):
         while not self._stopped:
             try:
                 buffer = await self._proc.stdout.readexactly(4)
+                if self._stopped:
+                    break
                 length = int.from_bytes(buffer, byteorder="little", signed=False)
                 buffer = bytes(0)
                 while length:
                     to_read = min(length, 32768)
                     data = await self._proc.stdout.readexactly(to_read)
+                    if self._stopped:
+                        break
                     length -= to_read
                     if len(buffer):
                         buffer = buffer + data
                     else:
                         buffer = data
+                if self._stopped:
+                    break
 
                 obj = self.deserialize_message(buffer)
                 self.on_message(obj)
             except asyncio.IncompleteReadError:
                 break
             await asyncio.sleep(0)
+
+        await self._proc.wait()
         self._stopped_future.set_result(None)
 
     def send(self, message: Dict) -> None:
@@ -203,7 +210,9 @@ class WebSocketTransport(AsyncIOEventEmitter, Transport):
     async def connect(self) -> None:
         try:
             self._connection = await websocket_connect(
-                self.ws_endpoint, extra_headers=self.headers
+                self.ws_endpoint,
+                extra_headers=self.headers,
+                max_size=256 * 1024 * 1024,  # 256Mb
             )
         except Exception as exc:
             self.on_error_future.set_exception(Error(f"websocket.connect: {str(exc)}"))

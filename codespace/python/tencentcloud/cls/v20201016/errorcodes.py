@@ -107,6 +107,9 @@ INVALIDPARAMETER_DATAFROMTASKNOTEXIST = 'InvalidParameter.DataFromTaskNotExist'
 # 数据库唯一键冲突。
 INVALIDPARAMETER_DBDUPLICATION = 'InvalidParameter.DbDuplication'
 
+# 导出任务已经存在。
+INVALIDPARAMETER_EXPORTCONFLICT = 'InvalidParameter.ExportConflict'
+
 # 低频不支持配置kv和tag索引。
 INVALIDPARAMETER_INVALIDINDEXRULEFORSEARCHLOW = 'InvalidParameter.InValidIndexRuleForSearchLow'
 
@@ -156,7 +159,7 @@ LIMITEXCEEDED_MACHINEGROUP = 'LimitExceeded.MachineGroup'
 LIMITEXCEEDED_MACHINEGROUPIP = 'LimitExceeded.MachineGroupIp'
 
 # 机器组Label超过限制。
-LIMITEXCEEDED_MACHINEGROUPLABELS = 'LimitExceeded.MachineGroupLabels'
+LIMITEXCEEDED_MACHINEGROUPIPLABELS = 'LimitExceeded.MachineGroupIpLabels'
 
 # 分区超过限制。
 LIMITEXCEEDED_PARTITION = 'LimitExceeded.Partition'

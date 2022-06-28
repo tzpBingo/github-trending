@@ -15,7 +15,7 @@
 import asyncio
 import pathlib
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Optional, Union, cast
+from typing import TYPE_CHECKING, Dict, List, Optional, Pattern, Union, cast
 
 from playwright._impl._api_structures import (
     Geolocation,
@@ -36,7 +36,10 @@ from playwright._impl._helper import (
     ColorScheme,
     Env,
     ForcedColors,
+    HarContentPolicy,
+    HarMode,
     ReducedMotion,
+    ServiceWorkersPolicy,
     locals_to_params,
 )
 from playwright._impl._transport import WebSocketTransport
@@ -89,7 +92,6 @@ class BrowserType(ChannelOwner):
         browser = cast(
             Browser, from_channel(await self._channel.send("launch", params))
         )
-        browser._local_utils = self._playwright._utils
         return browser
 
     async def launch_persistent_context(
@@ -138,6 +140,10 @@ class BrowserType(ChannelOwner):
         recordVideoSize: ViewportSize = None,
         baseURL: str = None,
         strictSelectors: bool = None,
+        serviceWorkers: ServiceWorkersPolicy = None,
+        recordHarUrlFilter: Union[Pattern, str] = None,
+        recordHarMode: HarMode = None,
+        recordHarContent: HarContentPolicy = None,
     ) -> BrowserContext:
         userDataDir = str(Path(userDataDir))
         params = locals_to_params(locals())
@@ -148,7 +154,6 @@ class BrowserType(ChannelOwner):
             from_channel(await self._channel.send("launchPersistentContext", params)),
         )
         context._options = params
-        context.tracing._local_utils = self._playwright._utils
         return context
 
     async def connect_over_cdp(
@@ -161,7 +166,6 @@ class BrowserType(ChannelOwner):
         params = locals_to_params(locals())
         response = await self._channel.send_return_as_dict("connectOverCDP", params)
         browser = cast(Browser, from_channel(response["browser"]))
-        browser._local_utils = self._playwright._utils
 
         default_context = cast(
             Optional[BrowserContext],
@@ -192,6 +196,7 @@ class BrowserType(ChannelOwner):
             self._connection._object_factory,
             transport,
             self._connection._loop,
+            local_utils=self._connection.local_utils,
         )
         connection.mark_as_remote()
         connection._is_sync = self._connection._is_sync
@@ -214,7 +219,6 @@ class BrowserType(ChannelOwner):
         assert pre_launched_browser
         browser = cast(Browser, from_channel(pre_launched_browser))
         browser._should_close_connection_on_close = True
-        browser._local_utils = self._playwright._utils
 
         def handle_transport_close() -> None:
             for context in browser.contexts:

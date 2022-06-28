@@ -437,6 +437,9 @@ UNKNOWNPARAMETER = 'UnknownParameter'
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
+# 账号余额不足
+UNSUPPORTEDOPERATION_ACCOUNTARREARS = 'UnsupportedOperation.AccountArrears'
+
 # 密钥已绑定使用计划。
 UNSUPPORTEDOPERATION_ALREADYBINDUSAGEPLAN = 'UnsupportedOperation.AlreadyBindUsagePlan'
 

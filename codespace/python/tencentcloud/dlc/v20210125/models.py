@@ -350,6 +350,9 @@ string|tinyint|smallint|int|bigint|boolean|float|double|decimal|timestamp|date|b
         :param ModifiedTime: 字段修改时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type ModifiedTime: str
+        :param IsPartition: 是否为分区字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsPartition: bool
         """
         self.Name = None
         self.Type = None
@@ -360,6 +363,7 @@ string|tinyint|smallint|int|bigint|boolean|float|double|decimal|timestamp|date|b
         self.Position = None
         self.CreateTime = None
         self.ModifiedTime = None
+        self.IsPartition = None
 
 
     def _deserialize(self, params):
@@ -372,6 +376,7 @@ string|tinyint|smallint|int|bigint|boolean|float|double|decimal|timestamp|date|b
         self.Position = params.get("Position")
         self.CreateTime = params.get("CreateTime")
         self.ModifiedTime = params.get("ModifiedTime")
+        self.IsPartition = params.get("IsPartition")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -618,6 +623,180 @@ class CreateScriptResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class CreateSparkAppRequest(AbstractModel):
+    """CreateSparkApp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppName: spark应用名
+        :type AppName: str
+        :param AppType: 1代表spark jar应用，2代表spark streaming应用
+        :type AppType: int
+        :param DataEngine: 执行spark作业的数据引擎
+        :type DataEngine: str
+        :param AppFile: spark应用的执行入口
+        :type AppFile: str
+        :param RoleArn: 执行spark作业的角色ID
+        :type RoleArn: int
+        :param AppDriverSize: spark作业driver资源规格大小, 可取small,medium,large,xlarge
+        :type AppDriverSize: str
+        :param AppExecutorSize: spark作业executor资源规格大小, 可取small,medium,large,xlarge
+        :type AppExecutorSize: str
+        :param AppExecutorNums: spark作业executor个数
+        :type AppExecutorNums: int
+        :param Eni: 该字段已下线，请使用字段Datasource
+        :type Eni: str
+        :param IsLocal: 是否本地上传，可去cos,lakefs
+        :type IsLocal: str
+        :param MainClass: spark jar作业时的主类
+        :type MainClass: str
+        :param AppConf: spark配置，以换行符分隔
+        :type AppConf: str
+        :param IsLocalJars: 是否本地上传，包含cos,lakefs
+        :type IsLocalJars: str
+        :param AppJars: spark jar作业依赖jars，以逗号分隔
+        :type AppJars: str
+        :param IsLocalFiles: 是否本地上传，包含cos,lakefs
+        :type IsLocalFiles: str
+        :param AppFiles: spark作业依赖资源，以逗号分隔
+        :type AppFiles: str
+        :param CmdArgs: spark作业命令行参数
+        :type CmdArgs: str
+        :param MaxRetries: 只对spark流任务生效
+        :type MaxRetries: int
+        :param DataSource: 数据源名
+        :type DataSource: str
+        :param IsLocalPythonFiles: pyspark：依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+        :type IsLocalPythonFiles: str
+        :param AppPythonFiles: pyspark：python依赖, 除py文件外，还支持zip/egg等归档格式，多文件以逗号分隔
+        :type AppPythonFiles: str
+        """
+        self.AppName = None
+        self.AppType = None
+        self.DataEngine = None
+        self.AppFile = None
+        self.RoleArn = None
+        self.AppDriverSize = None
+        self.AppExecutorSize = None
+        self.AppExecutorNums = None
+        self.Eni = None
+        self.IsLocal = None
+        self.MainClass = None
+        self.AppConf = None
+        self.IsLocalJars = None
+        self.AppJars = None
+        self.IsLocalFiles = None
+        self.AppFiles = None
+        self.CmdArgs = None
+        self.MaxRetries = None
+        self.DataSource = None
+        self.IsLocalPythonFiles = None
+        self.AppPythonFiles = None
+
+
+    def _deserialize(self, params):
+        self.AppName = params.get("AppName")
+        self.AppType = params.get("AppType")
+        self.DataEngine = params.get("DataEngine")
+        self.AppFile = params.get("AppFile")
+        self.RoleArn = params.get("RoleArn")
+        self.AppDriverSize = params.get("AppDriverSize")
+        self.AppExecutorSize = params.get("AppExecutorSize")
+        self.AppExecutorNums = params.get("AppExecutorNums")
+        self.Eni = params.get("Eni")
+        self.IsLocal = params.get("IsLocal")
+        self.MainClass = params.get("MainClass")
+        self.AppConf = params.get("AppConf")
+        self.IsLocalJars = params.get("IsLocalJars")
+        self.AppJars = params.get("AppJars")
+        self.IsLocalFiles = params.get("IsLocalFiles")
+        self.AppFiles = params.get("AppFiles")
+        self.CmdArgs = params.get("CmdArgs")
+        self.MaxRetries = params.get("MaxRetries")
+        self.DataSource = params.get("DataSource")
+        self.IsLocalPythonFiles = params.get("IsLocalPythonFiles")
+        self.AppPythonFiles = params.get("AppPythonFiles")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateSparkAppResponse(AbstractModel):
+    """CreateSparkApp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class CreateSparkAppTaskRequest(AbstractModel):
+    """CreateSparkAppTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobName: spark作业名
+        :type JobName: str
+        :param CmdArgs: spark作业的命令行参数，以空格分隔；一般用于周期性调用使用
+        :type CmdArgs: str
+        """
+        self.JobName = None
+        self.CmdArgs = None
+
+
+    def _deserialize(self, params):
+        self.JobName = params.get("JobName")
+        self.CmdArgs = params.get("CmdArgs")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateSparkAppTaskResponse(AbstractModel):
+    """CreateSparkAppTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BatchId: 批Id
+        :type BatchId: str
+        :param TaskId: 任务Id
+        :type TaskId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BatchId = None
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.BatchId = params.get("BatchId")
+        self.TaskId = params.get("TaskId")
         self.RequestId = params.get("RequestId")
 
 
@@ -1221,6 +1400,47 @@ class DeleteScriptResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteSparkAppRequest(AbstractModel):
+    """DeleteSparkApp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppName: spark应用名
+        :type AppName: str
+        """
+        self.AppName = None
+
+
+    def _deserialize(self, params):
+        self.AppName = params.get("AppName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteSparkAppResponse(AbstractModel):
+    """DeleteSparkApp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteUserRequest(AbstractModel):
     """DeleteUser请求参数结构体
 
@@ -1433,7 +1653,7 @@ class DescribeScriptsRequest(AbstractModel):
         :type Offset: int
         :param SortBy: 按字段排序，支持如下字段类型，update-time
         :type SortBy: str
-        :param Sorting: 排序方式，desc表示正序，asc表示反序
+        :param Sorting: 排序方式，desc表示正序，asc表示反序，默认asc
         :type Sorting: str
         :param Filters: 过滤条件，如下支持的过滤类型，传参Name应为其一
 script-id - String - （过滤条件）script-id取值形如：157de0d1-26b4-4df2-a2d0-b64afc406c25。
@@ -1495,6 +1715,219 @@ class DescribeScriptsResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Scripts.append(obj)
         self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSparkAppJobRequest(AbstractModel):
+    """DescribeSparkAppJob请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: spark作业Id，与JobName同时存在时，JobName无效
+        :type JobId: str
+        :param JobName: spark作业名
+        :type JobName: str
+        """
+        self.JobId = None
+        self.JobName = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.JobName = params.get("JobName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSparkAppJobResponse(AbstractModel):
+    """DescribeSparkAppJob返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Job: spark作业详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Job: :class:`tencentcloud.dlc.v20210125.models.SparkJobInfo`
+        :param IsExists: 查询的spark作业是否存在
+        :type IsExists: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Job = None
+        self.IsExists = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Job") is not None:
+            self.Job = SparkJobInfo()
+            self.Job._deserialize(params.get("Job"))
+        self.IsExists = params.get("IsExists")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSparkAppJobsRequest(AbstractModel):
+    """DescribeSparkAppJobs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SortBy: 返回结果按照该字段排序
+        :type SortBy: str
+        :param Sorting: 正序或者倒序，例如：desc
+        :type Sorting: str
+        :param Filters: 按照该参数过滤
+        :type Filters: list of Filter
+        :param StartTime: 更新时间起始点
+        :type StartTime: str
+        :param EndTime: 更新时间截止点
+        :type EndTime: str
+        :param Offset: 查询列表偏移量
+        :type Offset: int
+        :param Limit: 查询列表限制数量
+        :type Limit: int
+        """
+        self.SortBy = None
+        self.Sorting = None
+        self.Filters = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SortBy = params.get("SortBy")
+        self.Sorting = params.get("Sorting")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSparkAppJobsResponse(AbstractModel):
+    """DescribeSparkAppJobs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SparkAppJobs: spark作业列表详情
+        :type SparkAppJobs: list of SparkJobInfo
+        :param TotalCount: spark作业总数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SparkAppJobs = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("SparkAppJobs") is not None:
+            self.SparkAppJobs = []
+            for item in params.get("SparkAppJobs"):
+                obj = SparkJobInfo()
+                obj._deserialize(item)
+                self.SparkAppJobs.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSparkAppTasksRequest(AbstractModel):
+    """DescribeSparkAppTasks请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: spark作业Id
+        :type JobId: str
+        :param Offset: 分页查询偏移量
+        :type Offset: int
+        :param Limit: 分页查询Limit
+        :type Limit: int
+        :param TaskId: 执行实例id
+        :type TaskId: str
+        """
+        self.JobId = None
+        self.Offset = None
+        self.Limit = None
+        self.TaskId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        self.TaskId = params.get("TaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSparkAppTasksResponse(AbstractModel):
+    """DescribeSparkAppTasks返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Tasks: 任务结果（该字段已废弃）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tasks: :class:`tencentcloud.dlc.v20210125.models.TaskResponseInfo`
+        :param TotalCount: 任务总数
+        :type TotalCount: int
+        :param SparkAppTasks: 任务结果列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SparkAppTasks: list of TaskResponseInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Tasks = None
+        self.TotalCount = None
+        self.SparkAppTasks = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Tasks") is not None:
+            self.Tasks = TaskResponseInfo()
+            self.Tasks._deserialize(params.get("Tasks"))
+        self.TotalCount = params.get("TotalCount")
+        if params.get("SparkAppTasks") is not None:
+            self.SparkAppTasks = []
+            for item in params.get("SparkAppTasks"):
+                obj = TaskResponseInfo()
+                obj._deserialize(item)
+                self.SparkAppTasks.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -1606,10 +2039,12 @@ table-id - String - （过滤条件）table id形如：12342。
         :type EndTime: str
         :param Sort: 排序字段，支持：ModifiedTime（默认）；CreateTime
         :type Sort: str
-        :param Asc: 排序字段，false：降序（默认）；true
+        :param Asc: 排序字段，false：降序（默认）；true：升序
         :type Asc: bool
         :param TableType: table type，表类型查询,可用值:EXTERNAL_TABLE,INDEX_TABLE,MANAGED_TABLE,MATERIALIZED_VIEW,TABLE,VIEW,VIRTUAL_VIEW
         :type TableType: str
+        :param TableFormat: 筛选字段-表格式：不传（默认）为查全部；LAKEFS：托管表；ICEBERG：非托管iceberg表；HIVE：非托管hive表；OTHER：非托管其它；
+        :type TableFormat: str
         """
         self.DatabaseName = None
         self.Limit = None
@@ -1621,6 +2056,7 @@ table-id - String - （过滤条件）table id形如：12342。
         self.Sort = None
         self.Asc = None
         self.TableType = None
+        self.TableFormat = None
 
 
     def _deserialize(self, params):
@@ -1639,6 +2075,7 @@ table-id - String - （过滤条件）table id形如：12342。
         self.Sort = params.get("Sort")
         self.Asc = params.get("Asc")
         self.TableType = params.get("TableType")
+        self.TableFormat = params.get("TableFormat")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1926,11 +2363,11 @@ view-id - String - （过滤条件）view id形如：12342。
         :type DatasourceConnectionName: str
         :param Sort: 排序字段
         :type Sort: str
-        :param Asc: 排序规则
+        :param Asc: 排序规则，true:升序；false:降序
         :type Asc: bool
-        :param StartTime: 开始时间
+        :param StartTime: 按视图更新时间筛选，开始时间，如2021-11-11 00:00:00
         :type StartTime: str
-        :param EndTime: 结束时间
+        :param EndTime: 按视图更新时间筛选，结束时间，如2021-11-12 00:00:00
         :type EndTime: str
         """
         self.DatabaseName = None
@@ -2229,6 +2666,46 @@ class Filter(AbstractModel):
         
 
 
+class JobLogResult(AbstractModel):
+    """日志详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Time: 日志时间戳，毫秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Time: int
+        :param TopicId: 日志topic id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicId: str
+        :param TopicName: 日志topic name
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicName: str
+        :param LogJson: 日志内容，json字符串
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogJson: str
+        """
+        self.Time = None
+        self.TopicId = None
+        self.TopicName = None
+        self.LogJson = None
+
+
+    def _deserialize(self, params):
+        self.Time = params.get("Time")
+        self.TopicId = params.get("TopicId")
+        self.TopicName = params.get("TopicName")
+        self.LogJson = params.get("LogJson")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class KVPair(AbstractModel):
     """配置格式
 
@@ -2257,6 +2734,208 @@ class KVPair(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class ListTaskJobLogDetailRequest(AbstractModel):
+    """ListTaskJobLogDetail请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 列表返回的Id
+        :type TaskId: str
+        :param StartTime: 开始运行时间，unix时间戳（毫秒）
+        :type StartTime: int
+        :param EndTime: 结束运行时间，unix时间戳（毫秒）
+        :type EndTime: int
+        :param Limit: 分页大小，最大100，配合Context一起使用
+        :type Limit: int
+        :param Context: 下一次分页参数，第一次传空
+        :type Context: str
+        """
+        self.TaskId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Limit = None
+        self.Context = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Limit = params.get("Limit")
+        self.Context = params.get("Context")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ListTaskJobLogDetailResponse(AbstractModel):
+    """ListTaskJobLogDetail返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Context: 下一次分页参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Context: str
+        :param ListOver: 是否获取完结
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ListOver: bool
+        :param Results: 日志详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Results: list of JobLogResult
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Context = None
+        self.ListOver = None
+        self.Results = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Context = params.get("Context")
+        self.ListOver = params.get("ListOver")
+        if params.get("Results") is not None:
+            self.Results = []
+            for item in params.get("Results"):
+                obj = JobLogResult()
+                obj._deserialize(item)
+                self.Results.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class ModifySparkAppRequest(AbstractModel):
+    """ModifySparkApp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppName: spark应用名
+        :type AppName: str
+        :param AppType: 1代表spark jar应用，2代表spark streaming应用
+        :type AppType: int
+        :param DataEngine: 执行spark作业的数据引擎
+        :type DataEngine: str
+        :param AppFile: spark应用的执行入口
+        :type AppFile: str
+        :param RoleArn: 执行spark作业的角色ID
+        :type RoleArn: int
+        :param AppDriverSize: spark作业driver资源规格大小, 可取small,medium,large,xlarge
+        :type AppDriverSize: str
+        :param AppExecutorSize: spark作业executor资源规格大小, 可取small,medium,large,xlarge
+        :type AppExecutorSize: str
+        :param AppExecutorNums: spark作业executor个数
+        :type AppExecutorNums: int
+        :param SparkAppId: spark应用Id
+        :type SparkAppId: str
+        :param Eni: 该字段已下线，请使用字段Datasource
+        :type Eni: str
+        :param IsLocal: 是否本地上传，可取cos,lakefs
+        :type IsLocal: str
+        :param MainClass: spark jar作业时的主类
+        :type MainClass: str
+        :param AppConf: spark配置，以换行符分隔
+        :type AppConf: str
+        :param IsLocalJars: jar资源依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+        :type IsLocalJars: str
+        :param AppJars: spark jar作业依赖jars，以逗号分隔
+        :type AppJars: str
+        :param IsLocalFiles: file资源依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+        :type IsLocalFiles: str
+        :param AppFiles: spark作业依赖资源，以逗号分隔
+        :type AppFiles: str
+        :param IsLocalPythonFiles: pyspark：依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+        :type IsLocalPythonFiles: str
+        :param AppPythonFiles: pyspark：python依赖, 除py文件外，还支持zip/egg等归档格式，多文件以逗号分隔
+        :type AppPythonFiles: str
+        :param CmdArgs: spark作业命令行参数
+        :type CmdArgs: str
+        :param MaxRetries: 只对spark流任务生效
+        :type MaxRetries: int
+        :param DataSource: 数据源名
+        :type DataSource: str
+        """
+        self.AppName = None
+        self.AppType = None
+        self.DataEngine = None
+        self.AppFile = None
+        self.RoleArn = None
+        self.AppDriverSize = None
+        self.AppExecutorSize = None
+        self.AppExecutorNums = None
+        self.SparkAppId = None
+        self.Eni = None
+        self.IsLocal = None
+        self.MainClass = None
+        self.AppConf = None
+        self.IsLocalJars = None
+        self.AppJars = None
+        self.IsLocalFiles = None
+        self.AppFiles = None
+        self.IsLocalPythonFiles = None
+        self.AppPythonFiles = None
+        self.CmdArgs = None
+        self.MaxRetries = None
+        self.DataSource = None
+
+
+    def _deserialize(self, params):
+        self.AppName = params.get("AppName")
+        self.AppType = params.get("AppType")
+        self.DataEngine = params.get("DataEngine")
+        self.AppFile = params.get("AppFile")
+        self.RoleArn = params.get("RoleArn")
+        self.AppDriverSize = params.get("AppDriverSize")
+        self.AppExecutorSize = params.get("AppExecutorSize")
+        self.AppExecutorNums = params.get("AppExecutorNums")
+        self.SparkAppId = params.get("SparkAppId")
+        self.Eni = params.get("Eni")
+        self.IsLocal = params.get("IsLocal")
+        self.MainClass = params.get("MainClass")
+        self.AppConf = params.get("AppConf")
+        self.IsLocalJars = params.get("IsLocalJars")
+        self.AppJars = params.get("AppJars")
+        self.IsLocalFiles = params.get("IsLocalFiles")
+        self.AppFiles = params.get("AppFiles")
+        self.IsLocalPythonFiles = params.get("IsLocalPythonFiles")
+        self.AppPythonFiles = params.get("AppPythonFiles")
+        self.CmdArgs = params.get("CmdArgs")
+        self.MaxRetries = params.get("MaxRetries")
+        self.DataSource = params.get("DataSource")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifySparkAppResponse(AbstractModel):
+    """ModifySparkApp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class ModifyUserRequest(AbstractModel):
@@ -2386,16 +3065,31 @@ class Partition(AbstractModel):
         :type Type: str
         :param Comment: 对分区的描述。
         :type Comment: str
+        :param Transform: 隐式分区转换策略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Transform: str
+        :param TransformArgs: 转换策略参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TransformArgs: list of str
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: int
         """
         self.Name = None
         self.Type = None
         self.Comment = None
+        self.Transform = None
+        self.TransformArgs = None
+        self.CreateTime = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Type = params.get("Type")
         self.Comment = params.get("Comment")
+        self.Transform = params.get("Transform")
+        self.TransformArgs = params.get("TransformArgs")
+        self.CreateTime = params.get("CreateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2449,6 +3143,12 @@ class Policy(AbstractModel):
         :param CreateTime: 权限创建的时间，入参不填
 注意：此字段可能返回 null，表示取不到有效值。
         :type CreateTime: str
+        :param SourceId: 权限所属工作组的ID，只有当该权限的来源为工作组时才会有值。即仅当Source字段的值为WORKGROUP时该字段才有值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SourceId: int
+        :param SourceName: 权限所属工作组的名称，只有当该权限的来源为工作组时才会有值。即仅当Source字段的值为WORKGROUP时该字段才有值。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SourceName: str
         """
         self.Database = None
         self.Catalog = None
@@ -2464,6 +3164,8 @@ class Policy(AbstractModel):
         self.Mode = None
         self.Operator = None
         self.CreateTime = None
+        self.SourceId = None
+        self.SourceName = None
 
 
     def _deserialize(self, params):
@@ -2481,6 +3183,8 @@ class Policy(AbstractModel):
         self.Mode = params.get("Mode")
         self.Operator = params.get("Operator")
         self.CreateTime = params.get("CreateTime")
+        self.SourceId = params.get("SourceId")
+        self.SourceName = params.get("SourceName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2592,6 +3296,208 @@ class Script(AbstractModel):
         self.DatabaseName = params.get("DatabaseName")
         self.SQLStatement = params.get("SQLStatement")
         self.UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SparkJobInfo(AbstractModel):
+    """spark作业详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: spark作业ID
+        :type JobId: str
+        :param JobName: spark作业名
+        :type JobName: str
+        :param JobType: spark作业类型，可去1或者2，1表示batch作业， 2表示streaming作业
+        :type JobType: int
+        :param DataEngine: 引擎名
+        :type DataEngine: str
+        :param Eni: 该字段已下线，请使用字段Datasource
+        :type Eni: str
+        :param IsLocal: 程序包是否本地上传，cos或者lakefs
+        :type IsLocal: str
+        :param JobFile: 程序包路径
+        :type JobFile: str
+        :param RoleArn: 角色ID
+        :type RoleArn: int
+        :param MainClass: spark作业运行主类
+        :type MainClass: str
+        :param CmdArgs: 命令行参数，spark作业命令行参数，空格分隔
+        :type CmdArgs: str
+        :param JobConf: spark原生配置，换行符分隔
+        :type JobConf: str
+        :param IsLocalJars: 依赖jars是否本地上传，cos或者lakefs
+        :type IsLocalJars: str
+        :param JobJars: spark作业依赖jars，逗号分隔
+        :type JobJars: str
+        :param IsLocalFiles: 依赖文件是否本地上传，cos或者lakefs
+        :type IsLocalFiles: str
+        :param JobFiles: spark作业依赖文件，逗号分隔
+        :type JobFiles: str
+        :param JobDriverSize: spark作业driver资源大小
+        :type JobDriverSize: str
+        :param JobExecutorSize: spark作业executor资源大小
+        :type JobExecutorSize: str
+        :param JobExecutorNums: spark作业executor个数
+        :type JobExecutorNums: int
+        :param JobMaxAttempts: spark流任务最大重试次数
+        :type JobMaxAttempts: int
+        :param JobCreator: spark作业创建者
+        :type JobCreator: str
+        :param JobCreateTime: spark作业创建时间
+        :type JobCreateTime: int
+        :param JobUpdateTime: spark作业更新时间
+        :type JobUpdateTime: int
+        :param CurrentTaskId: spark作业最近任务ID
+        :type CurrentTaskId: str
+        :param JobStatus: spark作业最近运行状态
+        :type JobStatus: int
+        :param StreamingStat: spark流作业统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StreamingStat: :class:`tencentcloud.dlc.v20210125.models.StreamingStatistics`
+        :param DataSource: 数据源名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataSource: str
+        :param IsLocalPythonFiles: pyspark：依赖上传方式，1、cos；2、lakefs（控制台使用，该方式不支持直接接口调用）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsLocalPythonFiles: str
+        :param AppPythonFiles: pyspark：python依赖, 除py文件外，还支持zip/egg等归档格式，多文件以逗号分隔
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AppPythonFiles: str
+        """
+        self.JobId = None
+        self.JobName = None
+        self.JobType = None
+        self.DataEngine = None
+        self.Eni = None
+        self.IsLocal = None
+        self.JobFile = None
+        self.RoleArn = None
+        self.MainClass = None
+        self.CmdArgs = None
+        self.JobConf = None
+        self.IsLocalJars = None
+        self.JobJars = None
+        self.IsLocalFiles = None
+        self.JobFiles = None
+        self.JobDriverSize = None
+        self.JobExecutorSize = None
+        self.JobExecutorNums = None
+        self.JobMaxAttempts = None
+        self.JobCreator = None
+        self.JobCreateTime = None
+        self.JobUpdateTime = None
+        self.CurrentTaskId = None
+        self.JobStatus = None
+        self.StreamingStat = None
+        self.DataSource = None
+        self.IsLocalPythonFiles = None
+        self.AppPythonFiles = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.JobName = params.get("JobName")
+        self.JobType = params.get("JobType")
+        self.DataEngine = params.get("DataEngine")
+        self.Eni = params.get("Eni")
+        self.IsLocal = params.get("IsLocal")
+        self.JobFile = params.get("JobFile")
+        self.RoleArn = params.get("RoleArn")
+        self.MainClass = params.get("MainClass")
+        self.CmdArgs = params.get("CmdArgs")
+        self.JobConf = params.get("JobConf")
+        self.IsLocalJars = params.get("IsLocalJars")
+        self.JobJars = params.get("JobJars")
+        self.IsLocalFiles = params.get("IsLocalFiles")
+        self.JobFiles = params.get("JobFiles")
+        self.JobDriverSize = params.get("JobDriverSize")
+        self.JobExecutorSize = params.get("JobExecutorSize")
+        self.JobExecutorNums = params.get("JobExecutorNums")
+        self.JobMaxAttempts = params.get("JobMaxAttempts")
+        self.JobCreator = params.get("JobCreator")
+        self.JobCreateTime = params.get("JobCreateTime")
+        self.JobUpdateTime = params.get("JobUpdateTime")
+        self.CurrentTaskId = params.get("CurrentTaskId")
+        self.JobStatus = params.get("JobStatus")
+        if params.get("StreamingStat") is not None:
+            self.StreamingStat = StreamingStatistics()
+            self.StreamingStat._deserialize(params.get("StreamingStat"))
+        self.DataSource = params.get("DataSource")
+        self.IsLocalPythonFiles = params.get("IsLocalPythonFiles")
+        self.AppPythonFiles = params.get("AppPythonFiles")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StreamingStatistics(AbstractModel):
+    """spark流任务统计信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 任务开始时间
+        :type StartTime: str
+        :param Receivers: 数据接收器数
+        :type Receivers: int
+        :param NumActiveReceivers: 运行中的接收器数
+        :type NumActiveReceivers: int
+        :param NumInactiveReceivers: 不活跃的接收器数
+        :type NumInactiveReceivers: int
+        :param NumActiveBatches: 运行中的批数
+        :type NumActiveBatches: int
+        :param NumRetainedCompletedBatches: 待处理的批数
+        :type NumRetainedCompletedBatches: int
+        :param NumTotalCompletedBatches: 已完成的批数
+        :type NumTotalCompletedBatches: int
+        :param AverageInputRate: 平均输入速率
+        :type AverageInputRate: float
+        :param AverageSchedulingDelay: 平均等待时长
+        :type AverageSchedulingDelay: float
+        :param AverageProcessingTime: 平均处理时长
+        :type AverageProcessingTime: float
+        :param AverageTotalDelay: 平均延时
+        :type AverageTotalDelay: float
+        """
+        self.StartTime = None
+        self.Receivers = None
+        self.NumActiveReceivers = None
+        self.NumInactiveReceivers = None
+        self.NumActiveBatches = None
+        self.NumRetainedCompletedBatches = None
+        self.NumTotalCompletedBatches = None
+        self.AverageInputRate = None
+        self.AverageSchedulingDelay = None
+        self.AverageProcessingTime = None
+        self.AverageTotalDelay = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.Receivers = params.get("Receivers")
+        self.NumActiveReceivers = params.get("NumActiveReceivers")
+        self.NumInactiveReceivers = params.get("NumInactiveReceivers")
+        self.NumActiveBatches = params.get("NumActiveBatches")
+        self.NumRetainedCompletedBatches = params.get("NumRetainedCompletedBatches")
+        self.NumTotalCompletedBatches = params.get("NumTotalCompletedBatches")
+        self.AverageInputRate = params.get("AverageInputRate")
+        self.AverageSchedulingDelay = params.get("AverageSchedulingDelay")
+        self.AverageProcessingTime = params.get("AverageProcessingTime")
+        self.AverageTotalDelay = params.get("AverageTotalDelay")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2891,6 +3797,18 @@ class TaskResponseInfo(AbstractModel):
         :param UserAlias: 用户别名
 注意：此字段可能返回 null，表示取不到有效值。
         :type UserAlias: str
+        :param SparkJobName: spark应用作业名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SparkJobName: str
+        :param SparkJobId: spark应用作业Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SparkJobId: str
+        :param SparkJobFile: spark应用入口jar文件
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SparkJobFile: str
+        :param UiUrl: spark ui url
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UiUrl: str
         """
         self.DatabaseName = None
         self.DataAmount = None
@@ -2918,6 +3836,10 @@ class TaskResponseInfo(AbstractModel):
         self.DataNumber = None
         self.CanDownload = None
         self.UserAlias = None
+        self.SparkJobName = None
+        self.SparkJobId = None
+        self.SparkJobFile = None
+        self.UiUrl = None
 
 
     def _deserialize(self, params):
@@ -2947,6 +3869,10 @@ class TaskResponseInfo(AbstractModel):
         self.DataNumber = params.get("DataNumber")
         self.CanDownload = params.get("CanDownload")
         self.UserAlias = params.get("UserAlias")
+        self.SparkJobName = params.get("SparkJobName")
+        self.SparkJobId = params.get("SparkJobId")
+        self.SparkJobFile = params.get("SparkJobFile")
+        self.UiUrl = params.get("UiUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

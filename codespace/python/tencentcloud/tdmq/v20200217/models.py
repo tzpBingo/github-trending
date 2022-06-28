@@ -1753,7 +1753,7 @@ class CreateCmqQueueRequest(AbstractModel):
         :type Trace: bool
         :param Tags: 标签数组
         :type Tags: list of Tag
-        :param RetentionSizeInMB: 队列可回溯存储空间，取值范围1024MB - 10240MB，0表示不开启
+        :param RetentionSizeInMB: 队列可回溯存储空间：若开启消息回溯，取值范围：10240MB - 512000MB，若不开启消息回溯，取值：0
         :type RetentionSizeInMB: int
         """
         self.QueueName = None
@@ -4360,7 +4360,7 @@ class DescribeCmqQueuesRequest(AbstractModel):
         :type QueueNameList: list of str
         :param IsTagFilter: 标签过滤查找时，需要设置为 true
         :type IsTagFilter: bool
-        :param Filters: 过滤器。目前支持按标签过滤。
+        :param Filters: 过滤器。目前支持按标签过滤，标签的Name需要加前缀“tag:”，例如：tag:负责人、tag:环境、tag:业务
         :type Filters: list of Filter
         """
         self.Offset = None
@@ -4554,7 +4554,7 @@ class DescribeCmqTopicsRequest(AbstractModel):
         :type TopicNameList: list of str
         :param IsTagFilter: 标签过滤查找时，需要设置为 true
         :type IsTagFilter: bool
-        :param Filters: 过滤器。目前支持按标签过滤。
+        :param Filters: 过滤器。目前支持按标签过滤，标签的Name需要加前缀“tag:”，例如：tag:负责人、tag:环境、tag:业务
         :type Filters: list of Filter
         """
         self.Offset = None
@@ -6344,7 +6344,7 @@ class ModifyCmqQueueAttributeRequest(AbstractModel):
         :type Trace: bool
         :param Transaction: 是否开启事务，1开启，0不开启
         :type Transaction: int
-        :param RetentionSizeInMB: 队列可回溯存储空间，取值范围1024MB - 10240MB，0表示不开启
+        :param RetentionSizeInMB: 队列可回溯存储空间：若开启消息回溯，取值范围：10240MB - 512000MB，若不开启消息回溯，取值：0
         :type RetentionSizeInMB: int
         """
         self.QueueName = None
@@ -7094,9 +7094,9 @@ class PublishCmqMsgRequest(AbstractModel):
         r"""
         :param TopicName: 主题名
         :type TopicName: str
-        :param MsgContent: 消息内容
+        :param MsgContent: 消息内容，消息总大小需不大于1024K
         :type MsgContent: str
-        :param MsgTag: 消息标签
+        :param MsgTag: 消息标签，支持传递多标签或单路由，单个标签、路由长度不能超过64个字符。
         :type MsgTag: list of str
         """
         self.TopicName = None
@@ -7222,11 +7222,20 @@ class ReceiveMessageRequest(AbstractModel):
         :type ReceiverQueueSize: int
         :param SubInitialPosition: 默认值为：Latest。用作判定consumer初始接收消息的位置，可选参数为：Earliest, Latest
         :type SubInitialPosition: str
+        :param MaxNumMessages: 用于设置BatchReceivePolicy，指在一次batch中最多接收多少条消息，默认是 0。即不开启BatchReceivePolicy
+        :type MaxNumMessages: int
+        :param MaxNumBytes: 用于设置BatchReceivePolicy，指在一次batch中最多接收的消息体有多大，单位是 bytes。默认是 0，即不开启BatchReceivePolicy
+        :type MaxNumBytes: int
+        :param Timeout: 用于设置BatchReceivePolicy，指在一次batch消息的接收z中最多等待的超时时间，单位是毫秒。默认是 0，即不开启BatchReceivePolicy
+        :type Timeout: int
         """
         self.Topic = None
         self.SubscriptionName = None
         self.ReceiverQueueSize = None
         self.SubInitialPosition = None
+        self.MaxNumMessages = None
+        self.MaxNumBytes = None
+        self.Timeout = None
 
 
     def _deserialize(self, params):
@@ -7234,6 +7243,9 @@ class ReceiveMessageRequest(AbstractModel):
         self.SubscriptionName = params.get("SubscriptionName")
         self.ReceiverQueueSize = params.get("ReceiverQueueSize")
         self.SubInitialPosition = params.get("SubInitialPosition")
+        self.MaxNumMessages = params.get("MaxNumMessages")
+        self.MaxNumBytes = params.get("MaxNumBytes")
+        self.Timeout = params.get("Timeout")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7262,6 +7274,12 @@ class ReceiveMessageResponse(AbstractModel):
         :param SubName: 返回订阅者的名字，用来创建 ack consumer时使用
 注意：此字段可能返回 null，表示取不到有效值。
         :type SubName: str
+        :param MessageIDList: BatchReceivePolicy 一次性返回的多条消息的 MessageID，用 ‘###’ 来区分不同的 MessageID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MessageIDList: str
+        :param MessagesPayload: BatchReceivePolicy 一次性返回的多条消息的消息内容，用 ‘###’ 来区分不同的消息内容
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MessagesPayload: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -7270,6 +7288,8 @@ class ReceiveMessageResponse(AbstractModel):
         self.AckTopic = None
         self.ErrorMsg = None
         self.SubName = None
+        self.MessageIDList = None
+        self.MessagesPayload = None
         self.RequestId = None
 
 
@@ -7279,6 +7299,8 @@ class ReceiveMessageResponse(AbstractModel):
         self.AckTopic = params.get("AckTopic")
         self.ErrorMsg = params.get("ErrorMsg")
         self.SubName = params.get("SubName")
+        self.MessageIDList = params.get("MessageIDList")
+        self.MessagesPayload = params.get("MessagesPayload")
         self.RequestId = params.get("RequestId")
 
 

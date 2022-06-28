@@ -318,7 +318,7 @@ class FaceidClient(AbstractClient):
 
 
     def EncryptedPhoneVerification(self, request):
-        """本接口用于校验手机号、姓名和身份证号的真实性和一致性，入参支持MD5加密传输。
+        """本接口用于校验手机号、姓名和身份证号的真实性和一致性，入参支持明文、MD5和SHA256加密传输。
 
         :param request: Request instance for EncryptedPhoneVerification.
         :type request: :class:`tencentcloud.faceid.v20180301.models.EncryptedPhoneVerificationRequest`
@@ -912,6 +912,35 @@ class FaceidClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.MobileStatusResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ParseNfcData(self, request):
+        """解析SDK获取到的证件NFC数据，接口传入SDK返回的ReqId，返回证件信息（个别字段为特定证件类型特有）。SDK生成的ReqId五分钟内有效，重复查询仅收一次费。支持身份证类证件（二代身份证、港澳居住证、台湾居住证、外国人永居证）以及旅行类证件（港澳通行证、台湾通行证、台胞证、回乡证）的NFC识别及核验。
+
+        :param request: Request instance for ParseNfcData.
+        :type request: :class:`tencentcloud.faceid.v20180301.models.ParseNfcDataRequest`
+        :rtype: :class:`tencentcloud.faceid.v20180301.models.ParseNfcDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ParseNfcData", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ParseNfcDataResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

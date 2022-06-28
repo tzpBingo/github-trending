@@ -193,6 +193,59 @@ class CancelFlowResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CancelMultiFlowSignQRCodeRequest(AbstractModel):
+    """CancelMultiFlowSignQRCode请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 用户信息
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param QrCodeId: 二维码id
+        :type QrCodeId: str
+        :param Agent: 应用信息
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        """
+        self.Operator = None
+        self.QrCodeId = None
+        self.Agent = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        self.QrCodeId = params.get("QrCodeId")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CancelMultiFlowSignQRCodeResponse(AbstractModel):
+    """CancelMultiFlowSignQRCode返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CcInfo(AbstractModel):
     """抄送信息
 
@@ -233,25 +286,33 @@ SIGN_SEAL - 签署印章控件
 SIGN_DATE - 签署日期控件
 SIGN_SIGNATURE - 手写签名控件
         :type ComponentType: str
-        :param ComponentWidth: 参数控件宽度，单位px
+        :param ComponentWidth: 参数控件宽度，单位pt
         :type ComponentWidth: float
-        :param ComponentHeight: 参数控件高度，单位px
+        :param ComponentHeight: 参数控件高度，单位pt
         :type ComponentHeight: float
         :param ComponentPage: 参数控件所在页码，取值为：1-N
         :type ComponentPage: int
-        :param ComponentPosX: 参数控件X位置，单位px
+        :param ComponentPosX: 参数控件X位置，单位pt
         :type ComponentPosX: float
-        :param ComponentPosY: 参数控件Y位置，单位px
+        :param ComponentPosY: 参数控件Y位置，单位pt
         :type ComponentPosY: float
         :param FileIndex: 控件所属文件的序号（模板中的resourceId排列序号，取值为：0-N）
         :type FileIndex: int
-        :param ComponentId: 控件编号
+        :param ComponentId: GenerateMode==KEYWORD 指定关键字
         :type ComponentId: str
-        :param ComponentName: 控件名称
+        :param ComponentName: GenerateMode==FIELD 指定表单域名称
         :type ComponentName: str
         :param ComponentRequired: 是否必选，默认为false
         :type ComponentRequired: bool
-        :param ComponentExtra: 参数控件样式
+        :param ComponentExtra: 扩展参数：
+ComponentType为SIGN_SIGNATURE类型可以控制签署方式
+{“ComponentTypeLimit”: [“xxx”]}
+xxx可以为：
+HANDWRITE – 手写签名
+BORDERLESS_ESIGN – 自动生成无边框腾讯体
+OCR_ESIGN -- AI智能识别手写签名
+ESIGN -- 个人印章类型
+如：{“ComponentTypeLimit”: [“BORDERLESS_ESIGN”]}
         :type ComponentExtra: str
         :param ComponentRecipientId: 控件关联的签署人ID
         :type ComponentRecipientId: str
@@ -265,6 +326,10 @@ KEYWORD 关键字，使用ComponentId指定关键字
         :type GenerateMode: str
         :param ComponentDateFontSize: 日期控件类型字号
         :type ComponentDateFontSize: int
+        :param OffsetX: 指定关键字时横坐标偏移量
+        :type OffsetX: float
+        :param OffsetY: 指定关键字时纵坐标偏移量
+        :type OffsetY: float
         """
         self.ComponentType = None
         self.ComponentWidth = None
@@ -282,6 +347,8 @@ KEYWORD 关键字，使用ComponentId指定关键字
         self.IsFormType = None
         self.GenerateMode = None
         self.ComponentDateFontSize = None
+        self.OffsetX = None
+        self.OffsetY = None
 
 
     def _deserialize(self, params):
@@ -301,6 +368,8 @@ KEYWORD 关键字，使用ComponentId指定关键字
         self.IsFormType = params.get("IsFormType")
         self.GenerateMode = params.get("GenerateMode")
         self.ComponentDateFontSize = params.get("ComponentDateFontSize")
+        self.OffsetX = params.get("OffsetX")
+        self.OffsetY = params.get("OffsetY")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -611,6 +680,85 @@ class CreateFlowResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateMultiFlowSignQRCodeRequest(AbstractModel):
+    """CreateMultiFlowSignQRCode请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板ID
+        :type TemplateId: str
+        :param Operator: 用户信息
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param FlowName: 合同名称
+        :type FlowName: str
+        :param Agent: 应用信息
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        :param FlowEffectiveDay: 合同有效天数 默认7天 最高设置不超过30天
+        :type FlowEffectiveDay: int
+        :param QrEffectiveDay: 二维码有效天数 默认7天 最高设置不超过90天
+        :type QrEffectiveDay: int
+        :param MaxFlowNum: 最大合同份数，默认5份 超过此上限 二维码自动失效
+        :type MaxFlowNum: int
+        :param CallbackUrl: 回调地址
+        :type CallbackUrl: str
+        """
+        self.TemplateId = None
+        self.Operator = None
+        self.FlowName = None
+        self.Agent = None
+        self.FlowEffectiveDay = None
+        self.QrEffectiveDay = None
+        self.MaxFlowNum = None
+        self.CallbackUrl = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        self.FlowName = params.get("FlowName")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.FlowEffectiveDay = params.get("FlowEffectiveDay")
+        self.QrEffectiveDay = params.get("QrEffectiveDay")
+        self.MaxFlowNum = params.get("MaxFlowNum")
+        self.CallbackUrl = params.get("CallbackUrl")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateMultiFlowSignQRCodeResponse(AbstractModel):
+    """CreateMultiFlowSignQRCode返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param QrCode: 签署二维码对象
+        :type QrCode: :class:`tencentcloud.ess.v20201111.models.SignQrCode`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.QrCode = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("QrCode") is not None:
+            self.QrCode = SignQrCode()
+            self.QrCode._deserialize(params.get("QrCode"))
+        self.RequestId = params.get("RequestId")
+
+
 class CreateSchemeUrlRequest(AbstractModel):
     """CreateSchemeUrl请求参数结构体
 
@@ -632,7 +780,10 @@ class CreateSchemeUrlRequest(AbstractModel):
         :type FlowId: str
         :param OrganizationName: 企业名称
         :type OrganizationName: str
-        :param EndPoint: 链接类型 HTTP：跳转电子签小程序的http_url，APP：第三方APP或小程序跳转电子签小程序，默认为HTTP类型
+        :param EndPoint: 链接类型
+HTTP：跳转电子签小程序的http_url，
+APP：第三方APP或小程序跳转电子签小程序的path。
+默认为HTTP类型
         :type EndPoint: str
         :param AutoJumpBack: 是否自动回跳 true：是， false：否。该参数只针对"APP" 类型的签署链接有效
         :type AutoJumpBack: bool
@@ -856,6 +1007,93 @@ class DescribeFlowBriefsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeFlowTemplatesRequest(AbstractModel):
+    """DescribeFlowTemplates请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 操作人信息
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param Offset: 查询偏移位置，默认0
+        :type Offset: int
+        :param Limit: 查询个数，默认20，最大100
+        :type Limit: int
+        :param Filters: 搜索条件，具体参考Filter结构体。本接口取值：template-id：按照【 **模板唯一标识** 】进行过滤
+        :type Filters: list of Filter
+        :param Agent: 应用相关信息
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        :param GenerateSource: 暂未开放
+        :type GenerateSource: int
+        :param ContentType: 查询内容：0-模板列表及详情（默认），1-仅模板列表
+        :type ContentType: int
+        """
+        self.Operator = None
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+        self.Agent = None
+        self.GenerateSource = None
+        self.ContentType = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.GenerateSource = params.get("GenerateSource")
+        self.ContentType = params.get("ContentType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeFlowTemplatesResponse(AbstractModel):
+    """DescribeFlowTemplates返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Templates: 模板详情列表
+        :type Templates: list of TemplateInfo
+        :param TotalCount: 查询到的总个数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Templates = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Templates") is not None:
+            self.Templates = []
+            for item in params.get("Templates"):
+                obj = TemplateInfo()
+                obj._deserialize(item)
+                self.Templates.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeThirdPartyAuthCodeRequest(AbstractModel):
     """DescribeThirdPartyAuthCode请求参数结构体
 
@@ -901,6 +1139,42 @@ class DescribeThirdPartyAuthCodeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class FileInfo(AbstractModel):
+    """二期接口返回的模板中文件的信息结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileId: 文件Id
+        :type FileId: str
+        :param FileName: 文件名
+        :type FileName: str
+        :param FileSize: 文件大小，单位为Byte
+        :type FileSize: int
+        :param CreatedOn: 文件上传时间，10位时间戳（精确到秒）
+        :type CreatedOn: int
+        """
+        self.FileId = None
+        self.FileName = None
+        self.FileSize = None
+        self.CreatedOn = None
+
+
+    def _deserialize(self, params):
+        self.FileId = params.get("FileId")
+        self.FileName = params.get("FileName")
+        self.FileSize = params.get("FileSize")
+        self.CreatedOn = params.get("CreatedOn")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class FileUrl(AbstractModel):
     """下载文件的URL信息
 
@@ -921,6 +1195,34 @@ class FileUrl(AbstractModel):
     def _deserialize(self, params):
         self.Url = params.get("Url")
         self.Option = params.get("Option")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Filter(AbstractModel):
+    """查询过滤条件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 查询过滤条件的Key
+        :type Key: str
+        :param Values: 查询过滤条件的Value列表
+        :type Values: list of str
+        """
+        self.Key = None
+        self.Values = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Values = params.get("Values")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1100,6 +1402,110 @@ class FormField(AbstractModel):
         
 
 
+class Recipient(AbstractModel):
+    """签署参与者信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RecipientId: 签署参与者ID
+        :type RecipientId: str
+        :param RecipientType: 参与者类型（ENTERPRISE/INDIVIDUAL）
+        :type RecipientType: str
+        :param Description: 描述信息
+        :type Description: str
+        :param RoleName: 角色名称
+        :type RoleName: str
+        :param RequireValidation: 是否需要验证，默认为false
+        :type RequireValidation: bool
+        :param RequireSign: 是否需要签署，默认为true
+        :type RequireSign: bool
+        :param RoutingOrder: 添加序列
+        :type RoutingOrder: int
+        :param RequireDelivery: 是否需要发送，默认为true
+        :type RequireDelivery: bool
+        :param Email: 邮箱地址
+        :type Email: str
+        :param Mobile: 电话号码
+        :type Mobile: str
+        :param UserId: 关联的用户ID
+        :type UserId: str
+        :param DeliveryMethod: 发送方式（EMAIL/MOBILE）
+        :type DeliveryMethod: str
+        :param RecipientExtra: 附属信息
+        :type RecipientExtra: str
+        """
+        self.RecipientId = None
+        self.RecipientType = None
+        self.Description = None
+        self.RoleName = None
+        self.RequireValidation = None
+        self.RequireSign = None
+        self.RoutingOrder = None
+        self.RequireDelivery = None
+        self.Email = None
+        self.Mobile = None
+        self.UserId = None
+        self.DeliveryMethod = None
+        self.RecipientExtra = None
+
+
+    def _deserialize(self, params):
+        self.RecipientId = params.get("RecipientId")
+        self.RecipientType = params.get("RecipientType")
+        self.Description = params.get("Description")
+        self.RoleName = params.get("RoleName")
+        self.RequireValidation = params.get("RequireValidation")
+        self.RequireSign = params.get("RequireSign")
+        self.RoutingOrder = params.get("RoutingOrder")
+        self.RequireDelivery = params.get("RequireDelivery")
+        self.Email = params.get("Email")
+        self.Mobile = params.get("Mobile")
+        self.UserId = params.get("UserId")
+        self.DeliveryMethod = params.get("DeliveryMethod")
+        self.RecipientExtra = params.get("RecipientExtra")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SignQrCode(AbstractModel):
+    """一码多扫签署二维码对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param QrCodeId: 二维码id
+        :type QrCodeId: str
+        :param QrCodeUrl: 二维码url
+        :type QrCodeUrl: str
+        :param ExpiredTime: 二维码过期时间
+        :type ExpiredTime: int
+        """
+        self.QrCodeId = None
+        self.QrCodeUrl = None
+        self.ExpiredTime = None
+
+
+    def _deserialize(self, params):
+        self.QrCodeId = params.get("QrCodeId")
+        self.QrCodeUrl = params.get("QrCodeUrl")
+        self.ExpiredTime = params.get("ExpiredTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class StartFlowRequest(AbstractModel):
     """StartFlow请求参数结构体
 
@@ -1161,6 +1567,104 @@ class StartFlowResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class TemplateInfo(AbstractModel):
+    """二期接口返回的模板的信息结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板ID
+        :type TemplateId: str
+        :param TemplateName: 模板名字
+        :type TemplateName: str
+        :param Description: 模板描述信息
+        :type Description: str
+        :param DocumentResourceIds: 模板关联的资源IDs
+        :type DocumentResourceIds: list of str
+        :param FileInfos: 返回的文件信息结构
+        :type FileInfos: list of FileInfo
+        :param AttachmentResourceIds: 附件关联的资源ID是
+        :type AttachmentResourceIds: list of str
+        :param SignOrder: 签署顺序
+        :type SignOrder: list of int
+        :param Recipients: 签署参与者的信息
+        :type Recipients: list of Recipient
+        :param Components: 模板信息结构
+        :type Components: list of Component
+        :param SignComponents: 签署区模板信息结构
+        :type SignComponents: list of Component
+        :param Status: 模板状态(-1:不可用；0:草稿态；1:正式态)
+        :type Status: int
+        :param Creator: 模板的创建人
+        :type Creator: str
+        :param CreatedOn: 模板创建的时间戳（精确到秒）
+        :type CreatedOn: int
+        :param Promoter: 发起人角色信息
+        :type Promoter: :class:`tencentcloud.ess.v20201111.models.Recipient`
+        """
+        self.TemplateId = None
+        self.TemplateName = None
+        self.Description = None
+        self.DocumentResourceIds = None
+        self.FileInfos = None
+        self.AttachmentResourceIds = None
+        self.SignOrder = None
+        self.Recipients = None
+        self.Components = None
+        self.SignComponents = None
+        self.Status = None
+        self.Creator = None
+        self.CreatedOn = None
+        self.Promoter = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        self.TemplateName = params.get("TemplateName")
+        self.Description = params.get("Description")
+        self.DocumentResourceIds = params.get("DocumentResourceIds")
+        if params.get("FileInfos") is not None:
+            self.FileInfos = []
+            for item in params.get("FileInfos"):
+                obj = FileInfo()
+                obj._deserialize(item)
+                self.FileInfos.append(obj)
+        self.AttachmentResourceIds = params.get("AttachmentResourceIds")
+        self.SignOrder = params.get("SignOrder")
+        if params.get("Recipients") is not None:
+            self.Recipients = []
+            for item in params.get("Recipients"):
+                obj = Recipient()
+                obj._deserialize(item)
+                self.Recipients.append(obj)
+        if params.get("Components") is not None:
+            self.Components = []
+            for item in params.get("Components"):
+                obj = Component()
+                obj._deserialize(item)
+                self.Components.append(obj)
+        if params.get("SignComponents") is not None:
+            self.SignComponents = []
+            for item in params.get("SignComponents"):
+                obj = Component()
+                obj._deserialize(item)
+                self.SignComponents.append(obj)
+        self.Status = params.get("Status")
+        self.Creator = params.get("Creator")
+        self.CreatedOn = params.get("CreatedOn")
+        if params.get("Promoter") is not None:
+            self.Promoter = Recipient()
+            self.Promoter._deserialize(params.get("Promoter"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class UploadFile(AbstractModel):
     """此结构体 (UploadFile) 用于描述多文件上传的文件信息。
 
@@ -1199,7 +1703,7 @@ class UploadFilesRequest(AbstractModel):
         :param Caller: 调用方信息
         :type Caller: :class:`tencentcloud.ess.v20201111.models.Caller`
         :param BusinessType: 文件对应业务类型，用于区分文件存储路径：
-1. TEMPLATE - 模版； 文件类型：.pdf/.html
+1. TEMPLATE - 模板； 文件类型：.pdf/.html
 2. DOCUMENT - 签署过程及签署后的合同文档 文件类型：.pdf/.html
 3. FLOW - 签署过程 文件类型：.pdf/.html
 4. SEAL - 印章； 文件类型：.jpg/.jpeg/.png

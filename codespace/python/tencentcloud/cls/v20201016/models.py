@@ -721,22 +721,27 @@ class ConsumerContent(AbstractModel):
         :param EnableTag: 是否投递 TAG 信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type EnableTag: bool
-        :param MetaFields: 需要投递的元数据列表，目前仅支持：__SOURCE__，__FILENAME__和__TIMESTAMP__
+        :param MetaFields: 需要投递的元数据列表，目前仅支持：\_\_SOURCE\_\_，\_\_FILENAME\_\_和\_\_TIMESTAMP\_\_
 注意：此字段可能返回 null，表示取不到有效值。
         :type MetaFields: list of str
         :param TagJsonNotTiled: 当EnableTag为true时，必须填写TagJsonNotTiled字段，TagJsonNotTiled用于标识tag信息是否json平铺，TagJsonNotTiled为true时不平铺，false时平铺
 注意：此字段可能返回 null，表示取不到有效值。
         :type TagJsonNotTiled: bool
+        :param TimestampAccuracy: 投递时间戳精度，可选项 [1:秒；2:毫秒] ，默认是秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TimestampAccuracy: int
         """
         self.EnableTag = None
         self.MetaFields = None
         self.TagJsonNotTiled = None
+        self.TimestampAccuracy = None
 
 
     def _deserialize(self, params):
         self.EnableTag = params.get("EnableTag")
         self.MetaFields = params.get("MetaFields")
         self.TagJsonNotTiled = params.get("TagJsonNotTiled")
+        self.TimestampAccuracy = params.get("TimestampAccuracy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4216,7 +4221,9 @@ class FullTextInfo(AbstractModel):
         r"""
         :param CaseSensitive: 是否大小写敏感
         :type CaseSensitive: bool
-        :param Tokenizer: 全文索引的分词符，字符串中每个字符代表一个分词符
+        :param Tokenizer: 全文索引的分词符，其中的每个字符代表一个分词符；
+仅支持英文符号及\n\t\r；
+推荐使用 @&?|#()='",;:<>[]{}/ \n\t\r\ 作为分词符；
         :type Tokenizer: str
         :param ContainZH: 是否包含中文
 注意：此字段可能返回 null，表示取不到有效值。
@@ -6209,6 +6216,7 @@ class SearchLogRequest(AbstractModel):
         :type Limit: int
         :param Context: 透传上次接口返回的Context值，可获取后续更多日志，总计最多可获取1万条原始日志，过期时间1小时
 注意：
+* 透传该参数时，请勿修改除该参数外的其它参数
 * 仅当检索分析语句(Query)不包含SQL时有效
 * SQL获取后续结果参考<a href="https://cloud.tencent.com/document/product/614/58977" target="_blank">SQL LIMIT语法</a>
         :type Context: str
@@ -6690,7 +6698,10 @@ class ValueInfo(AbstractModel):
         r"""
         :param Type: 字段类型，目前支持的类型有：long、text、double
         :type Type: str
-        :param Tokenizer: 字段的分词符，只有当字段类型为text时才有意义；输入字符串中的每个字符代表一个分词符
+        :param Tokenizer: 字段的分词符，其中的每个字符代表一个分词符；
+仅支持英文符号及\n\t\r；
+long及double类型字段需为空；
+text类型字段推荐使用 @&?|#()='",;:<>[]{}/ \n\t\r\\ 作为分词符；
         :type Tokenizer: str
         :param SqlFlag: 字段是否开启分析功能
         :type SqlFlag: bool

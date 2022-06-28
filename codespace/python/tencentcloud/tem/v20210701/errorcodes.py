@@ -17,6 +17,9 @@
 # 请求响应超时。
 INTERNALERROR_ACTIONREADTIMEOUT = 'InternalError.ActionReadTimeout'
 
+# 添加子网/虚拟节点异常。
+INTERNALERROR_ADDNEWNODEERROR = 'InternalError.AddNewNodeError'
+
 # 创建apm资源失败。
 INTERNALERROR_CREATEAPMRESOURCEERROR = 'InternalError.CreateApmResourceError'
 
@@ -28,6 +31,9 @@ INTERNALERROR_CREATESERVICEERROR = 'InternalError.CreateServiceError'
 
 # 服务器繁忙,请稍后再试。
 INTERNALERROR_DEFAULTINTERNALERROR = 'InternalError.DefaultInternalError'
+
+# 删除 ingress 失败。
+INTERNALERROR_DELETEINGRESSERROR = 'InternalError.DeleteIngressError'
 
 # 删除应用失败。
 INTERNALERROR_DELETESERVICEERROR = 'InternalError.DeleteServiceError'
@@ -41,11 +47,20 @@ INTERNALERROR_DESCRIBERUNPODLISTERROR = 'InternalError.DescribeRunPodListError'
 # 查询服务关联的 ingress 失败。
 INTERNALERROR_DESCRIBESERVICEINGRESSERROR = 'InternalError.DescribeServiceIngressError'
 
+# 查询service列表失败。
+INTERNALERROR_DESCRIBESERVICELISTERROR = 'InternalError.DescribeServiceListError'
+
 # 重启失败。
 INTERNALERROR_RESTARTAPPLICATIONERROR = 'InternalError.RestartApplicationError'
 
+# 停止应用失败。
+INTERNALERROR_STOPAPPLICATIONERROR = 'InternalError.StopApplicationError'
+
 # 更新 ingress 失败。
 INTERNALERROR_UPDATEINGRESSERROR = 'InternalError.UpdateIngressError'
+
+# 只支持绑定一种弹性伸缩。
+INVALIDPARAMETERVALUE_AUTOSCALERLARGERTHANONE = 'InvalidParameterValue.AutoScalerLargerThanOne'
 
 # 版本号格式非法。
 INVALIDPARAMETERVALUE_INVALIDDEPLOYVERSION = 'InvalidParameterValue.InvalidDeployVersion'
@@ -77,6 +92,12 @@ INVALIDPARAMETERVALUE_SERVICELOWERCASE = 'InvalidParameterValue.ServiceLowerCase
 # 应用名已存在。
 INVALIDPARAMETERVALUE_SERVICENAMEDUPLICATEERROR = 'InvalidParameterValue.ServiceNameDuplicateError'
 
+# 实例创建失败，达到上限。
+INVALIDPARAMETERVALUE_SERVICEPODREACHMAXIMUM = 'InvalidParameterValue.ServicePodReachMaximum'
+
+# 应用创建失败，达到上限。
+INVALIDPARAMETERVALUE_SERVICEREACHMAXIMUM = 'InvalidParameterValue.ServiceReachMaximum'
+
 # 非 JAVA 应用不支持链路追踪特性。
 INVALIDPARAMETERVALUE_TRAITSTRACINGNOTSUPPORTED = 'InvalidParameterValue.TraitsTracingNotSupported'
 
@@ -92,8 +113,17 @@ MISSINGPARAMETER_DEPLOYVERSIONNULL = 'MissingParameter.DeployVersionNull'
 # 环境ID不能为空。
 MISSINGPARAMETER_NAMESPACEIDNULL = 'MissingParameter.NamespaceIdNull'
 
+# 包名不能为空。
+MISSINGPARAMETER_PKGNAMENULL = 'MissingParameter.PkgNameNull'
+
 # 服务ID不能为空。
 MISSINGPARAMETER_SERVICEIDNULL = 'MissingParameter.ServiceIdNull'
+
+# 镜像仓库还未就绪。
+MISSINGPARAMETER_SVCREPONOTREADY = 'MissingParameter.SvcRepoNotReady'
+
+# 你操作的资源已被其他操作占用，请稍后重试。
+RESOURCEINUSE_RESOURCEALREADYLOCKED = 'ResourceInUse.ResourceAlreadyLocked'
 
 # 资源已绑定。
 RESOURCEINUSE_RESOURCEALREADYUSED = 'ResourceInUse.ResourceAlreadyUsed'

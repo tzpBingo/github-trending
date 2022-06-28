@@ -20,6 +20,21 @@ AUTHFAILURE = 'AuthFailure'
 # 操作失败。
 FAILEDOPERATION = 'FailedOperation'
 
+# 签署人未达到合法年龄。
+FAILEDOPERATION_AGENOTACHIEVENORMALLEGAL = 'FailedOperation.AgeNotAchieveNormalLegal'
+
+# 鉴权失败。
+FAILEDOPERATION_AUTHFAIL = 'FailedOperation.AuthFail'
+
+# 发起签署存在填写控件。
+FAILEDOPERATION_QRCODECREATORSIGNCOMPONENTS = 'FailedOperation.QrCodeCreatorSignComponents'
+
+# 模板签署人不存在。
+FAILEDOPERATION_QRCODESIGNUSERS = 'FailedOperation.QrCodeSignUsers'
+
+# 一码多人二维码模板有误。
+FAILEDOPERATION_QRCODETEMPLATEID = 'FailedOperation.QrCodeTemplateId'
+
 # 员工已实名。
 FAILEDOPERATION_STAFFALREADYVERIFY = 'FailedOperation.StaffAlreadyVerify'
 
@@ -34,6 +49,9 @@ INTERNALERROR_DB = 'InternalError.Db'
 
 # 数据库连接出错。
 INTERNALERROR_DBCONNECTION = 'InternalError.DbConnection'
+
+# 数据库新增记录出错。
+INTERNALERROR_DBINSERT = 'InternalError.DbInsert'
 
 # 数据库读取失败。
 INTERNALERROR_DBREAD = 'InternalError.DbRead'
@@ -92,13 +110,19 @@ OPERATIONDENIED = 'OperationDenied'
 # 应用号已被禁止。
 OPERATIONDENIED_BANNEDAPPLICATION = 'OperationDenied.BannedApplication'
 
+# 禁止操作。
+OPERATIONDENIED_FORBID = 'OperationDenied.Forbid'
+
 # 没有API权限。
 OPERATIONDENIED_NOAPIAUTH = 'OperationDenied.NoApiAuth'
 
 # 未通过个人实名。
 OPERATIONDENIED_NOIDENTITYVERIFY = 'OperationDenied.NoIdentityVerify'
 
-# 用户与企业不对应。
+# 流程配额不足。
+OPERATIONDENIED_NOQUOTA = 'OperationDenied.NoQuota'
+
+# 用户不在当前企业中。
 OPERATIONDENIED_USERNOTINORGANIZATION = 'OperationDenied.UserNotInOrganization'
 
 # 资源不存在。

@@ -125,6 +125,9 @@ INVALIDPARAMETERVALUE_INVALIDPATTERN = 'InvalidParameterValue.InvalidPattern'
 # Limit取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_LIMIT = 'InvalidParameterValue.Limit'
 
+# LinkMode取值与规范不符，请修正后再试。
+INVALIDPARAMETERVALUE_LINKMODE = 'InvalidParameterValue.LinkMode'
+
 # NoticeReceiverChannel取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_NOTICERECEIVERCHANNEL = 'InvalidParameterValue.NoticeReceiverChannel'
 
@@ -215,7 +218,7 @@ OPERATIONDENIED_UNSUPPORTEDOPERATION = 'OperationDenied.UnsupportedOperation'
 # 同一个地域下，云服务默认事件集不允许重复创建。
 RESOURCEINUSE_DEFAULTEVENTBUS = 'ResourceInUse.DefaultEventBus'
 
-# 事件集下有规则或者连接器，无法删除，请删除所有规则和连接器后重试。
+# 无法删除，因事件集下存在规则、连接器或归档，请删除所有规则、连接器和归档后重试。
 RESOURCEINUSE_EVENTBUS = 'ResourceInUse.EventBus'
 
 # 规则下有目标，无法删除，请删除所有目标后重试。

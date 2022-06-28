@@ -71,6 +71,12 @@ class AccessLogConfig(AbstractModel):
         :type Encoding: str
         :param Format: 日志格式
         :type Format: str
+        :param Address: GRPC第三方服务器地址
+        :type Address: str
+        :param EnableServer: 是否启用GRPC第三方服务器
+        :type EnableServer: bool
+        :param EnableStdout: 是否启用标准输出
+        :type EnableStdout: bool
         """
         self.Enable = None
         self.Template = None
@@ -78,6 +84,9 @@ class AccessLogConfig(AbstractModel):
         self.CLS = None
         self.Encoding = None
         self.Format = None
+        self.Address = None
+        self.EnableServer = None
+        self.EnableStdout = None
 
 
     def _deserialize(self, params):
@@ -91,6 +100,9 @@ class AccessLogConfig(AbstractModel):
             self.CLS._deserialize(params.get("CLS"))
         self.Encoding = params.get("Encoding")
         self.Format = params.get("Format")
+        self.Address = params.get("Address")
+        self.EnableServer = params.get("EnableServer")
+        self.EnableStdout = params.get("EnableStdout")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -354,6 +366,50 @@ class ClusterStatus(AbstractModel):
     def _deserialize(self, params):
         self.LinkState = params.get("LinkState")
         self.LinkErrorDetail = params.get("LinkErrorDetail")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CustomPromConfig(AbstractModel):
+    """第三方 Prometheus 配置参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Url: Prometheus 访问地址
+        :type Url: str
+        :param AuthType: 认证方式
+        :type AuthType: str
+        :param IsPublicAddr: 是否公网地址，缺省为 false
+        :type IsPublicAddr: bool
+        :param VpcId: 虚拟网络id
+        :type VpcId: str
+        :param Username: Prometheus 用户名（用于 basic 认证方式）
+        :type Username: str
+        :param Password: Prometheus 密码（用于 basic 认证方式）
+        :type Password: str
+        """
+        self.Url = None
+        self.AuthType = None
+        self.IsPublicAddr = None
+        self.VpcId = None
+        self.Username = None
+        self.Password = None
+
+
+    def _deserialize(self, params):
+        self.Url = params.get("Url")
+        self.AuthType = params.get("AuthType")
+        self.IsPublicAddr = params.get("IsPublicAddr")
+        self.VpcId = params.get("VpcId")
+        self.Username = params.get("Username")
+        self.Password = params.get("Password")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1190,11 +1246,15 @@ class PrometheusConfig(AbstractModel):
         :type Region: str
         :param InstanceId: 关联已存在实例Id，不填则默认创建
         :type InstanceId: str
+        :param CustomProm: 第三方 Prometheus
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CustomProm: :class:`tencentcloud.tcm.v20210413.models.CustomPromConfig`
         """
         self.VpcId = None
         self.SubnetId = None
         self.Region = None
         self.InstanceId = None
+        self.CustomProm = None
 
 
     def _deserialize(self, params):
@@ -1202,6 +1262,9 @@ class PrometheusConfig(AbstractModel):
         self.SubnetId = params.get("SubnetId")
         self.Region = params.get("Region")
         self.InstanceId = params.get("InstanceId")
+        if params.get("CustomProm") is not None:
+            self.CustomProm = CustomPromConfig()
+            self.CustomProm._deserialize(params.get("CustomProm"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1233,6 +1296,9 @@ class PrometheusStatus(AbstractModel):
         :param Grafana: Grafana信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Grafana: :class:`tencentcloud.tcm.v20210413.models.GrafanaInfo`
+        :param Type: Prometheus 类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
         """
         self.PrometheusId = None
         self.DisplayName = None
@@ -1241,6 +1307,7 @@ class PrometheusStatus(AbstractModel):
         self.State = None
         self.Region = None
         self.Grafana = None
+        self.Type = None
 
 
     def _deserialize(self, params):
@@ -1253,6 +1320,7 @@ class PrometheusStatus(AbstractModel):
         if params.get("Grafana") is not None:
             self.Grafana = GrafanaInfo()
             self.Grafana._deserialize(params.get("Grafana"))
+        self.Type = params.get("Type")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1474,10 +1542,13 @@ class TracingConfig(AbstractModel):
         :type Enable: bool
         :param APM: 腾讯云 APM 服务相关参数
         :type APM: :class:`tencentcloud.tcm.v20210413.models.APM`
+        :param Zipkin: 启动第三方服务器的地址
+        :type Zipkin: :class:`tencentcloud.tcm.v20210413.models.TracingZipkin`
         """
         self.Sampling = None
         self.Enable = None
         self.APM = None
+        self.Zipkin = None
 
 
     def _deserialize(self, params):
@@ -1486,6 +1557,33 @@ class TracingConfig(AbstractModel):
         if params.get("APM") is not None:
             self.APM = APM()
             self.APM._deserialize(params.get("APM"))
+        if params.get("Zipkin") is not None:
+            self.Zipkin = TracingZipkin()
+            self.Zipkin._deserialize(params.get("Zipkin"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TracingZipkin(AbstractModel):
+    """调用追踪的Zipkin设置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Address: Zipkin调用地址
+        :type Address: str
+        """
+        self.Address = None
+
+
+    def _deserialize(self, params):
+        self.Address = params.get("Address")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

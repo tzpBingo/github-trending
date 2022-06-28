@@ -158,6 +158,9 @@ INVALIDPARAMETERVALUE_CCNATTACHBMVPCLIMITEXCEEDED = 'InvalidParameterValue.CcnAt
 # 目的网段不在对端VPC的CIDR范围内。
 INVALIDPARAMETERVALUE_CIDRNOTINPEERVPC = 'InvalidParameterValue.CidrNotInPeerVpc'
 
+# 指定CIDR不在SSL-VPN所属私有网络CIDR内。
+INVALIDPARAMETERVALUE_CIDRNOTINSSLVPNVPC = 'InvalidParameterValue.CidrNotInSslVpnVpc'
+
 # 非法入参组合。
 INVALIDPARAMETERVALUE_COMBINATION = 'InvalidParameterValue.Combination'
 
@@ -296,8 +299,41 @@ INVALIDPARAMETERVALUE_SUBNETOVERLAPASSISTCIDR = 'InvalidParameterValue.SubnetOve
 # 子网CIDR不合法。
 INVALIDPARAMETERVALUE_SUBNETRANGE = 'InvalidParameterValue.SubnetRange'
 
+# 标签键重复。
+INVALIDPARAMETERVALUE_TAGDUPLICATEKEY = 'InvalidParameterValue.TagDuplicateKey'
+
+# 重复的标签资源类型。
+INVALIDPARAMETERVALUE_TAGDUPLICATERESOURCETYPE = 'InvalidParameterValue.TagDuplicateResourceType'
+
+# 标签键无效。
+INVALIDPARAMETERVALUE_TAGINVALIDKEY = 'InvalidParameterValue.TagInvalidKey'
+
+# 标签键长度无效。
+INVALIDPARAMETERVALUE_TAGINVALIDKEYLEN = 'InvalidParameterValue.TagInvalidKeyLen'
+
+# 标签值无效。
+INVALIDPARAMETERVALUE_TAGINVALIDVAL = 'InvalidParameterValue.TagInvalidVal'
+
+# 标签键不存在。
+INVALIDPARAMETERVALUE_TAGKEYNOTEXISTS = 'InvalidParameterValue.TagKeyNotExists'
+
+# 标签没有分配配额。
+INVALIDPARAMETERVALUE_TAGNOTALLOCATEDQUOTA = 'InvalidParameterValue.TagNotAllocatedQuota'
+
 # 该标签和值不存在。
 INVALIDPARAMETERVALUE_TAGNOTEXISTED = 'InvalidParameterValue.TagNotExisted'
+
+# 不支持的标签。
+INVALIDPARAMETERVALUE_TAGNOTSUPPORTTAG = 'InvalidParameterValue.TagNotSupportTag'
+
+# '标签资源格式错误。
+INVALIDPARAMETERVALUE_TAGRESOURCEFORMATERROR = 'InvalidParameterValue.TagResourceFormatError'
+
+# 标签时间戳超配。
+INVALIDPARAMETERVALUE_TAGTIMESTAMPEXCEEDED = 'InvalidParameterValue.TagTimestampExceeded'
+
+# 标签值不存在。
+INVALIDPARAMETERVALUE_TAGVALNOTEXISTS = 'InvalidParameterValue.TagValNotExists'
 
 # 无效参数值。参数值太长。
 INVALIDPARAMETERVALUE_TOOLONG = 'InvalidParameterValue.TooLong'
@@ -365,11 +401,17 @@ LIMITEXCEEDED_ADDRESSQUOTALIMITEXCEEDED = 'LimitExceeded.AddressQuotaLimitExceed
 # 带宽包配额超过限制。
 LIMITEXCEEDED_BANDWIDTHPACKAGEQUOTA = 'LimitExceeded.BandwidthPackageQuota'
 
+# 超过更换IP配额。
+LIMITEXCEEDED_CHANGEADDRESSQUOTA = 'LimitExceeded.ChangeAddressQuota'
+
 # VPC分配网段数量达到上限。
 LIMITEXCEEDED_CIDRBLOCK = 'LimitExceeded.CidrBlock'
 
 # 租户每天申请的弹性IP超过上限。
 LIMITEXCEEDED_DAILYALLOCATEADDRESSQUOTALIMITEXCEEDED = 'LimitExceeded.DailyAllocateAddressQuotaLimitExceeded'
+
+# 超过每日更换IP配额。
+LIMITEXCEEDED_DAILYCHANGEADDRESSQUOTA = 'LimitExceeded.DailyChangeAddressQuota'
 
 # 实例绑定的弹性IP超过配额。
 LIMITEXCEEDED_INSTANCEADDRESSQUOTA = 'LimitExceeded.InstanceAddressQuota'
@@ -397,6 +439,24 @@ LIMITEXCEEDED_SECURITYGROUPPOLICYSET = 'LimitExceeded.SecurityGroupPolicySet'
 
 # 子网分配子网段数量达到上限。
 LIMITEXCEEDED_SUBNETCIDRBLOCK = 'LimitExceeded.SubnetCidrBlock'
+
+# 标签键已达到上限。
+LIMITEXCEEDED_TAGKEYEXCEEDED = 'LimitExceeded.TagKeyExceeded'
+
+# 每个资源的标签键已达到上限。
+LIMITEXCEEDED_TAGKEYPERRESOURCEEXCEEDED = 'LimitExceeded.TagKeyPerResourceExceeded'
+
+# 没有足够的标签配额。
+LIMITEXCEEDED_TAGNOTENOUGHQUOTA = 'LimitExceeded.TagNotEnoughQuota'
+
+# 标签配额已满，无法创建资源。
+LIMITEXCEEDED_TAGQUOTA = 'LimitExceeded.TagQuota'
+
+# 标签配额已达到上限。
+LIMITEXCEEDED_TAGQUOTAEXCEEDED = 'LimitExceeded.TagQuotaExceeded'
+
+# 标签键的数目已达到上限。
+LIMITEXCEEDED_TAGTAGSEXCEEDED = 'LimitExceeded.TagTagsExceeded'
 
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
@@ -521,6 +581,12 @@ UNSUPPORTEDOPERATION_CONFLICTWITHDOCKERROUTE = 'UnsupportedOperation.ConflictWit
 # 指定的VPC未发现专线网关。
 UNSUPPORTEDOPERATION_DCGATEWAYSNOTFOUNDINVPC = 'UnsupportedOperation.DcGatewaysNotFoundInVpc'
 
+# 禁止删除默认路由表。
+UNSUPPORTEDOPERATION_DELDEFAULTROUTE = 'UnsupportedOperation.DelDefaultRoute'
+
+# 禁止删除已关联子网的路由表。
+UNSUPPORTEDOPERATION_DELROUTEWITHSUBNET = 'UnsupportedOperation.DelRouteWithSubnet'
+
 # 专线网关正在更新BGP Community属性。
 UNSUPPORTEDOPERATION_DIRECTCONNECTGATEWAYISUPDATINGCOMMUNITY = 'UnsupportedOperation.DirectConnectGatewayIsUpdatingCommunity'
 
@@ -620,6 +686,12 @@ UNSUPPORTEDOPERATION_NOTPENDINGCCNINSTANCE = 'UnsupportedOperation.NotPendingCcn
 # 当前云联网为非后付费类型，无法进行此操作。
 UNSUPPORTEDOPERATION_NOTPOSTPAIDCCNOPERATION = 'UnsupportedOperation.NotPostpaidCcnOperation'
 
+# 不支持删除默认路由表。
+UNSUPPORTEDOPERATION_NOTSUPPORTDELETEDEFAULTROUTETABLE = 'UnsupportedOperation.NotSupportDeleteDefaultRouteTable'
+
+# 当前云联网不支持更新路由发布。
+UNSUPPORTEDOPERATION_NOTSUPPORTEDUPDATECCNROUTEPUBLISH = 'UnsupportedOperation.NotSupportedUpdateCcnRoutePublish'
+
 # 指定的路由策略不支持发布或撤销至云联网。
 UNSUPPORTEDOPERATION_NOTIFYCCN = 'UnsupportedOperation.NotifyCcn'
 
@@ -653,8 +725,23 @@ UNSUPPORTEDOPERATION_RESOURCEMISMATCH = 'UnsupportedOperation.ResourceMismatch'
 # 指定的终端节点服务所创建的终端节点不支持绑定安全组。
 UNSUPPORTEDOPERATION_SPECIALENDPOINTSERVICE = 'UnsupportedOperation.SpecialEndPointService'
 
+# 中继网卡不支持该操作。
+UNSUPPORTEDOPERATION_SUBENINOTSUPPORTTRUNKING = 'UnsupportedOperation.SubEniNotSupportTrunking'
+
 # 系统路由，禁止操作。
 UNSUPPORTEDOPERATION_SYSTEMROUTE = 'UnsupportedOperation.SystemRoute'
+
+# 标签正在分配中。
+UNSUPPORTEDOPERATION_TAGALLOCATE = 'UnsupportedOperation.TagAllocate'
+
+# 标签正在释放中。
+UNSUPPORTEDOPERATION_TAGFREE = 'UnsupportedOperation.TagFree'
+
+# 标签没有权限。
+UNSUPPORTEDOPERATION_TAGNOTPERMIT = 'UnsupportedOperation.TagNotPermit'
+
+# 不支持使用系统预留的标签键。
+UNSUPPORTEDOPERATION_TAGSYSTEMRESERVEDTAGKEY = 'UnsupportedOperation.TagSystemReservedTagKey'
 
 # 账号ID不存在。
 UNSUPPORTEDOPERATION_UINNOTFOUND = 'UnsupportedOperation.UinNotFound'

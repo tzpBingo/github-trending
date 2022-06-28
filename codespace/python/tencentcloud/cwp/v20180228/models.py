@@ -8070,10 +8070,16 @@ class DescribeBashEventsRequest(AbstractModel):
         :param Filters: 过滤条件。
 <li>Keywords - String - 是否必填：否 - 关键词(主机内网IP)</li>
         :type Filters: list of Filter
+        :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
+        :type Order: str
+        :param By: 排序字段：CreateTime-发生时间。ModifyTime-处理时间
+        :type By: str
         """
         self.Limit = None
         self.Offset = None
         self.Filters = None
+        self.Order = None
+        self.By = None
 
 
     def _deserialize(self, params):
@@ -8085,6 +8091,8 @@ class DescribeBashEventsRequest(AbstractModel):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8220,10 +8228,16 @@ class DescribeBruteAttackListRequest(AbstractModel):
 <li>ModifyEndTime - String - 是否必填：否 - 最近攻击时间筛选，结束时间</li>
 <li>Banned - String - 是否必填：否 - 阻断状态筛选，多个用","分割：0-未阻断（全局ZK开关关闭），82-未阻断(非专业版)，83-未阻断(已加白名单)，1-已阻断，2-未阻断-程序异常，3-未阻断-内网攻击暂不支持阻断，4-未阻断-安平暂不支持阻断</li>
         :type Filters: list of Filter
+        :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
+        :type Order: str
+        :param By: 排序字段：CreateTime-首次攻击时间
+        :type By: str
         """
         self.Limit = None
         self.Offset = None
         self.Filters = None
+        self.Order = None
+        self.By = None
 
 
     def _deserialize(self, params):
@@ -8235,6 +8249,8 @@ class DescribeBruteAttackListRequest(AbstractModel):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9058,6 +9074,8 @@ class DescribeHistoryServiceResponse(AbstractModel):
         :type ResourceId: str
         :param Status: 0 没开通 1 正常 2隔离 3销毁
         :type Status: int
+        :param StartTime: 开始时间
+        :type StartTime: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -9067,6 +9085,7 @@ class DescribeHistoryServiceResponse(AbstractModel):
         self.IsAutoOpenRenew = None
         self.ResourceId = None
         self.Status = None
+        self.StartTime = None
         self.RequestId = None
 
 
@@ -9077,6 +9096,7 @@ class DescribeHistoryServiceResponse(AbstractModel):
         self.IsAutoOpenRenew = params.get("IsAutoOpenRenew")
         self.ResourceId = params.get("ResourceId")
         self.Status = params.get("Status")
+        self.StartTime = params.get("StartTime")
         self.RequestId = params.get("RequestId")
 
 
@@ -9102,10 +9122,16 @@ class DescribeHostLoginListRequest(AbstractModel):
 <li>Status - int - 是否必填：否 - 状态筛选1:正常登录；5：已加白,14:已处理，15：已忽略</li>
 <li>RiskLevel - int - 是否必填：否 - 状态筛选0:高危；1：可疑</li>
         :type Filters: list of Filter
+        :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
+        :type Order: str
+        :param By: 排序字段：LoginTime-发生时间
+        :type By: str
         """
         self.Limit = None
         self.Offset = None
         self.Filters = None
+        self.Order = None
+        self.By = None
 
 
     def _deserialize(self, params):
@@ -9117,6 +9143,8 @@ class DescribeHostLoginListRequest(AbstractModel):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9311,8 +9339,8 @@ class DescribeImportMachineInfoRequest(AbstractModel):
         :type ImportType: str
         :param IsQueryProMachine: 该参数已作废.
         :type IsQueryProMachine: bool
-        :param Filters: 过滤条件。
-<li>Version - String  是否必填：否 - 当前防护版本（ PRO_VERSION：专业版 | BASIC_VERSION：基础版 | Flagship : 旗舰版 | ProtectedMachines: 专业版+旗舰版）</li>
+        :param Filters: 过滤条件：
+<li>Version - String  是否必填：否 - 当前防护版本（ PRO_VERSION：专业版 | BASIC_VERSION：基础版 | Flagship：旗舰版 | ProtectedMachines：专业版+旗舰版） | BASIC_PROPOST_GENERAL_DISCOUNT：普惠版+专业版按量计费+基础版主机 | UnFlagship：专业版预付费+专业版后付费+基础版+普惠版</li>
         :type Filters: list of Filters
         """
         self.MachineList = None
@@ -10010,7 +10038,7 @@ class DescribeMalWareListRequest(AbstractModel):
 <li>VirusName - String - 是否必填：否 - 描述筛选</li>
 <li>CreateBeginTime - String - 是否必填：否 - 创建时间筛选-开始时间</li>
 <li>CreateEndTime - String - 是否必填：否 - 创建时间筛选-结束时间</li>
-<li>Status - String - 是否必填：否 - 状态筛选 4待处理,5信任沃尔玛可哦啊吗,6已隔离,10隔离中,11恢复隔离中</li>
+<li>Status - String - 是否必填：否 - 状态筛选 4待处理,5信任,6已隔离,10隔离中,11恢复隔离中</li>
         :type Filters: list of Filter
         :param By: 检测排序 CreateTime
         :type By: str
@@ -10550,10 +10578,16 @@ class DescribePrivilegeEventsRequest(AbstractModel):
         :param Filters: 过滤条件。
 <li>Keywords - String - 是否必填：否 - 关键词(主机IP)</li>
         :type Filters: list of Filter
+        :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
+        :type Order: str
+        :param By: 排序字段：CreateTime-发现时间
+        :type By: str
         """
         self.Limit = None
         self.Offset = None
         self.Filters = None
+        self.Order = None
+        self.By = None
 
 
     def _deserialize(self, params):
@@ -10565,6 +10599,8 @@ class DescribePrivilegeEventsRequest(AbstractModel):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11066,10 +11102,16 @@ class DescribeReverseShellEventsRequest(AbstractModel):
         :param Filters: 过滤条件。
 <li>Keywords - String - 是否必填：否 - 关键字(主机内网IP|进程名)</li>
         :type Filters: list of Filter
+        :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
+        :type Order: str
+        :param By: 排序字段：CreateTime-发生时间
+        :type By: str
         """
         self.Limit = None
         self.Offset = None
         self.Filters = None
+        self.Order = None
+        self.By = None
 
 
     def _deserialize(self, params):
@@ -11081,6 +11123,8 @@ class DescribeReverseShellEventsRequest(AbstractModel):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11208,7 +11252,7 @@ class DescribeRiskDnsListRequest(AbstractModel):
         :type Filters: list of Filter
         :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
         :type Order: str
-        :param By: 排序字段：AccessCount-请求次数
+        :param By: 排序字段：AccessCount-请求次数。MergeTime-最近请求时间
         :type By: str
         """
         self.Limit = None
@@ -12834,11 +12878,13 @@ class DescribeVulEffectHostListRequest(AbstractModel):
         :type Offset: int
         :param VulId: 漏洞id
         :type VulId: int
-        :param Filters: 过滤条件。
+        :param Filters: 过滤条件：
 <li>AliasName - String - 主机名筛选</li>
-<li>TagIds - String - 主机标签id串，多个用英文逗号分隔</li>
-<li>Status - String - 状态,0: 待处理 1:忽略  3:已修复  5:检测中  6:修复中  8=:修复失败.</li>
+<li>TagIds - String - 主机标签id串，多个用英文用逗号分隔</li>
+<li>Status - String - 状态：0-待处理 1-忽略  3-已修复  5-检测中  6-修复中  8-修复失败</li>
 <li>Uuid - String数组 - Uuid串数组</li>
+<li>Version - String数组 - 付费版本数组："Flagship"-旗舰版 "PRO_VERSION"-专业版 "BASIC_VERSION"-基础版</li>
+<li>InstanceState - String数组 - 实例状态数组："PENDING"-创建中 "LAUNCH_FAILED"-创建失败 "RUNNING"-运行中 "STOPPED"-关机 "STARTING"-开机中 "STOPPING"-关机中 "REBOOTING"-重启中 "SHUTDOWN"-待销毁 "TERMINATING"-销毁中 "UNKNOWN"-未知（针对非腾讯云机器，且客户端离线的场景） </li>
         :type Filters: list of Filter
         """
         self.Limit = None
@@ -13727,6 +13773,9 @@ class EffectiveMachineInfo(AbstractModel):
         :param MachineStatus: 在线状态 OFFLINE，ONLINE
 注意：此字段可能返回 null，表示取不到有效值。
         :type MachineStatus: str
+        :param LicenseOrder: 授权订单对象
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LicenseOrder: :class:`tencentcloud.cwp.v20180228.models.LicenseOrder`
         """
         self.MachineName = None
         self.MachinePublicIp = None
@@ -13736,6 +13785,7 @@ class EffectiveMachineInfo(AbstractModel):
         self.Uuid = None
         self.KernelVersion = None
         self.MachineStatus = None
+        self.LicenseOrder = None
 
 
     def _deserialize(self, params):
@@ -13752,6 +13802,9 @@ class EffectiveMachineInfo(AbstractModel):
         self.Uuid = params.get("Uuid")
         self.KernelVersion = params.get("KernelVersion")
         self.MachineStatus = params.get("MachineStatus")
+        if params.get("LicenseOrder") is not None:
+            self.LicenseOrder = LicenseOrder()
+            self.LicenseOrder._deserialize(params.get("LicenseOrder"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13914,7 +13967,7 @@ class ExpertServiceOrderInfo(AbstractModel):
         r"""
         :param OrderId: 订单id
         :type OrderId: int
-        :param InquireType: 订单类型 1应急 2 旗舰护网 3 安全管家
+        :param InquireType: 订单类型 1应急 2 旗舰重保 3 安全管家
         :type InquireType: int
         :param InquireNum: 服务数量
         :type InquireNum: int
@@ -15699,6 +15752,46 @@ class IgnoreRuleEffectHostInfo(AbstractModel):
         
 
 
+class LicenseOrder(AbstractModel):
+    """授权订单对象内容
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LicenseId: 授权ID
+        :type LicenseId: int
+        :param LicenseType: 授权类型
+        :type LicenseType: int
+        :param Status: 授权订单资源状态
+        :type Status: int
+        :param SourceType: 订单类型
+        :type SourceType: int
+        :param ResourceId: 资源ID
+        :type ResourceId: str
+        """
+        self.LicenseId = None
+        self.LicenseType = None
+        self.Status = None
+        self.SourceType = None
+        self.ResourceId = None
+
+
+    def _deserialize(self, params):
+        self.LicenseId = params.get("LicenseId")
+        self.LicenseType = params.get("LicenseType")
+        self.Status = params.get("Status")
+        self.SourceType = params.get("SourceType")
+        self.ResourceId = params.get("ResourceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LoginWhiteCombinedInfo(AbstractModel):
     """异地登录合并后白名单
 
@@ -16042,7 +16135,7 @@ class MalWareList(AbstractModel):
         :type Id: int
         :param Alias: 主机别名
         :type Alias: str
-        :param Tags: 特性标签
+        :param Tags: 特性标签，已废弃字段，不会再返回标签，详情中才会返回标签信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of str
         :param FileCreateTime: 首次运行时间
@@ -16057,6 +16150,12 @@ class MalWareList(AbstractModel):
         :type LatestScanTime: str
         :param Level: 风险等级 0未知、1低、2中、3高、4严重
         :type Level: int
+        :param CheckPlatform: '木马检测平台用,分割 1云查杀引擎、2TAV、3binaryAi、4异常行为、5威胁情报
+        :type CheckPlatform: str
+        :param ProcessExists: 木马进程是否存在 0:不存在，1:存在
+        :type ProcessExists: int
+        :param FileExists: 木马文件是否存在 0:不存在，1:存在
+        :type FileExists: int
         """
         self.HostIp = None
         self.Uuid = None
@@ -16071,6 +16170,9 @@ class MalWareList(AbstractModel):
         self.CreateTime = None
         self.LatestScanTime = None
         self.Level = None
+        self.CheckPlatform = None
+        self.ProcessExists = None
+        self.FileExists = None
 
 
     def _deserialize(self, params):
@@ -16087,6 +16189,9 @@ class MalWareList(AbstractModel):
         self.CreateTime = params.get("CreateTime")
         self.LatestScanTime = params.get("LatestScanTime")
         self.Level = params.get("Level")
+        self.CheckPlatform = params.get("CheckPlatform")
+        self.ProcessExists = params.get("ProcessExists")
+        self.FileExists = params.get("FileExists")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19135,7 +19240,7 @@ class VulEffectHostList(AbstractModel):
         :param Description: 说明
 注意：此字段可能返回 null，表示取不到有效值。
         :type Description: str
-        :param HostVersion: 版本信息 0=普通版本 1=专业版 2=旗舰版
+        :param HostVersion: 版本信息：0-基础版 1-专业版 2-旗舰版 3-普惠版
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostVersion: int
         :param IsSupportAutoFix: 是否能自动修复 0 :漏洞不可自动修复，  1：可自动修复， 2：客户端已离线， 3：主机不是旗舰版只能手动修复， 4：机型不允许 ，5：修复中 ，6：已修复， 7：检测中  9:修复失败，10:已忽略 11:漏洞只支持linux不支持Windows 12：漏洞只支持Windows不支持linux，13:修复失败但此时主机已离线，14:修复失败但此时主机不是旗舰版， 15:已手动修复
@@ -19144,6 +19249,12 @@ class VulEffectHostList(AbstractModel):
         :param FixStatusMsg: 失败原因
 注意：此字段可能返回 null，表示取不到有效值。
         :type FixStatusMsg: str
+        :param FirstDiscoveryTime: 首次发现时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FirstDiscoveryTime: str
+        :param InstanceState: 实例状态："PENDING"-创建中 "LAUNCH_FAILED"-创建失败 "RUNNING"-运行中 "STOPPED"-关机 "STARTING"-表示开机中 "STOPPING"-表示关机中 "REBOOTING"-重启中 "SHUTDOWN"-表示停止待销毁 "TERMINATING"-表示销毁中 "
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceState: str
         """
         self.EventId = None
         self.Status = None
@@ -19158,6 +19269,8 @@ class VulEffectHostList(AbstractModel):
         self.HostVersion = None
         self.IsSupportAutoFix = None
         self.FixStatusMsg = None
+        self.FirstDiscoveryTime = None
+        self.InstanceState = None
 
 
     def _deserialize(self, params):
@@ -19174,6 +19287,8 @@ class VulEffectHostList(AbstractModel):
         self.HostVersion = params.get("HostVersion")
         self.IsSupportAutoFix = params.get("IsSupportAutoFix")
         self.FixStatusMsg = params.get("FixStatusMsg")
+        self.FirstDiscoveryTime = params.get("FirstDiscoveryTime")
+        self.InstanceState = params.get("InstanceState")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19438,7 +19553,7 @@ class WarningInfoObj(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Type: 事件告警类型；1：离线，2：木马，3：异常登录，4：爆破，5：漏洞（已拆分为9-12四种类型）6：高危命令，7：反弹sell，8：本地提权，9：应用漏洞，10：web-cms漏洞，11：应急漏洞，12：安全基线 ,13: 防篡改，14：恶意请求，15: 网络攻击，16：Windows系统漏洞，17：Linux软件漏洞
+        :param Type: 事件告警类型；1：离线，2：木马，3：异常登录，4：爆破，5：漏洞（已拆分为9-12四种类型）6：高危命令，7：反弹sell，8：本地提权，9：应用漏洞，10：web-cms漏洞，11：应急漏洞，12：安全基线 ,13: 防篡改，14：恶意请求，15: 网络攻击，16：Windows系统漏洞，17：Linux软件漏洞，18：核心文件监控告警，19：客户端卸载告警。20：客户端离线告警
         :type Type: int
         :param DisablePhoneWarning: 1: 关闭告警 0: 开启告警
         :type DisablePhoneWarning: int

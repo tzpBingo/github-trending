@@ -27,7 +27,7 @@ class SesClient(AbstractClient):
 
 
     def BatchSendEmail(self, request):
-        """您可以通过此API批量发送TEXT或者HTML邮件，适用于营销类、通知类邮件。默认仅支持使用模板发送邮件，如需发送自定义内容，请单独联系商务开通此功能。批量发送之前，需先创建收件人列表，和收件人地址，并通过收件人列表id来进行发送。批量发送任务支持定时发送和周期重复发送，定时发送需传TimedParam，周期重复发送需传CycleParam
+        """您可以通过此API批量发送TEXT或者HTML邮件，适用于营销类、通知类邮件。默认仅支持使用模板发送邮件。批量发送之前，需先创建收件人列表，和收件人地址，并通过收件人列表id来进行发送。批量发送任务支持定时发送和周期重复发送，定时发送需传TimedParam，周期重复发送需传CycleParam
 
         :param request: Request instance for BatchSendEmail.
         :type request: :class:`tencentcloud.ses.v20201002.models.BatchSendEmailRequest`
@@ -202,7 +202,7 @@ class SesClient(AbstractClient):
 
 
     def CreateReceiverDetailWithData(self, request):
-        """添加收件人地址附带模板参数
+        """添加收件人地址附带模板参数，使用本接口在添加收件人地址的同时传入模板参数，使每一个收件人地址在发信的时候使用的模板变量取值不同。用户首先调用创建收件人列表接口-CreateReceiver后，然后调用本接口传入收件人地址和发信时的模板参数，最后使用批量发送邮件接口-BatchSendEmail，即可完成批量发信。需要注意的是在使用本接口后BatchSendEmail接口中的Template参数不需再传。用户也可以在控制台上邮件发送-收件人列表菜单中，通过导入文件的方式，导入收件人地址和模板变量和参数值。
 
         :param request: Request instance for CreateReceiverDetailWithData.
         :type request: :class:`tencentcloud.ses.v20201002.models.CreateReceiverDetailWithDataRequest`
@@ -667,7 +667,7 @@ class SesClient(AbstractClient):
 
 
     def SendEmail(self, request):
-        """您可以通过此API发送TEXT或者HTML邮件，适用于触发类邮件（验证码、交易类）。默认仅支持使用模板发送邮件，如需发送自定义内容，请单独联系商务开通此功能。
+        """您可以通过此API发送HTML或者TEXT邮件，适用于触发类邮件（验证码、交易类）。默认仅支持使用模板发送邮件。
 
         :param request: Request instance for SendEmail.
         :type request: :class:`tencentcloud.ses.v20201002.models.SendEmailRequest`

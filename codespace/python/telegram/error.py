@@ -16,9 +16,26 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-# pylint: disable=C0115
-"""This module contains an object that represents Telegram errors."""
-from typing import Tuple
+"""This module contains classes that represent Telegram errors.
+
+.. versionchanged:: 20.0
+    Replaced ``Unauthorized`` by :class:`Forbidden`.
+"""
+
+__all__ = (
+    "BadRequest",
+    "ChatMigrated",
+    "Conflict",
+    "Forbidden",
+    "InvalidToken",
+    "NetworkError",
+    "PassportDecryptionError",
+    "RetryAfter",
+    "TelegramError",
+    "TimedOut",
+)
+
+from typing import Optional, Tuple, Union
 
 
 def _lstrip_str(in_s: str, lstr: str) -> str:
@@ -41,43 +58,56 @@ def _lstrip_str(in_s: str, lstr: str) -> str:
 class TelegramError(Exception):
     """Base class for Telegram errors."""
 
-    # Apparently the base class Exception already has __dict__ in it, so its not included here
-    __slots__ = ('message',)
+    __slots__ = ("message",)
 
     def __init__(self, message: str):
         super().__init__()
 
-        msg = _lstrip_str(message, 'Error: ')
-        msg = _lstrip_str(msg, '[Error]: ')
-        msg = _lstrip_str(msg, 'Bad Request: ')
+        msg = _lstrip_str(message, "Error: ")
+        msg = _lstrip_str(msg, "[Error]: ")
+        msg = _lstrip_str(msg, "Bad Request: ")
         if msg != message:
             # api_error - capitalize the msg...
             msg = msg.capitalize()
         self.message = msg
 
     def __str__(self) -> str:
-        return '%s' % self.message
+        return self.message
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}('{self.message}')"
 
     def __reduce__(self) -> Tuple[type, Tuple[str]]:
         return self.__class__, (self.message,)
 
 
-class Unauthorized(TelegramError):
-    """Raised when the bot has not enough rights to perform the requested action."""
+class Forbidden(TelegramError):
+    """Raised when the bot has not enough rights to perform the requested action.
+
+    .. versionchanged:: 20.0
+        This class was previously named ``Unauthorized``.
+    """
 
     __slots__ = ()
 
 
 class InvalidToken(TelegramError):
-    """Raised when the token is invalid."""
+    """Raised when the token is invalid.
 
-    __slots__ = ()
+    Args:
+        message (:obj:`str`, optional): Any additional information about the exception.
 
-    def __init__(self) -> None:
-        super().__init__('Invalid token')
+            .. versionadded:: 20.0
+    """
 
-    def __reduce__(self) -> Tuple[type, Tuple]:  # type: ignore[override]
-        return self.__class__, ()
+    __slots__ = ("_message",)
+
+    def __init__(self, message: str = None) -> None:
+        self._message = message
+        super().__init__("Invalid token" if self._message is None else self._message)
+
+    def __reduce__(self) -> Tuple[type, Tuple[Optional[str]]]:  # type: ignore[override]
+        return self.__class__, (self._message,)
 
 
 class NetworkError(TelegramError):
@@ -93,15 +123,18 @@ class BadRequest(NetworkError):
 
 
 class TimedOut(NetworkError):
-    """Raised when a request took too long to finish."""
+    """Raised when a request took too long to finish.
+
+    Args:
+        message (:obj:`str`, optional): Any additional information about the exception.
+
+            .. versionadded:: 20.0
+    """
 
     __slots__ = ()
 
-    def __init__(self) -> None:
-        super().__init__('Timed out')
-
-    def __reduce__(self) -> Tuple[type, Tuple]:  # type: ignore[override]
-        return self.__class__, ()
+    def __init__(self, message: str = None) -> None:
+        super().__init__(message or "Timed out")
 
 
 class ChatMigrated(TelegramError):
@@ -111,12 +144,15 @@ class ChatMigrated(TelegramError):
     Args:
         new_chat_id (:obj:`int`): The new chat id of the group.
 
+    Attributes:
+        new_chat_id (:obj:`int`): The new chat id of the group.
+
     """
 
-    __slots__ = ('new_chat_id',)
+    __slots__ = ("new_chat_id",)
 
     def __init__(self, new_chat_id: int):
-        super().__init__(f'Group migrated to supergroup. New chat id: {new_chat_id}')
+        super().__init__(f"Group migrated to supergroup. New chat id: {new_chat_id}")
         self.new_chat_id = new_chat_id
 
     def __reduce__(self) -> Tuple[type, Tuple[int]]:  # type: ignore[override]
@@ -127,16 +163,22 @@ class RetryAfter(TelegramError):
     """
     Raised when flood limits where exceeded.
 
+    .. versionchanged:: 20.0
+       :attr:`retry_after` is now an integer to comply with the Bot API.
+
     Args:
+        retry_after (:obj:`int`): Time in seconds, after which the bot can retry the request.
+
+    Attributes:
         retry_after (:obj:`int`): Time in seconds, after which the bot can retry the request.
 
     """
 
-    __slots__ = ('retry_after',)
+    __slots__ = ("retry_after",)
 
     def __init__(self, retry_after: int):
-        super().__init__(f'Flood control exceeded. Retry in {float(retry_after)} seconds')
-        self.retry_after = float(retry_after)
+        super().__init__(f"Flood control exceeded. Retry in {retry_after} seconds")
+        self.retry_after = retry_after
 
     def __reduce__(self) -> Tuple[type, Tuple[float]]:  # type: ignore[override]
         return self.__class__, (self.retry_after,)
@@ -149,3 +191,21 @@ class Conflict(TelegramError):
 
     def __reduce__(self) -> Tuple[type, Tuple[str]]:
         return self.__class__, (self.message,)
+
+
+class PassportDecryptionError(TelegramError):
+    """Something went wrong with decryption.
+
+    .. versionchanged:: 20.0
+        This class was previously named ``TelegramDecryptionError`` and was available via
+        ``telegram.TelegramDecryptionError``.
+    """
+
+    __slots__ = ("_msg",)
+
+    def __init__(self, message: Union[str, Exception]):
+        super().__init__(f"PassportDecryptionError: {message}")
+        self._msg = str(message)
+
+    def __reduce__(self) -> Tuple[type, Tuple[str]]:
+        return self.__class__, (self._msg,)

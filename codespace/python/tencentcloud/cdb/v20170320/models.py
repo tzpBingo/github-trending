@@ -1825,7 +1825,7 @@ class CreateDBInstanceHourRequest(AbstractModel):
         :type RoGroup: :class:`tencentcloud.cdb.v20170320.models.RoGroup`
         :param AutoRenewFlag: 购买按量计费实例该字段无意义。
         :type AutoRenewFlag: int
-        :param InstanceName: 实例名称。
+        :param InstanceName: 实例名称。一次购买多个实例命名会用后缀数字区分，例instnaceName=db，goodsNum=3，实例命名分别为db1，db2，db3。
         :type InstanceName: str
         :param ResourceTags: 实例标签信息。
         :type ResourceTags: list of TagInfo
@@ -1853,6 +1853,8 @@ class CreateDBInstanceHourRequest(AbstractModel):
         :type AlarmPolicyIdList: list of str
         :param DryRun: 是否只预检此次请求。true：发送检查请求，不会创建实例。检查项包括是否填写了必需参数，请求格式，业务限制等。如果检查不通过，则返回对应错误码；如果检查通过，则返回RequestId.默认为false：发送正常请求，通过检查后直接创建实例。
         :type DryRun: bool
+        :param EngineType: 实例引擎类型，默认为"InnoDB"，支持值包括："InnoDB"，"RocksDB"。
+        :type EngineType: str
         :param Vips: 指定实例的IP列表。仅支持主实例指定，按实例顺序，不足则按未指定处理。
         :type Vips: list of str
         """
@@ -1891,6 +1893,7 @@ class CreateDBInstanceHourRequest(AbstractModel):
         self.ParamTemplateType = None
         self.AlarmPolicyIdList = None
         self.DryRun = None
+        self.EngineType = None
         self.Vips = None
 
 
@@ -1942,6 +1945,7 @@ class CreateDBInstanceHourRequest(AbstractModel):
         self.ParamTemplateType = params.get("ParamTemplateType")
         self.AlarmPolicyIdList = params.get("AlarmPolicyIdList")
         self.DryRun = params.get("DryRun")
+        self.EngineType = params.get("EngineType")
         self.Vips = params.get("Vips")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -2028,7 +2032,7 @@ class CreateDBInstanceRequest(AbstractModel):
         :type SecurityGroup: list of str
         :param RoGroup: 只读实例参数。购买只读实例时，该参数必传。
         :type RoGroup: :class:`tencentcloud.cdb.v20170320.models.RoGroup`
-        :param InstanceName: 实例名称。
+        :param InstanceName: 实例名称。一次购买多个实例命名会用后缀数字区分，例instnaceName=db，goodsNum=3，实例命名分别为db1，db2，db3。
         :type InstanceName: str
         :param ResourceTags: 实例标签信息。
         :type ResourceTags: list of TagInfo
@@ -2056,6 +2060,8 @@ class CreateDBInstanceRequest(AbstractModel):
         :type AlarmPolicyIdList: list of str
         :param DryRun: 是否只预检此次请求。true：发送检查请求，不会创建实例。检查项包括是否填写了必需参数，请求格式，业务限制等。如果检查不通过，则返回对应错误码；如果检查通过，则返回RequestId.默认为false：发送正常请求，通过检查后直接创建实例。
         :type DryRun: bool
+        :param EngineType: 实例引擎类型，默认为"InnoDB"，支持值包括："InnoDB"，"RocksDB"。
+        :type EngineType: str
         :param Vips: 指定实例的IP列表。仅支持主实例指定，按实例顺序，不足则按未指定处理。
         :type Vips: list of str
         """
@@ -2095,6 +2101,7 @@ class CreateDBInstanceRequest(AbstractModel):
         self.ParamTemplateType = None
         self.AlarmPolicyIdList = None
         self.DryRun = None
+        self.EngineType = None
         self.Vips = None
 
 
@@ -2147,6 +2154,7 @@ class CreateDBInstanceRequest(AbstractModel):
         self.ParamTemplateType = params.get("ParamTemplateType")
         self.AlarmPolicyIdList = params.get("AlarmPolicyIdList")
         self.DryRun = params.get("DryRun")
+        self.EngineType = params.get("EngineType")
         self.Vips = params.get("Vips")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -4570,6 +4578,8 @@ class DescribeDBInstancesRequest(AbstractModel):
         :type UniqueVpcIds: list of str
         :param UniqSubnetIds: 私有网络字符型subnetId
         :type UniqSubnetIds: list of str
+        :param Tags: 标签键值
+        :type Tags: list of Tag
         """
         self.ProjectId = None
         self.InstanceTypes = None
@@ -4602,6 +4612,7 @@ class DescribeDBInstancesRequest(AbstractModel):
         self.TagValues = None
         self.UniqueVpcIds = None
         self.UniqSubnetIds = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -4636,6 +4647,12 @@ class DescribeDBInstancesRequest(AbstractModel):
         self.TagValues = params.get("TagValues")
         self.UniqueVpcIds = params.get("UniqueVpcIds")
         self.UniqSubnetIds = params.get("UniqSubnetIds")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7893,7 +7910,7 @@ class ModifyAccountPrivilegesRequest(AbstractModel):
         :type InstanceId: str
         :param Accounts: 数据库的账号，包括用户名和域名。
         :type Accounts: list of Account
-        :param GlobalPrivileges: 全局权限。其中，GlobalPrivileges 中权限的可选值为："SELECT","INSERT","UPDATE","DELETE","CREATE", "PROCESS", "DROP","REFERENCES","INDEX","ALTER","SHOW DATABASES","CREATE TEMPORARY TABLES","LOCK TABLES","EXECUTE","CREATE VIEW","SHOW VIEW","CREATE ROUTINE","ALTER ROUTINE","EVENT","TRIGGER","CREATE USER","RELOAD","REPLICATION CLIENT","REPLICATION SLAVE","UPDATE"。
+        :param GlobalPrivileges: 全局权限。其中，GlobalPrivileges 中权限的可选值为："SELECT","INSERT","UPDATE","DELETE","CREATE", "PROCESS", "DROP","REFERENCES","INDEX","ALTER","SHOW DATABASES","CREATE TEMPORARY TABLES","LOCK TABLES","EXECUTE","CREATE VIEW","SHOW VIEW","CREATE ROUTINE","ALTER ROUTINE","EVENT","TRIGGER","CREATE USER","RELOAD","REPLICATION CLIENT","REPLICATION SLAVE"。
 注意，ModifyAction为空时，不传该参数表示清除该权限。
         :type GlobalPrivileges: list of str
         :param DatabasePrivileges: 数据库的权限。Privileges 权限的可选值为："SELECT","INSERT","UPDATE","DELETE","CREATE",	"DROP","REFERENCES","INDEX","ALTER","CREATE TEMPORARY TABLES","LOCK TABLES","EXECUTE","CREATE VIEW","SHOW VIEW","CREATE ROUTINE","ALTER ROUTINE","EVENT","TRIGGER"。
@@ -10901,6 +10918,9 @@ class SellConfig(AbstractModel):
         :param DeviceTypeName: 实例类型描述，可能的取值范围有：通用型， 独享型， 基础型
 注意：此字段可能返回 null，表示取不到有效值。
         :type DeviceTypeName: str
+        :param EngineType: 引擎类型描述，可能的取值范围有：Innodb，RocksDB
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EngineType: str
         """
         self.Device = None
         self.Type = None
@@ -10918,6 +10938,7 @@ class SellConfig(AbstractModel):
         self.Tag = None
         self.DeviceType = None
         self.DeviceTypeName = None
+        self.EngineType = None
 
 
     def _deserialize(self, params):
@@ -10937,6 +10958,7 @@ class SellConfig(AbstractModel):
         self.Tag = params.get("Tag")
         self.DeviceType = params.get("DeviceType")
         self.DeviceTypeName = params.get("DeviceTypeName")
+        self.EngineType = params.get("EngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11708,6 +11730,34 @@ class TablePrivilege(AbstractModel):
         self.Database = params.get("Database")
         self.Table = params.get("Table")
         self.Privileges = params.get("Privileges")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Tag(AbstractModel):
+    """标签结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 标签键
+        :type Key: str
+        :param Value: 标签值
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

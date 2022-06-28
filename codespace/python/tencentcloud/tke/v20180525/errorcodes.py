@@ -29,6 +29,9 @@ FAILEDOPERATION_ASCOMMON = 'FailedOperation.AsCommon'
 # CLB 未知错误。
 FAILEDOPERATION_CLBUNEXPECTEDERROR = 'FailedOperation.CLBUnexpectedError'
 
+# CVM未知错误。
+FAILEDOPERATION_CVMUNEXPECTEDERROR = 'FailedOperation.CVMUnexpectedError'
+
 # 无该接口CAM权限。
 FAILEDOPERATION_CAMNOAUTH = 'FailedOperation.CamNoAuth'
 
@@ -41,6 +44,9 @@ FAILEDOPERATION_CLUSTERSTATE = 'FailedOperation.ClusterState'
 # 集群节点版本过低。
 FAILEDOPERATION_CLUSTERUPGRADENODEVERSION = 'FailedOperation.ClusterUpgradeNodeVersion'
 
+# 内部Client错误。
+FAILEDOPERATION_COMPONENTCLIENTCOMMON = 'FailedOperation.ComponentClientCommon'
+
 # 内部HTTP客户端错误。
 FAILEDOPERATION_COMPONENTCLIENTHTTP = 'FailedOperation.ComponentClientHttp'
 
@@ -50,8 +56,14 @@ FAILEDOPERATION_COMPONENTCLIENTUNPACK = 'FailedOperation.ComponentClientUnpack'
 # 请求(http请求)其他云服务失败。
 FAILEDOPERATION_COMPONENTCLINETHTTP = 'FailedOperation.ComponentClinetHttp'
 
+# 创建CLS日志集失败。
+FAILEDOPERATION_CREATECLSLOGSET = 'FailedOperation.CreateClsLogSet'
+
 # cvm创建节点报错。
 FAILEDOPERATION_CVMCOMMON = 'FailedOperation.CvmCommon'
+
+# 存在云服务器在CVM侧查询不到。
+FAILEDOPERATION_CVMNUMBERNOTMATCH = 'FailedOperation.CvmNumberNotMatch'
 
 # CVM 和 VPC ID 不匹配。
 FAILEDOPERATION_CVMVPCIDNOTMATCH = 'FailedOperation.CvmVpcidNotMatch'
@@ -65,11 +77,20 @@ FAILEDOPERATION_DBRECORDNOTFOUND = 'FailedOperation.DbRecordNotFound'
 # 获得安全组配额失败。
 FAILEDOPERATION_DFWGETUSGQUOTA = 'FailedOperation.DfwGetUSGQuota'
 
+# 查询主题集失败。
+FAILEDOPERATION_GETCLSLOGSET = 'FailedOperation.GetClsLogSet'
+
+# 获取CLS机器组失败。
+FAILEDOPERATION_GETCLSMACHINEGROUP = 'FailedOperation.GetClsMachineGroup'
+
 # 连接用户Kubernetes集群失败。
 FAILEDOPERATION_KUBECLIENTCONNECTION = 'FailedOperation.KubeClientConnection'
 
 # KubernetesAPI错误。
 FAILEDOPERATION_KUBECOMMON = 'FailedOperation.KubeCommon'
+
+# Kubernetes client建立失败。
+FAILEDOPERATION_KUBERNETESCLIENTBUILDERROR = 'FailedOperation.KubernetesClientBuildError'
 
 # 创建集群Client出错。
 FAILEDOPERATION_KUBERNETESCREATEOPERATIONERROR = 'FailedOperation.KubernetesCreateOperationError'
@@ -106,6 +127,12 @@ FAILEDOPERATION_TASKALREADYRUNNING = 'FailedOperation.TaskAlreadyRunning'
 
 # 询价错误。
 FAILEDOPERATION_TRADECOMMON = 'FailedOperation.TradeCommon'
+
+# VPC未知错误。
+FAILEDOPERATION_VPCUNEXPECTEDERROR = 'FailedOperation.VPCUnexpectedError'
+
+# VPC报错。
+FAILEDOPERATION_VPCCOMMON = 'FailedOperation.VpcCommon'
 
 # 未发现vpc记录。
 FAILEDOPERATION_VPCRECODRNOTFOUND = 'FailedOperation.VpcRecodrNotFound'
@@ -236,6 +263,9 @@ INTERNALERROR_KUBERNETESGETOPERATIONERROR = 'InternalError.KubernetesGetOperatio
 # Kubernetes未知错误。
 INTERNALERROR_KUBERNETESINTERNAL = 'InternalError.KubernetesInternal'
 
+# Kubernetes Patch操作失败。
+INTERNALERROR_KUBERNETESPATCHOPERATIONERROR = 'InternalError.KubernetesPatchOperationError'
+
 # 底层调用CLB未知错误。
 INTERNALERROR_LBCOMMON = 'InternalError.LbCommon'
 
@@ -308,6 +338,9 @@ INTERNALERROR_VPCPEERNOTFOUND = 'InternalError.VpcPeerNotFound'
 # 未发现vpc记录。
 INTERNALERROR_VPCRECODRNOTFOUND = 'InternalError.VpcRecodrNotFound'
 
+# VstationError。
+INTERNALERROR_VSTATIONERROR = 'InternalError.VstationError'
+
 # 白名单未知错误。
 INTERNALERROR_WHITELISTUNEXPECTEDERROR = 'InternalError.WhitelistUnexpectedError'
 
@@ -346,6 +379,9 @@ INVALIDPARAMETER_GATEWAYALREADYASSOCIATEDCIDR = 'InvalidParameter.GatewayAlready
 
 # 无效的私有CIDR网段。
 INVALIDPARAMETER_INVALIDPRIVATENETWORKCIDR = 'InvalidParameter.InvalidPrivateNetworkCIDR'
+
+# 镜像OS不支持。
+INVALIDPARAMETER_OSNOTSUPPORT = 'InvalidParameter.OsNotSupport'
 
 # 参数错误。
 INVALIDPARAMETER_PARAM = 'InvalidParameter.Param'
