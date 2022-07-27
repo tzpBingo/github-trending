@@ -187,8 +187,15 @@ class DescribeDetailedSingleProbeDataRequest(AbstractModel):
         :param EndTime: 结束时间戳（毫秒级）
         :type EndTime: int
         :param TaskType: 任务类型
+AnalyzeTaskType_Network：网络质量
+AnalyzeTaskType_Browse：页面性能
+AnalyzeTaskType_UploadDownload：文件传输（含文件上传、文件下载）
+AnalyzeTaskType_Transport：端口性能
+AnalyzeTaskType_MediaStream：音视频体验
         :type TaskType: str
         :param SortField: 待排序字段
+可以填写 ProbeTime 拨测时间排序
+也可填写SelectedFields 中的选中字段
         :type SortField: str
         :param Ascending: true表示升序
         :type Ascending: bool
@@ -201,12 +208,32 @@ class DescribeDetailedSingleProbeDataRequest(AbstractModel):
         :param TaskID: 任务ID
         :type TaskID: list of str
         :param Operators: 拨测点运营商
+	
+这里实际按拨测结果中的运营商来填写即可
+
+电信：中国电信
+移动：中国移动
+联通：中国联通
         :type Operators: list of str
         :param Districts: 拨测点地区
+	
+这里实际按拨测结果中的地区来填写即可
+
+国内一般是省级单位，如广东、广西、香港特区、新疆；直辖市则填北京、上海
+
+海外一般是国家名，如澳大利亚、新加坡
         :type Districts: list of str
         :param ErrorTypes: 错误类型
         :type ErrorTypes: list of str
         :param City: 城市
+这里实际按拨测结果中的城市来填写即可
+
+示例：
+
+深圳市
+武汉市
+首尔
+多伦多
         :type City: list of str
         """
         self.BeginTime = None
@@ -284,17 +311,23 @@ class DescribeProbeMetricDataRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AnalyzeTaskType: 分析任务类型
+        :param AnalyzeTaskType: 分析任务类型，支持以下几种类型：
+AnalyzeTaskType_Network：网络质量
+AnalyzeTaskType_Browse：页面性能
+AnalyzeTaskType_Transport：端口性能
+AnalyzeTaskType_UploadDownload：文件传输
+AnalyzeTaskType_MediaStream：音视频体验
         :type AnalyzeTaskType: str
-        :param MetricType: 指标类型，counter 或者 gauge
+        :param MetricType: 指标类型，指标查询默认传gauge
         :type MetricType: str
-        :param Field: 指标详细字段
+        :param Field: 指标详细字段，可以传递传具体的指标也可以对指标进行聚合查询例如："avg(ping_time)"代表整体时延(ms)
         :type Field: str
-        :param Filter: 过滤条件
+        :param Filter: 过滤条件可以传单个过滤条件也可以拼接多个参数
         :type Filter: str
-        :param GroupBy: 聚合时间, 1m、1d、100d 等等
+        :param GroupBy: 聚合时间, 1m、1d、30d 等等
         :type GroupBy: str
-        :param Filters: 过滤条件数组
+        :param Filters: 多条件过滤，支持多个过滤条件组合查询
+例如：[""host" = 'www.test.com'", "time >= now()-1h"]
         :type Filters: list of str
         """
         self.AnalyzeTaskType = None
@@ -328,7 +361,8 @@ class DescribeProbeMetricDataResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param MetricSet: 指标 JSON 序列化后的字符串
+        :param MetricSet: 返回指标 JSON 序列化后的字符串,具体如下所示：
+"[{\"name\":\"task_navigate_request_gauge\",\"columns\":[\"time\",\"avg(first_screen_time) / 1000\"],\"values\":[[1641571200,6.756600000000001]],\"tags\":null}]"
         :type MetricSet: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -431,6 +465,16 @@ class DescribeProbeTasksRequest(AbstractModel):
         :param TargetAddress: 拨测目标
         :type TargetAddress: str
         :param TaskStatus: 任务状态列表
+<li>1 = 创建中</li>
+<li> 2 = 运行中 </li>
+<li> 3 = 运行异常 </li>
+<li> 4 = 暂停中 </li>
+<li> 5 = 暂停异常 </li>
+<li> 6 = 任务暂停 </li>
+<li> 7 = 任务删除中 </li>
+<li> 8 = 任务删除异常 </li>
+<li> 9 = 任务删除</li>
+<li> 10 = 定时任务暂停中 </li>
         :type TaskStatus: list of int
         :param Offset: 偏移量，默认为0
         :type Offset: int
@@ -445,6 +489,14 @@ class DescribeProbeTasksRequest(AbstractModel):
 <li> 2 = 欠费 </li>
         :type OrderState: int
         :param TaskType: 拨测类型
+<li>1 = 页面浏览</li>
+<li> 2 =文件上传 </li>
+<li> 3 = 文件下载</li>
+<li> 4 = 端口性能 </li>
+<li> 5 = 网络质量 </li>
+<li> 6 =流媒体 </li>
+
+即使拨测只支持页面浏览，网络质量，文件下载
         :type TaskType: list of int
         :param TaskCategory: 节点类型
         :type TaskCategory: list of int

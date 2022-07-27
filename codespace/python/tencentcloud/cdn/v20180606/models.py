@@ -5049,11 +5049,14 @@ global: 全球节点
         :type Area: str
         :param Segment: 是否以IP段的格式返回。
         :type Segment: bool
+        :param ShowIpv6: 是否查询节点 IPV6 信息。
+        :type ShowIpv6: bool
         """
         self.Domain = None
         self.Layer = None
         self.Area = None
         self.Segment = None
+        self.ShowIpv6 = None
 
 
     def _deserialize(self, params):
@@ -5061,6 +5064,7 @@ global: 全球节点
         self.Layer = params.get("Layer")
         self.Area = params.get("Area")
         self.Segment = params.get("Segment")
+        self.ShowIpv6 = params.get("ShowIpv6")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7988,12 +7992,19 @@ class FollowRedirect(AbstractModel):
 on：开启
 off：关闭
         :type Switch: str
+        :param RedirectConfig: 自定义回源302 follow请求host配置，该功能为白名单功能，需要开启请联系腾讯云工程师。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RedirectConfig: :class:`tencentcloud.cdn.v20180606.models.RedirectConfig`
         """
         self.Switch = None
+        self.RedirectConfig = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
+        if params.get("RedirectConfig") is not None:
+            self.RedirectConfig = RedirectConfig()
+            self.RedirectConfig._deserialize(params.get("RedirectConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8673,12 +8684,16 @@ class IpStatus(AbstractModel):
 online：上线状态，正常调度服务中
 offline：下线状态
         :type Status: str
+        :param Ipv6: 节点 IPV6
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Ipv6: str
         """
         self.Ip = None
         self.District = None
         self.Isp = None
         self.City = None
         self.Status = None
+        self.Ipv6 = None
 
 
     def _deserialize(self, params):
@@ -8687,6 +8702,7 @@ offline：下线状态
         self.Isp = params.get("Isp")
         self.City = params.get("City")
         self.Status = params.get("Status")
+        self.Ipv6 = params.get("Ipv6")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11057,16 +11073,24 @@ delete：刷新全部资源
         :type FlushType: str
         :param UrlEncode: 是否对中文字符进行编码后刷新
         :type UrlEncode: bool
+        :param Area: 刷新区域
+无此参数时，默认刷新加速域名所在加速区域
+填充 mainland 时，仅刷新中国境内加速节点上缓存内容
+填充 overseas 时，仅刷新中国境外加速节点上缓存内容
+指定刷新区域时，需要与域名加速区域匹配
+        :type Area: str
         """
         self.Paths = None
         self.FlushType = None
         self.UrlEncode = None
+        self.Area = None
 
 
     def _deserialize(self, params):
         self.Paths = params.get("Paths")
         self.FlushType = params.get("FlushType")
         self.UrlEncode = params.get("UrlEncode")
+        self.Area = params.get("Area")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11538,6 +11562,38 @@ path 时填充绝对路径，如 /xxx/test.html
         self.Switch = params.get("Switch")
         self.RuleType = params.get("RuleType")
         self.RulePaths = params.get("RulePaths")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RedirectConfig(AbstractModel):
+    """自定义回源302 follow请求host配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 配置开关
+        :type Switch: str
+        :param FollowRedirectHost: 主源站follow302请求时带的自定义的host头部
+        :type FollowRedirectHost: str
+        :param FollowRedirectBackupHost: 备份源站follow302请求时带的自定义的host头部
+        :type FollowRedirectBackupHost: str
+        """
+        self.Switch = None
+        self.FollowRedirectHost = None
+        self.FollowRedirectBackupHost = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.FollowRedirectHost = params.get("FollowRedirectHost")
+        self.FollowRedirectBackupHost = params.get("FollowRedirectBackupHost")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

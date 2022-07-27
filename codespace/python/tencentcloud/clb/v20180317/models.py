@@ -1531,7 +1531,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         :type InternetAccessible: :class:`tencentcloud.clb.v20180317.models.InternetAccessible`
         :param VipIsp: 仅适用于公网负载均衡。CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
         :type VipIsp: str
-        :param Tags: 购买负载均衡的同时，给负载均衡打上标签。
+        :param Tags: 购买负载均衡的同时，给负载均衡打上标签，最大支持20个标签键值对。
         :type Tags: list of TagInfo
         :param Vip: 指定VIP申请负载均衡。指定此参数后：
 <ul><li>若创建共享型集群的公网负载均衡实例，则上述的VpcId选填，若实例是IPv6类型的，则SubnetId必填；若是IPv4、IPv6 NAT64类型，则SubnetId不填。</li>
@@ -4162,6 +4162,7 @@ class DescribeTaskStatusRequest(AbstractModel):
         :param TaskId: 请求ID，即接口返回的 RequestId 参数。
         :type TaskId: str
         :param DealName: 订单ID。
+注意：参数TaskId和DealName必须传一个。
         :type DealName: str
         """
         self.TaskId = None
@@ -4386,7 +4387,7 @@ class HealthCheck(AbstractModel):
         :param HttpCheckPath: 健康检查路径（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpCheckPath: str
-        :param HttpCheckDomain: 健康检查域名（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式）。
+        :param HttpCheckDomain: 健康检查域名（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式，当监听器是TCP类型时，该参数为必填项）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpCheckDomain: str
         :param HttpCheckMethod: 健康检查方法（仅适用于HTTP/HTTPS转发规则、TCP监听器的HTTP健康检查方式），默认值：HEAD，可选值HEAD或GET。
@@ -4698,6 +4699,9 @@ class Listener(AbstractModel):
         :param DeregisterTargetRst: 解绑后端目标时，是否发RST给客户端，（此参数仅对于TCP监听器有意义）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type DeregisterTargetRst: bool
+        :param AttrFlags: 监听器的属性
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttrFlags: list of str
         """
         self.ListenerId = None
         self.Protocol = None
@@ -4717,6 +4721,7 @@ class Listener(AbstractModel):
         self.KeepaliveEnable = None
         self.Toa = None
         self.DeregisterTargetRst = None
+        self.AttrFlags = None
 
 
     def _deserialize(self, params):
@@ -4749,6 +4754,7 @@ class Listener(AbstractModel):
         self.KeepaliveEnable = params.get("KeepaliveEnable")
         self.Toa = params.get("Toa")
         self.DeregisterTargetRst = params.get("DeregisterTargetRst")
+        self.AttrFlags = params.get("AttrFlags")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5836,6 +5842,8 @@ class ModifyListenerRequest(AbstractModel):
         :type Scheduler: str
         :param SniSwitch: 是否开启SNI特性，此参数仅适用于HTTPS监听器。注意：未开启SNI的监听器可以开启SNI；已开启SNI的监听器不能关闭SNI。
         :type SniSwitch: int
+        :param TargetType: 后端目标类型，NODE表示绑定普通节点，TARGETGROUP表示绑定目标组。
+        :type TargetType: str
         :param KeepaliveEnable: 是否开启长连接，此参数仅适用于HTTP/HTTPS监听器。
         :type KeepaliveEnable: int
         :param DeregisterTargetRst: 解绑后端目标时，是否发RST给客户端，此参数仅适用于TCP监听器。
@@ -5851,6 +5859,7 @@ class ModifyListenerRequest(AbstractModel):
         self.Certificate = None
         self.Scheduler = None
         self.SniSwitch = None
+        self.TargetType = None
         self.KeepaliveEnable = None
         self.DeregisterTargetRst = None
         self.SessionType = None
@@ -5869,6 +5878,7 @@ class ModifyListenerRequest(AbstractModel):
             self.Certificate._deserialize(params.get("Certificate"))
         self.Scheduler = params.get("Scheduler")
         self.SniSwitch = params.get("SniSwitch")
+        self.TargetType = params.get("TargetType")
         self.KeepaliveEnable = params.get("KeepaliveEnable")
         self.DeregisterTargetRst = params.get("DeregisterTargetRst")
         self.SessionType = params.get("SessionType")
@@ -7499,13 +7509,13 @@ class Target(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type Type: str
         :param InstanceId: 绑定CVM时需要传入此参数，代表CVM的唯一 ID，可通过 DescribeInstances 接口返回字段中的 InstanceId 字段获取。表示绑定主网卡主IP。
-注意：参数 InstanceId、EniIp 只能传入一个且必须传入一个。
+注意：参数 InstanceId、EniIp 有且只能传入其中一个参数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceId: str
         :param Weight: 后端服务修改后的转发权重，取值范围：[0, 100]，默认为 10。此参数的优先级高于[RsWeightRule](https://cloud.tencent.com/document/api/214/30694#RsWeightRule)中的Weight参数，即最终的权重值以此Weight参数值为准，仅当此Weight参数为空时，才以RsWeightRule中的Weight参数为准。
         :type Weight: int
         :param EniIp: 绑定IP时需要传入此参数，支持弹性网卡的IP和其他内网IP，如果是弹性网卡则必须先绑定至CVM，然后才能绑定到负载均衡实例。
-注意：参数 InstanceId、EniIp 只能传入一个且必须传入一个。如果绑定双栈IPV6子机，必须传该参数。
+注意：参数 InstanceId、EniIp 有且只能传入其中一个参数。如果绑定双栈IPV6子机，则必须传该参数。如果是跨地域绑定，则必须传该参数，不支持传InstanceId参数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type EniIp: str
         """

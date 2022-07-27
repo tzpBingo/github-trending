@@ -113,23 +113,8 @@ INTERNALERROR_CONFIGNOTEXIST = 'InternalError.ConfigNotExist'
 # DB 连接错误。
 INTERNALERROR_CONNECTDBERROR = 'InternalError.ConnectDbError'
 
-# 证书使用中。
-INTERNALERROR_CRTDATEINUSING = 'InternalError.CrtDateInUsing'
-
-# 证书不存在。
-INTERNALERROR_CRTDATENOTFOUND = 'InternalError.CrtDateNotFound'
-
-# 证书不合法。
-INTERNALERROR_CRTDATENOTLEGAL = 'InternalError.CrtDateNotLegal'
-
-# 证书过期。
-INTERNALERROR_CRTDATEOVERDUE = 'InternalError.CrtDateOverdue'
-
 # 没有相关域名。
 INTERNALERROR_CRTDOMAINNOTFOUND = 'InternalError.CrtDomainNotFound'
-
-# 证书 Key 不匹配。
-INTERNALERROR_CRTKEYNOTMATCH = 'InternalError.CrtKeyNotMatch'
 
 # DB执行错误。
 INTERNALERROR_DBERROR = 'InternalError.DBError'
@@ -254,26 +239,8 @@ INVALIDPARAMETER_COSCUSTOMFILENAMEERROR = 'InvalidParameter.COSCustomFileNameErr
 # 取消不存在的会话。
 INVALIDPARAMETER_CANCELSESSIONNOTEXIST = 'InvalidParameter.CancelSessionNotExist'
 
-# 腾讯云证书托管 ID 错误。
-INVALIDPARAMETER_CLOUDCRTIDERROR = 'InvalidParameter.CloudCrtIdError'
-
 # 赠送的腾讯云域名已过期。
 INVALIDPARAMETER_CLOUDDOMAINISSTOP = 'InvalidParameter.CloudDomainIsStop'
-
-# 证书使用中。
-INVALIDPARAMETER_CRTDATEINUSING = 'InvalidParameter.CrtDateInUsing'
-
-# 证书内容不合法。
-INVALIDPARAMETER_CRTDATENOTLEGAL = 'InvalidParameter.CrtDateNotLegal'
-
-# 证书过期。
-INVALIDPARAMETER_CRTDATEOVERDUE = 'InvalidParameter.CrtDateOverdue'
-
-# 证书 Key 不匹配。
-INVALIDPARAMETER_CRTKEYNOTMATCH = 'InvalidParameter.CrtKeyNotMatch'
-
-# 证书内容或者私钥未提供。
-INVALIDPARAMETER_CRTORKEYNOTEXIST = 'InvalidParameter.CrtOrKeyNotExist'
 
 # 域名已经存在。
 INVALIDPARAMETER_DOMAINALREADYEXIST = 'InvalidParameter.DomainAlreadyExist'
@@ -335,6 +302,9 @@ INVALIDPARAMETER_INVALIDTOURL = 'InvalidParameter.InvalidToUrl'
 # 错误的VodFileName。
 INVALIDPARAMETER_INVALIDVODFILENAME = 'InvalidParameter.InvalidVodFileName'
 
+# 水印参数有误。
+INVALIDPARAMETER_INVALIDWATERMARK = 'InvalidParameter.InvalidWatermark'
+
 # 当月不允许添加已删除的小程序域名。
 INVALIDPARAMETER_MPHOSTDELETE = 'InvalidParameter.MpHostDelete'
 
@@ -395,9 +365,6 @@ RESOURCENOTFOUND_CDNTHEMEEMPTY = 'ResourceNotFound.CdnThemeEmpty'
 # 频道不存在。
 RESOURCENOTFOUND_CHANNELNOTEXIST = 'ResourceNotFound.ChannelNotExist'
 
-# 证书不存在。
-RESOURCENOTFOUND_CRTDATENOTFOUND = 'ResourceNotFound.CrtDateNotFound'
-
 # 未找到证书信息。
 RESOURCENOTFOUND_CRTDOMAINNOTFOUND = 'ResourceNotFound.CrtDomainNotFound'
 
@@ -406,6 +373,12 @@ RESOURCENOTFOUND_DOMAINNORECORD = 'ResourceNotFound.DomainNoRecord'
 
 # 域名不存在或不匹配。
 RESOURCENOTFOUND_DOMAINNOTEXIST = 'ResourceNotFound.DomainNotExist'
+
+# 用户被禁用。
+RESOURCENOTFOUND_FORBIDSERVICE = 'ResourceNotFound.ForbidService'
+
+# 用户服务被冻结。
+RESOURCENOTFOUND_FREEZESERVICE = 'ResourceNotFound.FreezeService'
 
 # 用户不支持此接口。
 RESOURCENOTFOUND_INVALIDUSER = 'ResourceNotFound.InvalidUser'
@@ -424,6 +397,9 @@ RESOURCENOTFOUND_STREAMNOTALIVE = 'ResourceNotFound.StreamNotAlive'
 
 # TaskId 不存在。
 RESOURCENOTFOUND_TASKID = 'ResourceNotFound.TaskId'
+
+# 用户主动停服。
+RESOURCENOTFOUND_USERDISABLESERVICE = 'ResourceNotFound.UserDisableService'
 
 # 用户未注册直播。
 RESOURCENOTFOUND_USERNOTEXIST = 'ResourceNotFound.UserNotExist'

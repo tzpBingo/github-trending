@@ -258,6 +258,35 @@ class CynosdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeBackupDownloadUrl(self, request):
+        """此接口（DescribeBackupDownloadUrl）用于查询集群备份文件下载地址。
+
+        :param request: Request instance for DescribeBackupDownloadUrl.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBackupDownloadUrlRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBackupDownloadUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBackupDownloadUrl", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeBackupDownloadUrlResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeBackupList(self, request):
         """查询备份文件列表
 
@@ -273,6 +302,93 @@ class CynosdbClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeBackupListResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeBinlogDownloadUrl(self, request):
+        """此接口（DescribeBinlogDownloadUrl）用于查询Binlog的下载地址。
+
+        :param request: Request instance for DescribeBinlogDownloadUrl.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBinlogDownloadUrlRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBinlogDownloadUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBinlogDownloadUrl", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeBinlogDownloadUrlResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeBinlogSaveDays(self, request):
+        """此接口（DescribeBinlogSaveDays）用于查询集群的Binlog保留天数。
+
+        :param request: Request instance for DescribeBinlogSaveDays.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBinlogSaveDaysRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBinlogSaveDaysResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBinlogSaveDays", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeBinlogSaveDaysResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeBinlogs(self, request):
+        """此接口（DescribeBinlogs）用来查询集群Binlog日志列表。
+
+        :param request: Request instance for DescribeBinlogs.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBinlogsRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.DescribeBinlogsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBinlogs", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeBinlogsResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -461,6 +577,35 @@ class CynosdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeInstanceSlowQueries(self, request):
+        """此接口（DescribeInstanceSlowQueries）用于查询实例慢查询日志。
+
+        :param request: Request instance for DescribeInstanceSlowQueries.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.DescribeInstanceSlowQueriesRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.DescribeInstanceSlowQueriesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeInstanceSlowQueries", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeInstanceSlowQueriesResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeInstanceSpecs(self, request):
         """本接口（DescribeInstanceSpecs）用于查询实例规格
 
@@ -534,6 +679,35 @@ class CynosdbClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeMaintainPeriodResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeParamTemplates(self, request):
+        """查询用户指定产品下的所有参数模板信息
+
+        :param request: Request instance for DescribeParamTemplates.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.DescribeParamTemplatesRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.DescribeParamTemplatesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeParamTemplates", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeParamTemplatesResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -693,6 +867,35 @@ class CynosdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ExportInstanceSlowQueries(self, request):
+        """此接口（ExportInstanceSlowQueries）用于导出实例慢日志。
+
+        :param request: Request instance for ExportInstanceSlowQueries.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.ExportInstanceSlowQueriesRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.ExportInstanceSlowQueriesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ExportInstanceSlowQueries", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ExportInstanceSlowQueriesResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def GrantAccountPrivileges(self, request):
         """批量授权账号权限
 
@@ -708,6 +911,64 @@ class CynosdbClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.GrantAccountPrivilegesResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def InquirePriceCreate(self, request):
+        """查询新购集群价格
+
+        :param request: Request instance for InquirePriceCreate.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.InquirePriceCreateRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.InquirePriceCreateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("InquirePriceCreate", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.InquirePriceCreateResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def InquirePriceRenew(self, request):
+        """查询续费集群价格
+
+        :param request: Request instance for InquirePriceRenew.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.InquirePriceRenewRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.InquirePriceRenewResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("InquirePriceRenew", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.InquirePriceRenewResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -824,6 +1085,35 @@ class CynosdbClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyBackupConfigResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyBackupName(self, request):
+        """此接口（ModifyBackupName）用于修改备份文件备注名。
+
+        :param request: Request instance for ModifyBackupName.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.ModifyBackupNameRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.ModifyBackupNameResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyBackupName", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyBackupNameResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

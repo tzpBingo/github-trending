@@ -8013,16 +8013,26 @@ class ModifyAuditConfigRequest(AbstractModel):
 当关闭审计服务时，会删除用户的审计日志和文件，并删除该实例的所有审计策略。
 CloseAudit、LogExpireDay必须至少提供一个，如果两个都提供则按照CloseAudit优先的逻辑处理。
         :type CloseAudit: bool
+        :param HighLogExpireDay: 高频审计日志保存时长。支持值包括：
+7 - 一周
+30 - 一个月；
+180 - 六个月；
+365 - 一年；
+1095 - 三年；
+1825 - 五年；
+        :type HighLogExpireDay: int
         """
         self.InstanceId = None
         self.LogExpireDay = None
         self.CloseAudit = None
+        self.HighLogExpireDay = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.LogExpireDay = params.get("LogExpireDay")
         self.CloseAudit = params.get("CloseAudit")
+        self.HighLogExpireDay = params.get("HighLogExpireDay")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8881,7 +8891,7 @@ class ModifyLocalBinlogConfigRequest(AbstractModel):
         r"""
         :param InstanceId: 实例 ID，格式如：cdb-c1nl9rpv。与云数据库控制台页面中显示的实例ID相同。
         :type InstanceId: str
-        :param SaveHours: 本地binlog保留时长，可取值范围：[72,168]。
+        :param SaveHours: 本地binlog保留时长，可取值范围：[72,168]，当实例存在灾备实例时，可取值范围：[120,168]。
         :type SaveHours: int
         :param MaxUsage: 本地binlog空间使用率，可取值范围：[30,50]。
         :type MaxUsage: int
@@ -9176,6 +9186,67 @@ class OfflineIsolatedInstancesRequest(AbstractModel):
 
 class OfflineIsolatedInstancesResponse(AbstractModel):
     """OfflineIsolatedInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class OpenAuditServiceRequest(AbstractModel):
+    """OpenAuditService请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: CDB实例ID
+        :type InstanceId: str
+        :param LogExpireDay: 审计日志保存时长。支持值包括：
+7 - 一周
+30 - 一个月；
+180 - 六个月；
+365 - 一年；
+1095 - 三年；
+1825 - 五年；
+        :type LogExpireDay: int
+        :param HighLogExpireDay: 高频审计日志保存时长。支持值包括：
+7 - 一周
+30 - 一个月；
+180 - 六个月；
+365 - 一年；
+1095 - 三年；
+1825 - 五年；
+        :type HighLogExpireDay: int
+        """
+        self.InstanceId = None
+        self.LogExpireDay = None
+        self.HighLogExpireDay = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.LogExpireDay = params.get("LogExpireDay")
+        self.HighLogExpireDay = params.get("HighLogExpireDay")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OpenAuditServiceResponse(AbstractModel):
+    """OpenAuditService返回参数结构体
 
     """
 

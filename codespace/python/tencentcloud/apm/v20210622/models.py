@@ -562,22 +562,28 @@ class DescribeGeneralMetricDataRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: 要过滤的维度信息，支持：service.name（服务名）、span.kind（客户端/服务端视角）为维度进行过滤。
-
+        :param Filters: 要过滤的维度信息：
+service_metric视图支持：service.name（服务名）、span.kind（客户端/服务端视角）为维度进行过滤，service.name（服务名）必填。
 span.kind:
-
-       server:服务端视角
-       client:客户端视角
-
+	server:服务端视角
+	client:客户端视角
 默认为服务端视角进行查询。
+runtime_metric视图支持：service.name（服务名）维度进行过滤，service.name（服务名）必填。
+sql_metric视图支持：service.name（服务名）、db.instance（数据库名称）、db.ip（数据库实例ip）维度进行过滤，查询service_slow_sql_count（慢sql）指标时service.name必填，查询sql_duration_avg（耗时）指标时db.instance（数据库名称）必填。
         :type Filters: list of GeneralFilter
-        :param Metrics: 需要查询的指标，不可自定义输入。支持：service_request_count（总请求）、service_duration（平均响应时间）的指标数据。
+        :param Metrics: 需要查询的指标，不可自定义输入。
+service_metric视图支持：service_request_count（总请求）、service_duration（平均响应时间）、service_error_req_rate（平均错误率）、service_slow_call_count（慢调用）、service_error_request_count（异常数量）。
+runtime_metric视图支持：service_gc_full_count（Full GC）。
+sql_metric视图支持：service_slow_sql_count（慢sql）、sql_duration_avg（耗时）。
         :type Metrics: list of str
-        :param InstanceId: 实例ID
+        :param InstanceId: 业务系统ID
         :type InstanceId: str
-        :param ViewName: 视图名称，不可自定义输入。支持：service_metric
+        :param ViewName: 视图名称，不可自定义输入。支持：service_metric、runtime_metric、sql_metric。
         :type ViewName: str
-        :param GroupBy: 聚合维度，支持：service.name（服务名）、span.kind （客户端/服务端视角）维度进行聚合。
+        :param GroupBy: 聚合维度：
+service_metric视图支持：service.name（服务名）、span.kind （客户端/服务端视角）维度进行聚合，service.name（服务名）必填。
+runtime_metric视图支持：service.name（服务名）维度进行聚合，service.name（服务名）必填。
+sql_metric视图支持：service.name（服务名）、db.statement（sql语句）维度进行聚合，查询service_slow_sql_count（慢sql）时service.name（服务名）必填，查询sql_duration_avg（耗时）指标时service.name（服务名）、db.statement（sql语句）必填。
         :type GroupBy: list of str
         :param StartTime: 起始时间的时间戳，单位为秒，只支持查询2天内最多1小时的指标数据。
         :type StartTime: int
@@ -585,6 +591,15 @@ span.kind:
         :type EndTime: int
         :param Period: 聚合粒度，单位为秒，最小为60s，即一分钟的聚合粒度；如果为空或0则计算开始时间到截止时间的指标数据，上报其他值会报错。
         :type Period: int
+        :param OrderBy: 对查询指标进行排序：
+service_metric视图支持：service_request_count（总请求）、service_duration（平均响应时间）、service_error_req_rate（平均错误率）、service_slow_call_count（慢调用）、service_error_request_count（异常数量）。
+runtime_metric视图支持：service_gc_full_count（Full GC）。
+sql_metric视图支持：service_slow_sql_count（慢sql）、sql_duration_avg（耗时）。
+asc:对查询指标进行升序排序
+desc：对查询指标进行降序排序
+        :type OrderBy: :class:`tencentcloud.apm.v20210622.models.OrderBy`
+        :param PageSize: 查询指标的限制条数，目前最多展示50条数据，PageSize取值为1-50，上送PageSize则根据PageSize的值展示限制条数。
+        :type PageSize: int
         """
         self.Filters = None
         self.Metrics = None
@@ -594,6 +609,8 @@ span.kind:
         self.StartTime = None
         self.EndTime = None
         self.Period = None
+        self.OrderBy = None
+        self.PageSize = None
 
 
     def _deserialize(self, params):
@@ -610,6 +627,10 @@ span.kind:
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
         self.Period = params.get("Period")
+        if params.get("OrderBy") is not None:
+            self.OrderBy = OrderBy()
+            self.OrderBy._deserialize(params.get("OrderBy"))
+        self.PageSize = params.get("PageSize")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

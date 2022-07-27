@@ -854,83 +854,6 @@ class CreateAccessExportResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class CreateAttackDownloadTaskRequest(AbstractModel):
-    """CreateAttackDownloadTask请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Domain: 域名，所有域名填写all
-        :type Domain: str
-        :param FromTime: 查询起始时间
-        :type FromTime: str
-        :param ToTime: 查询结束时间
-        :type ToTime: str
-        :param Name: 下载任务名字
-        :type Name: str
-        :param RiskLevel: 风险等级
-        :type RiskLevel: int
-        :param Status: 拦截状态
-        :type Status: int
-        :param RuleId: 自定义策略ID
-        :type RuleId: int
-        :param AttackIp: 攻击者IP
-        :type AttackIp: str
-        :param AttackType: 攻击类型
-        :type AttackType: str
-        """
-        self.Domain = None
-        self.FromTime = None
-        self.ToTime = None
-        self.Name = None
-        self.RiskLevel = None
-        self.Status = None
-        self.RuleId = None
-        self.AttackIp = None
-        self.AttackType = None
-
-
-    def _deserialize(self, params):
-        self.Domain = params.get("Domain")
-        self.FromTime = params.get("FromTime")
-        self.ToTime = params.get("ToTime")
-        self.Name = params.get("Name")
-        self.RiskLevel = params.get("RiskLevel")
-        self.Status = params.get("Status")
-        self.RuleId = params.get("RuleId")
-        self.AttackIp = params.get("AttackIp")
-        self.AttackType = params.get("AttackType")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateAttackDownloadTaskResponse(AbstractModel):
-    """CreateAttackDownloadTask返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Flow: 任务ID
-        :type Flow: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Flow = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.Flow = params.get("Flow")
-        self.RequestId = params.get("RequestId")
-
-
 class DeleteAccessExportRequest(AbstractModel):
     """DeleteAccessExport请求参数结构体
 
@@ -1465,171 +1388,6 @@ class DescribeAutoDenyIPResponse(AbstractModel):
             self.Data = IpHitItemsData()
             self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
-
-
-class DescribeCustomRulesPagingInfo(AbstractModel):
-    """DescribeCustomRules接口的翻页参数
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Offset: 当前页码
-        :type Offset: int
-        :param Limit: 当前页的最大数据条数
-        :type Limit: int
-        """
-        self.Offset = None
-        self.Limit = None
-
-
-    def _deserialize(self, params):
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeCustomRulesRequest(AbstractModel):
-    """DescribeCustomRules请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Domain: 域名
-        :type Domain: str
-        :param Paging: 分页参数
-        :type Paging: :class:`tencentcloud.waf.v20180125.models.DescribeCustomRulesPagingInfo`
-        :param Edition: clb-waf或者sparta-waf
-        :type Edition: str
-        :param ActionType: 过滤参数：动作类型：0放行，1阻断，2人机识别，3观察，4重定向
-        :type ActionType: str
-        :param Search: 过滤参数：规则名称过滤条件
-        :type Search: str
-        """
-        self.Domain = None
-        self.Paging = None
-        self.Edition = None
-        self.ActionType = None
-        self.Search = None
-
-
-    def _deserialize(self, params):
-        self.Domain = params.get("Domain")
-        if params.get("Paging") is not None:
-            self.Paging = DescribeCustomRulesPagingInfo()
-            self.Paging._deserialize(params.get("Paging"))
-        self.Edition = params.get("Edition")
-        self.ActionType = params.get("ActionType")
-        self.Search = params.get("Search")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeCustomRulesResponse(AbstractModel):
-    """DescribeCustomRules返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RuleList: 规则详情
-        :type RuleList: list of DescribeCustomRulesRspRuleListItem
-        :param TotalCount: 规则条数
-        :type TotalCount: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RuleList = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("RuleList") is not None:
-            self.RuleList = []
-            for item in params.get("RuleList"):
-                obj = DescribeCustomRulesRspRuleListItem()
-                obj._deserialize(item)
-                self.RuleList.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeCustomRulesRspRuleListItem(AbstractModel):
-    """DescribeCustomRules接口回包中的复杂类型
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ActionType: 动作类型
-        :type ActionType: str
-        :param Bypass: 跳过的策略
-        :type Bypass: str
-        :param CreateTime: 创建时间
-        :type CreateTime: str
-        :param ExpireTime: 过期时间
-        :type ExpireTime: str
-        :param Name: 策略名称
-        :type Name: str
-        :param Redirect: 重定向地址
-        :type Redirect: str
-        :param RuleId: 策略ID
-        :type RuleId: str
-        :param SortId: 优先级
-        :type SortId: str
-        :param Status: 状态
-        :type Status: str
-        :param Strategies: 策略详情
-        :type Strategies: list of Strategy
-        """
-        self.ActionType = None
-        self.Bypass = None
-        self.CreateTime = None
-        self.ExpireTime = None
-        self.Name = None
-        self.Redirect = None
-        self.RuleId = None
-        self.SortId = None
-        self.Status = None
-        self.Strategies = None
-
-
-    def _deserialize(self, params):
-        self.ActionType = params.get("ActionType")
-        self.Bypass = params.get("Bypass")
-        self.CreateTime = params.get("CreateTime")
-        self.ExpireTime = params.get("ExpireTime")
-        self.Name = params.get("Name")
-        self.Redirect = params.get("Redirect")
-        self.RuleId = params.get("RuleId")
-        self.SortId = params.get("SortId")
-        self.Status = params.get("Status")
-        if params.get("Strategies") is not None:
-            self.Strategies = []
-            for item in params.get("Strategies"):
-                obj = Strategy()
-                obj._deserialize(item)
-                self.Strategies.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
 
 
 class DescribeDomainWhiteRulesRequest(AbstractModel):
@@ -2272,6 +2030,70 @@ class DomainPackageNew(AbstractModel):
         
 
 
+class DownloadAttackRecordInfo(AbstractModel):
+    """下载攻击日志记录数据项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 记录ID
+        :type Id: int
+        :param TaskName: 下载任务名
+        :type TaskName: str
+        :param TaskId: 任务ID
+        :type TaskId: str
+        :param Host: 域名
+        :type Host: str
+        :param Count: 当前下载任务的日志条数
+        :type Count: int
+        :param Status: 下载任务运行状态：-1-下载超时，0-下载等待，1-下载完成，2-下载失败，4-正在下载
+        :type Status: int
+        :param Url: 下载文件URL
+        :type Url: str
+        :param CreateTime: 创建时间
+        :type CreateTime: str
+        :param ModifyTime: 最后更新修改时间
+        :type ModifyTime: str
+        :param ExpireTime: 过期时间
+        :type ExpireTime: str
+        :param TotalCount: 下载任务需下载的日志总条数
+        :type TotalCount: int
+        """
+        self.Id = None
+        self.TaskName = None
+        self.TaskId = None
+        self.Host = None
+        self.Count = None
+        self.Status = None
+        self.Url = None
+        self.CreateTime = None
+        self.ModifyTime = None
+        self.ExpireTime = None
+        self.TotalCount = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.TaskName = params.get("TaskName")
+        self.TaskId = params.get("TaskId")
+        self.Host = params.get("Host")
+        self.Count = params.get("Count")
+        self.Status = params.get("Status")
+        self.Url = params.get("Url")
+        self.CreateTime = params.get("CreateTime")
+        self.ModifyTime = params.get("ModifyTime")
+        self.ExpireTime = params.get("ExpireTime")
+        self.TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ExportAccessInfo(AbstractModel):
     """DescribeAccessExports接口
 
@@ -2431,6 +2253,38 @@ class FraudPkg(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class GetAttackDownloadRecordsRequest(AbstractModel):
+    """GetAttackDownloadRecords请求参数结构体
+
+    """
+
+
+class GetAttackDownloadRecordsResponse(AbstractModel):
+    """GetAttackDownloadRecords返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Records: 下载攻击日志记录数组
+        :type Records: list of DownloadAttackRecordInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Records = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Records") is not None:
+            self.Records = []
+            for item in params.get("Records"):
+                obj = DownloadAttackRecordInfo()
+                obj._deserialize(item)
+                self.Records.append(obj)
+        self.RequestId = params.get("RequestId")
 
 
 class InstanceInfo(AbstractModel):
@@ -3067,6 +2921,71 @@ class PortItem(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class PostAttackDownloadTaskRequest(AbstractModel):
+    """PostAttackDownloadTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 查询的域名，所有域名使用all
+        :type Domain: str
+        :param StartTime: 查询起始时间
+        :type StartTime: str
+        :param EndTime: 查询结束时间
+        :type EndTime: str
+        :param QueryString: Lucene语法
+        :type QueryString: str
+        :param TaskName: 任务名称
+        :type TaskName: str
+        :param Sort: 默认为desc，可以取值desc和asc
+        :type Sort: str
+        """
+        self.Domain = None
+        self.StartTime = None
+        self.EndTime = None
+        self.QueryString = None
+        self.TaskName = None
+        self.Sort = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.QueryString = params.get("QueryString")
+        self.TaskName = params.get("TaskName")
+        self.Sort = params.get("Sort")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PostAttackDownloadTaskResponse(AbstractModel):
+    """PostAttackDownloadTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Flow: 任务task id
+        :type Flow: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Flow = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Flow = params.get("Flow")
+        self.RequestId = params.get("RequestId")
 
 
 class QPSPackageNew(AbstractModel):

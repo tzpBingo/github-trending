@@ -35,6 +35,9 @@ FAILEDOPERATION_CVMUNEXPECTEDERROR = 'FailedOperation.CVMUnexpectedError'
 # 无该接口CAM权限。
 FAILEDOPERATION_CAMNOAUTH = 'FailedOperation.CamNoAuth'
 
+# 集群禁止删除。
+FAILEDOPERATION_CLUSTERFORBIDDENTODELETE = 'FailedOperation.ClusterForbiddenToDelete'
+
 # 集群未找到。
 FAILEDOPERATION_CLUSTERNOTFOUND = 'FailedOperation.ClusterNotFound'
 
@@ -56,8 +59,20 @@ FAILEDOPERATION_COMPONENTCLIENTUNPACK = 'FailedOperation.ComponentClientUnpack'
 # 请求(http请求)其他云服务失败。
 FAILEDOPERATION_COMPONENTCLINETHTTP = 'FailedOperation.ComponentClinetHttp'
 
+# 创建CLS采集配置失败。
+FAILEDOPERATION_CREATECLSCONFIG = 'FailedOperation.CreateClsConfig'
+
+# 创建CLS索引失败。
+FAILEDOPERATION_CREATECLSINDEX = 'FailedOperation.CreateClsIndex'
+
 # 创建CLS日志集失败。
 FAILEDOPERATION_CREATECLSLOGSET = 'FailedOperation.CreateClsLogSet'
+
+# 创建CLS机器组失败。
+FAILEDOPERATION_CREATECLSMACHINEGROUP = 'FailedOperation.CreateClsMachineGroup'
+
+# 创建 CLS 主题失败。
+FAILEDOPERATION_CREATECLSTOPIC = 'FailedOperation.CreateClsTopic'
 
 # cvm创建节点报错。
 FAILEDOPERATION_CVMCOMMON = 'FailedOperation.CvmCommon'
@@ -77,11 +92,23 @@ FAILEDOPERATION_DBRECORDNOTFOUND = 'FailedOperation.DbRecordNotFound'
 # 获得安全组配额失败。
 FAILEDOPERATION_DFWGETUSGQUOTA = 'FailedOperation.DfwGetUSGQuota'
 
+# 集群关闭 VPC-CNI 模式失败。
+FAILEDOPERATION_DISABLEVPCCNIFAILED = 'FailedOperation.DisableVPCCNIFailed'
+
+# 开启 VPC-CNI 模式失败。
+FAILEDOPERATION_ENABLEVPCCNIFAILED = 'FailedOperation.EnableVPCCNIFailed'
+
+# 获取CLS采集配置失败。
+FAILEDOPERATION_GETCLSCONFIG = 'FailedOperation.GetClsConfig'
+
 # 查询主题集失败。
 FAILEDOPERATION_GETCLSLOGSET = 'FailedOperation.GetClsLogSet'
 
 # 获取CLS机器组失败。
 FAILEDOPERATION_GETCLSMACHINEGROUP = 'FailedOperation.GetClsMachineGroup'
+
+# 通过配置文件创建集群Client错误。
+FAILEDOPERATION_KUBECLIENTCONF = 'FailedOperation.KubeClientConf'
 
 # 连接用户Kubernetes集群失败。
 FAILEDOPERATION_KUBECLIENTCONNECTION = 'FailedOperation.KubeClientConnection'
@@ -95,11 +122,23 @@ FAILEDOPERATION_KUBERNETESCLIENTBUILDERROR = 'FailedOperation.KubernetesClientBu
 # 创建集群Client出错。
 FAILEDOPERATION_KUBERNETESCREATEOPERATIONERROR = 'FailedOperation.KubernetesCreateOperationError'
 
+# Kubernetes Delete 操作错误。
+FAILEDOPERATION_KUBERNETESDELETEOPERATIONERROR = 'FailedOperation.KubernetesDeleteOperationError'
+
+# 获取Kubernetes资源失败。
+FAILEDOPERATION_KUBERNETESGETOPERATIONERROR = 'FailedOperation.KubernetesGetOperationError'
+
 # Kubernetes未知错误。
 FAILEDOPERATION_KUBERNETESINTERNAL = 'FailedOperation.KubernetesInternal'
 
+# Kubernetes patch 操作失败。
+FAILEDOPERATION_KUBERNETESPATCHOPERATIONERROR = 'FailedOperation.KubernetesPatchOperationError'
+
 # 底层调用CLB未知错误。
 FAILEDOPERATION_LBCOMMON = 'FailedOperation.LbCommon'
+
+# 修改CLS索引失败。
+FAILEDOPERATION_MODIFYCLSINDEX = 'FailedOperation.ModifyClsIndex'
 
 # 网络扩展错误。
 FAILEDOPERATION_NETWORKSCALEERROR = 'FailedOperation.NetworkScaleError'
@@ -136,6 +175,9 @@ FAILEDOPERATION_VPCCOMMON = 'FailedOperation.VpcCommon'
 
 # 未发现vpc记录。
 FAILEDOPERATION_VPCRECODRNOTFOUND = 'FailedOperation.VpcRecodrNotFound'
+
+# 白名单错误。
+FAILEDOPERATION_WHITELISTUNEXPECTEDERROR = 'FailedOperation.WhitelistUnexpectedError'
 
 # 内部错误。
 INTERNALERROR = 'InternalError'
@@ -365,6 +407,9 @@ INVALIDPARAMETER_CIDRCONFLICTWITHVPCCIDR = 'InvalidParameter.CidrConflictWithVpc
 # 创建的路由与VPC下已存在的全局路由产生冲突。
 INVALIDPARAMETER_CIDRCONFLICTWITHVPCGLOBALROUTE = 'InvalidParameter.CidrConflictWithVpcGlobalRoute'
 
+# CIDR无效。
+INVALIDPARAMETER_CIDRINVALI = 'InvalidParameter.CidrInvali'
+
 # 参数错误，CIDR不符合规范。
 INVALIDPARAMETER_CIDRINVALID = 'InvalidParameter.CidrInvalid'
 
@@ -412,6 +457,9 @@ OPERATIONDENIED_CLUSTERINDELETIONPROTECTION = 'OperationDenied.ClusterInDeletion
 
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
+
+# 资源已存在。
+RESOURCEINUSE_RESOURCEEXISTALREADY = 'ResourceInUse.ResourceExistAlready'
 
 # 资源不足。
 RESOURCEINSUFFICIENT = 'ResourceInsufficient'
@@ -463,6 +511,12 @@ UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
 # AS伸缩关闭导致无法开启CA。
 UNSUPPORTEDOPERATION_CAENABLEFAILED = 'UnsupportedOperation.CaEnableFailed'
+
+# 集群不支持添加 ClusterCIDR。
+UNSUPPORTEDOPERATION_CLUSTERNOTSUITADDCLUSTERCIDR = 'UnsupportedOperation.ClusterNotSuitAddClusterCIDR'
+
+# 集群不支持开启 VPC-CNI 模式。
+UNSUPPORTEDOPERATION_CLUSTERNOTSUITENABLEVPCCNI = 'UnsupportedOperation.ClusterNotSuitEnableVPCCNI'
 
 # 非白名单用户。
 UNSUPPORTEDOPERATION_NOTINWHITELIST = 'UnsupportedOperation.NotInWhitelist'

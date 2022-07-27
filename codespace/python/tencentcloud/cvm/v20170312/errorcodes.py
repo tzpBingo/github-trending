@@ -206,6 +206,9 @@ INVALIDKEYPAIRNAMETOOLONG = 'InvalidKeyPairNameTooLong'
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
+# 最多指定一个参数。
+INVALIDPARAMETER_ATMOSTONE = 'InvalidParameter.AtMostOne'
+
 # DataDiskIds不应该传入RootDisk的Id。
 INVALIDPARAMETER_DATADISKIDCONTAINSROOTDISK = 'InvalidParameter.DataDiskIdContainsRootDisk'
 
@@ -281,6 +284,9 @@ INVALIDPARAMETERCONFLICT = 'InvalidParameterConflict'
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
 
+# 入参数目不相等。
+INVALIDPARAMETERVALUE_AMOUNTNOTEQUAL = 'InvalidParameterValue.AmountNotEqual'
+
 # 共享带宽包ID不合要求，请提供规范的共享带宽包ID，类似bwp-xxxxxxxx，字母x代表小写字符或者数字。
 INVALIDPARAMETERVALUE_BANDWIDTHPACKAGEIDMALFORMED = 'InvalidParameterValue.BandwidthPackageIdMalformed'
 
@@ -296,11 +302,17 @@ INVALIDPARAMETERVALUE_CAMROLENAMEMALFORMED = 'InvalidParameterValue.CamRoleNameM
 # 找不到对应的CHC物理服务器。
 INVALIDPARAMETERVALUE_CHCHOSTSNOTFOUND = 'InvalidParameterValue.ChcHostsNotFound'
 
+# 该CHC未配置任何网络。
+INVALIDPARAMETERVALUE_CHCNETWORKEMPTY = 'InvalidParameterValue.ChcNetworkEmpty'
+
 # SSD云硬盘为数据盘时，购买大小不得小于100GB
 INVALIDPARAMETERVALUE_CLOUDSSDDATADISKSIZETOOSMALL = 'InvalidParameterValue.CloudSsdDataDiskSizeTooSmall'
 
 # 核心计数不合法。
 INVALIDPARAMETERVALUE_CORECOUNTVALUE = 'InvalidParameterValue.CoreCountValue'
+
+# 已经存在部署VPC。
+INVALIDPARAMETERVALUE_DEPLOYVPCALREADYEXISTS = 'InvalidParameterValue.DeployVpcAlreadyExists'
 
 # 置放群组ID格式错误。
 INVALIDPARAMETERVALUE_DISASTERRECOVERGROUPIDMALFORMED = 'InvalidParameterValue.DisasterRecoverGroupIdMalformed'
@@ -542,6 +554,9 @@ LIMITEXCEEDED_CVMSVIFSPERSECGROUPLIMITEXCEEDED = 'LimitExceeded.CvmsVifsPerSecGr
 # 指定置放群组配额不足。
 LIMITEXCEEDED_DISASTERRECOVERGROUP = 'LimitExceeded.DisasterRecoverGroup'
 
+# 特定实例包含的某个ENI的EIP数量已超过目标实例类型的EIP允许的最大值，请删除部分EIP后重试。
+LIMITEXCEEDED_EIPNUMLIMIT = 'LimitExceeded.EipNumLimit'
+
 # 特定实例当前ENI数量已超过目标实例类型的ENI允许的最大值，需删除部分ENI后重试。
 LIMITEXCEEDED_ENINUMLIMIT = 'LimitExceeded.EniNumLimit'
 
@@ -604,6 +619,9 @@ MUTEXOPERATION_TASKRUNNING = 'MutexOperation.TaskRunning'
 
 # 不允许未配置部署网络的CHC安装云上镜像。
 OPERATIONDENIED_CHCINSTALLCLOUDIMAGEWITHOUTDEPLOYNETWORK = 'OperationDenied.ChcInstallCloudImageWithoutDeployNetwork'
+
+# 禁止管控账号操作。
+OPERATIONDENIED_INNERUSERPROHIBITACTION = 'OperationDenied.InnerUserProhibitAction'
 
 # 实例正在执行其他操作，请稍后再试。
 OPERATIONDENIED_INSTANCEOPERATIONINPROGRESS = 'OperationDenied.InstanceOperationInProgress'
@@ -809,6 +827,9 @@ UNSUPPORTEDOPERATION_MODIFYVPCWITHCLB = 'UnsupportedOperation.ModifyVPCWithCLB'
 # 该实例类型不支持竞价计费
 UNSUPPORTEDOPERATION_NOINSTANCETYPESUPPORTSPOT = 'UnsupportedOperation.NoInstanceTypeSupportSpot'
 
+# 不支持物理网络的实例。
+UNSUPPORTEDOPERATION_NOVPCNETWORK = 'UnsupportedOperation.NoVpcNetwork'
+
 # 当前实例不是FPGA机型。
 UNSUPPORTEDOPERATION_NOTFPGAINSTANCE = 'UnsupportedOperation.NotFpgaInstance'
 
@@ -850,6 +871,9 @@ UNSUPPORTEDOPERATION_SPOTUNSUPPORTEDREGION = 'UnsupportedOperation.SpotUnsupport
 
 # 不支持关机不收费特性
 UNSUPPORTEDOPERATION_STOPPEDMODESTOPCHARGING = 'UnsupportedOperation.StoppedModeStopCharging'
+
+# 不支持关机不收费机器做同类型变配操作。
+UNSUPPORTEDOPERATION_STOPPEDMODESTOPCHARGINGSAMEFAMILY = 'UnsupportedOperation.StoppedModeStopChargingSameFamily'
 
 # 该机型为包销机型，RenewFlag的值只允许设置为NOTIFY_AND_AUTO_RENEW。
 UNSUPPORTEDOPERATION_UNDERWRITINGINSTANCETYPEONLYSUPPORTAUTORENEW = 'UnsupportedOperation.UnderwritingInstanceTypeOnlySupportAutoRenew'

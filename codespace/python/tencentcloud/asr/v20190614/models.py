@@ -193,7 +193,7 @@ class CreateAsyncRecognitionTaskRequest(AbstractModel):
 • 16k_en：16k 英语；
 • 16k_ca：16k 粤语；
         :type EngineType: str
-        :param Url: 语音流地址，支持rtmp、hls、rtsp等流媒体协议，以及各类基于http协议的直播流
+        :param Url: 语音流地址，支持rtmp、rtsp等流媒体协议，以及各类基于http协议的直播流(不支持hls)
         :type Url: str
         :param CallbackUrl: 支持HTTP和HTTPS协议，用于接收识别结果，您需要自行搭建公网可调用的服务。回调格式&内容详见：[语音流异步识别回调说明](https://cloud.tencent.com/document/product/1093/52633)
         :type CallbackUrl: str
@@ -335,7 +335,7 @@ class CreateRecTaskRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param EngineModelType: 引擎模型类型。
+        :param EngineModelType: 引擎模型类型。注意：非电话场景请务必使用16k的引擎。
 电话场景：
 • 8k_en：电话 8k 英语；
 • 8k_zh：电话 8k 中文普通话通用；

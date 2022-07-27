@@ -55,35 +55,6 @@ class TafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
-    def EnhanceTaDegree(self, request):
-        """流量反欺诈-虚假TA识别
-
-        :param request: Request instance for EnhanceTaDegree.
-        :type request: :class:`tencentcloud.taf.v20200210.models.EnhanceTaDegreeRequest`
-        :rtype: :class:`tencentcloud.taf.v20200210.models.EnhanceTaDegreeResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("EnhanceTaDegree", params, headers=headers)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EnhanceTaDegreeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
     def RecognizeCustomizedAudience(self, request):
         """流量反欺诈-流量验准定制版
 

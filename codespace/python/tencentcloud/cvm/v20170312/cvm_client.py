@@ -120,6 +120,64 @@ class CvmClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ConfigureChcAssistVpc(self, request):
+        """配置CHC物理服务器的带外和部署网络。传入带外网络和部署网络信息
+
+        :param request: Request instance for ConfigureChcAssistVpc.
+        :type request: :class:`tencentcloud.cvm.v20170312.models.ConfigureChcAssistVpcRequest`
+        :rtype: :class:`tencentcloud.cvm.v20170312.models.ConfigureChcAssistVpcResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ConfigureChcAssistVpc", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ConfigureChcAssistVpcResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ConfigureChcDeployVpc(self, request):
+        """配置CHC物理服务器部署网络
+
+        :param request: Request instance for ConfigureChcDeployVpc.
+        :type request: :class:`tencentcloud.cvm.v20170312.models.ConfigureChcDeployVpcRequest`
+        :rtype: :class:`tencentcloud.cvm.v20170312.models.ConfigureChcDeployVpcResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ConfigureChcDeployVpc", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ConfigureChcDeployVpcResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateDisasterRecoverGroup(self, request):
         """本接口 (CreateDisasterRecoverGroup)用于创建[分散置放群组](https://cloud.tencent.com/document/product/213/15486)。创建好的置放群组，可在[创建实例](https://cloud.tencent.com/document/api/213/15730)时指定。
 
@@ -441,6 +499,38 @@ class CvmClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeAccountQuotaResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeChcHosts(self, request):
+        """本接口 (DescribeChcHosts) 用于查询一个或多个CHC物理服务器详细信息。
+
+        * 可以根据实例`ID`、实例名称或者设备类型等信息来查询实例的详细信息。过滤信息详细请见过滤器`Filter`。
+        * 如果参数为空，返回当前用户一定数量（`Limit`所指定的数量，默认为20）的实例。
+
+        :param request: Request instance for DescribeChcHosts.
+        :type request: :class:`tencentcloud.cvm.v20170312.models.DescribeChcHostsRequest`
+        :rtype: :class:`tencentcloud.cvm.v20170312.models.DescribeChcHostsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeChcHosts", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeChcHostsResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -1656,6 +1746,35 @@ class CvmClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyChcAttribute(self, request):
+        """修改CHC物理服务器的属性
+
+        :param request: Request instance for ModifyChcAttribute.
+        :type request: :class:`tencentcloud.cvm.v20170312.models.ModifyChcAttributeRequest`
+        :rtype: :class:`tencentcloud.cvm.v20170312.models.ModifyChcAttributeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyChcAttribute", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyChcAttributeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyDisasterRecoverGroupAttribute(self, request):
         """本接口 (ModifyDisasterRecoverGroupAttribute)用于修改[分散置放群组](https://cloud.tencent.com/document/product/213/15486)属性。
 
@@ -1851,7 +1970,6 @@ class CvmClient(AbstractClient):
     def ModifyInstancesChargeType(self, request):
         """本接口 (ModifyInstancesChargeType) 用于切换实例的计费模式。
 
-        * 只支持从 `POSTPAID_BY_HOUR` 计费模式切换为`PREPAID`计费模式。
         * 关机不收费的实例、`BC1`和`BS1`机型族的实例、设置定时销毁的实例不支持该操作。
         * 实例操作结果可以通过调用 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728#.E7.A4.BA.E4.BE.8B3-.E6.9F.A5.E8.AF.A2.E5.AE.9E.E4.BE.8B.E7.9A.84.E6.9C.80.E6.96.B0.E6.93.8D.E4.BD.9C.E6.83.85.E5.86.B5) 接口查询，如果实例的最新操作状态(LatestOperationState)为“SUCCESS”，则代表操作成功。
 
@@ -1886,7 +2004,6 @@ class CvmClient(AbstractClient):
 
         * 项目为一个虚拟概念，用户可以在一个账户下面建立多个项目，每个项目中管理不同的资源；将多个不同实例分属到不同项目中，后续使用 [`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728)接口查询实例，项目ID可用于过滤结果。
         * 绑定负载均衡的实例不支持修改实例所属项目，请先使用[`DeregisterInstancesFromLoadBalancer`](https://cloud.tencent.com/document/api/214/1258)接口解绑负载均衡。
-        [^_^]: # ( 修改实例所属项目会自动解关联实例原来关联的安全组，修改完成后可使用[`ModifyInstancesAttribute`](https://cloud.tencent.com/document/api/213/15739)接口关联安全组。)
         * 支持批量操作。每次请求批量实例的上限为100。
         * 实例操作结果可以通过调用 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728#.E7.A4.BA.E4.BE.8B3-.E6.9F.A5.E8.AF.A2.E5.AE.9E.E4.BE.8B.E7.9A.84.E6.9C.80.E6.96.B0.E6.93.8D.E4.BD.9C.E6.83.85.E5.86.B5) 接口查询，如果实例的最新操作状态(LatestOperationState)为“SUCCESS”，则代表操作成功。
 
@@ -2124,6 +2241,64 @@ class CvmClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.RebootInstancesResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RemoveChcAssistVpc(self, request):
+        """清理CHC物理服务器的带外网络和部署网络
+
+        :param request: Request instance for RemoveChcAssistVpc.
+        :type request: :class:`tencentcloud.cvm.v20170312.models.RemoveChcAssistVpcRequest`
+        :rtype: :class:`tencentcloud.cvm.v20170312.models.RemoveChcAssistVpcResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RemoveChcAssistVpc", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.RemoveChcAssistVpcResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RemoveChcDeployVpc(self, request):
+        """清理CHC物理服务器的部署网络
+
+        :param request: Request instance for RemoveChcDeployVpc.
+        :type request: :class:`tencentcloud.cvm.v20170312.models.RemoveChcDeployVpcRequest`
+        :rtype: :class:`tencentcloud.cvm.v20170312.models.RemoveChcDeployVpcResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RemoveChcDeployVpc", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.RemoveChcDeployVpcResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -2521,8 +2696,9 @@ class CvmClient(AbstractClient):
 
         * 不再使用的实例，可通过本接口主动退还。
         * 按量计费的实例通过本接口可直接退还；包年包月实例如符合[退还规则](https://cloud.tencent.com/document/product/213/9711)，也可通过本接口主动退还。
-        * 包年包月实例首次调用本接口，实例将被移至回收站，再次调用本接口，实例将被销毁，且不可恢复。按量计费实例调用本接口将被直接销毁
+        * 包年包月实例首次调用本接口，实例将被移至回收站，再次调用本接口，实例将被销毁，且不可恢复。按量计费实例调用本接口将被直接销毁。
         * 支持批量操作，每次请求批量实例的上限为100。
+        * 批量操作时，所有实例的付费类型必须一致。
 
         :param request: Request instance for TerminateInstances.
         :type request: :class:`tencentcloud.cvm.v20170312.models.TerminateInstancesRequest`

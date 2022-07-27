@@ -380,6 +380,108 @@ class BigKeyTypeInfo(AbstractModel):
         
 
 
+class ChangeInstanceRoleRequest(AbstractModel):
+    """ChangeInstanceRole请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 复制组ID
+        :type GroupId: str
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param InstanceRole: 实例角色，rw可读写，r只读
+        :type InstanceRole: str
+        """
+        self.GroupId = None
+        self.InstanceId = None
+        self.InstanceRole = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.InstanceId = params.get("InstanceId")
+        self.InstanceRole = params.get("InstanceRole")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChangeInstanceRoleResponse(AbstractModel):
+    """ChangeInstanceRole返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 异步流程ID
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
+class ChangeMasterInstanceRequest(AbstractModel):
+    """ChangeMasterInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 复制组ID
+        :type GroupId: str
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        """
+        self.GroupId = None
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChangeMasterInstanceResponse(AbstractModel):
+    """ChangeMasterInstance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 异步流程ID
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
 class ChangeReplicaToMasterRequest(AbstractModel):
     """ChangeReplicaToMaster请求参数结构体
 
@@ -678,6 +780,10 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         :type TemplateId: str
         :param DryRun: false ：默认值,发送正常请求，通过检查后直接创建实例 true：发送检查请求，不会创建实例。
         :type DryRun: bool
+        :param ProductVersion: "local"本地盘版，"cloud"云盘版，"cdc"独享集群版，如果不传默认发货为本地盘版本
+        :type ProductVersion: str
+        :param RedisClusterId: 独享集群id，ProductVersion="cdc"时必传
+        :type RedisClusterId: str
         """
         self.TypeId = None
         self.MemSize = None
@@ -702,6 +808,8 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         self.ZoneName = None
         self.TemplateId = None
         self.DryRun = None
+        self.ProductVersion = None
+        self.RedisClusterId = None
 
 
     def _deserialize(self, params):
@@ -738,6 +846,8 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         self.ZoneName = params.get("ZoneName")
         self.TemplateId = params.get("TemplateId")
         self.DryRun = params.get("DryRun")
+        self.ProductVersion = params.get("ProductVersion")
+        self.RedisClusterId = params.get("RedisClusterId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2537,7 +2647,7 @@ class DescribeInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Limit: 实例列表的大小，参数默认值20，传值则以传参为准，如果传参大于具体配置etc/conf/component.properties中的DescribeInstancesPageLimit配置项 （读不到配置默认配置项为1000），则以配置项为准
+        :param Limit: 返回数量，参数默认值20，最大值为1000
         :type Limit: int
         :param Offset: 偏移量，取Limit整数倍
         :type Offset: int
@@ -2585,6 +2695,10 @@ class DescribeInstancesRequest(AbstractModel):
         :type InstanceTags: list of InstanceTagInfo
         :param TagKeys: 根据标签的Key筛选资源，不传或者传空数组则不进行过滤
         :type TagKeys: list of str
+        :param ProductVersions: 需要过滤的产品版本支持多个，"local"本地盘版，"cloud"云盘版，"cdc"独享集群版，如果不传则默认不过滤
+        :type ProductVersions: list of str
+        :param InstanceIds: 批量查询指定的实例
+        :type InstanceIds: list of str
         """
         self.Limit = None
         self.Offset = None
@@ -2610,6 +2724,8 @@ class DescribeInstancesRequest(AbstractModel):
         self.MonitorVersion = None
         self.InstanceTags = None
         self.TagKeys = None
+        self.ProductVersions = None
+        self.InstanceIds = None
 
 
     def _deserialize(self, params):
@@ -2642,6 +2758,8 @@ class DescribeInstancesRequest(AbstractModel):
                 obj._deserialize(item)
                 self.InstanceTags.append(obj)
         self.TagKeys = params.get("TagKeys")
+        self.ProductVersions = params.get("ProductVersions")
+        self.InstanceIds = params.get("InstanceIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3320,8 +3438,10 @@ class DescribeTaskListRequest(AbstractModel):
         :type TaskStatus: list of int
         :param Result: 任务状态
         :type Result: list of int
-        :param OperatorUin: 操作者Uin
+        :param OperatorUin: 操作者Uin，该字段已废弃，使用OperateUin代替
         :type OperatorUin: list of int
+        :param OperateUin: 操作者Uin
+        :type OperateUin: list of str
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -3334,6 +3454,7 @@ class DescribeTaskListRequest(AbstractModel):
         self.TaskStatus = None
         self.Result = None
         self.OperatorUin = None
+        self.OperateUin = None
 
 
     def _deserialize(self, params):
@@ -3348,6 +3469,7 @@ class DescribeTaskListRequest(AbstractModel):
         self.TaskStatus = params.get("TaskStatus")
         self.Result = params.get("Result")
         self.OperatorUin = params.get("OperatorUin")
+        self.OperateUin = params.get("OperateUin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3873,6 +3995,8 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         :type ReplicasReadonly: bool
         :param ZoneName: 实例所属的可用区名称，可参考[地域和可用区](https://cloud.tencent.com/document/product/239/4106)  。
         :type ZoneName: str
+        :param ProductVersion: "local"本地盘版，"cloud"云盘版，"cdc"独享集群版，如果不传默认询价为本地盘版本
+        :type ProductVersion: str
         """
         self.TypeId = None
         self.MemSize = None
@@ -3884,6 +4008,7 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         self.RedisReplicasNum = None
         self.ReplicasReadonly = None
         self.ZoneName = None
+        self.ProductVersion = None
 
 
     def _deserialize(self, params):
@@ -3897,6 +4022,7 @@ TypeId为标准架构时，MemSize是实例总内存容量；TypeId为集群架�
         self.RedisReplicasNum = params.get("RedisReplicasNum")
         self.ReplicasReadonly = params.get("ReplicasReadonly")
         self.ZoneName = params.get("ZoneName")
+        self.ProductVersion = params.get("ProductVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

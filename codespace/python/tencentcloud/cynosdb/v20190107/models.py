@@ -148,17 +148,17 @@ class AddInstancesRequest(AbstractModel):
         :type Cpu: int
         :param Memory: 内存，单位为GB
         :type Memory: int
-        :param ReadOnlyCount: 新增只读实例数，取值范围为(0,16]
+        :param ReadOnlyCount: 新增只读实例数，取值范围为[0,4]
         :type ReadOnlyCount: int
-        :param InstanceGrpId: 实例组ID，在已有RO组中新增实例时使用，不传则新增RO组
+        :param InstanceGrpId: 实例组ID，在已有RO组中新增实例时使用，不传则新增RO组。当前版本不建议传输该值。
         :type InstanceGrpId: str
-        :param VpcId: 所属VPC网络ID
+        :param VpcId: 所属VPC网络ID，该参数已废弃
         :type VpcId: str
-        :param SubnetId: 所属子网ID，如果设置了VpcId，则SubnetId必填
+        :param SubnetId: 所属子网ID，如果设置了VpcId，则SubnetId必填。该参数已废弃。
         :type SubnetId: str
         :param Port: 新增RO组时使用的Port，取值范围为[0,65535)
         :type Port: int
-        :param InstanceName: 实例名称，字符串长度范围为[0,64)
+        :param InstanceName: 实例名称，字符串长度范围为[0,64)，取值范围为大小写字母，0-9数字，'_','-','.'
         :type InstanceName: str
         :param AutoVoucher: 是否自动选择代金券 1是 0否 默认为0
         :type AutoVoucher: int
@@ -389,14 +389,58 @@ class BillingResourceInfo(AbstractModel):
         :type ClusterId: str
         :param InstanceIds: 实例ID列表
         :type InstanceIds: list of str
+        :param DealName: 订单ID
+        :type DealName: str
         """
         self.ClusterId = None
         self.InstanceIds = None
+        self.DealName = None
 
 
     def _deserialize(self, params):
         self.ClusterId = params.get("ClusterId")
         self.InstanceIds = params.get("InstanceIds")
+        self.DealName = params.get("DealName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BinlogItem(AbstractModel):
+    """Binlog描述
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileName: Binlog文件名称
+        :type FileName: str
+        :param FileSize: 文件大小，单位：字节
+        :type FileSize: int
+        :param StartTime: 事务最早时间
+        :type StartTime: str
+        :param FinishTime: 事务最晚时间
+        :type FinishTime: str
+        :param BinlogId: Binlog文件ID
+        :type BinlogId: int
+        """
+        self.FileName = None
+        self.FileSize = None
+        self.StartTime = None
+        self.FinishTime = None
+        self.BinlogId = None
+
+
+    def _deserialize(self, params):
+        self.FileName = params.get("FileName")
+        self.FileSize = params.get("FileSize")
+        self.StartTime = params.get("StartTime")
+        self.FinishTime = params.get("FinishTime")
+        self.BinlogId = params.get("BinlogId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -586,7 +630,7 @@ class CreateClustersRequest(AbstractModel):
         :type ClusterName: str
         :param AdminPassword: 账号密码(8-64个字符，包含大小写英文字母、数字和符号~!@#$%^&*_-+=`|\(){}[]:;'<>,.?/中的任意三种)
         :type AdminPassword: str
-        :param Port: 端口，默认5432
+        :param Port: 端口，默认3306，取值范围[0, 65535)
         :type Port: int
         :param PayMode: 计费模式，按量计费：0，包年包月：1。默认按量计费。
         :type PayMode: int
@@ -609,13 +653,13 @@ timeRollback，时间点回档
         :param StorageLimit: 普通实例存储上限，单位GB
 当DbType为MYSQL，且存储计费模式为预付费时，该参数需不大于cpu与memory对应存储规格上限
         :type StorageLimit: int
-        :param InstanceCount: 实例数量
+        :param InstanceCount: 实例数量，数量范围为(0,16]
         :type InstanceCount: int
         :param TimeSpan: 包年包月购买时长
         :type TimeSpan: int
         :param TimeUnit: 包年包月购买时长单位，['s','d','m','y']
         :type TimeUnit: str
-        :param AutoRenewFlag: 包年包月购买是否自动续费
+        :param AutoRenewFlag: 包年包月购买是否自动续费，默认为0
         :type AutoRenewFlag: int
         :param AutoVoucher: 是否自动选择代金券 1是 0否 默认为0
         :type AutoVoucher: int
@@ -656,8 +700,10 @@ cpu最大值，可选范围参考DescribeServerlessInstanceSpecs接口返回
         :type ClusterParams: list of ParamItem
         :param DealMode: 交易模式，0-下单且支付，1-下单
         :type DealMode: int
-        :param ParamTemplateId: 参数模版ID
+        :param ParamTemplateId: 参数模版ID，可以通过查询参数模板信息DescribeParamTemplates获得参数模板ID
         :type ParamTemplateId: int
+        :param SlaveZone: 多可用区地址
+        :type SlaveZone: str
         """
         self.Zone = None
         self.VpcId = None
@@ -698,6 +744,7 @@ cpu最大值，可选范围参考DescribeServerlessInstanceSpecs接口返回
         self.ClusterParams = None
         self.DealMode = None
         self.ParamTemplateId = None
+        self.SlaveZone = None
 
 
     def _deserialize(self, params):
@@ -750,6 +797,7 @@ cpu最大值，可选范围参考DescribeServerlessInstanceSpecs接口返回
                 self.ClusterParams.append(obj)
         self.DealMode = params.get("DealMode")
         self.ParamTemplateId = params.get("ParamTemplateId")
+        self.SlaveZone = params.get("SlaveZone")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1807,6 +1855,55 @@ class DescribeBackupConfigResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeBackupDownloadUrlRequest(AbstractModel):
+    """DescribeBackupDownloadUrl请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param BackupId: 备份ID
+        :type BackupId: int
+        """
+        self.ClusterId = None
+        self.BackupId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.BackupId = params.get("BackupId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBackupDownloadUrlResponse(AbstractModel):
+    """DescribeBackupDownloadUrl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DownloadUrl: 备份下载地址
+        :type DownloadUrl: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DownloadUrl = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DownloadUrl = params.get("DownloadUrl")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeBackupListRequest(AbstractModel):
     """DescribeBackupList请求参数结构体
 
@@ -1871,6 +1968,171 @@ class DescribeBackupListResponse(AbstractModel):
                 obj = BackupFileInfo()
                 obj._deserialize(item)
                 self.BackupList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBinlogDownloadUrlRequest(AbstractModel):
+    """DescribeBinlogDownloadUrl请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param BinlogId: Binlog文件ID
+        :type BinlogId: int
+        """
+        self.ClusterId = None
+        self.BinlogId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.BinlogId = params.get("BinlogId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBinlogDownloadUrlResponse(AbstractModel):
+    """DescribeBinlogDownloadUrl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DownloadUrl: 下载地址
+        :type DownloadUrl: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DownloadUrl = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DownloadUrl = params.get("DownloadUrl")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBinlogSaveDaysRequest(AbstractModel):
+    """DescribeBinlogSaveDays请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBinlogSaveDaysResponse(AbstractModel):
+    """DescribeBinlogSaveDays返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BinlogSaveDays: Binlog保留天数
+        :type BinlogSaveDays: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BinlogSaveDays = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.BinlogSaveDays = params.get("BinlogSaveDays")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBinlogsRequest(AbstractModel):
+    """DescribeBinlogs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param StartTime: 开始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Limit: 限制条数
+        :type Limit: int
+        """
+        self.ClusterId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBinlogsResponse(AbstractModel):
+    """DescribeBinlogs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 记录总条数
+        :type TotalCount: int
+        :param Binlogs: Binlog列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Binlogs: list of BinlogItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Binlogs = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Binlogs") is not None:
+            self.Binlogs = []
+            for item in params.get("Binlogs"):
+                obj = BinlogItem()
+                obj._deserialize(item)
+                self.Binlogs.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -2218,6 +2480,96 @@ class DescribeInstanceDetailResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeInstanceSlowQueriesRequest(AbstractModel):
+    """DescribeInstanceSlowQueries请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param StartTime: 事务开始最早时间
+        :type StartTime: str
+        :param EndTime: 事务开始最晚时间
+        :type EndTime: str
+        :param Limit: 限制条数
+        :type Limit: int
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Username: 用户名
+        :type Username: str
+        :param Host: 客户端host
+        :type Host: str
+        :param Database: 数据库名
+        :type Database: str
+        :param OrderBy: 排序字段，可选值：QueryTime,LockTime,RowsExamined,RowsSent
+        :type OrderBy: str
+        :param OrderByType: 排序类型，可选值：asc,desc
+        :type OrderByType: str
+        """
+        self.InstanceId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Limit = None
+        self.Offset = None
+        self.Username = None
+        self.Host = None
+        self.Database = None
+        self.OrderBy = None
+        self.OrderByType = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.Username = params.get("Username")
+        self.Host = params.get("Host")
+        self.Database = params.get("Database")
+        self.OrderBy = params.get("OrderBy")
+        self.OrderByType = params.get("OrderByType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeInstanceSlowQueriesResponse(AbstractModel):
+    """DescribeInstanceSlowQueries返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总条数
+        :type TotalCount: int
+        :param SlowQueries: 慢查询记录
+        :type SlowQueries: list of SlowQueriesItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.SlowQueries = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("SlowQueries") is not None:
+            self.SlowQueries = []
+            for item in params.get("SlowQueries"):
+                obj = SlowQueriesItem()
+                obj._deserialize(item)
+                self.SlowQueries.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeInstanceSpecsRequest(AbstractModel):
     """DescribeInstanceSpecs请求参数结构体
 
@@ -2420,6 +2772,42 @@ class DescribeMaintainPeriodResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeParamTemplatesRequest(AbstractModel):
+    """DescribeParamTemplates请求参数结构体
+
+    """
+
+
+class DescribeParamTemplatesResponse(AbstractModel):
+    """DescribeParamTemplates返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 参数模板数量
+        :type TotalCount: int
+        :param Items: 参数模板信息
+        :type Items: list of ParamTemplateListInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Items = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Items") is not None:
+            self.Items = []
+            for item in params.get("Items"):
+                obj = ParamTemplateListInfo()
+                obj._deserialize(item)
+                self.Items.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeProjectSecurityGroupsRequest(AbstractModel):
     """DescribeProjectSecurityGroups请求参数结构体
 
@@ -2477,14 +2865,18 @@ class DescribeResourcesByDealNameRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DealName: 计费订单id（如果计费还没回调业务发货，可能出现错误码InvalidParameterValue.DealNameNotFound，这种情况需要业务重试DescribeResourcesByDealName接口直到成功）
+        :param DealName: 计费订单ID（如果计费还没回调业务发货，可能出现错误码InvalidParameterValue.DealNameNotFound，这种情况需要业务重试DescribeResourcesByDealName接口直到成功）
         :type DealName: str
+        :param DealNames: 计费订单ID列表，可以一次查询若干条订单ID对应资源信息（如果计费还没回调业务发货，可能出现错误码InvalidParameterValue.DealNameNotFound，这种情况需要业务重试DescribeResourcesByDealName接口直到成功）
+        :type DealNames: list of str
         """
         self.DealName = None
+        self.DealNames = None
 
 
     def _deserialize(self, params):
         self.DealName = params.get("DealName")
+        self.DealNames = params.get("DealNames")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2683,6 +3075,83 @@ class DisassociateSecurityGroupsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ExportInstanceSlowQueriesRequest(AbstractModel):
+    """ExportInstanceSlowQueries请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param StartTime: 事务开始最早时间
+        :type StartTime: str
+        :param EndTime: 事务开始最晚时间
+        :type EndTime: str
+        :param Limit: 限制条数
+        :type Limit: int
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Username: 用户名
+        :type Username: str
+        :param Host: 客户端host
+        :type Host: str
+        :param Database: 数据库名
+        :type Database: str
+        :param FileType: 文件类型，可选值：csv, original
+        :type FileType: str
+        """
+        self.InstanceId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Limit = None
+        self.Offset = None
+        self.Username = None
+        self.Host = None
+        self.Database = None
+        self.FileType = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.Username = params.get("Username")
+        self.Host = params.get("Host")
+        self.Database = params.get("Database")
+        self.FileType = params.get("FileType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ExportInstanceSlowQueriesResponse(AbstractModel):
+    """ExportInstanceSlowQueries返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileContent: 慢查询导出内容
+        :type FileContent: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FileContent = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FileContent = params.get("FileContent")
+        self.RequestId = params.get("RequestId")
+
+
 class GrantAccountPrivilegesRequest(AbstractModel):
     """GrantAccountPrivileges请求参数结构体
 
@@ -2771,6 +3240,169 @@ class InputAccount(AbstractModel):
         
 
 
+class InquirePriceCreateRequest(AbstractModel):
+    """InquirePriceCreate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Zone: 可用区,每个地域提供最佳实践
+        :type Zone: str
+        :param GoodsNum: 购买商品数量
+        :type GoodsNum: int
+        :param InstancePayMode: 实例购买类型，可选值为：PREPAID, POSTPAID, SERVERLESS
+        :type InstancePayMode: str
+        :param StoragePayMode: 存储购买类型，可选值为：PREPAID, POSTPAID
+        :type StoragePayMode: str
+        :param Cpu: CPU核数，PREPAID与POSTPAID实例类型必传
+        :type Cpu: int
+        :param Memory: 内存大小，单位G，PREPAID与POSTPAID实例类型必传
+        :type Memory: int
+        :param Ccu: Ccu大小，serverless类型必传
+        :type Ccu: float
+        :param StorageLimit: 存储大小，PREPAID存储类型必传
+        :type StorageLimit: int
+        :param TimeSpan: 购买时长，PREPAID购买类型必传
+        :type TimeSpan: int
+        :param TimeUnit: 时长单位，可选值为：m,d。PREPAID购买类型必传
+        :type TimeUnit: str
+        """
+        self.Zone = None
+        self.GoodsNum = None
+        self.InstancePayMode = None
+        self.StoragePayMode = None
+        self.Cpu = None
+        self.Memory = None
+        self.Ccu = None
+        self.StorageLimit = None
+        self.TimeSpan = None
+        self.TimeUnit = None
+
+
+    def _deserialize(self, params):
+        self.Zone = params.get("Zone")
+        self.GoodsNum = params.get("GoodsNum")
+        self.InstancePayMode = params.get("InstancePayMode")
+        self.StoragePayMode = params.get("StoragePayMode")
+        self.Cpu = params.get("Cpu")
+        self.Memory = params.get("Memory")
+        self.Ccu = params.get("Ccu")
+        self.StorageLimit = params.get("StorageLimit")
+        self.TimeSpan = params.get("TimeSpan")
+        self.TimeUnit = params.get("TimeUnit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InquirePriceCreateResponse(AbstractModel):
+    """InquirePriceCreate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstancePrice: 实例价格
+        :type InstancePrice: :class:`tencentcloud.cynosdb.v20190107.models.TradePrice`
+        :param StoragePrice: 存储价格
+        :type StoragePrice: :class:`tencentcloud.cynosdb.v20190107.models.TradePrice`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InstancePrice = None
+        self.StoragePrice = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("InstancePrice") is not None:
+            self.InstancePrice = TradePrice()
+            self.InstancePrice._deserialize(params.get("InstancePrice"))
+        if params.get("StoragePrice") is not None:
+            self.StoragePrice = TradePrice()
+            self.StoragePrice._deserialize(params.get("StoragePrice"))
+        self.RequestId = params.get("RequestId")
+
+
+class InquirePriceRenewRequest(AbstractModel):
+    """InquirePriceRenew请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param TimeSpan: 购买时长,与TimeUnit组合才能生效
+        :type TimeSpan: int
+        :param TimeUnit: 购买时长单位, 与TimeSpan组合生效，可选:日:d,月:m
+        :type TimeUnit: str
+        """
+        self.ClusterId = None
+        self.TimeSpan = None
+        self.TimeUnit = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.TimeSpan = params.get("TimeSpan")
+        self.TimeUnit = params.get("TimeUnit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InquirePriceRenewResponse(AbstractModel):
+    """InquirePriceRenew返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param InstanceIds: 实例ID列表
+        :type InstanceIds: list of str
+        :param Prices: 对应的询价结果数组
+        :type Prices: list of TradePrice
+        :param InstanceRealTotalPrice: 续费计算节点的总价格
+        :type InstanceRealTotalPrice: int
+        :param StorageRealTotalPrice: 续费存储节点的总价格
+        :type StorageRealTotalPrice: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ClusterId = None
+        self.InstanceIds = None
+        self.Prices = None
+        self.InstanceRealTotalPrice = None
+        self.StorageRealTotalPrice = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.InstanceIds = params.get("InstanceIds")
+        if params.get("Prices") is not None:
+            self.Prices = []
+            for item in params.get("Prices"):
+                obj = TradePrice()
+                obj._deserialize(item)
+                self.Prices.append(obj)
+        self.InstanceRealTotalPrice = params.get("InstanceRealTotalPrice")
+        self.StorageRealTotalPrice = params.get("StorageRealTotalPrice")
+        self.RequestId = params.get("RequestId")
+
+
 class InstanceSpec(AbstractModel):
     """实例可售卖规格详细信息，创建实例时Cpu/Memory确定实例规格，存储可选大小为[MinStorageSize,MaxStorageSize]
 
@@ -2816,8 +3448,7 @@ class IsolateClusterRequest(AbstractModel):
         r"""
         :param ClusterId: 集群ID
         :type ClusterId: str
-        :param DbType: 数据库类型，取值范围: 
-<li> MYSQL </li>
+        :param DbType: 该参数已废用
         :type DbType: str
         """
         self.ClusterId = None
@@ -2874,8 +3505,7 @@ class IsolateInstanceRequest(AbstractModel):
         :type ClusterId: str
         :param InstanceIdList: 实例ID数组
         :type InstanceIdList: list of str
-        :param DbType: 数据库类型，取值范围: 
-<li> MYSQL </li>
+        :param DbType: 该参数已废弃
         :type DbType: str
         """
         self.ClusterId = None
@@ -2933,7 +3563,7 @@ class ModifyAccountParamsRequest(AbstractModel):
         :type ClusterId: str
         :param Account: 账号信息
         :type Account: :class:`tencentcloud.cynosdb.v20190107.models.InputAccount`
-        :param AccountParams: 数据库表权限数组,当前仅支持参数：max_user_connections
+        :param AccountParams: 数据库表权限数组,当前仅支持参数：max_user_connections，max_user_connections不能大于10240
         :type AccountParams: list of AccountParam
         """
         self.ClusterId = None
@@ -2991,11 +3621,11 @@ class ModifyBackupConfigRequest(AbstractModel):
         :type BackupTimeBeg: int
         :param BackupTimeEnd: 表示全备结束时间，[0-24*3600]， 如0:00, 1:00, 2:00 分别为 0，3600， 7200
         :type BackupTimeEnd: int
-        :param ReserveDuration: 表示保留备份时长, 单位秒，超过该时间将被清理, 七天表示为3600*24*7=604800
+        :param ReserveDuration: 表示保留备份时长, 单位秒，超过该时间将被清理, 七天表示为3600*24*7=604800，最大为158112000
         :type ReserveDuration: int
-        :param BackupFreq: 备份频率，长度为7的数组，分别对应周一到周日的备份方式，full-全量备份，increment-增量备份
+        :param BackupFreq: 该参数目前不支持修改，无需填写。备份频率，长度为7的数组，分别对应周一到周日的备份方式，full-全量备份，increment-增量备份
         :type BackupFreq: list of str
-        :param BackupType: 备份方式，logic-逻辑备份，snapshot-快照备份
+        :param BackupType: 该参数目前不支持修改，无需填写。备份方式，logic-逻辑备份，snapshot-快照备份
         :type BackupType: str
         """
         self.ClusterId = None
@@ -3024,6 +3654,55 @@ class ModifyBackupConfigRequest(AbstractModel):
 
 class ModifyBackupConfigResponse(AbstractModel):
     """ModifyBackupConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyBackupNameRequest(AbstractModel):
+    """ModifyBackupName请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param BackupId: 备份文件ID
+        :type BackupId: int
+        :param BackupName: 备注名，长度不能超过60个字符
+        :type BackupName: str
+        """
+        self.ClusterId = None
+        self.BackupId = None
+        self.BackupName = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.BackupId = params.get("BackupId")
+        self.BackupName = params.get("BackupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyBackupNameResponse(AbstractModel):
+    """ModifyBackupName返回参数结构体
 
     """
 
@@ -3093,7 +3772,7 @@ class ModifyClusterParamRequest(AbstractModel):
         r"""
         :param ClusterId: 集群ID
         :type ClusterId: str
-        :param ParamList: 要修改的参数列表。每一个元素是ParamName、CurrentValue和OldValue的组合。ParamName是参数名称，CurrentValue是当前值，OldValue是之前值
+        :param ParamList: 要修改的参数列表。每一个元素是ParamName、CurrentValue和OldValue的组合。ParamName是参数名称，CurrentValue是当前值，OldValue是之前值且不做校验
         :type ParamList: list of ParamItem
         :param IsInMaintainPeriod: 维护期间执行-yes,立即执行-no
         :type IsInMaintainPeriod: str
@@ -3249,7 +3928,7 @@ class ModifyMaintainPeriodConfigRequest(AbstractModel):
         :type MaintainStartTime: int
         :param MaintainDuration: 维护持续时间，单位为秒，如1小时为3600
         :type MaintainDuration: int
-        :param MaintainWeekDays: 每周维护日期
+        :param MaintainWeekDays: 每周维护日期，日期取值范围[Mon, Tue, Wed, Thu, Fri, Sat, Sun]
         :type MaintainWeekDays: list of str
         """
         self.InstanceId = None
@@ -3532,6 +4211,42 @@ class ParamItem(AbstractModel):
         self.ParamName = params.get("ParamName")
         self.CurrentValue = params.get("CurrentValue")
         self.OldValue = params.get("OldValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ParamTemplateListInfo(AbstractModel):
+    """参数模板信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 参数模板ID
+        :type Id: int
+        :param TemplateName: 参数模板名称
+        :type TemplateName: str
+        :param TemplateDescription: 参数模板描述
+        :type TemplateDescription: str
+        :param EngineVersion: 引擎版本
+        :type EngineVersion: str
+        """
+        self.Id = None
+        self.TemplateName = None
+        self.TemplateDescription = None
+        self.EngineVersion = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.TemplateName = params.get("TemplateName")
+        self.TemplateDescription = params.get("TemplateDescription")
+        self.EngineVersion = params.get("EngineVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3869,9 +4584,9 @@ class RollbackDatabase(AbstractModel):
 
     def __init__(self):
         r"""
-        :param OldDatabase: 旧数据库
+        :param OldDatabase: 旧数据库名称
         :type OldDatabase: str
-        :param NewDatabase: 新数据库
+        :param NewDatabase: 新数据库名称
         :type NewDatabase: str
         """
         self.OldDatabase = None
@@ -4058,6 +4773,70 @@ class SetRenewFlagResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class SlowQueriesItem(AbstractModel):
+    """实例慢查询信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Timestamp: 执行时间戳
+        :type Timestamp: int
+        :param QueryTime: 执行时长，单位秒
+        :type QueryTime: float
+        :param SqlText: sql语句
+        :type SqlText: str
+        :param UserHost: 客户端host
+        :type UserHost: str
+        :param UserName: 用户名
+        :type UserName: str
+        :param Database: 数据库名
+        :type Database: str
+        :param LockTime: 锁时长，单位秒
+        :type LockTime: float
+        :param RowsExamined: 扫描行数
+        :type RowsExamined: int
+        :param RowsSent: 返回行数
+        :type RowsSent: int
+        :param SqlTemplate: sql模版
+        :type SqlTemplate: str
+        :param SqlMd5: sql语句md5
+        :type SqlMd5: str
+        """
+        self.Timestamp = None
+        self.QueryTime = None
+        self.SqlText = None
+        self.UserHost = None
+        self.UserName = None
+        self.Database = None
+        self.LockTime = None
+        self.RowsExamined = None
+        self.RowsSent = None
+        self.SqlTemplate = None
+        self.SqlMd5 = None
+
+
+    def _deserialize(self, params):
+        self.Timestamp = params.get("Timestamp")
+        self.QueryTime = params.get("QueryTime")
+        self.SqlText = params.get("SqlText")
+        self.UserHost = params.get("UserHost")
+        self.UserName = params.get("UserName")
+        self.Database = params.get("Database")
+        self.LockTime = params.get("LockTime")
+        self.RowsExamined = params.get("RowsExamined")
+        self.RowsSent = params.get("RowsSent")
+        self.SqlTemplate = params.get("SqlTemplate")
+        self.SqlMd5 = params.get("SqlMd5")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TablePrivileges(AbstractModel):
     """mysql表权限
 
@@ -4118,6 +4897,54 @@ class Tag(AbstractModel):
         
 
 
+class TradePrice(AbstractModel):
+    """计费询价结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalPrice: 预付费模式下资源总价，不包含优惠，单位:分
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalPrice: int
+        :param Discount: 总的折扣，100表示100%不打折
+        :type Discount: float
+        :param TotalPriceDiscount: 预付费模式下的优惠后总价, 单位: 分,例如用户享有折扣 =TotalPrice × Discount
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalPriceDiscount: int
+        :param UnitPrice: 后付费模式下的单位资源价格，不包含优惠，单位:分
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnitPrice: int
+        :param UnitPriceDiscount: 优惠后后付费模式下的单位资源价格, 单位: 分,例如用户享有折扣=UnitPricet × Discount
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnitPriceDiscount: int
+        :param ChargeUnit: 计费价格单位
+        :type ChargeUnit: str
+        """
+        self.TotalPrice = None
+        self.Discount = None
+        self.TotalPriceDiscount = None
+        self.UnitPrice = None
+        self.UnitPriceDiscount = None
+        self.ChargeUnit = None
+
+
+    def _deserialize(self, params):
+        self.TotalPrice = params.get("TotalPrice")
+        self.Discount = params.get("Discount")
+        self.TotalPriceDiscount = params.get("TotalPriceDiscount")
+        self.UnitPrice = params.get("UnitPrice")
+        self.UnitPriceDiscount = params.get("UnitPriceDiscount")
+        self.ChargeUnit = params.get("ChargeUnit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class UpgradeInstanceRequest(AbstractModel):
     """UpgradeInstance请求参数结构体
 
@@ -4133,12 +4960,11 @@ class UpgradeInstanceRequest(AbstractModel):
         :type Memory: int
         :param UpgradeType: 升级类型：upgradeImmediate，upgradeInMaintain
         :type UpgradeType: str
-        :param StorageLimit: 存储上限，为0表示使用标准配置
+        :param StorageLimit: 该参数已废弃
         :type StorageLimit: int
         :param AutoVoucher: 是否自动选择代金券 1是 0否 默认为0
         :type AutoVoucher: int
-        :param DbType: 数据库类型，取值范围: 
-<li> MYSQL </li>
+        :param DbType: 该参数已废弃
         :type DbType: str
         :param DealMode: 交易模式 0-下单并支付 1-下单
         :type DealMode: int

@@ -26,46 +26,6 @@ class TrtcClient(AbstractClient):
     _service = 'trtc'
 
 
-    def CreateCloudRecording(self, request):
-        """###接口说明：
-        启动云端录制功能，完成房间内的音视频录制，并上传到指定的云存储。您可以通过此 API 接口把TRTC 房间中的每一路音视频流做单独的录制有或者多路视频画面混流一路。
-
-        ###您可以通过此接口实现如下目标：
-        * 指定订阅流参数（RecordParams）来指定需要录制的主播的黑名单或者白名单。
-        * 指定第三方存储的参数（StorageParams）来指定上传到您希望的云存储
-        * 指定混流模式下的音视频转码详细参数（MixTranscodeParams），包括视频分辨率、视频码率、视频帧率、以及声音质量等
-        * 指定混流模式各路画面的位置和布局或者也可以指定自动模板的方式来配置。
-
-        ###关键名词：
-        * 单流录制：分别录制房间的订阅UserId的音频和视频。录制服务会实时将录制文件（M3U8/TS）上传至云存储。
-        * 混流录制：将房间内订阅UserId的音视频混录成一个音视频文件，并将录制文件（M3U8/TS）上传至云存储。
-
-        :param request: Request instance for CreateCloudRecording.
-        :type request: :class:`tencentcloud.trtc.v20190722.models.CreateCloudRecordingRequest`
-        :rtype: :class:`tencentcloud.trtc.v20190722.models.CreateCloudRecordingResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("CreateCloudRecording", params, headers=headers)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateCloudRecordingResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
     def CreatePicture(self, request):
         """如果您需要在 [云端混流转码](https://cloud.tencent.com/document/product/647/16827) 时频繁新增自定义背景图或水印，可通过此接口上传新的图片素材。无需频繁新增图片的场景，建议直接在 [控制台 > 应用管理 > 素材管理](https://cloud.tencent.com/document/product/647/50769) 中操作。
 
@@ -81,64 +41,6 @@ class TrtcClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreatePictureResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def CreateTroubleInfo(self, request):
-        """创建异常信息
-
-        :param request: Request instance for CreateTroubleInfo.
-        :type request: :class:`tencentcloud.trtc.v20190722.models.CreateTroubleInfoRequest`
-        :rtype: :class:`tencentcloud.trtc.v20190722.models.CreateTroubleInfoResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("CreateTroubleInfo", params, headers=headers)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateTroubleInfoResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def DeleteCloudRecording(self, request):
-        """成功开启录制后，可以使用此接口来停止录制任务。仅在录制任务进行时有效，录制退出后更新将会返回错误。停止录制成功后不代表文件全部传输完成，如果未完成后台将会继续上传文件，成功后通过事件回调通知客户文件全部传输完成状态。
-
-        :param request: Request instance for DeleteCloudRecording.
-        :type request: :class:`tencentcloud.trtc.v20190722.models.DeleteCloudRecordingRequest`
-        :rtype: :class:`tencentcloud.trtc.v20190722.models.DeleteCloudRecordingResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DeleteCloudRecording", params, headers=headers)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteCloudRecordingResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -183,7 +85,8 @@ class TrtcClient(AbstractClient):
 
 
     def DescribeAbnormalEvent(self, request):
-        """查询SDKAppID下用户的异常体验事件，返回异常体验ID与可能产生异常体验的原因。可查询15天内数据，查询起止时间不超过1个小时。支持跨天查询。异常体验ID映射见：https://cloud.tencent.com/document/product/647/44916
+        """查询SdkAppId下任意20条异常体验事件，返回异常体验ID与可能产生异常体验的原因。可查询14天内数据，查询起止时间不超过1个小时。支持跨天查询。
+        异常体验ID映射见：https://cloud.tencent.com/document/product/647/44916
 
         :param request: Request instance for DescribeAbnormalEvent.
         :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeAbnormalEventRequest`
@@ -212,7 +115,7 @@ class TrtcClient(AbstractClient):
 
 
     def DescribeCallDetail(self, request):
-        """查询指定时间内的用户列表及用户通话质量数据，可查询14天内数据。DataType 不为null，查询起止时间不超过1个小时，查询用户不超过6个，支持跨天查询。DataType，UserIds为null时，查询起止时间不超过4个小时， 默认查询6个用户，同时支持每页查询100以内用户个数（PageSize不超过100）。接口用于查询质量问题，不推荐作为计费使用。
+        """查询指定时间内的用户列表及用户通话质量数据，可查询14天内数据。DataType 不为null，查询起止时间不超过1个小时，查询用户不超过6个，支持跨天查询。DataType为null时，查询起止时间不超过4个小时， 默认查询6个用户，同时支持每页查询100以内用户个数（PageSize不超过100）。接口用于查询质量问题，不推荐作为计费使用。
         **注意**：该接口只用于历史数据统计或核对数据使用，实时类关键业务逻辑不能使用。
 
         :param request: Request instance for DescribeCallDetail.
@@ -241,21 +144,22 @@ class TrtcClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
-    def DescribeCloudRecording(self, request):
-        """成功开启录制后，可以使用此接口来查询录制状态。仅在录制任务进行时有效，录制退出后查询将会返回错误。
+    def DescribeCallDetailInfo(self, request):
+        """查询指定时间内的用户列表及用户通话质量数据，可查询14天内数据。DataType 不为null，查询起止时间不超过1个小时，查询用户不超过6个，支持跨天查询。DataType为null时，查询起止时间不超过4个小时， 默认查询6个用户，同时支持每页查询100以内用户个数（PageSize不超过100）。接口用于查询质量问题，不推荐作为计费使用。（同老接口DescribeCallDetail）
+        **注意**：该接口只用于历史数据统计或核对数据使用，实时类关键业务逻辑不能使用。
 
-        :param request: Request instance for DescribeCloudRecording.
-        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeCloudRecordingRequest`
-        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeCloudRecordingResponse`
+        :param request: Request instance for DescribeCallDetailInfo.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeCallDetailInfoRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeCallDetailInfoResponse`
 
         """
         try:
             params = request._serialize()
             headers = request.headers
-            body = self.call("DescribeCloudRecording", params, headers=headers)
+            body = self.call("DescribeCallDetailInfo", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
-                model = models.DescribeCloudRecordingResponse()
+                model = models.DescribeCallDetailInfoResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -329,7 +233,7 @@ class TrtcClient(AbstractClient):
 
 
     def DescribeHistoryScale(self, request):
-        """可查询sdkqppid 每天的房间数和用户数，每分钟1次，可查询最近14天的数据。当天未结束，无法查到当天的房间数与用户数。
+        """可查询SdkAppId每天的房间数和用户数，按天统计，可查询最近14天的数据。当天未结束，数据未统计完成，无法查到当天的房间数与用户数
 
         :param request: Request instance for DescribeHistoryScale.
         :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeHistoryScaleRequest`
@@ -420,8 +324,38 @@ class TrtcClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeRoomInfo(self, request):
+        """查询SdkAppId下的房间列表。默认返回10条通话，一次最多返回100条通话。可查询14天内的数据。（同老接口DescribeRoomInformation）
+        **注意**：该接口只用于历史数据统计或核对数据使用，实时类关键业务逻辑不能使用。
+
+        :param request: Request instance for DescribeRoomInfo.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeRoomInfoRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeRoomInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRoomInfo", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeRoomInfoResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeRoomInformation(self, request):
-        """查询sdkappid下的房间列表。默认返回10条通话，一次最多返回100条通话。可查询14天内的数据。
+        """查询SdkAppId下的房间列表。默认返回10条通话，一次最多返回100条通话。可查询14天内的数据。
         **注意**：该接口只用于历史数据统计或核对数据使用，实时类关键业务逻辑不能使用。
 
         :param request: Request instance for DescribeRoomInformation.
@@ -436,6 +370,35 @@ class TrtcClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeRoomInformationResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeScaleInfo(self, request):
+        """可查询SdkAppId每天的房间数和用户数，按天统计，可查询最近14天的数据。当天未结束，数据未统计完成，无法查到当天的房间数与用户数。（同老接口DescribeHistoryScale）
+
+        :param request: Request instance for DescribeScaleInfo.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeScaleInfoRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeScaleInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeScaleInfo", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeScaleInfoResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -469,6 +432,95 @@ class TrtcClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeTrtcMcuTranscodeTimeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeUnusualEvent(self, request):
+        """查询SdkAppId下任意20条异常体验事件，返回异常体验ID与可能产生异常体验的原因。可查询14天内数据，查询起止时间不超过1个小时。支持跨天查询。（同老接口DescribeAbnormalEvent）
+        异常体验ID映射见：https://cloud.tencent.com/document/product/647/44916
+
+        :param request: Request instance for DescribeUnusualEvent.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeUnusualEventRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeUnusualEventResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUnusualEvent", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeUnusualEventResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeUserEvent(self, request):
+        """查询用户某次通话内的进退房，视频开关等详细事件。可查询14天内数据。（同接口DescribeDetailEvent）
+
+        :param request: Request instance for DescribeUserEvent.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeUserEventRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeUserEventResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUserEvent", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeUserEventResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeUserInfo(self, request):
+        """查询指定时间内的用户列表，可查询14天内数据，查询起止时间不超过4小时。默认每页查询6个用户，支持每页最大查询100个用户PageSize不超过100）。（同老接口DescribeUserInformation）
+        **注意**：该接口只用于历史数据统计或核对数据使用，实时类关键业务逻辑不能使用。
+
+        :param request: Request instance for DescribeUserInfo.
+        :type request: :class:`tencentcloud.trtc.v20190722.models.DescribeUserInfoRequest`
+        :rtype: :class:`tencentcloud.trtc.v20190722.models.DescribeUserInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUserInfo", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeUserInfoResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -557,35 +609,6 @@ class TrtcClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DismissRoomByStrRoomIdResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def ModifyCloudRecording(self, request):
-        """成功开启录制后，可以使用此接口来更新录制任务。仅在录制任务进行时有效，录制退出后更新将会返回错误。更新操作是全量覆盖，并不是增量更新的模式，也就是说每次更新都需要携带全量的信息。
-
-        :param request: Request instance for ModifyCloudRecording.
-        :type request: :class:`tencentcloud.trtc.v20190722.models.ModifyCloudRecordingRequest`
-        :rtype: :class:`tencentcloud.trtc.v20190722.models.ModifyCloudRecordingResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("ModifyCloudRecording", params, headers=headers)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyCloudRecordingResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

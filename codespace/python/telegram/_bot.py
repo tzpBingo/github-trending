@@ -172,7 +172,7 @@ class Bot(TelegramObject, AbstractAsyncContextManager):
         private_key (:obj:`bytes`, optional): Private key for decryption of telegram passport data.
         private_key_password (:obj:`bytes`, optional): Password for above private key.
 
-    .. include:: bot_methods.rst
+    .. include:: inclusions/bot_methods.rst
 
     """
 
@@ -7345,7 +7345,7 @@ class Bot(TelegramObject, AbstractAsyncContextManager):
         return result  # type: ignore[return-value]
 
     @_log
-    def delete_my_commands(
+    async def delete_my_commands(
         self,
         scope: BotCommandScope = None,
         language_code: str = None,
@@ -7402,7 +7402,7 @@ class Bot(TelegramObject, AbstractAsyncContextManager):
         if language_code:
             data["language_code"] = language_code
 
-        result = self._post(
+        result = await self._post(
             "deleteMyCommands",
             data,
             read_timeout=read_timeout,
@@ -7422,6 +7422,7 @@ class Bot(TelegramObject, AbstractAsyncContextManager):
         write_timeout: ODVInput[float] = DEFAULT_NONE,
         connect_timeout: ODVInput[float] = DEFAULT_NONE,
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
+        api_kwargs: JSONDict = None,
     ) -> bool:
         """
         Use this method to log out from the cloud Bot API server before launching the bot locally.
@@ -7443,6 +7444,10 @@ class Bot(TelegramObject, AbstractAsyncContextManager):
             pool_timeout (:obj:`float` | :obj:`None`, optional): Value to pass to
                 :paramref:`telegram.request.BaseRequest.post.pool_timeout`. Defaults to
                 :attr:`~telegram.request.BaseRequest.DEFAULT_NONE`.
+            api_kwargs (:obj:`dict`, optional): Arbitrary keyword arguments to be passed to the
+                Telegram API.
+
+                .. versionadded:: 20.0
 
         Returns:
             :obj:`True`: On success
@@ -7457,6 +7462,7 @@ class Bot(TelegramObject, AbstractAsyncContextManager):
             write_timeout=write_timeout,
             connect_timeout=connect_timeout,
             pool_timeout=pool_timeout,
+            api_kwargs=api_kwargs,
         )
 
     @_log

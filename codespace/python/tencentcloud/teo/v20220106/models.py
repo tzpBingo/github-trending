@@ -205,10 +205,12 @@ class ApplicationProxy(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProxyId: 实例ID
+        :param ProxyId: 代理ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ProxyId: str
-        :param ProxyName: 实例名称
+        :param ProxyName: 代理名称
+当ProxyType=hostname时，表示域名或者子域名
+当ProxyType=instance时，表示实例名称
         :type ProxyName: str
         :param PlatType: 调度模式：
 ip表示Anycast IP
@@ -248,11 +250,13 @@ fail：部署失败/停用失败
 注意：此字段可能返回 null，表示取不到有效值。
         :type SessionPersistTime: int
         :param ProxyType: 服务类型
-hostname：子域名
-instance：实例
+hostname：子域名模式
+instance：实例模式
 注意：此字段可能返回 null，表示取不到有效值。
         :type ProxyType: str
-        :param HostId: 七层实例ID
+        :param HostId: 当ProxyType=hostname时：
+ProxyName为域名，如：test.123.com
+HostId表示该域名，即test.123.com对应的代理加速唯一标识
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostId: str
         """
@@ -321,14 +325,14 @@ class ApplicationProxyRule(AbstractModel):
         :param OriginType: 源站类型，取值：
 custom：手动添加
 origins：源站组
-load_balancing：负载均衡
         :type OriginType: str
         :param OriginValue: 源站信息：
-当OriginType=custom时，表示多个：
-IP:端口
-域名:端口
-当OriginType=origins时，包含一个元素，表示源站组ID
-当OriginType=load_balancing时，包含一个元素，表示负载均衡ID
+当OriginType=custom时，表示一个或多个源站，如：
+OriginValue=["8.8.8.8:80","9.9.9.9:80"]
+OriginValue=["test.com:80"]
+
+当OriginType=origins时，包含一个元素，表示源站组ID，如：
+OriginValue=["origin-xxx"]
         :type OriginValue: list of str
         :param RuleId: 规则ID
 注意：此字段可能返回 null，表示取不到有效值。
@@ -397,12 +401,16 @@ class BotConfig(AbstractModel):
         :type IspBotRule: :class:`tencentcloud.teo.v20220106.models.BotManagedRule`
         :param PortraitRule: 用户画像规则
         :type PortraitRule: :class:`tencentcloud.teo.v20220106.models.BotPortraitRule`
+        :param IntelligenceRule: Bot智能分析
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IntelligenceRule: :class:`tencentcloud.teo.v20220106.models.IntelligenceRule`
         """
         self.Switch = None
         self.ManagedRule = None
         self.UaBotRule = None
         self.IspBotRule = None
         self.PortraitRule = None
+        self.IntelligenceRule = None
 
 
     def _deserialize(self, params):
@@ -419,6 +427,9 @@ class BotConfig(AbstractModel):
         if params.get("PortraitRule") is not None:
             self.PortraitRule = BotPortraitRule()
             self.PortraitRule._deserialize(params.get("PortraitRule"))
+        if params.get("IntelligenceRule") is not None:
+            self.IntelligenceRule = IntelligenceRule()
+            self.IntelligenceRule._deserialize(params.get("IntelligenceRule"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1385,7 +1396,9 @@ class CreateApplicationProxyRequest(AbstractModel):
         :type ZoneId: str
         :param ZoneName: 站点名称
         :type ZoneName: str
-        :param ProxyName: 四层代理名称
+        :param ProxyName: 代理名称
+当ProxyType=hostname时，表示域名或者子域名
+当ProxyType=instance时，表示实例名称
         :type ProxyName: str
         :param PlatType: 调度模式：
 ip表示Anycast IP
@@ -1404,8 +1417,8 @@ domain表示CNAME
         :param SessionPersistTime: 会话保持时间，取值范围：30-3600，单位：秒
         :type SessionPersistTime: int
         :param ProxyType: 服务类型
-hostname：子域名
-instance：实例
+hostname：子域名模式
+instance：实例模式
         :type ProxyType: str
         """
         self.ZoneId = None
@@ -1488,14 +1501,12 @@ class CreateApplicationProxyRuleRequest(AbstractModel):
         :param OriginType: 源站类型，取值：
 custom：手动添加
 origins：源站组
-load_balancing：负载均衡
         :type OriginType: str
         :param OriginValue: 源站信息：
 当OriginType=custom时，表示多个：
 IP:端口
 域名:端口
 当OriginType=origins时，包含一个元素，表示源站组ID
-当OriginType=load_balancing时，包含一个元素，表示负载均衡ID
         :type OriginValue: list of str
         :param ForwardClientIp: 传递客户端IP，当Proto=TCP时，取值：
 TOA：TOA
@@ -1806,7 +1817,7 @@ class CreateLoadBalancingRequest(AbstractModel):
         r"""
         :param ZoneId: 站点ID
         :type ZoneId: str
-        :param Host: 子域名，填写@表示根域
+        :param Host: 子域名
         :type Host: str
         :param Type: 代理模式：
 dns_only: 仅DNS
@@ -1872,7 +1883,7 @@ class CreateOriginGroupRequest(AbstractModel):
         :param Type: 配置类型，当OriginType=self 时，需要填写：
 area: 按区域配置
 weight: 按权重配置
-当OriginType=third_party 时，不需要填写
+当OriginType=third_party/cos 时，不需要填写
         :type Type: str
         :param Record: 源站记录
         :type Record: list of OriginRecord
@@ -1881,6 +1892,7 @@ weight: 按权重配置
         :param OriginType: 源站类型
 self：自有源站
 third_party：第三方源站
+cos：腾讯云COS源站
         :type OriginType: str
         """
         self.OriginName = None
@@ -2100,16 +2112,25 @@ class CreateZoneRequest(AbstractModel):
         :type Type: str
         :param JumpStart: 是否跳过站点历史解析记录扫描
         :type JumpStart: bool
+        :param Tags: 资源标签
+        :type Tags: list of Tag
         """
         self.Name = None
         self.Type = None
         self.JumpStart = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Type = params.get("Type")
         self.JumpStart = params.get("JumpStart")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2252,6 +2273,9 @@ class DDoSAntiPly(AbstractModel):
         :type ConnectTimeout: int
         :param EmptyConnectProtect: 空连接防护开启 0-1
         :type EmptyConnectProtect: str
+        :param UdpShard: UDP分片开关；off-关闭，on-开启
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UdpShard: str
         """
         self.DropTcp = None
         self.DropUdp = None
@@ -2266,6 +2290,7 @@ class DDoSAntiPly(AbstractModel):
         self.AbnormalSynNum = None
         self.ConnectTimeout = None
         self.EmptyConnectProtect = None
+        self.UdpShard = None
 
 
     def _deserialize(self, params):
@@ -2282,6 +2307,7 @@ class DDoSAntiPly(AbstractModel):
         self.AbnormalSynNum = params.get("AbnormalSynNum")
         self.ConnectTimeout = params.get("ConnectTimeout")
         self.EmptyConnectProtect = params.get("EmptyConnectProtect")
+        self.UdpShard = params.get("UdpShard")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3070,6 +3096,9 @@ class DdosRule(AbstractModel):
         :param Switch: DDoS开关 on-开启；off-关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
+        :param UdpShardOpen: UDP分片功能是否支持，off-不支持，on-支持
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UdpShardOpen: str
         """
         self.DdosStatusInfo = None
         self.DdosGeoIp = None
@@ -3078,6 +3107,7 @@ class DdosRule(AbstractModel):
         self.DdosPacketFilter = None
         self.DdosAcl = None
         self.Switch = None
+        self.UdpShardOpen = None
 
 
     def _deserialize(self, params):
@@ -3100,6 +3130,7 @@ class DdosRule(AbstractModel):
             self.DdosAcl = DdosAcls()
             self.DdosAcl._deserialize(params.get("DdosAcl"))
         self.Switch = params.get("Switch")
+        self.UdpShardOpen = params.get("UdpShardOpen")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3513,7 +3544,9 @@ class DescribeApplicationProxyDetailResponse(AbstractModel):
         r"""
         :param ProxyId: 实例ID
         :type ProxyId: str
-        :param ProxyName: 实例名称
+        :param ProxyName: 代理名称
+当ProxyType=hostname时，表示域名或者子域名
+当ProxyType=instance时，表示实例名称
         :type ProxyName: str
         :param PlatType: 调度模式：
 ip表示Anycast IP
@@ -3545,10 +3578,12 @@ progress：部署中
         :param SessionPersistTime: 会话保持时间
         :type SessionPersistTime: int
         :param ProxyType: 服务类型
-hostname：子域名
-instance：实例
+hostname：子域名模式
+instance：实例模式
         :type ProxyType: str
-        :param HostId: 七层实例ID
+        :param HostId: 当ProxyType=hostname时：
+ProxyName为域名，如：test.123.com
+HostId表示该域名，即test.123.com对应的代理加速唯一标识
         :type HostId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3642,15 +3677,23 @@ class DescribeApplicationProxyResponse(AbstractModel):
         :param TotalCount: 记录总数
 注意：此字段可能返回 null，表示取不到有效值。
         :type TotalCount: int
-        :param Quota: 当ZoneId不为空时，表示当前站点允许创建的实例数量
+        :param Quota: 字段已废弃
 注意：此字段可能返回 null，表示取不到有效值。
         :type Quota: int
+        :param IpCount: 表示套餐内PlatType为ip的Anycast IP实例数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpCount: int
+        :param DomainCount: 表示套餐内PlatType为domain的CNAME实例数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DomainCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Data = None
         self.TotalCount = None
         self.Quota = None
+        self.IpCount = None
+        self.DomainCount = None
         self.RequestId = None
 
 
@@ -3663,6 +3706,8 @@ class DescribeApplicationProxyResponse(AbstractModel):
                 self.Data.append(obj)
         self.TotalCount = params.get("TotalCount")
         self.Quota = params.get("Quota")
+        self.IpCount = params.get("IpCount")
+        self.DomainCount = params.get("DomainCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -5100,7 +5145,9 @@ class DescribeOriginGroupDetailResponse(AbstractModel):
         :type OriginId: str
         :param OriginName: 源站组名称
         :type OriginName: str
-        :param Type: 配置类型
+        :param Type: 源站组配置类型
+area：表示按照Record记录中的Area字段进行按客户端IP所在区域回源。
+weight：表示按照Record记录中的Weight字段进行按权重回源。
         :type Type: str
         :param Record: 记录
         :type Record: list of OriginRecord
@@ -5113,12 +5160,19 @@ class DescribeOriginGroupDetailResponse(AbstractModel):
         :param OriginType: 源站类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type OriginType: str
-        :param ApplicationProxyUsed: 是否被四层代理使用
+        :param ApplicationProxyUsed: 当前源站组是否被四层代理使用。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApplicationProxyUsed: bool
-        :param LoadBalancingUsed: 是否被负载均衡使用
+        :param LoadBalancingUsed: 当前源站组是否被负载均衡使用。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LoadBalancingUsed: bool
+        :param LoadBalancingUsedType: 使用当前源站组的负载均衡的类型：
+none：未被使用
+dns_only：被仅DNS类型负载均衡使用
+proxied：被代理加速类型负载均衡使用
+both：同时被仅DNS和代理加速类型负载均衡使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LoadBalancingUsedType: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -5132,6 +5186,7 @@ class DescribeOriginGroupDetailResponse(AbstractModel):
         self.OriginType = None
         self.ApplicationProxyUsed = None
         self.LoadBalancingUsed = None
+        self.LoadBalancingUsedType = None
         self.RequestId = None
 
 
@@ -5151,6 +5206,7 @@ class DescribeOriginGroupDetailResponse(AbstractModel):
         self.OriginType = params.get("OriginType")
         self.ApplicationProxyUsed = params.get("ApplicationProxyUsed")
         self.LoadBalancingUsed = params.get("LoadBalancingUsed")
+        self.LoadBalancingUsedType = params.get("LoadBalancingUsedType")
         self.RequestId = params.get("RequestId")
 
 
@@ -5237,7 +5293,10 @@ class DescribeOverviewL7DataRequest(AbstractModel):
         :type StartTime: str
         :param EndTime: RFC3339格式，客户端时间
         :type EndTime: str
-        :param MetricNames: 指标列表
+        :param MetricNames: 指标列表，支持的指标
+l7Flow_outFlux: 访问流量
+l7Flow_request: 访问请求数
+l7Flow_outBandwidth: 访问带宽
         :type MetricNames: list of str
         :param Interval: 时间间隔，选填{min, 5min, hour, day, week}
         :type Interval: str
@@ -5837,18 +5896,26 @@ class DescribeTimingL4DataRequest(AbstractModel):
         :type StartTime: str
         :param EndTime: RFC3339格式，客户端时间
         :type EndTime: str
-        :param MetricNames: 指标列表
+        :param MetricNames: 支持的指标：
+l4Flow_connections: 访问连接数
+l4Flow_flux: 访问总流量
+l4Flow_inFlux: 访问入流量
+l4Flow_outFlux: 访问出流量
         :type MetricNames: list of str
-        :param ZoneIds: ZoneId列表，仅在zone/instance维度下查询时该参数有效
+        :param ZoneIds: 站点id列表
         :type ZoneIds: list of str
-        :param InstanceIds: InstanceId列表，仅在Instance维度下查询时该参数有效
+        :param InstanceIds: 该字段已废弃，请使用ProxyIds字段
         :type InstanceIds: list of str
-        :param Protocol: 协议类型， 该字段当前无效
+        :param Protocol: 该字段当前无效
         :type Protocol: str
         :param Interval: 时间间隔，选填{min, 5min, hour, day}
         :type Interval: str
-        :param RuleId: 规则ID，仅在instance维度有效
+        :param RuleId: 该字段当前无效，请使用Filter筛选
         :type RuleId: str
+        :param Filters: 支持的 Filter：proxyd,ruleId
+        :type Filters: list of Filter
+        :param ProxyIds: 四层实例列表
+        :type ProxyIds: list of str
         """
         self.StartTime = None
         self.EndTime = None
@@ -5858,6 +5925,8 @@ class DescribeTimingL4DataRequest(AbstractModel):
         self.Protocol = None
         self.Interval = None
         self.RuleId = None
+        self.Filters = None
+        self.ProxyIds = None
 
 
     def _deserialize(self, params):
@@ -5869,6 +5938,13 @@ class DescribeTimingL4DataRequest(AbstractModel):
         self.Protocol = params.get("Protocol")
         self.Interval = params.get("Interval")
         self.RuleId = params.get("RuleId")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.ProxyIds = params.get("ProxyIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5924,7 +6000,10 @@ class DescribeTimingL7AnalysisDataRequest(AbstractModel):
         :type StartTime: str
         :param EndTime: RFC3339标准，客户端时间
         :type EndTime: str
-        :param MetricNames: 时序类访问流量指标
+        :param MetricNames: 指标列表，支持的指标
+l7Flow_outFlux: 访问流量
+l7Flow_request: 访问请求数
+l7Flow_outBandwidth: 访问带宽
         :type MetricNames: list of str
         :param Interval: 时间间隔，选填{min, 5min, hour, day, week}
         :type Interval: str
@@ -6008,7 +6087,9 @@ class DescribeTimingL7CacheDataRequest(AbstractModel):
         :type StartTime: str
         :param EndTime: RFC3339标准，客户端时间
         :type EndTime: str
-        :param MetricNames: 时序类访问流量指标列表
+        :param MetricNames: 时序类访问流量指标列表，支持的指标
+l7Cache_outFlux: 访问流量
+l7Cache_request: 访问请求数
         :type MetricNames: list of str
         :param Interval: 时间间隔，选填{min, 5min, hour, day, week}
         :type Interval: str
@@ -7025,6 +7106,9 @@ class DescribeZoneDetailsResponse(AbstractModel):
 - pending 切换验证中
 注意：此字段可能返回 null，表示取不到有效值。
         :type CnameStatus: str
+        :param Tags: 资源标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -7041,6 +7125,7 @@ class DescribeZoneDetailsResponse(AbstractModel):
         self.VanityNameServersIps = None
         self.CnameSpeedUp = None
         self.CnameStatus = None
+        self.Tags = None
         self.RequestId = None
 
 
@@ -7065,6 +7150,12 @@ class DescribeZoneDetailsResponse(AbstractModel):
                 self.VanityNameServersIps.append(obj)
         self.CnameSpeedUp = params.get("CnameSpeedUp")
         self.CnameStatus = params.get("CnameStatus")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -7429,10 +7520,10 @@ pending: 不生效
         :param Cname: CNAME 地址
 注意：此字段可能返回 null，表示取不到有效值。
         :type Cname: str
-        :param DomainStatus: 域名是否开启了lb，四层，安全
+        :param DomainStatus: 域名是否开启了负载均衡，四层代理，安全
 - lb 负载均衡
 - security 安全
-- l4 四层
+- l4 四层代理
 注意：此字段可能返回 null，表示取不到有效值。
         :type DomainStatus: list of str
         """
@@ -8048,6 +8139,151 @@ class ImportDnsRecordsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class IntelligenceRule(AbstractModel):
+    """智能分析规则
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 开关
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Switch: str
+        :param Items: 规则详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Items: list of IntelligenceRuleItem
+        """
+        self.Switch = None
+        self.Items = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        if params.get("Items") is not None:
+            self.Items = []
+            for item in params.get("Items"):
+                obj = IntelligenceRuleItem()
+                obj._deserialize(item)
+                self.Items.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IntelligenceRuleItem(AbstractModel):
+    """Bot智能分析规则详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Label: 恶意BOT
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Label: str
+        :param Action: 动作
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Action: str
+        """
+        self.Label = None
+        self.Action = None
+
+
+    def _deserialize(self, params):
+        self.Label = params.get("Label")
+        self.Action = params.get("Action")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IpTableConfig(AbstractModel):
+    """IP黑白名单及IP区域控制配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 开关
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Switch: str
+        :param Rules: []
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Rules: list of IpTableRule
+        """
+        self.Switch = None
+        self.Rules = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        if params.get("Rules") is not None:
+            self.Rules = []
+            for item in params.get("Rules"):
+                obj = IpTableRule()
+                obj._deserialize(item)
+                self.Rules.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IpTableRule(AbstractModel):
+    """IP黑白名单详细规则
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Action: 动作: drop拦截，trans放行，monitor观察
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Action: str
+        :param MatchFrom: 根据类型匹配：ip(根据ip), area(根据区域)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MatchFrom: str
+        :param MatchContent: 匹配内容
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MatchContent: str
+        :param RuleID: 规则id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleID: int
+        :param UpdateTime: 更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        """
+        self.Action = None
+        self.MatchFrom = None
+        self.MatchContent = None
+        self.RuleID = None
+        self.UpdateTime = None
+
+
+    def _deserialize(self, params):
+        self.Action = params.get("Action")
+        self.MatchFrom = params.get("MatchFrom")
+        self.MatchContent = params.get("MatchContent")
+        self.RuleID = params.get("RuleID")
+        self.UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class L7OfflineLog(AbstractModel):
     """离线日志详细信息
 
@@ -8260,9 +8496,11 @@ class ModifyApplicationProxyRequest(AbstractModel):
         r"""
         :param ZoneId: 站点ID
         :type ZoneId: str
-        :param ProxyId: 四层代理ID
+        :param ProxyId: 代理ID
         :type ProxyId: str
-        :param ProxyName: 四层代理名称
+        :param ProxyName: 代理名称
+当ProxyType=hostname时，表示域名或者子域名
+当ProxyType=instance时，表示实例名称
         :type ProxyName: str
         :param ForwardClientIp: 参数已经废弃
         :type ForwardClientIp: str
@@ -8271,8 +8509,8 @@ class ModifyApplicationProxyRequest(AbstractModel):
         :param SessionPersistTime: 会话保持时间，取值范围：30-3600，单位：秒
         :type SessionPersistTime: int
         :param ProxyType: 服务类型
-hostname：子域名
-instance：实例
+hostname：子域名模式
+instance：实例模式
         :type ProxyType: str
         """
         self.ZoneId = None
@@ -8308,7 +8546,7 @@ class ModifyApplicationProxyResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProxyId: 四层代理ID
+        :param ProxyId: 代理ID
         :type ProxyId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -8344,14 +8582,14 @@ class ModifyApplicationProxyRuleRequest(AbstractModel):
         :param OriginType: 源站类型，取值：
 custom：手动添加
 origins：源站组
-load_balancing：负载均衡
         :type OriginType: str
         :param OriginValue: 源站信息：
-当OriginType=custom时，表示多个：
-IP:端口
-域名:端口
-当OriginType=origins时，包含一个元素，表示源站组ID
-当OriginType=load_balancing时，包含一个元素，表示负载均衡ID
+当OriginType=custom时，表示一个或多个源站，如：
+OriginValue=["8.8.8.8:80","9.9.9.9:80"]
+OriginValue=["test.com:80"]
+
+当OriginType=origins时，包含一个元素，表示源站组ID，如：
+OriginValue=["origin-xxx"]
         :type OriginValue: list of str
         :param ForwardClientIp: 传递客户端IP，当Proto=TCP时，取值：
 TOA：TOA
@@ -8425,7 +8663,7 @@ class ModifyApplicationProxyRuleStatusRequest(AbstractModel):
         r"""
         :param ZoneId: 站点ID
         :type ZoneId: str
-        :param ProxyId: 四层代理ID
+        :param ProxyId: 代理ID
         :type ProxyId: str
         :param RuleId: 规则ID
         :type RuleId: str
@@ -8484,7 +8722,7 @@ class ModifyApplicationProxyStatusRequest(AbstractModel):
         r"""
         :param ZoneId: 站点ID
         :type ZoneId: str
-        :param ProxyId: 四层代理ID
+        :param ProxyId: 代理ID
         :type ProxyId: str
         :param Status: 状态
 offline: 停用
@@ -8516,7 +8754,7 @@ class ModifyApplicationProxyStatusResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProxyId: 四层代理ID
+        :param ProxyId: 代理ID
         :type ProxyId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -9082,7 +9320,7 @@ class ModifyOriginGroupRequest(AbstractModel):
         :param Type: 配置类型，当OriginType=self 时，需要填写：
 area: 按区域配置
 weight: 按权重配置
-当OriginType=third_party 时，不需要填写
+当OriginType=third_party/cos 时，不需要填写
         :type Type: str
         :param Record: 源站记录
         :type Record: list of OriginRecord
@@ -9091,6 +9329,7 @@ weight: 按权重配置
         :param OriginType: 源站类型
 self：自有源站
 third_party：第三方源站
+cos：腾讯云COS源站
         :type OriginType: str
         """
         self.OriginId = None
@@ -9609,6 +9848,35 @@ https：强制 https 回源，https 回源时仅支持源站 443 端口
         
 
 
+class OriginCheckOriginStatus(AbstractModel):
+    """源站健康检查，源站状态信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: healthy: 健康，unhealthy: 不健康，process: 探测中
+        :type Status: str
+        :param Host: host列表，源站组不健康时存在值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Host: list of str
+        """
+        self.Status = None
+        self.Host = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        self.Host = params.get("Host")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class OriginFilter(AbstractModel):
     """源站组查询过滤参数
 
@@ -9648,7 +9916,9 @@ class OriginGroup(AbstractModel):
         :type OriginId: str
         :param OriginName: 源站组名称
         :type OriginName: str
-        :param Type: 配置类型
+        :param Type: 源站组配置类型
+area：表示按照Record记录中的Area字段进行按客户端IP所在区域回源。
+weight：表示按照Record记录中的Weight字段进行按权重回源。
         :type Type: str
         :param Record: 记录
         :type Record: list of OriginRecord
@@ -9661,12 +9931,22 @@ class OriginGroup(AbstractModel):
         :param OriginType: 源站类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type OriginType: str
-        :param ApplicationProxyUsed: 是否为四层代理使用
+        :param ApplicationProxyUsed: 当前源站组是否被四层代理使用。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApplicationProxyUsed: bool
-        :param LoadBalancingUsed: 是否为负载均衡使用
+        :param LoadBalancingUsed: 当前源站组是否被负载均衡使用。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LoadBalancingUsed: bool
+        :param Status: 源站状态信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: :class:`tencentcloud.teo.v20220106.models.OriginCheckOriginStatus`
+        :param LoadBalancingUsedType: 使用当前源站组的负载均衡的类型：
+none：未被使用
+dns_only：被仅DNS类型负载均衡使用
+proxied：被代理加速类型负载均衡使用
+both：同时被仅DNS和代理加速类型负载均衡使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LoadBalancingUsedType: str
         """
         self.OriginId = None
         self.OriginName = None
@@ -9678,6 +9958,8 @@ class OriginGroup(AbstractModel):
         self.OriginType = None
         self.ApplicationProxyUsed = None
         self.LoadBalancingUsed = None
+        self.Status = None
+        self.LoadBalancingUsedType = None
 
 
     def _deserialize(self, params):
@@ -9696,6 +9978,10 @@ class OriginGroup(AbstractModel):
         self.OriginType = params.get("OriginType")
         self.ApplicationProxyUsed = params.get("ApplicationProxyUsed")
         self.LoadBalancingUsed = params.get("LoadBalancingUsed")
+        if params.get("Status") is not None:
+            self.Status = OriginCheckOriginStatus()
+            self.Status._deserialize(params.get("Status"))
+        self.LoadBalancingUsedType = params.get("LoadBalancingUsedType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9715,9 +10001,11 @@ class OriginRecord(AbstractModel):
         :param Record: 记录值
         :type Record: str
         :param Area: 当源站配置类型Type=area时，表示区域
-当源站类型Type=area时，为空表示默认区域
+为空表示默认区域
         :type Area: list of str
         :param Weight: 当源站配置类型Type=weight时，表示权重
+取值范围为[1-100]
+源站组内多个源站权重总和应为100
         :type Weight: int
         :param Port: 端口
         :type Port: int
@@ -9975,10 +10263,14 @@ class RateLimitConfig(AbstractModel):
         :param Template: 默认模板
 注意：此字段可能返回 null，表示取不到有效值。
         :type Template: :class:`tencentcloud.teo.v20220106.models.RateLimitTemplate`
+        :param Intelligence: 智能客户端过滤
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Intelligence: :class:`tencentcloud.teo.v20220106.models.RateLimitIntelligence`
         """
         self.Switch = None
         self.UserRules = None
         self.Template = None
+        self.Intelligence = None
 
 
     def _deserialize(self, params):
@@ -9992,6 +10284,39 @@ class RateLimitConfig(AbstractModel):
         if params.get("Template") is not None:
             self.Template = RateLimitTemplate()
             self.Template._deserialize(params.get("Template"))
+        if params.get("Intelligence") is not None:
+            self.Intelligence = RateLimitIntelligence()
+            self.Intelligence._deserialize(params.get("Intelligence"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RateLimitIntelligence(AbstractModel):
+    """智能客户端过滤
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 功能开关
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Switch: str
+        :param Action: 执行动作 monitor(观察), alg(挑战)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Action: str
+        """
+        self.Switch = None
+        self.Action = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Action = params.get("Action")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10365,6 +10690,9 @@ class SecurityConfig(AbstractModel):
         :param SwitchConfig: 总开关
 注意：此字段可能返回 null，表示取不到有效值。
         :type SwitchConfig: :class:`tencentcloud.teo.v20220106.models.SwitchConfig`
+        :param IpTableConfig: IP黑白名单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpTableConfig: :class:`tencentcloud.teo.v20220106.models.IpTableConfig`
         """
         self.WafConfig = None
         self.RateLimitConfig = None
@@ -10372,6 +10700,7 @@ class SecurityConfig(AbstractModel):
         self.AclConfig = None
         self.BotConfig = None
         self.SwitchConfig = None
+        self.IpTableConfig = None
 
 
     def _deserialize(self, params):
@@ -10393,6 +10722,9 @@ class SecurityConfig(AbstractModel):
         if params.get("SwitchConfig") is not None:
             self.SwitchConfig = SwitchConfig()
             self.SwitchConfig._deserialize(params.get("SwitchConfig"))
+        if params.get("IpTableConfig") is not None:
+            self.IpTableConfig = IpTableConfig()
+            self.IpTableConfig._deserialize(params.get("IpTableConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10601,6 +10933,36 @@ class SwitchConfig(AbstractModel):
 
     def _deserialize(self, params):
         self.WebSwitch = params.get("WebSwitch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Tag(AbstractModel):
+    """标签配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKey: 标签键
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagKey: str
+        :param TagValue: 标签值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagValue: str
+        """
+        self.TagKey = None
+        self.TagValue = None
+
+
+    def _deserialize(self, params):
+        self.TagKey = params.get("TagKey")
+        self.TagValue = params.get("TagValue")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11351,6 +11713,9 @@ class Zone(AbstractModel):
 - pending 站点验证中
 注意：此字段可能返回 null，表示取不到有效值。
         :type CnameStatus: str
+        :param Tags: 资源标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         """
         self.Id = None
         self.Name = None
@@ -11362,6 +11727,7 @@ class Zone(AbstractModel):
         self.CreatedOn = None
         self.ModifiedOn = None
         self.CnameStatus = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -11375,6 +11741,12 @@ class Zone(AbstractModel):
         self.CreatedOn = params.get("CreatedOn")
         self.ModifiedOn = params.get("ModifiedOn")
         self.CnameStatus = params.get("CnameStatus")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11394,6 +11766,8 @@ class ZoneFilter(AbstractModel):
         :param Name: 过滤字段名，支持的列表如下：
 - name: 站点名。
 - status: 站点状态
+- tagKey: 标签键
+- tagValue: 标签值
         :type Name: str
         :param Values: 过滤字段值
         :type Values: list of str

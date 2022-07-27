@@ -762,16 +762,24 @@ class EmailIdentity(AbstractModel):
         :type IdentityType: str
         :param SendingEnabled: 是否已通过验证
         :type SendingEnabled: bool
+        :param CurrentReputationLevel: 当前信誉等级
+        :type CurrentReputationLevel: int
+        :param DailyQuota: 当日最高发信量
+        :type DailyQuota: int
         """
         self.IdentityName = None
         self.IdentityType = None
         self.SendingEnabled = None
+        self.CurrentReputationLevel = None
+        self.DailyQuota = None
 
 
     def _deserialize(self, params):
         self.IdentityName = params.get("IdentityName")
         self.IdentityType = params.get("IdentityType")
         self.SendingEnabled = params.get("SendingEnabled")
+        self.CurrentReputationLevel = params.get("CurrentReputationLevel")
+        self.DailyQuota = params.get("DailyQuota")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -906,10 +914,13 @@ class GetEmailTemplateResponse(AbstractModel):
         r"""
         :param TemplateContent: 模板内容数据
         :type TemplateContent: :class:`tencentcloud.ses.v20201002.models.TemplateContent`
+        :param TemplateStatus: 模板状态 0-审核通过 1-待审核 2-审核拒绝
+        :type TemplateStatus: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.TemplateContent = None
+        self.TemplateStatus = None
         self.RequestId = None
 
 
@@ -917,6 +928,7 @@ class GetEmailTemplateResponse(AbstractModel):
         if params.get("TemplateContent") is not None:
             self.TemplateContent = TemplateContent()
             self.TemplateContent._deserialize(params.get("TemplateContent"))
+        self.TemplateStatus = params.get("TemplateStatus")
         self.RequestId = params.get("RequestId")
 
 
@@ -1176,10 +1188,16 @@ class ListEmailIdentitiesResponse(AbstractModel):
         r"""
         :param EmailIdentities: 发信域名列表
         :type EmailIdentities: list of EmailIdentity
+        :param MaxReputationLevel: 最大信誉等级
+        :type MaxReputationLevel: int
+        :param MaxDailyQuota: 单域名最高日发送量
+        :type MaxDailyQuota: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.EmailIdentities = None
+        self.MaxReputationLevel = None
+        self.MaxDailyQuota = None
         self.RequestId = None
 
 
@@ -1190,6 +1208,8 @@ class ListEmailIdentitiesResponse(AbstractModel):
                 obj = EmailIdentity()
                 obj._deserialize(item)
                 self.EmailIdentities.append(obj)
+        self.MaxReputationLevel = params.get("MaxReputationLevel")
+        self.MaxDailyQuota = params.get("MaxDailyQuota")
         self.RequestId = params.get("RequestId")
 
 

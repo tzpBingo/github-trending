@@ -20,6 +20,9 @@ AUTHFAILURE = 'AuthFailure'
 # 操作失败。
 FAILEDOPERATION = 'FailedOperation'
 
+# 用户鉴权错误。
+FAILEDOPERATION_AUTHENTICATEUSERFAILED = 'FailedOperation.AuthenticateUserFailed'
+
 # 投递目标创建失败，请检查函数状态。
 FAILEDOPERATION_CREATETRIGGER = 'FailedOperation.CreateTrigger'
 
@@ -29,8 +32,14 @@ FAILEDOPERATION_DELETECONNECTION = 'FailedOperation.DeleteConnection'
 # 规则删除失败，请检查资源信息，确认是资源否存在或状态正常。
 FAILEDOPERATION_DELETERULE = 'FailedOperation.DeleteRule'
 
+# ES集群操作失败。
+FAILEDOPERATION_ESREQUESTFAILED = 'FailedOperation.ESRequestFailed'
+
 # 规则与事件不匹配，请修正后再试。
 FAILEDOPERATION_ERRORFILTER = 'FailedOperation.ErrorFilter'
+
+# 注册CLS服务失败。
+FAILEDOPERATION_REGISTERCLSSERVICE = 'FailedOperation.RegisterCLSService'
 
 # ServiceError操作失败，请检查资源信息。
 FAILEDOPERATION_SERVICEERROR = 'FailedOperation.ServiceError'
@@ -52,6 +61,9 @@ INTERNALERROR_SYSTEM = 'InternalError.System'
 
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
+
+# APIGateway连接器不支持开启或关闭操作，请修正后重试。
+INVALIDPARAMETER_ENABLEAPIGATEWAY = 'InvalidParameter.EnableAPIGateway'
 
 # Payload与规范不符，请修正后再试。
 INVALIDPARAMETER_PAYLOAD = 'InvalidParameter.Payload'
@@ -91,6 +103,9 @@ INVALIDPARAMETERVALUE_DEADLETTERCONFIG = 'InvalidParameterValue.DeadLetterConfig
 
 # Description取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_DESCRIPTION = 'InvalidParameterValue.Description'
+
+# ES目标参数错误。
+INVALIDPARAMETERVALUE_ELASTICSEARCHTARGETPARAMS = 'InvalidParameterValue.ElasticSearchTargetParams'
 
 # EventBusId取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_EVENTBUSID = 'InvalidParameterValue.EventBusId'
@@ -157,6 +172,9 @@ INVALIDPARAMETERVALUE_RULEID = 'InvalidParameterValue.RuleId'
 
 # RuleName取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_RULENAME = 'InvalidParameterValue.RuleName'
+
+# 标签参数错误。
+INVALIDPARAMETERVALUE_TAGS = 'InvalidParameterValue.Tags'
 
 # TargetDescription取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_TARGETDESCRIPTION = 'InvalidParameterValue.TargetDescription'
@@ -247,6 +265,9 @@ RESOURCENOTFOUND_INVALIDSERVICE = 'ResourceNotFound.InvalidService'
 
 # 投递目标创建失败，未找到指定的命名空间，请创建后再试。
 RESOURCENOTFOUND_NAMESPACE = 'ResourceNotFound.Namespace'
+
+# 未找到privatelink记录。
+RESOURCENOTFOUND_PRIVATELINKRESOURCE = 'ResourceNotFound.PrivateLinkResource'
 
 # 未找到指定的服务角色，请创建后再试。
 RESOURCENOTFOUND_ROLE = 'ResourceNotFound.Role'

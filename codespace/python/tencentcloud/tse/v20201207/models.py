@@ -439,16 +439,20 @@ class DescribeSREInstanceAccessAddressRequest(AbstractModel):
         :type VpcId: str
         :param SubnetId: 子网ID
         :type SubnetId: str
+        :param Workload: 引擎其他组件名称（pushgateway）
+        :type Workload: str
         """
         self.InstanceId = None
         self.VpcId = None
         self.SubnetId = None
+        self.Workload = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.VpcId = params.get("VpcId")
         self.SubnetId = params.get("SubnetId")
+        self.Workload = params.get("Workload")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -757,16 +761,21 @@ class EnvAddressInfo(AbstractModel):
         :type EnableConfigInternet: bool
         :param ConfigInternetServiceIp: config公网ip
         :type ConfigInternetServiceIp: str
+        :param ConfigIntranetAddress: config内网访问地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigIntranetAddress: str
         """
         self.EnvName = None
         self.EnableConfigInternet = None
         self.ConfigInternetServiceIp = None
+        self.ConfigIntranetAddress = None
 
 
     def _deserialize(self, params):
         self.EnvName = params.get("EnvName")
         self.EnableConfigInternet = params.get("EnableConfigInternet")
         self.ConfigInternetServiceIp = params.get("ConfigInternetServiceIp")
+        self.ConfigIntranetAddress = params.get("ConfigIntranetAddress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -807,6 +816,10 @@ class EnvInfo(AbstractModel):
         :type RunningCount: int
         :param AliasEnvName: 环境别名
         :type AliasEnvName: str
+        :param EnvDesc: 环境描述
+        :type EnvDesc: str
+        :param ClientBandWidth: 客户端带宽
+        :type ClientBandWidth: int
         """
         self.EnvName = None
         self.VpcInfos = None
@@ -820,6 +833,8 @@ class EnvInfo(AbstractModel):
         self.EnvReplica = None
         self.RunningCount = None
         self.AliasEnvName = None
+        self.EnvDesc = None
+        self.ClientBandWidth = None
 
 
     def _deserialize(self, params):
@@ -840,6 +855,8 @@ class EnvInfo(AbstractModel):
         self.EnvReplica = params.get("EnvReplica")
         self.RunningCount = params.get("RunningCount")
         self.AliasEnvName = params.get("AliasEnvName")
+        self.EnvDesc = params.get("EnvDesc")
+        self.ClientBandWidth = params.get("ClientBandWidth")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1201,6 +1218,8 @@ class ServiceGovernanceInfo(AbstractModel):
         :type Features: list of str
         :param MainPassword: 主账户名默认为 polaris，该值为主账户的默认密码
         :type MainPassword: str
+        :param PgwVpcInfos: 服务治理pushgateway引擎绑定的网络信息
+        :type PgwVpcInfos: list of VpcInfo
         """
         self.EngineRegion = None
         self.BoundK8SInfos = None
@@ -1208,6 +1227,7 @@ class ServiceGovernanceInfo(AbstractModel):
         self.AuthOpen = None
         self.Features = None
         self.MainPassword = None
+        self.PgwVpcInfos = None
 
 
     def _deserialize(self, params):
@@ -1227,6 +1247,12 @@ class ServiceGovernanceInfo(AbstractModel):
         self.AuthOpen = params.get("AuthOpen")
         self.Features = params.get("Features")
         self.MainPassword = params.get("MainPassword")
+        if params.get("PgwVpcInfos") is not None:
+            self.PgwVpcInfos = []
+            for item in params.get("PgwVpcInfos"):
+                obj = VpcInfo()
+                obj._deserialize(item)
+                self.PgwVpcInfos.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

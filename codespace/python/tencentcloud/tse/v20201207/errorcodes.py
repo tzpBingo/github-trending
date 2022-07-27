@@ -17,11 +17,17 @@
 # 未授权操作错误。
 AUTHFAILURE_UNAUTHORIZEDOPERATION = 'AuthFailure.UnauthorizedOperation'
 
+# 操作失败。
+FAILEDOPERATION = 'FailedOperation'
+
 # 创建内部错误。
 INTERNALERROR_CREATEERROR = 'InternalError.CreateError'
 
 # 获取凭证失败。
 INTERNALERROR_GETCREDENTIAL = 'InternalError.GetCredential'
+
+# 角色获取错误。
+INTERNALERROR_GETROLEERROR = 'InternalError.GetRoleError'
 
 # 操作失败。
 INTERNALERROR_OPERATIONFAILED = 'InternalError.OperationFailed'

@@ -454,6 +454,10 @@ class CreateAccountRequest(AbstractModel):
         :param DelayThresh: 如果备机延迟超过本参数设置值，系统将认为备机发生故障
 建议该参数值大于10。当ReadOnly选择1、2时该参数生效。
         :type DelayThresh: int
+        :param SlaveConst: 针对只读账号，设置策略是否固定备机，0：不固定备机，即备机不满足条件与客户端不断开连接，Proxy选择其他可用备机，1：备机不满足条件断开连接，确保一个连接固定备机。
+        :type SlaveConst: int
+        :param MaxUserConnections: 用户最大连接数限制参数。不传或者传0表示为不限制，对应max_user_connections参数，目前10.1内核版本不支持设置。
+        :type MaxUserConnections: int
         """
         self.InstanceId = None
         self.UserName = None
@@ -462,6 +466,8 @@ class CreateAccountRequest(AbstractModel):
         self.ReadOnly = None
         self.Description = None
         self.DelayThresh = None
+        self.SlaveConst = None
+        self.MaxUserConnections = None
 
 
     def _deserialize(self, params):
@@ -472,6 +478,8 @@ class CreateAccountRequest(AbstractModel):
         self.ReadOnly = params.get("ReadOnly")
         self.Description = params.get("Description")
         self.DelayThresh = params.get("DelayThresh")
+        self.SlaveConst = params.get("SlaveConst")
+        self.MaxUserConnections = params.get("MaxUserConnections")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -989,6 +997,8 @@ class DBAccount(AbstractModel):
         :param DelayThresh: 如果备机延迟超过本参数设置值，系统将认为备机发生故障
 建议该参数值大于10。当ReadOnly选择1、2时该参数生效。
         :type DelayThresh: int
+        :param SlaveConst: 针对只读账号，设置策略是否固定备机，0：不固定备机，即备机不满足条件与客户端不断开连接，Proxy选择其他可用备机，1：备机不满足条件断开连接，确保一个连接固定备机。
+        :type SlaveConst: int
         """
         self.UserName = None
         self.Host = None
@@ -997,6 +1007,7 @@ class DBAccount(AbstractModel):
         self.UpdateTime = None
         self.ReadOnly = None
         self.DelayThresh = None
+        self.SlaveConst = None
 
 
     def _deserialize(self, params):
@@ -1007,6 +1018,7 @@ class DBAccount(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.ReadOnly = params.get("ReadOnly")
         self.DelayThresh = params.get("DelayThresh")
+        self.SlaveConst = params.get("SlaveConst")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1160,6 +1172,9 @@ class DCDBInstanceInfo(AbstractModel):
         :param ResourceTags: 实例标签信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceTags: list of ResourceTag
+        :param DbVersionId: 数据库引擎版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DbVersionId: str
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -1210,6 +1225,7 @@ class DCDBInstanceInfo(AbstractModel):
         self.DcnDstNum = None
         self.InstanceType = None
         self.ResourceTags = None
+        self.DbVersionId = None
 
 
     def _deserialize(self, params):
@@ -1272,6 +1288,7 @@ class DCDBInstanceInfo(AbstractModel):
                 obj = ResourceTag()
                 obj._deserialize(item)
                 self.ResourceTags.append(obj)
+        self.DbVersionId = params.get("DbVersionId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -142,35 +142,6 @@ class WafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
-    def CreateAttackDownloadTask(self, request):
-        """创建攻击日志下载任务
-
-        :param request: Request instance for CreateAttackDownloadTask.
-        :type request: :class:`tencentcloud.waf.v20180125.models.CreateAttackDownloadTaskRequest`
-        :rtype: :class:`tencentcloud.waf.v20180125.models.CreateAttackDownloadTaskResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("CreateAttackDownloadTask", params, headers=headers)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateAttackDownloadTaskResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
     def DeleteAccessExport(self, request):
         """本接口用于删除访问日志导出
 
@@ -448,35 +419,6 @@ class WafClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeAutoDenyIPResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def DescribeCustomRules(self, request):
-        """获取防护配置中的自定义策略列表
-
-        :param request: Request instance for DescribeCustomRules.
-        :type request: :class:`tencentcloud.waf.v20180125.models.DescribeCustomRulesRequest`
-        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribeCustomRulesResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DescribeCustomRules", params, headers=headers)
-            response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCustomRulesResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -782,6 +724,35 @@ class WafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def GetAttackDownloadRecords(self, request):
+        """查询下载攻击日志任务记录列表
+
+        :param request: Request instance for GetAttackDownloadRecords.
+        :type request: :class:`tencentcloud.waf.v20180125.models.GetAttackDownloadRecordsRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.GetAttackDownloadRecordsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("GetAttackDownloadRecords", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.GetAttackDownloadRecordsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyAccessPeriod(self, request):
         """本接口用于修改访问日志保存期限
 
@@ -942,6 +913,35 @@ class WafClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyWafThreatenIntelligenceResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def PostAttackDownloadTask(self, request):
+        """创建搜索下载攻击日志任务，使用CLS新版本的搜索下载getlog接口
+
+        :param request: Request instance for PostAttackDownloadTask.
+        :type request: :class:`tencentcloud.waf.v20180125.models.PostAttackDownloadTaskRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.PostAttackDownloadTaskResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("PostAttackDownloadTask", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.PostAttackDownloadTaskResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

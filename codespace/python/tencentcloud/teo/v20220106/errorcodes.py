@@ -44,6 +44,9 @@ INTERNALERROR_PROXYSERVER = 'InternalError.ProxyServer'
 # 配额系统处理失败。
 INTERNALERROR_QUOTASYSTEM = 'InternalError.QuotaSystem'
 
+# 后端服务路由地址错误。
+INTERNALERROR_ROUTEERROR = 'InternalError.RouteError'
+
 # 内部错误。
 INTERNALERROR_SYSTEMERROR = 'InternalError.SystemError'
 
@@ -53,8 +56,17 @@ INVALIDPARAMETER = 'InvalidParameter'
 # 域名不存在或不属于该账号。
 INVALIDPARAMETER_DOMAINNOTFOUND = 'InvalidParameter.DomainNotFound'
 
+# 无效的节点缓存。
+INVALIDPARAMETER_INVALIDCACHEONLYONSWITCH = 'InvalidParameter.InvalidCacheOnlyOnSwitch'
+
 # 证书信息错误。
 INVALIDPARAMETER_INVALIDCERTINFO = 'InvalidParameter.InvalidCertInfo'
+
+# 无效的客户端IP请求头。
+INVALIDPARAMETER_INVALIDCLIENTIPHEADERNAME = 'InvalidParameter.InvalidClientIpHeaderName'
+
+# 无效的源站。
+INVALIDPARAMETER_INVALIDORIGIN = 'InvalidParameter.InvalidOrigin'
 
 # 无效的请求头header。
 INVALIDPARAMETER_INVALIDREQUESTHEADERNAME = 'InvalidParameter.InvalidRequestHeaderName'
@@ -77,8 +89,14 @@ INVALIDPARAMETER_TASKNOTGENERATED = 'InvalidParameter.TaskNotGenerated'
 # 文件上传链接存在问题。
 INVALIDPARAMETER_UPLOADURL = 'InvalidParameter.UploadUrl'
 
+# 站点不存在。
+INVALIDPARAMETER_ZONENOTFOUND = 'InvalidParameter.ZoneNotFound'
+
 # 与已经添加的记录冲突。
 INVALIDPARAMETERVALUE_CONFLICTRECORD = 'InvalidParameterValue.ConflictRecord'
+
+# DNS 记录与 DNSSEC 功能冲突。
+INVALIDPARAMETERVALUE_CONFLICTWITHDNSSEC = 'InvalidParameterValue.ConflictWithDNSSEC'
 
 # DNS 记录与 LB 记录冲突。
 INVALIDPARAMETERVALUE_CONFLICTWITHLBRECORD = 'InvalidParameterValue.ConflictWithLBRecord'
@@ -91,6 +109,9 @@ INVALIDPARAMETERVALUE_INVALIDDNSCONTENT = 'InvalidParameterValue.InvalidDNSConte
 
 # DNS 记录名称错误。
 INVALIDPARAMETERVALUE_INVALIDDNSNAME = 'InvalidParameterValue.InvalidDNSName'
+
+# DNS 代理域名错误。
+INVALIDPARAMETERVALUE_INVALIDPROXYNAME = 'InvalidParameterValue.InvalidProxyName'
 
 # DNS 代理域名源站错误。
 INVALIDPARAMETERVALUE_INVALIDPROXYORIGIN = 'InvalidParameterValue.InvalidProxyOrigin'

@@ -55,6 +55,64 @@ class OceanusClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CopyJobs(self, request):
+        """单条和批量复制作业
+
+        :param request: Request instance for CopyJobs.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.CopyJobsRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.CopyJobsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CopyJobs", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CopyJobsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateFolder(self, request):
+        """作业列表页面新建文件夹请求
+
+        :param request: Request instance for CreateFolder.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.CreateFolderRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.CreateFolderResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateFolder", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateFolderResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateJob(self, request):
         """新建作业接口，一个 AppId 最多允许创建1000个作业
 
@@ -171,6 +229,35 @@ class OceanusClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteJobs(self, request):
+        """批量删除作业接口，批量操作数量上限20
+
+        :param request: Request instance for DeleteJobs.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.DeleteJobsRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.DeleteJobsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteJobs", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DeleteJobsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteResourceConfigs(self, request):
         """删除资源版本
 
@@ -244,6 +331,35 @@ class OceanusClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DeleteTableConfigResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeClusters(self, request):
+        """查询集群
+
+        :param request: Request instance for DescribeClusters.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.DescribeClustersRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.DescribeClustersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClusters", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeClustersResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -447,6 +563,35 @@ class OceanusClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeSystemResourcesResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeTreeJobs(self, request):
+        """生成树状作业显示结构
+
+        :param request: Request instance for DescribeTreeJobs.
+        :type request: :class:`tencentcloud.oceanus.v20190422.models.DescribeTreeJobsRequest`
+        :rtype: :class:`tencentcloud.oceanus.v20190422.models.DescribeTreeJobsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTreeJobs", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeTreeJobsResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

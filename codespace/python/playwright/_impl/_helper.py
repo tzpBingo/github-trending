@@ -41,6 +41,7 @@ from greenlet import greenlet
 
 from playwright._impl._api_structures import NameValue
 from playwright._impl._api_types import Error, TimeoutError
+from playwright._impl._str_utils import escape_regex_flags
 
 if sys.version_info >= (3, 8):  # pragma: no cover
     from typing import Literal, TypedDict
@@ -49,11 +50,12 @@ else:  # pragma: no cover
 
 
 if TYPE_CHECKING:  # pragma: no cover
+    from playwright._impl._api_structures import HeadersArray
     from playwright._impl._network import Request, Response, Route
 
-URLMatch = Union[str, Pattern, Callable[[str], bool]]
-URLMatchRequest = Union[str, Pattern, Callable[["Request"], bool]]
-URLMatchResponse = Union[str, Pattern, Callable[["Response"], bool]]
+URLMatch = Union[str, Pattern[str], Callable[[str], bool]]
+URLMatchRequest = Union[str, Pattern[str], Callable[["Request"], bool]]
+URLMatchResponse = Union[str, Pattern[str], Callable[["Response"], bool]]
 RouteHandlerCallback = Union[
     Callable[["Route"], Any], Callable[["Route", "Request"], Any]
 ]
@@ -67,6 +69,7 @@ MouseButton = Literal["left", "middle", "right"]
 ServiceWorkersPolicy = Literal["allow", "block"]
 HarMode = Literal["full", "minimal"]
 HarContentPolicy = Literal["attach", "embed", "omit"]
+RouteFromHarNotFoundPolicy = Literal["abort", "fallback"]
 
 
 class ErrorPayload(TypedDict, total=False):
@@ -81,6 +84,40 @@ class FallbackOverrideParameters(TypedDict, total=False):
     method: Optional[str]
     headers: Optional[Dict[str, str]]
     postData: Optional[Union[str, bytes]]
+
+
+class HarRecordingMetadata(TypedDict, total=False):
+    path: str
+    content: Optional[HarContentPolicy]
+
+
+def prepare_record_har_options(params: Dict) -> Dict[str, Any]:
+    out_params: Dict[str, Any] = {"path": str(params["recordHarPath"])}
+    if "recordHarUrlFilter" in params:
+        opt = params["recordHarUrlFilter"]
+        if isinstance(opt, str):
+            out_params["urlGlob"] = opt
+        if isinstance(opt, Pattern):
+            out_params["urlRegexSource"] = opt.pattern
+            out_params["urlRegexFlags"] = escape_regex_flags(opt)
+        del params["recordHarUrlFilter"]
+    if "recordHarMode" in params:
+        out_params["mode"] = params["recordHarMode"]
+        del params["recordHarMode"]
+
+    new_content_api = None
+    old_content_api = None
+    if "recordHarContent" in params:
+        new_content_api = params["recordHarContent"]
+        del params["recordHarContent"]
+    if "recordHarOmitContent" in params:
+        old_content_api = params["recordHarOmitContent"]
+        del params["recordHarOmitContent"]
+    content = new_content_api or ("omit" if old_content_api else None)
+    if content:
+        out_params["content"] = content
+
+    return out_params
 
 
 class ParsedMessageParams(TypedDict):
@@ -115,7 +152,7 @@ Env = Dict[str, Union[str, float, bool]]
 class URLMatcher:
     def __init__(self, base_url: Union[str, None], match: URLMatch) -> None:
         self._callback: Optional[Callable[[str], bool]] = None
-        self._regex_obj: Optional[Pattern] = None
+        self._regex_obj: Optional[Pattern[str]] = None
         if isinstance(match, str):
             if base_url and not match.startswith("*"):
                 match = urljoin(base_url, match)
@@ -133,6 +170,15 @@ class URLMatcher:
         if self._regex_obj:
             return cast(bool, self._regex_obj.search(url))
         return False
+
+
+class HarLookupResult(TypedDict, total=False):
+    action: Literal["error", "redirect", "fulfill", "noentry"]
+    message: Optional[str]
+    redirectURL: Optional[str]
+    status: Optional[int]
+    headers: Optional["HeadersArray"]
+    body: Optional[str]
 
 
 class TimeoutSettings:

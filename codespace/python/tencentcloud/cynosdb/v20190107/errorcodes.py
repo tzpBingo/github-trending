@@ -14,6 +14,9 @@
 # limitations under the License.
 
 
+# 批量查询失败。
+FAILEDOPERATION_BATCHGETINSTANCEERROR = 'FailedOperation.BatchGetInstanceError'
+
 # 获取权限失败，请稍后重试。如果持续不成功，请联系客服进行处理。
 FAILEDOPERATION_CAMCHECKRESOURCEERROR = 'FailedOperation.CamCheckResourceError'
 
@@ -88,6 +91,9 @@ INVALIDPARAMETER = 'InvalidParameter'
 
 # 未找到该接口。
 INVALIDPARAMETER_CONTROLLERNOTFOUNDERROR = 'InvalidParameter.ControllerNotFoundError'
+
+# 未知参数，请检查参数是否有效。
+INVALIDPARAMETER_INVALIDPARAMETERERROR = 'InvalidParameter.InvalidParameterError'
 
 # 当前实例不可隔离。
 INVALIDPARAMETER_ISOLATENOTALLOWED = 'InvalidParameter.IsolateNotAllowed'

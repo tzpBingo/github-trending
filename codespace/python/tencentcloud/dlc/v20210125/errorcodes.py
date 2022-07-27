@@ -74,6 +74,9 @@ INVALIDPARAMETER_INVALIDGROUPID = 'InvalidParameter.InvalidGroupId'
 # 无效的Offset值。
 INVALIDPARAMETER_INVALIDOFFSET = 'InvalidParameter.InvalidOffset'
 
+# 无效的CAM role arn。
+INVALIDPARAMETER_INVALIDROLEARN = 'InvalidParameter.InvalidRoleArn'
+
 # SQL解析失败。
 INVALIDPARAMETER_INVALIDSQL = 'InvalidParameter.InvalidSQL'
 
@@ -82,6 +85,9 @@ INVALIDPARAMETER_INVALIDSQLNUM = 'InvalidParameter.InvalidSQLNum'
 
 # 不支持的排序类型。
 INVALIDPARAMETER_INVALIDSORTBYTYPE = 'InvalidParameter.InvalidSortByType'
+
+# SparkAppParam无效。
+INVALIDPARAMETER_INVALIDSPARKAPPPARAM = 'InvalidParameter.InvalidSparkAppParam'
 
 # 存储位置错误。
 INVALIDPARAMETER_INVALIDSTORELOCATION = 'InvalidParameter.InvalidStoreLocation'
@@ -118,6 +124,9 @@ RESOURCENOTFOUND = 'ResourceNotFound'
 
 # 指定数据源连接没有找到。
 RESOURCENOTFOUND_DATASOURCENOTFOUND = 'ResourceNotFound.DatasourceNotFound'
+
+# 未找到结果路径。
+RESOURCENOTFOUND_RESULTOUTPUTPATHNOTFOUND = 'ResourceNotFound.ResultOutputPathNotFound'
 
 # 资源不可用。
 RESOURCEUNAVAILABLE = 'ResourceUnavailable'

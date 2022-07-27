@@ -347,6 +347,264 @@ class ChargePrepaid(AbstractModel):
         
 
 
+class ChcDeployExtraConfig(AbstractModel):
+    """chc部署网络minos引导配置。
+
+    """
+
+
+class ChcHost(AbstractModel):
+    """CHC物理服务器信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcId: CHC物理服务器ID。
+        :type ChcId: str
+        :param InstanceName: 实例名称。
+        :type InstanceName: str
+        :param SerialNumber: 服务器序列号。
+        :type SerialNumber: str
+        :param InstanceState: CHC的状态<br/>
+<ul>
+<li>REGISTERED: 设备已录入。还未配置带外和部署网络</li>
+<li>VPC_READY: 已配置带外和部署网络</li>
+<li>PREPARED: 可分配云主机</li>
+<li>ONLINE: 已分配云主机</li>
+</ul>
+        :type InstanceState: str
+        :param DeviceType: 设备类型。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeviceType: str
+        :param Placement: 所属可用区
+        :type Placement: :class:`tencentcloud.cvm.v20170312.models.Placement`
+        :param BmcVirtualPrivateCloud: 带外网络。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BmcVirtualPrivateCloud: :class:`tencentcloud.cvm.v20170312.models.VirtualPrivateCloud`
+        :param BmcIp: 带外网络Ip。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BmcIp: str
+        :param BmcSecurityGroupIds: 带外网络安全组Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BmcSecurityGroupIds: list of str
+        :param DeployVirtualPrivateCloud: 部署网络。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeployVirtualPrivateCloud: :class:`tencentcloud.cvm.v20170312.models.VirtualPrivateCloud`
+        :param DeployIp: 部署网络Ip。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeployIp: str
+        :param DeploySecurityGroupIds: 部署网络安全组Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeploySecurityGroupIds: list of str
+        :param CvmInstanceId: 关联的云主机Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CvmInstanceId: str
+        :param CreatedTime: 服务器导入的时间。
+        :type CreatedTime: str
+        :param HardwareDescription: 机型的硬件描述，分别为CPU核数，内存容量和磁盘容量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HardwareDescription: str
+        :param CPU: CHC物理服务器的CPU核数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CPU: int
+        :param Memory: CHC物理服务器的内存大小，单位为GB
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Memory: int
+        :param Disk: CHC物理服务器的磁盘信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Disk: str
+        :param BmcMAC: 带外网络下分配的MAC地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BmcMAC: str
+        :param DeployMAC: 部署网络下分配的MAC地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeployMAC: str
+        :param TenantType: 设备托管类型。
+HOSTING: 托管
+TENANT: 租赁
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TenantType: str
+        :param DeployExtraConfig: chc dhcp选项，用于minios调试
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeployExtraConfig: :class:`tencentcloud.cvm.v20170312.models.ChcDeployExtraConfig`
+        """
+        self.ChcId = None
+        self.InstanceName = None
+        self.SerialNumber = None
+        self.InstanceState = None
+        self.DeviceType = None
+        self.Placement = None
+        self.BmcVirtualPrivateCloud = None
+        self.BmcIp = None
+        self.BmcSecurityGroupIds = None
+        self.DeployVirtualPrivateCloud = None
+        self.DeployIp = None
+        self.DeploySecurityGroupIds = None
+        self.CvmInstanceId = None
+        self.CreatedTime = None
+        self.HardwareDescription = None
+        self.CPU = None
+        self.Memory = None
+        self.Disk = None
+        self.BmcMAC = None
+        self.DeployMAC = None
+        self.TenantType = None
+        self.DeployExtraConfig = None
+
+
+    def _deserialize(self, params):
+        self.ChcId = params.get("ChcId")
+        self.InstanceName = params.get("InstanceName")
+        self.SerialNumber = params.get("SerialNumber")
+        self.InstanceState = params.get("InstanceState")
+        self.DeviceType = params.get("DeviceType")
+        if params.get("Placement") is not None:
+            self.Placement = Placement()
+            self.Placement._deserialize(params.get("Placement"))
+        if params.get("BmcVirtualPrivateCloud") is not None:
+            self.BmcVirtualPrivateCloud = VirtualPrivateCloud()
+            self.BmcVirtualPrivateCloud._deserialize(params.get("BmcVirtualPrivateCloud"))
+        self.BmcIp = params.get("BmcIp")
+        self.BmcSecurityGroupIds = params.get("BmcSecurityGroupIds")
+        if params.get("DeployVirtualPrivateCloud") is not None:
+            self.DeployVirtualPrivateCloud = VirtualPrivateCloud()
+            self.DeployVirtualPrivateCloud._deserialize(params.get("DeployVirtualPrivateCloud"))
+        self.DeployIp = params.get("DeployIp")
+        self.DeploySecurityGroupIds = params.get("DeploySecurityGroupIds")
+        self.CvmInstanceId = params.get("CvmInstanceId")
+        self.CreatedTime = params.get("CreatedTime")
+        self.HardwareDescription = params.get("HardwareDescription")
+        self.CPU = params.get("CPU")
+        self.Memory = params.get("Memory")
+        self.Disk = params.get("Disk")
+        self.BmcMAC = params.get("BmcMAC")
+        self.DeployMAC = params.get("DeployMAC")
+        self.TenantType = params.get("TenantType")
+        if params.get("DeployExtraConfig") is not None:
+            self.DeployExtraConfig = ChcDeployExtraConfig()
+            self.DeployExtraConfig._deserialize(params.get("DeployExtraConfig"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ConfigureChcAssistVpcRequest(AbstractModel):
+    """ConfigureChcAssistVpc请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcIds: CHC物理服务器的实例Id。
+        :type ChcIds: list of str
+        :param BmcVirtualPrivateCloud: 带外网络信息。
+        :type BmcVirtualPrivateCloud: :class:`tencentcloud.cvm.v20170312.models.VirtualPrivateCloud`
+        :param BmcSecurityGroupIds: 带外网络的安全组列表
+        :type BmcSecurityGroupIds: list of str
+        :param DeployVirtualPrivateCloud: 部署网络信息。
+        :type DeployVirtualPrivateCloud: :class:`tencentcloud.cvm.v20170312.models.VirtualPrivateCloud`
+        :param DeploySecurityGroupIds: 部署网络的安全组列表
+        :type DeploySecurityGroupIds: list of str
+        """
+        self.ChcIds = None
+        self.BmcVirtualPrivateCloud = None
+        self.BmcSecurityGroupIds = None
+        self.DeployVirtualPrivateCloud = None
+        self.DeploySecurityGroupIds = None
+
+
+    def _deserialize(self, params):
+        self.ChcIds = params.get("ChcIds")
+        if params.get("BmcVirtualPrivateCloud") is not None:
+            self.BmcVirtualPrivateCloud = VirtualPrivateCloud()
+            self.BmcVirtualPrivateCloud._deserialize(params.get("BmcVirtualPrivateCloud"))
+        self.BmcSecurityGroupIds = params.get("BmcSecurityGroupIds")
+        if params.get("DeployVirtualPrivateCloud") is not None:
+            self.DeployVirtualPrivateCloud = VirtualPrivateCloud()
+            self.DeployVirtualPrivateCloud._deserialize(params.get("DeployVirtualPrivateCloud"))
+        self.DeploySecurityGroupIds = params.get("DeploySecurityGroupIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ConfigureChcAssistVpcResponse(AbstractModel):
+    """ConfigureChcAssistVpc返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ConfigureChcDeployVpcRequest(AbstractModel):
+    """ConfigureChcDeployVpc请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcIds: CHC物理服务器的实例Id。
+        :type ChcIds: list of str
+        :param DeployVirtualPrivateCloud: 部署网络信息。
+        :type DeployVirtualPrivateCloud: :class:`tencentcloud.cvm.v20170312.models.VirtualPrivateCloud`
+        :param DeploySecurityGroupIds: 部署网络的安全组列表。
+        :type DeploySecurityGroupIds: list of str
+        """
+        self.ChcIds = None
+        self.DeployVirtualPrivateCloud = None
+        self.DeploySecurityGroupIds = None
+
+
+    def _deserialize(self, params):
+        self.ChcIds = params.get("ChcIds")
+        if params.get("DeployVirtualPrivateCloud") is not None:
+            self.DeployVirtualPrivateCloud = VirtualPrivateCloud()
+            self.DeployVirtualPrivateCloud._deserialize(params.get("DeployVirtualPrivateCloud"))
+        self.DeploySecurityGroupIds = params.get("DeploySecurityGroupIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ConfigureChcDeployVpcResponse(AbstractModel):
+    """ConfigureChcDeployVpc返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CreateDisasterRecoverGroupRequest(AbstractModel):
     """CreateDisasterRecoverGroup请求参数结构体
 
@@ -521,14 +779,23 @@ class CreateKeyPairRequest(AbstractModel):
 <li>通过项目列表查询项目ID。
 <li>通过调用接口DescribeProject，取返回信息中的`projectId `获取项目ID。
         :type ProjectId: int
+        :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到密钥对。
+        :type TagSpecification: list of TagSpecification
         """
         self.KeyName = None
         self.ProjectId = None
+        self.TagSpecification = None
 
 
     def _deserialize(self, params):
         self.KeyName = params.get("KeyName")
         self.ProjectId = params.get("ProjectId")
+        if params.get("TagSpecification") is not None:
+            self.TagSpecification = []
+            for item in params.get("TagSpecification"):
+                obj = TagSpecification()
+                obj._deserialize(item)
+                self.TagSpecification.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -941,7 +1208,7 @@ class DataDisk(AbstractModel):
         :param DiskType: 数据盘类型。数据盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>LOCAL_NVME：本地NVME硬盘，与InstanceType强相关，不支持指定<br><li>LOCAL_PRO：本地HDD硬盘，与InstanceType强相关，不支持指定<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_HSSD：增强型SSD云硬盘<br><li>CLOUD_TSSD：极速型SSD云硬盘<br><br>默认取值：LOCAL_BASIC。<br><br>该参数对`ResizeInstanceDisk`接口无效。
         :type DiskType: str
         :param DiskId: 数据盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID，暂时不支持该参数。
-该参数目前仅用于`DescribeInstances`接口。
+该参数目前仅用于`DescribeInstances`等查询类接口的返回参数，不可用于`RunInstances`等写接口的入参。
         :type DiskId: str
         :param DeleteWithInstance: 数据盘是否随子机销毁。取值范围：
 <li>TRUE：子机销毁时，销毁数据盘，只支持按小时后付费云盘
@@ -1275,6 +1542,88 @@ class DescribeAccountQuotaResponse(AbstractModel):
         if params.get("AccountQuotaOverview") is not None:
             self.AccountQuotaOverview = AccountQuotaOverview()
             self.AccountQuotaOverview._deserialize(params.get("AccountQuotaOverview"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeChcHostsRequest(AbstractModel):
+    """DescribeChcHosts请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcIds: CHC物理服务器实例ID。每次请求的实例的上限为100。参数不支持同时指定`ChcIds`和`Filters`。
+        :type ChcIds: list of str
+        :param Filters: <li><strong>zone</strong></li>
+<p style="padding-left: 30px;">按照【<strong>可用区</strong>】进行过滤。可用区形如：ap-guangzhou-1。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p><p style="padding-left: 30px;">可选项：<a href="https://cloud.tencent.com/document/product/213/6091">可用区列表</a></p>
+<li><strong>instance-name</strong></li>
+<p style="padding-left: 30px;">按照【<strong>实例名称</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>instance-state</strong></li>
+<p style="padding-left: 30px;">按照【<strong>实例状态</strong>】进行过滤。状态类型详见[实例状态表](https://cloud.tencent.com/document/api/213/15753#InstanceStatus)</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>device-type</strong></li>
+<p style="padding-left: 30px;">按照【<strong>设备类型</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>vpc-id</strong></li>
+<p style="padding-left: 30px;">按照【<strong>私有网络唯一ID</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>subnet-id</strong></li>
+<p style="padding-left: 30px;">按照【<strong>私有子网唯一ID</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+        :type Filters: list of Filter
+        :param Offset: 偏移量，默认为0。关于`Offset`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
+        :type Offset: int
+        :param Limit: 返回数量，默认为20，最大值为100。关于`Limit`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
+        :type Limit: int
+        """
+        self.ChcIds = None
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.ChcIds = params.get("ChcIds")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeChcHostsResponse(AbstractModel):
+    """DescribeChcHosts返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 符合条件的实例数量。
+        :type TotalCount: int
+        :param ChcHostSet: 返回的实例列表
+        :type ChcHostSet: list of ChcHost
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.ChcHostSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("ChcHostSet") is not None:
+            self.ChcHostSet = []
+            for item in params.get("ChcHostSet"):
+                obj = ChcHost()
+                obj._deserialize(item)
+                self.ChcHostSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -2340,7 +2689,7 @@ class DescribeLaunchTemplatesRequest(AbstractModel):
         r"""
         :param LaunchTemplateIds: 启动模板ID，一个或者多个启动模板ID。若未指定，则显示用户所有模板。
         :type LaunchTemplateIds: list of str
-        :param Filters: <p style="padding-left: 30px;">按照【<strong>LaunchTemplateNames</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+        :param Filters: <p style="padding-left: 30px;">按照【<strong>LaunchTemplateName</strong>】进行过滤。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 每次请求的`Filters`的上限为10，`Filter.Values`的上限为5。参数不支持同时指定`LaunchTemplateIds`和`Filters`。
         :type Filters: list of Filter
         :param Offset: 偏移量，默认为0。关于`Offset`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小节。
@@ -2711,6 +3060,12 @@ class DescribeZoneInstanceConfigInfosRequest(AbstractModel):
 <p style="padding-left: 30px;">按照【<strong>实例机型</strong>】进行过滤。不同实例机型指定了不同的资源规格，具体取值可通过调用接口 [DescribeInstanceTypeConfigs](https://cloud.tencent.com/document/product/213/15749) 来获得最新的规格表或参见[实例类型](https://cloud.tencent.com/document/product/213/11518)描述。若不指定该参数，则默认机型为S1.SMALL1。</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
 <li><strong>instance-charge-type</strong></li>
 <p style="padding-left: 30px;">按照【<strong>实例计费模式</strong>】进行过滤。(PREPAID：表示预付费，即包年包月 | POSTPAID_BY_HOUR：表示后付费，即按量计费 )</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>sort-keys</strong></li>
+<p style="padding-left: 30px;">按关键字进行排序,格式为排序字段加排序方式，中间用冒号分隔。 例如： 按cpu数逆序排序 "cpu:desc", 按mem大小顺序排序 "mem:asc"</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>offset</strong></li>
+<p style="padding-left: 30px;">按照偏移量进行分页</p><p style="padding-left: 30px;">类型：String</p><p style="padding-left: 30px;">必选：否</p>
+<li><strong>limit</strong></li>
+<p style="padding-left: 30px;">每页返回的数据条数</p><p style="padding-left: 30px;">类型：Integer</p><p style="padding-left: 30px;">必选：否</p>
 每次请求的`Filters`的上限为10，`Filter.Values`的上限为100。
         :type Filters: list of Filter
         """
@@ -3522,6 +3877,11 @@ class ImportImageRequest(AbstractModel):
         :type Force: bool
         :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到自定义镜像。
         :type TagSpecification: list of TagSpecification
+        :param LicenseType: 导入镜像后，激活操作系统采用的许可证类型。
+可选项：
+TencentCloud: 腾讯云官方许可
+BYOL: 自带许可（Bring Your Own License）
+        :type LicenseType: str
         """
         self.Architecture = None
         self.OsType = None
@@ -3532,6 +3892,7 @@ class ImportImageRequest(AbstractModel):
         self.DryRun = None
         self.Force = None
         self.TagSpecification = None
+        self.LicenseType = None
 
 
     def _deserialize(self, params):
@@ -3549,6 +3910,7 @@ class ImportImageRequest(AbstractModel):
                 obj = TagSpecification()
                 obj._deserialize(item)
                 self.TagSpecification.append(obj)
+        self.LicenseType = params.get("LicenseType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3590,16 +3952,25 @@ class ImportKeyPairRequest(AbstractModel):
         :type ProjectId: int
         :param PublicKey: 密钥对的公钥内容，`OpenSSH RSA` 格式。
         :type PublicKey: str
+        :param TagSpecification: 标签描述列表。通过指定该参数可以同时绑定标签到密钥对。
+        :type TagSpecification: list of TagSpecification
         """
         self.KeyName = None
         self.ProjectId = None
         self.PublicKey = None
+        self.TagSpecification = None
 
 
     def _deserialize(self, params):
         self.KeyName = params.get("KeyName")
         self.ProjectId = params.get("ProjectId")
         self.PublicKey = params.get("PublicKey")
+        if params.get("TagSpecification") is not None:
+            self.TagSpecification = []
+            for item in params.get("TagSpecification"):
+                obj = TagSpecification()
+                obj._deserialize(item)
+                self.TagSpecification.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5453,6 +5824,67 @@ class LoginSettings(AbstractModel):
         
 
 
+class ModifyChcAttributeRequest(AbstractModel):
+    """ModifyChcAttribute请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcIds: CHC物理服务器ID。
+        :type ChcIds: list of str
+        :param InstanceName: CHC物理服务器名称
+        :type InstanceName: str
+        :param DeviceType: 服务器类型
+        :type DeviceType: str
+        :param BmcUser: 合法字符为字母,数字, 横线和下划线
+        :type BmcUser: str
+        :param Password: 密码8-16位字符, 允许数字，字母， 和特殊字符()`~!@#$%^&*-+=_|{}[]:;'<>,.?/
+        :type Password: str
+        :param BmcSecurityGroupIds: bmc网络的安全组列表
+        :type BmcSecurityGroupIds: list of str
+        """
+        self.ChcIds = None
+        self.InstanceName = None
+        self.DeviceType = None
+        self.BmcUser = None
+        self.Password = None
+        self.BmcSecurityGroupIds = None
+
+
+    def _deserialize(self, params):
+        self.ChcIds = params.get("ChcIds")
+        self.InstanceName = params.get("InstanceName")
+        self.DeviceType = params.get("DeviceType")
+        self.BmcUser = params.get("BmcUser")
+        self.Password = params.get("Password")
+        self.BmcSecurityGroupIds = params.get("BmcSecurityGroupIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyChcAttributeResponse(AbstractModel):
+    """ModifyChcAttribute返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyDisasterRecoverGroupAttributeRequest(AbstractModel):
     """ModifyDisasterRecoverGroupAttribute请求参数结构体
 
@@ -5776,7 +6208,7 @@ class ModifyInstancesChargeTypeRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728)接口返回值中的`InstanceId`获取。每次请求批量实例的上限为100。
+        :param InstanceIds: 一个或多个待操作的实例ID。可通过[`DescribeInstances`](https://cloud.tencent.com/document/api/213/15728)接口返回值中的`InstanceId`获取。每次请求批量实例的上限为30。
         :type InstanceIds: list of str
         :param InstanceChargeType: 实例[计费类型](https://cloud.tencent.com/document/product/213/2180)。<br><li>PREPAID：预付费，即包年包月。<br><li>POSTPAID_BY_HOUR：后付费，即按量付费。
         :type InstanceChargeType: str
@@ -6472,6 +6904,88 @@ class RegionInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class RemoveChcAssistVpcRequest(AbstractModel):
+    """RemoveChcAssistVpc请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcIds: CHC物理服务器Id。
+        :type ChcIds: list of str
+        """
+        self.ChcIds = None
+
+
+    def _deserialize(self, params):
+        self.ChcIds = params.get("ChcIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RemoveChcAssistVpcResponse(AbstractModel):
+    """RemoveChcAssistVpc返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class RemoveChcDeployVpcRequest(AbstractModel):
+    """RemoveChcDeployVpc请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcIds: CHC物理服务器Id。
+        :type ChcIds: list of str
+        """
+        self.ChcIds = None
+
+
+    def _deserialize(self, params):
+        self.ChcIds = params.get("ChcIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RemoveChcDeployVpcResponse(AbstractModel):
+    """RemoveChcDeployVpc返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class RenewHostsRequest(AbstractModel):
@@ -7838,6 +8352,7 @@ class SystemDisk(AbstractModel):
         :param DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><br>默认取值：当前有库存的硬盘类型。
         :type DiskType: str
         :param DiskId: 系统盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID。暂时不支持该参数。
+该参数目前仅用于`DescribeInstances`等查询类接口的返回参数，不可用于`RunInstances`等写接口的入参。
         :type DiskId: str
         :param DiskSize: 系统盘大小，单位：GB。默认值为 50
         :type DiskSize: int
@@ -7899,7 +8414,7 @@ class TagSpecification(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ResourceType: 标签绑定的资源类型，云服务器为“instance”，专用宿主机为“host”，镜像为“image”
+        :param ResourceType: 标签绑定的资源类型，云服务器为“instance”，专用宿主机为“host”，镜像为“image”，密钥为“keypair”
         :type ResourceType: str
         :param Tags: 标签对列表
         :type Tags: list of Tag

@@ -269,6 +269,9 @@ INTERNALERROR_TKEAPIFAILEDOPERATION = 'InternalError.TkeApiFailedOperation'
 # TSF应用性能管理业务日志配置与应用关联处理错误。
 INTERNALERROR_TSFAPMBUSILOGCFGAPPRELATIONMASTERERROR = 'InternalError.TsfApmBusiLogCfgAppRelationMasterError'
 
+# TSF应用性能管理调用tsf-ms模块失败。
+INTERNALERROR_TSFAPMCALLTSFMSFAILED = 'InternalError.TsfApmCallTsfMsFailed'
+
 # TSF应用性能管理通用异常。
 INTERNALERROR_TSFAPMCOMMONERROR = 'InternalError.TsfApmCommonError'
 
@@ -412,6 +415,9 @@ INVALIDPARAMETERVALUE_APPLICATIONMICROTYPEINVALID = 'InvalidParameterValue.Appli
 
 # 应用名称已存在，请更换其他名称。
 INVALIDPARAMETERVALUE_APPLICATIONNAMEEXIST = 'InvalidParameterValue.ApplicationNameExist'
+
+# 应用名称不能大于60字符。
+INVALIDPARAMETERVALUE_APPLICATIONNAMELENGTH = 'InvalidParameterValue.ApplicationNameLength'
 
 # 应用名称不能为空。
 INVALIDPARAMETERVALUE_APPLICATIONNAMENULL = 'InvalidParameterValue.ApplicationNameNull'
@@ -857,7 +863,7 @@ RESOURCEINSUFFICIENT_PACKAGESPACEFULL = 'ResourceInsufficient.PackageSpaceFull'
 # 无法获取应用信息。
 RESOURCENOTFOUND_APPLICATIONNOTEXIST = 'ResourceNotFound.ApplicationNotExist'
 
-# 应用不存在或应用不属于当前项目。
+# 无法获取应用或应用不属于当前项目。
 RESOURCENOTFOUND_APPLICATIONPROJECTNOTMATCH = 'ResourceNotFound.ApplicationProjectNotMatch'
 
 # 无法获取命名空间所属集群。

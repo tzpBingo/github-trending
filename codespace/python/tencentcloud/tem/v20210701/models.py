@@ -670,7 +670,8 @@ class DeployApplicationRequest(AbstractModel):
         :type OsFlavour: str
         :param EnablePrometheusConf: 是否开启prometheus 业务指标监控
         :type EnablePrometheusConf: :class:`tencentcloud.tem.v20210701.models.EnablePrometheusConf`
-        :param EnableTracing: 1：开始apm采集；0：关闭apm采集
+        :param EnableTracing: 1：开始apm采集（skywalking）；
+0：关闭apm采集；
         :type EnableTracing: int
         """
         self.ApplicationId = None
@@ -1470,6 +1471,55 @@ class DescribeRunPodPage(AbstractModel):
         
 
 
+class DestroyEnvironmentRequest(AbstractModel):
+    """DestroyEnvironment请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EnvironmentId: 命名空间ID
+        :type EnvironmentId: str
+        :param SourceChannel: Namespace
+        :type SourceChannel: int
+        """
+        self.EnvironmentId = None
+        self.SourceChannel = None
+
+
+    def _deserialize(self, params):
+        self.EnvironmentId = params.get("EnvironmentId")
+        self.SourceChannel = params.get("SourceChannel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DestroyEnvironmentResponse(AbstractModel):
+    """DestroyEnvironment返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回结果
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class EksService(AbstractModel):
     """eks service info
 
@@ -2062,7 +2112,7 @@ class ModifyApplicationInfoRequest(AbstractModel):
         :type Description: str
         :param SourceChannel: 来源渠道
         :type SourceChannel: int
-        :param EnableTracing: 是否开启调用链, 0 为关闭，1位开启
+        :param EnableTracing: 是否开启调用链,（此参数已弃用）
         :type EnableTracing: int
         """
         self.ApplicationId = None
@@ -2416,16 +2466,20 @@ class PortMapping(AbstractModel):
         :type TargetPort: int
         :param Protocol: 协议栈 TCP/UDP
         :type Protocol: str
+        :param ServiceName: k8s service名称
+        :type ServiceName: str
         """
         self.Port = None
         self.TargetPort = None
         self.Protocol = None
+        self.ServiceName = None
 
 
     def _deserialize(self, params):
         self.Port = params.get("Port")
         self.TargetPort = params.get("TargetPort")
         self.Protocol = params.get("Protocol")
+        self.ServiceName = params.get("ServiceName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -64,7 +64,7 @@ class Locator:
         self,
         frame: "Frame",
         selector: str,
-        has_text: Union[str, Pattern] = None,
+        has_text: Union[str, Pattern[str]] = None,
         has: "Locator" = None,
     ) -> None:
         self._frame = frame
@@ -74,9 +74,10 @@ class Locator:
 
         if has_text:
             if isinstance(has_text, Pattern):
-                pattern = escape_with_quotes(has_text.pattern, '"')
-                flags = escape_regex_flags(has_text)
-                self._selector += f' >> :scope:text-matches({pattern}, "{flags}")'
+                js_regex = f"/{has_text.pattern}/{escape_regex_flags(has_text)}"
+                self._selector += (
+                    f' >> has={json.dumps("text=" + js_regex, ensure_ascii=False)}'
+                )
             else:
                 escaped = escape_with_quotes(has_text, '"')
                 self._selector += f" >> :scope:has-text({escaped})"
@@ -84,7 +85,7 @@ class Locator:
         if has:
             if has._frame != frame:
                 raise Error('Inner "has" locator must belong to the same frame.')
-            self._selector += " >> has=" + json.dumps(has._selector)
+            self._selector += " >> has=" + json.dumps(has._selector, ensure_ascii=False)
 
     def __repr__(self) -> str:
         return f"<Locator frame={self._frame!r} selector={self._selector!r}>"
@@ -198,7 +199,7 @@ class Locator:
     def locator(
         self,
         selector: str,
-        has_text: Union[str, Pattern] = None,
+        has_text: Union[str, Pattern[str]] = None,
         has: "Locator" = None,
     ) -> "Locator":
         return Locator(
@@ -238,7 +239,7 @@ class Locator:
 
     def filter(
         self,
-        has_text: Union[str, Pattern] = None,
+        has_text: Union[str, Pattern[str]] = None,
         has: "Locator" = None,
     ) -> "Locator":
         return Locator(
@@ -577,7 +578,10 @@ class FrameLocator:
         self._frame_selector = frame_selector
 
     def locator(
-        self, selector: str, has_text: Union[str, Pattern] = None, has: "Locator" = None
+        self,
+        selector: str,
+        has_text: Union[str, Pattern[str]] = None,
+        has: "Locator" = None,
     ) -> Locator:
         return Locator(
             self._frame,

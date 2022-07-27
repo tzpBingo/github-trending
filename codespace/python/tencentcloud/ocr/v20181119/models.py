@@ -483,10 +483,12 @@ class BizLicenseOCRResponse(AbstractModel):
         :type SetDate: str
         :param RecognizeWarnCode: Code 告警码列表和释义：
 -20001 非营业执照
+-9102 黑白复印件告警
 注：告警码可以同时存在多个
         :type RecognizeWarnCode: list of int
         :param RecognizeWarnMsg: 告警码说明：
 OCR_WARNING_TPYE_NOT_MATCH 非营业执照
+WARN_COPY_CARD 黑白复印件告警
 注：告警信息可以同时存在多个
         :type RecognizeWarnMsg: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -3222,6 +3224,44 @@ class ItemCoord(AbstractModel):
         
 
 
+class LicensePlateInfo(AbstractModel):
+    """全部车牌信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Number: 识别出的车牌号码。
+        :type Number: str
+        :param Confidence: 置信度，0 - 100 之间。
+        :type Confidence: int
+        :param Rect: 文本行在原图片中的像素坐标框。
+        :type Rect: :class:`tencentcloud.ocr.v20181119.models.Rect`
+        :param Color: 识别出的车牌颜色，目前支持颜色包括 “白”、“黑”、“蓝”、“绿“、“黄”、“黄绿”、“临牌”。
+        :type Color: str
+        """
+        self.Number = None
+        self.Confidence = None
+        self.Rect = None
+        self.Color = None
+
+
+    def _deserialize(self, params):
+        self.Number = params.get("Number")
+        self.Confidence = params.get("Confidence")
+        if params.get("Rect") is not None:
+            self.Rect = Rect()
+            self.Rect._deserialize(params.get("Rect"))
+        self.Color = params.get("Color")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LicensePlateOCRRequest(AbstractModel):
     """LicensePlateOCR请求参数结构体
 
@@ -3272,6 +3312,8 @@ class LicensePlateOCRResponse(AbstractModel):
         :type Rect: :class:`tencentcloud.ocr.v20181119.models.Rect`
         :param Color: 识别出的车牌颜色，目前支持颜色包括 “白”、“黑”、“蓝”、“绿“、“黄”、“黄绿”、“临牌”。
         :type Color: str
+        :param LicensePlateInfos: 全部车牌信息。
+        :type LicensePlateInfos: list of LicensePlateInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -3279,6 +3321,7 @@ class LicensePlateOCRResponse(AbstractModel):
         self.Confidence = None
         self.Rect = None
         self.Color = None
+        self.LicensePlateInfos = None
         self.RequestId = None
 
 
@@ -3289,6 +3332,12 @@ class LicensePlateOCRResponse(AbstractModel):
             self.Rect = Rect()
             self.Rect._deserialize(params.get("Rect"))
         self.Color = params.get("Color")
+        if params.get("LicensePlateInfos") is not None:
+            self.LicensePlateInfos = []
+            for item in params.get("LicensePlateInfos"):
+                obj = LicensePlateInfo()
+                obj._deserialize(item)
+                self.LicensePlateInfos.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -5156,8 +5205,6 @@ class RecognizePhilippinesDrivingLicenseOCRRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ReturnHeadImage: 是否返回人像照片。
-        :type ReturnHeadImage: bool
         :param ImageBase64: 图片的 Base64 值。
 支持的图片格式：PNG、JPG、JPEG，暂不支持 GIF 格式。
 支持的图片大小：所下载图片经Base64编码后不超过 7M。图片下载时间不超过 3 秒。
@@ -5169,16 +5216,18 @@ class RecognizePhilippinesDrivingLicenseOCRRequest(AbstractModel):
 图片存储于腾讯云的 Url 可保障更高的下载速度和稳定性，建议图片存储于腾讯云。
 非腾讯云存储的 Url 速度和稳定性可能受一定影响。
         :type ImageUrl: str
+        :param ReturnHeadImage: 是否返回人像照片。
+        :type ReturnHeadImage: bool
         """
-        self.ReturnHeadImage = None
         self.ImageBase64 = None
         self.ImageUrl = None
+        self.ReturnHeadImage = None
 
 
     def _deserialize(self, params):
-        self.ReturnHeadImage = params.get("ReturnHeadImage")
         self.ImageBase64 = params.get("ImageBase64")
         self.ImageUrl = params.get("ImageUrl")
+        self.ReturnHeadImage = params.get("ReturnHeadImage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5594,9 +5643,9 @@ class RecognizeTravelCardOCRResponse(AbstractModel):
         :type Time: str
         :param Color: 行程卡颜色：绿色、黄色、红色
         :type Color: str
-        :param ReachedCity: 14天内到达或途经的城市
+        :param ReachedCity: 7天内到达或途经的城市（自2022年7月8日起，通信行程卡查询结果的覆盖时间范围由“14天”调整为“7天”）
         :type ReachedCity: list of str
-        :param RiskArea: 14天内到达或途径存在中高风险地区的城市
+        :param RiskArea: 7天内到达或途径存在中高风险地区的城市（自2022年6月29日起，通信行程卡取消“星号”标记，改字段将返回空值）
         :type RiskArea: list of str
         :param Telephone: 电话号码
         :type Telephone: str
@@ -6212,16 +6261,24 @@ class SmartStructuralOCRRequest(AbstractModel):
 若客户只想返回姓名、性别两个字段的识别结果，则输入
 ItemNames=["姓名","性别"]
         :type ItemNames: list of str
+        :param IsPdf: 是否开启PDF识别，默认值为false，开启后可同时支持图片和PDF的识别。
+        :type IsPdf: bool
+        :param PdfPageNumber: 需要识别的PDF页面的对应页码，仅支持PDF单页识别，当上传文件为PDF且IsPdf参数值为true时有效，默认值为1。
+        :type PdfPageNumber: int
         """
         self.ImageUrl = None
         self.ImageBase64 = None
         self.ItemNames = None
+        self.IsPdf = None
+        self.PdfPageNumber = None
 
 
     def _deserialize(self, params):
         self.ImageUrl = params.get("ImageUrl")
         self.ImageBase64 = params.get("ImageBase64")
         self.ItemNames = params.get("ItemNames")
+        self.IsPdf = params.get("IsPdf")
+        self.PdfPageNumber = params.get("PdfPageNumber")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8140,9 +8197,9 @@ class VatInvoiceVerifyRequest(AbstractModel):
         r"""
         :param InvoiceCode: 发票代码， 一张发票一天只能查询5次。
         :type InvoiceCode: str
-        :param InvoiceNo: 发票号码（8位）。
+        :param InvoiceNo: 发票号码（8位）
         :type InvoiceNo: str
-        :param InvoiceDate: 开票日期（不支持当天发票查询，支持五年以内开具的发票），如：2019-12-20。
+        :param InvoiceDate: 开票日期（不支持当天发票查询，支持五年以内开具的发票），格式：“YYYY-MM-DD”，如：2019-12-20。
         :type InvoiceDate: str
         :param Additional: 根据票种传递对应值，如果报参数错误，请仔细检查每个票种对应的值
 
@@ -8353,6 +8410,10 @@ class VehicleInvoiceInfo(AbstractModel):
         :type MotorBankName: str
         :param MotorBankAccount: 账号
         :type MotorBankAccount: str
+        :param SellerAddress: 销售地址
+        :type SellerAddress: str
+        :param SellerTel: 销售电话
+        :type SellerTel: str
         """
         self.CarType = None
         self.PlateModel = None
@@ -8370,6 +8431,8 @@ class VehicleInvoiceInfo(AbstractModel):
         self.MotorTaxRate = None
         self.MotorBankName = None
         self.MotorBankAccount = None
+        self.SellerAddress = None
+        self.SellerTel = None
 
 
     def _deserialize(self, params):
@@ -8389,6 +8452,8 @@ class VehicleInvoiceInfo(AbstractModel):
         self.MotorTaxRate = params.get("MotorTaxRate")
         self.MotorBankName = params.get("MotorBankName")
         self.MotorBankAccount = params.get("MotorBankAccount")
+        self.SellerAddress = params.get("SellerAddress")
+        self.SellerTel = params.get("SellerTel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -212,6 +212,29 @@ class AddRealServersResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class BanAndRecoverProxyRequest(AbstractModel):
+    """BanAndRecoverProxy请求参数结构体
+
+    """
+
+
+class BanAndRecoverProxyResponse(AbstractModel):
+    """BanAndRecoverProxy返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class BandwidthPriceGradient(AbstractModel):
     """带宽梯度价格
 
@@ -318,6 +341,8 @@ class BindRealServer(AbstractModel):
         :type RealServerPort: int
         :param DownIPList: 当源站为域名时，域名被解析成一个或者多个IP，该字段表示其中异常的IP列表。状态异常，但该字段为空时，表示域名解析异常。
         :type DownIPList: list of str
+        :param RealServerFailoverRole: 源站主备角色：master表示主，slave表示备，该参数必须在监听器打开了源站主备模式。
+        :type RealServerFailoverRole: str
         """
         self.RealServerId = None
         self.RealServerIP = None
@@ -325,6 +350,7 @@ class BindRealServer(AbstractModel):
         self.RealServerStatus = None
         self.RealServerPort = None
         self.DownIPList = None
+        self.RealServerFailoverRole = None
 
 
     def _deserialize(self, params):
@@ -334,6 +360,7 @@ class BindRealServer(AbstractModel):
         self.RealServerStatus = params.get("RealServerStatus")
         self.RealServerPort = params.get("RealServerPort")
         self.DownIPList = params.get("DownIPList")
+        self.RealServerFailoverRole = params.get("RealServerFailoverRole")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1637,7 +1664,7 @@ class CreateRuleRequest(AbstractModel):
         :type Path: str
         :param RealServerType: 转发规则对应源站的类型，支持IP和DOMAIN类型。
         :type RealServerType: str
-        :param Scheduler: 规则转发源站调度策略，支持轮询（rr），加权轮询（wrr），最小连接数（lc）。
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
         :param HealthCheck: 规则是否开启健康检查，1开启，0关闭。
         :type HealthCheck: int
@@ -1652,6 +1679,8 @@ class CreateRuleRequest(AbstractModel):
         :type ServerNameIndicationSwitch: str
         :param ServerNameIndication: 服务器名称指示（ServerNameIndication，简称SNI），当SNI开关打开时，该字段必填。
         :type ServerNameIndication: str
+        :param ForcedRedirect: HTTP强制跳转HTTPS。输入当前规则对应的域名与地址。
+        :type ForcedRedirect: str
         """
         self.ListenerId = None
         self.Domain = None
@@ -1664,6 +1693,7 @@ class CreateRuleRequest(AbstractModel):
         self.ForwardHost = None
         self.ServerNameIndicationSwitch = None
         self.ServerNameIndication = None
+        self.ForcedRedirect = None
 
 
     def _deserialize(self, params):
@@ -1680,6 +1710,7 @@ class CreateRuleRequest(AbstractModel):
         self.ForwardHost = params.get("ForwardHost")
         self.ServerNameIndicationSwitch = params.get("ServerNameIndicationSwitch")
         self.ServerNameIndication = params.get("ServerNameIndication")
+        self.ForcedRedirect = params.get("ForcedRedirect")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1828,11 +1859,11 @@ class CreateTCPListenersRequest(AbstractModel):
         :type ListenerName: str
         :param Ports: 监听器端口列表。
         :type Ports: list of int non-negative
-        :param Scheduler: 监听器源站调度策略，支持轮询（rr），加权轮询（wrr），最小连接数（lc）。
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
         :param HealthCheck: 源站是否开启健康检查：1开启，0关闭，UDP监听器不支持健康检查
         :type HealthCheck: int
-        :param RealServerType: 监听器对应源站类型，支持IP或者DOMAIN类型。DOMAIN源站类型不支持wrr的源站调度策略。
+        :param RealServerType: 监听器绑定源站类型。IP表示IP地址，DOMAIN表示域名。
         :type RealServerType: str
         :param ProxyId: 通道ID，ProxyId和GroupId必须设置一个，但不能同时设置。
         :type ProxyId: str
@@ -1925,9 +1956,9 @@ class CreateUDPListenersRequest(AbstractModel):
         :type ListenerName: str
         :param Ports: 监听器端口列表
         :type Ports: list of int non-negative
-        :param Scheduler: 监听器源站调度策略，支持轮询（rr），加权轮询（wrr），最小连接数（lc）
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
-        :param RealServerType: 监听器对应源站类型，支持IP或者DOMAIN类型
+        :param RealServerType: 监听器绑定源站类型。IP表示IP地址，DOMAIN表示域名。
         :type RealServerType: str
         :param ProxyId: 通道ID，ProxyId和GroupId必须设置一个，但不能同时设置。
         :type ProxyId: str
@@ -1935,6 +1966,28 @@ class CreateUDPListenersRequest(AbstractModel):
         :type GroupId: str
         :param RealServerPorts: 源站端口列表，该参数仅支持v1版本监听器和通道组监听器
         :type RealServerPorts: list of int non-negative
+        :param DelayLoop: 源站健康检查时间间隔，单位：秒。时间间隔取值在[5，300]之间。
+        :type DelayLoop: int
+        :param ConnectTimeout: 源站健康检查响应超时时间，单位：秒。超时时间取值在[2，60]之间。超时时间应小于健康检查时间间隔DelayLoop。
+        :type ConnectTimeout: int
+        :param HealthyThreshold: 健康阈值，表示连续检查成功多少次后认定源站健康。范围为1到10
+        :type HealthyThreshold: int
+        :param UnhealthyThreshold: 不健康阈值，表示连续检查失败多少次数后认为源站不健康。范围为1到10
+        :type UnhealthyThreshold: int
+        :param FailoverSwitch: 源站是否开启主备模式：1开启，0关闭，DOMAIN类型源站不支持开启
+        :type FailoverSwitch: int
+        :param HealthCheck: 源站是否开启健康检查：1开启，0关闭。
+        :type HealthCheck: int
+        :param CheckType: UDP源站健康类型。PORT表示检查端口，PING表示PING。
+        :type CheckType: str
+        :param CheckPort: UDP源站健康检查探测端口。
+        :type CheckPort: int
+        :param ContextType: UDP源站健康检查端口探测报文类型：TEXT表示文本。仅在健康检查类型为PORT时使用。
+        :type ContextType: str
+        :param SendContext: UDP源站健康检查端口探测发送报文。仅在健康检查类型为PORT时使用。
+        :type SendContext: str
+        :param RecvContext: UDP源站健康检查端口探测接收报文。仅在健康检查类型为PORT时使用。
+        :type RecvContext: str
         """
         self.ListenerName = None
         self.Ports = None
@@ -1943,6 +1996,17 @@ class CreateUDPListenersRequest(AbstractModel):
         self.ProxyId = None
         self.GroupId = None
         self.RealServerPorts = None
+        self.DelayLoop = None
+        self.ConnectTimeout = None
+        self.HealthyThreshold = None
+        self.UnhealthyThreshold = None
+        self.FailoverSwitch = None
+        self.HealthCheck = None
+        self.CheckType = None
+        self.CheckPort = None
+        self.ContextType = None
+        self.SendContext = None
+        self.RecvContext = None
 
 
     def _deserialize(self, params):
@@ -1953,6 +2017,17 @@ class CreateUDPListenersRequest(AbstractModel):
         self.ProxyId = params.get("ProxyId")
         self.GroupId = params.get("GroupId")
         self.RealServerPorts = params.get("RealServerPorts")
+        self.DelayLoop = params.get("DelayLoop")
+        self.ConnectTimeout = params.get("ConnectTimeout")
+        self.HealthyThreshold = params.get("HealthyThreshold")
+        self.UnhealthyThreshold = params.get("UnhealthyThreshold")
+        self.FailoverSwitch = params.get("FailoverSwitch")
+        self.HealthCheck = params.get("HealthCheck")
+        self.CheckType = params.get("CheckType")
+        self.CheckPort = params.get("CheckPort")
+        self.ContextType = params.get("ContextType")
+        self.SendContext = params.get("SendContext")
+        self.RecvContext = params.get("RecvContext")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2675,6 +2750,29 @@ class DescribeCountryAreaMappingResponse(AbstractModel):
                 obj = CountryAreaMap()
                 obj._deserialize(item)
                 self.CountryAreaMappingList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeCrossBorderProxiesRequest(AbstractModel):
+    """DescribeCrossBorderProxies请求参数结构体
+
+    """
+
+
+class DescribeCrossBorderProxiesResponse(AbstractModel):
+    """DescribeCrossBorderProxies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -6234,10 +6332,7 @@ class ModifyRuleAttributeRequest(AbstractModel):
         :type ListenerId: str
         :param RuleId: 转发规则ID
         :type RuleId: str
-        :param Scheduler: 调度策略，其中：
-rr，轮询；
-wrr，加权轮询；
-lc，最小连接数。
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
         :param HealthCheck: 源站健康检查开关，其中：
 1，开启；
@@ -6257,6 +6352,8 @@ lc，最小连接数。
         :type ServerNameIndicationSwitch: str
         :param ServerNameIndication: 服务器名称指示（ServerNameIndication，简称SNI），当SNI开关打开时，该字段必填。
         :type ServerNameIndication: str
+        :param ForcedRedirect: HTTP强制跳转HTTPS。输入当前规则对应的域名与地址。
+        :type ForcedRedirect: str
         """
         self.ListenerId = None
         self.RuleId = None
@@ -6268,6 +6365,7 @@ lc，最小连接数。
         self.ForwardHost = None
         self.ServerNameIndicationSwitch = None
         self.ServerNameIndication = None
+        self.ForcedRedirect = None
 
 
     def _deserialize(self, params):
@@ -6283,6 +6381,7 @@ lc，最小连接数。
         self.ForwardHost = params.get("ForwardHost")
         self.ServerNameIndicationSwitch = params.get("ServerNameIndicationSwitch")
         self.ServerNameIndication = params.get("ServerNameIndication")
+        self.ForcedRedirect = params.get("ForcedRedirect")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6393,7 +6492,7 @@ class ModifyTCPListenerAttributeRequest(AbstractModel):
         :type ProxyId: str
         :param ListenerName: 监听器名称
         :type ListenerName: str
-        :param Scheduler: 监听器源站调度策略，支持轮询（rr），加权轮询（wrr），最小连接数（lc）。
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
         :param DelayLoop: 源站健康检查时间间隔，单位：秒。时间间隔取值在[5，300]之间。
         :type DelayLoop: int
@@ -6474,14 +6573,47 @@ class ModifyUDPListenerAttributeRequest(AbstractModel):
         :type ProxyId: str
         :param ListenerName: 监听器名称
         :type ListenerName: str
-        :param Scheduler: 监听器源站调度策略
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
+        :param DelayLoop: 源站健康检查时间间隔，单位：秒。时间间隔取值在[5，300]之间。
+        :type DelayLoop: int
+        :param ConnectTimeout: 源站健康检查响应超时时间，单位：秒。超时时间取值在[2，60]之间。超时时间应小于健康检查时间间隔DelayLoop。
+        :type ConnectTimeout: int
+        :param HealthyThreshold: 健康阈值，表示连续检查成功多少次后认定源站健康。范围为1到10
+        :type HealthyThreshold: int
+        :param UnhealthyThreshold: 不健康阈值，表示连续检查失败多少次数后认为源站不健康。范围为1到10
+        :type UnhealthyThreshold: int
+        :param FailoverSwitch: 源站是否开启主备模式：1开启，0关闭，DOMAIN类型源站不支持开启
+        :type FailoverSwitch: int
+        :param HealthCheck: 源站是否开启健康检查：1开启，0关闭。
+        :type HealthCheck: int
+        :param CheckType: UDP源站健康类型。PORT表示检查端口，PING表示PING。
+        :type CheckType: str
+        :param CheckPort: UDP源站健康检查探测端口。
+        :type CheckPort: int
+        :param ContextType: UDP源站健康检查端口探测报文类型：TEXT表示文本。仅在健康检查类型为PORT时使用。
+        :type ContextType: str
+        :param SendContext: UDP源站健康检查端口探测发送报文。仅在健康检查类型为PORT时使用。
+        :type SendContext: str
+        :param RecvContext: UDP源站健康检查端口探测接收报文。仅在健康检查类型为PORT时使用。
+        :type RecvContext: str
         """
         self.ListenerId = None
         self.GroupId = None
         self.ProxyId = None
         self.ListenerName = None
         self.Scheduler = None
+        self.DelayLoop = None
+        self.ConnectTimeout = None
+        self.HealthyThreshold = None
+        self.UnhealthyThreshold = None
+        self.FailoverSwitch = None
+        self.HealthCheck = None
+        self.CheckType = None
+        self.CheckPort = None
+        self.ContextType = None
+        self.SendContext = None
+        self.RecvContext = None
 
 
     def _deserialize(self, params):
@@ -6490,6 +6622,17 @@ class ModifyUDPListenerAttributeRequest(AbstractModel):
         self.ProxyId = params.get("ProxyId")
         self.ListenerName = params.get("ListenerName")
         self.Scheduler = params.get("Scheduler")
+        self.DelayLoop = params.get("DelayLoop")
+        self.ConnectTimeout = params.get("ConnectTimeout")
+        self.HealthyThreshold = params.get("HealthyThreshold")
+        self.UnhealthyThreshold = params.get("UnhealthyThreshold")
+        self.FailoverSwitch = params.get("FailoverSwitch")
+        self.HealthCheck = params.get("HealthCheck")
+        self.CheckType = params.get("CheckType")
+        self.CheckPort = params.get("CheckPort")
+        self.ContextType = params.get("ContextType")
+        self.SendContext = params.get("SendContext")
+        self.RecvContext = params.get("RecvContext")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7291,7 +7434,7 @@ class RealServerBindSetReq(AbstractModel):
         :type RealServerIP: str
         :param RealServerWeight: 源站权重
         :type RealServerWeight: int
-        :param RealServerFailoverRole: 源站主备角色：master主，slave备，该参数必须在监听器打开了源站主备模式，且监听器类型为TCP监听器
+        :param RealServerFailoverRole: 源站主备角色：master表示主，slave表示备，该参数必须在监听器打开了源站主备模式。
         :type RealServerFailoverRole: str
         """
         self.RealServerId = None
@@ -7526,7 +7669,7 @@ class RuleInfo(AbstractModel):
         :type Path: str
         :param RealServerType: 源站类型
         :type RealServerType: str
-        :param Scheduler: 转发源站策略
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
         :param HealthCheck: 是否开启健康检查标志，1表示开启，0表示关闭
         :type HealthCheck: int
@@ -7551,6 +7694,9 @@ class RuleInfo(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ServerNameIndication: str
+        :param ForcedRedirect: 强转HTTPS指示，当传递值为https:时表示强转为https
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ForcedRedirect: str
         """
         self.RuleId = None
         self.ListenerId = None
@@ -7566,6 +7712,7 @@ class RuleInfo(AbstractModel):
         self.ForwardHost = None
         self.ServerNameIndicationSwitch = None
         self.ServerNameIndication = None
+        self.ForcedRedirect = None
 
 
     def _deserialize(self, params):
@@ -7590,6 +7737,7 @@ class RuleInfo(AbstractModel):
         self.ForwardHost = params.get("ForwardHost")
         self.ServerNameIndicationSwitch = params.get("ServerNameIndicationSwitch")
         self.ServerNameIndication = params.get("ServerNameIndication")
+        self.ForcedRedirect = params.get("ForcedRedirect")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7864,10 +8012,7 @@ class TCPListener(AbstractModel):
 3表示源站调整中；
 4表示配置变更中。
         :type ListenerStatus: int
-        :param Scheduler: 监听器源站访问策略，其中：
-rr表示轮询；
-wrr表示加权轮询；
-lc表示最小连接数。
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
         :param ConnectTimeout: 源站健康检查响应超时时间，单位：秒
         :type ConnectTimeout: int
@@ -8043,7 +8188,7 @@ class UDPListener(AbstractModel):
 3表示源站调整中；
 4表示配置变更中。
         :type ListenerStatus: int
-        :param Scheduler: 监听器源站访问策略
+        :param Scheduler: 监听器源站访问策略，其中：rr表示轮询；wrr表示加权轮询；lc表示最小连接数；lrtt表示最小时延。
         :type Scheduler: str
         :param BindStatus: 监听器绑定源站状态， 0表示正常，1表示IP异常，2表示域名解析异常
         :type BindStatus: int
@@ -8054,6 +8199,39 @@ class UDPListener(AbstractModel):
         :param SessionPersist: 是否开启会话保持选项：0关闭， 非0开启，非0值为会话保持时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type SessionPersist: int
+        :param DelayLoop: 源站健康检查时间间隔，单位：秒。时间间隔取值在[5，300]之间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DelayLoop: int
+        :param ConnectTimeout: 源站健康检查响应超时时间，单位：秒。超时时间取值在[2，60]之间。超时时间应小于健康检查时间间隔DelayLoop。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConnectTimeout: int
+        :param HealthyThreshold: 健康阈值，表示连续检查成功多少次后认定源站健康。范围为1到10
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HealthyThreshold: int
+        :param UnhealthyThreshold: 不健康阈值，表示连续检查失败多少次数后认为源站不健康。范围为1到10
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnhealthyThreshold: int
+        :param FailoverSwitch: 源站是否开启主备模式：1开启，0关闭，DOMAIN类型源站不支持开启
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailoverSwitch: int
+        :param HealthCheck: 源站是否开启健康检查：1开启，0关闭。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HealthCheck: int
+        :param CheckType: UDP源站健康类型。PORT表示检查端口，PING表示PING。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CheckType: str
+        :param CheckPort: UDP源站健康检查探测端口。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CheckPort: int
+        :param ContextType: UDP源站健康检查端口探测报文类型：TEXT表示文本。仅在健康检查类型为PORT时使用。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContextType: str
+        :param SendContext: UDP源站健康检查端口探测发送报文。仅在健康检查类型为PORT时使用。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SendContext: str
+        :param RecvContext: UDP源站健康检查端口探测接收报文。仅在健康检查类型为PORT时使用。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecvContext: str
         """
         self.ListenerId = None
         self.ListenerName = None
@@ -8067,6 +8245,17 @@ class UDPListener(AbstractModel):
         self.RealServerSet = None
         self.CreateTime = None
         self.SessionPersist = None
+        self.DelayLoop = None
+        self.ConnectTimeout = None
+        self.HealthyThreshold = None
+        self.UnhealthyThreshold = None
+        self.FailoverSwitch = None
+        self.HealthCheck = None
+        self.CheckType = None
+        self.CheckPort = None
+        self.ContextType = None
+        self.SendContext = None
+        self.RecvContext = None
 
 
     def _deserialize(self, params):
@@ -8087,6 +8276,17 @@ class UDPListener(AbstractModel):
                 self.RealServerSet.append(obj)
         self.CreateTime = params.get("CreateTime")
         self.SessionPersist = params.get("SessionPersist")
+        self.DelayLoop = params.get("DelayLoop")
+        self.ConnectTimeout = params.get("ConnectTimeout")
+        self.HealthyThreshold = params.get("HealthyThreshold")
+        self.UnhealthyThreshold = params.get("UnhealthyThreshold")
+        self.FailoverSwitch = params.get("FailoverSwitch")
+        self.HealthCheck = params.get("HealthCheck")
+        self.CheckType = params.get("CheckType")
+        self.CheckPort = params.get("CheckPort")
+        self.ContextType = params.get("ContextType")
+        self.SendContext = params.get("SendContext")
+        self.RecvContext = params.get("RecvContext")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

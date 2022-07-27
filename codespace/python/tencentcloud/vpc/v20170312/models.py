@@ -3803,6 +3803,53 @@ class CreateNetDetectResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateNetworkAclQuintupleEntriesRequest(AbstractModel):
+    """CreateNetworkAclQuintupleEntries请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NetworkAclId: 网络ACL实例ID。例如：acl-12345678。
+        :type NetworkAclId: str
+        :param NetworkAclQuintupleSet: 网络五元组ACL规则集。
+        :type NetworkAclQuintupleSet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclQuintupleEntries`
+        """
+        self.NetworkAclId = None
+        self.NetworkAclQuintupleSet = None
+
+
+    def _deserialize(self, params):
+        self.NetworkAclId = params.get("NetworkAclId")
+        if params.get("NetworkAclQuintupleSet") is not None:
+            self.NetworkAclQuintupleSet = NetworkAclQuintupleEntries()
+            self.NetworkAclQuintupleSet._deserialize(params.get("NetworkAclQuintupleSet"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateNetworkAclQuintupleEntriesResponse(AbstractModel):
+    """CreateNetworkAclQuintupleEntries返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CreateNetworkAclRequest(AbstractModel):
     """CreateNetworkAcl请求参数结构体
 
@@ -3814,14 +3861,27 @@ class CreateNetworkAclRequest(AbstractModel):
         :type VpcId: str
         :param NetworkAclName: 网络ACL名称，最大长度不能超过60个字节。
         :type NetworkAclName: str
+        :param NetworkAclType: 网络ACL类型，三元组(TRIPLE)或五元组(QUINTUPLE)
+        :type NetworkAclType: str
+        :param Tags: 指定绑定的标签列表，例如：[{"Key": "city", "Value": "shanghai"}]。
+        :type Tags: list of Tag
         """
         self.VpcId = None
         self.NetworkAclName = None
+        self.NetworkAclType = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
         self.VpcId = params.get("VpcId")
         self.NetworkAclName = params.get("NetworkAclName")
+        self.NetworkAclType = params.get("NetworkAclType")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6152,6 +6212,53 @@ class DeleteNetDetectRequest(AbstractModel):
 
 class DeleteNetDetectResponse(AbstractModel):
     """DeleteNetDetect返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteNetworkAclQuintupleEntriesRequest(AbstractModel):
+    """DeleteNetworkAclQuintupleEntries请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NetworkAclId: 网络ACL实例ID。例如：acl-12345678。
+        :type NetworkAclId: str
+        :param NetworkAclQuintupleSet: 网络五元组ACL规则集。
+        :type NetworkAclQuintupleSet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclQuintupleEntries`
+        """
+        self.NetworkAclId = None
+        self.NetworkAclQuintupleSet = None
+
+
+    def _deserialize(self, params):
+        self.NetworkAclId = params.get("NetworkAclId")
+        if params.get("NetworkAclQuintupleSet") is not None:
+            self.NetworkAclQuintupleSet = NetworkAclQuintupleEntries()
+            self.NetworkAclQuintupleSet._deserialize(params.get("NetworkAclQuintupleSet"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteNetworkAclQuintupleEntriesResponse(AbstractModel):
+    """DeleteNetworkAclQuintupleEntries返回参数结构体
 
     """
 
@@ -9651,6 +9758,42 @@ class DescribeNetDetectsResponse(AbstractModel):
                 obj = NetDetect()
                 obj._deserialize(item)
                 self.NetDetectSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeNetworkAclQuintupleEntriesRequest(AbstractModel):
+    """DescribeNetworkAclQuintupleEntries请求参数结构体
+
+    """
+
+
+class DescribeNetworkAclQuintupleEntriesResponse(AbstractModel):
+    """DescribeNetworkAclQuintupleEntries返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NetworkAclQuintupleSet: 网络ACL条目列表（NetworkAclTuple5Entry）
+        :type NetworkAclQuintupleSet: list of NetworkAclQuintupleEntry
+        :param TotalCount: 符合条件的实例数量。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.NetworkAclQuintupleSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("NetworkAclQuintupleSet") is not None:
+            self.NetworkAclQuintupleSet = []
+            for item in params.get("NetworkAclQuintupleSet"):
+                obj = NetworkAclQuintupleEntry()
+                obj._deserialize(item)
+                self.NetworkAclQuintupleSet.append(obj)
         self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
@@ -16083,9 +16226,12 @@ class ModifyNetworkAclEntriesRequest(AbstractModel):
         :type NetworkAclId: str
         :param NetworkAclEntrySet: 网络ACL规则集。NetworkAclEntrySet和NetworkAclQuintupleSet只能输入一个。
         :type NetworkAclEntrySet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclEntrySet`
+        :param NetworkAclQuintupleSet: 网络ACL五元组规则集。NetworkAclEntrySet和NetworkAclQuintupleSet只能输入一个。
+        :type NetworkAclQuintupleSet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclQuintupleEntries`
         """
         self.NetworkAclId = None
         self.NetworkAclEntrySet = None
+        self.NetworkAclQuintupleSet = None
 
 
     def _deserialize(self, params):
@@ -16093,6 +16239,9 @@ class ModifyNetworkAclEntriesRequest(AbstractModel):
         if params.get("NetworkAclEntrySet") is not None:
             self.NetworkAclEntrySet = NetworkAclEntrySet()
             self.NetworkAclEntrySet._deserialize(params.get("NetworkAclEntrySet"))
+        if params.get("NetworkAclQuintupleSet") is not None:
+            self.NetworkAclQuintupleSet = NetworkAclQuintupleEntries()
+            self.NetworkAclQuintupleSet._deserialize(params.get("NetworkAclQuintupleSet"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16104,6 +16253,53 @@ class ModifyNetworkAclEntriesRequest(AbstractModel):
 
 class ModifyNetworkAclEntriesResponse(AbstractModel):
     """ModifyNetworkAclEntries返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyNetworkAclQuintupleEntriesRequest(AbstractModel):
+    """ModifyNetworkAclQuintupleEntries请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NetworkAclId: 网络ACL实例ID。例如：acl-12345678。
+        :type NetworkAclId: str
+        :param NetworkAclQuintupleSet: 网络五元组ACL规则集。
+        :type NetworkAclQuintupleSet: :class:`tencentcloud.vpc.v20170312.models.NetworkAclQuintupleEntries`
+        """
+        self.NetworkAclId = None
+        self.NetworkAclQuintupleSet = None
+
+
+    def _deserialize(self, params):
+        self.NetworkAclId = params.get("NetworkAclId")
+        if params.get("NetworkAclQuintupleSet") is not None:
+            self.NetworkAclQuintupleSet = NetworkAclQuintupleEntries()
+            self.NetworkAclQuintupleSet._deserialize(params.get("NetworkAclQuintupleSet"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyNetworkAclQuintupleEntriesResponse(AbstractModel):
+    """ModifyNetworkAclQuintupleEntries返回参数结构体
 
     """
 
@@ -17534,6 +17730,10 @@ class NetworkAcl(AbstractModel):
         :type IngressEntries: list of NetworkAclEntry
         :param EgressEntries: 网络ACL出站规则。
         :type EgressEntries: list of NetworkAclEntry
+        :param NetworkAclType: 网络ACL类型。三元组：'TRIPLE'   五元组：'QUINTUPLE'
+        :type NetworkAclType: str
+        :param TagSet: 标签键值对
+        :type TagSet: list of Tag
         """
         self.VpcId = None
         self.NetworkAclId = None
@@ -17542,6 +17742,8 @@ class NetworkAcl(AbstractModel):
         self.SubnetSet = None
         self.IngressEntries = None
         self.EgressEntries = None
+        self.NetworkAclType = None
+        self.TagSet = None
 
 
     def _deserialize(self, params):
@@ -17567,6 +17769,13 @@ class NetworkAcl(AbstractModel):
                 obj = NetworkAclEntry()
                 obj._deserialize(item)
                 self.EgressEntries.append(obj)
+        self.NetworkAclType = params.get("NetworkAclType")
+        if params.get("TagSet") is not None:
+            self.TagSet = []
+            for item in params.get("TagSet"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.TagSet.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17653,6 +17862,108 @@ class NetworkAclEntrySet(AbstractModel):
                 obj = NetworkAclEntry()
                 obj._deserialize(item)
                 self.Egress.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NetworkAclQuintupleEntries(AbstractModel):
+    """网络ACL五元组
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Ingress: 网络ACL五元组入站规则。
+        :type Ingress: list of NetworkAclQuintupleEntry
+        :param Egress: 网络ACL五元组出站规则
+        :type Egress: list of NetworkAclQuintupleEntry
+        """
+        self.Ingress = None
+        self.Egress = None
+
+
+    def _deserialize(self, params):
+        if params.get("Ingress") is not None:
+            self.Ingress = []
+            for item in params.get("Ingress"):
+                obj = NetworkAclQuintupleEntry()
+                obj._deserialize(item)
+                self.Ingress.append(obj)
+        if params.get("Egress") is not None:
+            self.Egress = []
+            for item in params.get("Egress"):
+                obj = NetworkAclQuintupleEntry()
+                obj._deserialize(item)
+                self.Egress.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NetworkAclQuintupleEntry(AbstractModel):
+    """网络ACL五元组Entry
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Protocol: 协议, 取值: TCP,UDP, ICMP, ALL。
+        :type Protocol: str
+        :param Description: 描述。
+        :type Description: str
+        :param SourcePort: 源端口(all, 单个port,  range)。当Protocol为ALL或ICMP时，不能指定Port。
+        :type SourcePort: str
+        :param SourceCidr: 源CIDR。
+        :type SourceCidr: str
+        :param DestinationPort: 目的端口(all, 单个port,  range)。当Protocol为ALL或ICMP时，不能指定Port。
+        :type DestinationPort: str
+        :param DestinationCidr: 目的CIDR。
+        :type DestinationCidr: str
+        :param Action: 动作，ACCEPT 或 DROP。
+        :type Action: str
+        :param NetworkAclQuintupleEntryId: 网络ACL条目唯一ID。
+        :type NetworkAclQuintupleEntryId: str
+        :param Priority: 优先级，从1开始。
+        :type Priority: int
+        :param CreateTime: 创建时间，用于DescribeNetworkAclQuintupleEntries的出参。
+        :type CreateTime: str
+        :param NetworkAclDirection: 方向，INGRESS或EGRESS，用于DescribeNetworkAclQuintupleEntries的出参。
+        :type NetworkAclDirection: str
+        """
+        self.Protocol = None
+        self.Description = None
+        self.SourcePort = None
+        self.SourceCidr = None
+        self.DestinationPort = None
+        self.DestinationCidr = None
+        self.Action = None
+        self.NetworkAclQuintupleEntryId = None
+        self.Priority = None
+        self.CreateTime = None
+        self.NetworkAclDirection = None
+
+
+    def _deserialize(self, params):
+        self.Protocol = params.get("Protocol")
+        self.Description = params.get("Description")
+        self.SourcePort = params.get("SourcePort")
+        self.SourceCidr = params.get("SourceCidr")
+        self.DestinationPort = params.get("DestinationPort")
+        self.DestinationCidr = params.get("DestinationCidr")
+        self.Action = params.get("Action")
+        self.NetworkAclQuintupleEntryId = params.get("NetworkAclQuintupleEntryId")
+        self.Priority = params.get("Priority")
+        self.CreateTime = params.get("CreateTime")
+        self.NetworkAclDirection = params.get("NetworkAclDirection")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

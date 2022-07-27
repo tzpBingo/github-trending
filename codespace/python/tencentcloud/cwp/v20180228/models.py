@@ -8583,10 +8583,11 @@ class DescribeEmergencyVulListRequest(AbstractModel):
 <li>Level - String - 是否必填：否 - 漏洞等级筛选 1:低 2:中 3:高 4:提示</li>
 <li>VulName- String - 是否必填：否 - 漏洞名称搜索</li>
 <li>Uuids- String - 是否必填：否 - 主机uuid</li>
+<li>IsSupportDefense - int- 是否必填：否 - 是否支持防御 0:不支持 1:支持</li>
         :type Filters: list of Filters
         :param Order: 排序方式 desc , asc
         :type Order: str
-        :param By: 排序字段 PublishDate
+        :param By: 排序字段 PublishDate  LastScanTime HostCount
         :type By: str
         """
         self.Limit = None
@@ -11614,6 +11615,9 @@ class DescribeScanTaskDetailsResponse(AbstractModel):
         :param StoppingAll: 任务是否全部正在被停止 ture是
 注意：此字段可能返回 null，表示取不到有效值。
         :type StoppingAll: bool
+        :param VulCount: 扫描出漏洞个数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VulCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -11631,6 +11635,7 @@ class DescribeScanTaskDetailsResponse(AbstractModel):
         self.RiskEventCount = None
         self.Type = None
         self.StoppingAll = None
+        self.VulCount = None
         self.RequestId = None
 
 
@@ -11659,6 +11664,7 @@ class DescribeScanTaskDetailsResponse(AbstractModel):
         self.RiskEventCount = params.get("RiskEventCount")
         self.Type = params.get("Type")
         self.StoppingAll = params.get("StoppingAll")
+        self.VulCount = params.get("VulCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -12995,16 +13001,20 @@ class DescribeVulHostTopRequest(AbstractModel):
         r"""
         :param Top: 获取top值，1-100
         :type Top: int
-        :param VulCategory: 1:web-cms 漏洞，2.应用漏洞 3:安全基线 4: Linux软件漏洞 5: windows系统漏洞 6:应急漏洞
+        :param VulCategory: 1:web-cms 漏洞，2.应用漏洞   4: Linux软件漏洞 5: windows系统漏洞 6:应急漏洞，不填或者填0时返回 1，2，4，5 的总统计数据
         :type VulCategory: int
+        :param IsFollowVul: 是否仅统计重点关注漏洞 1=仅统计重点关注漏洞, 0=统计全部漏洞
+        :type IsFollowVul: int
         """
         self.Top = None
         self.VulCategory = None
+        self.IsFollowVul = None
 
 
     def _deserialize(self, params):
         self.Top = params.get("Top")
         self.VulCategory = params.get("VulCategory")
+        self.IsFollowVul = params.get("IsFollowVul")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13114,6 +13124,9 @@ class DescribeVulInfoCvssResponse(AbstractModel):
         :param Labels: 漏洞标签 多个逗号分割
 注意：此字段可能返回 null，表示取不到有效值。
         :type Labels: str
+        :param DefenseAttackCount: 已防御的攻击次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DefenseAttackCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -13131,6 +13144,7 @@ class DescribeVulInfoCvssResponse(AbstractModel):
         self.CveInfo = None
         self.CvssScoreFloat = None
         self.Labels = None
+        self.DefenseAttackCount = None
         self.RequestId = None
 
 
@@ -13149,6 +13163,7 @@ class DescribeVulInfoCvssResponse(AbstractModel):
         self.CveInfo = params.get("CveInfo")
         self.CvssScoreFloat = params.get("CvssScoreFloat")
         self.Labels = params.get("Labels")
+        self.DefenseAttackCount = params.get("DefenseAttackCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -13159,14 +13174,18 @@ class DescribeVulLevelCountRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param VulCategory: 1:web-cms 漏洞，2.应用漏洞 3:安全基线 4: Linux软件漏洞 5: windows系统漏洞 6:应急漏洞
+        :param VulCategory: 1:web-cms 漏洞，2.应用漏洞 3:安全基线 4: Linux软件漏洞 5: windows系统漏洞 6:应急漏洞，不填或者填0时返回 1，2，4，5 的总统计数据
         :type VulCategory: int
+        :param IsFollowVul: 是否仅统计重点关注漏洞 1=仅统计重点关注漏洞, 0=统计全部漏洞
+        :type IsFollowVul: int
         """
         self.VulCategory = None
+        self.IsFollowVul = None
 
 
     def _deserialize(self, params):
         self.VulCategory = params.get("VulCategory")
+        self.IsFollowVul = params.get("IsFollowVul")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13220,6 +13239,8 @@ class DescribeVulListRequest(AbstractModel):
 <li>Uuid- String - 是否必填：否 - 主机uuid查询</li>
 <li>VulName- string -</li>
 <li>VulCategory- string - 是否必填：否 - 漏洞类别 1: web-cms漏洞 2:应用漏洞  4: Linux软件漏洞 5: Windows系统漏洞</li>
+<li>IsSupportDefense - int- 是否必填：否 - 是否支持防御 0:不支持 1:支持</li>
+<li>Labels- string- 是否必填：否 - 标签搜索</li>
         :type Filters: list of Filters
         :param By: 可选排序字段 Level，LastTime，HostCount
         :type By: str
@@ -13299,16 +13320,20 @@ class DescribeVulTopRequest(AbstractModel):
         r"""
         :param Top: 漏洞风险服务器top，1-100
         :type Top: int
-        :param VulCategory: 1:web-cms 漏洞，2.应用漏洞 3:安全基线 4: Linux软件漏洞 5: windows系统漏洞 6:应急漏洞
+        :param VulCategory: 1:web-cms 漏洞，2.应用漏洞 4: Linux软件漏洞 5: windows系统漏洞 6:应急漏洞，不填或者填0时返回 1，2，4，5 的总统计数据
         :type VulCategory: int
+        :param IsFollowVul: 是否仅统计重点关注漏洞 1=仅统计重点关注漏洞, 0=统计全部漏洞
+        :type IsFollowVul: int
         """
         self.Top = None
         self.VulCategory = None
+        self.IsFollowVul = None
 
 
     def _deserialize(self, params):
         self.Top = params.get("Top")
         self.VulCategory = params.get("VulCategory")
+        self.IsFollowVul = params.get("IsFollowVul")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13776,6 +13801,9 @@ class EffectiveMachineInfo(AbstractModel):
         :param LicenseOrder: 授权订单对象
 注意：此字段可能返回 null，表示取不到有效值。
         :type LicenseOrder: :class:`tencentcloud.cwp.v20180228.models.LicenseOrder`
+        :param VulNum: 漏洞数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VulNum: int
         """
         self.MachineName = None
         self.MachinePublicIp = None
@@ -13786,6 +13814,7 @@ class EffectiveMachineInfo(AbstractModel):
         self.KernelVersion = None
         self.MachineStatus = None
         self.LicenseOrder = None
+        self.VulNum = None
 
 
     def _deserialize(self, params):
@@ -13805,6 +13834,7 @@ class EffectiveMachineInfo(AbstractModel):
         if params.get("LicenseOrder") is not None:
             self.LicenseOrder = LicenseOrder()
             self.LicenseOrder._deserialize(params.get("LicenseOrder"))
+        self.VulNum = params.get("VulNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13893,6 +13923,12 @@ class EmergencyVul(AbstractModel):
         :param HostCount: 影响机器数
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostCount: int
+        :param IsSupportDefense: 是否支持防御， 0:不支持 1:支持
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsSupportDefense: int
+        :param DefenseAttackCount: 已防御的攻击次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DefenseAttackCount: int
         """
         self.VulId = None
         self.Level = None
@@ -13906,6 +13942,8 @@ class EmergencyVul(AbstractModel):
         self.CvssScore = None
         self.Labels = None
         self.HostCount = None
+        self.IsSupportDefense = None
+        self.DefenseAttackCount = None
 
 
     def _deserialize(self, params):
@@ -13921,6 +13959,8 @@ class EmergencyVul(AbstractModel):
         self.CvssScore = params.get("CvssScore")
         self.Labels = params.get("Labels")
         self.HostCount = params.get("HostCount")
+        self.IsSupportDefense = params.get("IsSupportDefense")
+        self.DefenseAttackCount = params.get("DefenseAttackCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15562,6 +15602,9 @@ class HostLoginList(AbstractModel):
         :param Location: 位置名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type Location: str
+        :param Quuid: 主机quuid
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Quuid: str
         """
         self.Id = None
         self.Uuid = None
@@ -15581,6 +15624,7 @@ class HostLoginList(AbstractModel):
         self.IsRiskSrcIp = None
         self.RiskLevel = None
         self.Location = None
+        self.Quuid = None
 
 
     def _deserialize(self, params):
@@ -15602,6 +15646,7 @@ class HostLoginList(AbstractModel):
         self.IsRiskSrcIp = params.get("IsRiskSrcIp")
         self.RiskLevel = params.get("RiskLevel")
         self.Location = params.get("Location")
+        self.Quuid = params.get("Quuid")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16311,6 +16356,12 @@ class MalwareInfo(AbstractModel):
         :param Uuid: 主机uuid
 注意：此字段可能返回 null，表示取不到有效值。
         :type Uuid: str
+        :param ModifyTime: 最近修改时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ModifyTime: str
+        :param StrFileAccessTime: 最近访问时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StrFileAccessTime: str
         """
         self.VirusName = None
         self.FileSize = None
@@ -16339,6 +16390,8 @@ class MalwareInfo(AbstractModel):
         self.Level = None
         self.CheckPlatform = None
         self.Uuid = None
+        self.ModifyTime = None
+        self.StrFileAccessTime = None
 
 
     def _deserialize(self, params):
@@ -16369,6 +16422,8 @@ class MalwareInfo(AbstractModel):
         self.Level = params.get("Level")
         self.CheckPlatform = params.get("CheckPlatform")
         self.Uuid = params.get("Uuid")
+        self.ModifyTime = params.get("ModifyTime")
+        self.StrFileAccessTime = params.get("StrFileAccessTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18013,6 +18068,8 @@ class ScanTaskDetails(AbstractModel):
         :type Id: int
         :param FailType: 失败详情
         :type FailType: int
+        :param MachineWanIp: 外网ip
+        :type MachineWanIp: str
         """
         self.HostIp = None
         self.HostName = None
@@ -18026,6 +18083,7 @@ class ScanTaskDetails(AbstractModel):
         self.Description = None
         self.Id = None
         self.FailType = None
+        self.MachineWanIp = None
 
 
     def _deserialize(self, params):
@@ -18041,6 +18099,7 @@ class ScanTaskDetails(AbstractModel):
         self.Description = params.get("Description")
         self.Id = params.get("Id")
         self.FailType = params.get("FailType")
+        self.MachineWanIp = params.get("MachineWanIp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19255,6 +19314,9 @@ class VulEffectHostList(AbstractModel):
         :param InstanceState: 实例状态："PENDING"-创建中 "LAUNCH_FAILED"-创建失败 "RUNNING"-运行中 "STOPPED"-关机 "STARTING"-表示开机中 "STOPPING"-表示关机中 "REBOOTING"-重启中 "SHUTDOWN"-表示停止待销毁 "TERMINATING"-表示销毁中 "
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceState: str
+        :param PublicIpAddresses: 外网ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PublicIpAddresses: str
         """
         self.EventId = None
         self.Status = None
@@ -19271,6 +19333,7 @@ class VulEffectHostList(AbstractModel):
         self.FixStatusMsg = None
         self.FirstDiscoveryTime = None
         self.InstanceState = None
+        self.PublicIpAddresses = None
 
 
     def _deserialize(self, params):
@@ -19289,6 +19352,7 @@ class VulEffectHostList(AbstractModel):
         self.FixStatusMsg = params.get("FixStatusMsg")
         self.FirstDiscoveryTime = params.get("FirstDiscoveryTime")
         self.InstanceState = params.get("InstanceState")
+        self.PublicIpAddresses = params.get("PublicIpAddresses")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19399,6 +19463,18 @@ class VulInfoList(AbstractModel):
         :param TaskId: 最后扫描任务的id
 注意：此字段可能返回 null，表示取不到有效值。
         :type TaskId: int
+        :param IsSupportDefense: 是否支持防御， 0:不支持 1:支持
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsSupportDefense: int
+        :param DefenseAttackCount: 已防御的攻击次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DefenseAttackCount: int
+        :param FirstAppearTime: 首次出现时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FirstAppearTime: str
+        :param VulCategory: 漏洞类别 1: web-cms漏洞 2:应用漏洞  4: Linux软件漏洞 5: Windows系统漏洞
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VulCategory: int
         """
         self.Ids = None
         self.Name = None
@@ -19419,6 +19495,10 @@ class VulInfoList(AbstractModel):
         self.Labels = None
         self.FixSwitch = None
         self.TaskId = None
+        self.IsSupportDefense = None
+        self.DefenseAttackCount = None
+        self.FirstAppearTime = None
+        self.VulCategory = None
 
 
     def _deserialize(self, params):
@@ -19441,6 +19521,10 @@ class VulInfoList(AbstractModel):
         self.Labels = params.get("Labels")
         self.FixSwitch = params.get("FixSwitch")
         self.TaskId = params.get("TaskId")
+        self.IsSupportDefense = params.get("IsSupportDefense")
+        self.DefenseAttackCount = params.get("DefenseAttackCount")
+        self.FirstAppearTime = params.get("FirstAppearTime")
+        self.VulCategory = params.get("VulCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

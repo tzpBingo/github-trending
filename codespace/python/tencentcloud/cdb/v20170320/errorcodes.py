@@ -173,6 +173,9 @@ INTERNALERROR_DFWERROR = 'InternalError.DfwError'
 # sql错误。
 INTERNALERROR_EXESQLERROR = 'InternalError.ExeSqlError'
 
+# sql执行失败。
+INTERNALERROR_EXECUTESQLERROR = 'InternalError.ExecuteSQLError'
+
 # 文件传输异常。
 INTERNALERROR_FTPERROR = 'InternalError.FtpError'
 
@@ -412,6 +415,9 @@ OPERATIONDENIED_DELETEROOTACCOUNTERROR = 'OperationDenied.DeleteRootAccountError
 
 # 该实例无此功能权限。
 OPERATIONDENIED_FUNCTIONDENIED = 'OperationDenied.FunctionDenied'
+
+# 当前类型实例不支持该操作。
+OPERATIONDENIED_INSTTYPENOTSUPPORT = 'OperationDenied.InstTypeNotSupport'
 
 # 实例锁冲突，请稍后重试。
 OPERATIONDENIED_INSTANCELOCKERCONFLICT = 'OperationDenied.InstanceLockerConflict'
