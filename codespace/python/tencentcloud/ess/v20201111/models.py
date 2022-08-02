@@ -41,7 +41,7 @@ class ApproverInfo(AbstractModel):
         :type ApproverName: str
         :param ApproverMobile: 本环节需要操作人的手机号
         :type ApproverMobile: str
-        :param SignComponents: 本环节操作人签署控件配置，为企业静默签署时，只允许类型为SIGN_SEAL（印章）和SIGN_DATE（日期）控件，并且传入印章编号。
+        :param SignComponents: 本环节操作人签署控件配置
         :type SignComponents: list of Component
         :param OrganizationName: 如果是企业,则为企业的名字
         :type OrganizationName: str
@@ -278,13 +278,15 @@ class Component(AbstractModel):
     def __init__(self):
         r"""
         :param ComponentType: 如果是 Component 控件类型，则可选类型为：
-TEXT - 内容文本控件
-DATE - 内容日期控件
-CHECK_BOX - 勾选框控件
+TEXT - 单行文本
+MULTI_LINE_TEXT - 多行文本
+CHECK_BOX - 勾选框
+ATTACHMENT - 附件
+SELECTOR - 选择器
 如果是 SignComponent 控件类型，则可选类型为：
-SIGN_SEAL - 签署印章控件
+SIGN_SEAL - 签署印章控件，静默签署时需要传入印章id作为ComponentValue
 SIGN_DATE - 签署日期控件
-SIGN_SIGNATURE - 手写签名控件
+SIGN_SIGNATURE - 手写签名控件，静默签署时不能使用
         :type ComponentType: str
         :param ComponentWidth: 参数控件宽度，单位pt
         :type ComponentWidth: float
@@ -316,7 +318,12 @@ ESIGN -- 个人印章类型
         :type ComponentExtra: str
         :param ComponentRecipientId: 控件关联的签署人ID
         :type ComponentRecipientId: str
-        :param ComponentValue: 控件所填写的内容
+        :param ComponentValue: 控件填充vaule，ComponentType和传入值类型对应关系：
+TEXT - 文本内容
+MULTI_LINE_TEXT - 文本内容
+CHECK_BOX - true/false
+ATTACHMENT - 附件的FileId，需要通过UploadFiles接口上传获取
+SELECTOR - 选项值
         :type ComponentValue: str
         :param IsFormType: 是否是表单域类型，默认不存在
         :type IsFormType: bool
@@ -377,6 +384,77 @@ KEYWORD 关键字，使用ComponentId指定关键字
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class CreateConvertTaskApiRequest(AbstractModel):
+    """CreateConvertTaskApi请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResourceId: 资源Id
+        :type ResourceId: str
+        :param ResourceType: 资源类型 取值范围doc,docx,html之一
+        :type ResourceType: str
+        :param ResourceName: 资源名称
+        :type ResourceName: str
+        :param Organization: 无
+        :type Organization: :class:`tencentcloud.ess.v20201111.models.OrganizationInfo`
+        :param Operator: 无
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param Agent: 无
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        """
+        self.ResourceId = None
+        self.ResourceType = None
+        self.ResourceName = None
+        self.Organization = None
+        self.Operator = None
+        self.Agent = None
+
+
+    def _deserialize(self, params):
+        self.ResourceId = params.get("ResourceId")
+        self.ResourceType = params.get("ResourceType")
+        self.ResourceName = params.get("ResourceName")
+        if params.get("Organization") is not None:
+            self.Organization = OrganizationInfo()
+            self.Organization._deserialize(params.get("Organization"))
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateConvertTaskApiResponse(AbstractModel):
+    """CreateConvertTaskApi返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 转换任务Id
+        :type TaskId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
 
 
 class CreateDocumentRequest(AbstractModel):
@@ -484,12 +562,7 @@ class CreateFlowByFilesRequest(AbstractModel):
         :type FileIds: list of str
         :param FlowType: 签署流程的类型(如销售合同/入职合同等)，最大长度200个字符
         :type FlowType: str
-        :param Components: 经办人内容控件配置。可选类型为：
-TEXT - 内容文本控件
-MULTI_LINE_TEXT - 多行文本控件
-CHECK_BOX - 勾选框控件
-ATTACHMENT - 附件
-注：默认字体大小为 字号12
+        :param Components: 经办人内容控件配置
         :type Components: list of Component
         :param CcInfos: 被抄送人的信息列表。
 注:此功能为白名单功能，若有需要，请联系电子签客服开白使用
@@ -1400,11 +1473,16 @@ class FormField(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ComponentValue: 控件填充value
+        :param ComponentValue: 控件填充value，ComponentType和传入值类型对应关系：
+TEXT - 文本内容
+MULTI_LINE_TEXT - 文本内容
+CHECK_BOX - true/false
+ATTACHMENT - 附件的FileId，需要通过UploadFiles接口上传获取
+SELECTOR - 模板中配置的选项值
         :type ComponentValue: str
-        :param ComponentId: 控件id
+        :param ComponentId: 控件id，和ComponentName选择一项传入即可
         :type ComponentId: str
-        :param ComponentName: 控件名字，最大长度不超过30字符
+        :param ComponentName: 控件名字，最大长度不超过30字符，和ComponentId选择一项传入即可
         :type ComponentName: str
         """
         self.ComponentValue = None
@@ -1416,6 +1494,121 @@ class FormField(AbstractModel):
         self.ComponentValue = params.get("ComponentValue")
         self.ComponentId = params.get("ComponentId")
         self.ComponentName = params.get("ComponentName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetTaskResultApiRequest(AbstractModel):
+    """GetTaskResultApi请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务Id
+        :type TaskId: str
+        :param Organization: 企业信息
+        :type Organization: :class:`tencentcloud.ess.v20201111.models.OrganizationInfo`
+        :param Operator: 操作人信息
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param Agent: 渠道信息
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        """
+        self.TaskId = None
+        self.Organization = None
+        self.Operator = None
+        self.Agent = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        if params.get("Organization") is not None:
+            self.Organization = OrganizationInfo()
+            self.Organization._deserialize(params.get("Organization"))
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetTaskResultApiResponse(AbstractModel):
+    """GetTaskResultApi返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务Id
+        :type TaskId: str
+        :param TaskStatus: 任务状态
+        :type TaskStatus: int
+        :param TaskMessage: 状态描述
+        :type TaskMessage: str
+        :param ResourceId: 资源Id
+        :type ResourceId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.TaskStatus = None
+        self.TaskMessage = None
+        self.ResourceId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.TaskStatus = params.get("TaskStatus")
+        self.TaskMessage = params.get("TaskMessage")
+        self.ResourceId = params.get("ResourceId")
+        self.RequestId = params.get("RequestId")
+
+
+class OrganizationInfo(AbstractModel):
+    """机构信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OrganizationId: 机构在平台的编号
+        :type OrganizationId: str
+        :param Channel: 用户渠道
+        :type Channel: str
+        :param OrganizationOpenId: 用户在渠道的机构编号
+        :type OrganizationOpenId: str
+        :param ClientIp: 用户真实的IP
+        :type ClientIp: str
+        :param ProxyIp: 机构的代理IP
+        :type ProxyIp: str
+        """
+        self.OrganizationId = None
+        self.Channel = None
+        self.OrganizationOpenId = None
+        self.ClientIp = None
+        self.ProxyIp = None
+
+
+    def _deserialize(self, params):
+        self.OrganizationId = params.get("OrganizationId")
+        self.Channel = params.get("Channel")
+        self.OrganizationOpenId = params.get("OrganizationOpenId")
+        self.ClientIp = params.get("ClientIp")
+        self.ProxyIp = params.get("ProxyIp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
