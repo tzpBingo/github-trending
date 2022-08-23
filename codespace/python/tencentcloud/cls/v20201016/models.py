@@ -536,7 +536,7 @@ class CompressInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Format: 压缩格式，支持gzip、lzop和none不压缩
+        :param Format: 压缩格式，支持gzip、lzop、snappy和none不压缩
         :type Format: str
         """
         self.Format = None
@@ -758,7 +758,7 @@ class ConsumerContent(AbstractModel):
         :param EnableTag: 是否投递 TAG 信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type EnableTag: bool
-        :param MetaFields: 需要投递的元数据列表，目前仅支持：\_\_SOURCE\_\_，\_\_FILENAME\_\_和\_\_TIMESTAMP\_\_
+        :param MetaFields: 需要投递的元数据列表，目前仅支持：\_\_SOURCE\_\_，\_\_FILENAME\_\_，\_\_TIMESTAMP\_\_，\_\_HOSTNAME\_\_和\_\_PKGID\_\_
 注意：此字段可能返回 null，表示取不到有效值。
         :type MetaFields: list of str
         :param TagJsonNotTiled: 当EnableTag为true时，必须填写TagJsonNotTiled字段，TagJsonNotTiled用于标识tag信息是否json平铺，TagJsonNotTiled为true时不平铺，false时平铺
@@ -1370,11 +1370,14 @@ class CreateConsumerRequest(AbstractModel):
         :type Content: :class:`tencentcloud.cls.v20201016.models.ConsumerContent`
         :param Ckafka: CKafka的描述
         :type Ckafka: :class:`tencentcloud.cls.v20201016.models.Ckafka`
+        :param Compression: 投递时压缩方式，取值0，2，3。[0:NONE；2:SNAPPY；3:LZ4]
+        :type Compression: int
         """
         self.TopicId = None
         self.NeedContent = None
         self.Content = None
         self.Ckafka = None
+        self.Compression = None
 
 
     def _deserialize(self, params):
@@ -1386,6 +1389,7 @@ class CreateConsumerRequest(AbstractModel):
         if params.get("Ckafka") is not None:
             self.Ckafka = Ckafka()
             self.Ckafka._deserialize(params.get("Ckafka"))
+        self.Compression = params.get("Compression")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2808,6 +2812,9 @@ class DescribeConsumerResponse(AbstractModel):
         :type Content: :class:`tencentcloud.cls.v20201016.models.ConsumerContent`
         :param Ckafka: CKafka的描述
         :type Ckafka: :class:`tencentcloud.cls.v20201016.models.Ckafka`
+        :param Compression: 压缩方式[0:NONE；2:SNAPPY；3:LZ4]
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Compression: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -2815,6 +2822,7 @@ class DescribeConsumerResponse(AbstractModel):
         self.NeedContent = None
         self.Content = None
         self.Ckafka = None
+        self.Compression = None
         self.RequestId = None
 
 
@@ -2827,6 +2835,7 @@ class DescribeConsumerResponse(AbstractModel):
         if params.get("Ckafka") is not None:
             self.Ckafka = Ckafka()
             self.Ckafka._deserialize(params.get("Ckafka"))
+        self.Compression = params.get("Compression")
         self.RequestId = params.get("RequestId")
 
 
@@ -5037,12 +5046,15 @@ class ModifyConsumerRequest(AbstractModel):
         :type Content: :class:`tencentcloud.cls.v20201016.models.ConsumerContent`
         :param Ckafka: CKafka的描述
         :type Ckafka: :class:`tencentcloud.cls.v20201016.models.Ckafka`
+        :param Compression: 投递时压缩方式，取值0，2，3。[0:NONE；2:SNAPPY；3:LZ4]
+        :type Compression: int
         """
         self.TopicId = None
         self.Effective = None
         self.NeedContent = None
         self.Content = None
         self.Ckafka = None
+        self.Compression = None
 
 
     def _deserialize(self, params):
@@ -5055,6 +5067,7 @@ class ModifyConsumerRequest(AbstractModel):
         if params.get("Ckafka") is not None:
             self.Ckafka = Ckafka()
             self.Ckafka._deserialize(params.get("Ckafka"))
+        self.Compression = params.get("Compression")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5379,7 +5392,7 @@ class ModifyTopicRequest(AbstractModel):
         :type AutoSplit: bool
         :param MaxSplitPartitions: 若开启最大分裂，该主题能够能够允许的最大分区数
         :type MaxSplitPartitions: int
-        :param Period: 生命周期，单位天，可取值范围1~3600。取值为3640时代表永久保存
+        :param Period: 生命周期，单位天，标准存储取值范围1~3600，低频存储取值范围7~3600。取值为3640时代表永久保存
         :type Period: int
         """
         self.TopicId = None
@@ -5520,12 +5533,16 @@ class OpenKafkaConsumerRequest(AbstractModel):
         r"""
         :param FromTopicId: CLS控制台创建的TopicId
         :type FromTopicId: str
+        :param Compression: 压缩方式[0:NONE；2:SNAPPY；3:LZ4]
+        :type Compression: int
         """
         self.FromTopicId = None
+        self.Compression = None
 
 
     def _deserialize(self, params):
         self.FromTopicId = params.get("FromTopicId")
+        self.Compression = params.get("Compression")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

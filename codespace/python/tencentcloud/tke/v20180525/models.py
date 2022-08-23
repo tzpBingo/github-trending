@@ -2746,6 +2746,75 @@ class CreateEKSContainerInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateEdgeCVMInstancesRequest(AbstractModel):
+    """CreateEdgeCVMInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群id
+        :type ClusterID: str
+        :param RunInstancePara: CVM创建透传参数，json化字符串格式，如需要保证扩展集群节点请求幂等性需要在此参数添加ClientToken字段，详见[CVM创建实例](https://cloud.tencent.com/document/product/213/15730)接口。
+        :type RunInstancePara: str
+        :param CvmRegion: CVM所属Region
+        :type CvmRegion: str
+        :param CvmCount: CVM数量
+        :type CvmCount: int
+        :param External: 实例扩展信息
+        :type External: str
+        :param UserScript: 用户自定义脚本
+        :type UserScript: str
+        :param EnableEni: 是否开启弹性网卡功能
+        :type EnableEni: bool
+        """
+        self.ClusterID = None
+        self.RunInstancePara = None
+        self.CvmRegion = None
+        self.CvmCount = None
+        self.External = None
+        self.UserScript = None
+        self.EnableEni = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        self.RunInstancePara = params.get("RunInstancePara")
+        self.CvmRegion = params.get("CvmRegion")
+        self.CvmCount = params.get("CvmCount")
+        self.External = params.get("External")
+        self.UserScript = params.get("UserScript")
+        self.EnableEni = params.get("EnableEni")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateEdgeCVMInstancesResponse(AbstractModel):
+    """CreateEdgeCVMInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CvmIdSet: cvm id 列表
+        :type CvmIdSet: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.CvmIdSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.CvmIdSet = params.get("CvmIdSet")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateEdgeLogConfigRequest(AbstractModel):
     """CreateEdgeLogConfig请求参数结构体
 
@@ -3382,6 +3451,12 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         :type MaxNodePodNum: int
         :param PublicLB: 边缘计算集群公网访问LB信息
         :type PublicLB: :class:`tencentcloud.tke.v20180525.models.EdgeClusterPublicLB`
+        :param ClusterLevel: 集群的级别
+        :type ClusterLevel: str
+        :param AutoUpgradeClusterLevel: 集群是否支持自动升配
+        :type AutoUpgradeClusterLevel: bool
+        :param ChargeType: 集群计费方式
+        :type ChargeType: str
         """
         self.K8SVersion = None
         self.VpcId = None
@@ -3392,6 +3467,9 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         self.ClusterAdvancedSettings = None
         self.MaxNodePodNum = None
         self.PublicLB = None
+        self.ClusterLevel = None
+        self.AutoUpgradeClusterLevel = None
+        self.ChargeType = None
 
 
     def _deserialize(self, params):
@@ -3408,6 +3486,9 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         if params.get("PublicLB") is not None:
             self.PublicLB = EdgeClusterPublicLB()
             self.PublicLB._deserialize(params.get("PublicLB"))
+        self.ClusterLevel = params.get("ClusterLevel")
+        self.AutoUpgradeClusterLevel = params.get("AutoUpgradeClusterLevel")
+        self.ChargeType = params.get("ChargeType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8626,11 +8707,14 @@ class DescribeTKEEdgeScriptRequest(AbstractModel):
         :type NodeName: str
         :param Config: json格式的节点配置
         :type Config: str
+        :param ScriptVersion: 可以下载某个历史版本的edgectl脚本，默认下载最新版本，edgectl版本信息可以在脚本里查看
+        :type ScriptVersion: str
         """
         self.ClusterId = None
         self.Interface = None
         self.NodeName = None
         self.Config = None
+        self.ScriptVersion = None
 
 
     def _deserialize(self, params):
@@ -8638,6 +8722,7 @@ class DescribeTKEEdgeScriptRequest(AbstractModel):
         self.Interface = params.get("Interface")
         self.NodeName = params.get("NodeName")
         self.Config = params.get("Config")
+        self.ScriptVersion = params.get("ScriptVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8660,12 +8745,16 @@ class DescribeTKEEdgeScriptResponse(AbstractModel):
         :type Token: str
         :param Command: 下载命令
         :type Command: str
+        :param ScriptVersion: edgectl脚本版本，默认拉取最新版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScriptVersion: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Link = None
         self.Token = None
         self.Command = None
+        self.ScriptVersion = None
         self.RequestId = None
 
 
@@ -8673,6 +8762,7 @@ class DescribeTKEEdgeScriptResponse(AbstractModel):
         self.Link = params.get("Link")
         self.Token = params.get("Token")
         self.Command = params.get("Command")
+        self.ScriptVersion = params.get("ScriptVersion")
         self.RequestId = params.get("RequestId")
 
 
@@ -9221,6 +9311,9 @@ class EdgeCluster(AbstractModel):
         :param MaxNodePodNum: 节点最大Pod数
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxNodePodNum: int
+        :param ClusterAdvancedSettings: 集群高级设置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterAdvancedSettings: :class:`tencentcloud.tke.v20180525.models.EdgeClusterAdvancedSettings`
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -9233,6 +9326,7 @@ class EdgeCluster(AbstractModel):
         self.CreatedTime = None
         self.EdgeClusterVersion = None
         self.MaxNodePodNum = None
+        self.ClusterAdvancedSettings = None
 
 
     def _deserialize(self, params):
@@ -9247,6 +9341,9 @@ class EdgeCluster(AbstractModel):
         self.CreatedTime = params.get("CreatedTime")
         self.EdgeClusterVersion = params.get("EdgeClusterVersion")
         self.MaxNodePodNum = params.get("MaxNodePodNum")
+        if params.get("ClusterAdvancedSettings") is not None:
+            self.ClusterAdvancedSettings = EdgeClusterAdvancedSettings()
+            self.ClusterAdvancedSettings._deserialize(params.get("ClusterAdvancedSettings"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9266,14 +9363,24 @@ class EdgeClusterAdvancedSettings(AbstractModel):
         :param ExtraArgs: 集群自定义参数
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExtraArgs: :class:`tencentcloud.tke.v20180525.models.EdgeClusterExtraArgs`
+        :param Runtime: 运行时类型，支持"docker"和"containerd"，默认为docker
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Runtime: str
+        :param ProxyMode: 集群kube-proxy转发模式，支持"iptables"和"ipvs"，默认为iptables
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProxyMode: str
         """
         self.ExtraArgs = None
+        self.Runtime = None
+        self.ProxyMode = None
 
 
     def _deserialize(self, params):
         if params.get("ExtraArgs") is not None:
             self.ExtraArgs = EdgeClusterExtraArgs()
             self.ExtraArgs._deserialize(params.get("ExtraArgs"))
+        self.Runtime = params.get("Runtime")
+        self.ProxyMode = params.get("ProxyMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

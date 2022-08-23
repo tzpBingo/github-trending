@@ -6149,9 +6149,9 @@ class DescribeAssetUserInfoRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Quuid: 服务器Quuid
+        :param Quuid: 云服务器UUID
         :type Quuid: str
-        :param Uuid: 服务器Uuid
+        :param Uuid: 主机安全UUID
         :type Uuid: str
         :param Name: 账户名
         :type Name: str
@@ -19428,7 +19428,7 @@ class VulInfoList(AbstractModel):
         :type LastTime: str
         :param HostCount: 影响主机数
         :type HostCount: int
-        :param Level: 漏洞等级 1:低 2:中 3:高 4:提示
+        :param Level: 漏洞等级 1:低 2:中 3:高 4:严重
         :type Level: int
         :param From: 废弃字段
 注意：此字段可能返回 null，表示取不到有效值。

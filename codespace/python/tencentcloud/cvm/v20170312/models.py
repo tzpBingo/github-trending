@@ -493,6 +493,38 @@ TENANT: 租赁
         
 
 
+class ChcHostDeniedActions(AbstractModel):
+    """CHC物理服务器实例禁止操作的返回结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcId: CHC物理服务器的实例id
+        :type ChcId: str
+        :param State: CHC物理服务器的状态
+        :type State: str
+        :param DenyActions: 当前CHC物理服务器禁止做的操作
+        :type DenyActions: list of str
+        """
+        self.ChcId = None
+        self.State = None
+        self.DenyActions = None
+
+
+    def _deserialize(self, params):
+        self.ChcId = params.get("ChcId")
+        self.State = params.get("State")
+        self.DenyActions = params.get("DenyActions")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ConfigureChcAssistVpcRequest(AbstractModel):
     """ConfigureChcAssistVpc请求参数结构体
 
@@ -1205,7 +1237,7 @@ class DataDisk(AbstractModel):
         r"""
         :param DiskSize: 数据盘大小，单位：GB。最小调整步长为10G，不同数据盘类型取值范围不同，具体限制详见：[存储概述](https://cloud.tencent.com/document/product/213/4952)。默认值为0，表示不购买数据盘。更多限制详见产品文档。
         :type DiskSize: int
-        :param DiskType: 数据盘类型。数据盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>LOCAL_NVME：本地NVME硬盘，与InstanceType强相关，不支持指定<br><li>LOCAL_PRO：本地HDD硬盘，与InstanceType强相关，不支持指定<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_HSSD：增强型SSD云硬盘<br><li>CLOUD_TSSD：极速型SSD云硬盘<br><br>默认取值：LOCAL_BASIC。<br><br>该参数对`ResizeInstanceDisk`接口无效。
+        :param DiskType: 数据盘类型。数据盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>LOCAL_NVME：本地NVME硬盘，与InstanceType强相关，不支持指定<br><li>LOCAL_PRO：本地HDD硬盘，与InstanceType强相关，不支持指定<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_HSSD：增强型SSD云硬盘<br><li>CLOUD_TSSD：极速型SSD云硬盘<br><li>CLOUD_BSSD：通用型SSD云硬盘<br><br>默认取值：LOCAL_BASIC。<br><br>该参数对`ResizeInstanceDisk`接口无效。
         :type DiskType: str
         :param DiskId: 数据盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID，暂时不支持该参数。
 该参数目前仅用于`DescribeInstances`等查询类接口的返回参数，不可用于`RunInstances`等写接口的入参。
@@ -1542,6 +1574,56 @@ class DescribeAccountQuotaResponse(AbstractModel):
         if params.get("AccountQuotaOverview") is not None:
             self.AccountQuotaOverview = AccountQuotaOverview()
             self.AccountQuotaOverview._deserialize(params.get("AccountQuotaOverview"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeChcDeniedActionsRequest(AbstractModel):
+    """DescribeChcDeniedActions请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcIds: CHC物理服务器实例id
+        :type ChcIds: list of str
+        """
+        self.ChcIds = None
+
+
+    def _deserialize(self, params):
+        self.ChcIds = params.get("ChcIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeChcDeniedActionsResponse(AbstractModel):
+    """DescribeChcDeniedActions返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChcHostDeniedActionSet: CHC实例禁止操作信息
+        :type ChcHostDeniedActionSet: list of ChcHostDeniedActions
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ChcHostDeniedActionSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("ChcHostDeniedActionSet") is not None:
+            self.ChcHostDeniedActionSet = []
+            for item in params.get("ChcHostDeniedActionSet"):
+                obj = ChcHostDeniedActions()
+                obj._deserialize(item)
+                self.ChcHostDeniedActionSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -7822,7 +7904,7 @@ class RunInstancesRequest(AbstractModel):
         :type SystemDisk: :class:`tencentcloud.cvm.v20170312.models.SystemDisk`
         :param DataDisks: 实例数据盘配置信息。若不指定该参数，则默认不购买数据盘。支持购买的时候指定21块数据盘，其中最多包含1块LOCAL_BASIC数据盘或者LOCAL_SSD数据盘，最多包含20块CLOUD_BASIC数据盘、CLOUD_PREMIUM数据盘或者CLOUD_SSD数据盘。
         :type DataDisks: list of DataDisk
-        :param VirtualPrivateCloud: 私有网络相关信息配置。通过该参数可以指定私有网络的ID，子网ID等信息。若不指定该参数，则默认使用基础网络。若在此参数中指定了私有网络IP，即表示每个实例的主网卡IP；同时，InstanceCount参数必须与私有网络IP的个数一致且不能大于20。
+        :param VirtualPrivateCloud: 私有网络相关信息配置。通过该参数可以指定私有网络的ID，子网ID等信息。若在此参数中指定了私有网络IP，即表示每个实例的主网卡IP；同时，InstanceCount参数必须与私有网络IP的个数一致且不能大于20。
         :type VirtualPrivateCloud: :class:`tencentcloud.cvm.v20170312.models.VirtualPrivateCloud`
         :param InternetAccessible: 公网带宽相关信息设置。若不指定该参数，则默认公网带宽为0Mbps。
         :type InternetAccessible: :class:`tencentcloud.cvm.v20170312.models.InternetAccessible`
@@ -7974,7 +8056,7 @@ class RunInstancesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceIdSet: 当通过本接口来创建实例时会返回该参数，表示一个或多个实例`ID`。返回实例`ID`列表并不代表实例创建成功，可根据 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728) 接口查询返回的InstancesSet中对应实例的`ID`的状态来判断创建是否完成；如果实例状态由“准备中”变为“正在运行”，则为创建成功。
+        :param InstanceIdSet: 当通过本接口来创建实例时会返回该参数，表示一个或多个实例`ID`。返回实例`ID`列表并不代表实例创建成功，可根据 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728) 接口查询返回的InstancesSet中对应实例的`ID`的状态来判断创建是否完成；如果实例状态由“PENDING(创建中)”变为“运行中(RUNNING)”，则为创建成功。
         :type InstanceIdSet: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -8303,19 +8385,25 @@ class SyncImagesRequest(AbstractModel):
         :param ImageIds: 镜像ID列表 ，镜像ID可以通过如下方式获取：<br><li>通过[DescribeImages](https://cloud.tencent.com/document/api/213/15715)接口返回的`ImageId`获取。<br><li>通过[镜像控制台](https://console.cloud.tencent.com/cvm/image)获取。<br>镜像ID必须满足限制：<br><li>镜像ID对应的镜像状态必须为`NORMAL`。<br>镜像状态请参考[镜像数据表](https://cloud.tencent.com/document/product/213/15753#Image)。
         :type ImageIds: list of str
         :param DestinationRegions: 目的同步地域列表；必须满足限制：<br><li>不能为源地域，<br><li>必须是一个合法的Region。<br><li>暂不支持部分地域同步。<br>具体地域参数请参考[Region](https://cloud.tencent.com/document/product/213/6091)。
+
+如果是共享镜像，则目的同步地域仅支持源地域，表示将共享镜像复制为同地域的自定义镜像。
         :type DestinationRegions: list of str
-        :param DryRun: 检测是否支持发起同步镜像
+        :param DryRun: 检测是否支持发起同步镜像。
         :type DryRun: bool
+        :param ImageName: 目标镜像名称。
+        :type ImageName: str
         """
         self.ImageIds = None
         self.DestinationRegions = None
         self.DryRun = None
+        self.ImageName = None
 
 
     def _deserialize(self, params):
         self.ImageIds = params.get("ImageIds")
         self.DestinationRegions = params.get("DestinationRegions")
         self.DryRun = params.get("DryRun")
+        self.ImageName = params.get("ImageName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8349,7 +8437,7 @@ class SystemDisk(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><br>默认取值：当前有库存的硬盘类型。
+        :param DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_BSSD：通用性SSD云硬盘<br><br>默认取值：当前有库存的硬盘类型。
         :type DiskType: str
         :param DiskId: 系统盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID。暂时不支持该参数。
 该参数目前仅用于`DescribeInstances`等查询类接口的返回参数，不可用于`RunInstances`等写接口的入参。

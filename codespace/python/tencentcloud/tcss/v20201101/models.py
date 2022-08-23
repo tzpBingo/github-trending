@@ -7449,15 +7449,19 @@ class DescribeAssetImageVirusListExportResponse(AbstractModel):
         r"""
         :param DownloadUrl: excel文件下载地址
         :type DownloadUrl: str
+        :param JobId: 任务ID
+        :type JobId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.DownloadUrl = None
+        self.JobId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.DownloadUrl = params.get("DownloadUrl")
+        self.JobId = params.get("JobId")
         self.RequestId = params.get("RequestId")
 
 
@@ -7897,6 +7901,8 @@ class DescribeAssetSummaryResponse(AbstractModel):
         :type LatestImageScanTime: str
         :param ImageUnsafeCnt: 风险镜像个数
         :type ImageUnsafeCnt: int
+        :param HostUnInstallCnt: 主机未安装agent数量
+        :type HostUnInstallCnt: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -7919,6 +7925,7 @@ class DescribeAssetSummaryResponse(AbstractModel):
         self.WebServiceCnt = None
         self.LatestImageScanTime = None
         self.ImageUnsafeCnt = None
+        self.HostUnInstallCnt = None
         self.RequestId = None
 
 
@@ -7942,6 +7949,7 @@ class DescribeAssetSummaryResponse(AbstractModel):
         self.WebServiceCnt = params.get("WebServiceCnt")
         self.LatestImageScanTime = params.get("LatestImageScanTime")
         self.ImageUnsafeCnt = params.get("ImageUnsafeCnt")
+        self.HostUnInstallCnt = params.get("HostUnInstallCnt")
         self.RequestId = params.get("RequestId")
 
 
@@ -8247,6 +8255,14 @@ class DescribeClusterSummaryResponse(AbstractModel):
         :type IndependentClusterCount: int
         :param NoRiskClusterCount: 无风险的集群数量
         :type NoRiskClusterCount: int
+        :param CheckedClusterCount: 已经检查集群数
+        :type CheckedClusterCount: int
+        :param AutoCheckClusterCount: 自动检查集群数
+        :type AutoCheckClusterCount: int
+        :param ManualCheckClusterCount: 手动检查集群数
+        :type ManualCheckClusterCount: int
+        :param FailedClusterCount: 检查失败集群数
+        :type FailedClusterCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -8256,6 +8272,10 @@ class DescribeClusterSummaryResponse(AbstractModel):
         self.ManagedClusterCount = None
         self.IndependentClusterCount = None
         self.NoRiskClusterCount = None
+        self.CheckedClusterCount = None
+        self.AutoCheckClusterCount = None
+        self.ManualCheckClusterCount = None
+        self.FailedClusterCount = None
         self.RequestId = None
 
 
@@ -8266,6 +8286,10 @@ class DescribeClusterSummaryResponse(AbstractModel):
         self.ManagedClusterCount = params.get("ManagedClusterCount")
         self.IndependentClusterCount = params.get("IndependentClusterCount")
         self.NoRiskClusterCount = params.get("NoRiskClusterCount")
+        self.CheckedClusterCount = params.get("CheckedClusterCount")
+        self.AutoCheckClusterCount = params.get("AutoCheckClusterCount")
+        self.ManualCheckClusterCount = params.get("ManualCheckClusterCount")
+        self.FailedClusterCount = params.get("FailedClusterCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -9011,6 +9035,8 @@ class DescribeContainerAssetSummaryResponse(AbstractModel):
         :type ImageRegistryCnt: int
         :param ImageTotalCnt: 镜像总数
         :type ImageTotalCnt: int
+        :param HostUnInstallCnt: 主机未安装agent数量
+        :type HostUnInstallCnt: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -9024,6 +9050,7 @@ class DescribeContainerAssetSummaryResponse(AbstractModel):
         self.HostOfflineCnt = None
         self.ImageRegistryCnt = None
         self.ImageTotalCnt = None
+        self.HostUnInstallCnt = None
         self.RequestId = None
 
 
@@ -9038,6 +9065,7 @@ class DescribeContainerAssetSummaryResponse(AbstractModel):
         self.HostOfflineCnt = params.get("HostOfflineCnt")
         self.ImageRegistryCnt = params.get("ImageRegistryCnt")
         self.ImageTotalCnt = params.get("ImageTotalCnt")
+        self.HostUnInstallCnt = params.get("HostUnInstallCnt")
         self.RequestId = params.get("RequestId")
 
 
@@ -11161,6 +11189,14 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         :param ContainerIsolateOperationSrc: 容器隔离操作来源
 注意：此字段可能返回 null，表示取不到有效值。
         :type ContainerIsolateOperationSrc: str
+        :param CheckPlatform: 检测平台
+1: 云查杀引擎
+2: tav
+3: binaryAi
+4: 异常行为
+5: 威胁情报
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CheckPlatform: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -11210,6 +11246,7 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         self.ContainerNetStatus = None
         self.ContainerNetSubStatus = None
         self.ContainerIsolateOperationSrc = None
+        self.CheckPlatform = None
         self.RequestId = None
 
 
@@ -11260,6 +11297,7 @@ CONTAINER_NOT_FOUND_DEAL_RECOVER:恢复时，容器不存在
         self.ContainerNetStatus = params.get("ContainerNetStatus")
         self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
         self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
+        self.CheckPlatform = params.get("CheckPlatform")
         self.RequestId = params.get("RequestId")
 
 
@@ -12856,6 +12894,14 @@ class ImageVirusInfo(AbstractModel):
         :param FileName: 文件名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type FileName: str
+        :param CheckPlatform: 检测平台
+1: 云查杀引擎
+2: tav
+3: binaryAi
+4: 异常行为
+5: 威胁情报
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CheckPlatform: list of str
         """
         self.Path = None
         self.RiskLevel = None
@@ -12868,6 +12914,7 @@ class ImageVirusInfo(AbstractModel):
         self.LatestScanTime = None
         self.Md5 = None
         self.FileName = None
+        self.CheckPlatform = None
 
 
     def _deserialize(self, params):
@@ -12882,6 +12929,7 @@ class ImageVirusInfo(AbstractModel):
         self.LatestScanTime = params.get("LatestScanTime")
         self.Md5 = params.get("Md5")
         self.FileName = params.get("FileName")
+        self.CheckPlatform = params.get("CheckPlatform")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16088,6 +16136,17 @@ VALIDATION: 参数非法
         :param MD5: md5值
 注意：此字段可能返回 null，表示取不到有效值。
         :type MD5: str
+        :param RiskLevel: 风险等级 RISK_CRITICAL, RISK_HIGH, RISK_MEDIUM, RISK_LOW, RISK_NOTICE。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RiskLevel: str
+        :param CheckPlatform: 检测平台
+1: 云查杀引擎
+2: tav
+3: binaryAi
+4: 异常行为
+5: 威胁情报
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CheckPlatform: list of str
         """
         self.FileName = None
         self.FilePath = None
@@ -16108,6 +16167,8 @@ VALIDATION: 参数非法
         self.ContainerNetSubStatus = None
         self.ContainerIsolateOperationSrc = None
         self.MD5 = None
+        self.RiskLevel = None
+        self.CheckPlatform = None
 
 
     def _deserialize(self, params):
@@ -16130,6 +16191,8 @@ VALIDATION: 参数非法
         self.ContainerNetSubStatus = params.get("ContainerNetSubStatus")
         self.ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
         self.MD5 = params.get("MD5")
+        self.RiskLevel = params.get("RiskLevel")
+        self.CheckPlatform = params.get("CheckPlatform")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

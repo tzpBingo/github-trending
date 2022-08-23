@@ -6222,14 +6222,18 @@ class SingleInvoiceInfo(AbstractModel):
         :type Name: str
         :param Value: 识别出的字段名称对应的值，也就是字段name对应的字符串结果。
         :type Value: str
+        :param Row: 字段属于第几行，用于相同字段的排版，如发票明细表格项目，普通字段使用默认值为-1，表示无列排版。
+        :type Row: int
         """
         self.Name = None
         self.Value = None
+        self.Row = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Value = params.get("Value")
+        self.Row = params.get("Row")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6265,12 +6269,15 @@ ItemNames=["姓名","性别"]
         :type IsPdf: bool
         :param PdfPageNumber: 需要识别的PDF页面的对应页码，仅支持PDF单页识别，当上传文件为PDF且IsPdf参数值为true时有效，默认值为1。
         :type PdfPageNumber: int
+        :param ReturnFullText: 是否开启全文字段识别，默认值为false，开启后可返回全文字段识别结果。
+        :type ReturnFullText: bool
         """
         self.ImageUrl = None
         self.ImageBase64 = None
         self.ItemNames = None
         self.IsPdf = None
         self.PdfPageNumber = None
+        self.ReturnFullText = None
 
 
     def _deserialize(self, params):
@@ -6279,6 +6286,7 @@ ItemNames=["姓名","性别"]
         self.ItemNames = params.get("ItemNames")
         self.IsPdf = params.get("IsPdf")
         self.PdfPageNumber = params.get("PdfPageNumber")
+        self.ReturnFullText = params.get("ReturnFullText")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8279,7 +8287,7 @@ class VatRollInvoiceInfo(AbstractModel):
     def __init__(self):
         r"""
         :param Name: 识别出的字段名称(关键字)，支持以下字段：
-发票代码、合计金额(小写)、合计金额(大写)、开票日期、发票号码、购买方识别号、销售方识别号、校验码、销售方名称、购买方名称、发票消费类型、省、市、是否有公司印章、服务类型、品名、种类。
+发票代码、合计金额(小写)、合计金额(大写)、开票日期、发票号码、购买方识别号、销售方识别号、校验码、销售方名称、购买方名称、发票消费类型、省、市、是否有公司印章、单价、金额、数量、服务类型、品名、种类。
         :type Name: str
         :param Value: 识别出的字段名称对应的值，也就是字段Name对应的字符串结果。
         :type Value: str

@@ -1314,6 +1314,8 @@ __sandbox__:沙箱环境
 __test__:测试环境
 缺省默认为生产环境
         :type Environment: str
+        :param NotifyUrl: 支付结果通知回调地址
+        :type NotifyUrl: str
         """
         self.PayeeId = None
         self.IncomeType = None
@@ -1322,6 +1324,7 @@ __test__:测试环境
         self.FundingAccountInfo = None
         self.Remark = None
         self.Environment = None
+        self.NotifyUrl = None
 
 
     def _deserialize(self, params):
@@ -1334,6 +1337,7 @@ __test__:测试环境
             self.FundingAccountInfo._deserialize(params.get("FundingAccountInfo"))
         self.Remark = params.get("Remark")
         self.Environment = params.get("Environment")
+        self.NotifyUrl = params.get("NotifyUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4104,6 +4108,34 @@ class CloudExternalPromptInfo(AbstractModel):
         self.ExternalPromptType = params.get("ExternalPromptType")
         self.ExternalPromptValue = params.get("ExternalPromptValue")
         self.ExternalPromptName = params.get("ExternalPromptName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CloudExternalUserInfo(AbstractModel):
+    """渠道方用户信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ExternalUserType: 渠道方用户类型
+        :type ExternalUserType: str
+        :param ExternalUserId: 渠道方用户ID
+        :type ExternalUserId: str
+        """
+        self.ExternalUserType = None
+        self.ExternalUserId = None
+
+
+    def _deserialize(self, params):
+        self.ExternalUserType = params.get("ExternalUserType")
+        self.ExternalUserId = params.get("ExternalUserId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9065,174 +9097,6 @@ class CreateRedInvoiceV2Response(AbstractModel):
         self.ErrCode = params.get("ErrCode")
         self.ErrMessage = params.get("ErrMessage")
         self.RequestId = params.get("RequestId")
-
-
-class CreateSinglePayRequest(AbstractModel):
-    """CreateSinglePay请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param SerialNumber: 业务流水号，历史唯一
-        :type SerialNumber: str
-        :param PayAccountNumber: 付方账户号
-        :type PayAccountNumber: str
-        :param PayAccountName: 付方账户名称
-        :type PayAccountName: str
-        :param Amount: 金额
-        :type Amount: int
-        :param RecvAccountNumber: 收方账户号
-        :type RecvAccountNumber: str
-        :param RecvAccountName: 收方账户名称
-        :type RecvAccountName: str
-        :param PayBankCnaps: 付方账户CNAPS号
-        :type PayBankCnaps: str
-        :param PayBankType: 付方账户银行大类，PayBankCnaps为空时必传（见常见问题-银企直连银行类型）
-        :type PayBankType: str
-        :param PayBankProvince: 付方账户银行所在省，PayBankCnaps为空时必传（见常见问题-银企直连省份枚举信息）
-        :type PayBankProvince: str
-        :param PayBankCity: 付方账户银行所在地区，PayBankCnaps为空时必传（见常见问题-银企直连城市枚举信息）
-        :type PayBankCity: str
-        :param RecvBankCnaps: 收方账户CNAPS号
-        :type RecvBankCnaps: str
-        :param RecvBankType: 收方账户银行大类，RecvBankCnaps为空时必传（见常见问题-银企直连银行类型）
-        :type RecvBankType: str
-        :param RecvBankProvince: 收方账户银行所在省，RecvBankCnaps为空时必传（见常见问题-银企直连省份枚举信息）
-        :type RecvBankProvince: str
-        :param RecvBankCity: 收方账户银行所在地区，RecvBankCnaps为空时必传（见常见问题-银企直连城市枚举信息）
-        :type RecvBankCity: str
-        :param RecvCertType: 收款方证件类型（见常见问题-银企直连证件类型枚举信息）
-        :type RecvCertType: str
-        :param RecvCertNo: 收款方证件号码
-        :type RecvCertNo: str
-        :param Summary: 摘要信息
-        :type Summary: str
-        :param Profile: 接入环境。沙箱环境填sandbox
-        :type Profile: str
-        """
-        self.SerialNumber = None
-        self.PayAccountNumber = None
-        self.PayAccountName = None
-        self.Amount = None
-        self.RecvAccountNumber = None
-        self.RecvAccountName = None
-        self.PayBankCnaps = None
-        self.PayBankType = None
-        self.PayBankProvince = None
-        self.PayBankCity = None
-        self.RecvBankCnaps = None
-        self.RecvBankType = None
-        self.RecvBankProvince = None
-        self.RecvBankCity = None
-        self.RecvCertType = None
-        self.RecvCertNo = None
-        self.Summary = None
-        self.Profile = None
-
-
-    def _deserialize(self, params):
-        self.SerialNumber = params.get("SerialNumber")
-        self.PayAccountNumber = params.get("PayAccountNumber")
-        self.PayAccountName = params.get("PayAccountName")
-        self.Amount = params.get("Amount")
-        self.RecvAccountNumber = params.get("RecvAccountNumber")
-        self.RecvAccountName = params.get("RecvAccountName")
-        self.PayBankCnaps = params.get("PayBankCnaps")
-        self.PayBankType = params.get("PayBankType")
-        self.PayBankProvince = params.get("PayBankProvince")
-        self.PayBankCity = params.get("PayBankCity")
-        self.RecvBankCnaps = params.get("RecvBankCnaps")
-        self.RecvBankType = params.get("RecvBankType")
-        self.RecvBankProvince = params.get("RecvBankProvince")
-        self.RecvBankCity = params.get("RecvBankCity")
-        self.RecvCertType = params.get("RecvCertType")
-        self.RecvCertNo = params.get("RecvCertNo")
-        self.Summary = params.get("Summary")
-        self.Profile = params.get("Profile")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateSinglePayResponse(AbstractModel):
-    """CreateSinglePay返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Result: 返回结果
-        :type Result: :class:`tencentcloud.cpdp.v20190820.models.CreateSinglePayResult`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Result = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Result") is not None:
-            self.Result = CreateSinglePayResult()
-            self.Result._deserialize(params.get("Result"))
-        self.RequestId = params.get("RequestId")
-
-
-class CreateSinglePayResult(AbstractModel):
-    """银企直连-单笔支付响应结果
-
-    """
-
-    def __init__(self):
-        r"""
-        :param HandleStatus: 受理状态（S：处理成功；F：处理失败）
-        :type HandleStatus: str
-        :param HandleMsg: 受理状态描述
-        :type HandleMsg: str
-        :param SerialNo: 业务流水号，历史唯一
-注意：此字段可能返回 null，表示取不到有效值。
-        :type SerialNo: str
-        :param BankSerialNo: 银行指令流水
-注意：此字段可能返回 null，表示取不到有效值。
-        :type BankSerialNo: str
-        :param PayStatus: 付款状态
-注意：此字段可能返回 null，表示取不到有效值。
-        :type PayStatus: str
-        :param BankRetCode: 银行原始返回码
-注意：此字段可能返回 null，表示取不到有效值。
-        :type BankRetCode: str
-        :param BankRetMsg: 银行原始返回
-注意：此字段可能返回 null，表示取不到有效值。
-        :type BankRetMsg: str
-        """
-        self.HandleStatus = None
-        self.HandleMsg = None
-        self.SerialNo = None
-        self.BankSerialNo = None
-        self.PayStatus = None
-        self.BankRetCode = None
-        self.BankRetMsg = None
-
-
-    def _deserialize(self, params):
-        self.HandleStatus = params.get("HandleStatus")
-        self.HandleMsg = params.get("HandleMsg")
-        self.SerialNo = params.get("SerialNo")
-        self.BankSerialNo = params.get("BankSerialNo")
-        self.PayStatus = params.get("PayStatus")
-        self.BankRetCode = params.get("BankRetCode")
-        self.BankRetMsg = params.get("BankRetMsg")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
 
 
 class CreateSinglePaymentData(AbstractModel):
@@ -23365,140 +23229,6 @@ class QueryShopOpenIdResult(AbstractModel):
         
 
 
-class QuerySinglePayItem(AbstractModel):
-    """银企直连-查询单笔支付状态条目
-
-    """
-
-    def __init__(self):
-        r"""
-        :param PayStatus: 付款状态（S：支付成功；P：支付处理中；F：支付失败）
-注意：此字段可能返回 null，表示取不到有效值。
-        :type PayStatus: str
-        :param PlatformMsg: 平台信息
-注意：此字段可能返回 null，表示取不到有效值。
-        :type PlatformMsg: str
-        :param BankRetCode: 银行原始返回码
-注意：此字段可能返回 null，表示取不到有效值。
-        :type BankRetCode: str
-        :param BankRetMsg: 银行原始返回
-注意：此字段可能返回 null，表示取不到有效值。
-        :type BankRetMsg: str
-        """
-        self.PayStatus = None
-        self.PlatformMsg = None
-        self.BankRetCode = None
-        self.BankRetMsg = None
-
-
-    def _deserialize(self, params):
-        self.PayStatus = params.get("PayStatus")
-        self.PlatformMsg = params.get("PlatformMsg")
-        self.BankRetCode = params.get("BankRetCode")
-        self.BankRetMsg = params.get("BankRetMsg")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class QuerySinglePayRequest(AbstractModel):
-    """QuerySinglePay请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param SerialNumber: 业务流水号
-        :type SerialNumber: str
-        :param Profile: 接入环境。沙箱环境填sandbox
-        :type Profile: str
-        """
-        self.SerialNumber = None
-        self.Profile = None
-
-
-    def _deserialize(self, params):
-        self.SerialNumber = params.get("SerialNumber")
-        self.Profile = params.get("Profile")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class QuerySinglePayResponse(AbstractModel):
-    """QuerySinglePay返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Result: 返回结果
-        :type Result: :class:`tencentcloud.cpdp.v20190820.models.QuerySinglePayResult`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Result = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Result") is not None:
-            self.Result = QuerySinglePayResult()
-            self.Result._deserialize(params.get("Result"))
-        self.RequestId = params.get("RequestId")
-
-
-class QuerySinglePayResult(AbstractModel):
-    """银企直连-查询单笔支付状态结果
-
-    """
-
-    def __init__(self):
-        r"""
-        :param HandleStatus: 受理状态（S：处理成功；F：处理失败）
-        :type HandleStatus: str
-        :param HandleMsg: 受理状态描述
-注意：此字段可能返回 null，表示取不到有效值。
-        :type HandleMsg: str
-        :param SerialNo: 业务流水号
-        :type SerialNo: str
-        :param Items: 支付明细
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Items: list of QuerySinglePayItem
-        """
-        self.HandleStatus = None
-        self.HandleMsg = None
-        self.SerialNo = None
-        self.Items = None
-
-
-    def _deserialize(self, params):
-        self.HandleStatus = params.get("HandleStatus")
-        self.HandleMsg = params.get("HandleMsg")
-        self.SerialNo = params.get("SerialNo")
-        if params.get("Items") is not None:
-            self.Items = []
-            for item in params.get("Items"):
-                obj = QuerySinglePayItem()
-                obj._deserialize(item)
-                self.Items.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
 class QuerySinglePaymentResultData(AbstractModel):
     """QuerySinglePaymentResult接口返回响应
 
@@ -27831,6 +27561,8 @@ ORDER_RECEIVE_MODE_COMBINE - 合单支付
 ORDER_RECEIVE_MODE_V_COMBINE - 虚拟合单支付
 若不传入该字段，则会根据是否传入子单来判断是 普通支付 还是 合单支付
         :type OrderReceiveMode: str
+        :param ExternalUserInfoList: 渠道方用户信息列表
+        :type ExternalUserInfoList: list of CloudExternalUserInfo
         """
         self.MidasAppId = None
         self.UserId = None
@@ -27870,6 +27602,7 @@ ORDER_RECEIVE_MODE_V_COMBINE - 虚拟合单支付
         self.ClientInfo = None
         self.ExternalPromptGroupList = None
         self.OrderReceiveMode = None
+        self.ExternalUserInfoList = None
 
 
     def _deserialize(self, params):
@@ -27934,6 +27667,12 @@ ORDER_RECEIVE_MODE_V_COMBINE - 虚拟合单支付
                 obj._deserialize(item)
                 self.ExternalPromptGroupList.append(obj)
         self.OrderReceiveMode = params.get("OrderReceiveMode")
+        if params.get("ExternalUserInfoList") is not None:
+            self.ExternalUserInfoList = []
+            for item in params.get("ExternalUserInfoList"):
+                obj = CloudExternalUserInfo()
+                obj._deserialize(item)
+                self.ExternalUserInfoList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

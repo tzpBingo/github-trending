@@ -429,7 +429,7 @@ class Response(SyncBase):
     def from_service_worker(self) -> bool:
         """Response.from_service_worker
 
-        Indicates whether this Response was fullfilled by a Service Worker's Fetch Handler (i.e. via
+        Indicates whether this Response was fulfilled by a Service Worker's Fetch Handler (i.e. via
         [FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).
 
         Returns
@@ -614,7 +614,7 @@ class Route(SyncBase):
         """
         return mapping.from_impl(self._impl_obj.request)
 
-    def abort(self, error_code: str = None) -> NoneType:
+    def abort(self, error_code: typing.Optional[str] = None) -> NoneType:
         """Route.abort
 
         Aborts the route's request.
@@ -648,12 +648,12 @@ class Route(SyncBase):
     def fulfill(
         self,
         *,
-        status: int = None,
+        status: typing.Optional[int] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        body: typing.Union[str, bytes] = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        content_type: str = None,
-        response: "APIResponse" = None
+        body: typing.Optional[typing.Union[str, bytes]] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        content_type: typing.Optional[str] = None,
+        response: typing.Optional["APIResponse"] = None
     ) -> NoneType:
         """Route.fulfill
 
@@ -708,10 +708,10 @@ class Route(SyncBase):
     def fallback(
         self,
         *,
-        url: str = None,
-        method: str = None,
+        url: typing.Optional[str] = None,
+        method: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        post_data: typing.Union[str, bytes] = None
+        post_data: typing.Optional[typing.Union[str, bytes]] = None
     ) -> NoneType:
         """Route.fallback
 
@@ -793,10 +793,10 @@ class Route(SyncBase):
     def continue_(
         self,
         *,
-        url: str = None,
-        method: str = None,
+        url: typing.Optional[str] = None,
+        method: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        post_data: typing.Union[str, bytes] = None
+        post_data: typing.Optional[typing.Union[str, bytes]] = None
     ) -> NoneType:
         """Route.continue_
 
@@ -922,7 +922,11 @@ class WebSocket(SyncBase):
         return mapping.from_maybe_impl(self._impl_obj.url)
 
     def expect_event(
-        self, event: str, predicate: typing.Callable = None, *, timeout: float = None
+        self,
+        event: str,
+        predicate: typing.Optional[typing.Callable] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager:
         """WebSocket.expect_event
 
@@ -951,7 +955,11 @@ class WebSocket(SyncBase):
         )
 
     def wait_for_event(
-        self, event: str, predicate: typing.Callable = None, *, timeout: float = None
+        self,
+        event: str,
+        predicate: typing.Optional[typing.Callable] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> typing.Any:
         """WebSocket.wait_for_event
 
@@ -1073,7 +1081,7 @@ class Keyboard(SyncBase):
             self._sync(self._impl_obj.insert_text(text=text))
         )
 
-    def type(self, text: str, *, delay: float = None) -> NoneType:
+    def type(self, text: str, *, delay: typing.Optional[float] = None) -> NoneType:
         """Keyboard.type
 
         Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
@@ -1100,7 +1108,7 @@ class Keyboard(SyncBase):
             self._sync(self._impl_obj.type(text=text, delay=delay))
         )
 
-    def press(self, key: str, *, delay: float = None) -> NoneType:
+    def press(self, key: str, *, delay: typing.Optional[float] = None) -> NoneType:
         """Keyboard.press
 
         `key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
@@ -1151,7 +1159,9 @@ mapping.register(KeyboardImpl, Keyboard)
 
 
 class Mouse(SyncBase):
-    def move(self, x: float, y: float, *, steps: int = None) -> NoneType:
+    def move(
+        self, x: float, y: float, *, steps: typing.Optional[int] = None
+    ) -> NoneType:
         """Mouse.move
 
         Dispatches a `mousemove` event.
@@ -1171,8 +1181,8 @@ class Mouse(SyncBase):
     def down(
         self,
         *,
-        button: Literal["left", "middle", "right"] = None,
-        click_count: int = None
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        click_count: typing.Optional[int] = None
     ) -> NoneType:
         """Mouse.down
 
@@ -1193,8 +1203,8 @@ class Mouse(SyncBase):
     def up(
         self,
         *,
-        button: Literal["left", "middle", "right"] = None,
-        click_count: int = None
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        click_count: typing.Optional[int] = None
     ) -> NoneType:
         """Mouse.up
 
@@ -1217,9 +1227,9 @@ class Mouse(SyncBase):
         x: float,
         y: float,
         *,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        click_count: int = None
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        click_count: typing.Optional[int] = None
     ) -> NoneType:
         """Mouse.click
 
@@ -1250,8 +1260,8 @@ class Mouse(SyncBase):
         x: float,
         y: float,
         *,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None
     ) -> NoneType:
         """Mouse.dblclick
 
@@ -1315,7 +1325,9 @@ mapping.register(TouchscreenImpl, Touchscreen)
 
 
 class JSHandle(SyncBase):
-    def evaluate(self, expression: str, arg: typing.Any = None) -> typing.Any:
+    def evaluate(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> typing.Any:
         """JSHandle.evaluate
 
         Returns the return value of `expression`.
@@ -1350,7 +1362,9 @@ class JSHandle(SyncBase):
             )
         )
 
-    def evaluate_handle(self, expression: str, arg: typing.Any = None) -> "JSHandle":
+    def evaluate_handle(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> "JSHandle":
         """JSHandle.evaluate_handle
 
         Returns the return value of `expression` as a `JSHandle`.
@@ -1628,7 +1642,9 @@ class ElementHandle(JSHandle):
 
         return mapping.from_maybe_impl(self._sync(self._impl_obj.is_visible()))
 
-    def dispatch_event(self, type: str, event_init: typing.Dict = None) -> NoneType:
+    def dispatch_event(
+        self, type: str, event_init: typing.Optional[typing.Dict] = None
+    ) -> NoneType:
         """ElementHandle.dispatch_event
 
         The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element,
@@ -1675,7 +1691,9 @@ class ElementHandle(JSHandle):
             )
         )
 
-    def scroll_into_view_if_needed(self, *, timeout: float = None) -> NoneType:
+    def scroll_into_view_if_needed(
+        self, *, timeout: typing.Optional[float] = None
+    ) -> NoneType:
         """ElementHandle.scroll_into_view_if_needed
 
         This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then tries to scroll element into view, unless it is
@@ -1702,10 +1720,10 @@ class ElementHandle(JSHandle):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.hover
 
@@ -1756,14 +1774,14 @@ class ElementHandle(JSHandle):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        click_count: int = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        click_count: typing.Optional[int] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.click
 
@@ -1828,13 +1846,13 @@ class ElementHandle(JSHandle):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.dblclick
 
@@ -1895,14 +1913,16 @@ class ElementHandle(JSHandle):
 
     def select_option(
         self,
-        value: typing.Union[str, typing.List[str]] = None,
+        value: typing.Optional[typing.Union[str, typing.List[str]]] = None,
         *,
-        index: typing.Union[int, typing.List[int]] = None,
-        label: typing.Union[str, typing.List[str]] = None,
-        element: typing.Union["ElementHandle", typing.List["ElementHandle"]] = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None
+        index: typing.Optional[typing.Union[int, typing.List[int]]] = None,
+        label: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+        element: typing.Optional[
+            typing.Union["ElementHandle", typing.List["ElementHandle"]]
+        ] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> typing.List[str]:
         """ElementHandle.select_option
 
@@ -1973,11 +1993,11 @@ class ElementHandle(JSHandle):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.tap
 
@@ -2033,9 +2053,9 @@ class ElementHandle(JSHandle):
         self,
         value: str,
         *,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        force: bool = None
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        force: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.fill
 
@@ -2072,7 +2092,12 @@ class ElementHandle(JSHandle):
             )
         )
 
-    def select_text(self, *, force: bool = None, timeout: float = None) -> NoneType:
+    def select_text(
+        self,
+        *,
+        force: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
+    ) -> NoneType:
         """ElementHandle.select_text
 
         This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then focuses the element and selects all its text
@@ -2095,7 +2120,7 @@ class ElementHandle(JSHandle):
             self._sync(self._impl_obj.select_text(force=force, timeout=timeout))
         )
 
-    def input_value(self, *, timeout: float = None) -> str:
+    def input_value(self, *, timeout: typing.Optional[float] = None) -> str:
         """ElementHandle.input_value
 
         Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element.
@@ -2128,8 +2153,8 @@ class ElementHandle(JSHandle):
             typing.List[FilePayload],
         ],
         *,
-        timeout: float = None,
-        no_wait_after: bool = None
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.set_input_files
 
@@ -2175,9 +2200,9 @@ class ElementHandle(JSHandle):
         self,
         text: str,
         *,
-        delay: float = None,
-        timeout: float = None,
-        no_wait_after: bool = None
+        delay: typing.Optional[float] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.type
 
@@ -2225,9 +2250,9 @@ class ElementHandle(JSHandle):
         self,
         key: str,
         *,
-        delay: float = None,
-        timeout: float = None,
-        no_wait_after: bool = None
+        delay: typing.Optional[float] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.press
 
@@ -2277,11 +2302,11 @@ class ElementHandle(JSHandle):
         self,
         checked: bool,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.set_checked
 
@@ -2335,11 +2360,11 @@ class ElementHandle(JSHandle):
     def check(
         self,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.check
 
@@ -2391,11 +2416,11 @@ class ElementHandle(JSHandle):
     def uncheck(
         self,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """ElementHandle.uncheck
 
@@ -2475,15 +2500,15 @@ class ElementHandle(JSHandle):
     def screenshot(
         self,
         *,
-        timeout: float = None,
-        type: Literal["jpeg", "png"] = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        quality: int = None,
-        omit_background: bool = None,
-        animations: Literal["allow", "disabled"] = None,
-        caret: Literal["hide", "initial"] = None,
-        scale: Literal["css", "device"] = None,
-        mask: typing.List["Locator"] = None
+        timeout: typing.Optional[float] = None,
+        type: typing.Optional[Literal["jpeg", "png"]] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        quality: typing.Optional[int] = None,
+        omit_background: typing.Optional[bool] = None,
+        animations: typing.Optional[Literal["allow", "disabled"]] = None,
+        caret: typing.Optional[Literal["hide", "initial"]] = None,
+        scale: typing.Optional[Literal["css", "device"]] = None,
+        mask: typing.Optional[typing.List["Locator"]] = None
     ) -> bytes:
         """ElementHandle.screenshot
 
@@ -2529,7 +2554,7 @@ class ElementHandle(JSHandle):
 
             Defaults to `"device"`.
         mask : Union[List[Locator], NoneType]
-            Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box
+            Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box
             `#FF00FF` that completely covers its bounding box.
 
         Returns
@@ -2594,7 +2619,7 @@ class ElementHandle(JSHandle):
         )
 
     def eval_on_selector(
-        self, selector: str, expression: str, arg: typing.Any = None
+        self, selector: str, expression: str, arg: typing.Optional[typing.Any] = None
     ) -> typing.Any:
         """ElementHandle.eval_on_selector
 
@@ -2639,7 +2664,7 @@ class ElementHandle(JSHandle):
         )
 
     def eval_on_selector_all(
-        self, selector: str, expression: str, arg: typing.Any = None
+        self, selector: str, expression: str, arg: typing.Optional[typing.Any] = None
     ) -> typing.Any:
         """ElementHandle.eval_on_selector_all
 
@@ -2694,7 +2719,7 @@ class ElementHandle(JSHandle):
             "disabled", "editable", "enabled", "hidden", "stable", "visible"
         ],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """ElementHandle.wait_for_element_state
 
@@ -2732,9 +2757,11 @@ class ElementHandle(JSHandle):
         self,
         selector: str,
         *,
-        state: Literal["attached", "detached", "hidden", "visible"] = None,
-        timeout: float = None,
-        strict: bool = None
+        state: typing.Optional[
+            Literal["attached", "detached", "hidden", "visible"]
+        ] = None,
+        timeout: typing.Optional[float] = None,
+        strict: typing.Optional[bool] = None
     ) -> typing.Optional["ElementHandle"]:
         """ElementHandle.wait_for_selector
 
@@ -2793,9 +2820,16 @@ mapping.register(ElementHandleImpl, ElementHandle)
 
 class Accessibility(SyncBase):
     def snapshot(
-        self, *, interesting_only: bool = None, root: "ElementHandle" = None
+        self,
+        *,
+        interesting_only: typing.Optional[bool] = None,
+        root: typing.Optional["ElementHandle"] = None
     ) -> typing.Optional[typing.Dict]:
         """Accessibility.snapshot
+
+        **DEPRECATED** This method is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you
+        need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for
+        integration with Axe.
 
         Captures the current state of the accessibility tree. The returned object represents the root accessible node of the
         page.
@@ -2899,8 +2933,8 @@ class FileChooser(SyncBase):
             typing.List[FilePayload],
         ],
         *,
-        timeout: float = None,
-        no_wait_after: bool = None
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """FileChooser.set_files
 
@@ -3000,9 +3034,11 @@ class Frame(SyncBase):
         self,
         url: str,
         *,
-        timeout: float = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
-        referer: str = None
+        timeout: typing.Optional[float] = None,
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None,
+        referer: typing.Optional[str] = None
     ) -> typing.Optional["Response"]:
         """Frame.goto
 
@@ -3060,11 +3096,13 @@ class Frame(SyncBase):
     def expect_navigation(
         self,
         *,
-        url: typing.Union[
-            str, typing.Pattern[str], typing.Callable[[str], bool]
+        url: typing.Optional[
+            typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]]
         ] = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
-        timeout: float = None
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None,
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Response"]:
         """Frame.expect_navigation
 
@@ -3117,8 +3155,10 @@ class Frame(SyncBase):
         self,
         url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         *,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
-        timeout: float = None
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Frame.wait_for_url
 
@@ -3158,9 +3198,11 @@ class Frame(SyncBase):
 
     def wait_for_load_state(
         self,
-        state: Literal["domcontentloaded", "load", "networkidle"] = None,
+        state: typing.Optional[
+            Literal["domcontentloaded", "load", "networkidle"]
+        ] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Frame.wait_for_load_state
 
@@ -3216,7 +3258,9 @@ class Frame(SyncBase):
 
         return mapping.from_impl(self._sync(self._impl_obj.frame_element()))
 
-    def evaluate(self, expression: str, arg: typing.Any = None) -> typing.Any:
+    def evaluate(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> typing.Any:
         """Frame.evaluate
 
         Returns the return value of `expression`.
@@ -3268,7 +3312,9 @@ class Frame(SyncBase):
             )
         )
 
-    def evaluate_handle(self, expression: str, arg: typing.Any = None) -> "JSHandle":
+    def evaluate_handle(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> "JSHandle":
         """Frame.evaluate_handle
 
         Returns the return value of `expression` as a `JSHandle`.
@@ -3321,7 +3367,7 @@ class Frame(SyncBase):
         )
 
     def query_selector(
-        self, selector: str, *, strict: bool = None
+        self, selector: str, *, strict: typing.Optional[bool] = None
     ) -> typing.Optional["ElementHandle"]:
         """Frame.query_selector
 
@@ -3377,9 +3423,11 @@ class Frame(SyncBase):
         self,
         selector: str,
         *,
-        strict: bool = None,
-        timeout: float = None,
-        state: Literal["attached", "detached", "hidden", "visible"] = None
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        state: typing.Optional[
+            Literal["attached", "detached", "hidden", "visible"]
+        ] = None
     ) -> typing.Optional["ElementHandle"]:
         """Frame.wait_for_selector
 
@@ -3445,7 +3493,11 @@ class Frame(SyncBase):
         )
 
     def is_checked(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Frame.is_checked
 
@@ -3477,7 +3529,11 @@ class Frame(SyncBase):
         )
 
     def is_disabled(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Frame.is_disabled
 
@@ -3509,7 +3565,11 @@ class Frame(SyncBase):
         )
 
     def is_editable(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Frame.is_editable
 
@@ -3541,7 +3601,11 @@ class Frame(SyncBase):
         )
 
     def is_enabled(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Frame.is_enabled
 
@@ -3573,7 +3637,11 @@ class Frame(SyncBase):
         )
 
     def is_hidden(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Frame.is_hidden
 
@@ -3606,7 +3674,11 @@ class Frame(SyncBase):
         )
 
     def is_visible(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Frame.is_visible
 
@@ -3642,10 +3714,10 @@ class Frame(SyncBase):
         self,
         selector: str,
         type: str,
-        event_init: typing.Dict = None,
+        event_init: typing.Optional[typing.Dict] = None,
         *,
-        strict: bool = None,
-        timeout: float = None
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Frame.dispatch_event
 
@@ -3710,9 +3782,9 @@ class Frame(SyncBase):
         self,
         selector: str,
         expression: str,
-        arg: typing.Any = None,
+        arg: typing.Optional[typing.Any] = None,
         *,
-        strict: bool = None
+        strict: typing.Optional[bool] = None
     ) -> typing.Any:
         """Frame.eval_on_selector
 
@@ -3766,7 +3838,7 @@ class Frame(SyncBase):
         )
 
     def eval_on_selector_all(
-        self, selector: str, expression: str, arg: typing.Any = None
+        self, selector: str, expression: str, arg: typing.Optional[typing.Any] = None
     ) -> typing.Any:
         """Frame.eval_on_selector_all
 
@@ -3826,8 +3898,10 @@ class Frame(SyncBase):
         self,
         html: str,
         *,
-        timeout: float = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None
+        timeout: typing.Optional[float] = None,
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None
     ) -> NoneType:
         """Frame.set_content
 
@@ -3871,10 +3945,10 @@ class Frame(SyncBase):
     def add_script_tag(
         self,
         *,
-        url: str = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        content: str = None,
-        type: str = None
+        url: typing.Optional[str] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        content: typing.Optional[str] = None,
+        type: typing.Optional[str] = None
     ) -> "ElementHandle":
         """Frame.add_script_tag
 
@@ -3911,9 +3985,9 @@ class Frame(SyncBase):
     def add_style_tag(
         self,
         *,
-        url: str = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        content: str = None
+        url: typing.Optional[str] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        content: typing.Optional[str] = None
     ) -> "ElementHandle":
         """Frame.add_style_tag
 
@@ -3950,15 +4024,15 @@ class Frame(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        click_count: int = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        click_count: typing.Optional[int] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.click
 
@@ -4032,14 +4106,14 @@ class Frame(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.dblclick
 
@@ -4113,12 +4187,12 @@ class Frame(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.tap
 
@@ -4183,10 +4257,10 @@ class Frame(SyncBase):
         selector: str,
         value: str,
         *,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        force: bool = None
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        force: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.fill
 
@@ -4239,8 +4313,8 @@ class Frame(SyncBase):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern[str]] = None,
-        has: "Locator" = None
+        has_text: typing.Optional[typing.Union[str, typing.Pattern[str]]] = None,
+        has: typing.Optional["Locator"] = None
     ) -> "Locator":
         """Frame.locator
 
@@ -4300,7 +4374,11 @@ class Frame(SyncBase):
         return mapping.from_impl(self._impl_obj.frame_locator(selector=selector))
 
     def focus(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Frame.focus
 
@@ -4327,7 +4405,11 @@ class Frame(SyncBase):
         )
 
     def text_content(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> typing.Optional[str]:
         """Frame.text_content
 
@@ -4359,7 +4441,11 @@ class Frame(SyncBase):
         )
 
     def inner_text(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> str:
         """Frame.inner_text
 
@@ -4391,7 +4477,11 @@ class Frame(SyncBase):
         )
 
     def inner_html(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> str:
         """Frame.inner_html
 
@@ -4423,7 +4513,12 @@ class Frame(SyncBase):
         )
 
     def get_attribute(
-        self, selector: str, name: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        name: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> typing.Optional[str]:
         """Frame.get_attribute
 
@@ -4463,11 +4558,11 @@ class Frame(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.hover
 
@@ -4525,13 +4620,13 @@ class Frame(SyncBase):
         source: str,
         target: str,
         *,
-        source_position: Position = None,
-        target_position: Position = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        timeout: float = None,
-        trial: bool = None
+        source_position: typing.Optional[Position] = None,
+        target_position: typing.Optional[Position] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.drag_and_drop
 
@@ -4585,15 +4680,17 @@ class Frame(SyncBase):
     def select_option(
         self,
         selector: str,
-        value: typing.Union[str, typing.List[str]] = None,
+        value: typing.Optional[typing.Union[str, typing.List[str]]] = None,
         *,
-        index: typing.Union[int, typing.List[int]] = None,
-        label: typing.Union[str, typing.List[str]] = None,
-        element: typing.Union["ElementHandle", typing.List["ElementHandle"]] = None,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        force: bool = None
+        index: typing.Optional[typing.Union[int, typing.List[int]]] = None,
+        label: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+        element: typing.Optional[
+            typing.Union["ElementHandle", typing.List["ElementHandle"]]
+        ] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        force: typing.Optional[bool] = None
     ) -> typing.List[str]:
         """Frame.select_option
 
@@ -4666,7 +4763,11 @@ class Frame(SyncBase):
         )
 
     def input_value(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> str:
         """Frame.input_value
 
@@ -4711,9 +4812,9 @@ class Frame(SyncBase):
             typing.List[FilePayload],
         ],
         *,
-        strict: bool = None,
-        timeout: float = None,
-        no_wait_after: bool = None
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.set_input_files
 
@@ -4760,10 +4861,10 @@ class Frame(SyncBase):
         selector: str,
         text: str,
         *,
-        delay: float = None,
-        strict: bool = None,
-        timeout: float = None,
-        no_wait_after: bool = None
+        delay: typing.Optional[float] = None,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.type
 
@@ -4816,10 +4917,10 @@ class Frame(SyncBase):
         selector: str,
         key: str,
         *,
-        delay: float = None,
-        strict: bool = None,
-        timeout: float = None,
-        no_wait_after: bool = None
+        delay: typing.Optional[float] = None,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.press
 
@@ -4878,12 +4979,12 @@ class Frame(SyncBase):
         self,
         selector: str,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.check
 
@@ -4944,12 +5045,12 @@ class Frame(SyncBase):
         self,
         selector: str,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.uncheck
 
@@ -5028,9 +5129,9 @@ class Frame(SyncBase):
         self,
         expression: str,
         *,
-        arg: typing.Any = None,
-        timeout: float = None,
-        polling: typing.Union[float, Literal["raf"]] = None
+        arg: typing.Optional[typing.Any] = None,
+        timeout: typing.Optional[float] = None,
+        polling: typing.Optional[typing.Union[float, Literal["raf"]]] = None
     ) -> "JSHandle":
         """Frame.wait_for_function
 
@@ -5107,12 +5208,12 @@ class Frame(SyncBase):
         selector: str,
         checked: bool,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Frame.set_checked
 
@@ -5205,8 +5306,8 @@ class FrameLocator(SyncBase):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern[str]] = None,
-        has: "Locator" = None
+        has_text: typing.Optional[typing.Union[str, typing.Pattern[str]]] = None,
+        has: typing.Optional["Locator"] = None
     ) -> "Locator":
         """FrameLocator.locator
 
@@ -5300,7 +5401,9 @@ class Worker(SyncBase):
         """
         return mapping.from_maybe_impl(self._impl_obj.url)
 
-    def evaluate(self, expression: str, arg: typing.Any = None) -> typing.Any:
+    def evaluate(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> typing.Any:
         """Worker.evaluate
 
         Returns the return value of `expression`.
@@ -5331,7 +5434,9 @@ class Worker(SyncBase):
             )
         )
 
-    def evaluate_handle(self, expression: str, arg: typing.Any = None) -> "JSHandle":
+    def evaluate_handle(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> "JSHandle":
         """Worker.evaluate_handle
 
         Returns the return value of `expression` as a `JSHandle`.
@@ -5371,10 +5476,10 @@ class Selectors(SyncBase):
     def register(
         self,
         name: str,
-        script: str = None,
+        script: typing.Optional[str] = None,
         *,
-        path: typing.Union[str, pathlib.Path] = None,
-        content_script: bool = None
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        content_script: typing.Optional[bool] = None
     ) -> NoneType:
         """Selectors.register
 
@@ -5533,7 +5638,7 @@ class Dialog(SyncBase):
         """
         return mapping.from_maybe_impl(self._impl_obj.default_value)
 
-    def accept(self, prompt_text: str = None) -> NoneType:
+    def accept(self, prompt_text: typing.Optional[str] = None) -> NoneType:
         """Dialog.accept
 
         Returns when the dialog has been accepted.
@@ -6130,6 +6235,10 @@ class Page(SyncContextManager):
     def accessibility(self) -> "Accessibility":
         """Page.accessibility
 
+        **DEPRECATED** This property is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you
+        need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for
+        integration with Axe.
+
         Returns
         -------
         Accessibility
@@ -6278,9 +6387,11 @@ class Page(SyncContextManager):
 
     def frame(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
         *,
-        url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]] = None
+        url: typing.Optional[
+            typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]]
+        ] = None
     ) -> typing.Optional["Frame"]:
         """Page.frame
 
@@ -6353,7 +6464,7 @@ class Page(SyncContextManager):
         )
 
     def query_selector(
-        self, selector: str, *, strict: bool = None
+        self, selector: str, *, strict: typing.Optional[bool] = None
     ) -> typing.Optional["ElementHandle"]:
         """Page.query_selector
 
@@ -6409,9 +6520,11 @@ class Page(SyncContextManager):
         self,
         selector: str,
         *,
-        timeout: float = None,
-        state: Literal["attached", "detached", "hidden", "visible"] = None,
-        strict: bool = None
+        timeout: typing.Optional[float] = None,
+        state: typing.Optional[
+            Literal["attached", "detached", "hidden", "visible"]
+        ] = None,
+        strict: typing.Optional[bool] = None
     ) -> typing.Optional["ElementHandle"]:
         """Page.wait_for_selector
 
@@ -6477,7 +6590,11 @@ class Page(SyncContextManager):
         )
 
     def is_checked(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Page.is_checked
 
@@ -6509,7 +6626,11 @@ class Page(SyncContextManager):
         )
 
     def is_disabled(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Page.is_disabled
 
@@ -6541,7 +6662,11 @@ class Page(SyncContextManager):
         )
 
     def is_editable(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Page.is_editable
 
@@ -6573,7 +6698,11 @@ class Page(SyncContextManager):
         )
 
     def is_enabled(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Page.is_enabled
 
@@ -6605,7 +6734,11 @@ class Page(SyncContextManager):
         )
 
     def is_hidden(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Page.is_hidden
 
@@ -6638,7 +6771,11 @@ class Page(SyncContextManager):
         )
 
     def is_visible(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> bool:
         """Page.is_visible
 
@@ -6674,10 +6811,10 @@ class Page(SyncContextManager):
         self,
         selector: str,
         type: str,
-        event_init: typing.Dict = None,
+        event_init: typing.Optional[typing.Dict] = None,
         *,
-        timeout: float = None,
-        strict: bool = None
+        timeout: typing.Optional[float] = None,
+        strict: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.dispatch_event
 
@@ -6738,7 +6875,9 @@ class Page(SyncContextManager):
             )
         )
 
-    def evaluate(self, expression: str, arg: typing.Any = None) -> typing.Any:
+    def evaluate(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> typing.Any:
         """Page.evaluate
 
         Returns the value of the `expression` invocation.
@@ -6794,7 +6933,9 @@ class Page(SyncContextManager):
             )
         )
 
-    def evaluate_handle(self, expression: str, arg: typing.Any = None) -> "JSHandle":
+    def evaluate_handle(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> "JSHandle":
         """Page.evaluate_handle
 
         Returns the value of the `expression` invocation as a `JSHandle`.
@@ -6850,9 +6991,9 @@ class Page(SyncContextManager):
         self,
         selector: str,
         expression: str,
-        arg: typing.Any = None,
+        arg: typing.Optional[typing.Any] = None,
         *,
-        strict: bool = None
+        strict: typing.Optional[bool] = None
     ) -> typing.Any:
         """Page.eval_on_selector
 
@@ -6905,7 +7046,7 @@ class Page(SyncContextManager):
         )
 
     def eval_on_selector_all(
-        self, selector: str, expression: str, arg: typing.Any = None
+        self, selector: str, expression: str, arg: typing.Optional[typing.Any] = None
     ) -> typing.Any:
         """Page.eval_on_selector_all
 
@@ -6950,10 +7091,10 @@ class Page(SyncContextManager):
     def add_script_tag(
         self,
         *,
-        url: str = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        content: str = None,
-        type: str = None
+        url: typing.Optional[str] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        content: typing.Optional[str] = None,
+        type: typing.Optional[str] = None
     ) -> "ElementHandle":
         """Page.add_script_tag
 
@@ -6991,9 +7132,9 @@ class Page(SyncContextManager):
     def add_style_tag(
         self,
         *,
-        url: str = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        content: str = None
+        url: typing.Optional[str] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        content: typing.Optional[str] = None
     ) -> "ElementHandle":
         """Page.add_style_tag
 
@@ -7083,7 +7224,11 @@ class Page(SyncContextManager):
         )
 
     def expose_binding(
-        self, name: str, callback: typing.Callable, *, handle: bool = None
+        self,
+        name: str,
+        callback: typing.Callable,
+        *,
+        handle: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.expose_binding
 
@@ -7194,8 +7339,10 @@ class Page(SyncContextManager):
         self,
         html: str,
         *,
-        timeout: float = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None
+        timeout: typing.Optional[float] = None,
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None
     ) -> NoneType:
         """Page.set_content
 
@@ -7228,9 +7375,11 @@ class Page(SyncContextManager):
         self,
         url: str,
         *,
-        timeout: float = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
-        referer: str = None
+        timeout: typing.Optional[float] = None,
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None,
+        referer: typing.Optional[str] = None
     ) -> typing.Optional["Response"]:
         """Page.goto
 
@@ -7292,8 +7441,10 @@ class Page(SyncContextManager):
     def reload(
         self,
         *,
-        timeout: float = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None
+        timeout: typing.Optional[float] = None,
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None
     ) -> typing.Optional["Response"]:
         """Page.reload
 
@@ -7325,9 +7476,11 @@ class Page(SyncContextManager):
 
     def wait_for_load_state(
         self,
-        state: Literal["domcontentloaded", "load", "networkidle"] = None,
+        state: typing.Optional[
+            Literal["domcontentloaded", "load", "networkidle"]
+        ] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Page.wait_for_load_state
 
@@ -7375,8 +7528,10 @@ class Page(SyncContextManager):
         self,
         url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
         *,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
-        timeout: float = None
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Page.wait_for_url
 
@@ -7417,7 +7572,11 @@ class Page(SyncContextManager):
         )
 
     def wait_for_event(
-        self, event: str, predicate: typing.Callable = None, *, timeout: float = None
+        self,
+        event: str,
+        predicate: typing.Optional[typing.Callable] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> typing.Any:
         """Page.wait_for_event
 
@@ -7455,8 +7614,10 @@ class Page(SyncContextManager):
     def go_back(
         self,
         *,
-        timeout: float = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None
+        timeout: typing.Optional[float] = None,
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None
     ) -> typing.Optional["Response"]:
         """Page.go_back
 
@@ -7491,8 +7652,10 @@ class Page(SyncContextManager):
     def go_forward(
         self,
         *,
-        timeout: float = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None
+        timeout: typing.Optional[float] = None,
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None
     ) -> typing.Optional["Response"]:
         """Page.go_forward
 
@@ -7527,10 +7690,10 @@ class Page(SyncContextManager):
     def emulate_media(
         self,
         *,
-        media: Literal["print", "screen"] = None,
-        color_scheme: Literal["dark", "light", "no-preference"] = None,
-        reduced_motion: Literal["no-preference", "reduce"] = None,
-        forced_colors: Literal["active", "none"] = None
+        media: typing.Optional[Literal["print", "screen"]] = None,
+        color_scheme: typing.Optional[Literal["dark", "light", "no-preference"]] = None,
+        reduced_motion: typing.Optional[Literal["no-preference", "reduce"]] = None,
+        forced_colors: typing.Optional[Literal["active", "none"]] = None
     ) -> NoneType:
         """Page.emulate_media
 
@@ -7629,7 +7792,10 @@ class Page(SyncContextManager):
         return mapping.from_maybe_impl(self._sync(self._impl_obj.bring_to_front()))
 
     def add_init_script(
-        self, script: str = None, *, path: typing.Union[str, pathlib.Path] = None
+        self,
+        script: typing.Optional[str] = None,
+        *,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None
     ) -> NoneType:
         """Page.add_init_script
 
@@ -7672,7 +7838,7 @@ class Page(SyncContextManager):
             typing.Callable[["Route", "Request"], typing.Any],
         ],
         *,
-        times: int = None
+        times: typing.Optional[int] = None
     ) -> NoneType:
         """Page.route
 
@@ -7747,9 +7913,11 @@ class Page(SyncContextManager):
     def unroute(
         self,
         url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
-        handler: typing.Union[
-            typing.Callable[["Route"], typing.Any],
-            typing.Callable[["Route", "Request"], typing.Any],
+        handler: typing.Optional[
+            typing.Union[
+                typing.Callable[["Route"], typing.Any],
+                typing.Callable[["Route", "Request"], typing.Any],
+            ]
         ] = None,
     ) -> NoneType:
         """Page.unroute
@@ -7776,9 +7944,9 @@ class Page(SyncContextManager):
         self,
         har: typing.Union[pathlib.Path, str],
         *,
-        url: typing.Union[str, typing.Pattern[str]] = None,
-        not_found: Literal["abort", "fallback"] = None,
-        update: bool = None
+        url: typing.Optional[typing.Union[str, typing.Pattern[str]]] = None,
+        not_found: typing.Optional[Literal["abort", "fallback"]] = None,
+        update: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.route_from_har
 
@@ -7817,17 +7985,17 @@ class Page(SyncContextManager):
     def screenshot(
         self,
         *,
-        timeout: float = None,
-        type: Literal["jpeg", "png"] = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        quality: int = None,
-        omit_background: bool = None,
-        full_page: bool = None,
-        clip: FloatRect = None,
-        animations: Literal["allow", "disabled"] = None,
-        caret: Literal["hide", "initial"] = None,
-        scale: Literal["css", "device"] = None,
-        mask: typing.List["Locator"] = None
+        timeout: typing.Optional[float] = None,
+        type: typing.Optional[Literal["jpeg", "png"]] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        quality: typing.Optional[int] = None,
+        omit_background: typing.Optional[bool] = None,
+        full_page: typing.Optional[bool] = None,
+        clip: typing.Optional[FloatRect] = None,
+        animations: typing.Optional[Literal["allow", "disabled"]] = None,
+        caret: typing.Optional[Literal["hide", "initial"]] = None,
+        scale: typing.Optional[Literal["css", "device"]] = None,
+        mask: typing.Optional[typing.List["Locator"]] = None
     ) -> bytes:
         """Page.screenshot
 
@@ -7871,7 +8039,7 @@ class Page(SyncContextManager):
 
             Defaults to `"device"`.
         mask : Union[List[Locator], NoneType]
-            Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box
+            Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box
             `#FF00FF` that completely covers its bounding box.
 
         Returns
@@ -7909,7 +8077,7 @@ class Page(SyncContextManager):
 
         return mapping.from_maybe_impl(self._sync(self._impl_obj.title()))
 
-    def close(self, *, run_before_unload: bool = None) -> NoneType:
+    def close(self, *, run_before_unload: typing.Optional[bool] = None) -> NoneType:
         """Page.close
 
         If `runBeforeUnload` is `false`, does not run any unload handlers and waits for the page to be closed. If
@@ -7950,15 +8118,15 @@ class Page(SyncContextManager):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        click_count: int = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None,
-        strict: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        click_count: typing.Optional[int] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.click
 
@@ -8034,14 +8202,14 @@ class Page(SyncContextManager):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.dblclick
 
@@ -8117,12 +8285,12 @@ class Page(SyncContextManager):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.tap
 
@@ -8189,10 +8357,10 @@ class Page(SyncContextManager):
         selector: str,
         value: str,
         *,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        force: bool = None
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        force: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.fill
 
@@ -8247,8 +8415,8 @@ class Page(SyncContextManager):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern[str]] = None,
-        has: "Locator" = None
+        has_text: typing.Optional[typing.Union[str, typing.Pattern[str]]] = None,
+        has: typing.Optional["Locator"] = None
     ) -> "Locator":
         """Page.locator
 
@@ -8310,7 +8478,11 @@ class Page(SyncContextManager):
         return mapping.from_impl(self._impl_obj.frame_locator(selector=selector))
 
     def focus(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Page.focus
 
@@ -8339,7 +8511,11 @@ class Page(SyncContextManager):
         )
 
     def text_content(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> typing.Optional[str]:
         """Page.text_content
 
@@ -8371,7 +8547,11 @@ class Page(SyncContextManager):
         )
 
     def inner_text(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> str:
         """Page.inner_text
 
@@ -8403,7 +8583,11 @@ class Page(SyncContextManager):
         )
 
     def inner_html(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> str:
         """Page.inner_html
 
@@ -8435,7 +8619,12 @@ class Page(SyncContextManager):
         )
 
     def get_attribute(
-        self, selector: str, name: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        name: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> typing.Optional[str]:
         """Page.get_attribute
 
@@ -8475,11 +8664,11 @@ class Page(SyncContextManager):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.hover
 
@@ -8539,13 +8728,13 @@ class Page(SyncContextManager):
         source: str,
         target: str,
         *,
-        source_position: Position = None,
-        target_position: Position = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        timeout: float = None,
-        strict: bool = None,
-        trial: bool = None
+        source_position: typing.Optional[Position] = None,
+        target_position: typing.Optional[Position] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.drag_and_drop
 
@@ -8599,15 +8788,17 @@ class Page(SyncContextManager):
     def select_option(
         self,
         selector: str,
-        value: typing.Union[str, typing.List[str]] = None,
+        value: typing.Optional[typing.Union[str, typing.List[str]]] = None,
         *,
-        index: typing.Union[int, typing.List[int]] = None,
-        label: typing.Union[str, typing.List[str]] = None,
-        element: typing.Union["ElementHandle", typing.List["ElementHandle"]] = None,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        force: bool = None,
-        strict: bool = None
+        index: typing.Optional[typing.Union[int, typing.List[int]]] = None,
+        label: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+        element: typing.Optional[
+            typing.Union["ElementHandle", typing.List["ElementHandle"]]
+        ] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        force: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None
     ) -> typing.List[str]:
         """Page.select_option
 
@@ -8683,7 +8874,11 @@ class Page(SyncContextManager):
         )
 
     def input_value(
-        self, selector: str, *, strict: bool = None, timeout: float = None
+        self,
+        selector: str,
+        *,
+        strict: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
     ) -> str:
         """Page.input_value
 
@@ -8728,9 +8923,9 @@ class Page(SyncContextManager):
             typing.List[FilePayload],
         ],
         *,
-        timeout: float = None,
-        strict: bool = None,
-        no_wait_after: bool = None
+        timeout: typing.Optional[float] = None,
+        strict: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.set_input_files
 
@@ -8777,10 +8972,10 @@ class Page(SyncContextManager):
         selector: str,
         text: str,
         *,
-        delay: float = None,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        strict: bool = None
+        delay: typing.Optional[float] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.type
 
@@ -8835,10 +9030,10 @@ class Page(SyncContextManager):
         selector: str,
         key: str,
         *,
-        delay: float = None,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        strict: bool = None
+        delay: typing.Optional[float] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.press
 
@@ -8911,12 +9106,12 @@ class Page(SyncContextManager):
         self,
         selector: str,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.check
 
@@ -8979,12 +9174,12 @@ class Page(SyncContextManager):
         self,
         selector: str,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.uncheck
 
@@ -9072,9 +9267,9 @@ class Page(SyncContextManager):
         self,
         expression: str,
         *,
-        arg: typing.Any = None,
-        timeout: float = None,
-        polling: typing.Union[float, Literal["raf"]] = None
+        arg: typing.Optional[typing.Any] = None,
+        timeout: typing.Optional[float] = None,
+        polling: typing.Optional[typing.Union[float, Literal["raf"]]] = None
     ) -> "JSHandle":
         """Page.wait_for_function
 
@@ -9154,19 +9349,19 @@ class Page(SyncContextManager):
     def pdf(
         self,
         *,
-        scale: float = None,
-        display_header_footer: bool = None,
-        header_template: str = None,
-        footer_template: str = None,
-        print_background: bool = None,
-        landscape: bool = None,
-        page_ranges: str = None,
-        format: str = None,
-        width: typing.Union[str, float] = None,
-        height: typing.Union[str, float] = None,
-        prefer_css_page_size: bool = None,
-        margin: PdfMargins = None,
-        path: typing.Union[str, pathlib.Path] = None
+        scale: typing.Optional[float] = None,
+        display_header_footer: typing.Optional[bool] = None,
+        header_template: typing.Optional[str] = None,
+        footer_template: typing.Optional[str] = None,
+        print_background: typing.Optional[bool] = None,
+        landscape: typing.Optional[bool] = None,
+        page_ranges: typing.Optional[str] = None,
+        format: typing.Optional[str] = None,
+        width: typing.Optional[typing.Union[str, float]] = None,
+        height: typing.Optional[typing.Union[str, float]] = None,
+        prefer_css_page_size: typing.Optional[bool] = None,
+        margin: typing.Optional[PdfMargins] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None
     ) -> bytes:
         """Page.pdf
 
@@ -9279,7 +9474,11 @@ class Page(SyncContextManager):
         )
 
     def expect_event(
-        self, event: str, predicate: typing.Callable = None, *, timeout: float = None
+        self,
+        event: str,
+        predicate: typing.Optional[typing.Callable] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager:
         """Page.expect_event
 
@@ -9317,7 +9516,7 @@ class Page(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["ConsoleMessage"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["ConsoleMessage"]:
         """Page.expect_console_message
 
@@ -9348,7 +9547,7 @@ class Page(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["Download"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Download"]:
         """Page.expect_download
 
@@ -9379,7 +9578,7 @@ class Page(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["FileChooser"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["FileChooser"]:
         """Page.expect_file_chooser
 
@@ -9409,11 +9608,13 @@ class Page(SyncContextManager):
     def expect_navigation(
         self,
         *,
-        url: typing.Union[
-            str, typing.Pattern[str], typing.Callable[[str], bool]
+        url: typing.Optional[
+            typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]]
         ] = None,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = None,
-        timeout: float = None
+        wait_until: typing.Optional[
+            Literal["commit", "domcontentloaded", "load", "networkidle"]
+        ] = None,
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Response"]:
         """Page.expect_navigation
 
@@ -9469,7 +9670,7 @@ class Page(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["Page"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Page"]:
         """Page.expect_popup
 
@@ -9502,7 +9703,7 @@ class Page(SyncContextManager):
             str, typing.Pattern[str], typing.Callable[["Request"], bool]
         ],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Request"]:
         """Page.expect_request
 
@@ -9545,7 +9746,7 @@ class Page(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["Request"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Request"]:
         """Page.expect_request_finished
 
@@ -9578,7 +9779,7 @@ class Page(SyncContextManager):
             str, typing.Pattern[str], typing.Callable[["Response"], bool]
         ],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Response"]:
         """Page.expect_response
 
@@ -9622,7 +9823,7 @@ class Page(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["WebSocket"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["WebSocket"]:
         """Page.expect_websocket
 
@@ -9653,7 +9854,7 @@ class Page(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["Worker"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Worker"]:
         """Page.expect_worker
 
@@ -9685,12 +9886,12 @@ class Page(SyncContextManager):
         selector: str,
         checked: bool,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        strict: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        strict: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Page.set_checked
 
@@ -10076,7 +10277,7 @@ class BrowserContext(SyncContextManager):
         return mapping.from_impl(self._sync(self._impl_obj.new_page()))
 
     def cookies(
-        self, urls: typing.Union[str, typing.List[str]] = None
+        self, urls: typing.Optional[typing.Union[str, typing.List[str]]] = None
     ) -> typing.List[Cookie]:
         """BrowserContext.cookies
 
@@ -10125,7 +10326,7 @@ class BrowserContext(SyncContextManager):
         return mapping.from_maybe_impl(self._sync(self._impl_obj.clear_cookies()))
 
     def grant_permissions(
-        self, permissions: typing.List[str], *, origin: str = None
+        self, permissions: typing.List[str], *, origin: typing.Optional[str] = None
     ) -> NoneType:
         """BrowserContext.grant_permissions
 
@@ -10178,7 +10379,9 @@ class BrowserContext(SyncContextManager):
 
         return mapping.from_maybe_impl(self._sync(self._impl_obj.clear_permissions()))
 
-    def set_geolocation(self, geolocation: Geolocation = None) -> NoneType:
+    def set_geolocation(
+        self, geolocation: typing.Optional[Geolocation] = None
+    ) -> NoneType:
         """BrowserContext.set_geolocation
 
         Sets the context's geolocation. Passing `null` or `undefined` emulates position unavailable.
@@ -10234,7 +10437,10 @@ class BrowserContext(SyncContextManager):
         )
 
     def add_init_script(
-        self, script: str = None, *, path: typing.Union[str, pathlib.Path] = None
+        self,
+        script: typing.Optional[str] = None,
+        *,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None
     ) -> NoneType:
         """BrowserContext.add_init_script
 
@@ -10270,7 +10476,11 @@ class BrowserContext(SyncContextManager):
         )
 
     def expose_binding(
-        self, name: str, callback: typing.Callable, *, handle: bool = None
+        self,
+        name: str,
+        callback: typing.Callable,
+        *,
+        handle: typing.Optional[bool] = None
     ) -> NoneType:
         """BrowserContext.expose_binding
 
@@ -10410,7 +10620,7 @@ class BrowserContext(SyncContextManager):
             typing.Callable[["Route", "Request"], typing.Any],
         ],
         *,
-        times: int = None
+        times: typing.Optional[int] = None
     ) -> NoneType:
         """BrowserContext.route
 
@@ -10487,9 +10697,11 @@ class BrowserContext(SyncContextManager):
     def unroute(
         self,
         url: typing.Union[str, typing.Pattern[str], typing.Callable[[str], bool]],
-        handler: typing.Union[
-            typing.Callable[["Route"], typing.Any],
-            typing.Callable[["Route", "Request"], typing.Any],
+        handler: typing.Optional[
+            typing.Union[
+                typing.Callable[["Route"], typing.Any],
+                typing.Callable[["Route", "Request"], typing.Any],
+            ]
         ] = None,
     ) -> NoneType:
         """BrowserContext.unroute
@@ -10518,9 +10730,9 @@ class BrowserContext(SyncContextManager):
         self,
         har: typing.Union[pathlib.Path, str],
         *,
-        url: typing.Union[str, typing.Pattern[str]] = None,
-        not_found: Literal["abort", "fallback"] = None,
-        update: bool = None
+        url: typing.Optional[typing.Union[str, typing.Pattern[str]]] = None,
+        not_found: typing.Optional[Literal["abort", "fallback"]] = None,
+        update: typing.Optional[bool] = None
     ) -> NoneType:
         """BrowserContext.route_from_har
 
@@ -10557,7 +10769,11 @@ class BrowserContext(SyncContextManager):
         )
 
     def expect_event(
-        self, event: str, predicate: typing.Callable = None, *, timeout: float = None
+        self,
+        event: str,
+        predicate: typing.Optional[typing.Callable] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager:
         """BrowserContext.expect_event
 
@@ -10602,7 +10818,7 @@ class BrowserContext(SyncContextManager):
         return mapping.from_maybe_impl(self._sync(self._impl_obj.close()))
 
     def storage_state(
-        self, *, path: typing.Union[str, pathlib.Path] = None
+        self, *, path: typing.Optional[typing.Union[str, pathlib.Path]] = None
     ) -> StorageState:
         """BrowserContext.storage_state
 
@@ -10622,7 +10838,11 @@ class BrowserContext(SyncContextManager):
         return mapping.from_impl(self._sync(self._impl_obj.storage_state(path=path)))
 
     def wait_for_event(
-        self, event: str, predicate: typing.Callable = None, *, timeout: float = None
+        self,
+        event: str,
+        predicate: typing.Optional[typing.Callable] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> typing.Any:
         """BrowserContext.wait_for_event
 
@@ -10661,7 +10881,7 @@ class BrowserContext(SyncContextManager):
         self,
         predicate: typing.Optional[typing.Callable[["Page"], bool]] = None,
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> EventContextManager["Page"]:
         """BrowserContext.expect_page
 
@@ -10713,7 +10933,9 @@ mapping.register(BrowserContextImpl, BrowserContext)
 
 
 class CDPSession(SyncBase):
-    def send(self, method: str, params: typing.Dict = None) -> typing.Dict:
+    def send(
+        self, method: str, params: typing.Optional[typing.Dict] = None
+    ) -> typing.Dict:
         """CDPSession.send
 
         Parameters
@@ -10824,46 +11046,50 @@ class Browser(SyncContextManager):
     def new_context(
         self,
         *,
-        viewport: ViewportSize = None,
-        screen: ViewportSize = None,
-        no_viewport: bool = None,
-        ignore_https_errors: bool = None,
-        java_script_enabled: bool = None,
-        bypass_csp: bool = None,
-        user_agent: str = None,
-        locale: str = None,
-        timezone_id: str = None,
-        geolocation: Geolocation = None,
-        permissions: typing.List[str] = None,
+        viewport: typing.Optional[ViewportSize] = None,
+        screen: typing.Optional[ViewportSize] = None,
+        no_viewport: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None,
+        java_script_enabled: typing.Optional[bool] = None,
+        bypass_csp: typing.Optional[bool] = None,
+        user_agent: typing.Optional[str] = None,
+        locale: typing.Optional[str] = None,
+        timezone_id: typing.Optional[str] = None,
+        geolocation: typing.Optional[Geolocation] = None,
+        permissions: typing.Optional[typing.List[str]] = None,
         extra_http_headers: typing.Optional[typing.Dict[str, str]] = None,
-        offline: bool = None,
-        http_credentials: HttpCredentials = None,
-        device_scale_factor: float = None,
-        is_mobile: bool = None,
-        has_touch: bool = None,
-        color_scheme: Literal["dark", "light", "no-preference"] = None,
-        reduced_motion: Literal["no-preference", "reduce"] = None,
-        forced_colors: Literal["active", "none"] = None,
-        accept_downloads: bool = None,
-        default_browser_type: str = None,
-        proxy: ProxySettings = None,
-        record_har_path: typing.Union[str, pathlib.Path] = None,
-        record_har_omit_content: bool = None,
-        record_video_dir: typing.Union[str, pathlib.Path] = None,
-        record_video_size: ViewportSize = None,
-        storage_state: typing.Union[StorageState, str, pathlib.Path] = None,
-        base_url: str = None,
-        strict_selectors: bool = None,
-        service_workers: Literal["allow", "block"] = None,
-        record_har_url_filter: typing.Union[str, typing.Pattern[str]] = None,
-        record_har_mode: Literal["full", "minimal"] = None,
-        record_har_content: Literal["attach", "embed", "omit"] = None
+        offline: typing.Optional[bool] = None,
+        http_credentials: typing.Optional[HttpCredentials] = None,
+        device_scale_factor: typing.Optional[float] = None,
+        is_mobile: typing.Optional[bool] = None,
+        has_touch: typing.Optional[bool] = None,
+        color_scheme: typing.Optional[Literal["dark", "light", "no-preference"]] = None,
+        reduced_motion: typing.Optional[Literal["no-preference", "reduce"]] = None,
+        forced_colors: typing.Optional[Literal["active", "none"]] = None,
+        accept_downloads: typing.Optional[bool] = None,
+        default_browser_type: typing.Optional[str] = None,
+        proxy: typing.Optional[ProxySettings] = None,
+        record_har_path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        record_har_omit_content: typing.Optional[bool] = None,
+        record_video_dir: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        record_video_size: typing.Optional[ViewportSize] = None,
+        storage_state: typing.Optional[
+            typing.Union[StorageState, str, pathlib.Path]
+        ] = None,
+        base_url: typing.Optional[str] = None,
+        strict_selectors: typing.Optional[bool] = None,
+        service_workers: typing.Optional[Literal["allow", "block"]] = None,
+        record_har_url_filter: typing.Optional[
+            typing.Union[str, typing.Pattern[str]]
+        ] = None,
+        record_har_mode: typing.Optional[Literal["full", "minimal"]] = None,
+        record_har_content: typing.Optional[Literal["attach", "embed", "omit"]] = None
     ) -> "BrowserContext":
         """Browser.new_context
 
         Creates a new browser context. It won't share cookies/cache with other browser contexts.
 
-        > NOTE: If directly using this method to create `BrowserContext`s, it is best practice to explicilty close the returned
+        > NOTE: If directly using this method to create `BrowserContext`s, it is best practice to explicitly close the returned
         context via `browser_context.close()` when your code is done with the `BrowserContext`, and before calling
         `browser.close()`. This will ensure the `context` is closed gracefully and any artifacts—like HARs and
         videos—are fully flushed and saved.
@@ -11033,40 +11259,44 @@ class Browser(SyncContextManager):
     def new_page(
         self,
         *,
-        viewport: ViewportSize = None,
-        screen: ViewportSize = None,
-        no_viewport: bool = None,
-        ignore_https_errors: bool = None,
-        java_script_enabled: bool = None,
-        bypass_csp: bool = None,
-        user_agent: str = None,
-        locale: str = None,
-        timezone_id: str = None,
-        geolocation: Geolocation = None,
-        permissions: typing.List[str] = None,
+        viewport: typing.Optional[ViewportSize] = None,
+        screen: typing.Optional[ViewportSize] = None,
+        no_viewport: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None,
+        java_script_enabled: typing.Optional[bool] = None,
+        bypass_csp: typing.Optional[bool] = None,
+        user_agent: typing.Optional[str] = None,
+        locale: typing.Optional[str] = None,
+        timezone_id: typing.Optional[str] = None,
+        geolocation: typing.Optional[Geolocation] = None,
+        permissions: typing.Optional[typing.List[str]] = None,
         extra_http_headers: typing.Optional[typing.Dict[str, str]] = None,
-        offline: bool = None,
-        http_credentials: HttpCredentials = None,
-        device_scale_factor: float = None,
-        is_mobile: bool = None,
-        has_touch: bool = None,
-        color_scheme: Literal["dark", "light", "no-preference"] = None,
-        forced_colors: Literal["active", "none"] = None,
-        reduced_motion: Literal["no-preference", "reduce"] = None,
-        accept_downloads: bool = None,
-        default_browser_type: str = None,
-        proxy: ProxySettings = None,
-        record_har_path: typing.Union[str, pathlib.Path] = None,
-        record_har_omit_content: bool = None,
-        record_video_dir: typing.Union[str, pathlib.Path] = None,
-        record_video_size: ViewportSize = None,
-        storage_state: typing.Union[StorageState, str, pathlib.Path] = None,
-        base_url: str = None,
-        strict_selectors: bool = None,
-        service_workers: Literal["allow", "block"] = None,
-        record_har_url_filter: typing.Union[str, typing.Pattern[str]] = None,
-        record_har_mode: Literal["full", "minimal"] = None,
-        record_har_content: Literal["attach", "embed", "omit"] = None
+        offline: typing.Optional[bool] = None,
+        http_credentials: typing.Optional[HttpCredentials] = None,
+        device_scale_factor: typing.Optional[float] = None,
+        is_mobile: typing.Optional[bool] = None,
+        has_touch: typing.Optional[bool] = None,
+        color_scheme: typing.Optional[Literal["dark", "light", "no-preference"]] = None,
+        forced_colors: typing.Optional[Literal["active", "none"]] = None,
+        reduced_motion: typing.Optional[Literal["no-preference", "reduce"]] = None,
+        accept_downloads: typing.Optional[bool] = None,
+        default_browser_type: typing.Optional[str] = None,
+        proxy: typing.Optional[ProxySettings] = None,
+        record_har_path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        record_har_omit_content: typing.Optional[bool] = None,
+        record_video_dir: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        record_video_size: typing.Optional[ViewportSize] = None,
+        storage_state: typing.Optional[
+            typing.Union[StorageState, str, pathlib.Path]
+        ] = None,
+        base_url: typing.Optional[str] = None,
+        strict_selectors: typing.Optional[bool] = None,
+        service_workers: typing.Optional[Literal["allow", "block"]] = None,
+        record_har_url_filter: typing.Optional[
+            typing.Union[str, typing.Pattern[str]]
+        ] = None,
+        record_har_mode: typing.Optional[Literal["full", "minimal"]] = None,
+        record_har_content: typing.Optional[Literal["attach", "embed", "omit"]] = None
     ) -> "Page":
         """Browser.new_page
 
@@ -11260,10 +11490,10 @@ class Browser(SyncContextManager):
     def start_tracing(
         self,
         *,
-        page: "Page" = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        screenshots: bool = None,
-        categories: typing.List[str] = None
+        page: typing.Optional["Page"] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        screenshots: typing.Optional[bool] = None,
+        categories: typing.Optional[typing.List[str]] = None
     ) -> NoneType:
         """Browser.start_tracing
 
@@ -11351,22 +11581,24 @@ class BrowserType(SyncBase):
     def launch(
         self,
         *,
-        executable_path: typing.Union[str, pathlib.Path] = None,
-        channel: str = None,
-        args: typing.List[str] = None,
-        ignore_default_args: typing.Union[bool, typing.List[str]] = None,
-        handle_sigint: bool = None,
-        handle_sigterm: bool = None,
-        handle_sighup: bool = None,
-        timeout: float = None,
+        executable_path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        channel: typing.Optional[str] = None,
+        args: typing.Optional[typing.List[str]] = None,
+        ignore_default_args: typing.Optional[
+            typing.Union[bool, typing.List[str]]
+        ] = None,
+        handle_sigint: typing.Optional[bool] = None,
+        handle_sigterm: typing.Optional[bool] = None,
+        handle_sighup: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
         env: typing.Optional[typing.Dict[str, typing.Union[str, float, bool]]] = None,
-        headless: bool = None,
-        devtools: bool = None,
-        proxy: ProxySettings = None,
-        downloads_path: typing.Union[str, pathlib.Path] = None,
-        slow_mo: float = None,
-        traces_dir: typing.Union[str, pathlib.Path] = None,
-        chromium_sandbox: bool = None,
+        headless: typing.Optional[bool] = None,
+        devtools: typing.Optional[bool] = None,
+        proxy: typing.Optional[ProxySettings] = None,
+        downloads_path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        slow_mo: typing.Optional[float] = None,
+        traces_dir: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        chromium_sandbox: typing.Optional[bool] = None,
         firefox_user_prefs: typing.Optional[
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None
@@ -11482,53 +11714,57 @@ class BrowserType(SyncBase):
         self,
         user_data_dir: typing.Union[str, pathlib.Path],
         *,
-        channel: str = None,
-        executable_path: typing.Union[str, pathlib.Path] = None,
-        args: typing.List[str] = None,
-        ignore_default_args: typing.Union[bool, typing.List[str]] = None,
-        handle_sigint: bool = None,
-        handle_sigterm: bool = None,
-        handle_sighup: bool = None,
-        timeout: float = None,
+        channel: typing.Optional[str] = None,
+        executable_path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        args: typing.Optional[typing.List[str]] = None,
+        ignore_default_args: typing.Optional[
+            typing.Union[bool, typing.List[str]]
+        ] = None,
+        handle_sigint: typing.Optional[bool] = None,
+        handle_sigterm: typing.Optional[bool] = None,
+        handle_sighup: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
         env: typing.Optional[typing.Dict[str, typing.Union[str, float, bool]]] = None,
-        headless: bool = None,
-        devtools: bool = None,
-        proxy: ProxySettings = None,
-        downloads_path: typing.Union[str, pathlib.Path] = None,
-        slow_mo: float = None,
-        viewport: ViewportSize = None,
-        screen: ViewportSize = None,
-        no_viewport: bool = None,
-        ignore_https_errors: bool = None,
-        java_script_enabled: bool = None,
-        bypass_csp: bool = None,
-        user_agent: str = None,
-        locale: str = None,
-        timezone_id: str = None,
-        geolocation: Geolocation = None,
-        permissions: typing.List[str] = None,
+        headless: typing.Optional[bool] = None,
+        devtools: typing.Optional[bool] = None,
+        proxy: typing.Optional[ProxySettings] = None,
+        downloads_path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        slow_mo: typing.Optional[float] = None,
+        viewport: typing.Optional[ViewportSize] = None,
+        screen: typing.Optional[ViewportSize] = None,
+        no_viewport: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None,
+        java_script_enabled: typing.Optional[bool] = None,
+        bypass_csp: typing.Optional[bool] = None,
+        user_agent: typing.Optional[str] = None,
+        locale: typing.Optional[str] = None,
+        timezone_id: typing.Optional[str] = None,
+        geolocation: typing.Optional[Geolocation] = None,
+        permissions: typing.Optional[typing.List[str]] = None,
         extra_http_headers: typing.Optional[typing.Dict[str, str]] = None,
-        offline: bool = None,
-        http_credentials: HttpCredentials = None,
-        device_scale_factor: float = None,
-        is_mobile: bool = None,
-        has_touch: bool = None,
-        color_scheme: Literal["dark", "light", "no-preference"] = None,
-        reduced_motion: Literal["no-preference", "reduce"] = None,
-        forced_colors: Literal["active", "none"] = None,
-        accept_downloads: bool = None,
-        traces_dir: typing.Union[str, pathlib.Path] = None,
-        chromium_sandbox: bool = None,
-        record_har_path: typing.Union[str, pathlib.Path] = None,
-        record_har_omit_content: bool = None,
-        record_video_dir: typing.Union[str, pathlib.Path] = None,
-        record_video_size: ViewportSize = None,
-        base_url: str = None,
-        strict_selectors: bool = None,
-        service_workers: Literal["allow", "block"] = None,
-        record_har_url_filter: typing.Union[str, typing.Pattern[str]] = None,
-        record_har_mode: Literal["full", "minimal"] = None,
-        record_har_content: Literal["attach", "embed", "omit"] = None
+        offline: typing.Optional[bool] = None,
+        http_credentials: typing.Optional[HttpCredentials] = None,
+        device_scale_factor: typing.Optional[float] = None,
+        is_mobile: typing.Optional[bool] = None,
+        has_touch: typing.Optional[bool] = None,
+        color_scheme: typing.Optional[Literal["dark", "light", "no-preference"]] = None,
+        reduced_motion: typing.Optional[Literal["no-preference", "reduce"]] = None,
+        forced_colors: typing.Optional[Literal["active", "none"]] = None,
+        accept_downloads: typing.Optional[bool] = None,
+        traces_dir: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        chromium_sandbox: typing.Optional[bool] = None,
+        record_har_path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        record_har_omit_content: typing.Optional[bool] = None,
+        record_video_dir: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        record_video_size: typing.Optional[ViewportSize] = None,
+        base_url: typing.Optional[str] = None,
+        strict_selectors: typing.Optional[bool] = None,
+        service_workers: typing.Optional[Literal["allow", "block"]] = None,
+        record_har_url_filter: typing.Optional[
+            typing.Union[str, typing.Pattern[str]]
+        ] = None,
+        record_har_mode: typing.Optional[Literal["full", "minimal"]] = None,
+        record_har_content: typing.Optional[Literal["attach", "embed", "omit"]] = None
     ) -> "BrowserContext":
         """BrowserType.launch_persistent_context
 
@@ -11745,8 +11981,8 @@ class BrowserType(SyncBase):
         self,
         endpoint_url: str,
         *,
-        timeout: float = None,
-        slow_mo: float = None,
+        timeout: typing.Optional[float] = None,
+        slow_mo: typing.Optional[float] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None
     ) -> "Browser":
         """BrowserType.connect_over_cdp
@@ -11791,13 +12027,15 @@ class BrowserType(SyncBase):
         self,
         ws_endpoint: str,
         *,
-        timeout: float = None,
-        slow_mo: float = None,
+        timeout: typing.Optional[float] = None,
+        slow_mo: typing.Optional[float] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None
     ) -> "Browser":
         """BrowserType.connect
 
-        This method attaches Playwright to an existing browser instance.
+        This method attaches Playwright to an existing browser instance. When connecting to another browser launched via
+        `BrowserType.launchServer` in Node.js, the major and minor version needs to match the client version (1.2.3 → is
+        compatible with 1.2.x).
 
         Parameters
         ----------
@@ -11957,11 +12195,11 @@ class Tracing(SyncBase):
     def start(
         self,
         *,
-        name: str = None,
-        title: str = None,
-        snapshots: bool = None,
-        screenshots: bool = None,
-        sources: bool = None
+        name: typing.Optional[str] = None,
+        title: typing.Optional[str] = None,
+        snapshots: typing.Optional[bool] = None,
+        screenshots: typing.Optional[bool] = None,
+        sources: typing.Optional[bool] = None
     ) -> NoneType:
         """Tracing.start
 
@@ -12003,7 +12241,7 @@ class Tracing(SyncBase):
             )
         )
 
-    def start_chunk(self, *, title: str = None) -> NoneType:
+    def start_chunk(self, *, title: typing.Optional[str] = None) -> NoneType:
         """Tracing.start_chunk
 
         Start a new trace chunk. If you'd like to record multiple traces on the same `BrowserContext`, use
@@ -12036,7 +12274,9 @@ class Tracing(SyncBase):
             self._sync(self._impl_obj.start_chunk(title=title))
         )
 
-    def stop_chunk(self, *, path: typing.Union[str, pathlib.Path] = None) -> NoneType:
+    def stop_chunk(
+        self, *, path: typing.Optional[typing.Union[str, pathlib.Path]] = None
+    ) -> NoneType:
         """Tracing.stop_chunk
 
         Stop the trace chunk. See `tracing.start_chunk()` for more details about multiple trace chunks.
@@ -12049,7 +12289,9 @@ class Tracing(SyncBase):
 
         return mapping.from_maybe_impl(self._sync(self._impl_obj.stop_chunk(path=path)))
 
-    def stop(self, *, path: typing.Union[str, pathlib.Path] = None) -> NoneType:
+    def stop(
+        self, *, path: typing.Optional[typing.Union[str, pathlib.Path]] = None
+    ) -> NoneType:
         """Tracing.stop
 
         Stop tracing.
@@ -12103,7 +12345,9 @@ class Locator(SyncBase):
         """
         return mapping.from_impl(self._impl_obj.last)
 
-    def bounding_box(self, *, timeout: float = None) -> typing.Optional[FloatRect]:
+    def bounding_box(
+        self, *, timeout: typing.Optional[float] = None
+    ) -> typing.Optional[FloatRect]:
         """Locator.bounding_box
 
         This method returns the bounding box of the element, or `null` if the element is not visible. The bounding box is
@@ -12142,11 +12386,11 @@ class Locator(SyncBase):
     def check(
         self,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.check
 
@@ -12201,14 +12445,14 @@ class Locator(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        click_count: int = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        click_count: typing.Optional[int] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.click
 
@@ -12273,13 +12517,13 @@ class Locator(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        delay: float = None,
-        button: Literal["left", "middle", "right"] = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        delay: typing.Optional[float] = None,
+        button: typing.Optional[Literal["left", "middle", "right"]] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.dblclick
 
@@ -12339,7 +12583,11 @@ class Locator(SyncBase):
         )
 
     def dispatch_event(
-        self, type: str, event_init: typing.Dict = None, *, timeout: float = None
+        self,
+        type: str,
+        event_init: typing.Optional[typing.Dict] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """Locator.dispatch_event
 
@@ -12391,7 +12639,11 @@ class Locator(SyncBase):
         )
 
     def evaluate(
-        self, expression: str, arg: typing.Any = None, *, timeout: float = None
+        self,
+        expression: str,
+        arg: typing.Optional[typing.Any] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> typing.Any:
         """Locator.evaluate
 
@@ -12432,7 +12684,9 @@ class Locator(SyncBase):
             )
         )
 
-    def evaluate_all(self, expression: str, arg: typing.Any = None) -> typing.Any:
+    def evaluate_all(
+        self, expression: str, arg: typing.Optional[typing.Any] = None
+    ) -> typing.Any:
         """Locator.evaluate_all
 
         The method finds all elements matching the specified locator and passes an array of matched elements as a first argument
@@ -12470,7 +12724,11 @@ class Locator(SyncBase):
         )
 
     def evaluate_handle(
-        self, expression: str, arg: typing.Any = None, *, timeout: float = None
+        self,
+        expression: str,
+        arg: typing.Optional[typing.Any] = None,
+        *,
+        timeout: typing.Optional[float] = None
     ) -> "JSHandle":
         """Locator.evaluate_handle
 
@@ -12514,9 +12772,9 @@ class Locator(SyncBase):
         self,
         value: str,
         *,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        force: bool = None
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        force: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.fill
 
@@ -12557,8 +12815,8 @@ class Locator(SyncBase):
         self,
         selector: str,
         *,
-        has_text: typing.Union[str, typing.Pattern[str]] = None,
-        has: "Locator" = None
+        has_text: typing.Optional[typing.Union[str, typing.Pattern[str]]] = None,
+        has: typing.Optional["Locator"] = None
     ) -> "Locator":
         """Locator.locator
 
@@ -12613,7 +12871,9 @@ class Locator(SyncBase):
 
         return mapping.from_impl(self._impl_obj.frame_locator(selector=selector))
 
-    def element_handle(self, *, timeout: float = None) -> "ElementHandle":
+    def element_handle(
+        self, *, timeout: typing.Optional[float] = None
+    ) -> "ElementHandle":
         """Locator.element_handle
 
         Resolves given locator to the first matching DOM element. If no elements matching the query are visible, waits for them
@@ -12665,8 +12925,8 @@ class Locator(SyncBase):
     def filter(
         self,
         *,
-        has_text: typing.Union[str, typing.Pattern[str]] = None,
-        has: "Locator" = None
+        has_text: typing.Optional[typing.Union[str, typing.Pattern[str]]] = None,
+        has: typing.Optional["Locator"] = None
     ) -> "Locator":
         """Locator.filter
 
@@ -12703,7 +12963,7 @@ class Locator(SyncBase):
             self._impl_obj.filter(has_text=has_text, has=has._impl_obj if has else None)
         )
 
-    def focus(self, *, timeout: float = None) -> NoneType:
+    def focus(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """Locator.focus
 
         Calls [focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) on the element.
@@ -12735,12 +12995,12 @@ class Locator(SyncBase):
         self,
         target: "Locator",
         *,
-        force: bool = None,
-        no_wait_after: bool = None,
-        timeout: float = None,
-        trial: bool = None,
-        source_position: Position = None,
-        target_position: Position = None
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        trial: typing.Optional[bool] = None,
+        source_position: typing.Optional[Position] = None,
+        target_position: typing.Optional[Position] = None
     ) -> NoneType:
         """Locator.drag_to
 
@@ -12783,7 +13043,7 @@ class Locator(SyncBase):
         )
 
     def get_attribute(
-        self, name: str, *, timeout: float = None
+        self, name: str, *, timeout: typing.Optional[float] = None
     ) -> typing.Optional[str]:
         """Locator.get_attribute
 
@@ -12812,10 +13072,10 @@ class Locator(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.hover
 
@@ -12860,7 +13120,7 @@ class Locator(SyncBase):
             )
         )
 
-    def inner_html(self, *, timeout: float = None) -> str:
+    def inner_html(self, *, timeout: typing.Optional[float] = None) -> str:
         """Locator.inner_html
 
         Returns the `element.innerHTML`.
@@ -12880,7 +13140,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.inner_html(timeout=timeout))
         )
 
-    def inner_text(self, *, timeout: float = None) -> str:
+    def inner_text(self, *, timeout: typing.Optional[float] = None) -> str:
         """Locator.inner_text
 
         Returns the `element.innerText`.
@@ -12900,7 +13160,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.inner_text(timeout=timeout))
         )
 
-    def input_value(self, *, timeout: float = None) -> str:
+    def input_value(self, *, timeout: typing.Optional[float] = None) -> str:
         """Locator.input_value
 
         Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element.
@@ -12923,7 +13183,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.input_value(timeout=timeout))
         )
 
-    def is_checked(self, *, timeout: float = None) -> bool:
+    def is_checked(self, *, timeout: typing.Optional[float] = None) -> bool:
         """Locator.is_checked
 
         Returns whether the element is checked. Throws if the element is not a checkbox or radio input.
@@ -12943,7 +13203,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.is_checked(timeout=timeout))
         )
 
-    def is_disabled(self, *, timeout: float = None) -> bool:
+    def is_disabled(self, *, timeout: typing.Optional[float] = None) -> bool:
         """Locator.is_disabled
 
         Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
@@ -12963,7 +13223,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.is_disabled(timeout=timeout))
         )
 
-    def is_editable(self, *, timeout: float = None) -> bool:
+    def is_editable(self, *, timeout: typing.Optional[float] = None) -> bool:
         """Locator.is_editable
 
         Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
@@ -12983,7 +13243,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.is_editable(timeout=timeout))
         )
 
-    def is_enabled(self, *, timeout: float = None) -> bool:
+    def is_enabled(self, *, timeout: typing.Optional[float] = None) -> bool:
         """Locator.is_enabled
 
         Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
@@ -13003,7 +13263,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.is_enabled(timeout=timeout))
         )
 
-    def is_hidden(self, *, timeout: float = None) -> bool:
+    def is_hidden(self, *, timeout: typing.Optional[float] = None) -> bool:
         """Locator.is_hidden
 
         Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).
@@ -13023,7 +13283,7 @@ class Locator(SyncBase):
             self._sync(self._impl_obj.is_hidden(timeout=timeout))
         )
 
-    def is_visible(self, *, timeout: float = None) -> bool:
+    def is_visible(self, *, timeout: typing.Optional[float] = None) -> bool:
         """Locator.is_visible
 
         Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible).
@@ -13047,9 +13307,9 @@ class Locator(SyncBase):
         self,
         key: str,
         *,
-        delay: float = None,
-        timeout: float = None,
-        no_wait_after: bool = None
+        delay: typing.Optional[float] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.press
 
@@ -13098,15 +13358,15 @@ class Locator(SyncBase):
     def screenshot(
         self,
         *,
-        timeout: float = None,
-        type: Literal["jpeg", "png"] = None,
-        path: typing.Union[str, pathlib.Path] = None,
-        quality: int = None,
-        omit_background: bool = None,
-        animations: Literal["allow", "disabled"] = None,
-        caret: Literal["hide", "initial"] = None,
-        scale: Literal["css", "device"] = None,
-        mask: typing.List["Locator"] = None
+        timeout: typing.Optional[float] = None,
+        type: typing.Optional[Literal["jpeg", "png"]] = None,
+        path: typing.Optional[typing.Union[str, pathlib.Path]] = None,
+        quality: typing.Optional[int] = None,
+        omit_background: typing.Optional[bool] = None,
+        animations: typing.Optional[Literal["allow", "disabled"]] = None,
+        caret: typing.Optional[Literal["hide", "initial"]] = None,
+        scale: typing.Optional[Literal["css", "device"]] = None,
+        mask: typing.Optional[typing.List["Locator"]] = None
     ) -> bytes:
         """Locator.screenshot
 
@@ -13152,7 +13412,7 @@ class Locator(SyncBase):
 
             Defaults to `"device"`.
         mask : Union[List[Locator], NoneType]
-            Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box
+            Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box
             `#FF00FF` that completely covers its bounding box.
 
         Returns
@@ -13176,7 +13436,9 @@ class Locator(SyncBase):
             )
         )
 
-    def scroll_into_view_if_needed(self, *, timeout: float = None) -> NoneType:
+    def scroll_into_view_if_needed(
+        self, *, timeout: typing.Optional[float] = None
+    ) -> NoneType:
         """Locator.scroll_into_view_if_needed
 
         This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then tries to scroll element into view, unless it is
@@ -13196,14 +13458,16 @@ class Locator(SyncBase):
 
     def select_option(
         self,
-        value: typing.Union[str, typing.List[str]] = None,
+        value: typing.Optional[typing.Union[str, typing.List[str]]] = None,
         *,
-        index: typing.Union[int, typing.List[int]] = None,
-        label: typing.Union[str, typing.List[str]] = None,
-        element: typing.Union["ElementHandle", typing.List["ElementHandle"]] = None,
-        timeout: float = None,
-        no_wait_after: bool = None,
-        force: bool = None
+        index: typing.Optional[typing.Union[int, typing.List[int]]] = None,
+        label: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+        element: typing.Optional[
+            typing.Union["ElementHandle", typing.List["ElementHandle"]]
+        ] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        force: typing.Optional[bool] = None
     ) -> typing.List[str]:
         """Locator.select_option
 
@@ -13268,7 +13532,12 @@ class Locator(SyncBase):
             )
         )
 
-    def select_text(self, *, force: bool = None, timeout: float = None) -> NoneType:
+    def select_text(
+        self,
+        *,
+        force: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None
+    ) -> NoneType:
         """Locator.select_text
 
         This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then focuses the element and selects all its text
@@ -13301,8 +13570,8 @@ class Locator(SyncBase):
             typing.List[FilePayload],
         ],
         *,
-        timeout: float = None,
-        no_wait_after: bool = None
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.set_input_files
 
@@ -13342,11 +13611,11 @@ class Locator(SyncBase):
         modifiers: typing.Optional[
             typing.List[Literal["Alt", "Control", "Meta", "Shift"]]
         ] = None,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.tap
 
@@ -13398,7 +13667,9 @@ class Locator(SyncBase):
             )
         )
 
-    def text_content(self, *, timeout: float = None) -> typing.Optional[str]:
+    def text_content(
+        self, *, timeout: typing.Optional[float] = None
+    ) -> typing.Optional[str]:
         """Locator.text_content
 
         Returns the `node.textContent`.
@@ -13422,9 +13693,9 @@ class Locator(SyncBase):
         self,
         text: str,
         *,
-        delay: float = None,
-        timeout: float = None,
-        no_wait_after: bool = None
+        delay: typing.Optional[float] = None,
+        timeout: typing.Optional[float] = None,
+        no_wait_after: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.type
 
@@ -13471,11 +13742,11 @@ class Locator(SyncBase):
     def uncheck(
         self,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.uncheck
 
@@ -13551,8 +13822,10 @@ class Locator(SyncBase):
     def wait_for(
         self,
         *,
-        timeout: float = None,
-        state: Literal["attached", "detached", "hidden", "visible"] = None
+        timeout: typing.Optional[float] = None,
+        state: typing.Optional[
+            Literal["attached", "detached", "hidden", "visible"]
+        ] = None
     ) -> NoneType:
         """Locator.wait_for
 
@@ -13589,11 +13862,11 @@ class Locator(SyncBase):
         self,
         checked: bool,
         *,
-        position: Position = None,
-        timeout: float = None,
-        force: bool = None,
-        no_wait_after: bool = None,
-        trial: bool = None
+        position: typing.Optional[Position] = None,
+        timeout: typing.Optional[float] = None,
+        force: typing.Optional[bool] = None,
+        no_wait_after: typing.Optional[bool] = None,
+        trial: typing.Optional[bool] = None
     ) -> NoneType:
         """Locator.set_checked
 
@@ -13800,14 +14073,14 @@ class APIRequestContext(SyncBase):
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        data: typing.Union[typing.Any, bytes, str] = None,
+        data: typing.Optional[typing.Union[typing.Any, bytes, str]] = None,
         form: typing.Optional[typing.Dict[str, typing.Union[str, float, bool]]] = None,
         multipart: typing.Optional[
             typing.Dict[str, typing.Union[bytes, bool, float, str, FilePayload]]
         ] = None,
-        timeout: float = None,
-        fail_on_status_code: bool = None,
-        ignore_https_errors: bool = None
+        timeout: typing.Optional[float] = None,
+        fail_on_status_code: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None
     ) -> "APIResponse":
         """APIRequestContext.delete
 
@@ -13872,9 +14145,9 @@ class APIRequestContext(SyncBase):
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        timeout: float = None,
-        fail_on_status_code: bool = None,
-        ignore_https_errors: bool = None
+        timeout: typing.Optional[float] = None,
+        fail_on_status_code: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None
     ) -> "APIResponse":
         """APIRequestContext.head
 
@@ -13923,9 +14196,9 @@ class APIRequestContext(SyncBase):
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        timeout: float = None,
-        fail_on_status_code: bool = None,
-        ignore_https_errors: bool = None
+        timeout: typing.Optional[float] = None,
+        fail_on_status_code: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None
     ) -> "APIResponse":
         """APIRequestContext.get
 
@@ -13974,14 +14247,14 @@ class APIRequestContext(SyncBase):
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        data: typing.Union[typing.Any, bytes, str] = None,
+        data: typing.Optional[typing.Union[typing.Any, bytes, str]] = None,
         form: typing.Optional[typing.Dict[str, typing.Union[str, float, bool]]] = None,
         multipart: typing.Optional[
             typing.Dict[str, typing.Union[bytes, bool, float, str, FilePayload]]
         ] = None,
-        timeout: float = None,
-        fail_on_status_code: bool = None,
-        ignore_https_errors: bool = None
+        timeout: typing.Optional[float] = None,
+        fail_on_status_code: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None
     ) -> "APIResponse":
         """APIRequestContext.patch
 
@@ -14046,14 +14319,14 @@ class APIRequestContext(SyncBase):
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        data: typing.Union[typing.Any, bytes, str] = None,
+        data: typing.Optional[typing.Union[typing.Any, bytes, str]] = None,
         form: typing.Optional[typing.Dict[str, typing.Union[str, float, bool]]] = None,
         multipart: typing.Optional[
             typing.Dict[str, typing.Union[bytes, bool, float, str, FilePayload]]
         ] = None,
-        timeout: float = None,
-        fail_on_status_code: bool = None,
-        ignore_https_errors: bool = None
+        timeout: typing.Optional[float] = None,
+        fail_on_status_code: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None
     ) -> "APIResponse":
         """APIRequestContext.put
 
@@ -14118,14 +14391,14 @@ class APIRequestContext(SyncBase):
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        data: typing.Union[typing.Any, bytes, str] = None,
+        data: typing.Optional[typing.Union[typing.Any, bytes, str]] = None,
         form: typing.Optional[typing.Dict[str, typing.Union[str, float, bool]]] = None,
         multipart: typing.Optional[
             typing.Dict[str, typing.Union[bytes, bool, float, str, FilePayload]]
         ] = None,
-        timeout: float = None,
-        fail_on_status_code: bool = None,
-        ignore_https_errors: bool = None
+        timeout: typing.Optional[float] = None,
+        fail_on_status_code: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None
     ) -> "APIResponse":
         """APIRequestContext.post
 
@@ -14189,16 +14462,16 @@ class APIRequestContext(SyncBase):
         params: typing.Optional[
             typing.Dict[str, typing.Union[str, float, bool]]
         ] = None,
-        method: str = None,
+        method: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
-        data: typing.Union[typing.Any, bytes, str] = None,
+        data: typing.Optional[typing.Union[typing.Any, bytes, str]] = None,
         form: typing.Optional[typing.Dict[str, typing.Union[str, float, bool]]] = None,
         multipart: typing.Optional[
             typing.Dict[str, typing.Union[bytes, bool, float, str, FilePayload]]
         ] = None,
-        timeout: float = None,
-        fail_on_status_code: bool = None,
-        ignore_https_errors: bool = None
+        timeout: typing.Optional[float] = None,
+        fail_on_status_code: typing.Optional[bool] = None,
+        ignore_https_errors: typing.Optional[bool] = None
     ) -> "APIResponse":
         """APIRequestContext.fetch
 
@@ -14259,7 +14532,7 @@ class APIRequestContext(SyncBase):
         )
 
     def storage_state(
-        self, *, path: typing.Union[str, pathlib.Path] = None
+        self, *, path: typing.Optional[typing.Union[str, pathlib.Path]] = None
     ) -> StorageState:
         """APIRequestContext.storage_state
 
@@ -14287,14 +14560,16 @@ class APIRequest(SyncBase):
     def new_context(
         self,
         *,
-        base_url: str = None,
+        base_url: typing.Optional[str] = None,
         extra_http_headers: typing.Optional[typing.Dict[str, str]] = None,
-        http_credentials: HttpCredentials = None,
-        ignore_https_errors: bool = None,
-        proxy: ProxySettings = None,
-        user_agent: str = None,
-        timeout: float = None,
-        storage_state: typing.Union[StorageState, str, pathlib.Path] = None
+        http_credentials: typing.Optional[HttpCredentials] = None,
+        ignore_https_errors: typing.Optional[bool] = None,
+        proxy: typing.Optional[ProxySettings] = None,
+        user_agent: typing.Optional[str] = None,
+        timeout: typing.Optional[float] = None,
+        storage_state: typing.Optional[
+            typing.Union[StorageState, str, pathlib.Path]
+        ] = None
     ) -> "APIRequestContext":
         """APIRequest.new_context
 
@@ -14358,7 +14633,7 @@ class PageAssertions(SyncBase):
         self,
         title_or_reg_exp: typing.Union[typing.Pattern[str], str],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """PageAssertions.to_have_title
 
@@ -14393,7 +14668,7 @@ class PageAssertions(SyncBase):
         self,
         title_or_reg_exp: typing.Union[typing.Pattern[str], str],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """PageAssertions.not_to_have_title
 
@@ -14420,7 +14695,7 @@ class PageAssertions(SyncBase):
         self,
         url_or_reg_exp: typing.Union[str, typing.Pattern[str]],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """PageAssertions.to_have_url
 
@@ -14455,7 +14730,7 @@ class PageAssertions(SyncBase):
         self,
         url_or_reg_exp: typing.Union[typing.Pattern[str], str],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """PageAssertions.not_to_have_url
 
@@ -14491,9 +14766,9 @@ class LocatorAssertions(SyncBase):
             str,
         ],
         *,
-        use_inner_text: bool = None,
-        timeout: float = None,
-        ignore_case: bool = None
+        use_inner_text: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        ignore_case: typing.Optional[bool] = None
     ) -> NoneType:
         """LocatorAssertions.to_contain_text
 
@@ -14509,14 +14784,38 @@ class LocatorAssertions(SyncBase):
         expect(locator).to_contain_text(re.compile(r\"\\d messages\"))
         ```
 
-        Note that if array is passed as an expected value, entire lists of elements can be asserted:
+        If you pass an array as an expected value, the expectations are:
+        1. Locator resolves to a list of elements.
+        1. Elements from a **subset** of this list contain text from the expected array, respectively.
+        1. The matching subset of elements has the same order as the expected array.
+        1. Each text value from the expected array is matched by some element from the list.
+
+        For example, consider the following list:
+
+        ```html
+        <ul>
+          <li>Item Text 1</li>
+          <li>Item Text 2</li>
+          <li>Item Text 3</li>
+        </ul>
+        ```
+
+        Let's see how we can use the assertion:
 
         ```py
-        import re
         from playwright.sync_api import expect
 
-        locator = page.locator(\"list > .list-item\")
-        expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])
+        # ✓ Contains the right items in the right order
+        expect(page.locator(\"ul > li\")).to_contain_text([\"Text 1\", \"Text 3\", \"Text 4\"])
+
+        # ✖ Wrong order
+        expect(page.locator(\"ul > li\")).to_contain_text([\"Text 3\", \"Text 2\"])
+
+        # ✖ No item contains this text
+        expect(page.locator(\"ul > li\")).to_contain_text([\"Some 33\"])
+
+        # ✖ Locator points to the outer list element, not to the list items
+        expect(page.locator(\"ul\")).to_contain_text([\"Text 3\"])
         ```
 
         Parameters
@@ -14552,9 +14851,9 @@ class LocatorAssertions(SyncBase):
             str,
         ],
         *,
-        use_inner_text: bool = None,
-        timeout: float = None,
-        ignore_case: bool = None
+        use_inner_text: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        ignore_case: typing.Optional[bool] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_contain_text
 
@@ -14590,7 +14889,7 @@ class LocatorAssertions(SyncBase):
         name: str,
         value: typing.Union[str, typing.Pattern[str]],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_attribute
 
@@ -14627,7 +14926,7 @@ class LocatorAssertions(SyncBase):
         name: str,
         value: typing.Union[str, typing.Pattern[str]],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_attribute
 
@@ -14660,7 +14959,7 @@ class LocatorAssertions(SyncBase):
             str,
         ],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_class
 
@@ -14713,7 +15012,7 @@ class LocatorAssertions(SyncBase):
             str,
         ],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_class
 
@@ -14736,7 +15035,9 @@ class LocatorAssertions(SyncBase):
             )
         )
 
-    def to_have_count(self, count: int, *, timeout: float = None) -> NoneType:
+    def to_have_count(
+        self, count: int, *, timeout: typing.Optional[float] = None
+    ) -> NoneType:
         """LocatorAssertions.to_have_count
 
         Ensures the `Locator` resolves to an exact number of DOM nodes.
@@ -14761,7 +15062,9 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_have_count(count=count, timeout=timeout))
         )
 
-    def not_to_have_count(self, count: int, *, timeout: float = None) -> NoneType:
+    def not_to_have_count(
+        self, count: int, *, timeout: typing.Optional[float] = None
+    ) -> NoneType:
         """LocatorAssertions.not_to_have_count
 
         The opposite of `locator_assertions.to_have_count()`.
@@ -14784,7 +15087,7 @@ class LocatorAssertions(SyncBase):
         name: str,
         value: typing.Union[str, typing.Pattern[str]],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_css
 
@@ -14819,7 +15122,7 @@ class LocatorAssertions(SyncBase):
         name: str,
         value: typing.Union[str, typing.Pattern[str]],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_css
 
@@ -14843,7 +15146,10 @@ class LocatorAssertions(SyncBase):
         )
 
     def to_have_id(
-        self, id: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
+        self,
+        id: typing.Union[str, typing.Pattern[str]],
+        *,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_id
 
@@ -14870,7 +15176,10 @@ class LocatorAssertions(SyncBase):
         )
 
     def not_to_have_id(
-        self, id: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
+        self,
+        id: typing.Union[str, typing.Pattern[str]],
+        *,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_id
 
@@ -14890,7 +15199,7 @@ class LocatorAssertions(SyncBase):
         )
 
     def to_have_js_property(
-        self, name: str, value: typing.Any, *, timeout: float = None
+        self, name: str, value: typing.Any, *, timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_js_property
 
@@ -14924,7 +15233,7 @@ class LocatorAssertions(SyncBase):
         )
 
     def not_to_have_js_property(
-        self, name: str, value: typing.Any, *, timeout: float = None
+        self, name: str, value: typing.Any, *, timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_js_property
 
@@ -14950,7 +15259,10 @@ class LocatorAssertions(SyncBase):
         )
 
     def to_have_value(
-        self, value: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
+        self,
+        value: typing.Union[str, typing.Pattern[str]],
+        *,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_value
 
@@ -14979,7 +15291,10 @@ class LocatorAssertions(SyncBase):
         )
 
     def not_to_have_value(
-        self, value: typing.Union[str, typing.Pattern[str]], *, timeout: float = None
+        self,
+        value: typing.Union[str, typing.Pattern[str]],
+        *,
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_value
 
@@ -15002,7 +15317,7 @@ class LocatorAssertions(SyncBase):
         self,
         values: typing.List[typing.Union[typing.Pattern[str], str]],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_values
 
@@ -15049,7 +15364,7 @@ class LocatorAssertions(SyncBase):
         self,
         values: typing.List[typing.Union[typing.Pattern[str], str]],
         *,
-        timeout: float = None
+        timeout: typing.Optional[float] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_values
 
@@ -15080,9 +15395,9 @@ class LocatorAssertions(SyncBase):
             str,
         ],
         *,
-        use_inner_text: bool = None,
-        timeout: float = None,
-        ignore_case: bool = None
+        use_inner_text: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        ignore_case: typing.Optional[bool] = None
     ) -> NoneType:
         """LocatorAssertions.to_have_text
 
@@ -15097,13 +15412,37 @@ class LocatorAssertions(SyncBase):
         expect(locator).to_have_text(re.compile(r\"Welcome, .*\"))
         ```
 
-        Note that if array is passed as an expected value, entire lists of elements can be asserted:
+        If you pass an array as an expected value, the expectations are:
+        1. Locator resolves to a list of elements.
+        1. The number of elements equals the number of expected values in the array.
+        1. Elements from the list have text matching expected array values, one by one, in order.
+
+        For example, consider the following list:
+
+        ```html
+        <ul>
+          <li>Text 1</li>
+          <li>Text 2</li>
+          <li>Text 3</li>
+        </ul>
+        ```
+
+        Let's see how we can use the assertion:
 
         ```py
         from playwright.sync_api import expect
 
-        locator = page.locator(\"list > .component\")
-        expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])
+        # ✓ Has the right items in the right order
+        await expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])
+
+        # ✖ Wrong order
+        await expect(page.locator(\"ul > li\")).to_have_text([\"Text 3\", \"Text 2\", \"Text 1\"])
+
+        # ✖ Last item does not match
+        await expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text\"])
+
+        # ✖ Locator points to the outer list element, not to the list items
+        await expect(page.locator(\"ul\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])
         ```
 
         Parameters
@@ -15139,9 +15478,9 @@ class LocatorAssertions(SyncBase):
             str,
         ],
         *,
-        use_inner_text: bool = None,
-        timeout: float = None,
-        ignore_case: bool = None
+        use_inner_text: typing.Optional[bool] = None,
+        timeout: typing.Optional[float] = None,
+        ignore_case: typing.Optional[bool] = None
     ) -> NoneType:
         """LocatorAssertions.not_to_have_text
 
@@ -15172,7 +15511,12 @@ class LocatorAssertions(SyncBase):
             )
         )
 
-    def to_be_checked(self, *, timeout: float = None, checked: bool = None) -> NoneType:
+    def to_be_checked(
+        self,
+        *,
+        timeout: typing.Optional[float] = None,
+        checked: typing.Optional[bool] = None
+    ) -> NoneType:
         """LocatorAssertions.to_be_checked
 
         Ensures the `Locator` points to a checked input.
@@ -15196,7 +15540,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_checked(timeout=timeout, checked=checked))
         )
 
-    def not_to_be_checked(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_checked(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_checked
 
         The opposite of `locator_assertions.to_be_checked()`.
@@ -15212,7 +15556,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.not_to_be_checked(timeout=timeout))
         )
 
-    def to_be_disabled(self, *, timeout: float = None) -> NoneType:
+    def to_be_disabled(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.to_be_disabled
 
         Ensures the `Locator` points to a disabled element. Element is disabled if it has \"disabled\" attribute or is disabled
@@ -15238,7 +15582,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_disabled(timeout=timeout))
         )
 
-    def not_to_be_disabled(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_disabled(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_disabled
 
         The opposite of `locator_assertions.to_be_disabled()`.
@@ -15254,7 +15598,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.not_to_be_disabled(timeout=timeout))
         )
 
-    def to_be_editable(self, *, timeout: float = None) -> NoneType:
+    def to_be_editable(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.to_be_editable
 
         Ensures the `Locator` points to an editable element.
@@ -15277,7 +15621,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_editable(timeout=timeout))
         )
 
-    def not_to_be_editable(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_editable(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_editable
 
         The opposite of `locator_assertions.to_be_editable()`.
@@ -15293,7 +15637,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.not_to_be_editable(timeout=timeout))
         )
 
-    def to_be_empty(self, *, timeout: float = None) -> NoneType:
+    def to_be_empty(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.to_be_empty
 
         Ensures the `Locator` points to an empty editable element or to a DOM node that has no text.
@@ -15316,7 +15660,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_empty(timeout=timeout))
         )
 
-    def not_to_be_empty(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_empty(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_empty
 
         The opposite of `locator_assertions.to_be_empty()`.
@@ -15332,7 +15676,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.not_to_be_empty(timeout=timeout))
         )
 
-    def to_be_enabled(self, *, timeout: float = None) -> NoneType:
+    def to_be_enabled(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.to_be_enabled
 
         Ensures the `Locator` points to an enabled element.
@@ -15355,7 +15699,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_enabled(timeout=timeout))
         )
 
-    def not_to_be_enabled(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_enabled(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_enabled
 
         The opposite of `locator_assertions.to_be_enabled()`.
@@ -15371,7 +15715,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.not_to_be_enabled(timeout=timeout))
         )
 
-    def to_be_hidden(self, *, timeout: float = None) -> NoneType:
+    def to_be_hidden(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.to_be_hidden
 
         Ensures the `Locator` points to a hidden DOM node, which is the opposite of [visible](https://playwright.dev/python/docs/api/actionability#visible).
@@ -15394,7 +15738,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_hidden(timeout=timeout))
         )
 
-    def not_to_be_hidden(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_hidden(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_hidden
 
         The opposite of `locator_assertions.to_be_hidden()`.
@@ -15410,7 +15754,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.not_to_be_hidden(timeout=timeout))
         )
 
-    def to_be_visible(self, *, timeout: float = None) -> NoneType:
+    def to_be_visible(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.to_be_visible
 
         Ensures the `Locator` points to a [visible](https://playwright.dev/python/docs/api/actionability#visible) DOM node.
@@ -15433,7 +15777,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_visible(timeout=timeout))
         )
 
-    def not_to_be_visible(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_visible(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_visible
 
         The opposite of `locator_assertions.to_be_visible()`.
@@ -15449,7 +15793,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.not_to_be_visible(timeout=timeout))
         )
 
-    def to_be_focused(self, *, timeout: float = None) -> NoneType:
+    def to_be_focused(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.to_be_focused
 
         Ensures the `Locator` points to a focused DOM node.
@@ -15472,7 +15816,7 @@ class LocatorAssertions(SyncBase):
             self._sync(self._impl_obj.to_be_focused(timeout=timeout))
         )
 
-    def not_to_be_focused(self, *, timeout: float = None) -> NoneType:
+    def not_to_be_focused(self, *, timeout: typing.Optional[float] = None) -> NoneType:
         """LocatorAssertions.not_to_be_focused
 
         The opposite of `locator_assertions.to_be_focused()`.

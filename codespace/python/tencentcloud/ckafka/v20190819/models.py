@@ -5996,6 +5996,72 @@ class FetchMessageByOffsetResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class FetchMessageListByOffsetRequest(AbstractModel):
+    """FetchMessageListByOffset请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例Id
+        :type InstanceId: str
+        :param Topic: 主题名
+        :type Topic: str
+        :param Partition: 分区id
+        :type Partition: int
+        :param Offset: 位点信息
+        :type Offset: int
+        :param SinglePartitionRecordNumber: 最大查询条数，默认20，最大20
+        :type SinglePartitionRecordNumber: int
+        """
+        self.InstanceId = None
+        self.Topic = None
+        self.Partition = None
+        self.Offset = None
+        self.SinglePartitionRecordNumber = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Topic = params.get("Topic")
+        self.Partition = params.get("Partition")
+        self.Offset = params.get("Offset")
+        self.SinglePartitionRecordNumber = params.get("SinglePartitionRecordNumber")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class FetchMessageListByOffsetResponse(AbstractModel):
+    """FetchMessageListByOffset返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回结果。注意，列表中不返回具体的消息内容（key、value），如果需要查询具体消息内容，请使用FetchMessageByOffset接口
+        :type Result: list of ConsumerRecord
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = []
+            for item in params.get("Result"):
+                obj = ConsumerRecord()
+                obj._deserialize(item)
+                self.Result.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class FieldParam(AbstractModel):
     """数据处理——处理链
 
@@ -7036,6 +7102,12 @@ class KafkaParam(AbstractModel):
         :param QpsLimit: Qps 限制
 注意：此字段可能返回 null，表示取不到有效值。
         :type QpsLimit: int
+        :param TableMappings: Table到Topic的路由，「分发到多个topic」开关打开时必传
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TableMappings: list of TableMapping
+        :param UseTableMapping: 「分发到多个topic」开关，默认为false
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UseTableMapping: bool
         """
         self.SelfBuilt = None
         self.Resource = None
@@ -7048,6 +7120,8 @@ class KafkaParam(AbstractModel):
         self.PartitionNum = None
         self.EnableToleration = None
         self.QpsLimit = None
+        self.TableMappings = None
+        self.UseTableMapping = None
 
 
     def _deserialize(self, params):
@@ -7062,6 +7136,13 @@ class KafkaParam(AbstractModel):
         self.PartitionNum = params.get("PartitionNum")
         self.EnableToleration = params.get("EnableToleration")
         self.QpsLimit = params.get("QpsLimit")
+        if params.get("TableMappings") is not None:
+            self.TableMappings = []
+            for item in params.get("TableMappings"):
+                obj = TableMapping()
+                obj._deserialize(item)
+                self.TableMappings.append(obj)
+        self.UseTableMapping = params.get("UseTableMapping")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8053,6 +8134,9 @@ class MySQLConnectParam(AbstractModel):
         :param ClusterId: 当type为TDSQL_C_MYSQL时，必填
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterId: str
+        :param SelfBuilt: Mysql 连接源是否为自建集群
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SelfBuilt: bool
         """
         self.Port = None
         self.UserName = None
@@ -8062,6 +8146,7 @@ class MySQLConnectParam(AbstractModel):
         self.UniqVpcId = None
         self.IsUpdate = None
         self.ClusterId = None
+        self.SelfBuilt = None
 
 
     def _deserialize(self, params):
@@ -8073,6 +8158,7 @@ class MySQLConnectParam(AbstractModel):
         self.UniqVpcId = params.get("UniqVpcId")
         self.IsUpdate = params.get("IsUpdate")
         self.ClusterId = params.get("ClusterId")
+        self.SelfBuilt = params.get("SelfBuilt")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8181,6 +8267,18 @@ class MySQLParam(AbstractModel):
         :type TopicReplacement: str
         :param KeyColumns: 格式：库1.表1:字段1,字段2;库2.表2:字段2，表之间;（分号）隔开，字段之间,（逗号）隔开。不指定的表默认取表的主键
         :type KeyColumns: str
+        :param DropInvalidMessage: Mysql 是否抛弃解析失败的消息，默认为true
+        :type DropInvalidMessage: bool
+        :param DropCls: 当设置成员参数DropInvalidMessageToCls设置为true时,DropInvalidMessage参数失效
+        :type DropCls: :class:`tencentcloud.ckafka.v20190819.models.DropCls`
+        :param OutputFormat: 输出格式，DEFAULT、CANAL_1、CANAL_2
+        :type OutputFormat: str
+        :param IsTablePrefix: 当Table输入的是前缀时，该项值为true，否则为false
+        :type IsTablePrefix: bool
+        :param IncludeContentChanges: 如果该值为all，则DDL数据以及DML数据也会写入到选中的topic；若该值为dml，则只有DML数据写入到选中的topic
+        :type IncludeContentChanges: str
+        :param IncludeQuery: 如果该值为true，且MySQL中"binlog_rows_query_log_events"配置项的值为"ON"，则流入到topic的数据包含原SQL语句；若该值为false，流入到topic的数据不包含原SQL语句
+        :type IncludeQuery: bool
         """
         self.Database = None
         self.Table = None
@@ -8198,6 +8296,12 @@ class MySQLParam(AbstractModel):
         self.TopicRegex = None
         self.TopicReplacement = None
         self.KeyColumns = None
+        self.DropInvalidMessage = None
+        self.DropCls = None
+        self.OutputFormat = None
+        self.IsTablePrefix = None
+        self.IncludeContentChanges = None
+        self.IncludeQuery = None
 
 
     def _deserialize(self, params):
@@ -8222,6 +8326,14 @@ class MySQLParam(AbstractModel):
         self.TopicRegex = params.get("TopicRegex")
         self.TopicReplacement = params.get("TopicReplacement")
         self.KeyColumns = params.get("KeyColumns")
+        self.DropInvalidMessage = params.get("DropInvalidMessage")
+        if params.get("DropCls") is not None:
+            self.DropCls = DropCls()
+            self.DropCls._deserialize(params.get("DropCls"))
+        self.OutputFormat = params.get("OutputFormat")
+        self.IsTablePrefix = params.get("IsTablePrefix")
+        self.IncludeContentChanges = params.get("IncludeContentChanges")
+        self.IncludeQuery = params.get("IncludeQuery")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8369,6 +8481,9 @@ class PostgreSQLConnectParam(AbstractModel):
         :param IsUpdate: 是否更新到关联的Datahub任务
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsUpdate: bool
+        :param SelfBuilt: PostgreSQL连接源是否为自建集群
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SelfBuilt: bool
         """
         self.Port = None
         self.UserName = None
@@ -8378,6 +8493,7 @@ class PostgreSQLConnectParam(AbstractModel):
         self.UniqVpcId = None
         self.ClusterId = None
         self.IsUpdate = None
+        self.SelfBuilt = None
 
 
     def _deserialize(self, params):
@@ -8389,6 +8505,7 @@ class PostgreSQLConnectParam(AbstractModel):
         self.UniqVpcId = params.get("UniqVpcId")
         self.ClusterId = params.get("ClusterId")
         self.IsUpdate = params.get("IsUpdate")
+        self.SelfBuilt = params.get("SelfBuilt")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9199,6 +9316,42 @@ class SubstrParam(AbstractModel):
     def _deserialize(self, params):
         self.Start = params.get("Start")
         self.End = params.get("End")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TableMapping(AbstractModel):
+    """Table、Topic路由
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Database: 库名
+        :type Database: str
+        :param Table: 表名，多个表,（逗号）隔开
+        :type Table: str
+        :param Topic: Topic名称
+        :type Topic: str
+        :param TopicId: Topic ID
+        :type TopicId: str
+        """
+        self.Database = None
+        self.Table = None
+        self.Topic = None
+        self.TopicId = None
+
+
+    def _deserialize(self, params):
+        self.Database = params.get("Database")
+        self.Table = params.get("Table")
+        self.Topic = params.get("Topic")
+        self.TopicId = params.get("TopicId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

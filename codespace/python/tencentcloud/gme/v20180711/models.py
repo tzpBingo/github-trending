@@ -448,6 +448,55 @@ class CreateAppResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateCustomizationRequest(AbstractModel):
+    """CreateCustomization请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BizId: 应用 ID，登录控制台创建应用得到的AppID
+        :type BizId: int
+        :param TextUrl: 文本文件的下载地址，服务会从该地址下载文件，目前仅支持腾讯云cos
+        :type TextUrl: str
+        """
+        self.BizId = None
+        self.TextUrl = None
+
+
+    def _deserialize(self, params):
+        self.BizId = params.get("BizId")
+        self.TextUrl = params.get("TextUrl")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCustomizationResponse(AbstractModel):
+    """CreateCustomization返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ModelId: 模型ID
+        :type ModelId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ModelId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ModelId = params.get("ModelId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateScanUserRequest(AbstractModel):
     """CreateScanUser请求参数结构体
 
@@ -484,6 +533,87 @@ class CreateScanUserResponse(AbstractModel):
     def __init__(self):
         r"""
         :param ErrorCode: 返回结果码
+        :type ErrorCode: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ErrorCode = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ErrorCode = params.get("ErrorCode")
+        self.RequestId = params.get("RequestId")
+
+
+class CustomizationConfigs(AbstractModel):
+    """语音消息转文本自学习模型配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BizId: 应用 ID，登录控制台创建应用得到的AppID
+        :type BizId: int
+        :param ModelId: 模型ID
+        :type ModelId: str
+        :param ModelState: 模型状态，-1下线状态，1上线状态, 0训练中, -2训练失败
+        :type ModelState: int
+        """
+        self.BizId = None
+        self.ModelId = None
+        self.ModelState = None
+
+
+    def _deserialize(self, params):
+        self.BizId = params.get("BizId")
+        self.ModelId = params.get("ModelId")
+        self.ModelState = params.get("ModelState")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteCustomizationRequest(AbstractModel):
+    """DeleteCustomization请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ModelId: 要删除的模型ID
+        :type ModelId: str
+        :param BizId: 应用 ID，登录控制台创建应用得到的AppID
+        :type BizId: int
+        """
+        self.ModelId = None
+        self.BizId = None
+
+
+    def _deserialize(self, params):
+        self.ModelId = params.get("ModelId")
+        self.BizId = params.get("BizId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteCustomizationResponse(AbstractModel):
+    """DeleteCustomization返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ErrorCode: 返回值。0为成功，非0为失败。
         :type ErrorCode: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -747,130 +877,6 @@ class DescribeApplicationDataResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Data") is not None:
             self.Data = ApplicationDataStatistics()
-            self.Data._deserialize(params.get("Data"))
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeFilterResultListRequest(AbstractModel):
-    """DescribeFilterResultList请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param BizId: 应用ID
-        :type BizId: int
-        :param StartDate: 开始时间，格式为 年-月-日，如: 2018-07-11
-        :type StartDate: str
-        :param EndDate: 结束时间，格式为 年-月-日，如: 2018-07-11
-        :type EndDate: str
-        :param Offset: 偏移量，默认值为0。
-        :type Offset: int
-        :param Limit: 返回数量，默认值为10，最大值为100。
-        :type Limit: int
-        """
-        self.BizId = None
-        self.StartDate = None
-        self.EndDate = None
-        self.Offset = None
-        self.Limit = None
-
-
-    def _deserialize(self, params):
-        self.BizId = params.get("BizId")
-        self.StartDate = params.get("StartDate")
-        self.EndDate = params.get("EndDate")
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeFilterResultListResponse(AbstractModel):
-    """DescribeFilterResultList返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TotalCount: 过滤结果总数
-注意：此字段可能返回 null，表示取不到有效值。
-        :type TotalCount: int
-        :param Data: 当前分页过滤结果列表
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of VoiceFilterInfo
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.TotalCount = None
-        self.Data = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.TotalCount = params.get("TotalCount")
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = VoiceFilterInfo()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeFilterResultRequest(AbstractModel):
-    """DescribeFilterResult请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param BizId: 应用ID
-        :type BizId: int
-        :param FileId: 文件ID
-        :type FileId: str
-        """
-        self.BizId = None
-        self.FileId = None
-
-
-    def _deserialize(self, params):
-        self.BizId = params.get("BizId")
-        self.FileId = params.get("FileId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeFilterResultResponse(AbstractModel):
-    """DescribeFilterResult返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: 过滤结果
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: :class:`tencentcloud.gme.v20180711.models.VoiceFilterInfo`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = VoiceFilterInfo()
             self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
 
@@ -1211,6 +1217,57 @@ class DescribeUserInAndOutTimeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class GetCustomizationListRequest(AbstractModel):
+    """GetCustomizationList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BizId: 应用 ID，登录控制台创建应用得到的AppID
+        :type BizId: int
+        """
+        self.BizId = None
+
+
+    def _deserialize(self, params):
+        self.BizId = params.get("BizId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetCustomizationListResponse(AbstractModel):
+    """GetCustomizationList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CustomizationConfigs: 语音消息转文本自学习模型配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CustomizationConfigs: list of CustomizationConfigs
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.CustomizationConfigs = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("CustomizationConfigs") is not None:
+            self.CustomizationConfigs = []
+            for item in params.get("CustomizationConfigs"):
+                obj = CustomizationConfigs()
+                obj._deserialize(item)
+                self.CustomizationConfigs.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class InOutTimeInfo(AbstractModel):
     """用户进出房间信息
 
@@ -1318,6 +1375,120 @@ class ModifyAppStatusResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyCustomizationRequest(AbstractModel):
+    """ModifyCustomization请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BizId: 应用 ID，登录控制台创建应用得到的AppID
+        :type BizId: int
+        :param TextUrl: 文本文件
+        :type TextUrl: str
+        :param ModelId: 要修改的模型ID
+        :type ModelId: str
+        """
+        self.BizId = None
+        self.TextUrl = None
+        self.ModelId = None
+
+
+    def _deserialize(self, params):
+        self.BizId = params.get("BizId")
+        self.TextUrl = params.get("TextUrl")
+        self.ModelId = params.get("ModelId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyCustomizationResponse(AbstractModel):
+    """ModifyCustomization返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ErrorCode: 返回值。0为成功，非0为失败。
+        :type ErrorCode: int
+        :param ModelId: 自学习模型ID
+        :type ModelId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ErrorCode = None
+        self.ModelId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ErrorCode = params.get("ErrorCode")
+        self.ModelId = params.get("ModelId")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyCustomizationStateRequest(AbstractModel):
+    """ModifyCustomizationState请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ModelId: 自学习模型ID
+        :type ModelId: str
+        :param ToState: 想要变换的模型状态，-1代表下线，1代表上线
+        :type ToState: int
+        :param BizId: 应用 ID，登录控制台创建应用得到的AppID
+        :type BizId: int
+        """
+        self.ModelId = None
+        self.ToState = None
+        self.BizId = None
+
+
+    def _deserialize(self, params):
+        self.ModelId = params.get("ModelId")
+        self.ToState = params.get("ToState")
+        self.BizId = params.get("BizId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyCustomizationStateResponse(AbstractModel):
+    """ModifyCustomizationState返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ModelId: 自学习模型ID
+        :type ModelId: str
+        :param ErrorCode: 返回值。0为成功，非0为失败。
+        :type ErrorCode: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ModelId = None
+        self.ErrorCode = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ModelId = params.get("ModelId")
+        self.ErrorCode = params.get("ErrorCode")
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyRoomInfoRequest(AbstractModel):
     """ModifyRoomInfo请求参数结构体
 
@@ -1364,6 +1535,68 @@ class ModifyRoomInfoResponse(AbstractModel):
         :type Result: int
         :param ErrMsg: 错误信息
 注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrMsg: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.ErrMsg = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.ErrMsg = params.get("ErrMsg")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyUserMicStatusRequest(AbstractModel):
+    """ModifyUserMicStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BizId: 应用ID
+        :type BizId: int
+        :param RoomId: 房间ID
+        :type RoomId: str
+        :param Users: 用户麦克风状态，数组长度不超过20
+        :type Users: list of UserMicStatus
+        """
+        self.BizId = None
+        self.RoomId = None
+        self.Users = None
+
+
+    def _deserialize(self, params):
+        self.BizId = params.get("BizId")
+        self.RoomId = params.get("RoomId")
+        if params.get("Users") is not None:
+            self.Users = []
+            for item in params.get("Users"):
+                obj = UserMicStatus()
+                obj._deserialize(item)
+                self.Users.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyUserMicStatusResponse(AbstractModel):
+    """ModifyUserMicStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回结果：0为成功，非0为失败
+        :type Result: int
+        :param ErrMsg: 错误信息
         :type ErrMsg: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1905,27 +2138,25 @@ class UpdateScanUsersResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class VoiceFilter(AbstractModel):
-    """过滤结果
+class UserMicStatus(AbstractModel):
+    """用户麦克风状态
 
     """
 
     def __init__(self):
         r"""
-        :param Type: 过滤类型，1：色情，2：涉毒，3：谩骂
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Type: int
-        :param Word: 过滤命中关键词
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Word: str
+        :param Uid: 用户ID
+        :type Uid: int
+        :param EnableMic: 是否开麦 。1闭麦  2开麦
+        :type EnableMic: int
         """
-        self.Type = None
-        self.Word = None
+        self.Uid = None
+        self.EnableMic = None
 
 
     def _deserialize(self, params):
-        self.Type = params.get("Type")
-        self.Word = params.get("Word")
+        self.Uid = params.get("Uid")
+        self.EnableMic = params.get("EnableMic")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1957,122 +2188,6 @@ class VoiceFilterConf(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
-
-
-class VoiceFilterInfo(AbstractModel):
-    """语音文件过滤详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param BizId: 应用ID
-注意：此字段可能返回 null，表示取不到有效值。
-        :type BizId: int
-        :param FileId: 文件ID，表示文件唯一ID
-注意：此字段可能返回 null，表示取不到有效值。
-        :type FileId: str
-        :param FileName: 文件名
-注意：此字段可能返回 null，表示取不到有效值。
-        :type FileName: str
-        :param OpenId: 用户ID
-注意：此字段可能返回 null，表示取不到有效值。
-        :type OpenId: str
-        :param Timestamp: 数据创建时间
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Timestamp: str
-        :param Data: 过滤结果列表
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of VoiceFilter
-        """
-        self.BizId = None
-        self.FileId = None
-        self.FileName = None
-        self.OpenId = None
-        self.Timestamp = None
-        self.Data = None
-
-
-    def _deserialize(self, params):
-        self.BizId = params.get("BizId")
-        self.FileId = params.get("FileId")
-        self.FileName = params.get("FileName")
-        self.OpenId = params.get("OpenId")
-        self.Timestamp = params.get("Timestamp")
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = VoiceFilter()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class VoiceFilterRequest(AbstractModel):
-    """VoiceFilter请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param BizId: 应用ID，登录[控制台](https://console.cloud.tencent.com/gamegme)创建应用得到的AppID
-        :type BizId: int
-        :param FileId: 文件ID，表示文件唯一ID
-        :type FileId: str
-        :param FileName: 文件名
-        :type FileName: str
-        :param FileUrl: 文件url，urlencode编码，FileUrl和FileContent二选一
-        :type FileUrl: str
-        :param FileContent: 文件内容，base64编码，FileUrl和FileContent二选一
-        :type FileContent: str
-        :param OpenId: 用户ID
-        :type OpenId: str
-        """
-        self.BizId = None
-        self.FileId = None
-        self.FileName = None
-        self.FileUrl = None
-        self.FileContent = None
-        self.OpenId = None
-
-
-    def _deserialize(self, params):
-        self.BizId = params.get("BizId")
-        self.FileId = params.get("FileId")
-        self.FileName = params.get("FileName")
-        self.FileUrl = params.get("FileUrl")
-        self.FileContent = params.get("FileContent")
-        self.OpenId = params.get("OpenId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class VoiceFilterResponse(AbstractModel):
-    """VoiceFilter返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
 
 
 class VoiceFilterStatisticsItem(AbstractModel):

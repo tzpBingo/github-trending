@@ -27,13 +27,13 @@ class Agent(AbstractModel):
         r"""
         :param AppId: 腾讯电子签颁发给渠道的应用ID，32位字符串
         :type AppId: str
-        :param ProxyOrganizationOpenId: 渠道/平台合作企业的企业ID
+        :param ProxyOrganizationOpenId: 渠道/平台合作企业的企业ID，最大64位字符串
         :type ProxyOrganizationOpenId: str
         :param ProxyOperator: 渠道/平台合作企业经办人（操作员）
         :type ProxyOperator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
         :param ProxyAppId: 腾讯电子签颁发给渠道侧合作企业的应用ID
         :type ProxyAppId: str
-        :param ProxyOrganizationId: 腾讯电子签颁发给渠道侧合作企业的企业ID
+        :param ProxyOrganizationId: 内部参数，腾讯电子签颁发给渠道侧合作企业的企业ID，不需要传
         :type ProxyOrganizationId: str
         """
         self.AppId = None
@@ -51,6 +51,42 @@ class Agent(AbstractModel):
             self.ProxyOperator._deserialize(params.get("ProxyOperator"))
         self.ProxyAppId = params.get("ProxyAppId")
         self.ProxyOrganizationId = params.get("ProxyOrganizationId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ApproverRestriction(AbstractModel):
+    """指定签署人限制项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 指定签署人名字
+        :type Name: str
+        :param Mobile: 指定签署人手机号
+        :type Mobile: str
+        :param IdCardType: 指定签署人证件类型
+        :type IdCardType: str
+        :param IdCardNumber: 指定签署人证件号码
+        :type IdCardNumber: str
+        """
+        self.Name = None
+        self.Mobile = None
+        self.IdCardType = None
+        self.IdCardNumber = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Mobile = params.get("Mobile")
+        self.IdCardType = params.get("IdCardType")
+        self.IdCardNumber = params.get("IdCardNumber")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -165,6 +201,142 @@ class ChannelCancelMultiFlowSignQRCodeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ChannelCreateBatchCancelFlowUrlRequest(AbstractModel):
+    """ChannelCreateBatchCancelFlowUrl请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Agent: 渠道应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 均必填。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        :param FlowIds: 签署流程Id数组
+        :type FlowIds: list of str
+        :param Operator: 操作人信息
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        """
+        self.Agent = None
+        self.FlowIds = None
+        self.Operator = None
+
+
+    def _deserialize(self, params):
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.FlowIds = params.get("FlowIds")
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelCreateBatchCancelFlowUrlResponse(AbstractModel):
+    """ChannelCreateBatchCancelFlowUrl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BatchCancelFlowUrl: 批量撤销url
+        :type BatchCancelFlowUrl: str
+        :param FailMessages: 签署流程批量撤销失败原因
+        :type FailMessages: list of str
+        :param UrlExpireOn: 签署撤销url过期时间-年月日-时分秒
+        :type UrlExpireOn: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BatchCancelFlowUrl = None
+        self.FailMessages = None
+        self.UrlExpireOn = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.BatchCancelFlowUrl = params.get("BatchCancelFlowUrl")
+        self.FailMessages = params.get("FailMessages")
+        self.UrlExpireOn = params.get("UrlExpireOn")
+        self.RequestId = params.get("RequestId")
+
+
+class ChannelCreateConvertTaskApiRequest(AbstractModel):
+    """ChannelCreateConvertTaskApi请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Agent: 渠道应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 均必填。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        :param ResourceType: 资源类型 取值范围doc,docx,html之一
+        :type ResourceType: str
+        :param ResourceName: 资源名称，长度限制为256字符
+        :type ResourceName: str
+        :param ResourceId: 资源Id，通过UploadFiles获取
+        :type ResourceId: str
+        :param Operator: 操作者信息
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        :param Organization: 暂未开放
+        :type Organization: :class:`tencentcloud.essbasic.v20210526.models.OrganizationInfo`
+        """
+        self.Agent = None
+        self.ResourceType = None
+        self.ResourceName = None
+        self.ResourceId = None
+        self.Operator = None
+        self.Organization = None
+
+
+    def _deserialize(self, params):
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.ResourceType = params.get("ResourceType")
+        self.ResourceName = params.get("ResourceName")
+        self.ResourceId = params.get("ResourceId")
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        if params.get("Organization") is not None:
+            self.Organization = OrganizationInfo()
+            self.Organization._deserialize(params.get("Organization"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelCreateConvertTaskApiResponse(AbstractModel):
+    """ChannelCreateConvertTaskApi返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务id
+        :type TaskId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
 class ChannelCreateFlowByFilesRequest(AbstractModel):
     """ChannelCreateFlowByFiles请求参数结构体
 
@@ -172,7 +344,7 @@ class ChannelCreateFlowByFilesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Agent: 渠道应用相关信息
+        :param Agent: 渠道应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 均必填。
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
         :param FlowName: 签署流程名称，长度不超过200个字符
         :type FlowName: str
@@ -196,6 +368,8 @@ class ChannelCreateFlowByFilesRequest(AbstractModel):
         :type CustomShowMap: str
         :param CustomerData: 渠道的业务信息，最大长度1000个字符。发起自动签署时，需设置对应自动签署场景，目前仅支持场景：处方单-E_PRESCRIPTION_AUTO_SIGN
         :type CustomerData: str
+        :param NeedSignReview: 发起方企业的签署人进行签署操作是否需要企业内部审批。 若设置为true,审核结果需通过接口 ChannelCreateFlowSignReview 通知电子签，审核通过后，发起方企业签署人方可进行签署操作，否则会阻塞其签署操作。  注：企业可以通过此功能与企业内部的审批流程进行关联，支持手动、静默签署合同。
+        :type NeedSignReview: bool
         :param Operator: 操作者的信息
         :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
         """
@@ -211,6 +385,7 @@ class ChannelCreateFlowByFilesRequest(AbstractModel):
         self.FlowDescription = None
         self.CustomShowMap = None
         self.CustomerData = None
+        self.NeedSignReview = None
         self.Operator = None
 
 
@@ -239,6 +414,7 @@ class ChannelCreateFlowByFilesRequest(AbstractModel):
         self.FlowDescription = params.get("FlowDescription")
         self.CustomShowMap = params.get("CustomShowMap")
         self.CustomerData = params.get("CustomerData")
+        self.NeedSignReview = params.get("NeedSignReview")
         if params.get("Operator") is not None:
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
@@ -273,6 +449,64 @@ class ChannelCreateFlowByFilesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ChannelCreateFlowSignReviewRequest(AbstractModel):
+    """ChannelCreateFlowSignReview请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Agent: 渠道应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 均必填。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        :param FlowId: 签署流程编号
+        :type FlowId: str
+        :param ReviewType: 企业内部审核结果
+PASS: 通过
+REJECT: 拒绝
+        :type ReviewType: str
+        :param ReviewMessage: 审核原因 
+当ReviewType 是REJECT 时此字段必填,字符串长度不超过200
+        :type ReviewMessage: str
+        """
+        self.Agent = None
+        self.FlowId = None
+        self.ReviewType = None
+        self.ReviewMessage = None
+
+
+    def _deserialize(self, params):
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.FlowId = params.get("FlowId")
+        self.ReviewType = params.get("ReviewType")
+        self.ReviewMessage = params.get("ReviewMessage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelCreateFlowSignReviewResponse(AbstractModel):
+    """ChannelCreateFlowSignReview返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
     """ChannelCreateMultiFlowSignQRCode请求参数结构体
 
@@ -297,6 +531,8 @@ class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
 不传默认使用渠道应用号配置的回调地址
 回调时机:用户通过签署二维码发起合同时，企业额度不足导致失败
         :type CallbackUrl: str
+        :param ApproverRestrictions: 限制二维码用户条件
+        :type ApproverRestrictions: :class:`tencentcloud.essbasic.v20210526.models.ApproverRestriction`
         :param Operator: 用户信息
         :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
         """
@@ -307,6 +543,7 @@ class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
         self.FlowEffectiveDay = None
         self.QrEffectiveDay = None
         self.CallbackUrl = None
+        self.ApproverRestrictions = None
         self.Operator = None
 
 
@@ -320,6 +557,9 @@ class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
         self.FlowEffectiveDay = params.get("FlowEffectiveDay")
         self.QrEffectiveDay = params.get("QrEffectiveDay")
         self.CallbackUrl = params.get("CallbackUrl")
+        if params.get("ApproverRestrictions") is not None:
+            self.ApproverRestrictions = ApproverRestriction()
+            self.ApproverRestrictions._deserialize(params.get("ApproverRestrictions"))
         if params.get("Operator") is not None:
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
@@ -341,10 +581,13 @@ class ChannelCreateMultiFlowSignQRCodeResponse(AbstractModel):
         r"""
         :param QrCode: 签署二维码对象
         :type QrCode: :class:`tencentcloud.essbasic.v20210526.models.SignQrCode`
+        :param SignUrls: 签署链接对象
+        :type SignUrls: :class:`tencentcloud.essbasic.v20210526.models.SignUrl`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.QrCode = None
+        self.SignUrls = None
         self.RequestId = None
 
 
@@ -352,6 +595,96 @@ class ChannelCreateMultiFlowSignQRCodeResponse(AbstractModel):
         if params.get("QrCode") is not None:
             self.QrCode = SignQrCode()
             self.QrCode._deserialize(params.get("QrCode"))
+        if params.get("SignUrls") is not None:
+            self.SignUrls = SignUrl()
+            self.SignUrls._deserialize(params.get("SignUrls"))
+        self.RequestId = params.get("RequestId")
+
+
+class ChannelGetTaskResultApiRequest(AbstractModel):
+    """ChannelGetTaskResultApi请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Agent: 渠道应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 和 Agent.ProxyAppId 均必填。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        :param TaskId: 任务Id，通过ChannelCreateConvertTaskApi接口获得
+        :type TaskId: str
+        :param Operator: 操作者的信息
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        :param Organization: 暂未开放
+        :type Organization: :class:`tencentcloud.essbasic.v20210526.models.OrganizationInfo`
+        """
+        self.Agent = None
+        self.TaskId = None
+        self.Operator = None
+        self.Organization = None
+
+
+    def _deserialize(self, params):
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
+        self.TaskId = params.get("TaskId")
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        if params.get("Organization") is not None:
+            self.Organization = OrganizationInfo()
+            self.Organization._deserialize(params.get("Organization"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelGetTaskResultApiResponse(AbstractModel):
+    """ChannelGetTaskResultApi返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务Id
+        :type TaskId: str
+        :param TaskStatus: 任务状态，需要关注的状态
+0  :NeedTranform   - 任务已提交
+4  :Processing     - 文档转换中
+8  :TaskEnd        - 任务处理完成
+-2 :DownloadFailed - 下载失败
+-6 :ProcessFailed  - 转换失败
+-13:ProcessTimeout - 转换文件超时
+        :type TaskStatus: int
+        :param TaskMessage: 状态描述，需要关注的状态
+NeedTranform   - 任务已提交
+Processing     - 文档转换中
+TaskEnd        - 任务处理完成
+DownloadFailed - 下载失败
+ProcessFailed  - 转换失败
+ProcessTimeout - 转换文件超时
+        :type TaskMessage: str
+        :param ResourceId: 资源Id，也是FileId，用于文件发起使用
+        :type ResourceId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.TaskStatus = None
+        self.TaskMessage = None
+        self.ResourceId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.TaskStatus = params.get("TaskStatus")
+        self.TaskMessage = params.get("TaskMessage")
+        self.ResourceId = params.get("ResourceId")
         self.RequestId = params.get("RequestId")
 
 
@@ -375,12 +708,18 @@ class Component(AbstractModel):
         :type ComponentId: str
         :param ComponentType: 如果是Component控件类型，则可选的字段为：
 TEXT - 普通文本控件；
-DATE - 普通日期控件；跟TEXT相比会有校验逻辑
+MULTI_LINE_TEXT - 多行文本控件；
+CHECK_BOX - 勾选框控件；
+FILL_IMAGE - 图片控件；
+DYNAMIC_TABLE - 动态表格控件；
+ATTACHMENT - 附件控件；
+SELECTOR - 选择器控件；
+
 如果是SignComponent控件类型，则可选的字段为
 SIGN_SEAL - 签署印章控件；
 SIGN_DATE - 签署日期控件；
 SIGN_SIGNATURE - 用户签名控件；
-SIGN_PERSONAL_SEAL - 个人签署印章控件；
+SIGN_PERSONAL_SEAL - 个人签署印章控件（使用文件发起暂不支持此类型）；
 
 表单域的控件不能作为印章和签名控件
         :type ComponentType: str
@@ -412,8 +751,13 @@ KEYWORD - 关键字
 TEXT控件可以指定字体
 例如：{"FontSize":12}
         :type ComponentExtra: str
-        :param ComponentValue: 印章 ID，传参 DEFAULT_COMPANY_SEAL 表示使用默认印章。
-控件填入内容，印章控件里面，如果是手写签名内容为PNG图片格式的base64编码
+        :param ComponentValue: 控件填充vaule，ComponentType和传入值类型对应关系：
+TEXT - 文本内容
+MULTI_LINE_TEXT - 文本内容
+CHECK_BOX - true/false
+FILL_IMAGE、ATTACHMENT - 附件的FileId，需要通过UploadFiles接口上传获取
+SELECTOR - 选项值
+DYNAMIC_TABLE - 传入json格式的表格内容，具体见数据结构FlowInfo：https://cloud.tencent.com/document/api/1420/61525#FlowInfo
         :type ComponentValue: str
         :param ComponentDateFontSize: 日期签署控件的字号，默认为 12
 
@@ -1377,6 +1721,65 @@ class FlowDetailInfo(AbstractModel):
 class FlowInfo(AbstractModel):
     """此结构体 (FlowInfo) 用于描述签署流程信息。
 
+    【动态表格传参说明】
+    当模板的 ComponentType='DYNAMIC_TABLE'时（渠道版），FormField.ComponentValue需要传递json格式的字符串参数，用于确定表头&填充动态表格（支持内容的单元格合并）
+    输入示例
+
+    ```
+    {
+        "headers":[
+            {
+                "content":"head1"
+            },
+            {
+                "content":"head2"
+            },
+            {
+                "content":"head3"
+            }
+        ],
+        "rowCount":3,
+        "body":{
+            "cells":[
+                {
+                    "rowStart":1,
+                    "rowEnd":1,
+                    "columnStart":1,
+                    "columnEnd":1,
+                    "content":"123"
+                },
+                {
+                    "rowStart":2,
+                    "rowEnd":3,
+                    "columnStart":1,
+                    "columnEnd":2,
+                    "content":"456"
+                },
+                {
+                    "rowStart":3,
+                    "rowEnd":3,
+                    "columnStart":3,
+                    "columnEnd":3,
+                    "content":"789"
+                }
+            ]
+        }
+    }
+
+    ```
+
+    表格参数说明
+
+    | 名称                | 类型    | 描述                                              |
+    | ------------------- | ------- | ------------------------------------------------- |
+    | headers             | Array   | 表头：不超过10列，不支持单元格合并，字数不超过100 |
+    | rowCount            | Integer | 表格内容最大行数                                  |
+    | cells.N.rowStart    | Integer | 单元格坐标：行起始index                           |
+    | cells.N.rowEnd      | Integer | 单元格坐标：行结束index                           |
+    | cells.N.columnStart | Integer | 单元格坐标：列起始index                           |
+    | cells.N.columnEnd   | Integer | 单元格坐标：列结束index                           |
+    | cells.N.content     | String  | 单元格内容，字数不超过100                         |
+
     """
 
     def __init__(self):
@@ -1403,6 +1806,11 @@ class FlowInfo(AbstractModel):
         :type CustomShowMap: str
         :param CcInfos: 被抄送人的信息列表，抄送功能暂不开放
         :type CcInfos: list of CcInfo
+        :param NeedSignReview: 发起方企业的签署人进行签署操作是否需要企业内部审批。
+若设置为true,审核结果需通过接口 ChannelCreateFlowSignReview 通知电子签，审核通过后，发起方企业签署人方可进行签署操作，否则会阻塞其签署操作。
+
+注：企业可以通过此功能与企业内部的审批流程进行关联，支持手动、静默签署合同。
+        :type NeedSignReview: bool
         """
         self.FlowName = None
         self.Deadline = None
@@ -1415,6 +1823,7 @@ class FlowInfo(AbstractModel):
         self.CustomerData = None
         self.CustomShowMap = None
         self.CcInfos = None
+        self.NeedSignReview = None
 
 
     def _deserialize(self, params):
@@ -1444,6 +1853,7 @@ class FlowInfo(AbstractModel):
                 obj = CcInfo()
                 obj._deserialize(item)
                 self.CcInfos.append(obj)
+        self.NeedSignReview = params.get("NeedSignReview")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1495,7 +1905,13 @@ class FormField(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ComponentValue: 表单域或控件的Value
+        :param ComponentValue: 控件填充vaule，ComponentType和传入值类型对应关系：
+TEXT - 文本内容
+MULTI_LINE_TEXT - 文本内容
+CHECK_BOX - true/false
+FILL_IMAGE、ATTACHMENT - 附件的FileId，需要通过UploadFiles接口上传获取
+SELECTOR - 选项值
+DYNAMIC_TABLE - 传入json格式的表格内容，具体见数据结构FlowInfo：https://cloud.tencent.com/document/api/1420/61525#FlowInfo
         :type ComponentValue: str
         :param ComponentId: 表单域或控件的ID，跟ComponentName二选一，不能全为空
 注意：此字段可能返回 null，表示取不到有效值。
@@ -1682,6 +2098,46 @@ class OperateChannelTemplateResponse(AbstractModel):
                 obj._deserialize(item)
                 self.FailMessageList.append(obj)
         self.RequestId = params.get("RequestId")
+
+
+class OrganizationInfo(AbstractModel):
+    """机构信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OrganizationOpenId: 用户在渠道的机构编号
+        :type OrganizationOpenId: str
+        :param ClientIp: 用户真实的IP
+        :type ClientIp: str
+        :param ProxyIp: 机构的代理IP
+        :type ProxyIp: str
+        :param OrganizationId: 机构在平台的编号
+        :type OrganizationId: str
+        :param Channel: 用户渠道
+        :type Channel: str
+        """
+        self.OrganizationOpenId = None
+        self.ClientIp = None
+        self.ProxyIp = None
+        self.OrganizationId = None
+        self.Channel = None
+
+
+    def _deserialize(self, params):
+        self.OrganizationOpenId = params.get("OrganizationOpenId")
+        self.ClientIp = params.get("ClientIp")
+        self.ProxyIp = params.get("ProxyIp")
+        self.OrganizationId = params.get("OrganizationId")
+        self.Channel = params.get("Channel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class PrepareFlowsRequest(AbstractModel):
@@ -1907,6 +2363,38 @@ class SignQrCode(AbstractModel):
         self.QrCodeId = params.get("QrCodeId")
         self.QrCodeUrl = params.get("QrCodeUrl")
         self.ExpiredTime = params.get("ExpiredTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SignUrl(AbstractModel):
+    """一码多扫签署二维码签署信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppSignUrl: 小程序签署链接
+        :type AppSignUrl: str
+        :param EffectiveTime: 签署链接有效时间
+        :type EffectiveTime: str
+        :param HttpSignUrl: 移动端签署链接
+        :type HttpSignUrl: str
+        """
+        self.AppSignUrl = None
+        self.EffectiveTime = None
+        self.HttpSignUrl = None
+
+
+    def _deserialize(self, params):
+        self.AppSignUrl = params.get("AppSignUrl")
+        self.EffectiveTime = params.get("EffectiveTime")
+        self.HttpSignUrl = params.get("HttpSignUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2282,7 +2770,7 @@ class UploadFilesRequest(AbstractModel):
         :param Agent: 应用相关信息，若是渠道版调用 appid 和proxyappid 必填
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
         :param BusinessType: 文件对应业务类型，用于区分文件存储路径：
-1. TEMPLATE - 模板； 文件类型：.pdf
+1. TEMPLATE - 模板； 文件类型：.pdf .doc .docx .html
 2. DOCUMENT - 签署过程及签署后的合同文档/图片控件 文件类型：.pdf/.jpg/.png
         :type BusinessType: str
         :param FileInfos: 上传文件内容数组，最多支持20个文件
@@ -2398,7 +2886,7 @@ class UserInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param OpenId: 用户在渠道的编号
+        :param OpenId: 用户在渠道的编号，最大64位字符串
         :type OpenId: str
         :param Channel: 用户的来源渠道
         :type Channel: str

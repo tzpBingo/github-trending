@@ -1492,14 +1492,18 @@ class DescribeDiskDiscountRequest(AbstractModel):
         :type DiskType: str
         :param DiskSize: 云硬盘大小。
         :type DiskSize: int
+        :param DiskBackupQuota: 指定云硬盘备份点配额，不传时默认为不带备份点配额。目前只支持不带或设置1个云硬盘备份点配额。
+        :type DiskBackupQuota: int
         """
         self.DiskType = None
         self.DiskSize = None
+        self.DiskBackupQuota = None
 
 
     def _deserialize(self, params):
         self.DiskType = params.get("DiskType")
         self.DiskSize = params.get("DiskSize")
+        self.DiskBackupQuota = params.get("DiskBackupQuota")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1619,11 +1623,13 @@ disk-usage
 按照【云硬盘类型】进行过滤。
 类型：String
 必选：否
+取值：SYSTEM_DISK或DATA_DISK
 disk-state
 按照【云硬盘状态】进行过滤。
 类型：String
 必选：否
-每次请求的 Filters 的上限为 10，Filter.Values 的上限为 5。参数不支持同时指定 DiskIds 和 Filters。
+取值：参考数据结构[Disk](https://cloud.tencent.com/document/api/1207/47576#Disk)中DiskState取值。
+每次请求的 Filters 的上限为 10，Filter.Values 的上限为 100。参数不支持同时指定 DiskIds 和 Filters。
         :type Filters: list of Filter
         :param Limit: 返回数量，默认为20，最大值为100。
         :type Limit: int
@@ -2887,6 +2893,48 @@ class DetachDisksResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DetailPrice(AbstractModel):
+    """计费项目明细。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PriceName: 描述计费项目名称，目前取值
+<li>"DiskSpace"代表云硬盘空间收费项。</li>
+<li>"DiskBackupQuota"代表云硬盘备份点配额收费项。</li>
+        :type PriceName: str
+        :param OriginUnitPrice: 云硬盘计费项维度单价。
+        :type OriginUnitPrice: float
+        :param OriginalPrice: 云硬盘计费项维度总价。
+        :type OriginalPrice: float
+        :param Discount: 云硬盘在计费项维度折扣。
+        :type Discount: float
+        :param DiscountPrice: 云硬盘在计费项维度折后总价。
+        :type DiscountPrice: float
+        """
+        self.PriceName = None
+        self.OriginUnitPrice = None
+        self.OriginalPrice = None
+        self.Discount = None
+        self.DiscountPrice = None
+
+
+    def _deserialize(self, params):
+        self.PriceName = params.get("PriceName")
+        self.OriginUnitPrice = params.get("OriginUnitPrice")
+        self.OriginalPrice = params.get("OriginalPrice")
+        self.Discount = params.get("Discount")
+        self.DiscountPrice = params.get("DiscountPrice")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DisassociateInstancesKeyPairsRequest(AbstractModel):
     """DisassociateInstancesKeyPairs请求参数结构体
 
@@ -3003,7 +3051,17 @@ class Disk(AbstractModel):
         :type DiskSize: int
         :param RenewFlag: 续费标识
         :type RenewFlag: str
-        :param DiskState: 磁盘状态
+        :param DiskState: 磁盘状态，取值范围：
+<li>PENDING：创建中。 </li>
+<li>UNATTACHED：未挂载。</li>
+<li>ATTACHING：挂载中。</li>
+<li>ATTACHED：已挂载。</li>
+<li>DETACHING：卸载中。 </li>
+<li> SHUTDOWN：已隔离。</li>
+<li> CREATED_FAILED：创建失败。</li>
+<li>TERMINATING：销毁中。</li>
+<li> DELETING：删除中。</li>
+<li> FREEZING：冻结中。</li>
         :type DiskState: str
         :param Attached: 磁盘挂载状态
         :type Attached: bool
@@ -3015,14 +3073,21 @@ class Disk(AbstractModel):
         :type LatestOperationState: str
         :param LatestOperationRequestId: 上一次请求ID
         :type LatestOperationRequestId: str
-        :param CreatedTime: 创建时间
+        :param CreatedTime: 创建时间。按照 ISO8601 标准表示，并且使用 UTC 时间。 
+格式为： YYYY-MM-DDThh:mm:ssZ。
         :type CreatedTime: str
-        :param ExpiredTime: 到期时间
+        :param ExpiredTime: 到期时间。按照 ISO8601 标准表示，并且使用 UTC 时间。 
+格式为： YYYY-MM-DDThh:mm:ssZ。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExpiredTime: str
-        :param IsolatedTime: 隔离时间
+        :param IsolatedTime: 隔离时间。按照 ISO8601 标准表示，并且使用 UTC 时间。 
+格式为： YYYY-MM-DDThh:mm:ssZ。
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsolatedTime: str
+        :param DiskBackupCount: 云硬盘的已有备份点数量。
+        :type DiskBackupCount: int
+        :param DiskBackupQuota: 云硬盘的备份点配额数量。
+        :type DiskBackupQuota: int
         """
         self.DiskId = None
         self.InstanceId = None
@@ -3042,6 +3107,8 @@ class Disk(AbstractModel):
         self.CreatedTime = None
         self.ExpiredTime = None
         self.IsolatedTime = None
+        self.DiskBackupCount = None
+        self.DiskBackupQuota = None
 
 
     def _deserialize(self, params):
@@ -3063,6 +3130,8 @@ class Disk(AbstractModel):
         self.CreatedTime = params.get("CreatedTime")
         self.ExpiredTime = params.get("ExpiredTime")
         self.IsolatedTime = params.get("IsolatedTime")
+        self.DiskBackupCount = params.get("DiskBackupCount")
+        self.DiskBackupQuota = params.get("DiskBackupQuota")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3196,11 +3265,14 @@ class DiskPrice(AbstractModel):
         :type Discount: float
         :param DiscountPrice: 折后总价。
         :type DiscountPrice: float
+        :param DetailPrices: 计费项目明细列表。
+        :type DetailPrices: list of DetailPrice
         """
         self.OriginalDiskPrice = None
         self.OriginalPrice = None
         self.Discount = None
         self.DiscountPrice = None
+        self.DetailPrices = None
 
 
     def _deserialize(self, params):
@@ -3208,6 +3280,12 @@ class DiskPrice(AbstractModel):
         self.OriginalPrice = params.get("OriginalPrice")
         self.Discount = params.get("Discount")
         self.DiscountPrice = params.get("DiscountPrice")
+        if params.get("DetailPrices") is not None:
+            self.DetailPrices = []
+            for item in params.get("DetailPrices"):
+                obj = DetailPrice()
+                obj._deserialize(item)
+                self.DetailPrices.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3644,11 +3722,14 @@ class InquirePriceCreateDisksRequest(AbstractModel):
         :type DiskChargePrepaid: :class:`tencentcloud.lighthouse.v20200324.models.DiskChargePrepaid`
         :param DiskCount: 云硬盘个数, 默认值: 1。
         :type DiskCount: int
+        :param DiskBackupQuota: 指定云硬盘备份点配额，不传时默认为不带备份点配额。目前只支持不带或设置1个云硬盘备份点配额。
+        :type DiskBackupQuota: int
         """
         self.DiskSize = None
         self.DiskType = None
         self.DiskChargePrepaid = None
         self.DiskCount = None
+        self.DiskBackupQuota = None
 
 
     def _deserialize(self, params):
@@ -3658,6 +3739,7 @@ class InquirePriceCreateDisksRequest(AbstractModel):
             self.DiskChargePrepaid = DiskChargePrepaid()
             self.DiskChargePrepaid._deserialize(params.get("DiskChargePrepaid"))
         self.DiskCount = params.get("DiskCount")
+        self.DiskBackupQuota = params.get("DiskBackupQuota")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3914,7 +3996,7 @@ NOTIFY_AND_AUTO_RENEW：表示通知即将过期，而且自动续费 。
         :param LoginSettings: 实例登录设置。
         :type LoginSettings: :class:`tencentcloud.lighthouse.v20200324.models.LoginSettings`
         :param InstanceState: 实例状态。取值范围： 
-<li>PENDING：表示创建中</li><li>LAUNCH_FAILED：表示创建失败</li><li>RUNNING：表示运行中</li><li>STOPPED：表示关机</li><li>STARTING：表示开机中</li><li>STOPPING：表示关机中</li><li>REBOOTING：表示重启中</li><li>SHUTDOWN：表示停止待销毁</li><li>TERMINATING：表示销毁中</li><li>DELETING：表示删除中</li><li>FREEZING：表示冻结中</li>
+<li>PENDING：表示创建中</li><li>LAUNCH_FAILED：表示创建失败</li><li>RUNNING：表示运行中</li><li>STOPPED：表示关机</li><li>STARTING：表示开机中</li><li>STOPPING：表示关机中</li><li>REBOOTING：表示重启中</li><li>SHUTDOWN：表示停止待销毁</li><li>TERMINATING：表示销毁中</li><li>DELETING：表示删除中</li><li>FREEZING：表示冻结中</li><li>ENTER_RESCUE_MODE：表示进入救援模式中</li><li>RESCUE_MODE：表示救援模式</li><li>EXIT_RESCUE_MODE：表示退出救援模式中</li>
         :type InstanceState: str
         :param Uuid: 实例全局唯一 ID。
         :type Uuid: str

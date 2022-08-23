@@ -245,6 +245,38 @@ yyyy-mm-dd HH:MM:SS
         
 
 
+class BatchDomainOperateErrors(AbstractModel):
+    """批量操作域名相关接口，若其中个别域名操作失败将会跳过，相应的域名错误信息将统一汇总在此类型中
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainName: 操作失败的域名。
+        :type DomainName: str
+        :param Code: API3.0错误码。
+        :type Code: str
+        :param Message: API3.0错误信息。
+        :type Message: str
+        """
+        self.DomainName = None
+        self.Code = None
+        self.Message = None
+
+
+    def _deserialize(self, params):
+        self.DomainName = params.get("DomainName")
+        self.Code = params.get("Code")
+        self.Message = params.get("Message")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class BillAreaInfo(AbstractModel):
     """海外分区直播带宽出参，分区信息
 
@@ -1262,7 +1294,7 @@ ContinueBreakPoint：播放完当前正在播放的点播 url 后再使用新的
         :param Comment: 任务描述，限制 512 字节。
         :type Comment: str
         :param ToUrl: 完整目标 URL 地址。
-用法注意：如果使用该参数来传完整目标地址，则 DomainName, AppName, StreamName 需要传入空值，任务将会使用该 ToUrl 参数指定的目标地址。
+用法注意：如果使用该参数来传完整目标地址，则 DomainName, AppName, StreamName 需要传入空字符串，任务将会使用该 ToUrl 参数指定的目标地址。
 
 注意：签名时间需要超过任务结束时间，避免因签名过期造成任务失败。
         :type ToUrl: str
@@ -1277,6 +1309,12 @@ PullVodPushLive -点播。
         :param BackupSourceUrl: 备源 URL。
 只允许填一个备源 URL
         :type BackupSourceUrl: str
+        :param WatermarkList: 水印信息列表。
+注意：
+1. 最多支持4个不同位置的水印。
+2. 水印图片 URL 请使用合法外网可访问地址。
+3. 支持的水印图片格式：png，jpg，gif 等。
+        :type WatermarkList: list of PullPushWatermarkInfo
         """
         self.SourceType = None
         self.SourceUrls = None
@@ -1296,6 +1334,7 @@ PullVodPushLive -点播。
         self.ToUrl = None
         self.BackupSourceType = None
         self.BackupSourceUrl = None
+        self.WatermarkList = None
 
 
     def _deserialize(self, params):
@@ -1317,6 +1356,12 @@ PullVodPushLive -点播。
         self.ToUrl = params.get("ToUrl")
         self.BackupSourceType = params.get("BackupSourceType")
         self.BackupSourceUrl = params.get("BackupSourceUrl")
+        if params.get("WatermarkList") is not None:
+            self.WatermarkList = []
+            for item in params.get("WatermarkList"):
+                obj = PullPushWatermarkInfo()
+                obj._deserialize(item)
+                self.WatermarkList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3873,6 +3918,79 @@ class DescribeLiveDelayInfoListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeLiveDomainCertBindingsRequest(AbstractModel):
+    """DescribeLiveDomainCertBindings请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainSearch: 要搜索的域名字符串。
+        :type DomainSearch: str
+        :param Offset: 记录行的位置，从0开始。默认0。
+        :type Offset: int
+        :param Length: 记录行的最大数目。默认50。
+若不传，则最多返回50条数据。
+        :type Length: int
+        :param DomainName: 要查询的单个域名。
+        :type DomainName: str
+        :param OrderBy: 可取值：
+ExpireTimeAsc：证书过期时间升序。
+ExpireTimeDesc：证书过期时间降序。
+        :type OrderBy: str
+        """
+        self.DomainSearch = None
+        self.Offset = None
+        self.Length = None
+        self.DomainName = None
+        self.OrderBy = None
+
+
+    def _deserialize(self, params):
+        self.DomainSearch = params.get("DomainSearch")
+        self.Offset = params.get("Offset")
+        self.Length = params.get("Length")
+        self.DomainName = params.get("DomainName")
+        self.OrderBy = params.get("OrderBy")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeLiveDomainCertBindingsResponse(AbstractModel):
+    """DescribeLiveDomainCertBindings返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LiveDomainCertBindings: 有绑定证书的域名信息数组。
+        :type LiveDomainCertBindings: list of LiveDomainCertBindings
+        :param TotalNum: 总的记录行数，便于分页。
+        :type TotalNum: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.LiveDomainCertBindings = None
+        self.TotalNum = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("LiveDomainCertBindings") is not None:
+            self.LiveDomainCertBindings = []
+            for item in params.get("LiveDomainCertBindings"):
+                obj = LiveDomainCertBindings()
+                obj._deserialize(item)
+                self.LiveDomainCertBindings.append(obj)
+        self.TotalNum = params.get("TotalNum")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeLiveDomainCertRequest(AbstractModel):
     """DescribeLiveDomainCert请求参数结构体
 
@@ -4150,12 +4268,16 @@ class DescribeLiveDomainsResponse(AbstractModel):
         :param CreateLimitCount: 可继续添加域名数量。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CreateLimitCount: int
+        :param PlayTypeCount: 启用的播放域名加速区域统计，数组元素分别为：中国大陆（境内），全球地区，国际/港澳台（境外）域名数量。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PlayTypeCount: list of int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.AllCount = None
         self.DomainList = None
         self.CreateLimitCount = None
+        self.PlayTypeCount = None
         self.RequestId = None
 
 
@@ -4168,6 +4290,7 @@ class DescribeLiveDomainsResponse(AbstractModel):
                 obj._deserialize(item)
                 self.DomainList.append(obj)
         self.CreateLimitCount = params.get("CreateLimitCount")
+        self.PlayTypeCount = params.get("PlayTypeCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -7734,6 +7857,94 @@ class HttpStatusInfo(AbstractModel):
         
 
 
+class LiveCertDomainInfo(AbstractModel):
+    """用作批量绑定域名和证书。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainName: 域名。
+        :type DomainName: str
+        :param Status: 是否启用域名的https规则。
+1：启用
+0：禁用
+-1：保持不变
+        :type Status: int
+        """
+        self.DomainName = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.DomainName = params.get("DomainName")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LiveDomainCertBindings(AbstractModel):
+    """DescribeLiveDomainCertBindings, DescribeLiveDomainCertBindingsGray接口返回的域名证书信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainName: 域名。
+        :type DomainName: str
+        :param CertificateAlias: 证书备注。与CertName同义。
+        :type CertificateAlias: str
+        :param CertType: 证书类型。
+0：自有证书
+1：腾讯云ssl托管证书
+        :type CertType: int
+        :param Status: https状态。
+1：已开启。
+0：已关闭。
+        :type Status: int
+        :param CertExpireTime: 证书过期时间。
+        :type CertExpireTime: str
+        :param CertId: 证书Id。
+        :type CertId: int
+        :param CloudCertId: 腾讯云ssl的证书Id。
+        :type CloudCertId: str
+        :param UpdateTime: 规则最后更新时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        """
+        self.DomainName = None
+        self.CertificateAlias = None
+        self.CertType = None
+        self.Status = None
+        self.CertExpireTime = None
+        self.CertId = None
+        self.CloudCertId = None
+        self.UpdateTime = None
+
+
+    def _deserialize(self, params):
+        self.DomainName = params.get("DomainName")
+        self.CertificateAlias = params.get("CertificateAlias")
+        self.CertType = params.get("CertType")
+        self.Status = params.get("Status")
+        self.CertExpireTime = params.get("CertExpireTime")
+        self.CertId = params.get("CertId")
+        self.CloudCertId = params.get("CloudCertId")
+        self.UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LivePackageInfo(AbstractModel):
     """直播包信息。
 
@@ -7911,6 +8122,86 @@ class ModifyLiveCallbackTemplateResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyLiveDomainCertBindingsRequest(AbstractModel):
+    """ModifyLiveDomainCertBindings请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainInfos: 要绑定证书的播放域名/状态 信息列表。
+如果CloudCertId和证书公钥私钥对均不传，且域名列表已有绑定规则，只批量更新域名https规则的启用状态，并把未上传至腾讯云ssl的已有自有证书上传。
+        :type DomainInfos: list of LiveCertDomainInfo
+        :param CloudCertId: 腾讯云ssl的证书Id。
+见 https://cloud.tencent.com/document/api/400/41665
+        :type CloudCertId: str
+        :param CertificatePublicKey: 证书公钥。
+CloudCertId和公钥私钥对二选一，若CloudCertId将会舍弃公钥和私钥参数，否则将自动先把公钥私钥对上传至ssl新建证书，并使用上传成功后返回的CloudCertId。
+        :type CertificatePublicKey: str
+        :param CertificatePrivateKey: 证书私钥。
+CloudCertId和公钥私钥对二选一，若传CloudCertId将会舍弃公钥和私钥参数，否则将自动先把公钥私钥对上传至ssl新建证书，并使用上传成功后返回的CloudCertId。
+        :type CertificatePrivateKey: str
+        :param CertificateAlias: 上传至ssl证书中心的备注信息，只有新建证书时有效。传CloudCertId时会忽略。
+        :type CertificateAlias: str
+        """
+        self.DomainInfos = None
+        self.CloudCertId = None
+        self.CertificatePublicKey = None
+        self.CertificatePrivateKey = None
+        self.CertificateAlias = None
+
+
+    def _deserialize(self, params):
+        if params.get("DomainInfos") is not None:
+            self.DomainInfos = []
+            for item in params.get("DomainInfos"):
+                obj = LiveCertDomainInfo()
+                obj._deserialize(item)
+                self.DomainInfos.append(obj)
+        self.CloudCertId = params.get("CloudCertId")
+        self.CertificatePublicKey = params.get("CertificatePublicKey")
+        self.CertificatePrivateKey = params.get("CertificatePrivateKey")
+        self.CertificateAlias = params.get("CertificateAlias")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyLiveDomainCertBindingsResponse(AbstractModel):
+    """ModifyLiveDomainCertBindings返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MismatchedDomainNames: DomainNames 入参中，与证书不匹配的域名列表，将会跳过处理。
+        :type MismatchedDomainNames: list of str
+        :param Errors: 操作失败的域名及错误码，错误信息，包括MismatchedDomainNames中的域名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Errors: list of BatchDomainOperateErrors
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.MismatchedDomainNames = None
+        self.Errors = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.MismatchedDomainNames = params.get("MismatchedDomainNames")
+        if params.get("Errors") is not None:
+            self.Errors = []
+            for item in params.get("Errors"):
+                obj = BatchDomainOperateErrors()
+                obj._deserialize(item)
+                self.Errors.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -8150,6 +8441,16 @@ PullVodPushLive -点播。
         :param BackupSourceUrl: 备源 URL。
 只允许填一个备源 URL
         :type BackupSourceUrl: str
+        :param WatermarkList: 水印信息列表。
+注意：
+1. 最多支持4个不同位置的水印。
+2. 水印图片 URL 请使用合法外网可访问地址。
+3. 支持的水印图片格式：png，jpg等。
+4. 轮播任务修改水印后，轮播到下一个文件时新水印生效。
+5. 直播源任务修改水印后，水印立即生效。
+6. 清除水印时，需携带该水印列表参数，内容为空数组。
+7. 暂不支持动图水印。
+        :type WatermarkList: list of PullPushWatermarkInfo
         """
         self.TaskId = None
         self.Operator = None
@@ -8166,6 +8467,7 @@ PullVodPushLive -点播。
         self.Comment = None
         self.BackupSourceType = None
         self.BackupSourceUrl = None
+        self.WatermarkList = None
 
 
     def _deserialize(self, params):
@@ -8184,6 +8486,12 @@ PullVodPushLive -点播。
         self.Comment = params.get("Comment")
         self.BackupSourceType = params.get("BackupSourceType")
         self.BackupSourceUrl = params.get("BackupSourceUrl")
+        if params.get("WatermarkList") is not None:
+            self.WatermarkList = []
+            for item in params.get("WatermarkList"):
+                obj = PullPushWatermarkInfo()
+                obj._deserialize(item)
+                self.WatermarkList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9063,6 +9371,56 @@ UTC 格式，例如：2018-06-29T19:00:00Z。
         
 
 
+class PullPushWatermarkInfo(AbstractModel):
+    """云转推水印信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PictureUrl: 水印图片 URL。
+URL中禁止包含的字符：
+;(){}$>`#"'|
+        :type PictureUrl: str
+        :param XPosition: 显示位置，X轴偏移，单位是百分比，默认 0。
+        :type XPosition: int
+        :param YPosition: 显示位置，Y轴偏移，单位是百分比，默认 0。
+        :type YPosition: int
+        :param Width: 水印宽度，占直播原始画面宽度百分比，建议高宽只设置一项，另外一项会自适应缩放，避免变形。默认原始宽度。
+        :type Width: int
+        :param Height: 水印高度，占直播原始画面高度百分比，建议高宽只设置一项，另外一项会自适应缩放，避免变形。默认原始高度。
+        :type Height: int
+        :param Location: 水印位置，默认 0。
+0：左上角。
+1：右上角。
+2：右下角。
+3：左下角。
+        :type Location: int
+        """
+        self.PictureUrl = None
+        self.XPosition = None
+        self.YPosition = None
+        self.Width = None
+        self.Height = None
+        self.Location = None
+
+
+    def _deserialize(self, params):
+        self.PictureUrl = params.get("PictureUrl")
+        self.XPosition = params.get("XPosition")
+        self.YPosition = params.get("YPosition")
+        self.Width = params.get("Width")
+        self.Height = params.get("Height")
+        self.Location = params.get("Location")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PullStreamConfig(AbstractModel):
     """拉流配置。
 
@@ -9224,6 +9582,17 @@ pause：暂停中。
         :type RecentPullInfo: :class:`tencentcloud.live.v20180801.models.RecentPullInfo`
         :param Comment: 任务备注信息。
         :type Comment: str
+        :param BackupSourceType: 备源类型：
+PullLivePushLive -直播，
+PullVodPushLive -点播。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BackupSourceType: str
+        :param BackupSourceUrl: 备源URL。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BackupSourceUrl: str
+        :param WatermarkList: 水印信息列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WatermarkList: list of PullPushWatermarkInfo
         """
         self.TaskId = None
         self.SourceType = None
@@ -9248,6 +9617,9 @@ pause：暂停中。
         self.Status = None
         self.RecentPullInfo = None
         self.Comment = None
+        self.BackupSourceType = None
+        self.BackupSourceUrl = None
+        self.WatermarkList = None
 
 
     def _deserialize(self, params):
@@ -9276,6 +9648,14 @@ pause：暂停中。
             self.RecentPullInfo = RecentPullInfo()
             self.RecentPullInfo._deserialize(params.get("RecentPullInfo"))
         self.Comment = params.get("Comment")
+        self.BackupSourceType = params.get("BackupSourceType")
+        self.BackupSourceUrl = params.get("BackupSourceUrl")
+        if params.get("WatermarkList") is not None:
+            self.WatermarkList = []
+            for item in params.get("WatermarkList"):
+                obj = PullPushWatermarkInfo()
+                obj._deserialize(item)
+                self.WatermarkList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

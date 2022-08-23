@@ -23,6 +23,9 @@ INTERNALERROR_ADDNEWNODEERROR = 'InternalError.AddNewNodeError'
 # 创建apm资源失败。
 INTERNALERROR_CREATEAPMRESOURCEERROR = 'InternalError.CreateApmResourceError'
 
+# 创建配置失败。
+INTERNALERROR_CREATECONFIGDATAERROR = 'InternalError.CreateConfigDataError'
+
 # 底层集群创建失败。
 INTERNALERROR_CREATEEKSCLUSTERERROR = 'InternalError.CreateEksClusterError'
 
@@ -41,17 +44,29 @@ INTERNALERROR_DELETESERVICEERROR = 'InternalError.DeleteServiceError'
 # 版本部署调用失败。
 INTERNALERROR_DEPLOYVERSIONERROR = 'InternalError.DeployVersionError'
 
+# 查询配置详情失败。
+INTERNALERROR_DESCRIBECONFIGDATAERROR = 'InternalError.DescribeConfigDataError'
+
+# 查询配置列表失败。
+INTERNALERROR_DESCRIBECONFIGDATALISTERROR = 'InternalError.DescribeConfigDataListError'
+
 # 查询 ingress 失败。
 INTERNALERROR_DESCRIBEINGRESSERROR = 'InternalError.DescribeIngressError'
 
 # 查询实例信息失败。
 INTERNALERROR_DESCRIBERUNPODLISTERROR = 'InternalError.DescribeRunPodListError'
 
+# 查询service失败。
+INTERNALERROR_DESCRIBESERVICEERROR = 'InternalError.DescribeServiceError'
+
 # 查询服务关联的 ingress 失败。
 INTERNALERROR_DESCRIBESERVICEINGRESSERROR = 'InternalError.DescribeServiceIngressError'
 
 # 查询service列表失败。
 INTERNALERROR_DESCRIBESERVICELISTERROR = 'InternalError.DescribeServiceListError'
+
+# 修改配置失败。
+INTERNALERROR_MODIFYCONFIGDATAERROR = 'InternalError.ModifyConfigDataError'
 
 # 重启失败。
 INTERNALERROR_RESTARTAPPLICATIONERROR = 'InternalError.RestartApplicationError'
@@ -65,6 +80,30 @@ INTERNALERROR_UPDATEINGRESSERROR = 'InternalError.UpdateIngressError'
 # 只支持绑定一种弹性伸缩。
 INVALIDPARAMETERVALUE_AUTOSCALERLARGERTHANONE = 'InvalidParameterValue.AutoScalerLargerThanOne'
 
+# 不能覆盖其他应用的访问方式。
+INVALIDPARAMETERVALUE_CANNOTOVERWRITEOTHERAPPLICATIONSERVICE = 'InvalidParameterValue.CannotOverWriteOtherApplicationService'
+
+# 配置已存在。
+INVALIDPARAMETERVALUE_CONFIGDATAALREADYEXIST = 'InvalidParameterValue.ConfigDataAlreadyExist'
+
+# 配置不合法。
+INVALIDPARAMETERVALUE_CONFIGDATAINVALID = 'InvalidParameterValue.ConfigDataInvalid'
+
+# 定时弹性伸缩目标实例数不合法。
+INVALIDPARAMETERVALUE_CRONHPAREPLICASINVALID = 'InvalidParameterValue.CronHpaReplicasInvalid'
+
+# 弹性伸缩启用中，请停用后再删除。
+INVALIDPARAMETERVALUE_DISABLESCALERBEFOREDELETE = 'InvalidParameterValue.DisableScalerBeforeDelete'
+
+# 弹性伸缩指标不合法。
+INVALIDPARAMETERVALUE_HPAMETRICSINVALID = 'InvalidParameterValue.HpaMetricsInvalid'
+
+# 弹性伸缩最小值/最大值不合法。
+INVALIDPARAMETERVALUE_HPAMINMAXINVALID = 'InvalidParameterValue.HpaMinMaxInvalid'
+
+# 无效的定时伸缩周期。
+INVALIDPARAMETERVALUE_INVALIDCRONSCALERPERIOD = 'InvalidParameterValue.InvalidCronScalerPeriod'
+
 # 版本号格式非法。
 INVALIDPARAMETERVALUE_INVALIDDEPLOYVERSION = 'InvalidParameterValue.InvalidDeployVersion'
 
@@ -77,6 +116,9 @@ INVALIDPARAMETERVALUE_NAMESPACEDUPLICATEERROR = 'InvalidParameterValue.Namespace
 # 命名空间不属于用户。
 INVALIDPARAMETERVALUE_NAMESPACENOTBELONGTOAPPID = 'InvalidParameterValue.NamespaceNotBelongToAppid'
 
+# 环境不存在。
+INVALIDPARAMETERVALUE_NAMESPACENOTFOUND = 'InvalidParameterValue.NamespaceNotFound'
+
 # 环境创建失败，达到上限。
 INVALIDPARAMETERVALUE_NAMESPACEREACHMAXIMUM = 'InvalidParameterValue.NamespaceReachMaximum'
 
@@ -86,6 +128,9 @@ INVALIDPARAMETERVALUE_NAMESPACERESOURCEREACHMAXIMUM = 'InvalidParameterValue.Nam
 # 公有镜像参数错误。
 INVALIDPARAMETERVALUE_PUBLICREPOTYPEPARAMETERERROR = 'InvalidParameterValue.PublicRepoTypeParameterError'
 
+# 弹性伸缩名称已存在。
+INVALIDPARAMETERVALUE_SCALERNAMEDUPLICATED = 'InvalidParameterValue.ScalerNameDuplicated'
+
 # 应用存在正在运行的实例。
 INVALIDPARAMETERVALUE_SERVICEFOUNDRUNNINGVERSION = 'InvalidParameterValue.ServiceFoundRunningVersion'
 
@@ -94,6 +139,9 @@ INVALIDPARAMETERVALUE_SERVICELOWERCASE = 'InvalidParameterValue.ServiceLowerCase
 
 # 应用名已存在。
 INVALIDPARAMETERVALUE_SERVICENAMEDUPLICATEERROR = 'InvalidParameterValue.ServiceNameDuplicateError'
+
+# 应用不属于此账户。
+INVALIDPARAMETERVALUE_SERVICENOTBELONGTOAPPID = 'InvalidParameterValue.ServiceNotBelongToAppid'
 
 # 实例创建失败，达到上限。
 INVALIDPARAMETERVALUE_SERVICEPODREACHMAXIMUM = 'InvalidParameterValue.ServicePodReachMaximum'
@@ -121,6 +169,9 @@ MISSINGPARAMETER_NAMESPACEIDNULL = 'MissingParameter.NamespaceIdNull'
 
 # 包名不能为空。
 MISSINGPARAMETER_PKGNAMENULL = 'MissingParameter.PkgNameNull'
+
+# 弹性规则ID不能为空。
+MISSINGPARAMETER_SCALERIDNULL = 'MissingParameter.ScalerIdNull'
 
 # 服务ID不能为空。
 MISSINGPARAMETER_SERVICEIDNULL = 'MissingParameter.ServiceIdNull'
@@ -157,6 +208,9 @@ RESOURCENOTFOUND_VERSIONNAMESPACENOTFOUND = 'ResourceNotFound.VersionNamespaceNo
 
 # 找不到版本对应的应用。
 RESOURCENOTFOUND_VERSIONSERVICENOTFOUND = 'ResourceNotFound.VersionServiceNotFound'
+
+# 应用已停止。
+RESOURCEUNAVAILABLE_APPLICATIONSTOPPED = 'ResourceUnavailable.ApplicationStopped'
 
 # 等待组件安装。
 RESOURCEUNAVAILABLE_WAITFORKRUISE = 'ResourceUnavailable.WaitForKruise'

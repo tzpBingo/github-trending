@@ -17,30 +17,30 @@ import json
 
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.common.abstract_client import AbstractClient
-from tencentcloud.rce.v20201103 import models
+from tencentcloud.irp.v20220805 import models
 
 
-class RceClient(AbstractClient):
-    _apiVersion = '2020-11-03'
-    _endpoint = 'rce.tencentcloudapi.com'
-    _service = 'rce'
+class IrpClient(AbstractClient):
+    _apiVersion = '2022-08-05'
+    _endpoint = 'irp.tencentcloudapi.com'
+    _service = 'irp'
 
 
-    def DescribeRiskAssessment(self, request):
-        """此接口用于查询风险评估结果
+    def FeedRecommend(self, request):
+        """获取信息流推荐结果
 
-        :param request: Request instance for DescribeRiskAssessment.
-        :type request: :class:`tencentcloud.rce.v20201103.models.DescribeRiskAssessmentRequest`
-        :rtype: :class:`tencentcloud.rce.v20201103.models.DescribeRiskAssessmentResponse`
+        :param request: Request instance for FeedRecommend.
+        :type request: :class:`tencentcloud.irp.v20220805.models.FeedRecommendRequest`
+        :rtype: :class:`tencentcloud.irp.v20220805.models.FeedRecommendResponse`
 
         """
         try:
             params = request._serialize()
             headers = request.headers
-            body = self.call("DescribeRiskAssessment", params, headers=headers)
+            body = self.call("FeedRecommend", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
-                model = models.DescribeRiskAssessmentResponse()
+                model = models.FeedRecommendResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -55,21 +55,21 @@ class RceClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
-    def DescribeRiskTrends(self, request):
-        """以图表形式展示三种请求状态的趋势变化
+    def ReportFeedBehavior(self, request):
+        """上报场景内的行为数据，随着数据的积累，模型的效果会逐渐稳定。
 
-        :param request: Request instance for DescribeRiskTrends.
-        :type request: :class:`tencentcloud.rce.v20201103.models.DescribeRiskTrendsRequest`
-        :rtype: :class:`tencentcloud.rce.v20201103.models.DescribeRiskTrendsResponse`
+        :param request: Request instance for ReportFeedBehavior.
+        :type request: :class:`tencentcloud.irp.v20220805.models.ReportFeedBehaviorRequest`
+        :rtype: :class:`tencentcloud.irp.v20220805.models.ReportFeedBehaviorResponse`
 
         """
         try:
             params = request._serialize()
             headers = request.headers
-            body = self.call("DescribeRiskTrends", params, headers=headers)
+            body = self.call("ReportFeedBehavior", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
-                model = models.DescribeRiskTrendsResponse()
+                model = models.ReportFeedBehaviorResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -84,21 +84,50 @@ class RceClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
-    def ManageMarketingRisk(self, request):
-        """全栈式风控引擎（RiskControlEngine，RCE）是基于人工智能技术和腾讯20年风控实战沉淀，依托腾讯海量业务构建的风控引擎，以轻量级的 SaaS 服务方式接入，帮助您快速解决注册、登录、营销活动等关键场景遇到的欺诈问题，实时防御黑灰产作恶。
+    def ReportFeedItem(self, request):
+        """上报被用于推荐的信息流内容
 
-        :param request: Request instance for ManageMarketingRisk.
-        :type request: :class:`tencentcloud.rce.v20201103.models.ManageMarketingRiskRequest`
-        :rtype: :class:`tencentcloud.rce.v20201103.models.ManageMarketingRiskResponse`
+        :param request: Request instance for ReportFeedItem.
+        :type request: :class:`tencentcloud.irp.v20220805.models.ReportFeedItemRequest`
+        :rtype: :class:`tencentcloud.irp.v20220805.models.ReportFeedItemResponse`
 
         """
         try:
             params = request._serialize()
             headers = request.headers
-            body = self.call("ManageMarketingRisk", params, headers=headers)
+            body = self.call("ReportFeedItem", params, headers=headers)
             response = json.loads(body)
             if "Error" not in response["Response"]:
-                model = models.ManageMarketingRiskResponse()
+                model = models.ReportFeedItemResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ReportFeedUser(self, request):
+        """上报用户信息，请务必确认用户的唯一性，并在请求推荐结果时指定用户的唯一标识信息（UserId），否则将无法进行千人千面的推荐
+
+        :param request: Request instance for ReportFeedUser.
+        :type request: :class:`tencentcloud.irp.v20220805.models.ReportFeedUserRequest`
+        :rtype: :class:`tencentcloud.irp.v20220805.models.ReportFeedUserResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ReportFeedUser", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ReportFeedUserResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

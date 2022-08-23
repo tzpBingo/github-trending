@@ -627,7 +627,7 @@ class VodClient(AbstractClient):
 
 
     def CreateSuperPlayerConfig(self, request):
-        """创建超级播放器配置，数量上限：100。
+        """创建播放器配置，数量上限：100。
 
         :param request: Request instance for CreateSuperPlayerConfig.
         :type request: :class:`tencentcloud.vod.v20180717.models.CreateSuperPlayerConfigRequest`
@@ -1184,7 +1184,7 @@ class VodClient(AbstractClient):
 
 
     def DeleteSuperPlayerConfig(self, request):
-        """删除超级播放器配置。
+        """删除播放器配置。
         *注：系统预置播放器配置不允许删除。*
 
         :param request: Request instance for DeleteSuperPlayerConfig.
@@ -1558,6 +1558,38 @@ class VodClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeCdnLogsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeClientUploadAccelerationUsageData(self, request):
+        """该接口返回查询时间范围内客户端上传加速统计信息。
+           1. 可以查询最近365天内的客户端上传加速统计数据。
+           2. 查询时间跨度不超过90天。
+           3. 查询时间跨度超过1天的，返回以天为粒度的数据，否则，返回以5分钟为粒度的数据。
+
+        :param request: Request instance for DescribeClientUploadAccelerationUsageData.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DescribeClientUploadAccelerationUsageDataRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DescribeClientUploadAccelerationUsageDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClientUploadAccelerationUsageData", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeClientUploadAccelerationUsageDataResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -2351,7 +2383,7 @@ class VodClient(AbstractClient):
 
 
     def DescribeSuperPlayerConfigs(self, request):
-        """查询超级播放器配置，支持根据条件，分页查询。
+        """查询播放器配置，支持根据条件，分页查询。
 
         :param request: Request instance for DescribeSuperPlayerConfigs.
         :type request: :class:`tencentcloud.vod.v20180717.models.DescribeSuperPlayerConfigsRequest`
@@ -3251,7 +3283,7 @@ class VodClient(AbstractClient):
 
 
     def ModifySuperPlayerConfig(self, request):
-        """修改超级播放器配置。
+        """修改播放器配置。
 
         :param request: Request instance for ModifySuperPlayerConfig.
         :type request: :class:`tencentcloud.vod.v20180717.models.ModifySuperPlayerConfigRequest`

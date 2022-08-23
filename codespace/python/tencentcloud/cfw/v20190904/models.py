@@ -1651,7 +1651,7 @@ class DescribeBlockStaticListRequest(AbstractModel):
         :type StartTime: str
         :param EndTime: 结束时间
         :type EndTime: str
-        :param QueryType: 类型
+        :param QueryType: 列表类型，只能是下面三种之一：port、address、ip
         :type QueryType: str
         :param Top: top数
         :type Top: int
@@ -1713,11 +1713,11 @@ class DescribeCfwEipsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Mode: 0：cfw新增模式，1：cfw接入模式
+        :param Mode: 1：cfw接入模式，目前仅支持接入模式实例
         :type Mode: int
         :param NatGatewayId: ALL：查询所有弹性公网ip; nat-xxxxx：接入模式场景指定网关的弹性公网ip
         :type NatGatewayId: str
-        :param CfwInstance: 防火墙实例id
+        :param CfwInstance: 防火墙实例id，当前仅支持接入模式的实例
         :type CfwInstance: str
         """
         self.Mode = None
@@ -3743,9 +3743,9 @@ class ModifyBlockIgnoreListRequest(AbstractModel):
         :type IOC: list of IocListData
         :param IocAction: 可选值：delete（删除）、edit（编辑）、add（添加）  其他值无效
         :type IocAction: str
-        :param StartTime: 时间格式：yyyy-MM-dd HH:mm:ss
+        :param StartTime: 时间格式：yyyy-MM-dd HH:mm:ss，IocAction 为edit或add时必填
         :type StartTime: str
-        :param EndTime: 时间格式：yyyy-MM-dd HH:mm:ss
+        :param EndTime: 时间格式：yyyy-MM-dd HH:mm:ss，IocAction 为edit或add时必填
         :type EndTime: str
         """
         self.RuleType = None
