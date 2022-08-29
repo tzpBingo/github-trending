@@ -7619,6 +7619,8 @@ class ModifyInstanceAttributesRequest(AbstractModel):
         :type PublicNetwork: int
         :param DynamicDiskConfig: 动态硬盘扩容策略配置
         :type DynamicDiskConfig: :class:`tencentcloud.ckafka.v20190819.models.DynamicDiskConfig`
+        :param MaxMessageByte: 实例级别单条消息大小（单位byte)
+        :type MaxMessageByte: int
         """
         self.InstanceId = None
         self.MsgRetentionTime = None
@@ -7628,6 +7630,7 @@ class ModifyInstanceAttributesRequest(AbstractModel):
         self.RebalanceTime = None
         self.PublicNetwork = None
         self.DynamicDiskConfig = None
+        self.MaxMessageByte = None
 
 
     def _deserialize(self, params):
@@ -7645,6 +7648,7 @@ class ModifyInstanceAttributesRequest(AbstractModel):
         if params.get("DynamicDiskConfig") is not None:
             self.DynamicDiskConfig = DynamicDiskConfig()
             self.DynamicDiskConfig._deserialize(params.get("DynamicDiskConfig"))
+        self.MaxMessageByte = params.get("MaxMessageByte")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8199,6 +8203,9 @@ class MySQLModifyConnectParam(AbstractModel):
         :param ClusterId: 当type为TDSQL_C_MYSQL时
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterId: str
+        :param SelfBuilt: 是否是自建的集群
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SelfBuilt: bool
         """
         self.Resource = None
         self.Port = None
@@ -8208,6 +8215,7 @@ class MySQLModifyConnectParam(AbstractModel):
         self.Password = None
         self.IsUpdate = None
         self.ClusterId = None
+        self.SelfBuilt = None
 
 
     def _deserialize(self, params):
@@ -8219,6 +8227,7 @@ class MySQLModifyConnectParam(AbstractModel):
         self.Password = params.get("Password")
         self.IsUpdate = params.get("IsUpdate")
         self.ClusterId = params.get("ClusterId")
+        self.SelfBuilt = params.get("SelfBuilt")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8279,6 +8288,8 @@ class MySQLParam(AbstractModel):
         :type IncludeContentChanges: str
         :param IncludeQuery: 如果该值为true，且MySQL中"binlog_rows_query_log_events"配置项的值为"ON"，则流入到topic的数据包含原SQL语句；若该值为false，流入到topic的数据不包含原SQL语句
         :type IncludeQuery: bool
+        :param RecordWithSchema: 如果该值为 true，则消息中会携带消息结构体对应的schema，如果该值为false则不会携带
+        :type RecordWithSchema: bool
         """
         self.Database = None
         self.Table = None
@@ -8302,6 +8313,7 @@ class MySQLParam(AbstractModel):
         self.IsTablePrefix = None
         self.IncludeContentChanges = None
         self.IncludeQuery = None
+        self.RecordWithSchema = None
 
 
     def _deserialize(self, params):
@@ -8334,6 +8346,7 @@ class MySQLParam(AbstractModel):
         self.IsTablePrefix = params.get("IsTablePrefix")
         self.IncludeContentChanges = params.get("IncludeContentChanges")
         self.IncludeQuery = params.get("IncludeQuery")
+        self.RecordWithSchema = params.get("RecordWithSchema")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8546,6 +8559,9 @@ class PostgreSQLModifyConnectParam(AbstractModel):
         :param IsUpdate: 是否更新到关联的Datahub任务
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsUpdate: bool
+        :param SelfBuilt: 是否为自建集群
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SelfBuilt: bool
         """
         self.Resource = None
         self.Port = None
@@ -8555,6 +8571,7 @@ class PostgreSQLModifyConnectParam(AbstractModel):
         self.Password = None
         self.ClusterId = None
         self.IsUpdate = None
+        self.SelfBuilt = None
 
 
     def _deserialize(self, params):
@@ -8566,6 +8583,7 @@ class PostgreSQLModifyConnectParam(AbstractModel):
         self.Password = params.get("Password")
         self.ClusterId = params.get("ClusterId")
         self.IsUpdate = params.get("IsUpdate")
+        self.SelfBuilt = params.get("SelfBuilt")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8592,12 +8610,27 @@ class PostgreSQLParam(AbstractModel):
         :type PluginName: str
         :param SnapshotMode: 复制存量信息(never增量, initial全量)，默认为initial
         :type SnapshotMode: str
+        :param DataFormat: 上游数据格式(JSON/Debezium), 当数据库同步模式为默认字段匹配时,必填
+        :type DataFormat: str
+        :param DataTargetInsertMode: "INSERT" 表示使用 Insert 模式插入，"UPSERT" 表示使用 Upsert 模式插入
+        :type DataTargetInsertMode: str
+        :param DataTargetPrimaryKeyField: 当 "DataInsertMode"="UPSERT" 时，传入当前 upsert 时依赖的主键
+        :type DataTargetPrimaryKeyField: str
+        :param DataTargetRecordMapping: 表与消息间的映射关系
+        :type DataTargetRecordMapping: list of RecordMapping
+        :param DropInvalidMessage: 是否抛弃解析失败的消息，默认为true
+        :type DropInvalidMessage: bool
         """
         self.Database = None
         self.Table = None
         self.Resource = None
         self.PluginName = None
         self.SnapshotMode = None
+        self.DataFormat = None
+        self.DataTargetInsertMode = None
+        self.DataTargetPrimaryKeyField = None
+        self.DataTargetRecordMapping = None
+        self.DropInvalidMessage = None
 
 
     def _deserialize(self, params):
@@ -8606,6 +8639,16 @@ class PostgreSQLParam(AbstractModel):
         self.Resource = params.get("Resource")
         self.PluginName = params.get("PluginName")
         self.SnapshotMode = params.get("SnapshotMode")
+        self.DataFormat = params.get("DataFormat")
+        self.DataTargetInsertMode = params.get("DataTargetInsertMode")
+        self.DataTargetPrimaryKeyField = params.get("DataTargetPrimaryKeyField")
+        if params.get("DataTargetRecordMapping") is not None:
+            self.DataTargetRecordMapping = []
+            for item in params.get("DataTargetRecordMapping"):
+                obj = RecordMapping()
+                obj._deserialize(item)
+                self.DataTargetRecordMapping.append(obj)
+        self.DropInvalidMessage = params.get("DropInvalidMessage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8921,6 +8964,40 @@ class RouteResponse(AbstractModel):
                 obj = Route()
                 obj._deserialize(item)
                 self.Routers.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RowParam(AbstractModel):
+    """数据处理ROW输出格式配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RowContent: 行内容，KEY_VALUE，VALUE
+        :type RowContent: str
+        :param KeyValueDelimiter: key和value间的分隔符
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KeyValueDelimiter: str
+        :param EntryDelimiter: 元素建的分隔符
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EntryDelimiter: str
+        """
+        self.RowContent = None
+        self.KeyValueDelimiter = None
+        self.EntryDelimiter = None
+
+
+    def _deserialize(self, params):
+        self.RowContent = params.get("RowContent")
+        self.KeyValueDelimiter = params.get("KeyValueDelimiter")
+        self.EntryDelimiter = params.get("EntryDelimiter")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10047,9 +10124,12 @@ class TransformsParam(AbstractModel):
         :param SourceType: 数据来源
 注意：此字段可能返回 null，表示取不到有效值。
         :type SourceType: str
-        :param OutputFormat: 输出格式
+        :param OutputFormat: 输出格式，JSON，ROW，默认为JSON
 注意：此字段可能返回 null，表示取不到有效值。
         :type OutputFormat: str
+        :param RowParam: 输出格式为ROW必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RowParam: :class:`tencentcloud.ckafka.v20190819.models.RowParam`
         """
         self.Content = None
         self.FieldChain = None
@@ -10058,6 +10138,7 @@ class TransformsParam(AbstractModel):
         self.Result = None
         self.SourceType = None
         self.OutputFormat = None
+        self.RowParam = None
 
 
     def _deserialize(self, params):
@@ -10080,6 +10161,9 @@ class TransformsParam(AbstractModel):
         self.Result = params.get("Result")
         self.SourceType = params.get("SourceType")
         self.OutputFormat = params.get("OutputFormat")
+        if params.get("RowParam") is not None:
+            self.RowParam = RowParam()
+            self.RowParam._deserialize(params.get("RowParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

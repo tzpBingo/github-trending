@@ -1700,7 +1700,6 @@ off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type BpsThreshold: int
         :param CounterMeasure: 达到阈值后的操作
-RESOLVE_DNS_TO_ORIGIN：直接回源，仅自有源站域名支持
 RETURN_404：全部请求返回 404
 注意：此字段可能返回 null，表示取不到有效值。
         :type CounterMeasure: str
@@ -13360,7 +13359,6 @@ class ServerCert(AbstractModel):
     """https 加速服务端证书配置：
     + 支持使用托管至 SSL 证书管理的证书进行部署
     + 支持上传 PEM 格式的证书进行部署
-    注意：上传 PEM 证书时，需要进行 Base 64 编码
 
     """
 
