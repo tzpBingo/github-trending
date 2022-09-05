@@ -10342,8 +10342,8 @@ class DescribeSecurityGroupPoliciesRequest(AbstractModel):
         r"""
         :param SecurityGroupId: 安全组实例ID，例如：sg-33ocnj9n，可通过DescribeSecurityGroups获取。
         :type SecurityGroupId: str
-        :param Filters: 过滤条件,不支持同时指定SecurityGroupId和Filters参数。
-<li>security-group-id - String - 安全组ID。</li>
+        :param Filters: 过滤条件。
+<li>security-group-id - String - 规则中的安全组ID。</li>
 <li>ip - String - IP，支持IPV4和IPV6模糊匹配。</li>
 <li>address-module - String - IP地址模板或IP地址组模板ID。</li>
 <li>service-module - String - 协议端口模板或协议端口组模板ID。</li>
@@ -10848,6 +10848,80 @@ class DescribeTenantCcnsResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTrafficPackagesRequest(AbstractModel):
+    """DescribeTrafficPackages请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TrafficPackageIds: 共享流量包ID，支持批量
+        :type TrafficPackageIds: list of str
+        :param Filters: 每次请求的`Filters`的上限为10。参数不支持同时指定`TrafficPackageIds`和`Filters`。详细的过滤条件如下：
+<li> traffic-package_id - String - 是否必填：否 - （过滤条件）按照共享流量包的唯一标识ID过滤。</li>
+<li> traffic-package-name - String - 是否必填：否 - （过滤条件）按照共享流量包名称过滤。不支持模糊过滤。</li>
+<li> status - String - 是否必填：否 - （过滤条件）按照共享流量包状态过滤。可选状态：[AVAILABLE|EXPIRED|EXHAUSTED]</li>
+        :type Filters: list of Filter
+        :param Offset: 分页参数
+        :type Offset: int
+        :param Limit: 分页参数
+        :type Limit: int
+        """
+        self.TrafficPackageIds = None
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.TrafficPackageIds = params.get("TrafficPackageIds")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTrafficPackagesResponse(AbstractModel):
+    """DescribeTrafficPackages返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 按照条件查询出来的流量包数量
+        :type TotalCount: int
+        :param TrafficPackageSet: 流量包信息
+        :type TrafficPackageSet: list of TrafficPackage
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.TrafficPackageSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("TrafficPackageSet") is not None:
+            self.TrafficPackageSet = []
+            for item in params.get("TrafficPackageSet"):
+                obj = TrafficPackage()
+                obj._deserialize(item)
+                self.TrafficPackageSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -20653,6 +20727,73 @@ class TemplateLimit(AbstractModel):
         self.AddressTemplateGroupMemberLimit = params.get("AddressTemplateGroupMemberLimit")
         self.ServiceTemplateMemberLimit = params.get("ServiceTemplateMemberLimit")
         self.ServiceTemplateGroupMemberLimit = params.get("ServiceTemplateGroupMemberLimit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TrafficPackage(AbstractModel):
+    """流量包信息描述类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TrafficPackageId: 流量包唯一ID
+        :type TrafficPackageId: str
+        :param TrafficPackageName: 流量包名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TrafficPackageName: str
+        :param TotalAmount: 流量包总量，单位GB
+        :type TotalAmount: float
+        :param RemainingAmount: 流量包剩余量，单位GB
+        :type RemainingAmount: float
+        :param Status: 流量包状态，可能的值有: AVAILABLE-可用状态， EXPIRED-已过期， EXHAUSTED-已用完， REFUNDED-已退还， DELETED-已删除
+        :type Status: str
+        :param CreatedTime: 流量包创建时间
+        :type CreatedTime: str
+        :param Deadline: 流量包截止时间
+        :type Deadline: str
+        :param UsedAmount: 已使用的流量，单位GB
+        :type UsedAmount: float
+        :param TagSet: 流量包标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagSet: list of Tag
+        :param DeductType: 区分闲时流量包与全时流量包
+        :type DeductType: str
+        """
+        self.TrafficPackageId = None
+        self.TrafficPackageName = None
+        self.TotalAmount = None
+        self.RemainingAmount = None
+        self.Status = None
+        self.CreatedTime = None
+        self.Deadline = None
+        self.UsedAmount = None
+        self.TagSet = None
+        self.DeductType = None
+
+
+    def _deserialize(self, params):
+        self.TrafficPackageId = params.get("TrafficPackageId")
+        self.TrafficPackageName = params.get("TrafficPackageName")
+        self.TotalAmount = params.get("TotalAmount")
+        self.RemainingAmount = params.get("RemainingAmount")
+        self.Status = params.get("Status")
+        self.CreatedTime = params.get("CreatedTime")
+        self.Deadline = params.get("Deadline")
+        self.UsedAmount = params.get("UsedAmount")
+        if params.get("TagSet") is not None:
+            self.TagSet = []
+            for item in params.get("TagSet"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.TagSet.append(obj)
+        self.DeductType = params.get("DeductType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
