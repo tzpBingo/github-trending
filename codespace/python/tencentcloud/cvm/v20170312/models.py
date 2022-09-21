@@ -6235,6 +6235,8 @@ class ModifyInstancesAttributeRequest(AbstractModel):
         :type SecurityGroups: list of str
         :param CamRoleName: 给实例绑定用户角色，传空值为解绑操作
         :type CamRoleName: str
+        :param HostName: 实例的主机名。<br><li>点号（.）和短横线（-）不能作为 HostName 的首尾字符，不能连续使用。<br><li>Windows 实例：名字符长度为[2, 15]，允许字母（不限制大小写）、数字和短横线（-）组成，不支持点号（.），不能全是数字。<br><li>其他类型（Linux 等）实例：字符长度为[2, 60]，允许支持多个点号，点之间为一段，每段允许字母（不限制大小写）、数字和短横线（-）组成。
+        :type HostName: str
         :param DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
         :type DisableApiTermination: bool
         :param CamRoleType: 角色类别，与CamRoleName搭配使用，该值可从CAM DescribeRoleList, GetRole接口返回RoleType字段获取，当前只接受user、system和service_linked三种类别。
@@ -6246,6 +6248,7 @@ class ModifyInstancesAttributeRequest(AbstractModel):
         self.InstanceName = None
         self.SecurityGroups = None
         self.CamRoleName = None
+        self.HostName = None
         self.DisableApiTermination = None
         self.CamRoleType = None
 
@@ -6255,6 +6258,7 @@ class ModifyInstancesAttributeRequest(AbstractModel):
         self.InstanceName = params.get("InstanceName")
         self.SecurityGroups = params.get("SecurityGroups")
         self.CamRoleName = params.get("CamRoleName")
+        self.HostName = params.get("HostName")
         self.DisableApiTermination = params.get("DisableApiTermination")
         self.CamRoleType = params.get("CamRoleType")
         memeber_set = set(params.keys())
@@ -8384,9 +8388,7 @@ class SyncImagesRequest(AbstractModel):
         r"""
         :param ImageIds: 镜像ID列表 ，镜像ID可以通过如下方式获取：<br><li>通过[DescribeImages](https://cloud.tencent.com/document/api/213/15715)接口返回的`ImageId`获取。<br><li>通过[镜像控制台](https://console.cloud.tencent.com/cvm/image)获取。<br>镜像ID必须满足限制：<br><li>镜像ID对应的镜像状态必须为`NORMAL`。<br>镜像状态请参考[镜像数据表](https://cloud.tencent.com/document/product/213/15753#Image)。
         :type ImageIds: list of str
-        :param DestinationRegions: 目的同步地域列表；必须满足限制：<br><li>不能为源地域，<br><li>必须是一个合法的Region。<br><li>暂不支持部分地域同步。<br>具体地域参数请参考[Region](https://cloud.tencent.com/document/product/213/6091)。
-
-如果是共享镜像，则目的同步地域仅支持源地域，表示将共享镜像复制为同地域的自定义镜像。
+        :param DestinationRegions: 目的同步地域列表，必须满足如下限制：<br><li>必须是一个合法的Region。<br><li>如果是自定义镜像，则目标同步地域不能为源地域。<br><li>如果是共享镜像，则目的同步地域仅支持源地域，表示将共享镜像复制为源地域的自定义镜像。<br><li>暂不支持部分地域同步。<br>具体地域参数请参考[Region](https://cloud.tencent.com/document/product/213/6091)。
         :type DestinationRegions: list of str
         :param DryRun: 检测是否支持发起同步镜像。
         :type DryRun: bool

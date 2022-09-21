@@ -35,7 +35,7 @@ class ApproverInfo(AbstractModel):
 0：企业
 1：个人
 3：企业静默签署
-注：类型为3（企业静默签署）时，此接口会默认完成该签署方的签署。
+注：类型为3（企业静默签署）时，此接口会默认完成该签署方的签署。静默签署仅进行盖章操作，不能自动签名。
         :type ApproverType: int
         :param ApproverName: 本环节需要操作人的名字
         :type ApproverName: str
@@ -739,6 +739,8 @@ class CreateFlowByFilesRequest(AbstractModel):
         :type CcInfos: list of CcInfo
         :param NeedPreview: 是否需要预览，true：预览模式，false：非预览（默认）；
 预览链接有效期300秒；
+
+注：如果使用“预览模式”，出参会返回合同预览链接 PreviewUrl，不会正式发起合同，且出参不会返回签署流程编号 FlowId；如果使用“非预览”，则会正常返回签署流程编号 FlowId，不会生成合同预览链接 PreviewUrl。
         :type NeedPreview: bool
         :param FlowDescription: 签署流程描述,最大长度1000个字符
         :type FlowDescription: str
@@ -752,8 +754,8 @@ false：有序签
         :type Unordered: bool
         :param CustomShowMap: 合同显示的页卡模板，说明：只支持{合同名称}, {发起方企业}, {发起方姓名}, {签署方N企业}, {签署方N姓名}，且N不能超过签署人的数量，N从1开始
         :type CustomShowMap: str
-        :param NeedSignReview: 发起方企业的签署人进行签署操作是否需要企业内部审批。
-若设置为true,审核结果需通过接口 CreateFlowSignReview 通知电子签，审核通过后，发起方企业签署人方可进行签署操作，否则会阻塞其签署操作。
+        :param NeedSignReview: 发起方企业的签署人进行签署操作是否需要企业内部审批。使用此功能需要发起方企业有参与签署。
+若设置为true，审核结果需通过接口 CreateFlowSignReview 通知电子签，审核通过后，发起方企业签署人方可进行签署操作，否则会阻塞其签署操作。
 
 注：企业可以通过此功能与企业内部的审批流程进行关联，支持手动、静默签署合同。
         :type NeedSignReview: bool
@@ -826,9 +828,13 @@ class CreateFlowByFilesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FlowId: 签署流程编号
+        :param FlowId: 签署流程编号。
+
+注：如入参 是否需要预览 NeedPreview 设置为 true，不会正式发起合同，此处不会有值返回；如入参 是否需要预览 NeedPreview 设置为 false，此处会正常返回签署流程编号 FlowId。
         :type FlowId: str
-        :param PreviewUrl: 合同预览链接
+        :param PreviewUrl: 合同预览链接。
+
+注：如入参 是否需要预览 NeedPreview 设置为 true，会开启“预览模式”，此处会返回预览链接；如入参 是否需要预览 NeedPreview 设置为 false，此处不会有值返回。
 注意：此字段可能返回 null，表示取不到有效值。
         :type PreviewUrl: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -913,8 +919,8 @@ class CreateFlowRequest(AbstractModel):
         :type FlowType: str
         :param ClientToken: 客户端Token，保持接口幂等性,最大长度64个字符
         :type ClientToken: str
-        :param CallbackUrl: 暂未开放
-        :type CallbackUrl: str
+        :param RelatedFlowId: 暂未开放
+        :type RelatedFlowId: str
         :param DeadLine: 签署流程的签署截止时间。
 值为unix时间戳,精确到秒,不传默认为当前时间一年后
         :type DeadLine: int
@@ -929,13 +935,13 @@ false：有序签
         :type Unordered: bool
         :param CustomShowMap: 合同显示的页卡模板，说明：只支持{合同名称}, {发起方企业}, {发起方姓名}, {签署方N企业}, {签署方N姓名}，且N不能超过签署人的数量，N从1开始
         :type CustomShowMap: str
-        :param NeedSignReview: 发起方企业的签署人进行签署操作是否需要企业内部审批。
-若设置为true,审核结果需通过接口 CreateFlowSignReview 通知电子签，审核通过后，发起方企业签署人方可进行签署操作，否则会阻塞其签署操作。
+        :param NeedSignReview: 发起方企业的签署人进行签署操作是否需要企业内部审批。使用此功能需要发起方企业有参与签署。
+若设置为true，审核结果需通过接口 CreateFlowSignReview 通知电子签，审核通过后，发起方企业签署人方可进行签署操作，否则会阻塞其签署操作。
 
 注：企业可以通过此功能与企业内部的审批流程进行关联，支持手动、静默签署合同。
         :type NeedSignReview: bool
-        :param RelatedFlowId: 暂未开放
-        :type RelatedFlowId: str
+        :param CallbackUrl: 暂未开放
+        :type CallbackUrl: str
         :param Agent: 应用相关信息
         :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         """
@@ -944,14 +950,14 @@ false：有序签
         self.Approvers = None
         self.FlowType = None
         self.ClientToken = None
-        self.CallbackUrl = None
+        self.RelatedFlowId = None
         self.DeadLine = None
         self.UserData = None
         self.FlowDescription = None
         self.Unordered = None
         self.CustomShowMap = None
         self.NeedSignReview = None
-        self.RelatedFlowId = None
+        self.CallbackUrl = None
         self.Agent = None
 
 
@@ -968,14 +974,14 @@ false：有序签
                 self.Approvers.append(obj)
         self.FlowType = params.get("FlowType")
         self.ClientToken = params.get("ClientToken")
-        self.CallbackUrl = params.get("CallbackUrl")
+        self.RelatedFlowId = params.get("RelatedFlowId")
         self.DeadLine = params.get("DeadLine")
         self.UserData = params.get("UserData")
         self.FlowDescription = params.get("FlowDescription")
         self.Unordered = params.get("Unordered")
         self.CustomShowMap = params.get("CustomShowMap")
         self.NeedSignReview = params.get("NeedSignReview")
-        self.RelatedFlowId = params.get("RelatedFlowId")
+        self.CallbackUrl = params.get("CallbackUrl")
         if params.get("Agent") is not None:
             self.Agent = Agent()
             self.Agent._deserialize(params.get("Agent"))
@@ -1894,7 +1900,7 @@ class FlowCreateApprover(AbstractModel):
 0：企业
 1：个人
 3：企业静默签署
-注：类型为3（企业静默签署）时，此接口会默认完成该签署方的签署。
+注：类型为3（企业静默签署）时，此接口会默认完成该签署方的签署。静默签署仅进行盖章操作，不能自动签名。
         :type ApproverType: int
         :param OrganizationName: 如果签署方为企业，需要填入企业全称
         :type OrganizationName: str
@@ -1926,6 +1932,8 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         :type ApproverSource: str
         :param CustomApproverTag: 客户自定义签署人标识，64位长度，保证唯一。非企微场景不使用此字段
         :type CustomApproverTag: str
+        :param RegisterInfo: 快速注册相关信息，目前暂未开放！
+        :type RegisterInfo: :class:`tencentcloud.ess.v20201111.models.RegisterInfo`
         """
         self.ApproverType = None
         self.OrganizationName = None
@@ -1942,6 +1950,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         self.Required = None
         self.ApproverSource = None
         self.CustomApproverTag = None
+        self.RegisterInfo = None
 
 
     def _deserialize(self, params):
@@ -1960,6 +1969,9 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         self.Required = params.get("Required")
         self.ApproverSource = params.get("ApproverSource")
         self.CustomApproverTag = params.get("CustomApproverTag")
+        if params.get("RegisterInfo") is not None:
+            self.RegisterInfo = RegisterInfo()
+            self.RegisterInfo._deserialize(params.get("RegisterInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2200,6 +2212,78 @@ class OrganizationInfo(AbstractModel):
         
 
 
+class PdfVerifyResult(AbstractModel):
+    """合同文件验签单个结果结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param VerifyResult: 验签结果
+        :type VerifyResult: int
+        :param SignPlatform: 签署平台
+        :type SignPlatform: str
+        :param SignerName: 签署人名称
+        :type SignerName: str
+        :param SignTime: 签署时间
+        :type SignTime: int
+        :param SignAlgorithm: 签名算法
+        :type SignAlgorithm: str
+        :param CertSn: 签名证书序列号
+        :type CertSn: str
+        :param CertNotBefore: 证书起始时间
+        :type CertNotBefore: int
+        :param CertNotAfter: 证书过期时间
+        :type CertNotAfter: int
+        :param ComponentPosX: 签名域横坐标
+        :type ComponentPosX: float
+        :param ComponentPosY: 签名域纵坐标
+        :type ComponentPosY: float
+        :param ComponentWidth: 签名域宽度
+        :type ComponentWidth: float
+        :param ComponentHeight: 签名域高度
+        :type ComponentHeight: float
+        :param ComponentPage: 签名域所在页码
+        :type ComponentPage: int
+        """
+        self.VerifyResult = None
+        self.SignPlatform = None
+        self.SignerName = None
+        self.SignTime = None
+        self.SignAlgorithm = None
+        self.CertSn = None
+        self.CertNotBefore = None
+        self.CertNotAfter = None
+        self.ComponentPosX = None
+        self.ComponentPosY = None
+        self.ComponentWidth = None
+        self.ComponentHeight = None
+        self.ComponentPage = None
+
+
+    def _deserialize(self, params):
+        self.VerifyResult = params.get("VerifyResult")
+        self.SignPlatform = params.get("SignPlatform")
+        self.SignerName = params.get("SignerName")
+        self.SignTime = params.get("SignTime")
+        self.SignAlgorithm = params.get("SignAlgorithm")
+        self.CertSn = params.get("CertSn")
+        self.CertNotBefore = params.get("CertNotBefore")
+        self.CertNotAfter = params.get("CertNotAfter")
+        self.ComponentPosX = params.get("ComponentPosX")
+        self.ComponentPosY = params.get("ComponentPosY")
+        self.ComponentWidth = params.get("ComponentWidth")
+        self.ComponentHeight = params.get("ComponentHeight")
+        self.ComponentPage = params.get("ComponentPage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Recipient(AbstractModel):
     """签署参与者信息
 
@@ -2263,6 +2347,34 @@ class Recipient(AbstractModel):
         self.UserId = params.get("UserId")
         self.DeliveryMethod = params.get("DeliveryMethod")
         self.RecipientExtra = params.get("RecipientExtra")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RegisterInfo(AbstractModel):
+    """发起流程快速注册相关信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LegalName: 法人姓名
+        :type LegalName: str
+        :param Uscc: 社会统一信用代码
+        :type Uscc: str
+        """
+        self.LegalName = None
+        self.Uscc = None
+
+
+    def _deserialize(self, params):
+        self.LegalName = params.get("LegalName")
+        self.Uscc = params.get("Uscc")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2647,3 +2759,64 @@ class UserInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class VerifyPdfRequest(AbstractModel):
+    """VerifyPdf请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 合同Id，流程Id
+        :type FlowId: str
+        :param Operator: 调用方用户信息，userId 必填
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        """
+        self.FlowId = None
+        self.Operator = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VerifyPdfResponse(AbstractModel):
+    """VerifyPdf返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param VerifyResult: 验签结果，1-文件未被篡改，全部签名在腾讯电子签完成； 2-文件未被篡改，部分签名在腾讯电子签完成；3-文件被篡改；4-异常：文件内没有签名域；5-异常：文件签名格式错误
+        :type VerifyResult: int
+        :param PdfVerifyResults: 验签结果详情,内部状态1-验签成功，在电子签签署；2-验签成功，在其他平台签署；3-验签失败；4-pdf文件没有签名域
+；5-文件签名格式错误
+        :type PdfVerifyResults: list of PdfVerifyResult
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.VerifyResult = None
+        self.PdfVerifyResults = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.VerifyResult = params.get("VerifyResult")
+        if params.get("PdfVerifyResults") is not None:
+            self.PdfVerifyResults = []
+            for item in params.get("PdfVerifyResults"):
+                obj = PdfVerifyResult()
+                obj._deserialize(item)
+                self.PdfVerifyResults.append(obj)
+        self.RequestId = params.get("RequestId")

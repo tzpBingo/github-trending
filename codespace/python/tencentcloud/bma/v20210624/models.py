@@ -827,7 +827,7 @@ class CreateCRWorkRequest(AbstractModel):
         :type SamplePublicURL: str
         :param IsMonitor: 是否启用监测 0：不启用 1：启用 默认为0
         :type IsMonitor: str
-        :param IsCert: 是否启用存证0：不启用 1：启用 默认为1
+        :param IsCert: 是否启用存证0：不存证  2：存证 默认为0
         :type IsCert: str
         :param CertUrl: 存证回调地址
         :type CertUrl: str
@@ -835,25 +835,25 @@ class CreateCRWorkRequest(AbstractModel):
         :type MonitorUrl: str
         :param ProduceType: 创作性质（原创,改编,翻译,汇编,注释,整理,其他)
         :type ProduceType: str
-        :param WhiteLists: xxx
+        :param WhiteLists: 白名单
         :type WhiteLists: list of str
-        :param WorkId: x
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param ProducerName: xx
+        :param ProducerName: 著作权人姓名
         :type ProducerName: str
-        :param Nickname: xx
+        :param Nickname: 作者
         :type Nickname: str
-        :param Authorization: x
+        :param Authorization: 授权书
         :type Authorization: str
-        :param AuthorizationStartTime: x
+        :param AuthorizationStartTime: 授权书开始时间
         :type AuthorizationStartTime: str
-        :param AuthorizationEndTime: x
+        :param AuthorizationEndTime: 授权书结束时间
         :type AuthorizationEndTime: str
-        :param ContentType: x
+        :param ContentType: 内容格式
         :type ContentType: str
-        :param Content: x
+        :param Content: 文件内容
         :type Content: str
-        :param MonitorEndTime: x
+        :param MonitorEndTime: 监测结束时间
         :type MonitorEndTime: str
         """
         self.WorkName = None
@@ -1398,6 +1398,40 @@ class DescribeCRWorkInfoResponse(AbstractModel):
         :type CommStatus: int
         :param IsProducer: x
         :type IsProducer: int
+        :param EvidenceStatus: xxx
+        :type EvidenceStatus: int
+        :param WorkCategory: xxx
+        :type WorkCategory: str
+        :param IsOriginal: xxx
+        :type IsOriginal: str
+        :param IsRelease: xxx
+        :type IsRelease: str
+        :param ProducerName: xxx
+        :type ProducerName: str
+        :param ProduceTime: xxx
+        :type ProduceTime: str
+        :param WhiteLists: xxx
+        :type WhiteLists: list of str
+        :param WorkDesc: xxx
+        :type WorkDesc: str
+        :param Authorization: xxx
+        :type Authorization: str
+        :param AuthorizationStartTime: xxx
+        :type AuthorizationStartTime: str
+        :param AuthorizationEndTime: xxx
+        :type AuthorizationEndTime: str
+        :param Commission: xxx
+        :type Commission: str
+        :param CommissionStartTime: xxx
+        :type CommissionStartTime: str
+        :param CommissionEndTime: xxx
+        :type CommissionEndTime: str
+        :param EvidenceUrl: xxx
+        :type EvidenceUrl: str
+        :param EvidenceStartTime: xxx
+        :type EvidenceStartTime: str
+        :param EvidenceEndTime: xxx
+        :type EvidenceEndTime: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -1406,6 +1440,23 @@ class DescribeCRWorkInfoResponse(AbstractModel):
         self.AuthStatus = None
         self.CommStatus = None
         self.IsProducer = None
+        self.EvidenceStatus = None
+        self.WorkCategory = None
+        self.IsOriginal = None
+        self.IsRelease = None
+        self.ProducerName = None
+        self.ProduceTime = None
+        self.WhiteLists = None
+        self.WorkDesc = None
+        self.Authorization = None
+        self.AuthorizationStartTime = None
+        self.AuthorizationEndTime = None
+        self.Commission = None
+        self.CommissionStartTime = None
+        self.CommissionEndTime = None
+        self.EvidenceUrl = None
+        self.EvidenceStartTime = None
+        self.EvidenceEndTime = None
         self.RequestId = None
 
 
@@ -1415,6 +1466,23 @@ class DescribeCRWorkInfoResponse(AbstractModel):
         self.AuthStatus = params.get("AuthStatus")
         self.CommStatus = params.get("CommStatus")
         self.IsProducer = params.get("IsProducer")
+        self.EvidenceStatus = params.get("EvidenceStatus")
+        self.WorkCategory = params.get("WorkCategory")
+        self.IsOriginal = params.get("IsOriginal")
+        self.IsRelease = params.get("IsRelease")
+        self.ProducerName = params.get("ProducerName")
+        self.ProduceTime = params.get("ProduceTime")
+        self.WhiteLists = params.get("WhiteLists")
+        self.WorkDesc = params.get("WorkDesc")
+        self.Authorization = params.get("Authorization")
+        self.AuthorizationStartTime = params.get("AuthorizationStartTime")
+        self.AuthorizationEndTime = params.get("AuthorizationEndTime")
+        self.Commission = params.get("Commission")
+        self.CommissionStartTime = params.get("CommissionStartTime")
+        self.CommissionEndTime = params.get("CommissionEndTime")
+        self.EvidenceUrl = params.get("EvidenceUrl")
+        self.EvidenceStartTime = params.get("EvidenceStartTime")
+        self.EvidenceEndTime = params.get("EvidenceEndTime")
         self.RequestId = params.get("RequestId")
 
 

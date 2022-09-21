@@ -47,6 +47,9 @@ FAILEDOPERATION_INQUIRYPRICEFAILED = 'FailedOperation.InquiryPriceFailed'
 # 查询退换价格失败，找不到付款订单，请检查设备 `ins-xxxxxxx` 是否已过期。
 FAILEDOPERATION_INQUIRYREFUNDPRICEFAILED = 'FailedOperation.InquiryRefundPriceFailed'
 
+# 镜像状态繁忙，请稍后重试。
+FAILEDOPERATION_INVALIDIMAGESTATE = 'FailedOperation.InvalidImageState'
+
 # 请求不支持`EMR`的实例`ins-xxxxxxxx`。
 FAILEDOPERATION_INVALIDINSTANCEAPPLICATIONROLEEMR = 'FailedOperation.InvalidInstanceApplicationRoleEmr'
 
@@ -257,7 +260,7 @@ INVALIDPARAMETER_LOCALDATADISKNOTSUPPORT = 'InvalidParameter.LocalDataDiskNotSup
 # 不支持同时指定密钥登陆和保持镜像登陆方式。
 INVALIDPARAMETER_PARAMETERCONFLICT = 'InvalidParameter.ParameterConflict'
 
-# 不支持设置登陆密码。
+# 不支持设置登录密码。
 INVALIDPARAMETER_PASSWORDNOTSUPPORTED = 'InvalidParameter.PasswordNotSupported'
 
 # 指定的快照不存在。
@@ -722,6 +725,9 @@ UNSUPPORTEDOPERATION_BANDWIDTHPACKAGEIDNOTSUPPORTED = 'UnsupportedOperation.Band
 # 云服务器绑定了弹性网卡，请解绑弹性网卡后再切换私有网络。
 UNSUPPORTEDOPERATION_ELASTICNETWORKINTERFACE = 'UnsupportedOperation.ElasticNetworkInterface'
 
+# 不支持加密镜像。
+UNSUPPORTEDOPERATION_ENCRYPTEDIMAGESNOTSUPPORTED = 'UnsupportedOperation.EncryptedImagesNotSupported'
+
 # 异构机型不支持跨机型调整。
 UNSUPPORTEDOPERATION_HETEROGENEOUSCHANGEINSTANCEFAMILY = 'UnsupportedOperation.HeterogeneousChangeInstanceFamily'
 
@@ -763,6 +769,9 @@ UNSUPPORTEDOPERATION_INSTANCESTATEFREEZING = 'UnsupportedOperation.InstanceState
 
 # 请求不支持正在隔离状态的实例。
 UNSUPPORTEDOPERATION_INSTANCESTATEISOLATING = 'UnsupportedOperation.InstanceStateIsolating'
+
+# 不支持操作创建失败的实例。
+UNSUPPORTEDOPERATION_INSTANCESTATELAUNCHFAILED = 'UnsupportedOperation.InstanceStateLaunchFailed'
 
 # 请求不支持创建未完成的实例
 UNSUPPORTEDOPERATION_INSTANCESTATEPENDING = 'UnsupportedOperation.InstanceStatePending'

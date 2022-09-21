@@ -74,18 +74,19 @@ class Auth(AbstractModel):
 
     def __init__(self):
         r"""
-        :param NameSpace: *表示所有数据库,db.name表示特定的name数据库。
-        :type NameSpace: str
-        :param Mask: 用于控制权限,0无权限，1只读，2只写，3读写。
+        :param Mask: 当前账号具有的权限信息。<ul><li>0：无权限。</li><li>1：只读。</li><li>2：只写。</li><li>3：读写。</li></ul>
         :type Mask: int
+        :param NameSpace: 指具有当前账号权限的数据库名。
+<ul><li>* ：表示所有数据库。</li><li>db.name：表示特定name的数据库。</li></ul>
+        :type NameSpace: str
         """
-        self.NameSpace = None
         self.Mask = None
+        self.NameSpace = None
 
 
     def _deserialize(self, params):
-        self.NameSpace = params.get("NameSpace")
         self.Mask = params.get("Mask")
+        self.NameSpace = params.get("NameSpace")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -812,6 +813,56 @@ class DBInstancePrice(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class DescribeAccountUsersRequest(AbstractModel):
+    """DescribeAccountUsers请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID。
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAccountUsersResponse(AbstractModel):
+    """DescribeAccountUsers返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Users: 实例账号列表。
+        :type Users: list of UserInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Users = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Users") is not None:
+            self.Users = []
+            for item in params.get("Users"):
+                obj = UserInfo()
+                obj._deserialize(item)
+                self.Users.append(obj)
+        self.RequestId = params.get("RequestId")
 
 
 class DescribeAsyncRequestInfoRequest(AbstractModel):
@@ -3365,3 +3416,48 @@ class TerminateDBInstancesResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class UserInfo(AbstractModel):
+    """账户基本信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserName: 账号名。
+        :type UserName: str
+        :param AuthRole: 账号权限详情。
+        :type AuthRole: list of Auth
+        :param CreateTime: 账号创建时间。
+        :type CreateTime: str
+        :param UpdateTime: 账号更新时间。
+        :type UpdateTime: str
+        :param UserDesc: 备注信息。
+        :type UserDesc: str
+        """
+        self.UserName = None
+        self.AuthRole = None
+        self.CreateTime = None
+        self.UpdateTime = None
+        self.UserDesc = None
+
+
+    def _deserialize(self, params):
+        self.UserName = params.get("UserName")
+        if params.get("AuthRole") is not None:
+            self.AuthRole = []
+            for item in params.get("AuthRole"):
+                obj = Auth()
+                obj._deserialize(item)
+                self.AuthRole.append(obj)
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        self.UserDesc = params.get("UserDesc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        

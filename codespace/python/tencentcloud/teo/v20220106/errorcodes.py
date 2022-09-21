@@ -89,6 +89,9 @@ INVALIDPARAMETER_INVALIDPOSTMAXSIZEBILLING = 'InvalidParameter.InvalidPostMaxSiz
 # 无效的最大上传大小。
 INVALIDPARAMETER_INVALIDPOSTSIZEVALUE = 'InvalidParameter.InvalidPostSizeValue'
 
+# 无效的URL重写。
+INVALIDPARAMETER_INVALIDREDIRECTURLCAPTURE = 'InvalidParameter.InvalidRedirectUrlCapture'
+
 # 无效的请求头header。
 INVALIDPARAMETER_INVALIDREQUESTHEADERNAME = 'InvalidParameter.InvalidRequestHeaderName'
 
@@ -109,6 +112,9 @@ INVALIDPARAMETER_INVALIDRULEENGINETARGET = 'InvalidParameter.InvalidRuleEngineTa
 
 # 无效的规则引擎文件后缀条件。
 INVALIDPARAMETER_INVALIDRULEENGINETARGETSEXTENSION = 'InvalidParameter.InvalidRuleEngineTargetsExtension'
+
+# URL重写的目标URL无效。
+INVALIDPARAMETER_INVALIDURLREDIRECTURL = 'InvalidParameter.InvalidUrlRedirectUrl'
 
 # 无效的WebSocket。
 INVALIDPARAMETER_INVALIDWEBSOCKETTIMEOUT = 'InvalidParameter.InvalidWebSocketTimeout'
@@ -157,6 +163,9 @@ INVALIDPARAMETERVALUE_INVALIDPROXYNAME = 'InvalidParameterValue.InvalidProxyName
 
 # DNS 代理域名源站错误。
 INVALIDPARAMETERVALUE_INVALIDPROXYORIGIN = 'InvalidParameterValue.InvalidProxyOrigin'
+
+# SRV 记录名称错误。
+INVALIDPARAMETERVALUE_INVALIDSRVNAME = 'InvalidParameterValue.InvalidSRVName'
 
 # 记录已存在。
 INVALIDPARAMETERVALUE_RECORDALREADYEXISTS = 'InvalidParameterValue.RecordAlreadyExists'
