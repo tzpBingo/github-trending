@@ -14917,6 +14917,9 @@ FAILED:已失败
         :type PayeeId: str
         :param OutUserId: 外部用户ID
         :type OutUserId: str
+        :param ChannelOrderId: 渠道支付订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelOrderId: str
         """
         self.IncomeType = None
         self.AmountBeforeTax = None
@@ -14931,6 +14934,7 @@ FAILED:已失败
         self.Remark = None
         self.PayeeId = None
         self.OutUserId = None
+        self.ChannelOrderId = None
 
 
     def _deserialize(self, params):
@@ -14947,6 +14951,7 @@ FAILED:已失败
         self.Remark = params.get("Remark")
         self.PayeeId = params.get("PayeeId")
         self.OutUserId = params.get("OutUserId")
+        self.ChannelOrderId = params.get("ChannelOrderId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17879,6 +17884,65 @@ class QueryExternalAccountBookResult(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class QueryFinancialDataUrlRequest(AbstractModel):
+    """QueryFinancialDataUrl请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EndTime: 数据查询范围:结束时间
+        :type EndTime: str
+        :param StartTime: 数据查询范围:开始时间
+        :type StartTime: str
+        :param DataType: 数据类型：ADDED_INVOICE_REPORT  增值税开票数据，NATURAL_FINANCE_REPORT 自然人金融数据
+        :type DataType: str
+        """
+        self.EndTime = None
+        self.StartTime = None
+        self.DataType = None
+
+
+    def _deserialize(self, params):
+        self.EndTime = params.get("EndTime")
+        self.StartTime = params.get("StartTime")
+        self.DataType = params.get("DataType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryFinancialDataUrlResponse(AbstractModel):
+    """QueryFinancialDataUrl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CosUrl: 下载链接
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosUrl: str
+        :param ExpireTime: 过期时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExpireTime: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.CosUrl = None
+        self.ExpireTime = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.CosUrl = params.get("CosUrl")
+        self.ExpireTime = params.get("ExpireTime")
+        self.RequestId = params.get("RequestId")
 
 
 class QueryFlexAmountBeforeTaxRequest(AbstractModel):
@@ -21491,9 +21555,9 @@ class QueryOpenBankPaymentOrderRequest(AbstractModel):
         r"""
         :param ChannelMerchantId: 渠道商户号。外部接入平台入驻云企付平台下发。
         :type ChannelMerchantId: str
-        :param OutOrderId: 外部商户订单号。与ChannelOrderId不能同时为空。
+        :param OutOrderId: 外部商户订单号。与ChannelOrderId不能同时为空。若传空串即表示忽略该参数。
         :type OutOrderId: str
-        :param ChannelOrderId: 云平台订单号。与OutOrderId不能同时为空。
+        :param ChannelOrderId: 云平台订单号。与OutOrderId不能同时为空。若调用下单接口时，发生异常，无法取到ChannelOrderId，传空串即可
         :type ChannelOrderId: str
         :param Environment: 接入环境。沙箱环境填 sandbox。缺省默认调用生产环境。
         :type Environment: str

@@ -1789,7 +1789,7 @@ class CreateTopicRequest(AbstractModel):
         :type MaxSplitPartitions: int
         :param StorageType: 日志主题的存储类型，可选值 hot（标准存储），cold（低频存储）；默认为hot。
         :type StorageType: str
-        :param Period: 生命周期，单位天，可取值范围1~3600。取值为3640时代表永久保存
+        :param Period: 生命周期，单位天，标准存储取值范围1~3600，低频存储取值范围7~3600天。取值为3640时代表永久保存
         :type Period: int
         """
         self.LogsetId = None
@@ -3068,7 +3068,7 @@ class DescribeLogHistogramRequest(AbstractModel):
         :type To: int
         :param Query: 查询语句
         :type Query: str
-        :param Interval: 时间间隔: 单位ms
+        :param Interval: 时间间隔: 单位ms  限制性条件：(To-From) / interval <= 200
         :type Interval: int
         """
         self.TopicId = None
@@ -3852,6 +3852,20 @@ class ExtractRuleInfo(AbstractModel):
         :param JsonStandard: 是否为标准json.   0: 否, 1: 是
 注意：此字段可能返回 null，表示取不到有效值。
         :type JsonStandard: int
+        :param Protocol: syslog传输协议，取值为tcp或者udp。
+该接口适用于：创建采集规则配置、修改采集规则配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Protocol: str
+        :param Address: syslog系统日志采集指定采集器监听的地址和端口 ，形式：[ip]:[port]。举例：127.0.0.1:9000
+该接口适用于：创建采集规则配置、修改采集规则配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Address: str
+        :param ParseProtocol: rfc3164：指定系统日志采集使用RFC3164协议解析日志。
+rfc5424：指定系统日志采集使用RFC5424协议解析日志。
+auto：自动匹配rfc3164或者rfc5424其中一种协议
+该接口适用于：创建采集规则配置、修改采集规则配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ParseProtocol: str
         """
         self.TimeKey = None
         self.TimeFormat = None
@@ -3865,6 +3879,9 @@ class ExtractRuleInfo(AbstractModel):
         self.Backtracking = None
         self.IsGBK = None
         self.JsonStandard = None
+        self.Protocol = None
+        self.Address = None
+        self.ParseProtocol = None
 
 
     def _deserialize(self, params):
@@ -3885,6 +3902,9 @@ class ExtractRuleInfo(AbstractModel):
         self.Backtracking = params.get("Backtracking")
         self.IsGBK = params.get("IsGBK")
         self.JsonStandard = params.get("JsonStandard")
+        self.Protocol = params.get("Protocol")
+        self.Address = params.get("Address")
+        self.ParseProtocol = params.get("ParseProtocol")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

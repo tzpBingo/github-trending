@@ -1702,6 +1702,8 @@ class CreateConnectResourceRequest(AbstractModel):
         :type MariaDBConnectParam: :class:`tencentcloud.ckafka.v20190819.models.MariaDBConnectParam`
         :param SQLServerConnectParam: SQLServer配置，Type为SQLSERVER时必填
         :type SQLServerConnectParam: :class:`tencentcloud.ckafka.v20190819.models.SQLServerConnectParam`
+        :param DorisConnectParam: Doris 配置，Type为 DORIS 时必填
+        :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisConnectParam`
         """
         self.ResourceName = None
         self.Type = None
@@ -1714,6 +1716,7 @@ class CreateConnectResourceRequest(AbstractModel):
         self.PostgreSQLConnectParam = None
         self.MariaDBConnectParam = None
         self.SQLServerConnectParam = None
+        self.DorisConnectParam = None
 
 
     def _deserialize(self, params):
@@ -1744,6 +1747,9 @@ class CreateConnectResourceRequest(AbstractModel):
         if params.get("SQLServerConnectParam") is not None:
             self.SQLServerConnectParam = SQLServerConnectParam()
             self.SQLServerConnectParam._deserialize(params.get("SQLServerConnectParam"))
+        if params.get("DorisConnectParam") is not None:
+            self.DorisConnectParam = DorisConnectParam()
+            self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1860,6 +1866,8 @@ class CreateDatahubTaskRequest(AbstractModel):
         :type TransformsParam: :class:`tencentcloud.ckafka.v20190819.models.TransformsParam`
         :param TaskId: 任务ID
         :type TaskId: str
+        :param Tags: 标签列表
+        :type Tags: list of Tag
         """
         self.TaskName = None
         self.TaskType = None
@@ -1870,6 +1878,7 @@ class CreateDatahubTaskRequest(AbstractModel):
         self.SchemaId = None
         self.TransformsParam = None
         self.TaskId = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -1892,6 +1901,12 @@ class CreateDatahubTaskRequest(AbstractModel):
             self.TransformsParam = TransformsParam()
             self.TransformsParam._deserialize(params.get("TransformsParam"))
         self.TaskId = params.get("TaskId")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3822,6 +3837,9 @@ class DescribeConnectResource(AbstractModel):
         :param CtsdbConnectParam: Ctsdb配置，Type为CTSDB时返回
 注意：此字段可能返回 null，表示取不到有效值。
         :type CtsdbConnectParam: :class:`tencentcloud.ckafka.v20190819.models.CtsdbConnectParam`
+        :param DorisConnectParam: Doris 配置，Type 为 DORIS 时返回
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisConnectParam`
         """
         self.ResourceId = None
         self.ResourceName = None
@@ -3841,6 +3859,7 @@ class DescribeConnectResource(AbstractModel):
         self.MariaDBConnectParam = None
         self.SQLServerConnectParam = None
         self.CtsdbConnectParam = None
+        self.DorisConnectParam = None
 
 
     def _deserialize(self, params):
@@ -3880,6 +3899,9 @@ class DescribeConnectResource(AbstractModel):
         if params.get("CtsdbConnectParam") is not None:
             self.CtsdbConnectParam = CtsdbConnectParam()
             self.CtsdbConnectParam._deserialize(params.get("CtsdbConnectParam"))
+        if params.get("DorisConnectParam") is not None:
+            self.DorisConnectParam = DorisConnectParam()
+            self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3974,6 +3996,9 @@ class DescribeConnectResourceResp(AbstractModel):
         :param CtsdbConnectParam: Ctsdb配置，Type为CTSDB时返回
 注意：此字段可能返回 null，表示取不到有效值。
         :type CtsdbConnectParam: :class:`tencentcloud.ckafka.v20190819.models.CtsdbConnectParam`
+        :param DorisConnectParam: Doris 配置，Type 为 DORIS 时返回
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisConnectParam`
         """
         self.ResourceId = None
         self.ResourceName = None
@@ -3993,6 +4018,7 @@ class DescribeConnectResourceResp(AbstractModel):
         self.MariaDBConnectParam = None
         self.SQLServerConnectParam = None
         self.CtsdbConnectParam = None
+        self.DorisConnectParam = None
 
 
     def _deserialize(self, params):
@@ -4032,6 +4058,9 @@ class DescribeConnectResourceResp(AbstractModel):
         if params.get("CtsdbConnectParam") is not None:
             self.CtsdbConnectParam = CtsdbConnectParam()
             self.CtsdbConnectParam._deserialize(params.get("CtsdbConnectParam"))
+        if params.get("DorisConnectParam") is not None:
+            self.DorisConnectParam = DorisConnectParam()
+            self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4353,6 +4382,9 @@ class DescribeDatahubTaskRes(AbstractModel):
         :param ErrorMessage: 异常信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type ErrorMessage: str
+        :param Tags: 任务标签列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         """
         self.TaskId = None
         self.TaskName = None
@@ -4368,6 +4400,7 @@ class DescribeDatahubTaskRes(AbstractModel):
         self.SchemaName = None
         self.TransformsParam = None
         self.ErrorMessage = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -4398,6 +4431,12 @@ class DescribeDatahubTaskRes(AbstractModel):
             self.TransformsParam = TransformsParam()
             self.TransformsParam._deserialize(params.get("TransformsParam"))
         self.ErrorMessage = params.get("ErrorMessage")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5183,7 +5222,7 @@ class DescribeTopicRequest(AbstractModel):
         :type SearchWord: str
         :param Offset: 偏移量，不填默认为0
         :type Offset: int
-        :param Limit: 返回数量，不填则默认为10，最大值为50
+        :param Limit: 返回数量，不填则默认为20，最大值为50
         :type Limit: int
         :param AclRuleName: Acl预设策略名称
         :type AclRuleName: str
@@ -5413,6 +5452,71 @@ class DescribeUserResponse(AbstractModel):
             self.Result = UserResponse()
             self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
+
+
+class DorisConnectParam(AbstractModel):
+    """Doris 连接源参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Port: Doris jdbc 负载均衡连接 port，通常映射到 fe 的 9030 端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Port: int
+        :param UserName: Doris 连接源的用户名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserName: str
+        :param Password: Doris 连接源的密码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Password: str
+        :param Resource: Doris 连接源的实例资源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Resource: str
+        :param ServiceVip: Doris 连接源的实例vip，当为腾讯云实例时，必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceVip: str
+        :param UniqVpcId: Doris 连接源的vpcId，当为腾讯云实例时，必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UniqVpcId: str
+        :param IsUpdate: 是否更新到关联的Datahub任务
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsUpdate: bool
+        :param SelfBuilt: Doris 连接源是否为自建集群
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SelfBuilt: bool
+        :param BePort: Doris 的 http 负载均衡连接 port，通常映射到 be 的 8040 端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BePort: int
+        """
+        self.Port = None
+        self.UserName = None
+        self.Password = None
+        self.Resource = None
+        self.ServiceVip = None
+        self.UniqVpcId = None
+        self.IsUpdate = None
+        self.SelfBuilt = None
+        self.BePort = None
+
+
+    def _deserialize(self, params):
+        self.Port = params.get("Port")
+        self.UserName = params.get("UserName")
+        self.Password = params.get("Password")
+        self.Resource = params.get("Resource")
+        self.ServiceVip = params.get("ServiceVip")
+        self.UniqVpcId = params.get("UniqVpcId")
+        self.IsUpdate = params.get("IsUpdate")
+        self.SelfBuilt = params.get("SelfBuilt")
+        self.BePort = params.get("BePort")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DropCls(AbstractModel):
@@ -7238,6 +7342,34 @@ class JgwOperateResponse(AbstractModel):
         if params.get("Data") is not None:
             self.Data = OperateResponseData()
             self.Data._deserialize(params.get("Data"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class JsonPathReplaceParam(AbstractModel):
+    """数据处理——Value处理参数——Jsonpath替换参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OldValue: 被替换值，Jsonpath表达式
+        :type OldValue: str
+        :param NewValue: 替换值，Jsonpath表达式或字符串
+        :type NewValue: str
+        """
+        self.OldValue = None
+        self.NewValue = None
+
+
+    def _deserialize(self, params):
+        self.OldValue = params.get("OldValue")
+        self.NewValue = params.get("NewValue")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10559,6 +10691,9 @@ class ValueParam(AbstractModel):
         :param Result: 处理结果
 注意：此字段可能返回 null，表示取不到有效值。
         :type Result: str
+        :param JsonPathReplace: JsonPath替换，TYPE=JSON_PATH_REPLACE时必传
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JsonPathReplace: :class:`tencentcloud.ckafka.v20190819.models.JsonPathReplaceParam`
         """
         self.Type = None
         self.Replace = None
@@ -10568,6 +10703,7 @@ class ValueParam(AbstractModel):
         self.Split = None
         self.KV = None
         self.Result = None
+        self.JsonPathReplace = None
 
 
     def _deserialize(self, params):
@@ -10591,6 +10727,9 @@ class ValueParam(AbstractModel):
             self.KV = KVParam()
             self.KV._deserialize(params.get("KV"))
         self.Result = params.get("Result")
+        if params.get("JsonPathReplace") is not None:
+            self.JsonPathReplace = JsonPathReplaceParam()
+            self.JsonPathReplace._deserialize(params.get("JsonPathReplace"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

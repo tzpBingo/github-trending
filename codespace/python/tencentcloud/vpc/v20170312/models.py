@@ -330,7 +330,7 @@ class Address(AbstractModel):
         :type IsBlocked: bool
         :param IsEipDirectConnection: eip是否支持直通模式。true表示eip支持直通模式，false表示资源不支持直通模式
         :type IsEipDirectConnection: bool
-        :param AddressType: EIP 资源类型，包括CalcIP、WanIP、EIP和AnycastEIP。其中：CalcIP 表示设备 IP，WanIP 表示普通公网 IP，EIP 表示弹性公网 IP，AnycastEip 表示加速 EIP。
+        :param AddressType: EIP 资源类型，包括CalcIP、WanIP、EIP和AnycastEIP、高防EIP。其中：`CalcIP` 表示设备 IP，`WanIP` 表示普通公网 IP，`EIP` 表示弹性公网 IP，`AnycastEip` 表示加速 EIP，`AntiDDoSEIP`表示高防EIP。
         :type AddressType: str
         :param CascadeRelease: eip是否在解绑后自动释放。true表示eip将会在解绑后自动释放，false表示eip在解绑后不会自动释放
         :type CascadeRelease: bool
@@ -20368,6 +20368,56 @@ class SetCcnRegionBandwidthLimitsRequest(AbstractModel):
 
 class SetCcnRegionBandwidthLimitsResponse(AbstractModel):
     """SetCcnRegionBandwidthLimits返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class SetVpnGatewaysRenewFlagRequest(AbstractModel):
+    """SetVpnGatewaysRenewFlag请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param VpnGatewayIds: VPNGW字符型ID列表
+        :type VpnGatewayIds: list of str
+        :param AutoRenewFlag: 自动续费标记[0, 1, 2]
+0表示默认状态(初始状态)， 1表示自动续费，2表示明确不自动续费
+        :type AutoRenewFlag: int
+        :param Type: VPNGW类型['IPSEC', 'SSL']
+        :type Type: str
+        """
+        self.VpnGatewayIds = None
+        self.AutoRenewFlag = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.VpnGatewayIds = params.get("VpnGatewayIds")
+        self.AutoRenewFlag = params.get("AutoRenewFlag")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetVpnGatewaysRenewFlagResponse(AbstractModel):
+    """SetVpnGatewaysRenewFlag返回参数结构体
 
     """
 

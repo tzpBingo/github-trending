@@ -1914,7 +1914,7 @@ class CreateClusterEndpointRequest(AbstractModel):
         :type IsExtranet: bool
         :param Domain: 设置域名
         :type Domain: str
-        :param SecurityGroup: 使用的安全组，只有外网访问需要传递
+        :param SecurityGroup: 使用的安全组，只有外网访问需要传递（开启外网访问时必传）
         :type SecurityGroup: str
         :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置
         :type ExtensiveParameters: str
@@ -2541,7 +2541,7 @@ class CreateEKSClusterRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param K8SVersion: k8s版本号。可为1.14.4, 1.12.8。
+        :param K8SVersion: k8s版本号。可为1.18.4 1.20.6。
         :type K8SVersion: str
         :param VpcId: vpc 的Id
         :type VpcId: str
@@ -2551,7 +2551,7 @@ class CreateEKSClusterRequest(AbstractModel):
         :type SubnetIds: list of str
         :param ClusterDesc: 集群描述信息
         :type ClusterDesc: str
-        :param ServiceSubnetId: Serivce 所在子网Id
+        :param ServiceSubnetId: Service CIDR 或 Serivce 所在子网Id
         :type ServiceSubnetId: str
         :param DnsServers: 集群自定义的Dns服务器信息
         :type DnsServers: list of DnsServerConf
@@ -3498,6 +3498,10 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         :type AutoUpgradeClusterLevel: bool
         :param ChargeType: 集群计费方式
         :type ChargeType: str
+        :param EdgeVersion: 边缘集群版本，此版本区别于k8s版本，是整个集群各组件版本集合
+        :type EdgeVersion: str
+        :param RegistryPrefix: 边缘组件镜像仓库前缀
+        :type RegistryPrefix: str
         """
         self.K8SVersion = None
         self.VpcId = None
@@ -3511,6 +3515,8 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         self.ClusterLevel = None
         self.AutoUpgradeClusterLevel = None
         self.ChargeType = None
+        self.EdgeVersion = None
+        self.RegistryPrefix = None
 
 
     def _deserialize(self, params):
@@ -3530,6 +3536,8 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         self.ClusterLevel = params.get("ClusterLevel")
         self.AutoUpgradeClusterLevel = params.get("AutoUpgradeClusterLevel")
         self.ChargeType = params.get("ChargeType")
+        self.EdgeVersion = params.get("EdgeVersion")
+        self.RegistryPrefix = params.get("RegistryPrefix")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4901,6 +4909,24 @@ class DescribeAvailableTKEEdgeVersionRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param ClusterId: 填写ClusterId获取当前集群各个组件版本和最新版本
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class DescribeAvailableTKEEdgeVersionResponse(AbstractModel):
     """DescribeAvailableTKEEdgeVersion返回参数结构体
@@ -4911,15 +4937,25 @@ class DescribeAvailableTKEEdgeVersionResponse(AbstractModel):
         r"""
         :param Versions: 版本列表
         :type Versions: list of str
+        :param EdgeVersionLatest: 边缘集群最新版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EdgeVersionLatest: str
+        :param EdgeVersionCurrent: 边缘集群当前版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EdgeVersionCurrent: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Versions = None
+        self.EdgeVersionLatest = None
+        self.EdgeVersionCurrent = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Versions = params.get("Versions")
+        self.EdgeVersionLatest = params.get("EdgeVersionLatest")
+        self.EdgeVersionCurrent = params.get("EdgeVersionCurrent")
         self.RequestId = params.get("RequestId")
 
 
@@ -11795,7 +11831,7 @@ class LoginSettings(AbstractModel):
         :param Password: 实例登录密码。不同操作系统类型密码复杂度限制不一样，具体如下：<br><li>Linux实例密码必须8到30位，至少包括两项[a-z]，[A-Z]、[0-9] 和 [( ) \` ~ ! @ # $ % ^ & *  - + = | { } [ ] : ; ' , . ? / ]中的特殊符号。<br><li>Windows实例密码必须12到30位，至少包括三项[a-z]，[A-Z]，[0-9] 和 [( ) \` ~ ! @ # $ % ^ & * - + = | { } [ ] : ; ' , . ? /]中的特殊符号。<br><br>若不指定该参数，则由系统随机生成密码，并通过站内信方式通知到用户。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Password: str
-        :param KeyIds: 密钥ID列表。关联密钥后，就可以通过对应的私钥来访问实例；KeyId可通过接口[DescribeKeyPairs](https://cloud.tencent.com/document/api/213/15699)获取，密钥与密码不能同时指定，同时Windows操作系统不支持指定密钥。当前仅支持购买的时候指定一个密钥。
+        :param KeyIds: 密钥ID列表。关联密钥后，就可以通过对应的私钥来访问实例；KeyId可通过接口[DescribeKeyPairs](https://cloud.tencent.com/document/api/213/15699)获取，密钥与密码不能同时指定，同时Windows操作系统不支持指定密钥。
 注意：此字段可能返回 null，表示取不到有效值。
         :type KeyIds: list of str
         :param KeepImageLogin: 保持镜像的原始设置。该参数与Password或KeyIds.N不能同时指定。只有使用自定义镜像、共享镜像或外部导入镜像创建实例时才能指定该参数为TRUE。取值范围：<br><li>TRUE：表示保持镜像的登录设置<br><li>FALSE：表示不保持镜像的登录设置<br><br>默认取值：FALSE。
