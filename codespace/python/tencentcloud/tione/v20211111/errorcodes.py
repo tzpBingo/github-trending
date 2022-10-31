@@ -143,6 +143,9 @@ INTERNALERROR_NOPERMISSION = 'InternalError.NoPermission'
 # 操作不允许。
 INTERNALERROR_NOTALLOW = 'InternalError.NotAllow'
 
+# 获取HDFS存储信息失败。
+INTERNALERROR_QUERYHDFSINFOFAILED = 'InternalError.QueryHDFSInfoFailed'
+
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
@@ -202,6 +205,9 @@ OPERATIONDENIED_BALANCEINSUFFICIENT = 'OperationDenied.BalanceInsufficient'
 
 # 觅影资源包余额不足，请先充值。
 OPERATIONDENIED_MIYINGBALANCEINSUFFICIENT = 'OperationDenied.MIYINGBalanceInsufficient'
+
+# 网段不合法。
+OPERATIONDENIED_NETWORKCIDRILLEGAL = 'OperationDenied.NetworkCidrIllegal'
 
 # 白名单免费配额不足。
 OPERATIONDENIED_WHITELISTQUOTAEXCEED = 'OperationDenied.WhitelistQuotaExceed'

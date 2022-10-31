@@ -606,6 +606,35 @@ class CpdpClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def BindOpenBankProfitSharePayee(self, request):
+        """云企付-绑定分账收款方
+
+        :param request: Request instance for BindOpenBankProfitSharePayee.
+        :type request: :class:`tencentcloud.cpdp.v20190820.models.BindOpenBankProfitSharePayeeRequest`
+        :rtype: :class:`tencentcloud.cpdp.v20190820.models.BindOpenBankProfitSharePayeeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("BindOpenBankProfitSharePayee", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.BindOpenBankProfitSharePayeeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def BindRelateAccReUnionPay(self, request):
         """会员绑定提现账户-回填银联鉴权短信码。用于会员填写动态验证码后，发往银行进行验证，验证成功则完成绑定。
 
@@ -1296,6 +1325,35 @@ class CpdpClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateOpenBankExternalSubMerchantRegistrationResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateOpenBankGlobalPaymentOrder(self, request):
+        """云企付-跨境支付下单
+
+        :param request: Request instance for CreateOpenBankGlobalPaymentOrder.
+        :type request: :class:`tencentcloud.cpdp.v20190820.models.CreateOpenBankGlobalPaymentOrderRequest`
+        :rtype: :class:`tencentcloud.cpdp.v20190820.models.CreateOpenBankGlobalPaymentOrderResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateOpenBankGlobalPaymentOrder", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateOpenBankGlobalPaymentOrderResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -3168,6 +3226,35 @@ class CpdpClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def QueryCompanyTitle(self, request):
+        """智慧零售-查询公司抬头
+
+        :param request: Request instance for QueryCompanyTitle.
+        :type request: :class:`tencentcloud.cpdp.v20190820.models.QueryCompanyTitleRequest`
+        :rtype: :class:`tencentcloud.cpdp.v20190820.models.QueryCompanyTitleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("QueryCompanyTitle", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.QueryCompanyTitleResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def QueryContract(self, request):
         """通过此接口查询签约数据
 
@@ -4431,6 +4518,35 @@ class CpdpClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.QueryOpenBankPaymentOrderResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def QueryOpenBankProfitSharePayee(self, request):
+        """云企付-绑定分账收款方查询
+
+        :param request: Request instance for QueryOpenBankProfitSharePayee.
+        :type request: :class:`tencentcloud.cpdp.v20190820.models.QueryOpenBankProfitSharePayeeRequest`
+        :rtype: :class:`tencentcloud.cpdp.v20190820.models.QueryOpenBankProfitSharePayeeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("QueryOpenBankProfitSharePayee", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.QueryOpenBankProfitSharePayeeResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

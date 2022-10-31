@@ -5110,11 +5110,15 @@ class DescribeClusterAuthenticationOptionsResponse(AbstractModel):
         :param LatestOperationState: 最近一次修改操作结果，返回值可能为：Updating，Success，Failed，TimeOut
 注意：此字段可能返回 null，表示取不到有效值。
         :type LatestOperationState: str
+        :param OIDCConfig: OIDC认证配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OIDCConfig: :class:`tencentcloud.tke.v20180525.models.OIDCConfigAuthenticationOptions`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.ServiceAccounts = None
         self.LatestOperationState = None
+        self.OIDCConfig = None
         self.RequestId = None
 
 
@@ -5123,6 +5127,9 @@ class DescribeClusterAuthenticationOptionsResponse(AbstractModel):
             self.ServiceAccounts = ServiceAccountAuthenticationOptions()
             self.ServiceAccounts._deserialize(params.get("ServiceAccounts"))
         self.LatestOperationState = params.get("LatestOperationState")
+        if params.get("OIDCConfig") is not None:
+            self.OIDCConfig = OIDCConfigAuthenticationOptions()
+            self.OIDCConfig._deserialize(params.get("OIDCConfig"))
         self.RequestId = params.get("RequestId")
 
 
@@ -6768,6 +6775,76 @@ class DescribeEdgeClusterInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeEdgeClusterUpgradeInfoRequest(AbstractModel):
+    """DescribeEdgeClusterUpgradeInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param EdgeVersion: 要升级到的TKEEdge版本
+        :type EdgeVersion: str
+        """
+        self.ClusterId = None
+        self.EdgeVersion = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.EdgeVersion = params.get("EdgeVersion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeEdgeClusterUpgradeInfoResponse(AbstractModel):
+    """DescribeEdgeClusterUpgradeInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ComponentVersion: 可升级的集群组件和
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ComponentVersion: str
+        :param EdgeVersionCurrent: 边缘集群当前版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EdgeVersionCurrent: str
+        :param RegistryPrefix: 边缘组件镜像仓库地址前缀，包含域名和命名空间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegistryPrefix: str
+        :param ClusterUpgradeStatus: 集群升级状态，可能值：running、updating、failed
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterUpgradeStatus: str
+        :param ClusterUpgradeStatusReason: 集群升级中状态或者失败原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterUpgradeStatusReason: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ComponentVersion = None
+        self.EdgeVersionCurrent = None
+        self.RegistryPrefix = None
+        self.ClusterUpgradeStatus = None
+        self.ClusterUpgradeStatusReason = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ComponentVersion = params.get("ComponentVersion")
+        self.EdgeVersionCurrent = params.get("EdgeVersionCurrent")
+        self.RegistryPrefix = params.get("RegistryPrefix")
+        self.ClusterUpgradeStatus = params.get("ClusterUpgradeStatus")
+        self.ClusterUpgradeStatusReason = params.get("ClusterUpgradeStatusReason")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeEdgeLogSwitchesRequest(AbstractModel):
     """DescribeEdgeLogSwitches请求参数结构体
 
@@ -7804,6 +7881,24 @@ class DescribePrometheusInstanceInitStatusRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class DescribePrometheusInstanceInitStatusResponse(AbstractModel):
     """DescribePrometheusInstanceInitStatus返回参数结构体
@@ -7812,13 +7907,36 @@ class DescribePrometheusInstanceInitStatusResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param Status: 实例初始化状态，取值：
+uninitialized 未初始化 
+initializing 初始化中
+running 初始化完成，运行中
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param Steps: 初始化任务步骤
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Steps: list of TaskStepInfo
+        :param EksClusterId: 实例eks集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EksClusterId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.Status = None
+        self.Steps = None
+        self.EksClusterId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.Status = params.get("Status")
+        if params.get("Steps") is not None:
+            self.Steps = []
+            for item in params.get("Steps"):
+                obj = TaskStepInfo()
+                obj._deserialize(item)
+                self.Steps.append(obj)
+        self.EksClusterId = params.get("EksClusterId")
         self.RequestId = params.get("RequestId")
 
 
@@ -9486,6 +9604,9 @@ class EdgeCluster(AbstractModel):
         :param ClusterAdvancedSettings: 集群高级设置
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterAdvancedSettings: :class:`tencentcloud.tke.v20180525.models.EdgeClusterAdvancedSettings`
+        :param Level: 边缘容器集群级别
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Level: str
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -9499,6 +9620,7 @@ class EdgeCluster(AbstractModel):
         self.EdgeClusterVersion = None
         self.MaxNodePodNum = None
         self.ClusterAdvancedSettings = None
+        self.Level = None
 
 
     def _deserialize(self, params):
@@ -9516,6 +9638,7 @@ class EdgeCluster(AbstractModel):
         if params.get("ClusterAdvancedSettings") is not None:
             self.ClusterAdvancedSettings = EdgeClusterAdvancedSettings()
             self.ClusterAdvancedSettings._deserialize(params.get("ClusterAdvancedSettings"))
+        self.Level = params.get("Level")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12096,9 +12219,12 @@ class ModifyClusterAuthenticationOptionsRequest(AbstractModel):
         :type ClusterId: str
         :param ServiceAccounts: ServiceAccount认证配置
         :type ServiceAccounts: :class:`tencentcloud.tke.v20180525.models.ServiceAccountAuthenticationOptions`
+        :param OIDCConfig: OIDC认证配置
+        :type OIDCConfig: :class:`tencentcloud.tke.v20180525.models.OIDCConfigAuthenticationOptions`
         """
         self.ClusterId = None
         self.ServiceAccounts = None
+        self.OIDCConfig = None
 
 
     def _deserialize(self, params):
@@ -12106,6 +12232,9 @@ class ModifyClusterAuthenticationOptionsRequest(AbstractModel):
         if params.get("ServiceAccounts") is not None:
             self.ServiceAccounts = ServiceAccountAuthenticationOptions()
             self.ServiceAccounts._deserialize(params.get("ServiceAccounts"))
+        if params.get("OIDCConfig") is not None:
+            self.OIDCConfig = OIDCConfigAuthenticationOptions()
+            self.OIDCConfig._deserialize(params.get("OIDCConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13033,6 +13162,41 @@ class NodePoolOption(AbstractModel):
         
 
 
+class OIDCConfigAuthenticationOptions(AbstractModel):
+    """OIDC认证相关配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AutoCreateOIDCConfig: 创建身份提供商
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoCreateOIDCConfig: bool
+        :param AutoCreateClientId: 创建身份提供商的ClientId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoCreateClientId: list of str
+        :param AutoInstallPodIdentityWebhookAddon: 创建PodIdentityWebhook组件
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoInstallPodIdentityWebhookAddon: bool
+        """
+        self.AutoCreateOIDCConfig = None
+        self.AutoCreateClientId = None
+        self.AutoInstallPodIdentityWebhookAddon = None
+
+
+    def _deserialize(self, params):
+        self.AutoCreateOIDCConfig = params.get("AutoCreateOIDCConfig")
+        self.AutoCreateClientId = params.get("AutoCreateClientId")
+        self.AutoInstallPodIdentityWebhookAddon = params.get("AutoInstallPodIdentityWebhookAddon")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PodLimitsByType(AbstractModel):
     """某机型可支持的最大 VPC-CNI 模式的 Pod 数量
 
@@ -13209,12 +13373,24 @@ abnormal = 异常
 本集群的所有指标都会带上这几个label
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExternalLabels: list of Label
+        :param Region: 集群所在地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param VpcId: 集群所在VPC ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param FailedReason: 记录关联等操作的失败信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailedReason: str
         """
         self.ClusterType = None
         self.ClusterId = None
         self.Status = None
         self.ClusterName = None
         self.ExternalLabels = None
+        self.Region = None
+        self.VpcId = None
+        self.FailedReason = None
 
 
     def _deserialize(self, params):
@@ -13228,6 +13404,9 @@ abnormal = 异常
                 obj = Label()
                 obj._deserialize(item)
                 self.ExternalLabels.append(obj)
+        self.Region = params.get("Region")
+        self.VpcId = params.get("VpcId")
+        self.FailedReason = params.get("FailedReason")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15045,6 +15224,28 @@ class RunPrometheusInstanceRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param SubnetId: 子网ID，默认使用实例所用子网初始化，也可通过该参数传递新的子网ID初始化
+        :type SubnetId: str
+        """
+        self.InstanceId = None
+        self.SubnetId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.SubnetId = params.get("SubnetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class RunPrometheusInstanceResponse(AbstractModel):
     """RunPrometheusInstance返回参数结构体
@@ -16015,6 +16216,59 @@ class UpdateEKSContainerInstanceResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.EksCiId = params.get("EksCiId")
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateEdgeClusterVersionRequest(AbstractModel):
+    """UpdateEdgeClusterVersion请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群 Id
+        :type ClusterId: str
+        :param EdgeVersion: 需要升级到的版本
+        :type EdgeVersion: str
+        :param RegistryPrefix: 自定义边缘组件镜像仓库前缀
+        :type RegistryPrefix: str
+        :param SkipPreCheck: 是否跳过预检查阶段
+        :type SkipPreCheck: bool
+        """
+        self.ClusterId = None
+        self.EdgeVersion = None
+        self.RegistryPrefix = None
+        self.SkipPreCheck = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.EdgeVersion = params.get("EdgeVersion")
+        self.RegistryPrefix = params.get("RegistryPrefix")
+        self.SkipPreCheck = params.get("SkipPreCheck")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateEdgeClusterVersionResponse(AbstractModel):
+    """UpdateEdgeClusterVersion返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 

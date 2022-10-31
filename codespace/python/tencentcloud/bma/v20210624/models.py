@@ -25,19 +25,19 @@ class BrandData(AbstractModel):
 
     def __init__(self):
         r"""
-        :param BrandName: xxx
+        :param BrandName: 商标名称
         :type BrandName: str
-        :param BrandCertificateName: xxx
+        :param BrandCertificateName: 商标证明
         :type BrandCertificateName: str
-        :param BrandStatus: xxx
+        :param BrandStatus: 商标审核状态 1-审核中 2-审核未通过 3-审核通过
         :type BrandStatus: int
-        :param BrandNote: xxx
+        :param BrandNote: 审核说明
         :type BrandNote: str
-        :param TransferName: xxx
+        :param TransferName: 商标转让证明
         :type TransferName: str
-        :param TransferStatus: xxx
+        :param TransferStatus: 商标转让证明审核状态
         :type TransferStatus: int
-        :param TransferNote: xxx
+        :param TransferNote: 审核说明 1-审核中 2-审核未通过 3-审核通过
         :type TransferNote: str
         """
         self.BrandName = None
@@ -73,13 +73,13 @@ class CreateBPFakeURLRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProtectURLId: xxx
+        :param ProtectURLId: 保护网址ID
         :type ProtectURLId: int
-        :param FakeURL: xxx
+        :param FakeURL: 仿冒网址
         :type FakeURL: str
-        :param SnapshotNames: xxx
+        :param SnapshotNames: 截图
         :type SnapshotNames: list of str
-        :param Note: xxx
+        :param Note: 举报说明
         :type Note: str
         """
         self.ProtectURLId = None
@@ -126,7 +126,7 @@ class CreateBPFalseTicketRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FakeURL: xxx
+        :param FakeURL: 仿冒网址
         :type FakeURL: str
         """
         self.FakeURL = None
@@ -167,13 +167,13 @@ class CreateBPOfflineAttachmentRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param BrandName: xxx
+        :param BrandName: 品牌名字
         :type BrandName: str
-        :param BrandCertificateName: xx
+        :param BrandCertificateName: 商标证明
         :type BrandCertificateName: str
-        :param TransferName: xx
+        :param TransferName: 商标转让证明
         :type TransferName: str
-        :param AuthorizationName: xx
+        :param AuthorizationName: 授权书
         :type AuthorizationName: str
         """
         self.BrandName = None
@@ -220,7 +220,7 @@ class CreateBPOfflineTicketRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FakeURLId: xxx
+        :param FakeURLId: 仿冒网址ID
         :type FakeURLId: int
         """
         self.FakeURLId = None
@@ -261,15 +261,15 @@ class CreateBPProtectURLsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CompanyName: xxx
+        :param CompanyName: 企业名称
         :type CompanyName: str
-        :param Phone: xxx
+        :param Phone: 电话号码
         :type Phone: str
-        :param LicenseName: xxx
+        :param LicenseName: 营业执照
         :type LicenseName: str
-        :param ProtectURLs: xxx
+        :param ProtectURLs: 保护网站
         :type ProtectURLs: list of str
-        :param ProtectWebs: xxx
+        :param ProtectWebs: 网站名称
         :type ProtectWebs: list of str
         """
         self.CompanyName = None
@@ -318,7 +318,7 @@ class CreateCRBlockRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: 已存证的作品ID
+        :param WorkId: 作品ID
         :type WorkId: int
         :param TortUrl: 侵权链接
         :type TortUrl: str
@@ -328,27 +328,27 @@ class CreateCRBlockRequest(AbstractModel):
         :type TortPlat: str
         :param BlockUrl: 拦截结果回调地址
         :type BlockUrl: str
-        :param FileUrl: x
+        :param FileUrl: 授权书下载地址
         :type FileUrl: str
-        :param ValidStartDate: x
+        :param ValidStartDate: 授权书生效日期
         :type ValidStartDate: str
-        :param ValidEndDate: x
+        :param ValidEndDate: 授权书截止日期
         :type ValidEndDate: str
-        :param TortPic: xx
+        :param TortPic: 侵权截图
         :type TortPic: str
-        :param CommFileUrl: x
+        :param CommFileUrl: 委托书下载地址
         :type CommFileUrl: str
-        :param CommValidStartDate: x
+        :param CommValidStartDate: 委托书生效日期
         :type CommValidStartDate: str
-        :param CommValidEndDate: x
+        :param CommValidEndDate: 委托书截止日期
         :type CommValidEndDate: str
-        :param IsProducer: x
+        :param IsProducer: 是否著作权人：0-否 1-是
         :type IsProducer: str
-        :param EvidenceFileUrl: x
+        :param EvidenceFileUrl: 存证证书下载地址
         :type EvidenceFileUrl: str
-        :param EvidenceValidStartDate: x
+        :param EvidenceValidStartDate: 存证证书生效日期
         :type EvidenceValidStartDate: str
-        :param EvidenceValidEndDate: x
+        :param EvidenceValidEndDate: 存证证书截止日期
         :type EvidenceValidEndDate: str
         """
         self.WorkId = None
@@ -404,7 +404,7 @@ class CreateCRBlockResponse(AbstractModel):
         r"""
         :param TortId: 侵权ID
         :type TortId: int
-        :param TortNum: xxx
+        :param TortNum: 该字段已废弃
         :type TortNum: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -429,39 +429,39 @@ class CreateCRCompanyVerifyRequest(AbstractModel):
         r"""
         :param CompanyName: 企业名称
         :type CompanyName: str
-        :param CompanyIDType: 企业认证号码类型 1：社会信用代码 2：组织机构代码 3：企业工商注册码 4：其他 默认为1
-        :type CompanyIDType: str
         :param CompanyID: 企业证件号码
         :type CompanyID: str
         :param CompanyLegalName: 企业法人姓名
         :type CompanyLegalName: str
-        :param ManagerName: 管理员名称
+        :param ManagerName: 联系人姓名
         :type ManagerName: str
-        :param ManagerPhone: 管理员手机号
+        :param ManagerPhone: 联系人手机号
         :type ManagerPhone: str
-        :param VerificationCode: 手机验证码
+        :param VerificationCode: 手机验证码，接口接入可以置空
         :type VerificationCode: str
-        :param Type: xxx
+        :param CompanyIDType: 字段已废弃，企业认证号码类型 1：社会信用代码 2：组织机构代码 3：企业工商注册码 4：其他 默认为1
+        :type CompanyIDType: str
+        :param Type: 字段已废弃，认证类型
         :type Type: str
         """
         self.CompanyName = None
-        self.CompanyIDType = None
         self.CompanyID = None
         self.CompanyLegalName = None
         self.ManagerName = None
         self.ManagerPhone = None
         self.VerificationCode = None
+        self.CompanyIDType = None
         self.Type = None
 
 
     def _deserialize(self, params):
         self.CompanyName = params.get("CompanyName")
-        self.CompanyIDType = params.get("CompanyIDType")
         self.CompanyID = params.get("CompanyID")
         self.CompanyLegalName = params.get("CompanyLegalName")
         self.ManagerName = params.get("ManagerName")
         self.ManagerPhone = params.get("ManagerPhone")
         self.VerificationCode = params.get("VerificationCode")
+        self.CompanyIDType = params.get("CompanyIDType")
         self.Type = params.get("Type")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -479,9 +479,9 @@ class CreateCRCompanyVerifyResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Status: 认证状态 0-认证成功 1-认证失败
+        :param Status: 认证状态：0-认证成功 1-认证失败
         :type Status: int
-        :param Note: 认证结果返回
+        :param Note: 认证状态说明，包括认证失败的原因
         :type Note: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -497,6 +497,132 @@ class CreateCRCompanyVerifyResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateCRDesktopCodeRequest(AbstractModel):
+    """CreateCRDesktopCode请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TortId: xxx
+        :type TortId: int
+        :param DesktopCode: xxx
+        :type DesktopCode: str
+        """
+        self.TortId = None
+        self.DesktopCode = None
+
+
+    def _deserialize(self, params):
+        self.TortId = params.get("TortId")
+        self.DesktopCode = params.get("DesktopCode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCRDesktopCodeResponse(AbstractModel):
+    """CreateCRDesktopCode返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class CreateCRObtainRequest(AbstractModel):
+    """CreateCRObtain请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param WorkId: 已存证的作品ID
+        :type WorkId: int
+        :param TortUrl: 侵权链接
+        :type TortUrl: str
+        :param ObtainType: 取证类型 1-网页取证 2-过程取证
+        :type ObtainType: int
+        :param WorkTitle: 侵权标题
+        :type WorkTitle: str
+        :param TortPlat: 侵权平台
+        :type TortPlat: str
+        :param ObtainDuration: 过程取证的取证时长 6-300分钟
+        :type ObtainDuration: int
+        :param ObtainUrl: 取证回调地址
+        :type ObtainUrl: str
+        :param WorkCategory: xxx
+        :type WorkCategory: str
+        :param WorkType: xxx
+        :type WorkType: str
+        """
+        self.WorkId = None
+        self.TortUrl = None
+        self.ObtainType = None
+        self.WorkTitle = None
+        self.TortPlat = None
+        self.ObtainDuration = None
+        self.ObtainUrl = None
+        self.WorkCategory = None
+        self.WorkType = None
+
+
+    def _deserialize(self, params):
+        self.WorkId = params.get("WorkId")
+        self.TortUrl = params.get("TortUrl")
+        self.ObtainType = params.get("ObtainType")
+        self.WorkTitle = params.get("WorkTitle")
+        self.TortPlat = params.get("TortPlat")
+        self.ObtainDuration = params.get("ObtainDuration")
+        self.ObtainUrl = params.get("ObtainUrl")
+        self.WorkCategory = params.get("WorkCategory")
+        self.WorkType = params.get("WorkType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCRObtainResponse(AbstractModel):
+    """CreateCRObtain返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TortId: 侵权ID
+        :type TortId: int
+        :param TortNum: xxx
+        :type TortNum: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TortId = None
+        self.TortNum = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TortId = params.get("TortId")
+        self.TortNum = params.get("TortNum")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateCRRightFileRequest(AbstractModel):
     """CreateCRRightFile请求参数结构体
 
@@ -504,9 +630,9 @@ class CreateCRRightFileRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: xxx
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param FileList: xxx
+        :param FileList: 权属文件列表
         :type FileList: list of File
         """
         self.WorkId = None
@@ -537,7 +663,7 @@ class CreateCRRightFileResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FileIds: xxx
+        :param FileIds: 权属文件Id，按提交顺序排序
         :type FileIds: list of int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -558,7 +684,7 @@ class CreateCRRightRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: 已存证的作品ID
+        :param WorkId: 作品ID
         :type WorkId: int
         :param TortUrl: 侵权链接
         :type TortUrl: str
@@ -568,31 +694,31 @@ class CreateCRRightRequest(AbstractModel):
         :type TortPlat: str
         :param RightUrl: 发函结果回调地址
         :type RightUrl: str
-        :param FileUrl: x
+        :param FileUrl: 授权书下载地址
         :type FileUrl: str
-        :param ValidStartDate: x
+        :param ValidStartDate: 授权书生效日期
         :type ValidStartDate: str
-        :param ValidEndDate: x
+        :param ValidEndDate: 授权书截止日期
         :type ValidEndDate: str
-        :param CommFileUrl: x
+        :param CommFileUrl: 委托书下载地址
         :type CommFileUrl: str
-        :param CommValidStartDate: x
+        :param CommValidStartDate: 委托书生效日期
         :type CommValidStartDate: str
-        :param CommValidEndDate: x
+        :param CommValidEndDate: 委托书截止日期
         :type CommValidEndDate: str
-        :param HomeFileUrl: x
+        :param HomeFileUrl: 主页下载地址
         :type HomeFileUrl: str
-        :param HomeValidStartDate: x
+        :param HomeValidStartDate: 主页生效日期
         :type HomeValidStartDate: str
-        :param HomeValidEndDate: x
+        :param HomeValidEndDate: 主页截止日期
         :type HomeValidEndDate: str
-        :param IsProducer: x
+        :param IsProducer: 是否著作权人：0-否 1-是
         :type IsProducer: str
-        :param EvidenceFileUrl: x
+        :param EvidenceFileUrl: 存证证书下载地址
         :type EvidenceFileUrl: str
-        :param EvidenceValidStartDate: x
+        :param EvidenceValidStartDate: 存证证书生效日期
         :type EvidenceValidStartDate: str
-        :param EvidenceValidEndDate: x
+        :param EvidenceValidEndDate: 存证证书截止日期
         :type EvidenceValidEndDate: str
         """
         self.WorkId = None
@@ -652,7 +778,7 @@ class CreateCRRightResponse(AbstractModel):
         r"""
         :param TortId: 侵权ID
         :type TortId: int
-        :param TortNum: xxx
+        :param TortNum: 该字段已废弃
         :type TortNum: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -675,13 +801,13 @@ class CreateCRTortRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: xx
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param TortURL: xx
+        :param TortURL: 侵权网址
         :type TortURL: str
-        :param TortPlat: xx
+        :param TortPlat: 侵权平台
         :type TortPlat: str
-        :param TortTitle: xx
+        :param TortTitle: 侵权标题
         :type TortTitle: str
         """
         self.WorkId = None
@@ -711,19 +837,19 @@ class CreateCRTortResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: xx
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param TortId: xx
+        :param TortId: 侵权ID
         :type TortId: int
-        :param TortTitle: xx
+        :param TortTitle: 侵权标题
         :type TortTitle: str
-        :param TortPlat: xx
+        :param TortPlat: 侵权平台
         :type TortPlat: str
-        :param TortURL: xx
+        :param TortURL: 侵权网址
         :type TortURL: str
-        :param TortDomain: xx
+        :param TortDomain: 侵权域名
         :type TortDomain: str
-        :param TortBodyName: xx
+        :param TortBodyName: 侵权主体
         :type TortBodyName: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -758,13 +884,13 @@ class CreateCRUserVerifyRequest(AbstractModel):
         r"""
         :param UserName: 用户真实姓名
         :type UserName: str
-        :param UserID: 用户身份证ID
+        :param UserID: 用户身份证号
         :type UserID: str
         :param UserPhone: 用户手机号码
         :type UserPhone: str
-        :param VerificationCode: 短信验证码
+        :param VerificationCode: 短信验证码，接口接入可以置空
         :type VerificationCode: str
-        :param Type: xxx
+        :param Type: 字段已废弃，认证类型
         :type Type: str
         """
         self.UserName = None
@@ -796,9 +922,9 @@ class CreateCRUserVerifyResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Status: 认证状态 0-认证成功 1-认证失败
+        :param Status: 认证状态：0-认证成功 1-认证失败
         :type Status: int
-        :param Note: 认证结果返回
+        :param Note: 认证状态说明，包括认证失败原因等
         :type Note: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -829,59 +955,59 @@ class CreateCRWorkRequest(AbstractModel):
         :type WorkType: str
         :param WorkSign: 作品标签
         :type WorkSign: str
-        :param WorkPic: 作品图片
+        :param WorkPic: 字段已废弃，作品图片
         :type WorkPic: str
-        :param WorkDesc: 创作描述
+        :param WorkDesc: 作品描述
         :type WorkDesc: str
-        :param IsOriginal: 是否原创 0:否 1:是
+        :param IsOriginal: 是否原创：0-否 1-是
         :type IsOriginal: str
-        :param IsRelease: 是否发布 0：未发布 1：已发布
+        :param IsRelease: 是否发布：0-未发布 1-已发布
         :type IsRelease: str
-        :param ProducerID: 著作权人ID
+        :param ProducerID: 字段已废弃，著作权人ID
         :type ProducerID: int
         :param ProduceTime: 创作时间
         :type ProduceTime: str
-        :param SampleContentURL: 样品文件路径
+        :param SampleContentURL: 字段已废弃
         :type SampleContentURL: str
-        :param SampleDownloadURL: 样本下载Url
+        :param SampleDownloadURL: 作品下载地址
         :type SampleDownloadURL: str
-        :param GrantType: 授予类型
-        :type GrantType: str
-        :param SamplePublicURL: 作品发布Url
+        :param SamplePublicURL: 作品在线地址
         :type SamplePublicURL: str
-        :param IsMonitor: 是否启用监测 0：不启用 1：启用 默认为0
+        :param GrantType: 字段已废弃，授予类型
+        :type GrantType: str
+        :param IsMonitor: 是否监测：0-不监测 1-监测
         :type IsMonitor: str
-        :param IsCert: 是否启用存证0：不存证  2：存证 默认为0
+        :param IsCert: 是否存证：0-不存证  2-存证 注意是2
         :type IsCert: str
         :param CertUrl: 存证回调地址
         :type CertUrl: str
         :param MonitorUrl: 监测回调地址
         :type MonitorUrl: str
-        :param ProduceType: 创作性质（原创,改编,翻译,汇编,注释,整理,其他)
+        :param ProduceType: 字段已废弃，创作性质
         :type ProduceType: str
-        :param WhiteLists: 白名单
+        :param WhiteLists: 白名单列表
         :type WhiteLists: list of str
-        :param WorkId: 作品ID
+        :param WorkId: 作品ID，忽略该字段
         :type WorkId: int
         :param ProducerName: 著作权人姓名
         :type ProducerName: str
-        :param Nickname: 作者
+        :param Nickname: 作者，小说类型必填
         :type Nickname: str
-        :param Authorization: 授权书
+        :param Authorization: 授权书下载地址
         :type Authorization: str
         :param AuthorizationStartTime: 授权书开始时间
         :type AuthorizationStartTime: str
         :param AuthorizationEndTime: 授权书结束时间
         :type AuthorizationEndTime: str
-        :param ContentType: 内容格式
+        :param ContentType: 内容格式，支持txt、doc等，表示Content的具体格式
         :type ContentType: str
-        :param Content: 文件内容
+        :param Content: 文件内容base64编码，该字段仅在无法提供下载链接时使用
         :type Content: str
         :param MonitorEndTime: 监测结束时间
         :type MonitorEndTime: str
-        :param ApplierId: 申请人ID
+        :param ApplierId: 申请人ID，用于存证和取证
         :type ApplierId: str
-        :param ApplierName: 申请人姓名
+        :param ApplierName: 申请人姓名，用于存证和取证
         :type ApplierName: str
         """
         self.WorkName = None
@@ -896,8 +1022,8 @@ class CreateCRWorkRequest(AbstractModel):
         self.ProduceTime = None
         self.SampleContentURL = None
         self.SampleDownloadURL = None
-        self.GrantType = None
         self.SamplePublicURL = None
+        self.GrantType = None
         self.IsMonitor = None
         self.IsCert = None
         self.CertUrl = None
@@ -930,8 +1056,8 @@ class CreateCRWorkRequest(AbstractModel):
         self.ProduceTime = params.get("ProduceTime")
         self.SampleContentURL = params.get("SampleContentURL")
         self.SampleDownloadURL = params.get("SampleDownloadURL")
-        self.GrantType = params.get("GrantType")
         self.SamplePublicURL = params.get("SamplePublicURL")
+        self.GrantType = params.get("GrantType")
         self.IsMonitor = params.get("IsMonitor")
         self.IsCert = params.get("IsCert")
         self.CertUrl = params.get("CertUrl")
@@ -965,9 +1091,9 @@ class CreateCRWorkResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: 作品ID
+        :param WorkId: 作品ID，一个作品对应唯一的workid
         :type WorkId: int
-        :param EvidenceId: x
+        :param EvidenceId: 存证ID，忽略该字段
         :type EvidenceId: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -996,25 +1122,25 @@ class DescribeBPCompanyInfoResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CompanyName: xx
+        :param CompanyName: 企业名称
         :type CompanyName: str
-        :param Phone: xx
+        :param Phone: 电话号码
         :type Phone: str
-        :param LicenseName: xx
+        :param LicenseName: 营业执照
         :type LicenseName: str
-        :param LicenseStatus: xx
+        :param LicenseStatus: 营业执照审核状态 1-审核中 2-审核未通过，3、审核通过
         :type LicenseStatus: int
-        :param LicenseNote: xx
+        :param LicenseNote: 营业执照备注
         :type LicenseNote: str
-        :param AuthorizationName: xx
+        :param AuthorizationName: 授权书
         :type AuthorizationName: str
-        :param AuthorizationStatus: xx
+        :param AuthorizationStatus: 授权书审核状态
         :type AuthorizationStatus: int
-        :param AuthorizationNote: xx
+        :param AuthorizationNote: 授权书备注
         :type AuthorizationNote: str
-        :param BrandDatas: xx
+        :param BrandDatas: 品牌信息
         :type BrandDatas: list of BrandData
-        :param CompanyId: xx
+        :param CompanyId: 企业ID
         :type CompanyId: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1058,11 +1184,11 @@ class DescribeBPFakeURLsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: xxx
+        :param Filters: 过滤条件
         :type Filters: list of Filter
-        :param PageSize: xxx
+        :param PageSize: 页数
         :type PageSize: int
-        :param PageNumber: xxx
+        :param PageNumber: 页码
         :type PageNumber: int
         """
         self.Filters = None
@@ -1095,11 +1221,11 @@ class DescribeBPFakeURLsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FakeURLInfos: xxx
+        :param FakeURLInfos: 仿冒网址列表
         :type FakeURLInfos: list of FakeURLInfo
-        :param TotalCount: xxx
+        :param TotalCount: 总量
         :type TotalCount: int
-        :param ExportURL: xxx
+        :param ExportURL: 导出量
         :type ExportURL: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1129,9 +1255,9 @@ class DescribeBPProtectURLsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param PageSize: xxx
+        :param PageSize: 页数
         :type PageSize: int
-        :param PageNumber: xxx
+        :param PageNumber: 页码
         :type PageNumber: int
         """
         self.PageSize = None
@@ -1157,9 +1283,9 @@ class DescribeBPProtectURLsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProtectURLInfos: xxx
+        :param ProtectURLInfos: 保护网址列表
         :type ProtectURLInfos: list of ProtectURLInfo
-        :param TotalCount: xxx
+        :param TotalCount: 总量
         :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1187,11 +1313,11 @@ class DescribeBPReportFakeURLsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: xxx
+        :param Filters: 过滤条件
         :type Filters: list of Filter
-        :param PageSize: xxx
+        :param PageSize: 页数
         :type PageSize: int
-        :param PageNumber: xxx
+        :param PageNumber: 页码
         :type PageNumber: int
         """
         self.Filters = None
@@ -1224,9 +1350,9 @@ class DescribeBPReportFakeURLsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ReportFakeURLInfos: xxx
+        :param ReportFakeURLInfos: 举报网站列表
         :type ReportFakeURLInfos: list of ReportFakeURLInfo
-        :param TotalCount: xxx
+        :param TotalCount: 总量
         :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1260,7 +1386,7 @@ class DescribeCRMonitorDetailRequest(AbstractModel):
         :type PageSize: int
         :param PageNumber: 页码
         :type PageNumber: int
-        :param Filters: x
+        :param Filters: 过滤参数
         :type Filters: list of Filter
         """
         self.WorkId = None
@@ -1295,11 +1421,11 @@ class DescribeCRMonitorDetailResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Torts: MonitorTort数组
+        :param Torts: 侵权数组
         :type Torts: list of MonitorTort
         :param TotalCount: 总记录数
         :type TotalCount: int
-        :param MonitorStatus: x
+        :param MonitorStatus: 监测状态
         :type MonitorStatus: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1389,6 +1515,107 @@ class DescribeCRMonitorsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeCRObtainDetailRequest(AbstractModel):
+    """DescribeCRObtainDetail请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TortId: 侵权ID
+        :type TortId: int
+        """
+        self.TortId = None
+
+
+    def _deserialize(self, params):
+        self.TortId = params.get("TortId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeCRObtainDetailResponse(AbstractModel):
+    """DescribeCRObtainDetail返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param WorkName: 作品名称
+        :type WorkName: str
+        :param TortURL: 侵权链接
+        :type TortURL: str
+        :param ObtainTime: 取证时间
+        :type ObtainTime: str
+        :param ObtainType: 取证类型
+        :type ObtainType: str
+        :param ObtainNum: 取证号
+        :type ObtainNum: str
+        :param DepositFile: 证据地址
+        :type DepositFile: str
+        :param DepositCert: 公证信息地址
+        :type DepositCert: str
+        :param WorkType: 内容类型
+        :type WorkType: str
+        :param WorkCategory: 作品类型
+        :type WorkCategory: str
+        :param TortId: 侵权ID
+        :type TortId: int
+        :param TortNum: 侵权编号
+        :type TortNum: str
+        :param ObtainStatus: 取证状态
+        :type ObtainStatus: int
+        :param ObtainNote: 取证状态说明
+        :type ObtainNote: str
+        :param ObtainDuration: 取证时长
+        :type ObtainDuration: str
+        :param ObtainName: 取证名称
+        :type ObtainName: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.WorkName = None
+        self.TortURL = None
+        self.ObtainTime = None
+        self.ObtainType = None
+        self.ObtainNum = None
+        self.DepositFile = None
+        self.DepositCert = None
+        self.WorkType = None
+        self.WorkCategory = None
+        self.TortId = None
+        self.TortNum = None
+        self.ObtainStatus = None
+        self.ObtainNote = None
+        self.ObtainDuration = None
+        self.ObtainName = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.WorkName = params.get("WorkName")
+        self.TortURL = params.get("TortURL")
+        self.ObtainTime = params.get("ObtainTime")
+        self.ObtainType = params.get("ObtainType")
+        self.ObtainNum = params.get("ObtainNum")
+        self.DepositFile = params.get("DepositFile")
+        self.DepositCert = params.get("DepositCert")
+        self.WorkType = params.get("WorkType")
+        self.WorkCategory = params.get("WorkCategory")
+        self.TortId = params.get("TortId")
+        self.TortNum = params.get("TortNum")
+        self.ObtainStatus = params.get("ObtainStatus")
+        self.ObtainNote = params.get("ObtainNote")
+        self.ObtainDuration = params.get("ObtainDuration")
+        self.ObtainName = params.get("ObtainName")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeCRWorkInfoRequest(AbstractModel):
     """DescribeCRWorkInfo请求参数结构体
 
@@ -1396,7 +1623,7 @@ class DescribeCRWorkInfoRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: xxx
+        :param WorkId: 作品ID
         :type WorkId: int
         """
         self.WorkId = None
@@ -1420,49 +1647,49 @@ class DescribeCRWorkInfoResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkName: x
+        :param WorkName: 作品名称
         :type WorkName: str
-        :param MonitorStatus: x
+        :param MonitorStatus: 监测状态
         :type MonitorStatus: int
-        :param AuthStatus: x
+        :param AuthStatus: 授权文件状态
         :type AuthStatus: int
-        :param CommStatus: x
+        :param CommStatus: 委托书状态
         :type CommStatus: int
-        :param IsProducer: x
+        :param IsProducer: 是否著作权人
         :type IsProducer: int
-        :param EvidenceStatus: xxx
+        :param EvidenceStatus: 存证证书状态
         :type EvidenceStatus: int
-        :param WorkCategory: xxx
+        :param WorkCategory: 作品类型
         :type WorkCategory: str
-        :param IsOriginal: xxx
+        :param IsOriginal: 是否原创
         :type IsOriginal: str
-        :param IsRelease: xxx
+        :param IsRelease: 是否已发表
         :type IsRelease: str
-        :param ProducerName: xxx
+        :param ProducerName: 著作权人姓名
         :type ProducerName: str
-        :param ProduceTime: xxx
+        :param ProduceTime: 发表时间
         :type ProduceTime: str
-        :param WhiteLists: xxx
+        :param WhiteLists: 白名单
         :type WhiteLists: list of str
-        :param WorkDesc: xxx
+        :param WorkDesc: 作品描述
         :type WorkDesc: str
-        :param Authorization: xxx
+        :param Authorization: 授权书
         :type Authorization: str
-        :param AuthorizationStartTime: xxx
+        :param AuthorizationStartTime: 授权书生效日期
         :type AuthorizationStartTime: str
-        :param AuthorizationEndTime: xxx
+        :param AuthorizationEndTime: 授权书截止日期
         :type AuthorizationEndTime: str
-        :param Commission: xxx
+        :param Commission: 委托书
         :type Commission: str
-        :param CommissionStartTime: xxx
+        :param CommissionStartTime: 委托书生效日期
         :type CommissionStartTime: str
-        :param CommissionEndTime: xxx
+        :param CommissionEndTime: 委托书截止日期
         :type CommissionEndTime: str
-        :param EvidenceUrl: xxx
+        :param EvidenceUrl: 存证证书
         :type EvidenceUrl: str
-        :param EvidenceStartTime: xxx
+        :param EvidenceStartTime: 存证证书生效日期
         :type EvidenceStartTime: str
-        :param EvidenceEndTime: xxx
+        :param EvidenceEndTime: 存证证书截止日期
         :type EvidenceEndTime: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1525,37 +1752,37 @@ class FakeURLInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FakeURLId: xxx
+        :param FakeURLId: 仿冒网址ID
         :type FakeURLId: int
-        :param ProtectWeb: xxx
+        :param ProtectWeb: 保护网站
         :type ProtectWeb: str
-        :param DetectTime: xxx
+        :param DetectTime: 检测时间
         :type DetectTime: str
-        :param FakeURL: xxx
+        :param FakeURL: 仿冒网址
         :type FakeURL: str
-        :param Snapshot: xxx
+        :param Snapshot: 截图
         :type Snapshot: str
-        :param IP: xxx
+        :param IP: IP地址
         :type IP: str
-        :param IPLoc: xxx
+        :param IPLoc: IP地理位置
         :type IPLoc: str
-        :param Heat: xxx
+        :param Heat: 热度
         :type Heat: int
-        :param Status: xxx
+        :param Status: 网址状态
         :type Status: int
-        :param Note: xxx
+        :param Note: 备注
         :type Note: str
-        :param FakeURLCompany: xxx
+        :param FakeURLCompany: 仿冒网站所属单位
         :type FakeURLCompany: str
-        :param FakeURLAttr: xxx
+        :param FakeURLAttr: 仿冒网站性质
         :type FakeURLAttr: str
-        :param FakeURLName: xxx
+        :param FakeURLName: 仿冒网站名称
         :type FakeURLName: str
-        :param FakeURLICP: xxx
+        :param FakeURLICP: 仿冒网站备案号
         :type FakeURLICP: str
-        :param FakeURLCreateTime: xxx
+        :param FakeURLCreateTime: 仿冒网站创建时间
         :type FakeURLCreateTime: str
-        :param FakeURLExpireTime: xxx
+        :param FakeURLExpireTime: 仿冒网站过期时间
         :type FakeURLExpireTime: str
         """
         self.FakeURLId = None
@@ -1609,13 +1836,13 @@ class File(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FileUrl: xxx
+        :param FileUrl: 文件下载地址
         :type FileUrl: str
-        :param FileType: xxx
+        :param FileType: 文件类型 1-委托书 2-授权书 5-存证证书 11-营业执照
         :type FileType: int
-        :param ValidStartDate: xxx
+        :param ValidStartDate: 文件有效开始日期
         :type ValidStartDate: str
-        :param ValidEndDate: xxx
+        :param ValidEndDate: 文件有效截止日期
         :type ValidEndDate: str
         """
         self.FileUrl = None
@@ -1651,15 +1878,15 @@ class ModifyBPOfflineAttachmentRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LicenseName: xx
+        :param LicenseName: 营业执照
         :type LicenseName: str
-        :param AuthorizationName: xx
+        :param AuthorizationName: 授权书
         :type AuthorizationName: str
-        :param BrandName: xx
+        :param BrandName: 商标名称
         :type BrandName: str
-        :param BrandCertificateName: xx
+        :param BrandCertificateName: 商标证明
         :type BrandCertificateName: str
-        :param TransferName: xx
+        :param TransferName: 商标转让证明
         :type TransferName: str
         """
         self.LicenseName = None
@@ -1755,9 +1982,9 @@ class ModifyCRMonitorRequest(AbstractModel):
         r"""
         :param WorkId: 作品ID
         :type WorkId: int
-        :param MonitorStatus: 监测状态 1-开启监测 2-关闭监测
+        :param MonitorStatus: 监测状态：1-开启监测 2-关闭监测
         :type MonitorStatus: str
-        :param MonitorEnd: 默认不停止，支持续期
+        :param MonitorEnd: 监测截止时间
         :type MonitorEnd: str
         """
         self.WorkId = None
@@ -1802,13 +2029,13 @@ class ModifyCRObtainStatusRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TortId: xxx
+        :param TortId: 侵权ID
         :type TortId: int
-        :param ObtainType: xxx
+        :param ObtainType: 取证类型：1-网页取证 2-过程取证(暂不提供)
         :type ObtainType: int
-        :param ObtainDuration: xxx
+        :param ObtainDuration: 过程取证的取证时长，单位分钟，范围0-120
         :type ObtainDuration: int
-        :param ObtainUrl: xxx
+        :param ObtainUrl: 取证结果回调地址
         :type ObtainUrl: str
         """
         self.TortId = None
@@ -1900,19 +2127,19 @@ class ModifyCRWhiteListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WhiteListId: 白名单ID
+        :param WhiteListId: 该字段已废弃，白名单ID
         :type WhiteListId: int
-        :param PlatForm: 平台名称
+        :param PlatForm: 该字段已废弃，平台名称
         :type PlatForm: str
-        :param PlatUrl: 平台站点链接
+        :param PlatUrl: 该字段已废弃，平台站点链接
         :type PlatUrl: str
-        :param AuthorId: 作者ID
+        :param AuthorId: 该字段已废弃，作者ID
         :type AuthorId: str
-        :param WorksId: 作品ID
+        :param WorksId: 该字段已废弃，作品ID
         :type WorksId: int
-        :param WorkId: xxx
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param WhiteSites: xxx
+        :param WhiteSites: 白名单列表，以\n分割
         :type WhiteSites: str
         """
         self.WhiteListId = None
@@ -1981,9 +2208,9 @@ class Monitor(AbstractModel):
         :type MonitorStatus: int
         :param WorkCategory: 作品类型
         :type WorkCategory: str
-        :param InsertTime: xx
+        :param InsertTime: 新增时间
         :type InsertTime: str
-        :param MonitorNote: xx
+        :param MonitorNote: 监测状态说明
         :type MonitorNote: str
         """
         self.WorkId = None
@@ -2037,43 +2264,43 @@ class MonitorTort(AbstractModel):
         :type PubTime: str
         :param Author: 作者
         :type Author: str
-        :param DetectTime: xxx
+        :param DetectTime: 发现时间
         :type DetectTime: str
-        :param ObtainStatus: 1
+        :param ObtainStatus: 取证状态
         :type ObtainStatus: int
-        :param RightStatus: 1
+        :param RightStatus: 维权状态
         :type RightStatus: int
-        :param BlockStatus: 1
+        :param BlockStatus: 拦截状态
         :type BlockStatus: int
-        :param TortNum: 1
+        :param TortNum: 侵权编号
         :type TortNum: str
-        :param ObtainNote: 1
+        :param ObtainNote: 取证状态说明
         :type ObtainNote: str
-        :param WorkTitle: 1
+        :param WorkTitle: 作品标题
         :type WorkTitle: str
-        :param TortSite: 1
+        :param TortSite: 侵权站点
         :type TortSite: str
-        :param ICP: 1
+        :param ICP: ICP备案信息
         :type ICP: str
-        :param RightNote: 1
+        :param RightNote: 维权状态说明
         :type RightNote: str
-        :param ObtainType: 1
+        :param ObtainType: 取证类型
         :type ObtainType: int
-        :param BlockNote: 1
+        :param BlockNote: 拦截状态说明
         :type BlockNote: str
-        :param WorkId: 1
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param WorkName: 1
+        :param WorkName: 作品名称
         :type WorkName: str
-        :param AuthStatus: 1
+        :param AuthStatus: 授权书状态
         :type AuthStatus: int
-        :param CommStatus: 1
+        :param CommStatus: 委托书状态
         :type CommStatus: int
-        :param EvidenceStatus: 1
+        :param EvidenceStatus: 存证证书状态
         :type EvidenceStatus: int
-        :param IsProducer: 1
+        :param IsProducer: 是否著作权人
         :type IsProducer: int
-        :param IsOverseas: 1
+        :param IsOverseas: 是否境外网址
         :type IsOverseas: int
         """
         self.TortId = None
@@ -2145,17 +2372,17 @@ class ProtectURLInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProtectURLId: xxx
+        :param ProtectURLId: 保护网站ID
         :type ProtectURLId: int
-        :param ProtectURL: xxx
+        :param ProtectURL: 保护网站
         :type ProtectURL: str
-        :param ProtectWeb: xxx
+        :param ProtectWeb: 保护网站名称
         :type ProtectWeb: str
-        :param ProtectURLStatus: xxx
+        :param ProtectURLStatus: 保护网站审核状态 1-审核中 2-审核不通过 3-审核通过
         :type ProtectURLStatus: int
-        :param ProtectURLNote: xxx
+        :param ProtectURLNote: 网站审核不通过原因
         :type ProtectURLNote: str
-        :param CreateTime: xxx
+        :param CreateTime: 创建时间
         :type CreateTime: str
         """
         self.ProtectURLId = None
@@ -2189,41 +2416,41 @@ class ReportFakeURLInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FakeURLId: xxx
+        :param FakeURLId: 仿冒网址ID
         :type FakeURLId: int
-        :param DetectTime: xxx
+        :param DetectTime: 检测时间
         :type DetectTime: str
-        :param ProtectURL: xxx
+        :param ProtectURL: 保护网站
         :type ProtectURL: str
-        :param ProtectWeb: xxx
+        :param ProtectWeb: 保护网站名称
         :type ProtectWeb: str
-        :param FakeURL: xxx
+        :param FakeURL: 仿冒网址
         :type FakeURL: str
-        :param Snapshot: xxx
+        :param Snapshot: 截图
         :type Snapshot: str
-        :param IP: xxx
+        :param IP: IP地址
         :type IP: str
-        :param IPLoc: xxx
+        :param IPLoc: IP地理位置
         :type IPLoc: str
-        :param Heat: xxx
+        :param Heat: 热度
         :type Heat: int
-        :param Status: xxx
+        :param Status: 网站状态
         :type Status: int
-        :param Note: xxx
+        :param Note: 网站不处理原因
         :type Note: str
-        :param FakeURLCompany: xxx
+        :param FakeURLCompany: 仿冒网站的企业名称
         :type FakeURLCompany: str
-        :param FakeURLAttr: xxx
+        :param FakeURLAttr: 仿冒网站的网站性质
         :type FakeURLAttr: str
-        :param FakeURLName: xxx
+        :param FakeURLName: 仿冒网站的网站名称
         :type FakeURLName: str
-        :param FakeURLICP: xxx
+        :param FakeURLICP: 仿冒网站的备案
         :type FakeURLICP: str
-        :param FakeURLCreateTime: xxx
+        :param FakeURLCreateTime: 仿冒网站创建时间
         :type FakeURLCreateTime: str
-        :param FakeURLExpireTime: xxx
+        :param FakeURLExpireTime: 仿冒网站过期时间
         :type FakeURLExpireTime: str
-        :param BlockTime: xxx
+        :param BlockTime: 协查处置时间
         :type BlockTime: str
         """
         self.FakeURLId = None
@@ -2281,13 +2508,13 @@ class UpdateCRWorkRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: xx
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param ContentType: xx
+        :param ContentType: 文件的扩展名，例如txt，docx
         :type ContentType: str
-        :param Content: xx
+        :param Content: 内容的base64编码
         :type Content: str
-        :param CertType: xx
+        :param CertType: 本次存证类型：0-不存证 1-存当前文件 2-存历史全量文件
         :type CertType: str
         """
         self.WorkId = None
@@ -2317,9 +2544,9 @@ class UpdateCRWorkResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param WorkId: xx
+        :param WorkId: 作品ID
         :type WorkId: int
-        :param EvidenceId: xx
+        :param EvidenceId: 存证ID
         :type EvidenceId: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str

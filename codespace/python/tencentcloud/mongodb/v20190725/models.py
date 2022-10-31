@@ -1272,6 +1272,97 @@ class DescribeDBInstanceDealResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeDBInstanceNodePropertyRequest(AbstractModel):
+    """DescribeDBInstanceNodeProperty请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID，格式如：cmgo-p8vnipr5。与云数据库控制台页面中显示的实例ID相同。
+        :type InstanceId: str
+        :param NodeIds: 节点ID。
+        :type NodeIds: list of str
+        :param Roles: 节点角色。可选值包括：
+<ul><li>PRIMARY：主节点。</li><li>SECONDARY：从节点。</li><li>READONLY：只读节点。</li><li>ARBITER：仲裁节点。</li></ul>
+        :type Roles: list of str
+        :param OnlyHidden: 该参数指定节点是否为Hidden节点，默认为false。
+        :type OnlyHidden: bool
+        :param Priority: 该参数指定选举新主节点的优先级。其取值范围为[0,100]，数值越高，优先级越高。
+        :type Priority: int
+        :param Votes: 该参数指定节点投票权。
+<ul><li>1：具有投票权。</li><li>0：无投票权。</li></ul>
+        :type Votes: int
+        :param Tags: 节点标签。
+        :type Tags: list of NodeTag
+        """
+        self.InstanceId = None
+        self.NodeIds = None
+        self.Roles = None
+        self.OnlyHidden = None
+        self.Priority = None
+        self.Votes = None
+        self.Tags = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.NodeIds = params.get("NodeIds")
+        self.Roles = params.get("Roles")
+        self.OnlyHidden = params.get("OnlyHidden")
+        self.Priority = params.get("Priority")
+        self.Votes = params.get("Votes")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = NodeTag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDBInstanceNodePropertyResponse(AbstractModel):
+    """DescribeDBInstanceNodeProperty返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Mongos: Mongos节点属性。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Mongos: list of NodeProperty
+        :param ReplicateSets: 副本集节点信息。
+        :type ReplicateSets: list of ReplicateSetInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Mongos = None
+        self.ReplicateSets = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Mongos") is not None:
+            self.Mongos = []
+            for item in params.get("Mongos"):
+                obj = NodeProperty()
+                obj._deserialize(item)
+                self.Mongos.append(obj)
+        if params.get("ReplicateSets") is not None:
+            self.ReplicateSets = []
+            for item in params.get("ReplicateSets"):
+                obj = ReplicateSetInfo()
+                obj._deserialize(item)
+                self.ReplicateSets.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeDBInstancesRequest(AbstractModel):
     """DescribeDBInstances请求参数结构体
 
@@ -1761,26 +1852,40 @@ class InquirePriceCreateDBInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Zone: 实例所属区域名称，格式如：ap-guangzhou-2
+        :param Zone: 实例所属区域及可用区信息。格式：ap-guangzhou-2。
         :type Zone: str
-        :param NodeNum: 每个副本集内节点个数，具体参照查询云数据库的售卖规格返回参数
+        :param NodeNum: 每个分片的主从节点数量。<br>取值范围：请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数MinStorage与MaxStorage分别对应其最小磁盘规格与最大磁盘规格。</br>
         :type NodeNum: int
-        :param Memory: 实例内存大小，单位：GB
+        :param Memory: 实例内存大小。<ul><li>单位：GB。</li><li>取值范围：请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数CPU与Memory分别对应CPU核数与内存规格。</li></ul>
         :type Memory: int
-        :param Volume: 实例硬盘大小，单位：GB
+        :param Volume: 实例硬盘大小。<ul><li>单位：GB。</li><li>取值范围：请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数MinNodeNum与MaxNodeNum分别对应其最小值与最大值。</li></ul>
         :type Volume: int
-        :param MongoVersion: 版本号，具体支持的售卖版本请参照查询云数据库的售卖规格（DescribeSpecInfo）返回结果。参数与版本对应关系是MONGO_3_WT：MongoDB 3.2 WiredTiger存储引擎版本，MONGO_3_ROCKS：MongoDB 3.2 RocksDB存储引擎版本，MONGO_36_WT：MongoDB 3.6 WiredTiger存储引擎版本，MONGO_40_WT：MongoDB 4.0 WiredTiger存储引擎版本
+        :param MongoVersion: 实例版本信息。<ul><li>具体支持的版本，请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数MongoVersionCode为实例所支持的版本信息。</li><li>版本信息与版本号对应关系如下：<ul><li>MONGO_3_WT：MongoDB 3.2 WiredTiger存储引擎版本。</li><li>MONGO_3_ROCKS：MongoDB 3.2 RocksDB存储引擎版本。</li><li>MONGO_36_WT：MongoDB 3.6 WiredTiger存储引擎版本。</li><li>MONGO_40_WT：MongoDB 4.0 WiredTiger存储引擎版本。</li></ul>
         :type MongoVersion: str
-        :param MachineCode: 机器类型，HIO：高IO型；HIO10G：高IO万兆型；
+        :param MachineCode: 机器类型。<ul><li>HIO：高IO型。</li><li>HIO10G：高IO万兆型。</li></ul>
         :type MachineCode: str
-        :param GoodsNum: 实例数量, 最小值1，最大值为10
+        :param GoodsNum: 实例数量，取值范围为[1,10]。
         :type GoodsNum: int
-        :param Period: 实例时长，单位：月，可选值包括[1,2,3,4,5,6,7,8,9,10,11,12,24,36]
-        :type Period: int
-        :param ClusterType: 实例类型，REPLSET-副本集，SHARD-分片集群，STANDALONE-单节点
+        :param ClusterType: 实例类型。<ul><li>REPLSET：副本集。</li><li>SHARD：分片集群。</li><li>STANDALONE：单节点。</li></ul>
         :type ClusterType: str
-        :param ReplicateSetNum: 副本集个数，创建副本集实例时，该参数必须设置为1；创建分片实例时，具体参照查询云数据库的售卖规格返回参数；若为单节点实例，该参数设置为0
+        :param ReplicateSetNum: 副本集个数。<ul><li>创建副本集实例时，该参数固定设置为1。</li><li>创建分片集群时，指分片数量，请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数MinReplicateSetNum与MaxReplicateSetNum分别对应其最小值与最大值。</li><li>若为单节点实例，该参数固定设置为0。</li></ul>
         :type ReplicateSetNum: int
+        :param Period: 选择包年包月计费模式时，您需要设定购买实例的时长。即<b>InstanceChargeType</b>设定为<b>PREPAID</b>时，该参数必须配置。<ul><li>单位：月。</li><li>可选值包括[1,2,3,4,5,6,7,8,9,10,11,12,24,36]。</li></ul>
+        :type Period: int
+        :param InstanceChargeType: 实例付费方式。<ul><li>PREPAID：包年包月计费。</li><li>POSTPAID_BY_HOUR：按量计费。</li></ul>
+        :type InstanceChargeType: str
+        :param MongosCpu: 分片实例询价必填参数，指 Mongos CPU核数，取值范围为[1,16]。
+        :type MongosCpu: int
+        :param MongosMemory: 分片实例询价必填参数，指 Mongos 内存，取值范围为[2,32]，单位：GB。
+        :type MongosMemory: int
+        :param MongosNum: 分片实例询价必填参数，指 Mongos 个数，取值范围为[3,32]。
+        :type MongosNum: int
+        :param ConfigServerCpu: 分片实例询价必填参数，指 ConfigServer CPU核数，取值为1，单位：GB。
+        :type ConfigServerCpu: int
+        :param ConfigServerMemory: 分片实例询价必填参数，指 ConfigServer 内存大小，取值为2，单位：GB。
+        :type ConfigServerMemory: int
+        :param ConfigServerVolume: 分片实例询价必填参数，指 ConfigServer 磁盘大小，取值为 20，单位：GB。
+        :type ConfigServerVolume: int
         """
         self.Zone = None
         self.NodeNum = None
@@ -1789,9 +1894,16 @@ class InquirePriceCreateDBInstancesRequest(AbstractModel):
         self.MongoVersion = None
         self.MachineCode = None
         self.GoodsNum = None
-        self.Period = None
         self.ClusterType = None
         self.ReplicateSetNum = None
+        self.Period = None
+        self.InstanceChargeType = None
+        self.MongosCpu = None
+        self.MongosMemory = None
+        self.MongosNum = None
+        self.ConfigServerCpu = None
+        self.ConfigServerMemory = None
+        self.ConfigServerVolume = None
 
 
     def _deserialize(self, params):
@@ -1802,9 +1914,16 @@ class InquirePriceCreateDBInstancesRequest(AbstractModel):
         self.MongoVersion = params.get("MongoVersion")
         self.MachineCode = params.get("MachineCode")
         self.GoodsNum = params.get("GoodsNum")
-        self.Period = params.get("Period")
         self.ClusterType = params.get("ClusterType")
         self.ReplicateSetNum = params.get("ReplicateSetNum")
+        self.Period = params.get("Period")
+        self.InstanceChargeType = params.get("InstanceChargeType")
+        self.MongosCpu = params.get("MongosCpu")
+        self.MongosMemory = params.get("MongosMemory")
+        self.MongosNum = params.get("MongosNum")
+        self.ConfigServerCpu = params.get("ConfigServerCpu")
+        self.ConfigServerMemory = params.get("ConfigServerMemory")
+        self.ConfigServerVolume = params.get("ConfigServerVolume")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2702,6 +2821,116 @@ class ModifyNetworkAddress(AbstractModel):
         
 
 
+class NodeProperty(AbstractModel):
+    """节点属性
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Zone: 节点所在的可用区。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Zone: str
+        :param NodeName: 节点名称。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NodeName: str
+        :param Address: 节点访问地址。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Address: str
+        :param Role: 角色。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Role: str
+        :param Hidden: 是否为Hidden节点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Hidden: bool
+        :param Status: 节点状态，包括：ORMAL/STARTUP/RECOVERING/STARTUP2/UNKNOWN/DOWN/ROLLBACK/REMOVED等。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param SlaveDelay: 主从延迟，单位秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SlaveDelay: int
+        :param Priority: 节点优先级。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Priority: int
+        :param Votes: 节点投票权。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Votes: int
+        :param Tags: 节点标签。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of NodeTag
+        :param ReplicateSetId: 副本集Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReplicateSetId: str
+        """
+        self.Zone = None
+        self.NodeName = None
+        self.Address = None
+        self.Role = None
+        self.Hidden = None
+        self.Status = None
+        self.SlaveDelay = None
+        self.Priority = None
+        self.Votes = None
+        self.Tags = None
+        self.ReplicateSetId = None
+
+
+    def _deserialize(self, params):
+        self.Zone = params.get("Zone")
+        self.NodeName = params.get("NodeName")
+        self.Address = params.get("Address")
+        self.Role = params.get("Role")
+        self.Hidden = params.get("Hidden")
+        self.Status = params.get("Status")
+        self.SlaveDelay = params.get("SlaveDelay")
+        self.Priority = params.get("Priority")
+        self.Votes = params.get("Votes")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = NodeTag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        self.ReplicateSetId = params.get("ReplicateSetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NodeTag(AbstractModel):
+    """节点Tag
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKey: 节点Tag key
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagKey: str
+        :param TagValue: 节点Tag Value
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagValue: str
+        """
+        self.TagKey = None
+        self.TagValue = None
+
+
+    def _deserialize(self, params):
+        self.TagKey = params.get("TagKey")
+        self.TagValue = params.get("TagValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class OfflineIsolatedDBInstanceRequest(AbstractModel):
     """OfflineIsolatedDBInstance请求参数结构体
 
@@ -2886,6 +3115,36 @@ class ReplicaSetInfo(AbstractModel):
 
     def _deserialize(self, params):
         self.ReplicaSetId = params.get("ReplicaSetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ReplicateSetInfo(AbstractModel):
+    """副本集信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Nodes: 节点属性
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Nodes: list of NodeProperty
+        """
+        self.Nodes = None
+
+
+    def _deserialize(self, params):
+        if params.get("Nodes") is not None:
+            self.Nodes = []
+            for item in params.get("Nodes"):
+                obj = NodeProperty()
+                obj._deserialize(item)
+                self.Nodes.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

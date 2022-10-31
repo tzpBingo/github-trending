@@ -60,7 +60,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         :type VerifyChannel: list of str
         :param PreReadTime: 合同的强制预览时间：3~300s，未指定则按合同页数计算
         :type PreReadTime: int
-        :param UserId: 签署人userId，非企微场景不使用此字段
+        :param UserId: 签署人userId，传此字段则不用传姓名、手机号
         :type UserId: str
         :param ApproverSource: 签署人用户来源,企微侧用户请传入：WEWORKAPP
         :type ApproverSource: str
@@ -103,6 +103,34 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         self.UserId = params.get("UserId")
         self.ApproverSource = params.get("ApproverSource")
         self.CustomApproverTag = params.get("CustomApproverTag")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ApproverOption(AbstractModel):
+    """签署人个性化能力信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NoRefuse: 是否可以拒签 false-可以拒签,默认 true-不可以拒签
+        :type NoRefuse: bool
+        :param NoTransfer: 是否可以转发 false-可以转发,默认 true-不可以转发
+        :type NoTransfer: bool
+        """
+        self.NoRefuse = None
+        self.NoTransfer = None
+
+
+    def _deserialize(self, params):
+        self.NoRefuse = params.get("NoRefuse")
+        self.NoTransfer = params.get("NoTransfer")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -333,12 +361,15 @@ FILL_IMAGE - 图片控件；
 DYNAMIC_TABLE - 动态表格控件；
 ATTACHMENT - 附件控件；
 SELECTOR - 选择器控件；
+DATE - 日期控件；默认是格式化为xxxx年xx月xx日
 
 如果是SignComponent控件类型，则可选的字段为
 SIGN_SEAL - 签署印章控件；
 SIGN_DATE - 签署日期控件；
+DATE， 日期控件，默认是格式化为xxxx年xx月xx日
 SIGN_SIGNATURE - 用户签名控件；
 SIGN_PERSONAL_SEAL - 个人签署印章控件（使用文件发起暂不支持此类型）；
+SIGN_PAGING_SEAL - 骑缝章；若文件发起，需要对应填充ComponentPosY、ComponentWidth、ComponentHeight
 
 表单域的控件不能作为印章和签名控件
         :type ComponentType: str
@@ -379,6 +410,9 @@ CHECK_BOX - true/false
 FILL_IMAGE、ATTACHMENT - 附件的FileId，需要通过UploadFiles接口上传获取
 SELECTOR - 选项值
 DYNAMIC_TABLE - 传入json格式的表格内容，具体见数据结构FlowInfo：https://cloud.tencent.com/document/api/1420/61525#FlowInfo
+DATE - 默认是格式化为xxxx年xx月xx日
+SIGN_SEAL - 印章ID，于控制台查询获取
+SIGN_PAGING_SEAL - 可以指定印章ID，于控制台查询获取
         :type ComponentValue: str
         :param IsFormType: 是否是表单域类型，默认不存在
         :type IsFormType: bool
@@ -1144,18 +1178,12 @@ class CreateMultiFlowSignQRCodeRequest(AbstractModel):
 
     def __init__(self):
         r"""
+        :param Operator: 用户信息
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param TemplateId: 模板ID
         :type TemplateId: str
         :param FlowName: 签署流程名称，最大长度不超过200字符
         :type FlowName: str
-        :param Operator: 用户信息
-        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
-        :param Agent: 应用信息
-        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
-        :param CallbackUrl: 回调地址,最大长度1000字符串
-回调时机：
-用户通过签署二维码发起签署流程时，企业额度不足导致失败
-        :type CallbackUrl: str
         :param MaxFlowNum: 最大可发起签署流程份数，默认5份 
 发起流程数量超过此上限后二维码自动失效
         :type MaxFlowNum: int
@@ -1163,33 +1191,48 @@ class CreateMultiFlowSignQRCodeRequest(AbstractModel):
         :type FlowEffectiveDay: int
         :param QrEffectiveDay: 二维码有效天数 默认7天 最高设置不超过90天
         :type QrEffectiveDay: int
-        :param ApproverRestrictions: 限制二维码用户条件
+        :param Restrictions: 限制二维码用户条件
+        :type Restrictions: list of ApproverRestriction
+        :param CallbackUrl: 回调地址,最大长度1000字符串
+回调时机：
+用户通过签署二维码发起签署流程时，企业额度不足导致失败
+        :type CallbackUrl: str
+        :param Agent: 应用信息
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        :param ApproverRestrictions: 限制二维码用户条件（已弃用）
         :type ApproverRestrictions: :class:`tencentcloud.ess.v20201111.models.ApproverRestriction`
         """
+        self.Operator = None
         self.TemplateId = None
         self.FlowName = None
-        self.Operator = None
-        self.Agent = None
-        self.CallbackUrl = None
         self.MaxFlowNum = None
         self.FlowEffectiveDay = None
         self.QrEffectiveDay = None
+        self.Restrictions = None
+        self.CallbackUrl = None
+        self.Agent = None
         self.ApproverRestrictions = None
 
 
     def _deserialize(self, params):
-        self.TemplateId = params.get("TemplateId")
-        self.FlowName = params.get("FlowName")
         if params.get("Operator") is not None:
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
-        if params.get("Agent") is not None:
-            self.Agent = Agent()
-            self.Agent._deserialize(params.get("Agent"))
-        self.CallbackUrl = params.get("CallbackUrl")
+        self.TemplateId = params.get("TemplateId")
+        self.FlowName = params.get("FlowName")
         self.MaxFlowNum = params.get("MaxFlowNum")
         self.FlowEffectiveDay = params.get("FlowEffectiveDay")
         self.QrEffectiveDay = params.get("QrEffectiveDay")
+        if params.get("Restrictions") is not None:
+            self.Restrictions = []
+            for item in params.get("Restrictions"):
+                obj = ApproverRestriction()
+                obj._deserialize(item)
+                self.Restrictions.append(obj)
+        self.CallbackUrl = params.get("CallbackUrl")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
         if params.get("ApproverRestrictions") is not None:
             self.ApproverRestrictions = ApproverRestriction()
             self.ApproverRestrictions._deserialize(params.get("ApproverRestrictions"))
@@ -1800,7 +1843,8 @@ class DescribeIntegrationEmployeesRequest(AbstractModel):
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param Limit: 返回最大数量，最大为20
         :type Limit: int
-        :param Filters: 查询过滤实名用户，key为Status，Values为["IsVerified"]
+        :param Filters: 查询过滤实名用户，Key为Status，Values为["IsVerified"]
+根据第三方系统openId过滤查询员工时,Key为StaffOpenId,Values为["OpenId","OpenId",...]
         :type Filters: list of Filter
         :param Offset: 偏移量，默认为0，最大为20000
         :type Offset: int
@@ -2295,9 +2339,9 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         :type NotifyType: str
         :param IsFullText: 签署前置条件：是否需要阅读全文，默认为不需要
         :type IsFullText: bool
-        :param PreReadTime: 签署前置条件：阅读时长限制，默认为不需要
+        :param PreReadTime: 签署前置条件：阅读时长限制，单位秒，默认为不需要
         :type PreReadTime: int
-        :param UserId: 签署方经办人的用户ID,和签署方经办人姓名+手机号+证件必须有一个。非企微场景不使用此字段
+        :param UserId: 签署方经办人的用户ID,和签署方经办人姓名+手机号+证件必须有一个。
         :type UserId: str
         :param Required: 当前只支持true，默认为true
         :type Required: bool
@@ -2307,6 +2351,8 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         :type CustomApproverTag: str
         :param RegisterInfo: 快速注册相关信息，目前暂未开放！
         :type RegisterInfo: :class:`tencentcloud.ess.v20201111.models.RegisterInfo`
+        :param ApproverOption: 签署人个性化能力值
+        :type ApproverOption: :class:`tencentcloud.ess.v20201111.models.ApproverOption`
         """
         self.ApproverType = None
         self.OrganizationName = None
@@ -2324,6 +2370,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         self.ApproverSource = None
         self.CustomApproverTag = None
         self.RegisterInfo = None
+        self.ApproverOption = None
 
 
     def _deserialize(self, params):
@@ -2345,6 +2392,9 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         if params.get("RegisterInfo") is not None:
             self.RegisterInfo = RegisterInfo()
             self.RegisterInfo._deserialize(params.get("RegisterInfo"))
+        if params.get("ApproverOption") is not None:
+            self.ApproverOption = ApproverOption()
+            self.ApproverOption._deserialize(params.get("ApproverOption"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

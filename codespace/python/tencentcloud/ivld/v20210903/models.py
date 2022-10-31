@@ -1885,12 +1885,13 @@ class MediaInfo(AbstractModel):
     | MEDIA_STATUS_WAITING| 1 | 等待中 |
     | MEDIA_STATUS_DOWNLOADING | 2 | 下载中 |
     | MEDIA_STATUS_DOWNLOADED | 3 | 下载完成 |
-    | MEDIA_STATUS_DOWNLOAD_FAILED | 4 | 下载失败 |
+    | MEDIA_STATUS_DOWNLOAD_FAILED | 4 | 下载失败(已废弃) |
     | MEDIA_STATUS_TRANSCODING | 5 | 转码中 |
     | MEDIA_STATUS_TRANSCODED | 6 | 转码完成 |
-    | MEDIA_STATUS_TRANCODE_FAILED | 7 | 转码失败 |
+    | MEDIA_STATUS_TRANCODE_FAILED | 7 | 转码失败(已废弃) |
     | MEDIA_STATUS_SUCCESS | 8 | 媒资文件状态就绪，可发起任务 |
     | MEDIA_STATUS_EXPIRED | 9 | 媒资文件已过期 |
+    | MEDIA_STATUS_FAILED | 10 | 媒资导入失败 |
 
     """
 
@@ -2293,11 +2294,15 @@ class PersonInfo(AbstractModel):
         :type FirstAppear: int
         :param AppearInfo: 人物出现信息
         :type AppearInfo: :class:`tencentcloud.ivld.v20210903.models.AppearInfo`
+        :param AppearRect: 人脸在图片中的位置，仅在图片标签任务有效
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AppearRect: :class:`tencentcloud.ivld.v20210903.models.Rectf`
         """
         self.Name = None
         self.Job = None
         self.FirstAppear = None
         self.AppearInfo = None
+        self.AppearRect = None
 
 
     def _deserialize(self, params):
@@ -2307,6 +2312,9 @@ class PersonInfo(AbstractModel):
         if params.get("AppearInfo") is not None:
             self.AppearInfo = AppearInfo()
             self.AppearInfo._deserialize(params.get("AppearInfo"))
+        if params.get("AppearRect") is not None:
+            self.AppearRect = Rectf()
+            self.AppearRect._deserialize(params.get("AppearRect"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

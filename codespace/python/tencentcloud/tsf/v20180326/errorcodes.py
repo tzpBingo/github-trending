@@ -380,6 +380,9 @@ INVALIDPARAMETER_REPOPACKAGEPARAMERROR = 'InvalidParameter.RepoPackageParamError
 # 仓库中存在软件包，请先删除软件包。
 INVALIDPARAMETER_REPOSITORYNOTEMPTY = 'InvalidParameter.RepositoryNotEmpty'
 
+# TSF应用性能管理业务日志应用标识参数错误。
+INVALIDPARAMETER_TSFAPMBUSILOGCFGAPPPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgAppParamError'
+
 # TSF应用性能管理业务日志配置与应用关联参数错误。
 INVALIDPARAMETER_TSFAPMBUSILOGCFGAPPRELATIONPARAMERROR = 'InvalidParameter.TsfApmBusiLogCfgAppRelationParamError'
 
@@ -496,9 +499,6 @@ INVALIDPARAMETERVALUE_CONTAINERGROUPAPPLICATIONIDNULL = 'InvalidParameterValue.C
 
 # 集群 CPU 资源不足。
 INVALIDPARAMETERVALUE_CONTAINERGROUPCPULIMITOVER = 'InvalidParameterValue.ContainergroupCpulimitOver'
-
-# 容器 Env 的 Value 和 ValueFrom 至少要有一个。
-INVALIDPARAMETERVALUE_CONTAINERGROUPENVVALUENOTSET = 'InvalidParameterValue.ContainergroupEnvValueNotSet'
 
 # 部署组ID不能为空。
 INVALIDPARAMETERVALUE_CONTAINERGROUPGROUPIDNULL = 'InvalidParameterValue.ContainergroupGroupidNull'

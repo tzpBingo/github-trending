@@ -5519,6 +5519,71 @@ class DorisConnectParam(AbstractModel):
         
 
 
+class DorisModifyConnectParam(AbstractModel):
+    """Doris 连接源修改参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Resource: Doris 连接源的实例资源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Resource: str
+        :param Port: Doris jdbc 负载均衡连接 port，通常映射到 fe 的 9030 端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Port: int
+        :param ServiceVip: Doris 连接源的实例vip，当为腾讯云实例时，必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceVip: str
+        :param UniqVpcId: Doris 连接源的vpcId，当为腾讯云实例时，必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UniqVpcId: str
+        :param UserName: Doris 连接源的用户名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserName: str
+        :param Password: Doris 连接源的密码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Password: str
+        :param IsUpdate: 是否更新到关联的Datahub任务
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsUpdate: bool
+        :param SelfBuilt: Doris 连接源是否为自建集群
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SelfBuilt: bool
+        :param BePort: Doris 的 http 负载均衡连接 port，通常映射到 be 的 8040 端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BePort: int
+        """
+        self.Resource = None
+        self.Port = None
+        self.ServiceVip = None
+        self.UniqVpcId = None
+        self.UserName = None
+        self.Password = None
+        self.IsUpdate = None
+        self.SelfBuilt = None
+        self.BePort = None
+
+
+    def _deserialize(self, params):
+        self.Resource = params.get("Resource")
+        self.Port = params.get("Port")
+        self.ServiceVip = params.get("ServiceVip")
+        self.UniqVpcId = params.get("UniqVpcId")
+        self.UserName = params.get("UserName")
+        self.Password = params.get("Password")
+        self.IsUpdate = params.get("IsUpdate")
+        self.SelfBuilt = params.get("SelfBuilt")
+        self.BePort = params.get("BePort")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DropCls(AbstractModel):
     """dip失败消息写入cls的配置
 
@@ -7455,6 +7520,12 @@ class KafkaParam(AbstractModel):
         :param UseTableMapping: 「分发到多个topic」开关，默认为false
 注意：此字段可能返回 null，表示取不到有效值。
         :type UseTableMapping: bool
+        :param UseAutoCreateTopic: 使用的Topic是否需要自动创建（目前只支持SOURCE流入任务，如果不使用分发到多个topic，需要在Topic字段填写需要自动创建的topic名）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UseAutoCreateTopic: bool
+        :param CompressionType: 写入Topic时是否进行压缩，不开启填"none"，开启的话，可选择"gzip", "snappy", "lz4"中的一个进行填写。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CompressionType: str
         """
         self.SelfBuilt = None
         self.Resource = None
@@ -7469,6 +7540,8 @@ class KafkaParam(AbstractModel):
         self.QpsLimit = None
         self.TableMappings = None
         self.UseTableMapping = None
+        self.UseAutoCreateTopic = None
+        self.CompressionType = None
 
 
     def _deserialize(self, params):
@@ -7490,6 +7563,8 @@ class KafkaParam(AbstractModel):
                 obj._deserialize(item)
                 self.TableMappings.append(obj)
         self.UseTableMapping = params.get("UseTableMapping")
+        self.UseAutoCreateTopic = params.get("UseAutoCreateTopic")
+        self.CompressionType = params.get("CompressionType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7734,6 +7809,8 @@ class ModifyConnectResourceRequest(AbstractModel):
         :type SQLServerConnectParam: :class:`tencentcloud.ckafka.v20190819.models.SQLServerModifyConnectParam`
         :param CtsdbConnectParam: Ctsdb配置，Type为CTSDB
         :type CtsdbConnectParam: :class:`tencentcloud.ckafka.v20190819.models.CtsdbModifyConnectParam`
+        :param DorisConnectParam: Doris配置，Type为DORIS
+        :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisModifyConnectParam`
         """
         self.ResourceId = None
         self.ResourceName = None
@@ -7748,6 +7825,7 @@ class ModifyConnectResourceRequest(AbstractModel):
         self.MariaDBConnectParam = None
         self.SQLServerConnectParam = None
         self.CtsdbConnectParam = None
+        self.DorisConnectParam = None
 
 
     def _deserialize(self, params):
@@ -7782,6 +7860,9 @@ class ModifyConnectResourceRequest(AbstractModel):
         if params.get("CtsdbConnectParam") is not None:
             self.CtsdbConnectParam = CtsdbModifyConnectParam()
             self.CtsdbConnectParam._deserialize(params.get("CtsdbConnectParam"))
+        if params.get("DorisConnectParam") is not None:
+            self.DorisConnectParam = DorisModifyConnectParam()
+            self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8623,7 +8704,7 @@ class MySQLParam(AbstractModel):
         r"""
         :param Database: MySQL的数据库名称，"*"为全数据库
         :type Database: str
-        :param Table: MySQL的数据表名称，"*"为所监听的所有数据库中的非系统表，可以","间隔，监听多个数据表，但数据表需要以"数据库名.数据表名"的格式进行填写
+        :param Table: MySQL的数据表名称，"*"为所监听的所有数据库中的非系统表，可以","间隔，监听多个数据表，但数据表需要以"数据库名.数据表名"的格式进行填写，需要填入正则表达式时，格式为"数据库名\\.数据表名"
         :type Table: str
         :param Resource: 该MySQL在连接管理内的Id
         :type Resource: str
@@ -8667,6 +8748,10 @@ class MySQLParam(AbstractModel):
         :type IncludeQuery: bool
         :param RecordWithSchema: 如果该值为 true，则消息中会携带消息结构体对应的schema，如果该值为false则不会携带
         :type RecordWithSchema: bool
+        :param SignalDatabase: 存放信令表的数据库名称
+        :type SignalDatabase: str
+        :param IsTableRegular: 输入的table是否为正则表达式，如果该选项以及IsTablePrefix同时为true，该选项的判断优先级高于IsTablePrefix
+        :type IsTableRegular: bool
         """
         self.Database = None
         self.Table = None
@@ -8691,6 +8776,8 @@ class MySQLParam(AbstractModel):
         self.IncludeContentChanges = None
         self.IncludeQuery = None
         self.RecordWithSchema = None
+        self.SignalDatabase = None
+        self.IsTableRegular = None
 
 
     def _deserialize(self, params):
@@ -8724,6 +8811,8 @@ class MySQLParam(AbstractModel):
         self.IncludeContentChanges = params.get("IncludeContentChanges")
         self.IncludeQuery = params.get("IncludeQuery")
         self.RecordWithSchema = params.get("RecordWithSchema")
+        self.SignalDatabase = params.get("SignalDatabase")
+        self.IsTableRegular = params.get("IsTableRegular")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8979,7 +9068,7 @@ class PostgreSQLParam(AbstractModel):
         r"""
         :param Database: PostgreSQL的数据库名称
         :type Database: str
-        :param Table: PostgreSQL的数据表名称，"*"为所监听的所有数据库中的非系统表，可以","间隔，监听多个数据表，但数据表需要以"数据库名.数据表名"的格式进行填写
+        :param Table: PostgreSQL的数据表名称，"*"为所监听的所有数据库中的非系统表，可以","间隔，监听多个数据表，但数据表需要以"Schema名.数据表名"的格式进行填写，需要填入正则表达式时，格式为"Schema名\\.数据表名"
         :type Table: str
         :param Resource: 该PostgreSQL在连接管理内的Id
         :type Resource: str
@@ -10260,11 +10349,19 @@ class TopicParam(AbstractModel):
         :param TopicId: Topic的TopicId【出参】
 注意：此字段可能返回 null，表示取不到有效值。
         :type TopicId: str
+        :param CompressionType: 写入Topic时是否进行压缩，不开启填"none"，开启的话，可选择"gzip", "snappy", "lz4"中的一个进行填写。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CompressionType: str
+        :param UseAutoCreateTopic: 使用的Topic是否需要自动创建（目前只支持SOURCE流入任务）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UseAutoCreateTopic: bool
         """
         self.Resource = None
         self.OffsetType = None
         self.StartTime = None
         self.TopicId = None
+        self.CompressionType = None
+        self.UseAutoCreateTopic = None
 
 
     def _deserialize(self, params):
@@ -10272,6 +10369,8 @@ class TopicParam(AbstractModel):
         self.OffsetType = params.get("OffsetType")
         self.StartTime = params.get("StartTime")
         self.TopicId = params.get("TopicId")
+        self.CompressionType = params.get("CompressionType")
+        self.UseAutoCreateTopic = params.get("UseAutoCreateTopic")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10591,6 +10690,31 @@ class TransformsParam(AbstractModel):
         
 
 
+class UrlDecodeParam(AbstractModel):
+    """Url解析
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CharsetName: 编码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CharsetName: str
+        """
+        self.CharsetName = None
+
+
+    def _deserialize(self, params):
+        self.CharsetName = params.get("CharsetName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class User(AbstractModel):
     """用户实体
 
@@ -10694,6 +10818,9 @@ class ValueParam(AbstractModel):
         :param JsonPathReplace: JsonPath替换，TYPE=JSON_PATH_REPLACE时必传
 注意：此字段可能返回 null，表示取不到有效值。
         :type JsonPathReplace: :class:`tencentcloud.ckafka.v20190819.models.JsonPathReplaceParam`
+        :param UrlDecode: Url解析
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UrlDecode: :class:`tencentcloud.ckafka.v20190819.models.UrlDecodeParam`
         """
         self.Type = None
         self.Replace = None
@@ -10704,6 +10831,7 @@ class ValueParam(AbstractModel):
         self.KV = None
         self.Result = None
         self.JsonPathReplace = None
+        self.UrlDecode = None
 
 
     def _deserialize(self, params):
@@ -10730,6 +10858,9 @@ class ValueParam(AbstractModel):
         if params.get("JsonPathReplace") is not None:
             self.JsonPathReplace = JsonPathReplaceParam()
             self.JsonPathReplace._deserialize(params.get("JsonPathReplace"))
+        if params.get("UrlDecode") is not None:
+            self.UrlDecode = UrlDecodeParam()
+            self.UrlDecode._deserialize(params.get("UrlDecode"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

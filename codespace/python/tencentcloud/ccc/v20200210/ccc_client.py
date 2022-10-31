@@ -142,6 +142,35 @@ class CccClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateExtension(self, request):
+        """创建话机账号
+
+        :param request: Request instance for CreateExtension.
+        :type request: :class:`tencentcloud.ccc.v20200210.models.CreateExtensionRequest`
+        :rtype: :class:`tencentcloud.ccc.v20200210.models.CreateExtensionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateExtension", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateExtensionResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateSDKLoginToken(self, request):
         """创建 SDK 登录 Token。
 
@@ -215,6 +244,35 @@ class CccClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateUserSigResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteExtension(self, request):
+        """删除话机账号
+
+        :param request: Request instance for DeleteExtension.
+        :type request: :class:`tencentcloud.ccc.v20200210.models.DeleteExtensionRequest`
+        :rtype: :class:`tencentcloud.ccc.v20200210.models.DeleteExtensionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteExtension", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DeleteExtensionResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -389,6 +447,64 @@ class CccClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeChatMessagesResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeExtension(self, request):
+        """获取话机信息
+
+        :param request: Request instance for DescribeExtension.
+        :type request: :class:`tencentcloud.ccc.v20200210.models.DescribeExtensionRequest`
+        :rtype: :class:`tencentcloud.ccc.v20200210.models.DescribeExtensionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeExtension", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeExtensionResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeExtensions(self, request):
+        """查询话机列表信息
+
+        :param request: Request instance for DescribeExtensions.
+        :type request: :class:`tencentcloud.ccc.v20200210.models.DescribeExtensionsRequest`
+        :rtype: :class:`tencentcloud.ccc.v20200210.models.DescribeExtensionsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeExtensions", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeExtensionsResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -693,6 +809,35 @@ class CccClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyExtension(self, request):
+        """修改话机账号(绑定技能组、绑定坐席账号)
+
+        :param request: Request instance for ModifyExtension.
+        :type request: :class:`tencentcloud.ccc.v20200210.models.ModifyExtensionRequest`
+        :rtype: :class:`tencentcloud.ccc.v20200210.models.ModifyExtensionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyExtension", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ModifyExtensionResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyStaff(self, request):
         """修改客服账号
 
@@ -708,6 +853,35 @@ class CccClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ModifyStaffResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ResetExtensionPassword(self, request):
+        """重置话机注册密码
+
+        :param request: Request instance for ResetExtensionPassword.
+        :type request: :class:`tencentcloud.ccc.v20200210.models.ResetExtensionPasswordRequest`
+        :rtype: :class:`tencentcloud.ccc.v20200210.models.ResetExtensionPasswordResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ResetExtensionPassword", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ResetExtensionPasswordResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

@@ -18,6 +18,59 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class AddProjectRequest(AbstractModel):
+    """AddProject请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectName: 项目名称
+        :type ProjectName: str
+        :param Info: 项目描述
+        :type Info: str
+        """
+        self.ProjectName = None
+        self.Info = None
+
+
+    def _deserialize(self, params):
+        self.ProjectName = params.get("ProjectName")
+        self.Info = params.get("Info")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AddProjectResponse(AbstractModel):
+    """AddProject返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectId: 项目Id
+        :type ProjectId: int
+        :param IsNew: 是否为新项目
+        :type IsNew: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ProjectId = None
+        self.IsNew = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ProjectId = params.get("ProjectId")
+        self.IsNew = params.get("IsNew")
+        self.RequestId = params.get("RequestId")
+
+
 class AddResourceTagRequest(AbstractModel):
     """AddResourceTag请求参数结构体
 
@@ -364,7 +417,7 @@ class DescribeProjectsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AllList: 传1拉取所有项目（包括隐藏项目），不传或传0拉取显示项目
+        :param AllList: 传1拉取所有项目（包括隐藏项目），传0拉取显示项目
         :type AllList: int
         :param Limit: 分页条数，固定值1000。
         :type Limit: int
@@ -2255,6 +2308,59 @@ class UnTagResourcesResponse(AbstractModel):
                 obj = FailedResource()
                 obj._deserialize(item)
                 self.FailedResources.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateProjectRequest(AbstractModel):
+    """UpdateProject请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectId: 项目ID
+        :type ProjectId: int
+        :param ProjectName: 项目名称
+        :type ProjectName: str
+        :param Disable: 禁用项目，1，禁用，0，启用
+        :type Disable: int
+        :param Info: 备注
+        :type Info: str
+        """
+        self.ProjectId = None
+        self.ProjectName = None
+        self.Disable = None
+        self.Info = None
+
+
+    def _deserialize(self, params):
+        self.ProjectId = params.get("ProjectId")
+        self.ProjectName = params.get("ProjectName")
+        self.Disable = params.get("Disable")
+        self.Info = params.get("Info")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateProjectResponse(AbstractModel):
+    """UpdateProject返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 

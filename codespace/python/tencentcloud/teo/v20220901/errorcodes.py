@@ -62,7 +62,7 @@ INTERNALERROR_QUOTASYSTEM = 'InternalError.QuotaSystem'
 # 后端服务路由地址错误。
 INTERNALERROR_ROUTEERROR = 'InternalError.RouteError'
 
-# 系统错误。
+# 内部错误-系统错误。
 INTERNALERROR_SYSTEMERROR = 'InternalError.SystemError'
 
 # 参数错误。
@@ -71,8 +71,32 @@ INVALIDPARAMETER = 'InvalidParameter'
 # 操作频繁，请稍后重试。
 INVALIDPARAMETER_ACTIONINPROGRESS = 'InvalidParameter.ActionInProgress'
 
+# HTTPS证书和域名不匹配。
+INVALIDPARAMETER_CERTNOTMATCHDOMAIN = 'InvalidParameter.CertNotMatchDomain'
+
 # 域名不存在或不属于该账号。
 INVALIDPARAMETER_DOMAINNOTFOUND = 'InvalidParameter.DomainNotFound'
+
+# 当前域名已开启流量调度功能。
+INVALIDPARAMETER_DOMAINONTRAFFICSCHEDULING = 'InvalidParameter.DomainOnTrafficScheduling'
+
+# 非法操作-非法参数。
+INVALIDPARAMETER_ERRINVALIDACTIONPARAM = 'InvalidParameter.ErrInvalidActionParam'
+
+# 非法操作-非法参数-参数值数量超出限制。
+INVALIDPARAMETER_ERRINVALIDACTIONPARAMTOOMANYVALUES = 'InvalidParameter.ErrInvalidActionParamTooManyValues'
+
+# 非法条件-非法参数值-参数值长度超出限制。
+INVALIDPARAMETER_ERRINVALIDCONDITIONVALUETOOLONGVALUE = 'InvalidParameter.ErrInvalidConditionValueTooLongValue'
+
+# 域名不存在。
+INVALIDPARAMETER_HOSTNOTFOUND = 'InvalidParameter.HostNotFound'
+
+# 无效的token鉴权参数。
+INVALIDPARAMETER_INVALIDAUTHENTICATIONTYPESIGNPARAM = 'InvalidParameter.InvalidAuthenticationTypeSignParam'
+
+# 无效的查询字符串。
+INVALIDPARAMETER_INVALIDCACHEKEYQUERYSTRINGVALUE = 'InvalidParameter.InvalidCacheKeyQueryStringValue'
 
 # 无效的节点缓存。
 INVALIDPARAMETER_INVALIDCACHEONLYONSWITCH = 'InvalidParameter.InvalidCacheOnlyOnSwitch'
@@ -83,8 +107,20 @@ INVALIDPARAMETER_INVALIDCERTINFO = 'InvalidParameter.InvalidCertInfo'
 # 无效的客户端IP请求头。
 INVALIDPARAMETER_INVALIDCLIENTIPHEADERNAME = 'InvalidParameter.InvalidClientIpHeaderName'
 
+# 无效的智能加速。
+INVALIDPARAMETER_INVALIDDYNAMICROUTINE = 'InvalidParameter.InvalidDynamicRoutine'
+
+# 无效的自定义错误页面。
+INVALIDPARAMETER_INVALIDERRORPAGEREDIRECTURL = 'InvalidParameter.InvalidErrorPageRedirectUrl'
+
+# 无效的HTTPS TLS版本。
+INVALIDPARAMETER_INVALIDHTTPSTLSVERSION = 'InvalidParameter.InvalidHttpsTlsVersion'
+
 # 无效的源站。
 INVALIDPARAMETER_INVALIDORIGIN = 'InvalidParameter.InvalidOrigin'
+
+# 参数错误。
+INVALIDPARAMETER_INVALIDPARAMETER = 'InvalidParameter.InvalidParameter'
 
 # 套餐包不支持最大上传大小。
 INVALIDPARAMETER_INVALIDPOSTMAXSIZEBILLING = 'InvalidParameter.InvalidPostMaxSizeBilling'
@@ -98,6 +134,9 @@ INVALIDPARAMETER_INVALIDRESOURCEIDBILLING = 'InvalidParameter.InvalidResourceIdB
 # 无效的规则引擎操作。
 INVALIDPARAMETER_INVALIDRULEENGINEACTION = 'InvalidParameter.InvalidRuleEngineAction'
 
+# 规则不存在。
+INVALIDPARAMETER_INVALIDRULEENGINENOTFOUND = 'InvalidParameter.InvalidRuleEngineNotFound'
+
 # 无效的规则引擎条件。
 INVALIDPARAMETER_INVALIDRULEENGINETARGET = 'InvalidParameter.InvalidRuleEngineTarget'
 
@@ -106,6 +145,9 @@ INVALIDPARAMETER_INVALIDRULEENGINETARGETSEXTENSION = 'InvalidParameter.InvalidRu
 
 # 无效的规则引擎URL条件。
 INVALIDPARAMETER_INVALIDRULEENGINETARGETSURL = 'InvalidParameter.InvalidRuleEngineTargetsUrl'
+
+# URL重写的目标HOST无效。
+INVALIDPARAMETER_INVALIDURLREDIRECTHOST = 'InvalidParameter.InvalidUrlRedirectHost'
 
 # URL重写的目标URL无效。
 INVALIDPARAMETER_INVALIDURLREDIRECTURL = 'InvalidParameter.InvalidUrlRedirectUrl'
@@ -119,7 +161,7 @@ INVALIDPARAMETER_PARAMETERERROR = 'InvalidParameter.ParameterError'
 # 参数错误
 INVALIDPARAMETER_SECURITY = 'InvalidParameter.Security'
 
-# 域名配置错误。
+# 参数错误-setting非法参数。
 INVALIDPARAMETER_SETTINGINVALIDPARAM = 'InvalidParameter.SettingInvalidParam'
 
 # 资源存在错误。
@@ -133,6 +175,9 @@ INVALIDPARAMETER_UPLOADURL = 'InvalidParameter.UploadUrl'
 
 # 站点不存在。
 INVALIDPARAMETER_ZONENOTFOUND = 'InvalidParameter.ZoneNotFound'
+
+# 参数取值错误。
+INVALIDPARAMETERVALUE = 'InvalidParameterValue'
 
 # 与已经添加的记录冲突。
 INVALIDPARAMETERVALUE_CONFLICTRECORD = 'InvalidParameterValue.ConflictRecord'
@@ -173,6 +218,9 @@ LIMITEXCEEDED_BATCHQUOTA = 'LimitExceeded.BatchQuota'
 # 当天提交的资源数超过上限。
 LIMITEXCEEDED_DAILYQUOTA = 'LimitExceeded.DailyQuota'
 
+# 单位时间内接口请求频率达到限制。
+LIMITEXCEEDED_RATELIMITEXCEEDED = 'LimitExceeded.RateLimitExceeded'
+
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'
 
@@ -185,6 +233,9 @@ OPERATIONDENIED_DOMAINNOICP = 'OperationDenied.DomainNoICP'
 # 4层代理资源处于封禁中，禁止操作。
 OPERATIONDENIED_L4PROXYINBANNEDSTATUS = 'OperationDenied.L4ProxyInBannedStatus'
 
+# 已存在多个Cname接入站点，不允许切换至NS。
+OPERATIONDENIED_MULTIPLECNAMEZONE = 'OperationDenied.MultipleCnameZone'
+
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
 
@@ -196,6 +247,9 @@ RESOURCEINUSE_CNAME = 'ResourceInUse.Cname'
 
 # Dns资源被占用。
 RESOURCEINUSE_DNS = 'ResourceInUse.Dns'
+
+# 已存在相同的别称域名。
+RESOURCEINUSE_DUPLICATENAME = 'ResourceInUse.DuplicateName'
 
 # 资源被本账号的子域名占用。
 RESOURCEINUSE_HOST = 'ResourceInUse.Host'
@@ -220,6 +274,9 @@ RESOURCEINUSE_OTHERSNS = 'ResourceInUse.OthersNS'
 
 # 资源被本账号和其他账号同时Cname接入占用。
 RESOURCEINUSE_SELFANDOTHERSCNAME = 'ResourceInUse.SelfAndOthersCname'
+
+# 别称域名已站点接入。
+RESOURCEINUSE_ZONE = 'ResourceInUse.Zone'
 
 # 资源不足。
 RESOURCEINSUFFICIENT = 'ResourceInsufficient'

@@ -2174,342 +2174,6 @@ class DescribeDBParametersResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class DescribeDBPerformanceDetailsRequest(AbstractModel):
-    """DescribeDBPerformanceDetails请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param InstanceId: 实例 ID，形如：tdsql-ow728lmc。
-        :type InstanceId: str
-        :param StartTime: 开始日期，格式yyyy-mm-dd
-        :type StartTime: str
-        :param EndTime: 结束日期，格式yyyy-mm-dd
-        :type EndTime: str
-        :param MetricName: 拉取的指标名，支持的值为：long_query,select_total,update_total,insert_total,delete_total,mem_hit_rate,disk_iops,conn_active,is_master_switched,slave_delay
-        :type MetricName: str
-        """
-        self.InstanceId = None
-        self.StartTime = None
-        self.EndTime = None
-        self.MetricName = None
-
-
-    def _deserialize(self, params):
-        self.InstanceId = params.get("InstanceId")
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.MetricName = params.get("MetricName")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDBPerformanceDetailsResponse(AbstractModel):
-    """DescribeDBPerformanceDetails返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Master: 主节点性能监控数据
-        :type Master: :class:`tencentcloud.mariadb.v20170312.models.PerformanceMonitorSet`
-        :param Slave1: 备机1性能监控数据
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Slave1: :class:`tencentcloud.mariadb.v20170312.models.PerformanceMonitorSet`
-        :param Slave2: 备机2性能监控数据，如果实例是一主一从，则没有该字段
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Slave2: :class:`tencentcloud.mariadb.v20170312.models.PerformanceMonitorSet`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Master = None
-        self.Slave1 = None
-        self.Slave2 = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Master") is not None:
-            self.Master = PerformanceMonitorSet()
-            self.Master._deserialize(params.get("Master"))
-        if params.get("Slave1") is not None:
-            self.Slave1 = PerformanceMonitorSet()
-            self.Slave1._deserialize(params.get("Slave1"))
-        if params.get("Slave2") is not None:
-            self.Slave2 = PerformanceMonitorSet()
-            self.Slave2._deserialize(params.get("Slave2"))
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDBPerformanceRequest(AbstractModel):
-    """DescribeDBPerformance请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param InstanceId: 实例 ID，形如：tdsql-ow728lmc。
-        :type InstanceId: str
-        :param StartTime: 开始日期，格式yyyy-mm-dd
-        :type StartTime: str
-        :param EndTime: 结束日期，格式yyyy-mm-dd
-        :type EndTime: str
-        :param MetricName: 拉取的指标名，支持的值为：long_query,select_total,update_total,insert_total,delete_total,mem_hit_rate,disk_iops,conn_active,is_master_switched,slave_delay
-        :type MetricName: str
-        """
-        self.InstanceId = None
-        self.StartTime = None
-        self.EndTime = None
-        self.MetricName = None
-
-
-    def _deserialize(self, params):
-        self.InstanceId = params.get("InstanceId")
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.MetricName = params.get("MetricName")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDBPerformanceResponse(AbstractModel):
-    """DescribeDBPerformance返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LongQuery: 慢查询数
-        :type LongQuery: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param SelectTotal: 查询操作数SELECT
-        :type SelectTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param UpdateTotal: 更新操作数UPDATE
-        :type UpdateTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param InsertTotal: 插入操作数INSERT
-        :type InsertTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param DeleteTotal: 删除操作数DELETE
-        :type DeleteTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param MemHitRate: 缓存命中率
-        :type MemHitRate: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param DiskIops: 磁盘每秒IO次数
-        :type DiskIops: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param ConnActive: 活跃连接数
-        :type ConnActive: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param IsMasterSwitched: 是否发生主备切换，1为发生，0否
-        :type IsMasterSwitched: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param SlaveDelay: 主备延迟
-        :type SlaveDelay: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.LongQuery = None
-        self.SelectTotal = None
-        self.UpdateTotal = None
-        self.InsertTotal = None
-        self.DeleteTotal = None
-        self.MemHitRate = None
-        self.DiskIops = None
-        self.ConnActive = None
-        self.IsMasterSwitched = None
-        self.SlaveDelay = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("LongQuery") is not None:
-            self.LongQuery = MonitorData()
-            self.LongQuery._deserialize(params.get("LongQuery"))
-        if params.get("SelectTotal") is not None:
-            self.SelectTotal = MonitorData()
-            self.SelectTotal._deserialize(params.get("SelectTotal"))
-        if params.get("UpdateTotal") is not None:
-            self.UpdateTotal = MonitorData()
-            self.UpdateTotal._deserialize(params.get("UpdateTotal"))
-        if params.get("InsertTotal") is not None:
-            self.InsertTotal = MonitorData()
-            self.InsertTotal._deserialize(params.get("InsertTotal"))
-        if params.get("DeleteTotal") is not None:
-            self.DeleteTotal = MonitorData()
-            self.DeleteTotal._deserialize(params.get("DeleteTotal"))
-        if params.get("MemHitRate") is not None:
-            self.MemHitRate = MonitorData()
-            self.MemHitRate._deserialize(params.get("MemHitRate"))
-        if params.get("DiskIops") is not None:
-            self.DiskIops = MonitorData()
-            self.DiskIops._deserialize(params.get("DiskIops"))
-        if params.get("ConnActive") is not None:
-            self.ConnActive = MonitorData()
-            self.ConnActive._deserialize(params.get("ConnActive"))
-        if params.get("IsMasterSwitched") is not None:
-            self.IsMasterSwitched = MonitorData()
-            self.IsMasterSwitched._deserialize(params.get("IsMasterSwitched"))
-        if params.get("SlaveDelay") is not None:
-            self.SlaveDelay = MonitorData()
-            self.SlaveDelay._deserialize(params.get("SlaveDelay"))
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDBResourceUsageDetailsRequest(AbstractModel):
-    """DescribeDBResourceUsageDetails请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param InstanceId: 实例 ID，形如：tdsql-ow728lmc。
-        :type InstanceId: str
-        :param StartTime: 开始日期，格式yyyy-mm-dd
-        :type StartTime: str
-        :param EndTime: 结束日期，格式yyyy-mm-dd
-        :type EndTime: str
-        :param MetricName: 拉取的指标名称，支持的值为：data_disk_available,binlog_disk_available,mem_available,cpu_usage_rate
-        :type MetricName: str
-        """
-        self.InstanceId = None
-        self.StartTime = None
-        self.EndTime = None
-        self.MetricName = None
-
-
-    def _deserialize(self, params):
-        self.InstanceId = params.get("InstanceId")
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.MetricName = params.get("MetricName")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDBResourceUsageDetailsResponse(AbstractModel):
-    """DescribeDBResourceUsageDetails返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Master: 主节点资源使用情况监控数据
-        :type Master: :class:`tencentcloud.mariadb.v20170312.models.ResourceUsageMonitorSet`
-        :param Slave1: 备机1资源使用情况监控数据
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Slave1: :class:`tencentcloud.mariadb.v20170312.models.ResourceUsageMonitorSet`
-        :param Slave2: 备机2资源使用情况监控数据
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Slave2: :class:`tencentcloud.mariadb.v20170312.models.ResourceUsageMonitorSet`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Master = None
-        self.Slave1 = None
-        self.Slave2 = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Master") is not None:
-            self.Master = ResourceUsageMonitorSet()
-            self.Master._deserialize(params.get("Master"))
-        if params.get("Slave1") is not None:
-            self.Slave1 = ResourceUsageMonitorSet()
-            self.Slave1._deserialize(params.get("Slave1"))
-        if params.get("Slave2") is not None:
-            self.Slave2 = ResourceUsageMonitorSet()
-            self.Slave2._deserialize(params.get("Slave2"))
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDBResourceUsageRequest(AbstractModel):
-    """DescribeDBResourceUsage请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param InstanceId: 实例 ID，形如：tdsql-ow728lmc。
-        :type InstanceId: str
-        :param StartTime: 开始日期，格式yyyy-mm-dd
-        :type StartTime: str
-        :param EndTime: 结束日期，格式yyyy-mm-dd
-        :type EndTime: str
-        :param MetricName: 拉取的指标名称，支持的值为：data_disk_available,binlog_disk_available,mem_available,cpu_usage_rate
-        :type MetricName: str
-        """
-        self.InstanceId = None
-        self.StartTime = None
-        self.EndTime = None
-        self.MetricName = None
-
-
-    def _deserialize(self, params):
-        self.InstanceId = params.get("InstanceId")
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.MetricName = params.get("MetricName")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDBResourceUsageResponse(AbstractModel):
-    """DescribeDBResourceUsage返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param BinlogDiskAvailable: binlog日志磁盘可用空间,单位GB
-        :type BinlogDiskAvailable: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param DataDiskAvailable: 磁盘可用空间,单位GB
-        :type DataDiskAvailable: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param CpuUsageRate: CPU利用率
-        :type CpuUsageRate: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param MemAvailable: 内存可用空间,单位GB
-        :type MemAvailable: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.BinlogDiskAvailable = None
-        self.DataDiskAvailable = None
-        self.CpuUsageRate = None
-        self.MemAvailable = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("BinlogDiskAvailable") is not None:
-            self.BinlogDiskAvailable = MonitorData()
-            self.BinlogDiskAvailable._deserialize(params.get("BinlogDiskAvailable"))
-        if params.get("DataDiskAvailable") is not None:
-            self.DataDiskAvailable = MonitorData()
-            self.DataDiskAvailable._deserialize(params.get("DataDiskAvailable"))
-        if params.get("CpuUsageRate") is not None:
-            self.CpuUsageRate = MonitorData()
-            self.CpuUsageRate._deserialize(params.get("CpuUsageRate"))
-        if params.get("MemAvailable") is not None:
-            self.MemAvailable = MonitorData()
-            self.MemAvailable._deserialize(params.get("MemAvailable"))
-        self.RequestId = params.get("RequestId")
-
-
 class DescribeDBSecurityGroupsRequest(AbstractModel):
     """DescribeDBSecurityGroups请求参数结构体
 
@@ -3410,84 +3074,6 @@ class DescribeSaleInfoResponse(AbstractModel):
                 obj = RegionInfo()
                 obj._deserialize(item)
                 self.RegionList.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeSqlLogsRequest(AbstractModel):
-    """DescribeSqlLogs请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param InstanceId: 实例 ID，形如：tdsql-ow728lmc，可以通过 DescribeDBInstances 查询实例详情获得。
-        :type InstanceId: str
-        :param Offset: SQL日志偏移。
-        :type Offset: int
-        :param Limit: 拉取数量（0-10000，为0时拉取总数信息）。
-        :type Limit: int
-        """
-        self.InstanceId = None
-        self.Offset = None
-        self.Limit = None
-
-
-    def _deserialize(self, params):
-        self.InstanceId = params.get("InstanceId")
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeSqlLogsResponse(AbstractModel):
-    """DescribeSqlLogs返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TotalCount: 当前消息队列中的sql日志条目数。
-        :type TotalCount: int
-        :param StartOffset: 消息队列中的sql日志起始偏移。
-        :type StartOffset: int
-        :param EndOffset: 消息队列中的sql日志结束偏移。
-        :type EndOffset: int
-        :param Offset: 返回的第一条sql日志的偏移。
-        :type Offset: int
-        :param Count: 返回的sql日志数量。
-        :type Count: int
-        :param SqlItems: Sql日志列表。
-        :type SqlItems: list of SqlLogItem
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.TotalCount = None
-        self.StartOffset = None
-        self.EndOffset = None
-        self.Offset = None
-        self.Count = None
-        self.SqlItems = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.TotalCount = params.get("TotalCount")
-        self.StartOffset = params.get("StartOffset")
-        self.EndOffset = params.get("EndOffset")
-        self.Offset = params.get("Offset")
-        self.Count = params.get("Count")
-        if params.get("SqlItems") is not None:
-            self.SqlItems = []
-            for item in params.get("SqlItems"):
-                obj = SqlLogItem()
-                obj._deserialize(item)
-                self.SqlItems.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -4556,6 +4142,173 @@ class ModifyDBSyncModeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyInstanceNetworkRequest(AbstractModel):
+    """ModifyInstanceNetwork请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param VpcId: 希望转到的VPC网络的VpcId
+        :type VpcId: str
+        :param SubnetId: 希望转到的VPC网络的子网ID
+        :type SubnetId: str
+        :param Vip: 如果需要指定VIP，填上该字段
+        :type Vip: str
+        :param Vipv6: 如果需要指定VIPv6，填上该字段
+        :type Vipv6: str
+        :param VipReleaseDelay: VIP保留时长，单位小时，取值范围（0~168），0表示立即释放，有一分钟释放延迟。不传此参数，默认24小时释放VIP。
+        :type VipReleaseDelay: int
+        """
+        self.InstanceId = None
+        self.VpcId = None
+        self.SubnetId = None
+        self.Vip = None
+        self.Vipv6 = None
+        self.VipReleaseDelay = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.VpcId = params.get("VpcId")
+        self.SubnetId = params.get("SubnetId")
+        self.Vip = params.get("Vip")
+        self.Vipv6 = params.get("Vipv6")
+        self.VipReleaseDelay = params.get("VipReleaseDelay")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyInstanceNetworkResponse(AbstractModel):
+    """ModifyInstanceNetwork返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 异步任务ID，根据此FlowId通过DescribeFlow接口查询任务进行状态
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyInstanceVipRequest(AbstractModel):
+    """ModifyInstanceVip请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param Vip: 实例VIP
+        :type Vip: str
+        :param Ipv6Flag: IPv6标志
+        :type Ipv6Flag: int
+        :param VipReleaseDelay: VIP保留时长，单位小时，取值范围（0~168），0表示立即释放，有一分钟释放延迟。不传此参数，默认24小时释放VIP。
+        :type VipReleaseDelay: int
+        """
+        self.InstanceId = None
+        self.Vip = None
+        self.Ipv6Flag = None
+        self.VipReleaseDelay = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Vip = params.get("Vip")
+        self.Ipv6Flag = params.get("Ipv6Flag")
+        self.VipReleaseDelay = params.get("VipReleaseDelay")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyInstanceVipResponse(AbstractModel):
+    """ModifyInstanceVip返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 异步任务流程ID
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyInstanceVportRequest(AbstractModel):
+    """ModifyInstanceVport请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param Vport: 实例VPORT
+        :type Vport: int
+        """
+        self.InstanceId = None
+        self.Vport = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Vport = params.get("Vport")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyInstanceVportResponse(AbstractModel):
+    """ModifyInstanceVport返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyLogFileRetentionPeriodRequest(AbstractModel):
     """ModifyLogFileRetentionPeriod请求参数结构体
 
@@ -4693,38 +4446,6 @@ class ModifySyncTaskAttributeResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
-
-
-class MonitorData(AbstractModel):
-    """监控数据
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 起始时间，形如 2018-03-24 23:59:59
-        :type StartTime: str
-        :param EndTime: 结束时间，形如 2018-03-24 23:59:59
-        :type EndTime: str
-        :param Data: 监控数据
-        :type Data: list of float
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.Data = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.Data = params.get("Data")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
 
 
 class NodeInfo(AbstractModel):
@@ -4914,86 +4635,6 @@ class ParamModifyResult(AbstractModel):
     def _deserialize(self, params):
         self.Param = params.get("Param")
         self.Code = params.get("Code")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class PerformanceMonitorSet(AbstractModel):
-    """DB性能监控指标集合
-
-    """
-
-    def __init__(self):
-        r"""
-        :param UpdateTotal: 更新操作数UPDATE
-        :type UpdateTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param DiskIops: 磁盘每秒IO次数
-        :type DiskIops: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param ConnActive: 活跃连接数
-        :type ConnActive: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param MemHitRate: 缓存命中率
-        :type MemHitRate: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param SlaveDelay: 主备延迟
-        :type SlaveDelay: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param SelectTotal: 查询操作数SELECT
-        :type SelectTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param LongQuery: 慢查询数
-        :type LongQuery: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param DeleteTotal: 删除操作数DELETE
-        :type DeleteTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param InsertTotal: 插入操作数INSERT
-        :type InsertTotal: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param IsMasterSwitched: 是否发生主备切换，1为发生，0否
-        :type IsMasterSwitched: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        """
-        self.UpdateTotal = None
-        self.DiskIops = None
-        self.ConnActive = None
-        self.MemHitRate = None
-        self.SlaveDelay = None
-        self.SelectTotal = None
-        self.LongQuery = None
-        self.DeleteTotal = None
-        self.InsertTotal = None
-        self.IsMasterSwitched = None
-
-
-    def _deserialize(self, params):
-        if params.get("UpdateTotal") is not None:
-            self.UpdateTotal = MonitorData()
-            self.UpdateTotal._deserialize(params.get("UpdateTotal"))
-        if params.get("DiskIops") is not None:
-            self.DiskIops = MonitorData()
-            self.DiskIops._deserialize(params.get("DiskIops"))
-        if params.get("ConnActive") is not None:
-            self.ConnActive = MonitorData()
-            self.ConnActive._deserialize(params.get("ConnActive"))
-        if params.get("MemHitRate") is not None:
-            self.MemHitRate = MonitorData()
-            self.MemHitRate._deserialize(params.get("MemHitRate"))
-        if params.get("SlaveDelay") is not None:
-            self.SlaveDelay = MonitorData()
-            self.SlaveDelay._deserialize(params.get("SlaveDelay"))
-        if params.get("SelectTotal") is not None:
-            self.SelectTotal = MonitorData()
-            self.SelectTotal._deserialize(params.get("SelectTotal"))
-        if params.get("LongQuery") is not None:
-            self.LongQuery = MonitorData()
-            self.LongQuery._deserialize(params.get("LongQuery"))
-        if params.get("DeleteTotal") is not None:
-            self.DeleteTotal = MonitorData()
-            self.DeleteTotal._deserialize(params.get("DeleteTotal"))
-        if params.get("InsertTotal") is not None:
-            self.InsertTotal = MonitorData()
-            self.InsertTotal._deserialize(params.get("InsertTotal"))
-        if params.get("IsMasterSwitched") is not None:
-            self.IsMasterSwitched = MonitorData()
-            self.IsMasterSwitched._deserialize(params.get("IsMasterSwitched"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5215,50 +4856,6 @@ class ResourceTag(AbstractModel):
     def _deserialize(self, params):
         self.TagKey = params.get("TagKey")
         self.TagValue = params.get("TagValue")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ResourceUsageMonitorSet(AbstractModel):
-    """DB资源使用情况监控指标集合
-
-    """
-
-    def __init__(self):
-        r"""
-        :param BinlogDiskAvailable: binlog日志磁盘可用空间,单位GB
-        :type BinlogDiskAvailable: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param CpuUsageRate: CPU利用率
-        :type CpuUsageRate: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param MemAvailable: 内存可用空间,单位GB
-        :type MemAvailable: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        :param DataDiskAvailable: 磁盘可用空间,单位GB
-        :type DataDiskAvailable: :class:`tencentcloud.mariadb.v20170312.models.MonitorData`
-        """
-        self.BinlogDiskAvailable = None
-        self.CpuUsageRate = None
-        self.MemAvailable = None
-        self.DataDiskAvailable = None
-
-
-    def _deserialize(self, params):
-        if params.get("BinlogDiskAvailable") is not None:
-            self.BinlogDiskAvailable = MonitorData()
-            self.BinlogDiskAvailable._deserialize(params.get("BinlogDiskAvailable"))
-        if params.get("CpuUsageRate") is not None:
-            self.CpuUsageRate = MonitorData()
-            self.CpuUsageRate._deserialize(params.get("CpuUsageRate"))
-        if params.get("MemAvailable") is not None:
-            self.MemAvailable = MonitorData()
-            self.MemAvailable._deserialize(params.get("MemAvailable"))
-        if params.get("DataDiskAvailable") is not None:
-            self.DataDiskAvailable = MonitorData()
-            self.DataDiskAvailable._deserialize(params.get("DataDiskAvailable"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5555,66 +5152,6 @@ class SpecConfigInfo(AbstractModel):
         self.Pid = params.get("Pid")
         self.NodeCount = params.get("NodeCount")
         self.Cpu = params.get("Cpu")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class SqlLogItem(AbstractModel):
-    """描述一条sql日志的详细信息。
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Offset: 本条日志在消息队列中的偏移量。
-        :type Offset: int
-        :param User: 执行本条sql的用户。
-        :type User: str
-        :param Client: 执行本条sql的客户端IP+端口。
-        :type Client: str
-        :param DbName: 数据库名称。
-        :type DbName: str
-        :param Sql: 执行的sql语句。
-        :type Sql: str
-        :param SelectRowNum: 返回的数据行数。
-        :type SelectRowNum: int
-        :param AffectRowNum: 影响行数。
-        :type AffectRowNum: int
-        :param Timestamp: Sql执行时间戳。
-        :type Timestamp: int
-        :param TimeCostMs: Sql耗时，单位为毫秒。
-        :type TimeCostMs: int
-        :param ResultCode: Sql返回码，0为成功。
-        :type ResultCode: int
-        """
-        self.Offset = None
-        self.User = None
-        self.Client = None
-        self.DbName = None
-        self.Sql = None
-        self.SelectRowNum = None
-        self.AffectRowNum = None
-        self.Timestamp = None
-        self.TimeCostMs = None
-        self.ResultCode = None
-
-
-    def _deserialize(self, params):
-        self.Offset = params.get("Offset")
-        self.User = params.get("User")
-        self.Client = params.get("Client")
-        self.DbName = params.get("DbName")
-        self.Sql = params.get("Sql")
-        self.SelectRowNum = params.get("SelectRowNum")
-        self.AffectRowNum = params.get("AffectRowNum")
-        self.Timestamp = params.get("Timestamp")
-        self.TimeCostMs = params.get("TimeCostMs")
-        self.ResultCode = params.get("ResultCode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

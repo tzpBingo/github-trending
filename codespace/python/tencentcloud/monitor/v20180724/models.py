@@ -50,6 +50,71 @@ class AlarmEvent(AbstractModel):
         
 
 
+class AlarmHierarchicalNotice(AbstractModel):
+    """通知模版ID及通知等级列表，["Remind","Serious"]表示该通知模板仅接收提醒和严重类别的告警
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NoticeId: 通知模板ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NoticeId: str
+        :param Classification: 通知等级列表，["Remind","Serious"]表示该通知模板仅接收提醒和严重类别的告警
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Classification: list of str
+        """
+        self.NoticeId = None
+        self.Classification = None
+
+
+    def _deserialize(self, params):
+        self.NoticeId = params.get("NoticeId")
+        self.Classification = params.get("Classification")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AlarmHierarchicalValue(AbstractModel):
+    """告警分级阈值配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Remind: 提醒等级阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Remind: str
+        :param Warn: 警告等级阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Warn: str
+        :param Serious: 严重等级阈值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Serious: str
+        """
+        self.Remind = None
+        self.Warn = None
+        self.Serious = None
+
+
+    def _deserialize(self, params):
+        self.Remind = params.get("Remind")
+        self.Warn = params.get("Warn")
+        self.Serious = params.get("Serious")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AlarmHistory(AbstractModel):
     """告警历史数据
 
@@ -715,6 +780,9 @@ re=正则匹配
         :param ValueMin: 最小值
 注意：此字段可能返回 null，表示取不到有效值。
         :type ValueMin: float
+        :param HierarchicalValue: 告警分级阈值配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HierarchicalValue: :class:`tencentcloud.monitor.v20180724.models.AlarmHierarchicalValue`
         """
         self.MetricName = None
         self.Period = None
@@ -732,6 +800,7 @@ re=正则匹配
         self.ProductId = None
         self.ValueMax = None
         self.ValueMin = None
+        self.HierarchicalValue = None
 
 
     def _deserialize(self, params):
@@ -753,6 +822,9 @@ re=正则匹配
         self.ProductId = params.get("ProductId")
         self.ValueMax = params.get("ValueMax")
         self.ValueMin = params.get("ValueMin")
+        if params.get("HierarchicalValue") is not None:
+            self.HierarchicalValue = AlarmHierarchicalValue()
+            self.HierarchicalValue._deserialize(params.get("HierarchicalValue"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1426,6 +1498,10 @@ class CreateAlarmPolicyRequest(AbstractModel):
         :type Tags: list of Tag
         :param LogAlarmReqInfo: 日志告警信息
         :type LogAlarmReqInfo: :class:`tencentcloud.monitor.v20180724.models.LogAlarmReq`
+        :param HierarchicalNotices: 告警分级通知规则配置
+        :type HierarchicalNotices: list of AlarmHierarchicalNotice
+        :param MigrateFlag: 迁移策略专用字段，0-走鉴权逻辑，1-跳过鉴权逻辑
+        :type MigrateFlag: int
         """
         self.Module = None
         self.PolicyName = None
@@ -1443,6 +1519,8 @@ class CreateAlarmPolicyRequest(AbstractModel):
         self.GroupBy = None
         self.Tags = None
         self.LogAlarmReqInfo = None
+        self.HierarchicalNotices = None
+        self.MigrateFlag = None
 
 
     def _deserialize(self, params):
@@ -1480,6 +1558,13 @@ class CreateAlarmPolicyRequest(AbstractModel):
         if params.get("LogAlarmReqInfo") is not None:
             self.LogAlarmReqInfo = LogAlarmReq()
             self.LogAlarmReqInfo._deserialize(params.get("LogAlarmReqInfo"))
+        if params.get("HierarchicalNotices") is not None:
+            self.HierarchicalNotices = []
+            for item in params.get("HierarchicalNotices"):
+                obj = AlarmHierarchicalNotice()
+                obj._deserialize(item)
+                self.HierarchicalNotices.append(obj)
+        self.MigrateFlag = params.get("MigrateFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7893,6 +7978,8 @@ class GetMonitorDataResponse(AbstractModel):
         :type StartTime: str
         :param EndTime: 结束时间
         :type EndTime: str
+        :param Msg: 返回信息
+        :type Msg: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -7901,6 +7988,7 @@ class GetMonitorDataResponse(AbstractModel):
         self.DataPoints = None
         self.StartTime = None
         self.EndTime = None
+        self.Msg = None
         self.RequestId = None
 
 
@@ -7915,6 +8003,7 @@ class GetMonitorDataResponse(AbstractModel):
                 self.DataPoints.append(obj)
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
+        self.Msg = params.get("Msg")
         self.RequestId = params.get("RequestId")
 
 
@@ -10256,6 +10345,9 @@ class PrometheusInstancesItem(AbstractModel):
         :param RecordingRuleLimit: 预聚合规则限制
 注意：此字段可能返回 null，表示取不到有效值。
         :type RecordingRuleLimit: int
+        :param MigrationType: 迁移状态，0-不在迁移中，1-迁移中、原实例，2-迁移中、目标实例
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MigrationType: int
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -10286,6 +10378,7 @@ class PrometheusInstancesItem(AbstractModel):
         self.GrafanaInstanceId = None
         self.AlertRuleLimit = None
         self.RecordingRuleLimit = None
+        self.MigrationType = None
 
 
     def _deserialize(self, params):
@@ -10325,6 +10418,7 @@ class PrometheusInstancesItem(AbstractModel):
         self.GrafanaInstanceId = params.get("GrafanaInstanceId")
         self.AlertRuleLimit = params.get("AlertRuleLimit")
         self.RecordingRuleLimit = params.get("RecordingRuleLimit")
+        self.MigrationType = params.get("MigrationType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

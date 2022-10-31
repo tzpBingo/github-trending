@@ -68,6 +68,9 @@ FAILEDOPERATION_TRIALTASKEXCEED = 'FailedOperation.TrialTaskExceed'
 # json解析失败。
 FAILEDOPERATION_UNMARSHALRESPONSE = 'FailedOperation.UnmarshalResponse'
 
+# 鉴权失败。
+FAILEDOPERATION_USERNOQCLOUDTAGFULLACCESS = 'FailedOperation.UserNoQcloudTAGFullAccess'
+
 # 内部错误。
 INTERNALERROR = 'InternalError'
 

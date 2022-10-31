@@ -288,7 +288,7 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeAgentDealsCache(self, request):
-        """【该接口将逐步下线，请切换使用升级版本DescribeAgentDealsByCache】代理商拉取缓存的全量客户订单
+        """【该接口已下线，请使用升级版本DescribeAgentDealsByCache】代理商拉取缓存的全量客户订单
 
         :param request: Request instance for DescribeAgentDealsCache.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeAgentDealsCacheRequest`
@@ -317,7 +317,7 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeAgentPayDeals(self, request):
-        """【该接口将逐步下线，请切换使用升级版本DescribeAgentPayDealsV2】可以查询代理商代付的所有订单
+        """【该接口已下线，请切换使用升级版本DescribeAgentPayDealsV2】可以查询代理商代付的所有订单
 
         :param request: Request instance for DescribeAgentPayDeals.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeAgentPayDealsRequest`
@@ -375,7 +375,7 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeAgentSelfPayDeals(self, request):
-        """【该接口将逐步下线，请切换使用升级版本DescribeAgentSelfPayDealsV2】可以查询代理商下指定客户的自付订单
+        """【该接口已下线，请切换使用升级版本DescribeAgentSelfPayDealsV2】可以查询代理商下指定客户的自付订单
 
         :param request: Request instance for DescribeAgentSelfPayDeals.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeAgentSelfPayDealsRequest`
@@ -491,7 +491,7 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeRebateInfos(self, request):
-        """代理商可查询自己名下全部返佣信息
+        """【该接口已下线，请切换使用升级版本DescribeRebateInfosNew】代理商可查询自己名下全部返佣信息
 
         :param request: Request instance for DescribeRebateInfos.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeRebateInfosRequest`
@@ -505,6 +505,35 @@ class PartnersClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeRebateInfosResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeRebateInfosNew(self, request):
+        """代理商可查询自己名下全部返佣信息
+
+        :param request: Request instance for DescribeRebateInfosNew.
+        :type request: :class:`tencentcloud.partners.v20180321.models.DescribeRebateInfosNewRequest`
+        :rtype: :class:`tencentcloud.partners.v20180321.models.DescribeRebateInfosNewResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRebateInfosNew", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeRebateInfosNewResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

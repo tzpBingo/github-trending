@@ -683,6 +683,9 @@ class ConfigInfo(AbstractModel):
         r"""
         :param ConfigId: 采集规则配置ID
         :type ConfigId: str
+        :param Name: 采集规则配置名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
         :param LogFormat: 日志格式化方式
 注意：此字段可能返回 null，表示取不到有效值。
         :type LogFormat: str
@@ -710,6 +713,7 @@ class ConfigInfo(AbstractModel):
         :type UserDefineRule: str
         """
         self.ConfigId = None
+        self.Name = None
         self.LogFormat = None
         self.Path = None
         self.LogType = None
@@ -723,6 +727,7 @@ class ConfigInfo(AbstractModel):
 
     def _deserialize(self, params):
         self.ConfigId = params.get("ConfigId")
+        self.Name = params.get("Name")
         self.LogFormat = params.get("LogFormat")
         self.Path = params.get("Path")
         self.LogType = params.get("LogType")
@@ -1789,7 +1794,7 @@ class CreateTopicRequest(AbstractModel):
         :type MaxSplitPartitions: int
         :param StorageType: 日志主题的存储类型，可选值 hot（标准存储），cold（低频存储）；默认为hot。
         :type StorageType: str
-        :param Period: 生命周期，单位天，标准存储取值范围1~3600，低频存储取值范围7~3600天。取值为3640时代表永久保存
+        :param Period: 生命周期，单位天，标准存储取值范围1\~3600，低频存储取值范围7\~3600天。取值为3640时代表永久保存
         :type Period: int
         """
         self.LogsetId = None
@@ -3853,17 +3858,17 @@ class ExtractRuleInfo(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type JsonStandard: int
         :param Protocol: syslog传输协议，取值为tcp或者udp。
-该接口适用于：创建采集规则配置、修改采集规则配置
+该字段适用于：创建采集规则配置、修改采集规则配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type Protocol: str
         :param Address: syslog系统日志采集指定采集器监听的地址和端口 ，形式：[ip]:[port]。举例：127.0.0.1:9000
-该接口适用于：创建采集规则配置、修改采集规则配置
+该字段适用于：创建采集规则配置、修改采集规则配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type Address: str
         :param ParseProtocol: rfc3164：指定系统日志采集使用RFC3164协议解析日志。
 rfc5424：指定系统日志采集使用RFC5424协议解析日志。
 auto：自动匹配rfc3164或者rfc5424其中一种协议
-该接口适用于：创建采集规则配置、修改采集规则配置
+该字段适用于：创建采集规则配置、修改采集规则配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type ParseProtocol: str
         """
@@ -5896,6 +5901,12 @@ class SearchLogRequest(AbstractModel):
 为false时代表使用老的检索结果返回方式, 输出AnalysisResults和ColNames有效
 两种返回方式在编码格式上有少量区别，建议使用true
         :type UseNewAnalysis: bool
+        :param SamplingRate: 执行统计分析（Query中包含SQL）时，是否对原始日志先进行采样，再进行统计分析。
+0：自动采样;
+0～1：按指定采样率采样，例如0.02;
+1：不采样，即精确分析
+默认值为1
+        :type SamplingRate: float
         """
         self.TopicId = None
         self.From = None
@@ -5905,6 +5916,7 @@ class SearchLogRequest(AbstractModel):
         self.Context = None
         self.Sort = None
         self.UseNewAnalysis = None
+        self.SamplingRate = None
 
 
     def _deserialize(self, params):
@@ -5916,6 +5928,7 @@ class SearchLogRequest(AbstractModel):
         self.Context = params.get("Context")
         self.Sort = params.get("Sort")
         self.UseNewAnalysis = params.get("UseNewAnalysis")
+        self.SamplingRate = params.get("SamplingRate")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

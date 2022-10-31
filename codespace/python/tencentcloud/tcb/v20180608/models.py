@@ -2490,11 +2490,16 @@ class CreateWxCloudBaseRunServerDBClusterRequest(AbstractModel):
         :type WxAppId: str
         :param DbVersion: mysql内核版本，支持5.7,8.0
         :type DbVersion: str
+        :param LowerCaseTableName: 0: 非大小写敏感
+1: 大小写敏感
+默认 0
+        :type LowerCaseTableName: str
         """
         self.AccountPassword = None
         self.EnvId = None
         self.WxAppId = None
         self.DbVersion = None
+        self.LowerCaseTableName = None
 
 
     def _deserialize(self, params):
@@ -2502,6 +2507,7 @@ class CreateWxCloudBaseRunServerDBClusterRequest(AbstractModel):
         self.EnvId = params.get("EnvId")
         self.WxAppId = params.get("WxAppId")
         self.DbVersion = params.get("DbVersion")
+        self.LowerCaseTableName = params.get("LowerCaseTableName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7141,6 +7147,51 @@ class ModifyCloudBaseRunServerVersionResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyClsTopicRequest(AbstractModel):
+    """ModifyClsTopic请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EnvId: 环境ID
+        :type EnvId: str
+        :param Period: 日志生命周期，单位天，可取值范围1~3600，取值为3640时代表永久保存
+        :type Period: int
+        """
+        self.EnvId = None
+        self.Period = None
+
+
+    def _deserialize(self, params):
+        self.EnvId = params.get("EnvId")
+        self.Period = params.get("Period")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyClsTopicResponse(AbstractModel):
+    """ModifyClsTopic返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 

@@ -558,6 +558,7 @@ class LiveClient(AbstractClient):
 
     def CreatePullStreamConfig(self, request):
         """创建临时拉流转推任务，目前限制添加10条任务。
+        该接口已下线,请使用新接口 CreateLivePullStreamTask。
 
         注意：该接口用于创建临时拉流转推任务，
         拉流源地址即 FromUrl 可以是腾讯或非腾讯数据源，
@@ -1044,7 +1045,7 @@ class LiveClient(AbstractClient):
 
 
     def DeletePullStreamConfig(self, request):
-        """删除直播拉流配置。
+        """删除直播拉流配置。该接口已下线,请使用新接口 DeleteLivePullStreamTask。
 
         :param request: Request instance for DeletePullStreamConfig.
         :type request: :class:`tencentcloud.live.v20180801.models.DeletePullStreamConfigRequest`
@@ -2608,7 +2609,7 @@ class LiveClient(AbstractClient):
 
 
     def DescribePullStreamConfigs(self, request):
-        """查询直播拉流配置。
+        """查询直播拉流配置。该接口已下线,请使用新接口 DescribeLivePullStreamTasks。
 
         :param request: Request instance for DescribePullStreamConfigs.
         :type request: :class:`tencentcloud.live.v20180801.models.DescribePullStreamConfigsRequest`
@@ -3375,7 +3376,7 @@ class LiveClient(AbstractClient):
 
 
     def ModifyPullStreamConfig(self, request):
-        """更新拉流配置。
+        """更新拉流配置。该接口为已下线接口，请使用新接口 ModifyLivePullStreamTask。
 
         :param request: Request instance for ModifyPullStreamConfig.
         :type request: :class:`tencentcloud.live.v20180801.models.ModifyPullStreamConfigRequest`
@@ -3404,7 +3405,7 @@ class LiveClient(AbstractClient):
 
 
     def ModifyPullStreamStatus(self, request):
-        """修改直播拉流配置的状态。
+        """修改直播拉流配置的状态。该接口已下线,请使用新接口 ModifyLivePullStreamTask。
 
         :param request: Request instance for ModifyPullStreamStatus.
         :type request: :class:`tencentcloud.live.v20180801.models.ModifyPullStreamStatusRequest`

@@ -172,7 +172,7 @@ class BmaClient(AbstractClient):
 
 
     def CreateCRBlock(self, request):
-        """版权保护-新建拦截接口
+        """新建协查处置
 
         :param request: Request instance for CreateCRBlock.
         :type request: :class:`tencentcloud.bma.v20210624.models.CreateCRBlockRequest`
@@ -201,7 +201,7 @@ class BmaClient(AbstractClient):
 
 
     def CreateCRCompanyVerify(self, request):
-        """品牌经营管家-版权保护模块企业认证接口
+        """本接口用于企业认证，新接入用户必须认证后才可以进行后续操作（个人认证和企业认证二选一），只需认证一次即可
 
         :param request: Request instance for CreateCRCompanyVerify.
         :type request: :class:`tencentcloud.bma.v20210624.models.CreateCRCompanyVerifyRequest`
@@ -215,6 +215,64 @@ class BmaClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateCRCompanyVerifyResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateCRDesktopCode(self, request):
+        """新建过程取证码
+
+        :param request: Request instance for CreateCRDesktopCode.
+        :type request: :class:`tencentcloud.bma.v20210624.models.CreateCRDesktopCodeRequest`
+        :rtype: :class:`tencentcloud.bma.v20210624.models.CreateCRDesktopCodeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateCRDesktopCode", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateCRDesktopCodeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateCRObtain(self, request):
+        """版权保护-新建取证接口
+
+        :param request: Request instance for CreateCRObtain.
+        :type request: :class:`tencentcloud.bma.v20210624.models.CreateCRObtainRequest`
+        :rtype: :class:`tencentcloud.bma.v20210624.models.CreateCRObtainResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateCRObtain", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreateCRObtainResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -259,7 +317,7 @@ class BmaClient(AbstractClient):
 
 
     def CreateCRRightFile(self, request):
-        """新增权属文件
+        """权属文件添加
 
         :param request: Request instance for CreateCRRightFile.
         :type request: :class:`tencentcloud.bma.v20210624.models.CreateCRRightFileRequest`
@@ -317,7 +375,7 @@ class BmaClient(AbstractClient):
 
 
     def CreateCRUserVerify(self, request):
-        """品牌经营管家-版权保护个人认证接口
+        """本接口用于个人认证，新接入用户必须认证后才可以进行后续操作（个人认证和企业认证二选一），只需认证一次即可
 
         :param request: Request instance for CreateCRUserVerify.
         :type request: :class:`tencentcloud.bma.v20210624.models.CreateCRUserVerifyRequest`
@@ -346,7 +404,7 @@ class BmaClient(AbstractClient):
 
 
     def CreateCRWork(self, request):
-        """版权保护-添加作品接口
+        """新建作品
 
         :param request: Request instance for CreateCRWork.
         :type request: :class:`tencentcloud.bma.v20210624.models.CreateCRWorkRequest`
@@ -548,6 +606,35 @@ class BmaClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeCRObtainDetail(self, request):
+        """查询取证详情
+
+        :param request: Request instance for DescribeCRObtainDetail.
+        :type request: :class:`tencentcloud.bma.v20210624.models.DescribeCRObtainDetailRequest`
+        :rtype: :class:`tencentcloud.bma.v20210624.models.DescribeCRObtainDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCRObtainDetail", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeCRObtainDetailResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeCRWorkInfo(self, request):
         """查询作品基本信息
 
@@ -607,7 +694,7 @@ class BmaClient(AbstractClient):
 
 
     def ModifyCRBlockStatus(self, request):
-        """版权保护-拦截申请接口
+        """协查处置申请
 
         :param request: Request instance for ModifyCRBlockStatus.
         :type request: :class:`tencentcloud.bma.v20210624.models.ModifyCRBlockStatusRequest`
@@ -636,7 +723,7 @@ class BmaClient(AbstractClient):
 
 
     def ModifyCRMonitor(self, request):
-        """版权保护-修改监测状态接口
+        """开启/关闭监测
 
         :param request: Request instance for ModifyCRMonitor.
         :type request: :class:`tencentcloud.bma.v20210624.models.ModifyCRMonitorRequest`
@@ -665,7 +752,7 @@ class BmaClient(AbstractClient):
 
 
     def ModifyCRObtainStatus(self, request):
-        """申请取证
+        """取证申请
 
         :param request: Request instance for ModifyCRObtainStatus.
         :type request: :class:`tencentcloud.bma.v20210624.models.ModifyCRObtainStatusRequest`
@@ -694,7 +781,7 @@ class BmaClient(AbstractClient):
 
 
     def ModifyCRRightStatus(self, request):
-        """版权保护-维权申请接口
+        """发函申请
 
         :param request: Request instance for ModifyCRRightStatus.
         :type request: :class:`tencentcloud.bma.v20210624.models.ModifyCRRightStatusRequest`
@@ -723,7 +810,7 @@ class BmaClient(AbstractClient):
 
 
     def ModifyCRWhiteList(self, request):
-        """版权保护-白名单修改接口
+        """修改白名单列表
 
         :param request: Request instance for ModifyCRWhiteList.
         :type request: :class:`tencentcloud.bma.v20210624.models.ModifyCRWhiteListRequest`

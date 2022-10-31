@@ -435,6 +435,77 @@ class CommonId(AbstractModel):
         
 
 
+class CreateCustomFunctionRequest(AbstractModel):
+    """CreateCustomFunction请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 类型：HIVE、SPARK
+        :type Type: str
+        :param Kind: 分类：窗口函数、聚合函数、日期函数......
+        :type Kind: str
+        :param Name: 函数名称
+        :type Name: str
+        :param ClusterIdentifier: 集群实例引擎 ID
+        :type ClusterIdentifier: str
+        :param DbName: 数据库名称
+        :type DbName: str
+        :param ProjectId: 项目ID
+        :type ProjectId: str
+        """
+        self.Type = None
+        self.Kind = None
+        self.Name = None
+        self.ClusterIdentifier = None
+        self.DbName = None
+        self.ProjectId = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.Kind = params.get("Kind")
+        self.Name = params.get("Name")
+        self.ClusterIdentifier = params.get("ClusterIdentifier")
+        self.DbName = params.get("DbName")
+        self.ProjectId = params.get("ProjectId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCustomFunctionResponse(AbstractModel):
+    """CreateCustomFunction返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionId: 函数唯一标识
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FunctionId: str
+        :param ErrorMessage: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FunctionId = None
+        self.ErrorMessage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FunctionId = params.get("FunctionId")
+        self.ErrorMessage = params.get("ErrorMessage")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateDataSourceRequest(AbstractModel):
     """CreateDataSource请求参数结构体
 
@@ -598,6 +669,81 @@ class CreateFolderResponse(AbstractModel):
         if params.get("Data") is not None:
             self.Data = CommonId()
             self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreateOrUpdateResourceRequest(AbstractModel):
+    """CreateOrUpdateResource请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectId: 项目ID
+        :type ProjectId: str
+        :param Files: 文件名
+        :type Files: list of str
+        :param FilePath: 文件所属路径，资源管理根路径为 /datastudio/resouce
+        :type FilePath: str
+        :param CosBucketName: cos存储桶名字
+        :type CosBucketName: str
+        :param CosRegion: cos所属地域
+        :type CosRegion: str
+        :param NewFile: 是否为新文件，新增为 true，更新为 false
+        :type NewFile: bool
+        :param FilesSize: 文件大小
+        :type FilesSize: list of str
+        """
+        self.ProjectId = None
+        self.Files = None
+        self.FilePath = None
+        self.CosBucketName = None
+        self.CosRegion = None
+        self.NewFile = None
+        self.FilesSize = None
+
+
+    def _deserialize(self, params):
+        self.ProjectId = params.get("ProjectId")
+        self.Files = params.get("Files")
+        self.FilePath = params.get("FilePath")
+        self.CosBucketName = params.get("CosBucketName")
+        self.CosRegion = params.get("CosRegion")
+        self.NewFile = params.get("NewFile")
+        self.FilesSize = params.get("FilesSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateOrUpdateResourceResponse(AbstractModel):
+    """CreateOrUpdateResource返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 响应数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: list of UserFileDTO
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = UserFileDTO()
+                obj._deserialize(item)
+                self.Data.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -941,6 +1087,65 @@ class DataSourceInfoPage(AbstractModel):
         
 
 
+class DeleteCustomFunctionRequest(AbstractModel):
+    """DeleteCustomFunction请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterIdentifier: 集群实例 ID
+        :type ClusterIdentifier: str
+        :param FunctionId: 函数 ID
+        :type FunctionId: str
+        :param ProjectId: 项目ID，必须填
+        :type ProjectId: str
+        """
+        self.ClusterIdentifier = None
+        self.FunctionId = None
+        self.ProjectId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterIdentifier = params.get("ClusterIdentifier")
+        self.FunctionId = params.get("FunctionId")
+        self.ProjectId = params.get("ProjectId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteCustomFunctionResponse(AbstractModel):
+    """DeleteCustomFunction返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionId: 函数 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FunctionId: str
+        :param ErrorMessage: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FunctionId = None
+        self.ErrorMessage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FunctionId = params.get("FunctionId")
+        self.ErrorMessage = params.get("ErrorMessage")
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteDataSourcesRequest(AbstractModel):
     """DeleteDataSources请求参数结构体
 
@@ -1023,6 +1228,56 @@ class DeleteFolderResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Data: true代表删除成功，false代表删除失败
+        :type Data: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteResourceRequest(AbstractModel):
+    """DeleteResource请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectId: 项目ID
+        :type ProjectId: str
+        :param ResourceId: 资源ID
+        :type ResourceId: str
+        """
+        self.ProjectId = None
+        self.ResourceId = None
+
+
+    def _deserialize(self, params):
+        self.ProjectId = params.get("ProjectId")
+        self.ResourceId = params.get("ResourceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteResourceResponse(AbstractModel):
+    """DeleteResource返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 是否成功
+注意：此字段可能返回 null，表示取不到有效值。
         :type Data: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1600,6 +1855,82 @@ class DescribeFolderWorkflowListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeFunctionKindsRequest(AbstractModel):
+    """DescribeFunctionKinds请求参数结构体
+
+    """
+
+
+class DescribeFunctionKindsResponse(AbstractModel):
+    """DescribeFunctionKinds返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Kinds: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Kinds: list of FunctionTypeOrKind
+        :param ErrorMessage: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Kinds = None
+        self.ErrorMessage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Kinds") is not None:
+            self.Kinds = []
+            for item in params.get("Kinds"):
+                obj = FunctionTypeOrKind()
+                obj._deserialize(item)
+                self.Kinds.append(obj)
+        self.ErrorMessage = params.get("ErrorMessage")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeFunctionTypesRequest(AbstractModel):
+    """DescribeFunctionTypes请求参数结构体
+
+    """
+
+
+class DescribeFunctionTypesResponse(AbstractModel):
+    """DescribeFunctionTypes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Types: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Types: list of FunctionTypeOrKind
+        :param ErrorMessage: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Types = None
+        self.ErrorMessage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Types") is not None:
+            self.Types = []
+            for item in params.get("Types"):
+                obj = FunctionTypeOrKind()
+                obj._deserialize(item)
+                self.Types.append(obj)
+        self.ErrorMessage = params.get("ErrorMessage")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeInstanceLogsRequest(AbstractModel):
     """DescribeInstanceLogs请求参数结构体
 
@@ -1656,6 +1987,74 @@ class DescribeInstanceLogsResponse(AbstractModel):
                 obj = InstanceLog()
                 obj._deserialize(item)
                 self.Data.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeOrganizationalFunctionsRequest(AbstractModel):
+    """DescribeOrganizationalFunctions请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 场景类型：开发、使用
+        :type Type: str
+        :param ProjectId: 项目 ID
+        :type ProjectId: str
+        :param Name: 函数名称
+        :type Name: str
+        :param DisplayName: 展示名称
+        :type DisplayName: str
+        """
+        self.Type = None
+        self.ProjectId = None
+        self.Name = None
+        self.DisplayName = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.ProjectId = params.get("ProjectId")
+        self.Name = params.get("Name")
+        self.DisplayName = params.get("DisplayName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOrganizationalFunctionsResponse(AbstractModel):
+    """DescribeOrganizationalFunctions返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Content: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: list of OrganizationalFunction
+        :param ErrorMessage: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Content = None
+        self.ErrorMessage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Content") is not None:
+            self.Content = []
+            for item in params.get("Content"):
+                obj = OrganizationalFunction()
+                obj._deserialize(item)
+                self.Content.append(obj)
+        self.ErrorMessage = params.get("ErrorMessage")
         self.RequestId = params.get("RequestId")
 
 
@@ -1788,6 +2187,73 @@ class DescribeRelatedInstancesResponse(AbstractModel):
         if params.get("Data") is not None:
             self.Data = DescribeTaskInstancesData()
             self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeResourceManagePathTreesRequest(AbstractModel):
+    """DescribeResourceManagePathTrees请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectId: 项目ID
+        :type ProjectId: str
+        :param Name: 名字，供搜索
+        :type Name: str
+        :param FileType: 文件类型
+        :type FileType: str
+        :param FilePath: 文件路径
+        :type FilePath: str
+        :param DirType: 文件夹类型
+        :type DirType: str
+        """
+        self.ProjectId = None
+        self.Name = None
+        self.FileType = None
+        self.FilePath = None
+        self.DirType = None
+
+
+    def _deserialize(self, params):
+        self.ProjectId = params.get("ProjectId")
+        self.Name = params.get("Name")
+        self.FileType = params.get("FileType")
+        self.FilePath = params.get("FilePath")
+        self.DirType = params.get("DirType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeResourceManagePathTreesResponse(AbstractModel):
+    """DescribeResourceManagePathTrees返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 响应数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: list of ResourcePathTree
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = ResourcePathTree()
+                obj._deserialize(item)
+                self.Data.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -2333,6 +2799,132 @@ class FreezeTasksResponse(AbstractModel):
             self.Data = OperateResult()
             self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
+
+
+class FunctionResource(AbstractModel):
+    """函数资源信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Path: 资源路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Path: str
+        :param Name: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param Id: 资源唯一标识
+        :type Id: str
+        :param Md5: 资源 MD5 值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Md5: str
+        :param Type: 默认是 hdfs
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        """
+        self.Path = None
+        self.Name = None
+        self.Id = None
+        self.Md5 = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Path = params.get("Path")
+        self.Name = params.get("Name")
+        self.Id = params.get("Id")
+        self.Md5 = params.get("Md5")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class FunctionTypeOrKind(AbstractModel):
+    """函数类型或函数分类
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 无
+        :type Name: str
+        :param ZhName: 无
+        :type ZhName: str
+        :param EnName: 无
+        :type EnName: str
+        """
+        self.Name = None
+        self.ZhName = None
+        self.EnName = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.ZhName = params.get("ZhName")
+        self.EnName = params.get("EnName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class FunctionVersion(AbstractModel):
+    """函数提交版本信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Tag: 版本号：V0 V1 V2
+        :type Tag: str
+        :param UserId: 提交人 ID
+        :type UserId: str
+        :param Type: 变更类型：ADD、MODIFY
+        :type Type: str
+        :param Comment: 备注
+        :type Comment: str
+        :param Timestamp: 提交时间: UTC 秒数
+        :type Timestamp: str
+        :param UserName: 提交人名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserName: str
+        :param Content: 版本内容：json string 格式
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: str
+        """
+        self.Tag = None
+        self.UserId = None
+        self.Type = None
+        self.Comment = None
+        self.Timestamp = None
+        self.UserName = None
+        self.Content = None
+
+
+    def _deserialize(self, params):
+        self.Tag = params.get("Tag")
+        self.UserId = params.get("UserId")
+        self.Type = params.get("Type")
+        self.Comment = params.get("Comment")
+        self.Timestamp = params.get("Timestamp")
+        self.UserName = params.get("UserName")
+        self.Content = params.get("Content")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class GeneralTaskParam(AbstractModel):
@@ -3578,6 +4170,132 @@ class OrderField(AbstractModel):
         
 
 
+class OrganizationalFunction(AbstractModel):
+    """包含层级信息的函数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        :param DisplayName: 展示名称
+        :type DisplayName: str
+        :param LayerPath: 层级路径
+        :type LayerPath: str
+        :param ParentLayerPath: 上级层级路径
+        :type ParentLayerPath: str
+        :param Type: 函数类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param Kind: 函数分类：窗口函数、聚合函数、日期函数......
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Kind: str
+        :param Category: 函数种类：系统函数、自定义函数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Category: str
+        :param Status: 函数状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param Description: 函数说明
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        :param Usage: 函数用法
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Usage: str
+        :param ParamDesc: 函数参数说明
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ParamDesc: str
+        :param ReturnDesc: 函数返回值说明
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReturnDesc: str
+        :param Example: 函数示例
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Example: str
+        :param ClusterIdentifier: 集群实例引擎 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterIdentifier: str
+        :param FuncId: 函数 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FuncId: str
+        :param ClassName: 函数类名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClassName: str
+        :param ResourceList: 函数资源列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceList: list of FunctionVersion
+        :param OperatorUserIds: 操作人 ID 列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OperatorUserIds: list of int
+        :param OwnerUserIds: 公有云 Owner ID 列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OwnerUserIds: list of int
+        :param DbName: 数据库名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DbName: str
+        :param SubmitErrorMsg: 提交失败错误信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubmitErrorMsg: str
+        """
+        self.Name = None
+        self.DisplayName = None
+        self.LayerPath = None
+        self.ParentLayerPath = None
+        self.Type = None
+        self.Kind = None
+        self.Category = None
+        self.Status = None
+        self.Description = None
+        self.Usage = None
+        self.ParamDesc = None
+        self.ReturnDesc = None
+        self.Example = None
+        self.ClusterIdentifier = None
+        self.FuncId = None
+        self.ClassName = None
+        self.ResourceList = None
+        self.OperatorUserIds = None
+        self.OwnerUserIds = None
+        self.DbName = None
+        self.SubmitErrorMsg = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.DisplayName = params.get("DisplayName")
+        self.LayerPath = params.get("LayerPath")
+        self.ParentLayerPath = params.get("ParentLayerPath")
+        self.Type = params.get("Type")
+        self.Kind = params.get("Kind")
+        self.Category = params.get("Category")
+        self.Status = params.get("Status")
+        self.Description = params.get("Description")
+        self.Usage = params.get("Usage")
+        self.ParamDesc = params.get("ParamDesc")
+        self.ReturnDesc = params.get("ReturnDesc")
+        self.Example = params.get("Example")
+        self.ClusterIdentifier = params.get("ClusterIdentifier")
+        self.FuncId = params.get("FuncId")
+        self.ClassName = params.get("ClassName")
+        if params.get("ResourceList") is not None:
+            self.ResourceList = []
+            for item in params.get("ResourceList"):
+                obj = FunctionVersion()
+                obj._deserialize(item)
+                self.ResourceList.append(obj)
+        self.OperatorUserIds = params.get("OperatorUserIds")
+        self.OwnerUserIds = params.get("OwnerUserIds")
+        self.DbName = params.get("DbName")
+        self.SubmitErrorMsg = params.get("SubmitErrorMsg")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ParamInfo(AbstractModel):
     """参数参数
 
@@ -3858,6 +4576,106 @@ class RerunInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ResourcePathTree(AbstractModel):
+    """资源管理目录树节点
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 资源名字
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param IsLeaf: 是否为叶子节点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsLeaf: bool
+        :param ResourceId: 资源ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceId: str
+        :param LocalPath: 本地路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LocalPath: str
+        :param RemotePath: 远程路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RemotePath: str
+        :param FileExtensionType: 文件类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileExtensionType: str
+        :param Size: 文件大小
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Size: int
+        :param Md5Value: 文件MD5值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Md5Value: str
+        :param OwnerName: 文件拥有者名字
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OwnerName: str
+        :param UpdateUser: 更新人
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateUser: str
+        :param UpdateUserId: 文件更新人uin
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateUserId: str
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: int
+        :param UpdateTime: 更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: int
+        :param CosBucket: Cos存储桶名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosBucket: str
+        :param CosRegion: Cos地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosRegion: str
+        :param ExtraInfo: 额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExtraInfo: str
+        """
+        self.Name = None
+        self.IsLeaf = None
+        self.ResourceId = None
+        self.LocalPath = None
+        self.RemotePath = None
+        self.FileExtensionType = None
+        self.Size = None
+        self.Md5Value = None
+        self.OwnerName = None
+        self.UpdateUser = None
+        self.UpdateUserId = None
+        self.CreateTime = None
+        self.UpdateTime = None
+        self.CosBucket = None
+        self.CosRegion = None
+        self.ExtraInfo = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.IsLeaf = params.get("IsLeaf")
+        self.ResourceId = params.get("ResourceId")
+        self.LocalPath = params.get("LocalPath")
+        self.RemotePath = params.get("RemotePath")
+        self.FileExtensionType = params.get("FileExtensionType")
+        self.Size = params.get("Size")
+        self.Md5Value = params.get("Md5Value")
+        self.OwnerName = params.get("OwnerName")
+        self.UpdateUser = params.get("UpdateUser")
+        self.UpdateUserId = params.get("UpdateUserId")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        self.CosBucket = params.get("CosBucket")
+        self.CosRegion = params.get("CosRegion")
+        self.ExtraInfo = params.get("ExtraInfo")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RunTaskRequest(AbstractModel):
     """RunTask请求参数结构体
 
@@ -3904,6 +4722,98 @@ class RunTaskResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
+class SaveCustomFunctionRequest(AbstractModel):
+    """SaveCustomFunction请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionId: 函数唯一标识
+        :type FunctionId: str
+        :param Kind: 分类：窗口函数、聚合函数、日期函数......
+        :type Kind: str
+        :param ClusterIdentifier: 集群引擎实例
+        :type ClusterIdentifier: str
+        :param ClassName: 类名
+        :type ClassName: str
+        :param ResourceList: 资源列表
+        :type ResourceList: list of FunctionResource
+        :param Description: 函数说明
+        :type Description: str
+        :param Usage: 用法
+        :type Usage: str
+        :param ParamDesc: 参数说明
+        :type ParamDesc: str
+        :param ReturnDesc: 返回值说明
+        :type ReturnDesc: str
+        :param Example: 示例
+        :type Example: str
+        """
+        self.FunctionId = None
+        self.Kind = None
+        self.ClusterIdentifier = None
+        self.ClassName = None
+        self.ResourceList = None
+        self.Description = None
+        self.Usage = None
+        self.ParamDesc = None
+        self.ReturnDesc = None
+        self.Example = None
+
+
+    def _deserialize(self, params):
+        self.FunctionId = params.get("FunctionId")
+        self.Kind = params.get("Kind")
+        self.ClusterIdentifier = params.get("ClusterIdentifier")
+        self.ClassName = params.get("ClassName")
+        if params.get("ResourceList") is not None:
+            self.ResourceList = []
+            for item in params.get("ResourceList"):
+                obj = FunctionResource()
+                obj._deserialize(item)
+                self.ResourceList.append(obj)
+        self.Description = params.get("Description")
+        self.Usage = params.get("Usage")
+        self.ParamDesc = params.get("ParamDesc")
+        self.ReturnDesc = params.get("ReturnDesc")
+        self.Example = params.get("Example")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SaveCustomFunctionResponse(AbstractModel):
+    """SaveCustomFunction返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionId: 函数唯一标识
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FunctionId: str
+        :param ErrorMessage: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FunctionId = None
+        self.ErrorMessage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FunctionId = params.get("FunctionId")
+        self.ErrorMessage = params.get("ErrorMessage")
         self.RequestId = params.get("RequestId")
 
 
@@ -3989,6 +4899,69 @@ class SimpleTaskInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class SubmitCustomFunctionRequest(AbstractModel):
+    """SubmitCustomFunction请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionId: 函数唯一标识
+        :type FunctionId: str
+        :param ClusterIdentifier: 集群实例 ID
+        :type ClusterIdentifier: str
+        :param Comment: 备注信息
+        :type Comment: str
+        :param ProjectId: 项目ID
+        :type ProjectId: str
+        """
+        self.FunctionId = None
+        self.ClusterIdentifier = None
+        self.Comment = None
+        self.ProjectId = None
+
+
+    def _deserialize(self, params):
+        self.FunctionId = params.get("FunctionId")
+        self.ClusterIdentifier = params.get("ClusterIdentifier")
+        self.Comment = params.get("Comment")
+        self.ProjectId = params.get("ProjectId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SubmitCustomFunctionResponse(AbstractModel):
+    """SubmitCustomFunction返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionId: 函数唯一标识
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FunctionId: str
+        :param ErrorMessage: 无
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FunctionId = None
+        self.ErrorMessage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FunctionId = params.get("FunctionId")
+        self.ErrorMessage = params.get("ErrorMessage")
+        self.RequestId = params.get("RequestId")
 
 
 class SubmitTaskRequest(AbstractModel):
@@ -5010,6 +5983,121 @@ class TriggerEventResponse(AbstractModel):
             self.Data = BatchReturn()
             self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
+
+
+class UserFileDTO(AbstractModel):
+    """用户文件信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResourceId: 资源ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceId: str
+        :param FileName: 文件名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileName: str
+        :param FileExtensionType: 文件类型，如 jar zip 等
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileExtensionType: str
+        :param FileUploadType: 文件上传类型，资源管理为 resource
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileUploadType: str
+        :param Md5Value: 文件MD5值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Md5Value: str
+        :param CreateTime: 创建时间，秒级别的时间戳
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: int
+        :param UpdateTime: 更新时间，秒级别的时间戳
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: int
+        :param Size: 文件大小，单位为字节
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Size: int
+        :param LocalPath: 本地路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LocalPath: str
+        :param LocalTmpPath: 本地临时路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LocalTmpPath: str
+        :param RemotePath: 远程路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RemotePath: str
+        :param OwnerName: 文件拥有者名字
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OwnerName: str
+        :param Owner: 文件拥有者uin
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Owner: str
+        :param PathDepth: 文件深度
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PathDepth: str
+        :param ProjectId: 项目ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProjectId: str
+        :param ExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExtraInfo: str
+        :param ZipPath: 本地临时压缩文件绝对路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ZipPath: str
+        :param Bucket: 文件所属存储桶
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
+        :param Region: 文件所属存储桶的地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        """
+        self.ResourceId = None
+        self.FileName = None
+        self.FileExtensionType = None
+        self.FileUploadType = None
+        self.Md5Value = None
+        self.CreateTime = None
+        self.UpdateTime = None
+        self.Size = None
+        self.LocalPath = None
+        self.LocalTmpPath = None
+        self.RemotePath = None
+        self.OwnerName = None
+        self.Owner = None
+        self.PathDepth = None
+        self.ProjectId = None
+        self.ExtraInfo = None
+        self.ZipPath = None
+        self.Bucket = None
+        self.Region = None
+
+
+    def _deserialize(self, params):
+        self.ResourceId = params.get("ResourceId")
+        self.FileName = params.get("FileName")
+        self.FileExtensionType = params.get("FileExtensionType")
+        self.FileUploadType = params.get("FileUploadType")
+        self.Md5Value = params.get("Md5Value")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        self.Size = params.get("Size")
+        self.LocalPath = params.get("LocalPath")
+        self.LocalTmpPath = params.get("LocalTmpPath")
+        self.RemotePath = params.get("RemotePath")
+        self.OwnerName = params.get("OwnerName")
+        self.Owner = params.get("Owner")
+        self.PathDepth = params.get("PathDepth")
+        self.ProjectId = params.get("ProjectId")
+        self.ExtraInfo = params.get("ExtraInfo")
+        self.ZipPath = params.get("ZipPath")
+        self.Bucket = params.get("Bucket")
+        self.Region = params.get("Region")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class Workflow(AbstractModel):

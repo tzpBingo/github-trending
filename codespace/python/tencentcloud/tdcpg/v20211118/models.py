@@ -178,6 +178,13 @@ class CloneClusterToPointInTimeRequest(AbstractModel):
         :type Period: int
         :param AutoRenewFlag: 是否自动续费，0-不 1-是。默认为0，只有当PayMode为PREPAID时生效。
         :type AutoRenewFlag: int
+        :param StoragePayMode: 存储付费模式
+ - PREPAID：预付费，即包年包月
+ - POSTPAID_BY_HOUR：按小时后付费
+默认为POSTPAID_BY_HOUR，实例付费模式为按小时付费时，存储付费模式不支持包年包月
+        :type StoragePayMode: str
+        :param Storage: 存储最大使用量，单位GB。取值参考文档【购买指南】。存储使用预付费模式时必须设置，存储使用按小时后付费时不可设置
+        :type Storage: int
         """
         self.Zone = None
         self.DBVersion = None
@@ -194,6 +201,8 @@ class CloneClusterToPointInTimeRequest(AbstractModel):
         self.InstanceCount = None
         self.Period = None
         self.AutoRenewFlag = None
+        self.StoragePayMode = None
+        self.Storage = None
 
 
     def _deserialize(self, params):
@@ -212,6 +221,8 @@ class CloneClusterToPointInTimeRequest(AbstractModel):
         self.InstanceCount = params.get("InstanceCount")
         self.Period = params.get("Period")
         self.AutoRenewFlag = params.get("AutoRenewFlag")
+        self.StoragePayMode = params.get("StoragePayMode")
+        self.Storage = params.get("Storage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -298,6 +309,11 @@ class Cluster(AbstractModel):
         :type DBMajorVersion: str
         :param DBKernelVersion: TDSQL-C PostgreSQL 内核版本号
         :type DBKernelVersion: str
+        :param StoragePayMode: 存储付费模式
+ - PREPAID：预付费，即包年包月
+ - POSTPAID_BY_HOUR：按小时后付费
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StoragePayMode: str
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -318,6 +334,7 @@ class Cluster(AbstractModel):
         self.EndpointSet = None
         self.DBMajorVersion = None
         self.DBKernelVersion = None
+        self.StoragePayMode = None
 
 
     def _deserialize(self, params):
@@ -345,6 +362,7 @@ class Cluster(AbstractModel):
                 self.EndpointSet.append(obj)
         self.DBMajorVersion = params.get("DBMajorVersion")
         self.DBKernelVersion = params.get("DBKernelVersion")
+        self.StoragePayMode = params.get("StoragePayMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -434,7 +452,7 @@ class CreateClusterRequest(AbstractModel):
         :type VpcId: str
         :param SubnetId: 已配置的私有网络中的子网ID
         :type SubnetId: str
-        :param PayMode: 集群付费模式
+        :param PayMode: 实例付费模式
  - PREPAID：预付费，即包年包月
  - POSTPAID_BY_HOUR：按小时后付费
         :type PayMode: str
@@ -463,6 +481,13 @@ class CreateClusterRequest(AbstractModel):
 支持入参值为：v10.17_r1.4。当输入该参数时，会创建此版本号对应的数据库内核。
 注：该参数和DBVersion、DBMajorVersion只能传递一个，且需要传递一个。
         :type DBKernelVersion: str
+        :param StoragePayMode: 存储付费模式
+ - PREPAID：预付费，即包年包月
+ - POSTPAID_BY_HOUR：按小时后付费
+默认为POSTPAID_BY_HOUR，实例付费模式为按小时付费时，存储付费模式不支持包年包月
+        :type StoragePayMode: str
+        :param Storage: 存储最大使用量，单位GB。取值参考文档【购买指南】。存储使用预付费模式时必须设置，存储使用按小时后付费时不可设置
+        :type Storage: int
         """
         self.Zone = None
         self.MasterUserPassword = None
@@ -480,6 +505,8 @@ class CreateClusterRequest(AbstractModel):
         self.AutoRenewFlag = None
         self.DBMajorVersion = None
         self.DBKernelVersion = None
+        self.StoragePayMode = None
+        self.Storage = None
 
 
     def _deserialize(self, params):
@@ -499,6 +526,8 @@ class CreateClusterRequest(AbstractModel):
         self.AutoRenewFlag = params.get("AutoRenewFlag")
         self.DBMajorVersion = params.get("DBMajorVersion")
         self.DBKernelVersion = params.get("DBKernelVersion")
+        self.StoragePayMode = params.get("StoragePayMode")
+        self.Storage = params.get("Storage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

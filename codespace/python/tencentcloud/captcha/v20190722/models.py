@@ -234,6 +234,84 @@ class CaptchaQueryData(AbstractModel):
         
 
 
+class CaptchaStatisticObj(AbstractModel):
+    """验证码统计图Obj
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ActionTotal: 请求总量
+        :type ActionTotal: int
+        :param VerifyTotal: 验证总量
+        :type VerifyTotal: int
+        :param VerifyThroughTotal: 验证通过总量
+        :type VerifyThroughTotal: int
+        :param VerifyInterceptTotal: 验证拦截总量
+        :type VerifyInterceptTotal: int
+        :param TicketTotal: 票据校验总量
+        :type TicketTotal: int
+        :param TicketThroughTotal: 票据通过总量
+        :type TicketThroughTotal: int
+        :param TicketInterceptTotal: 票据拦截总量
+        :type TicketInterceptTotal: int
+        :param RequestTrend: 请求趋势图
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RequestTrend: list of RequestTrendObj
+        :param InterceptPerTrend: 拦截率趋势图
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InterceptPerTrend: list of InterceptPerTrendObj
+        :param TicketCheckTrend: 票据校验趋势图
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TicketCheckTrend: list of TicketCheckTrendObj
+        """
+        self.ActionTotal = None
+        self.VerifyTotal = None
+        self.VerifyThroughTotal = None
+        self.VerifyInterceptTotal = None
+        self.TicketTotal = None
+        self.TicketThroughTotal = None
+        self.TicketInterceptTotal = None
+        self.RequestTrend = None
+        self.InterceptPerTrend = None
+        self.TicketCheckTrend = None
+
+
+    def _deserialize(self, params):
+        self.ActionTotal = params.get("ActionTotal")
+        self.VerifyTotal = params.get("VerifyTotal")
+        self.VerifyThroughTotal = params.get("VerifyThroughTotal")
+        self.VerifyInterceptTotal = params.get("VerifyInterceptTotal")
+        self.TicketTotal = params.get("TicketTotal")
+        self.TicketThroughTotal = params.get("TicketThroughTotal")
+        self.TicketInterceptTotal = params.get("TicketInterceptTotal")
+        if params.get("RequestTrend") is not None:
+            self.RequestTrend = []
+            for item in params.get("RequestTrend"):
+                obj = RequestTrendObj()
+                obj._deserialize(item)
+                self.RequestTrend.append(obj)
+        if params.get("InterceptPerTrend") is not None:
+            self.InterceptPerTrend = []
+            for item in params.get("InterceptPerTrend"):
+                obj = InterceptPerTrendObj()
+                obj._deserialize(item)
+                self.InterceptPerTrend.append(obj)
+        if params.get("TicketCheckTrend") is not None:
+            self.TicketCheckTrend = []
+            for item in params.get("TicketCheckTrend"):
+                obj = TicketCheckTrendObj()
+                obj._deserialize(item)
+                self.TicketCheckTrend.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CaptchaTicketDataRes(AbstractModel):
     """DescribeCaptchaTicketData 接口 返回数据类型集合
 
@@ -544,8 +622,12 @@ class DescribeCaptchaDataSumResponse(AbstractModel):
         :type CaptchaMsg: str
         :param CaptchaCode: 成功返回0  其它失败
         :type CaptchaCode: int
-        :param CheckTicketSum: 票据校验量
+        :param CheckTicketSum: 票据校验总量
         :type CheckTicketSum: int
+        :param TicketThroughputSum: 票据验证通过量
+        :type TicketThroughputSum: int
+        :param TicketInterceptSum: 票据验证拦截量
+        :type TicketInterceptSum: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -556,6 +638,8 @@ class DescribeCaptchaDataSumResponse(AbstractModel):
         self.CaptchaMsg = None
         self.CaptchaCode = None
         self.CheckTicketSum = None
+        self.TicketThroughputSum = None
+        self.TicketInterceptSum = None
         self.RequestId = None
 
 
@@ -567,6 +651,8 @@ class DescribeCaptchaDataSumResponse(AbstractModel):
         self.CaptchaMsg = params.get("CaptchaMsg")
         self.CaptchaCode = params.get("CaptchaCode")
         self.CheckTicketSum = params.get("CheckTicketSum")
+        self.TicketThroughputSum = params.get("TicketThroughputSum")
+        self.TicketInterceptSum = params.get("TicketInterceptSum")
         self.RequestId = params.get("RequestId")
 
 
@@ -877,6 +963,7 @@ class DescribeCaptchaMiniResultResponse(AbstractModel):
 21     ticket error     票据验证错误
 25     invalid ticket     无效票据
 26     system internal error     系统内部错误
+31 	   UnauthorizedOperation.Unauthorized	无有效套餐包/账户已欠费
 100   param err     参数校验错误
         :type CaptchaCode: int
         :param CaptchaMsg: 状态描述及验证错误信息
@@ -1145,29 +1232,13 @@ class DescribeCaptchaResultResponse(AbstractModel):
     def __init__(self):
         r"""
         :param CaptchaCode: 1 OK 验证通过
-6 user code len error 验证码长度不匹配，请检查请求是否带Randstr参数，Randstr参数大小写是否有误
-7 captcha no match 验证码答案不匹配/Randstr参数不匹配，请重新生成Randstr、Ticket进行校验
-8 verify timeout 验证码签名超时，票据已过期，请重新生成Randstr、Ticket票进行校验
-9 Sequnce repeat 验证码签名重放，票据重复使用，请重新生成Randstr、Ticket进行校验
-10 Sequnce invalid 验证码签名序列
-11 Cookie invalid 验证码cookie信息不合法，非法请求，可能存在不规范接入
-12 sig len error 签名长度错误
-13 verify ip no match ip不匹配，非法请求，可能存在不规范接入
-15 decrypt fail 验证码签名解密失败，票据校验失败，请检查Ticket票据是否与前端返回Ticket一致
-16 appid no match 验证码强校验appid错误，前端代码 data-appid 和后端 CaptchaAppId 所填写的值，必须和 验证码控制台 中【验证详情】>【基础配置】内的 AppID 一致,请检查CaptchaAppId是否为控制台基础配置界面系统分配的APPID
-17 cmd no much 验证码系统命令不匹配
-18 uin no match 号码不匹配
-19 seq redirect 重定向验证
-20 opt no vcode 操作使用pt免验证码校验错误
-21 diff 差别，验证错误 
-该情况出现原因一般为，当验证码前端生成terror格式票据并进行后端票据校验时，用户网络较差，该情况下仍会返回可用票据，业务侧可以自行根据需要，进行票据生成或做其他处理。详情参见 [验证码Web前端接入-异常处理文档](https://cloud.tencent.com/document/product/1110/36841#.E5.BC.82.E5.B8.B8.E5.A4.84.E7.90.86)。
-22 captcha type not match 验证码类型与拉取时不一致
-23 verify type error 验证类型错误
-24 invalid pkg 非法请求包
-25 bad visitor 策略拦截
-26 system busy 系统内部错误
-100 param err appsecretkey 参数校验错误，CaptchaAppId 与对应 AppSecretKey 不一致，需检查 AppSecretKey 参数是否有误。其中 CaptchaAppId、 AppSecretKey 在 验证码控制台 的【验证详情】>【基础配置】中获取
-104 Ticket Reuse 票据重复使用，同个票据验证多次，请重新生成Randstr、Ticket进行校验
+7 captcha no match 传入的Randstr不合法，请检查Randstr是否与前端返回的Randstr一致
+8 ticket expired 传入的Ticket已过期（Ticket有效期5分钟），请重新生成Ticket、Randstr进行校验
+9 ticket reused 传入的Ticket被重复使用，请重新生成Ticket、Randstr进行校验
+15 decrypt fail 传入的Ticket不合法，请检查Ticket是否与前端返回的Ticket一致
+16 appid-ticket mismatch 传入的CaptchaAppId错误，请检查CaptchaAppId是否与前端传入的CaptchaAppId一致，并且保障CaptchaAppId是从验证码控制台【验证管理】->【基础配置】中获取
+21 diff 票据校验异常，可能的原因是（1）若Ticket包含terror前缀，一般是由于用户网络较差，导致前端自动容灾，而生成了容灾票据，业务侧可根据需要进行跳过或二次处理。（2）若Ticket不包含terror前缀，则是由于验证码风控系统发现请求有安全风险，业务侧可根据需要进行拦截。
+100 appid-secretkey-ticket mismatch 参数校验错误，（1）请检查CaptchaAppId与AppSecretKey是否正确，CaptchaAppId、AppSecretKey需要在验证码控制台【验证管理】>【基础配置】中获取（2）请检查传入的Ticket是否由传入的CaptchaAppId生成
         :type CaptchaCode: int
         :param CaptchaMsg: 状态描述及验证错误信息
 注意：此字段可能返回 null，表示取不到有效值。
@@ -1305,6 +1376,109 @@ class DescribeCaptchaUserAllAppIdResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class GetTotalTicketStatisticsRequest(AbstractModel):
+    """GetTotalTicketStatistics请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTimeStr: 开始时间
+        :type StartTimeStr: str
+        :param EndTimeStr: 结束时间
+        :type EndTimeStr: str
+        :param Dimension: 查询粒度
+分钟：“1”
+小时：“2”
+天：“3”
+        :type Dimension: str
+        """
+        self.StartTimeStr = None
+        self.EndTimeStr = None
+        self.Dimension = None
+
+
+    def _deserialize(self, params):
+        self.StartTimeStr = params.get("StartTimeStr")
+        self.EndTimeStr = params.get("EndTimeStr")
+        self.Dimension = params.get("Dimension")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetTotalTicketStatisticsResponse(AbstractModel):
+    """GetTotalTicketStatistics返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 返回数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.captcha.v20190722.models.CaptchaStatisticObj`
+        :param CaptchaCode: 返回码
+        :type CaptchaCode: int
+        :param CaptchaMsg: 返回信息
+        :type CaptchaMsg: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.CaptchaCode = None
+        self.CaptchaMsg = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = CaptchaStatisticObj()
+            self.Data._deserialize(params.get("Data"))
+        self.CaptchaCode = params.get("CaptchaCode")
+        self.CaptchaMsg = params.get("CaptchaMsg")
+        self.RequestId = params.get("RequestId")
+
+
+class InterceptPerTrendObj(AbstractModel):
+    """拦截率趋势obj
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Ftime: 时间参数
+        :type Ftime: str
+        :param RequestInterceptPer: 拦截率
+        :type RequestInterceptPer: float
+        :param AnswerInterceptPer: 答案拦截率
+        :type AnswerInterceptPer: float
+        :param PolicyInterceptPer: 策略拦截率
+        :type PolicyInterceptPer: float
+        """
+        self.Ftime = None
+        self.RequestInterceptPer = None
+        self.AnswerInterceptPer = None
+        self.PolicyInterceptPer = None
+
+
+    def _deserialize(self, params):
+        self.Ftime = params.get("Ftime")
+        self.RequestInterceptPer = params.get("RequestInterceptPer")
+        self.AnswerInterceptPer = params.get("AnswerInterceptPer")
+        self.PolicyInterceptPer = params.get("PolicyInterceptPer")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class OutputManageMarketingRiskValue(AbstractModel):
     """拦截策略返回信息
 
@@ -1386,6 +1560,46 @@ reject：拒绝，高风险恶意
         
 
 
+class RequestTrendObj(AbstractModel):
+    """验证码请求趋势图obj
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Ftime: 时间参数
+        :type Ftime: str
+        :param RequestAction: 请求量
+        :type RequestAction: int
+        :param RequestVerify: 验证量
+        :type RequestVerify: int
+        :param RequestThroughput: 通过量
+        :type RequestThroughput: int
+        :param RequestIntercept: 拦截量
+        :type RequestIntercept: int
+        """
+        self.Ftime = None
+        self.RequestAction = None
+        self.RequestVerify = None
+        self.RequestThroughput = None
+        self.RequestIntercept = None
+
+
+    def _deserialize(self, params):
+        self.Ftime = params.get("Ftime")
+        self.RequestAction = params.get("RequestAction")
+        self.RequestVerify = params.get("RequestVerify")
+        self.RequestThroughput = params.get("RequestThroughput")
+        self.RequestIntercept = params.get("RequestIntercept")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TicketAmountUnit(AbstractModel):
     """DescribeCaptchaTicketData 返回的数据结构
 
@@ -1405,6 +1619,42 @@ class TicketAmountUnit(AbstractModel):
     def _deserialize(self, params):
         self.DateKey = params.get("DateKey")
         self.Amount = params.get("Amount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TicketCheckTrendObj(AbstractModel):
+    """验证码票据校验趋势obj
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Ftime: 时间参数
+        :type Ftime: str
+        :param TicketCount: 票据校验量
+        :type TicketCount: int
+        :param TicketThroughput: 票据通过量
+        :type TicketThroughput: int
+        :param TicketIntercept: 票据拦截量
+        :type TicketIntercept: int
+        """
+        self.Ftime = None
+        self.TicketCount = None
+        self.TicketThroughput = None
+        self.TicketIntercept = None
+
+
+    def _deserialize(self, params):
+        self.Ftime = params.get("Ftime")
+        self.TicketCount = params.get("TicketCount")
+        self.TicketThroughput = params.get("TicketThroughput")
+        self.TicketIntercept = params.get("TicketIntercept")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
