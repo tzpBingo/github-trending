@@ -131,6 +131,9 @@ INVALIDPARAMETER_DATANOTFOUND = 'InvalidParameter.DataNotFound'
 # 参数错误，不合法的日期，请检查后重试。
 INVALIDPARAMETER_DATE = 'InvalidParameter.Date'
 
+# 重复提交任务。
+INVALIDPARAMETER_DUPTASK = 'InvalidParameter.DupTask'
+
 # 参数为空。
 INVALIDPARAMETER_EMPTYPARAMS = 'InvalidParameter.EmptyParams'
 
@@ -314,6 +317,9 @@ OPERATIONDENIED_ERRNORESOURCEACCESS = 'OperationDenied.ErrNoResourceAccess'
 # 文件已删除。
 OPERATIONDENIED_FILEDELETED = 'OperationDenied.FileDeleted'
 
+# 流程已终止。
+OPERATIONDENIED_FLOWHASTERMINATED = 'OperationDenied.FlowHasTerminated'
+
 # 禁止操作。
 OPERATIONDENIED_FORBID = 'OperationDenied.Forbid'
 
@@ -323,6 +329,9 @@ OPERATIONDENIED_INVALIDAPPROVERAGE = 'OperationDenied.InvalidApproverAge'
 # 没有API权限。
 OPERATIONDENIED_NOAPIAUTH = 'OperationDenied.NoApiAuth'
 
+# 无权操作合同。
+OPERATIONDENIED_NOFLOWPERMISSION = 'OperationDenied.NoFlowPermission'
+
 # 未通过个人实名。
 OPERATIONDENIED_NOIDENTITYVERIFY = 'OperationDenied.NoIdentityVerify'
 
@@ -331,6 +340,9 @@ OPERATIONDENIED_NOQUOTA = 'OperationDenied.NoQuota'
 
 # 操作类型不支持。
 OPERATIONDENIED_OPERATETYPE = 'OperationDenied.OperateType'
+
+# 操作者权限不足。
+OPERATIONDENIED_OPERATORHASNOPERMISSION = 'OperationDenied.OperatorHasNoPermission'
 
 # 超出查询上限。
 OPERATIONDENIED_OUTQUERYLIMIT = 'OperationDenied.OutQueryLimit'

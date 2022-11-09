@@ -65,6 +65,9 @@ RESOURCENOTFOUND_NODEID = 'ResourceNotFound.NodeId'
 # 该伸缩组已绑定集群，请更换伸缩组。
 UNSUPPORTEDOPERATION_AUTOSCALINGGROUPALREADYBINDED = 'UnsupportedOperation.AutoScalingGroupAlreadyBinded'
 
+# 弹性伸缩类型不支持此操作。
+UNSUPPORTEDOPERATION_AUTOSCALINGTYPE = 'UnsupportedOperation.AutoScalingType'
+
 # 该集群当前状态不支持该操作。
 UNSUPPORTEDOPERATION_CLUSTERSTATUSNOTSUPPORT = 'UnsupportedOperation.ClusterStatusNotSupport'
 
@@ -73,3 +76,6 @@ UNSUPPORTEDOPERATION_INVALIDNODEROLE = 'UnsupportedOperation.InvalidNodeRole'
 
 # 节点状态不支持此操作。
 UNSUPPORTEDOPERATION_NODESTATUSNOTSUPPORT = 'UnsupportedOperation.NodeStatusNotSupport'
+
+# vpc冲突，不支持当前操作。
+UNSUPPORTEDOPERATION_VPCIDCONFLICT = 'UnsupportedOperation.VpcIdConflict'

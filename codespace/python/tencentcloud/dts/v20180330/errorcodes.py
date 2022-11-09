@@ -14,8 +14,14 @@
 # limitations under the License.
 
 
+# 认证失败。
+AUTHFAILURE_AUTHFAILUREERROR = 'AuthFailure.AuthFailureError'
+
 # 鉴权失败，当前用户不允许执行该操作。
 AUTHFAILURE_UNAUTHORIZEDOPERATIONERROR = 'AuthFailure.UnauthorizedOperationError'
+
+# 操作失败。
+FAILEDOPERATION_FAILEDOPERATIONERROR = 'FailedOperation.FailedOperationError'
 
 # 禁止该操作。
 FAILEDOPERATION_NOTALLOWOPERATION = 'FailedOperation.NotAllowOperation'
@@ -49,6 +55,9 @@ INTERNALERROR_DATABASEERROR = 'InternalError.DatabaseError'
 
 # 迁移任务冲突。
 INTERNALERROR_DUPLICATEJOB = 'InternalError.DuplicateJob'
+
+# 内部错误。
+INTERNALERROR_INTERNALERRORERROR = 'InternalError.InternalErrorError'
 
 # http请求访问出错。
 INTERNALERROR_INTERNALHTTPSERVERERROR = 'InternalError.InternalHttpServerError'
@@ -130,6 +139,9 @@ RESOURCENOTFOUND_RESOURCENOTFOUND = 'ResourceNotFound.ResourceNotFound'
 
 # 认证失败，没有足够权限。
 UNAUTHORIZEDOPERATION_NOTENOUGHPRIVILEGES = 'UnauthorizedOperation.NotEnoughPrivileges'
+
+# 未授权的操作。
+UNAUTHORIZEDOPERATION_UNAUTHORIZEDOPERATIONERROR = 'UnauthorizedOperation.UnauthorizedOperationError'
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'

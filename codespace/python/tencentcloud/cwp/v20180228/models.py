@@ -4262,12 +4262,15 @@ class CreateScanMalwareSettingRequest(AbstractModel):
         :type TimeoutPeriod: int
         :param EngineType: 1标准模式（只报严重、高危）、2增强模式（报严重、高危、中危）、3严格模式（报严重、高、中、低、提示）
         :type EngineType: int
+        :param EnableMemShellScan: 是否开启恶意进程查杀[0:未开启,1:开启]
+        :type EnableMemShellScan: int
         """
         self.ScanPattern = None
         self.HostType = None
         self.QuuidList = None
         self.TimeoutPeriod = None
         self.EngineType = None
+        self.EnableMemShellScan = None
 
 
     def _deserialize(self, params):
@@ -4276,6 +4279,7 @@ class CreateScanMalwareSettingRequest(AbstractModel):
         self.QuuidList = params.get("QuuidList")
         self.TimeoutPeriod = params.get("TimeoutPeriod")
         self.EngineType = params.get("EngineType")
+        self.EnableMemShellScan = params.get("EnableMemShellScan")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11521,7 +11525,9 @@ Other 混合云专区
         :param Offset: 偏移量，默认为0。
         :type Offset: int
         :param Filters: 过滤条件。
-<li>Keywords - String - 是否必填：否 - 查询关键字 </li>
+<li>Ips - String - 是否必填：否 - 通过ip查询 </li>
+<li>Names - String - 是否必填：否 - 通过实例名查询 </li>
+<li>InstanceIds - String - 是否必填：否 - 通过实例id查询 </li>
 <li>Status - String - 是否必填：否 - 客户端在线状态（OFFLINE: 离线/关机 | ONLINE: 在线 | UNINSTALLED：未安装 | AGENT_OFFLINE 离线| AGENT_SHUTDOWN 已关机）</li>
 <li>Version - String  是否必填：否 - 当前防护版本（ PRO_VERSION：专业版 | BASIC_VERSION：基础版 | Flagship : 旗舰版 | ProtectedMachines: 专业版+旗舰版）</li>
 <li>Risk - String 是否必填: 否 - 风险主机( yes ) </li>
@@ -11857,12 +11863,16 @@ class DescribeMalwareRiskWarningResponse(AbstractModel):
         :type List: list of MalwareRisk
         :param IsPop: 是否弹出提示 true 弹出, false不弹
         :type IsPop: bool
+        :param ProcessList: 异常进程列表信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProcessList: list of MalwareRisk
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.IsCheckRisk = None
         self.List = None
         self.IsPop = None
+        self.ProcessList = None
         self.RequestId = None
 
 
@@ -11875,6 +11885,12 @@ class DescribeMalwareRiskWarningResponse(AbstractModel):
                 obj._deserialize(item)
                 self.List.append(obj)
         self.IsPop = params.get("IsPop")
+        if params.get("ProcessList") is not None:
+            self.ProcessList = []
+            for item in params.get("ProcessList"):
+                obj = MalwareRisk()
+                obj._deserialize(item)
+                self.ProcessList.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -11922,6 +11938,8 @@ class DescribeMalwareTimingScanSettingResponse(AbstractModel):
         :type EngineType: int
         :param EnableInspiredEngine: 启发引擎 0 关闭 1开启
         :type EnableInspiredEngine: int
+        :param EnableMemShellScan: 是否开启恶意进程查杀[0:未开启,1:开启]
+        :type EnableMemShellScan: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -11940,6 +11958,7 @@ class DescribeMalwareTimingScanSettingResponse(AbstractModel):
         self.KillProcess = None
         self.EngineType = None
         self.EnableInspiredEngine = None
+        self.EnableMemShellScan = None
         self.RequestId = None
 
 
@@ -11959,6 +11978,7 @@ class DescribeMalwareTimingScanSettingResponse(AbstractModel):
         self.KillProcess = params.get("KillProcess")
         self.EngineType = params.get("EngineType")
         self.EnableInspiredEngine = params.get("EnableInspiredEngine")
+        self.EnableMemShellScan = params.get("EnableMemShellScan")
         self.RequestId = params.get("RequestId")
 
 
@@ -18042,6 +18062,9 @@ class Machine(AbstractModel):
         :param IsAddedOnTheFifteen: 是否15天内新增的主机 0：非15天内新增的主机，1：15天内增加的主机
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsAddedOnTheFifteen: int
+        :param IpList: 主机ip列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpList: str
         """
         self.MachineName = None
         self.MachineOs = None
@@ -18069,6 +18092,7 @@ class Machine(AbstractModel):
         self.ProtectType = None
         self.CloudTags = None
         self.IsAddedOnTheFifteen = None
+        self.IpList = None
 
 
     def _deserialize(self, params):
@@ -18110,6 +18134,7 @@ class Machine(AbstractModel):
                 obj._deserialize(item)
                 self.CloudTags.append(obj)
         self.IsAddedOnTheFifteen = params.get("IsAddedOnTheFifteen")
+        self.IpList = params.get("IpList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18166,7 +18191,7 @@ class MalWareList(AbstractModel):
         :type FilePath: str
         :param VirusName: 描述
         :type VirusName: str
-        :param Status: 状态；4-:待处理，5-已信任，6-已隔离，8-文件已删除
+        :param Status: 状态；4-:待处理，5-已信任，6-已隔离，8-文件已删除, 14:已处理
         :type Status: int
         :param Id: 唯一ID
 注意：此字段可能返回 null，表示取不到有效值。
@@ -18857,6 +18882,8 @@ class ModifyMalwareTimingScanSettingsRequest(AbstractModel):
         :type EngineType: int
         :param EnableInspiredEngine: 启发引擎开关 0 关闭 1开启
         :type EnableInspiredEngine: int
+        :param EnableMemShellScan: 是否开启恶意进程查杀[0:未开启,1:开启]
+        :type EnableMemShellScan: int
         """
         self.CheckPattern = None
         self.StartTime = None
@@ -18871,6 +18898,7 @@ class ModifyMalwareTimingScanSettingsRequest(AbstractModel):
         self.KillProcess = None
         self.EngineType = None
         self.EnableInspiredEngine = None
+        self.EnableMemShellScan = None
 
 
     def _deserialize(self, params):
@@ -18887,6 +18915,7 @@ class ModifyMalwareTimingScanSettingsRequest(AbstractModel):
         self.KillProcess = params.get("KillProcess")
         self.EngineType = params.get("EngineType")
         self.EnableInspiredEngine = params.get("EnableInspiredEngine")
+        self.EnableMemShellScan = params.get("EnableMemShellScan")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -30,12 +30,12 @@ class AssessQualityRequest(AbstractModel):
 • 图片格式：PNG、JPG、JPEG。 
 • 图片大小：所下载图片经Base64编码后不超过4M。图片下载时间不超过3秒。 
 建议：
-• 图片像素：大于50*50像素，否则影响识别效果； 
-• 长宽比：长边：短边<5； 
+• 图片像素：大于50*50像素，否则影响识别效果。 
+• 长宽比：长边：短边<5。
 接口响应时间会受到图片下载时间的影响，建议使用更可靠的存储服务，推荐将图片存储在腾讯云COS。
         :type ImageUrl: str
-        :param ImageBase64: 图片经过base64编码的内容。最大不超过4M。与ImageUrl同时存在时优先使用ImageUrl字段。
-**注意：图片需要base64编码，并且要去掉编码头部。**
+        :param ImageBase64: 图片经过Base64编码的内容。最大不超过4M。与ImageUrl同时存在时优先使用ImageUrl字段。
+**注意：图片需要Base64编码，并且要去掉编码头部。**
         :type ImageBase64: str
         """
         self.ImageUrl = None
@@ -555,25 +555,25 @@ class CropImageRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Width: 需要裁剪区域的宽度，与Height共同组成所需裁剪的图片宽高比例；
-输入数字请大于0、小于图片宽度的像素值；
+        :param Width: 需要裁剪区域的宽度，与Height共同组成所需裁剪的图片宽高比例。
+输入数字请大于0、小于图片宽度的像素值。
         :type Width: int
-        :param Height: 需要裁剪区域的高度，与Width共同组成所需裁剪的图片宽高比例；
-输入数字请请大于0、小于图片高度的像素值；
+        :param Height: 需要裁剪区域的高度，与Width共同组成所需裁剪的图片宽高比例。
+输入数字请请大于0、小于图片高度的像素值。
 宽高比例（Width : Height）会简化为最简分数，即如果Width输入10、Height输入20，会简化为1：2。
-Width : Height建议取值在[1, 2.5]之间，超过这个范围可能会影响效果；
+Width : Height建议取值在[1, 2.5]之间，超过这个范围可能会影响效果。
         :type Height: int
         :param ImageUrl: 图片URL地址。 
 图片限制： 
 • 图片格式：PNG、JPG、JPEG。 
 • 图片大小：所下载图片经Base64编码后不超过4M。图片下载时间不超过3秒。 
 建议：
-• 图片像素：大于50*50像素，否则影响识别效果； 
-• 长宽比：长边：短边<5； 
+• 图片像素：大于50*50像素，否则影响识别效果。
+• 长宽比：长边：短边<5。 
 接口响应时间会受到图片下载时间的影响，建议使用更可靠的存储服务，推荐将图片存储在腾讯云COS。
         :type ImageUrl: str
-        :param ImageBase64: 图片经过base64编码的内容。最大不超过4M。与ImageUrl同时存在时优先使用ImageUrl字段。
-**注意：图片需要base64编码，并且要去掉编码头部。**
+        :param ImageBase64: 图片经过Base64编码的内容。最大不超过4M。与ImageUrl同时存在时优先使用ImageUrl字段。
+注意：图片需要Base64编码，并且要去掉编码头部。
         :type ImageBase64: str
         """
         self.Width = None
@@ -1353,6 +1353,64 @@ class DetectMisbehaviorResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DetectPetRequest(AbstractModel):
+    """DetectPet请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageUrl: 图片的URL地址。图片存储于腾讯云的Url可保障更高下载速度和稳定性，建议图片存储于腾讯云。 
+非腾讯云存储的Url速度和稳定性可能受一定影响。
+图片大小的限制为4M，图片像素的限制为4k。
+        :type ImageUrl: str
+        :param ImageBase64: 图片经过base64编码的内容。与ImageUrl同时存在时优先使用ImageUrl字段。 
+图片大小的限制为4M，图片像素的限制为4k。
+**注意：图片需要base64编码，并且要去掉编码头部。**
+        :type ImageBase64: str
+        """
+        self.ImageUrl = None
+        self.ImageBase64 = None
+
+
+    def _deserialize(self, params):
+        self.ImageUrl = params.get("ImageUrl")
+        self.ImageBase64 = params.get("ImageBase64")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DetectPetResponse(AbstractModel):
+    """DetectPet返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Pets: 识别出图片中的宠物信息列表。
+        :type Pets: list of Pet
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Pets = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Pets") is not None:
+            self.Pets = []
+            for item in params.get("Pets"):
+                obj = Pet()
+                obj._deserialize(item)
+                self.Pets.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DetectProductBetaRequest(AbstractModel):
     """DetectProductBeta请求参数结构体
 
@@ -1506,12 +1564,12 @@ class EnhanceImageRequest(AbstractModel):
 • 图片格式：PNG、JPG、JPEG。 
 • 图片大小：所下载图片经Base64编码后不超过4M。图片下载时间不超过3秒。 
 建议：
-• 图片像素：大于50*50像素，最大不超过250万像素，否则影响识别效果； 
-• 长宽比：长边：短边<5； 
+• 图片像素：大于50*50像素，最大不超过250万像素，否则影响识别效果。 
+• 长宽比：长边：短边<5。 
 接口响应时间会受到图片下载时间的影响，建议使用更可靠的存储服务，推荐将图片存储在腾讯云COS。
         :type ImageUrl: str
-        :param ImageBase64: 支持PNG、JPG、JPEG、BMP，不支持 GIF 图片。图片经过base64编码的内容。最大不超过4M。与ImageUrl同时存在时优先使用ImageUrl字段。
-**注意：图片需要base64编码，并且要去掉编码头部。**
+        :param ImageBase64: 支持PNG、JPG、JPEG、BMP，不支持 GIF 图片。图片经过Base64编码的内容。最大不超过4M。与ImageUrl同时存在时优先使用ImageUrl字段。
+注意：图片需要Base64编码，并且要去掉编码头部。
         :type ImageBase64: str
         """
         self.ImageUrl = None
@@ -1835,6 +1893,40 @@ class ObjectInfo(AbstractModel):
                 obj = Box()
                 obj._deserialize(item)
                 self.AllBox.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Pet(AbstractModel):
+    """宠物具体信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 识别出的宠物类型（猫或者狗，暂不支持识别猫狗品种）。
+        :type Name: str
+        :param Score: 识别服务给识别目标打出的置信度，范围在0-100之间。值越高，表示目标为相应结果的可能性越高。
+        :type Score: int
+        :param Location: 识别目标在图片中的坐标。
+        :type Location: :class:`tencentcloud.tiia.v20190529.models.Rect`
+        """
+        self.Name = None
+        self.Score = None
+        self.Location = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Score = params.get("Score")
+        if params.get("Location") is not None:
+            self.Location = Rect()
+            self.Location._deserialize(params.get("Location"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

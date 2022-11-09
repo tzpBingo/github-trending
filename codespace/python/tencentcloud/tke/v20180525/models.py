@@ -2126,9 +2126,9 @@ class CreateClusterNodePoolRequest(AbstractModel):
         r"""
         :param ClusterId: cluster id
         :type ClusterId: str
-        :param AutoScalingGroupPara: AutoScalingGroupPara AS组参数
+        :param AutoScalingGroupPara: AutoScalingGroupPara AS组参数，参考 https://cloud.tencent.com/document/product/377/20440
         :type AutoScalingGroupPara: str
-        :param LaunchConfigurePara: LaunchConfigurePara 运行参数
+        :param LaunchConfigurePara: LaunchConfigurePara 运行参数，参考 https://cloud.tencent.com/document/product/377/20447
         :type LaunchConfigurePara: str
         :param InstanceAdvancedSettings: InstanceAdvancedSettings 示例参数
         :type InstanceAdvancedSettings: :class:`tencentcloud.tke.v20180525.models.InstanceAdvancedSettings`
@@ -10330,7 +10330,7 @@ class EnhancedService(AbstractModel):
         :type SecurityService: :class:`tencentcloud.tke.v20180525.models.RunSecurityServiceEnabled`
         :param MonitorService: 开启云监控服务。若不指定该参数，则默认开启云监控服务。
         :type MonitorService: :class:`tencentcloud.tke.v20180525.models.RunMonitorServiceEnabled`
-        :param AutomationService: 开启云自动化助手服务。若不指定该参数，则默认不开启云自动化助手服务。
+        :param AutomationService: 开启云自动化助手服务（TencentCloud Automation Tools，TAT）。若不指定该参数，则公共镜像默认开启云自动化助手服务，其他镜像默认不开启云自动化助手服务。
         :type AutomationService: :class:`tencentcloud.tke.v20180525.models.RunAutomationServiceEnabled`
         """
         self.SecurityService = None

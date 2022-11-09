@@ -758,12 +758,15 @@ false: 使用vpc域名
         :type UsePublicDomain: bool
         :param RegionName: 解析地域，需要保证和vpc处于同一地域，如果不填则默认为主实例地域
         :type RegionName: str
+        :param RegionId: 请求的地域ID，用于实例复制地域
+        :type RegionId: int
         """
         self.InstanceId = None
         self.VpcId = None
         self.EniLBIp = None
         self.UsePublicDomain = None
         self.RegionName = None
+        self.RegionId = None
 
 
     def _deserialize(self, params):
@@ -772,6 +775,7 @@ false: 使用vpc域名
         self.EniLBIp = params.get("EniLBIp")
         self.UsePublicDomain = params.get("UsePublicDomain")
         self.RegionName = params.get("RegionName")
+        self.RegionId = params.get("RegionId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3317,6 +3321,8 @@ class DescribeImagesRequest(AbstractModel):
         :type Offset: int
         :param Digest: 指定镜像 Digest 进行查找
         :type Digest: str
+        :param ExactMatch: 指定是否为精准匹配，true为精准匹配，不填为模糊匹配
+        :type ExactMatch: bool
         """
         self.RegistryId = None
         self.NamespaceName = None
@@ -3325,6 +3331,7 @@ class DescribeImagesRequest(AbstractModel):
         self.Limit = None
         self.Offset = None
         self.Digest = None
+        self.ExactMatch = None
 
 
     def _deserialize(self, params):
@@ -3335,6 +3342,7 @@ class DescribeImagesRequest(AbstractModel):
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
         self.Digest = params.get("Digest")
+        self.ExactMatch = params.get("ExactMatch")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3438,6 +3446,28 @@ class DescribeInstanceAllNamespacesRequest(AbstractModel):
     """DescribeInstanceAllNamespaces请求参数结构体
 
     """
+
+    def __init__(self):
+        r"""
+        :param Limit: 每页个数
+        :type Limit: int
+        :param Offset: 起始偏移位置
+        :type Offset: int
+        """
+        self.Limit = None
+        self.Offset = None
+
+
+    def _deserialize(self, params):
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DescribeInstanceAllNamespacesResponse(AbstractModel):

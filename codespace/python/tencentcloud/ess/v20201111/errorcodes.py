@@ -371,6 +371,9 @@ OPERATIONDENIED_ERRNORESOURCEACCESS = 'OperationDenied.ErrNoResourceAccess'
 # 个人签署方不支持设置企业名称，请确认签署人类型后重试。
 OPERATIONDENIED_ERRNOSUPPORTINDIVIDUALHASORGANIZATIONNAME = 'OperationDenied.ErrNoSupportIndividualHasOrganizationName'
 
+# 文件已被删除，请联系客服处理。
+OPERATIONDENIED_FILEDELETED = 'OperationDenied.FileDeleted'
+
 # 文件与资源不匹配，请检查文件名与资源id数量以及对应关系，并在修改后重试。
 OPERATIONDENIED_FILENOMATCHRESOURCE = 'OperationDenied.FileNoMatchResource'
 
@@ -430,6 +433,9 @@ OPERATIONDENIED_NOVERIFY = 'OperationDenied.NoVerify'
 
 # 不属于企业超管或者法人。
 OPERATIONDENIED_NOTBELONGSUPERADMINORLEGALPERSON = 'OperationDenied.NotBelongSuperAdminOrLegalPerson'
+
+# 操作者权限不足。
+OPERATIONDENIED_OPERATORHASNOPERMISSION = 'OperationDenied.OperatorHasNoPermission'
 
 # 此社会信用编码未查询到结果，请检查后重试。
 OPERATIONDENIED_ORGUNIFORMSOCIALCREDITCODEERR = 'OperationDenied.OrgUniformSocialCreditCodeErr'

@@ -462,7 +462,7 @@ class CreateClusterRequest(AbstractModel):
         :type ComputeNode: :class:`tencentcloud.thpc.v20220401.models.ComputeNode`
         :param ComputeNodeCount: 指定计算节点的数量。默认取值：0。
         :type ComputeNodeCount: int
-        :param SchedulerType: 调度器类型。<br><li>SGE：SGE调度器。<br><li>SLURM：SLURM调度器。
+        :param SchedulerType: 调度器类型。默认取值：SLURM。<br><li>SGE：SGE调度器。<br><li>SLURM：SLURM调度器。
         :type SchedulerType: str
         :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前仅支持公有镜像。
         :type ImageId: str
@@ -480,7 +480,7 @@ true：发送检查请求，不会创建实例。检查项包括是否填写了�
 如果检查通过，则返回RequestId.
 false（默认）：发送正常请求，通过检查后直接创建实例
         :type DryRun: bool
-        :param AccountType: 域名字服务类型。默认值：NIS
+        :param AccountType: 域名字服务类型。默认取值：NIS。
 <li>NIS：NIS域名字服务。
         :type AccountType: str
         :param ClusterName: 集群显示名称。
@@ -493,6 +493,8 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         :type LoginNodeCount: int
         :param Tags: 创建集群时同时绑定的标签对说明。
         :type Tags: list of Tag
+        :param AutoScalingType: 弹性伸缩类型。<br><li>AS：集群自动扩缩容由[弹性伸缩](https://cloud.tencent.com/document/product/377/3154)产品实现。<br><li>THPC_AS：集群自动扩缩容由THPC产品内部实现。
+        :type AutoScalingType: str
         """
         self.Placement = None
         self.ManagerNode = None
@@ -512,6 +514,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         self.LoginNode = None
         self.LoginNodeCount = None
         self.Tags = None
+        self.AutoScalingType = None
 
 
     def _deserialize(self, params):
@@ -552,6 +555,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
                 obj = Tag()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.AutoScalingType = params.get("AutoScalingType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
