@@ -277,6 +277,9 @@ class TextModerationResponse(AbstractModel):
         :param SubLabel: 该字段用于返回当前标签（Label）下的二级标签。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SubLabel: str
+        :param ContextText: 该字段用于返回上下文关联文本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContextText: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -290,6 +293,7 @@ class TextModerationResponse(AbstractModel):
         self.Extra = None
         self.DataId = None
         self.SubLabel = None
+        self.ContextText = None
         self.RequestId = None
 
 
@@ -314,6 +318,7 @@ class TextModerationResponse(AbstractModel):
         self.Extra = params.get("Extra")
         self.DataId = params.get("DataId")
         self.SubLabel = params.get("SubLabel")
+        self.ContextText = params.get("ContextText")
         self.RequestId = params.get("RequestId")
 
 
@@ -349,6 +354,12 @@ class User(AbstractModel):
         :type HeadUrl: str
         :param Desc: 该字段表示业务用户的简介信息，支持汉字、英文及特殊符号，长度不超过5000个汉字字符。
         :type Desc: str
+        :param RoomId: 该字段表示业务群聊场景时的房间ID。
+        :type RoomId: str
+        :param ReceiverId: 该字段表示消息接受者ID
+        :type ReceiverId: str
+        :param SendTime: 消息生成时间，精确到毫秒
+        :type SendTime: int
         """
         self.UserId = None
         self.Nickname = None
@@ -359,6 +370,9 @@ class User(AbstractModel):
         self.Phone = None
         self.HeadUrl = None
         self.Desc = None
+        self.RoomId = None
+        self.ReceiverId = None
+        self.SendTime = None
 
 
     def _deserialize(self, params):
@@ -371,6 +385,9 @@ class User(AbstractModel):
         self.Phone = params.get("Phone")
         self.HeadUrl = params.get("HeadUrl")
         self.Desc = params.get("Desc")
+        self.RoomId = params.get("RoomId")
+        self.ReceiverId = params.get("ReceiverId")
+        self.SendTime = params.get("SendTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -47,6 +47,9 @@ INVALIDPARAMETERVALUE_LIMITEXCEEDED = 'InvalidParameterValue.LimitExceeded'
 # 指定的手机号码与当前的相同。
 INVALIDPARAMETERVALUE_NOTMODIFIED = 'InvalidParameterValue.NotModified'
 
+# 指定的手机号码非该企业的超级管理员。
+INVALIDPARAMETERVALUE_NOTSUPERADMIN = 'InvalidParameterValue.NotSuperAdmin'
+
 # 指定的手机号码无效。
 INVALIDPARAMETERVALUE_PHONENUMBER = 'InvalidParameterValue.PhoneNumber'
 
@@ -64,6 +67,9 @@ RESOURCENOTFOUND_LIBRARY = 'ResourceNotFound.Library'
 
 # 官方云盘实例不存在或不属于当前账号。
 RESOURCENOTFOUND_OFFICIALINSTANCE = 'ResourceNotFound.OfficialInstance'
+
+# 尚未开通 COS 数据处理（数据万象）服务。
+UNAUTHORIZEDOPERATION_CREATEMEDIABUCKET = 'UnauthorizedOperation.CreateMediaBucket'
 
 # 未授予 cam:PassRole 权限。
 UNAUTHORIZEDOPERATION_PASSROLE = 'UnauthorizedOperation.PassRole'

@@ -1848,6 +1848,51 @@ class AffectedWorkloadItem(AbstractModel):
         
 
 
+class AssetClusterListItem(AbstractModel):
+    """集群列表Item
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterID: 集群ID
+        :type ClusterID: str
+        :param ClusterName: 集群名称
+        :type ClusterName: str
+        :param Status: 集群状态
+CSR_RUNNING: 运行中
+CSR_EXCEPTION:异常
+CSR_DEL:已经删除
+        :type Status: str
+        :param BindRuleName: 绑定规则名称
+        :type BindRuleName: str
+        :param ClusterType: 集群类型:
+CT_TKE: TKE集群
+CT_USER_CREATE: 用户自建集群
+        :type ClusterType: str
+        """
+        self.ClusterID = None
+        self.ClusterName = None
+        self.Status = None
+        self.BindRuleName = None
+        self.ClusterType = None
+
+
+    def _deserialize(self, params):
+        self.ClusterID = params.get("ClusterID")
+        self.ClusterName = params.get("ClusterName")
+        self.Status = params.get("Status")
+        self.BindRuleName = params.get("BindRuleName")
+        self.ClusterType = params.get("ClusterType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AssetFilters(AbstractModel):
     """容器安全
     描述键值对过滤器，用于条件过滤查询。例如过滤ID、名称、状态等
@@ -4928,29 +4973,38 @@ class CreateHostExportJobRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ExportField: 导出字段
-        :type ExportField: list of str
-        :param Filters: 需要返回的数量，默认为10，最大值为10000
+        :param Filters: 过滤条件。
+<li>Status - String - 是否必填：否 - agent状态筛选，"ALL":"全部"(或不传该字段),"UNINSTALL"："未安装","OFFLINE"："离线", "ONLINE"："防护中"</li>
+<li>HostName - String - 是否必填：否 - 主机名筛选</li>
+<li>Group- String - 是否必填：否 - 主机群组搜索</li>
+<li>HostIP- string - 是否必填：否 - 主机ip搜索</li>
+<li>HostID- string - 是否必填：否 - 主机id搜索</li>
+<li>DockerVersion- string - 是否必填：否 - docker版本搜索</li>
+<li>MachineType- string - 是否必填：否 - 主机来源MachineType搜索，"ALL":"全部"(或不传该字段),主机来源：["CVM", "ECM", "LH", "BM"]  中的之一为腾讯云服务器；["Other"]之一非腾讯云服务器；</li>
+<li>DockerStatus- string - 是否必填：否 - docker安装状态，"ALL":"全部"(或不传该字段),"INSTALL":"已安装","UNINSTALL":"未安装"</li>
+<li>ProjectID- string - 是否必填：否 - 所属项目id搜索</li>
+<li>Tag:xxx(tag:key)- string- 是否必填：否 - 标签键值搜索 示例Filters":[{"Name":"tag:tke-kind","Values":["service"]}]</li>
         :type Filters: list of AssetFilters
         :param Limit: 偏移量，默认为0。
         :type Limit: int
-        :param Offset: 过滤参数,"Filters":[{"Name":"Status","Values":["2"]}]
+        :param Offset: 需要返回的数量，默认为10，最大值为10000
         :type Offset: int
         :param By: 排序字段
         :type By: str
         :param Order: 升序降序,asc desc
         :type Order: str
+        :param ExportField: 导出字段
+        :type ExportField: list of str
         """
-        self.ExportField = None
         self.Filters = None
         self.Limit = None
         self.Offset = None
         self.By = None
         self.Order = None
+        self.ExportField = None
 
 
     def _deserialize(self, params):
-        self.ExportField = params.get("ExportField")
         if params.get("Filters") is not None:
             self.Filters = []
             for item in params.get("Filters"):
@@ -4961,6 +5015,7 @@ class CreateHostExportJobRequest(AbstractModel):
         self.Offset = params.get("Offset")
         self.By = params.get("By")
         self.Order = params.get("Order")
+        self.ExportField = params.get("ExportField")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5066,6 +5121,195 @@ class CreateImageExportJobResponse(AbstractModel):
     def _deserialize(self, params):
         self.JobId = params.get("JobId")
         self.DownloadUrl = params.get("DownloadUrl")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateK8sApiAbnormalEventExportJobRequest(AbstractModel):
+    """CreateK8sApiAbnormalEventExportJob请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件。
+<li>TimeRange - string -是否必填: 否 - 时间范围筛选 ["2022-03-31 16:55:00", "2022-03-31 17:00:00"]</li>
+<li>MatchRules - string  - 是否必填: 否 -命中规则筛选</li>
+<li>RiskLevel - string  - 是否必填: 否 -威胁等级筛选</li>
+<li>Status - string  - 是否必填: 否 -事件状态筛选</li>
+<li>MatchRuleType - string  - 是否必填: 否 -命中规则类型筛选</li>
+<li>ClusterRunningStatus - string  - 是否必填: 否 -集群运行状态</li>
+<li>ClusterName - string  - 是否必填: 否 -集群名称</li>
+<li>ClusterID - string  - 是否必填: 否 -集群ID</li>
+        :type Filters: list of RunTimeFilters
+        :param Order: 排序方式
+        :type Order: str
+        :param By: 排序字段
+        :type By: str
+        :param ExportField: 导出字段
+        :type ExportField: list of str
+        """
+        self.Filters = None
+        self.Order = None
+        self.By = None
+        self.ExportField = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = RunTimeFilters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        self.ExportField = params.get("ExportField")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateK8sApiAbnormalEventExportJobResponse(AbstractModel):
+    """CreateK8sApiAbnormalEventExportJob返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 导出任务ID，前端拿着任务ID查询任务进度
+        :type JobId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.JobId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateK8sApiAbnormalRuleExportJobRequest(AbstractModel):
+    """CreateK8sApiAbnormalRuleExportJob请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件。
+<li>RuleType - string  - 是否必填: 否 -规则类型</li>
+<li>Status - string  - 是否必填: 否 -状态</li>
+        :type Filters: list of RunTimeFilters
+        :param Order: 排序方式
+        :type Order: str
+        :param By: 排序字段
+        :type By: list of str
+        :param ExportField: 导出字段
+        :type ExportField: list of str
+        """
+        self.Filters = None
+        self.Order = None
+        self.By = None
+        self.ExportField = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = RunTimeFilters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        self.ExportField = params.get("ExportField")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateK8sApiAbnormalRuleExportJobResponse(AbstractModel):
+    """CreateK8sApiAbnormalRuleExportJob返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 导出任务ID，前端拿着任务ID查询任务进度
+        :type JobId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.JobId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateK8sApiAbnormalRuleInfoRequest(AbstractModel):
+    """CreateK8sApiAbnormalRuleInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleInfo: 规则详情
+        :type RuleInfo: :class:`tencentcloud.tcss.v20201101.models.K8sApiAbnormalRuleInfo`
+        :param CopySrcRuleID: 拷贝规则ID(适用于复制规则场景)
+        :type CopySrcRuleID: str
+        :param EventID: 事件ID(适用于事件加白场景)
+        :type EventID: int
+        """
+        self.RuleInfo = None
+        self.CopySrcRuleID = None
+        self.EventID = None
+
+
+    def _deserialize(self, params):
+        if params.get("RuleInfo") is not None:
+            self.RuleInfo = K8sApiAbnormalRuleInfo()
+            self.RuleInfo._deserialize(params.get("RuleInfo"))
+        self.CopySrcRuleID = params.get("CopySrcRuleID")
+        self.EventID = params.get("EventID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateK8sApiAbnormalRuleInfoResponse(AbstractModel):
+    """CreateK8sApiAbnormalRuleInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleID: 规则ID
+        :type RuleID: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RuleID = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RuleID = params.get("RuleID")
         self.RequestId = params.get("RequestId")
 
 
@@ -6525,6 +6769,47 @@ class DeleteIgnoreVulRequest(AbstractModel):
 
 class DeleteIgnoreVulResponse(AbstractModel):
     """DeleteIgnoreVul返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteK8sApiAbnormalRuleRequest(AbstractModel):
+    """DeleteK8sApiAbnormalRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleIDSet: 规则ID集合
+        :type RuleIDSet: list of str
+        """
+        self.RuleIDSet = None
+
+
+    def _deserialize(self, params):
+        self.RuleIDSet = params.get("RuleIDSet")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteK8sApiAbnormalRuleResponse(AbstractModel):
+    """DeleteK8sApiAbnormalRule返回参数结构体
 
     """
 
@@ -8244,6 +8529,84 @@ class DescribeAssetAppServiceListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeAssetClusterListRequest(AbstractModel):
+    """DescribeAssetClusterList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件。
+<li>ClusterID - string  - 是否必填: 否 -集群ID</li>
+<li>ClusterName - string  - 是否必填: 否 -集群名称</li>
+<li>Status - string  - 是否必填: 否 -集群状态</li>
+        :type Filters: list of RunTimeFilters
+        :param Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Order: 排序方式
+        :type Order: str
+        :param By: 排序字段。
+        :type By: str
+        """
+        self.Filters = None
+        self.Limit = None
+        self.Offset = None
+        self.Order = None
+        self.By = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = RunTimeFilters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAssetClusterListResponse(AbstractModel):
+    """DescribeAssetClusterList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param List: 集群列表
+        :type List: list of AssetClusterListItem
+        :param TotalCount: 总数量
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.List = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = AssetClusterListItem()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeAssetComponentListRequest(AbstractModel):
     """DescribeAssetComponentList请求参数结构体
 
@@ -8708,6 +9071,10 @@ class DescribeAssetHostDetailResponse(AbstractModel):
         :type InstanceID: str
         :param RegionID: 地域ID
         :type RegionID: int
+        :param Project: 所属项目
+        :type Project: :class:`tencentcloud.tcss.v20201101.models.ProjectInfo`
+        :param Tags: 标签
+        :type Tags: list of TagInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -8735,6 +9102,8 @@ class DescribeAssetHostDetailResponse(AbstractModel):
         self.PublicIp = None
         self.InstanceID = None
         self.RegionID = None
+        self.Project = None
+        self.Tags = None
         self.RequestId = None
 
 
@@ -8763,6 +9132,15 @@ class DescribeAssetHostDetailResponse(AbstractModel):
         self.PublicIp = params.get("PublicIp")
         self.InstanceID = params.get("InstanceID")
         self.RegionID = params.get("RegionID")
+        if params.get("Project") is not None:
+            self.Project = ProjectInfo()
+            self.Project._deserialize(params.get("Project"))
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = TagInfo()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -8786,6 +9164,8 @@ class DescribeAssetHostListRequest(AbstractModel):
 <li>DockerVersion- string - 是否必填：否 - docker版本搜索</li>
 <li>MachineType- string - 是否必填：否 - 主机来源MachineType搜索，"ALL":"全部"(或不传该字段),主机来源：["CVM", "ECM", "LH", "BM"]  中的之一为腾讯云服务器；["Other"]之一非腾讯云服务器；</li>
 <li>DockerStatus- string - 是否必填：否 - docker安装状态，"ALL":"全部"(或不传该字段),"INSTALL":"已安装","UNINSTALL":"未安装"</li>
+<li>ProjectID- string - 是否必填：否 - 所属项目id搜索</li>
+<li>Tag:xxx(tag:key)- string- 是否必填：否 - 标签键值搜索 示例Filters":[{"Name":"tag:tke-kind","Values":["service"]}]</li>
         :type Filters: list of AssetFilters
         :param By: 排序字段
         :type By: str
@@ -14097,6 +14477,430 @@ class DescribeInspectionReportResponse(AbstractModel):
     def _deserialize(self, params):
         self.ReportName = params.get("ReportName")
         self.ReportUrl = params.get("ReportUrl")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeK8sApiAbnormalEventInfoRequest(AbstractModel):
+    """DescribeK8sApiAbnormalEventInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ID: 事件ID
+        :type ID: int
+        """
+        self.ID = None
+
+
+    def _deserialize(self, params):
+        self.ID = params.get("ID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeK8sApiAbnormalEventInfoResponse(AbstractModel):
+    """DescribeK8sApiAbnormalEventInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 事件详情
+        :type Info: :class:`tencentcloud.tcss.v20201101.models.K8sApiAbnormalEventInfo`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Info = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = K8sApiAbnormalEventInfo()
+            self.Info._deserialize(params.get("Info"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeK8sApiAbnormalEventListRequest(AbstractModel):
+    """DescribeK8sApiAbnormalEventList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件。
+<li>TimeRange - string -是否必填: 否 - 时间范围筛选 ["2022-03-31 16:55:00", "2022-03-31 17:00:00"]</li>
+<li>MatchRules - string  - 是否必填: 否 -命中规则筛选</li>
+<li>RiskLevel - string  - 是否必填: 否 -威胁等级筛选</li>
+<li>Status - string  - 是否必填: 否 -事件状态筛选</li>
+<li>MatchRuleType - string  - 是否必填: 否 -命中规则类型筛选</li>
+<li>ClusterRunningStatus - string  - 是否必填: 否 -集群运行状态</li>
+<li>ClusterName - string  - 是否必填: 否 -集群名称</li>
+<li>ClusterID - string  - 是否必填: 否 -集群ID</li>
+        :type Filters: list of RunTimeFilters
+        :param Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Order: 排序方式
+        :type Order: str
+        :param By: 排序字段
+LatestFoundTime: 最近生成时间
+AlarmCount: 告警数量
+        :type By: str
+        """
+        self.Filters = None
+        self.Limit = None
+        self.Offset = None
+        self.Order = None
+        self.By = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = RunTimeFilters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeK8sApiAbnormalEventListResponse(AbstractModel):
+    """DescribeK8sApiAbnormalEventList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param List: 事件列表
+        :type List: list of K8sApiAbnormalEventListItem
+        :param TotalCount: 总数量
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.List = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = K8sApiAbnormalEventListItem()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeK8sApiAbnormalRuleInfoRequest(AbstractModel):
+    """DescribeK8sApiAbnormalRuleInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleID: 规则ID
+        :type RuleID: str
+        """
+        self.RuleID = None
+
+
+    def _deserialize(self, params):
+        self.RuleID = params.get("RuleID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeK8sApiAbnormalRuleInfoResponse(AbstractModel):
+    """DescribeK8sApiAbnormalRuleInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 规则详情
+        :type Info: :class:`tencentcloud.tcss.v20201101.models.K8sApiAbnormalRuleInfo`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Info = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = K8sApiAbnormalRuleInfo()
+            self.Info._deserialize(params.get("Info"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeK8sApiAbnormalRuleListRequest(AbstractModel):
+    """DescribeK8sApiAbnormalRuleList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件。
+<li>RuleType - string  - 是否必填: 否 -规则类型</li>
+<li>Status - string  - 是否必填: 否 -状态</li>
+        :type Filters: list of RunTimeFilters
+        :param Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Order: 排序方式
+        :type Order: str
+        :param By: 排序字段。
+<li>UpdateTime - string  - 是否必填: 否 -最后更新时间</li>
+<li>EffectClusterCount - string  - 是否必填: 否 -影响集群数</li>
+        :type By: str
+        """
+        self.Filters = None
+        self.Limit = None
+        self.Offset = None
+        self.Order = None
+        self.By = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = RunTimeFilters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeK8sApiAbnormalRuleListResponse(AbstractModel):
+    """DescribeK8sApiAbnormalRuleList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param List: 规则列表
+        :type List: list of K8sApiAbnormalRuleListItem
+        :param TotalCount: 总数量
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.List = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = K8sApiAbnormalRuleListItem()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeK8sApiAbnormalRuleScopeListRequest(AbstractModel):
+    """DescribeK8sApiAbnormalRuleScopeList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleID: 规则ID
+        :type RuleID: str
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param Filters: 过滤条件。
+<li>Action - string -是否必填: 否 - 执行动作</li>
+<li>RiskLevel - string  - 是否必填: 否 -威胁等级筛选</li>
+        :type Filters: list of RunTimeFilters
+        """
+        self.RuleID = None
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.RuleID = params.get("RuleID")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = RunTimeFilters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeK8sApiAbnormalRuleScopeListResponse(AbstractModel):
+    """DescribeK8sApiAbnormalRuleScopeList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总数
+        :type TotalCount: int
+        :param List: 列表
+        :type List: list of K8sApiAbnormalRuleScopeInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.List = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = K8sApiAbnormalRuleScopeInfo()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeK8sApiAbnormalSummaryRequest(AbstractModel):
+    """DescribeK8sApiAbnormalSummary请求参数结构体
+
+    """
+
+
+class DescribeK8sApiAbnormalSummaryResponse(AbstractModel):
+    """DescribeK8sApiAbnormalSummary返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UnhandleEventCount: 待处理事件个数
+        :type UnhandleEventCount: int
+        :param UnhandleHighLevelEventCount: 待处理高危事件个数
+        :type UnhandleHighLevelEventCount: int
+        :param UnhandleMediumLevelEventCount: 待处理中危事件个数
+        :type UnhandleMediumLevelEventCount: int
+        :param UnhandleLowLevelEventCount: 待处理低危事件个数
+        :type UnhandleLowLevelEventCount: int
+        :param UnhandleNoticeLevelEventCount: 待处理提示级别事件个数
+        :type UnhandleNoticeLevelEventCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UnhandleEventCount = None
+        self.UnhandleHighLevelEventCount = None
+        self.UnhandleMediumLevelEventCount = None
+        self.UnhandleLowLevelEventCount = None
+        self.UnhandleNoticeLevelEventCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.UnhandleEventCount = params.get("UnhandleEventCount")
+        self.UnhandleHighLevelEventCount = params.get("UnhandleHighLevelEventCount")
+        self.UnhandleMediumLevelEventCount = params.get("UnhandleMediumLevelEventCount")
+        self.UnhandleLowLevelEventCount = params.get("UnhandleLowLevelEventCount")
+        self.UnhandleNoticeLevelEventCount = params.get("UnhandleNoticeLevelEventCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeK8sApiAbnormalTendencyRequest(AbstractModel):
+    """DescribeK8sApiAbnormalTendency请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TendencyPeriod: 趋势周期(默认为7天)
+        :type TendencyPeriod: int
+        """
+        self.TendencyPeriod = None
+
+
+    def _deserialize(self, params):
+        self.TendencyPeriod = params.get("TendencyPeriod")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeK8sApiAbnormalTendencyResponse(AbstractModel):
+    """DescribeK8sApiAbnormalTendency返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param List: 趋势列表
+        :type List: list of K8sApiAbnormalTendencyItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.List = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = K8sApiAbnormalTendencyItem()
+                obj._deserialize(item)
+                self.List.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -20605,6 +21409,12 @@ class HostInfo(AbstractModel):
         :type InstanceID: str
         :param RegionID: 地域ID
         :type RegionID: int
+        :param Project: 所属项目
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Project: :class:`tencentcloud.tcss.v20201101.models.ProjectInfo`
+        :param Tags: 标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of TagInfo
         """
         self.HostID = None
         self.HostIP = None
@@ -20621,6 +21431,8 @@ class HostInfo(AbstractModel):
         self.Uuid = None
         self.InstanceID = None
         self.RegionID = None
+        self.Project = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -20639,6 +21451,15 @@ class HostInfo(AbstractModel):
         self.Uuid = params.get("Uuid")
         self.InstanceID = params.get("InstanceID")
         self.RegionID = params.get("RegionID")
+        if params.get("Project") is not None:
+            self.Project = ProjectInfo()
+            self.Project._deserialize(params.get("Project"))
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = TagInfo()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21800,6 +22621,419 @@ class InitializeUserComplianceEnvironmentResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class K8sApiAbnormalEventInfo(AbstractModel):
+    """k8sApi异常事件详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MatchRuleName: 命中规则名称
+        :type MatchRuleName: str
+        :param MatchRuleType: 命中规则类型
+        :type MatchRuleType: str
+        :param RiskLevel: 告警等级
+        :type RiskLevel: str
+        :param ClusterID: 集群ID
+        :type ClusterID: str
+        :param ClusterName: 集群名称
+        :type ClusterName: str
+        :param ClusterRunningStatus: 集群运行状态
+        :type ClusterRunningStatus: str
+        :param FirstCreateTime: 初次生成时间
+        :type FirstCreateTime: str
+        :param LastCreateTime: 最近一次生成时间
+        :type LastCreateTime: str
+        :param AlarmCount: 告警数量
+        :type AlarmCount: int
+        :param Status: 状态
+"EVENT_UNDEAL":未处理
+"EVENT_DEALED": 已处理
+"EVENT_IGNORE": 忽略
+"EVENT_DEL": 删除
+"EVENT_ADD_WHITE": 加白
+        :type Status: str
+        :param ClusterMasterIP: 集群masterIP
+        :type ClusterMasterIP: str
+        :param K8sVersion: k8s版本
+        :type K8sVersion: str
+        :param RunningComponent: 运行时组件
+        :type RunningComponent: list of str
+        :param Desc: 描述
+        :type Desc: str
+        :param Suggestion: 建议
+        :type Suggestion: str
+        :param Info: 请求信息
+        :type Info: str
+        :param MatchRuleID: 规则ID
+        :type MatchRuleID: str
+        :param HighLightFields: 高亮字段数组
+        :type HighLightFields: list of str
+        :param MatchRule: 命中规则
+        :type MatchRule: :class:`tencentcloud.tcss.v20201101.models.K8sApiAbnormalRuleScopeInfo`
+        """
+        self.MatchRuleName = None
+        self.MatchRuleType = None
+        self.RiskLevel = None
+        self.ClusterID = None
+        self.ClusterName = None
+        self.ClusterRunningStatus = None
+        self.FirstCreateTime = None
+        self.LastCreateTime = None
+        self.AlarmCount = None
+        self.Status = None
+        self.ClusterMasterIP = None
+        self.K8sVersion = None
+        self.RunningComponent = None
+        self.Desc = None
+        self.Suggestion = None
+        self.Info = None
+        self.MatchRuleID = None
+        self.HighLightFields = None
+        self.MatchRule = None
+
+
+    def _deserialize(self, params):
+        self.MatchRuleName = params.get("MatchRuleName")
+        self.MatchRuleType = params.get("MatchRuleType")
+        self.RiskLevel = params.get("RiskLevel")
+        self.ClusterID = params.get("ClusterID")
+        self.ClusterName = params.get("ClusterName")
+        self.ClusterRunningStatus = params.get("ClusterRunningStatus")
+        self.FirstCreateTime = params.get("FirstCreateTime")
+        self.LastCreateTime = params.get("LastCreateTime")
+        self.AlarmCount = params.get("AlarmCount")
+        self.Status = params.get("Status")
+        self.ClusterMasterIP = params.get("ClusterMasterIP")
+        self.K8sVersion = params.get("K8sVersion")
+        self.RunningComponent = params.get("RunningComponent")
+        self.Desc = params.get("Desc")
+        self.Suggestion = params.get("Suggestion")
+        self.Info = params.get("Info")
+        self.MatchRuleID = params.get("MatchRuleID")
+        self.HighLightFields = params.get("HighLightFields")
+        if params.get("MatchRule") is not None:
+            self.MatchRule = K8sApiAbnormalRuleScopeInfo()
+            self.MatchRule._deserialize(params.get("MatchRule"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class K8sApiAbnormalEventListItem(AbstractModel):
+    """k8sapi异常事件列表Item
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ID: 事件ID
+        :type ID: int
+        :param MatchRuleType: 命中规则类型
+        :type MatchRuleType: str
+        :param RiskLevel: 威胁等级
+        :type RiskLevel: str
+        :param ClusterID: 集群ID
+        :type ClusterID: str
+        :param ClusterName: 集群名称
+        :type ClusterName: str
+        :param ClusterRunningStatus: 集群运行状态
+        :type ClusterRunningStatus: str
+        :param FirstCreateTime: 初次生成时间
+        :type FirstCreateTime: str
+        :param LastCreateTime: 最近一次生成时间
+        :type LastCreateTime: str
+        :param AlarmCount: 告警数量
+        :type AlarmCount: int
+        :param Status: 状态
+        :type Status: str
+        :param RuleType: 规则类型
+        :type RuleType: str
+        :param Desc: 描述信息
+        :type Desc: str
+        :param Suggestion: 解决方案
+        :type Suggestion: str
+        :param RuleName: 规则名称
+        :type RuleName: str
+        :param MatchRule: 命中规则
+        :type MatchRule: :class:`tencentcloud.tcss.v20201101.models.K8sApiAbnormalRuleScopeInfo`
+        """
+        self.ID = None
+        self.MatchRuleType = None
+        self.RiskLevel = None
+        self.ClusterID = None
+        self.ClusterName = None
+        self.ClusterRunningStatus = None
+        self.FirstCreateTime = None
+        self.LastCreateTime = None
+        self.AlarmCount = None
+        self.Status = None
+        self.RuleType = None
+        self.Desc = None
+        self.Suggestion = None
+        self.RuleName = None
+        self.MatchRule = None
+
+
+    def _deserialize(self, params):
+        self.ID = params.get("ID")
+        self.MatchRuleType = params.get("MatchRuleType")
+        self.RiskLevel = params.get("RiskLevel")
+        self.ClusterID = params.get("ClusterID")
+        self.ClusterName = params.get("ClusterName")
+        self.ClusterRunningStatus = params.get("ClusterRunningStatus")
+        self.FirstCreateTime = params.get("FirstCreateTime")
+        self.LastCreateTime = params.get("LastCreateTime")
+        self.AlarmCount = params.get("AlarmCount")
+        self.Status = params.get("Status")
+        self.RuleType = params.get("RuleType")
+        self.Desc = params.get("Desc")
+        self.Suggestion = params.get("Suggestion")
+        self.RuleName = params.get("RuleName")
+        if params.get("MatchRule") is not None:
+            self.MatchRule = K8sApiAbnormalRuleScopeInfo()
+            self.MatchRule._deserialize(params.get("MatchRule"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class K8sApiAbnormalRuleInfo(AbstractModel):
+    """k8a api 异常请求规则详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleName: 规则名称
+        :type RuleName: str
+        :param Status: 状态
+        :type Status: bool
+        :param RuleInfoList: 规则信息列表
+        :type RuleInfoList: list of K8sApiAbnormalRuleScopeInfo
+        :param EffectClusterIDSet: 生效集群IDSet
+        :type EffectClusterIDSet: list of str
+        :param RuleType: 规则类型
+RT_SYSTEM 系统规则
+RT_USER 用户自定义
+        :type RuleType: str
+        :param EffectAllCluster: 是否所有集群生效
+        :type EffectAllCluster: bool
+        :param RuleID: 规则ID
+        :type RuleID: str
+        """
+        self.RuleName = None
+        self.Status = None
+        self.RuleInfoList = None
+        self.EffectClusterIDSet = None
+        self.RuleType = None
+        self.EffectAllCluster = None
+        self.RuleID = None
+
+
+    def _deserialize(self, params):
+        self.RuleName = params.get("RuleName")
+        self.Status = params.get("Status")
+        if params.get("RuleInfoList") is not None:
+            self.RuleInfoList = []
+            for item in params.get("RuleInfoList"):
+                obj = K8sApiAbnormalRuleScopeInfo()
+                obj._deserialize(item)
+                self.RuleInfoList.append(obj)
+        self.EffectClusterIDSet = params.get("EffectClusterIDSet")
+        self.RuleType = params.get("RuleType")
+        self.EffectAllCluster = params.get("EffectAllCluster")
+        self.RuleID = params.get("RuleID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class K8sApiAbnormalRuleListItem(AbstractModel):
+    """k8s api 异常请求规则列表Item
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleID: 规则ID
+        :type RuleID: str
+        :param RuleName: 规则名称
+        :type RuleName: str
+        :param RuleType: 规则类型
+RT_SYSTEM 系统规则
+RT_USER 用户自定义
+        :type RuleType: str
+        :param EffectClusterCount: 受影响集群总数
+        :type EffectClusterCount: int
+        :param UpdateTime: 更新时间
+        :type UpdateTime: str
+        :param OprUin: 编辑账号
+        :type OprUin: str
+        :param Status: 状态
+        :type Status: bool
+        """
+        self.RuleID = None
+        self.RuleName = None
+        self.RuleType = None
+        self.EffectClusterCount = None
+        self.UpdateTime = None
+        self.OprUin = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.RuleID = params.get("RuleID")
+        self.RuleName = params.get("RuleName")
+        self.RuleType = params.get("RuleType")
+        self.EffectClusterCount = params.get("EffectClusterCount")
+        self.UpdateTime = params.get("UpdateTime")
+        self.OprUin = params.get("OprUin")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class K8sApiAbnormalRuleScopeInfo(AbstractModel):
+    """k8s api 异常事件规则配置范围
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Scope: 范围
+系统事件:
+ANONYMOUS_ACCESS: 匿名访问
+ABNORMAL_UA_REQ: 异常UA请求
+ANONYMOUS_ABNORMAL_PERMISSION: 匿名用户权限异动
+GET_CREDENTIALS: 凭据信息获取
+MOUNT_SENSITIVE_PATH: 敏感路径挂载
+COMMAND_RUN: 命令执行
+PRIVILEGE_CONTAINER: 特权容器
+EXCEPTION_CRONTAB_TASK: 异常定时任务
+STATICS_POD: 静态pod创建
+ABNORMAL_CREATE_POD: 异常pod创建
+USER_DEFINED: 用户自定义
+        :type Scope: str
+        :param Action: 动作(RULE_MODE_ALERT: 告警 RULE_MODE_RELEASE:放行)
+        :type Action: str
+        :param RiskLevel: 威胁等级 HIGH:高级 MIDDLE: 中级 LOW:低级 NOTICE:提示
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RiskLevel: str
+        :param Status: 开关状态(true:开 false:关) 适用于系统规则
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: bool
+        :param IsDelete: 是否被删除 适用于自定义规则入参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsDelete: bool
+        """
+        self.Scope = None
+        self.Action = None
+        self.RiskLevel = None
+        self.Status = None
+        self.IsDelete = None
+
+
+    def _deserialize(self, params):
+        self.Scope = params.get("Scope")
+        self.Action = params.get("Action")
+        self.RiskLevel = params.get("RiskLevel")
+        self.Status = params.get("Status")
+        self.IsDelete = params.get("IsDelete")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class K8sApiAbnormalTendencyItem(AbstractModel):
+    """k8sapi异常请求趋势Item
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Date: 日期
+        :type Date: str
+        :param ExceptionUARequestCount: 异常UA请求事件数
+        :type ExceptionUARequestCount: int
+        :param AnonymousUserRightCount: 匿名用户权限事件数
+        :type AnonymousUserRightCount: int
+        :param CredentialInformationObtainCount: 凭据信息获取事件数
+        :type CredentialInformationObtainCount: int
+        :param SensitiveDataMountCount: 敏感数据挂载事件数
+        :type SensitiveDataMountCount: int
+        :param CmdExecCount: 命令执行事件数
+        :type CmdExecCount: int
+        :param AbnormalScheduledTaskCount: 异常定时任务事件数
+        :type AbnormalScheduledTaskCount: int
+        :param StaticsPodCreateCount: 静态Pod创建数
+        :type StaticsPodCreateCount: int
+        :param DoubtfulContainerCreateCount: 可疑容器创建数
+        :type DoubtfulContainerCreateCount: int
+        :param UserDefinedRuleCount: 自定义规则事件数
+        :type UserDefinedRuleCount: int
+        :param AnonymousAccessCount: 匿名访问事件数
+        :type AnonymousAccessCount: int
+        :param PrivilegeContainerCount: 特权容器事件数
+        :type PrivilegeContainerCount: int
+        """
+        self.Date = None
+        self.ExceptionUARequestCount = None
+        self.AnonymousUserRightCount = None
+        self.CredentialInformationObtainCount = None
+        self.SensitiveDataMountCount = None
+        self.CmdExecCount = None
+        self.AbnormalScheduledTaskCount = None
+        self.StaticsPodCreateCount = None
+        self.DoubtfulContainerCreateCount = None
+        self.UserDefinedRuleCount = None
+        self.AnonymousAccessCount = None
+        self.PrivilegeContainerCount = None
+
+
+    def _deserialize(self, params):
+        self.Date = params.get("Date")
+        self.ExceptionUARequestCount = params.get("ExceptionUARequestCount")
+        self.AnonymousUserRightCount = params.get("AnonymousUserRightCount")
+        self.CredentialInformationObtainCount = params.get("CredentialInformationObtainCount")
+        self.SensitiveDataMountCount = params.get("SensitiveDataMountCount")
+        self.CmdExecCount = params.get("CmdExecCount")
+        self.AbnormalScheduledTaskCount = params.get("AbnormalScheduledTaskCount")
+        self.StaticsPodCreateCount = params.get("StaticsPodCreateCount")
+        self.DoubtfulContainerCreateCount = params.get("DoubtfulContainerCreateCount")
+        self.UserDefinedRuleCount = params.get("UserDefinedRuleCount")
+        self.AnonymousAccessCount = params.get("AnonymousAccessCount")
+        self.PrivilegeContainerCount = params.get("PrivilegeContainerCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ModifyAbnormalProcessRuleStatusRequest(AbstractModel):
     """ModifyAbnormalProcessRuleStatus请求参数结构体
 
@@ -22616,6 +23850,143 @@ class ModifyImageAuthorizedRequest(AbstractModel):
 
 class ModifyImageAuthorizedResponse(AbstractModel):
     """ModifyImageAuthorized返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyK8sApiAbnormalEventStatusRequest(AbstractModel):
+    """ModifyK8sApiAbnormalEventStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventIDSet: 事件ID集合
+        :type EventIDSet: list of int non-negative
+        :param Status: 状态
+        :type Status: str
+        :param Remark: 备注
+        :type Remark: str
+        """
+        self.EventIDSet = None
+        self.Status = None
+        self.Remark = None
+
+
+    def _deserialize(self, params):
+        self.EventIDSet = params.get("EventIDSet")
+        self.Status = params.get("Status")
+        self.Remark = params.get("Remark")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyK8sApiAbnormalEventStatusResponse(AbstractModel):
+    """ModifyK8sApiAbnormalEventStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyK8sApiAbnormalRuleInfoRequest(AbstractModel):
+    """ModifyK8sApiAbnormalRuleInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleInfo: 规则详情
+        :type RuleInfo: :class:`tencentcloud.tcss.v20201101.models.K8sApiAbnormalRuleInfo`
+        """
+        self.RuleInfo = None
+
+
+    def _deserialize(self, params):
+        if params.get("RuleInfo") is not None:
+            self.RuleInfo = K8sApiAbnormalRuleInfo()
+            self.RuleInfo._deserialize(params.get("RuleInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyK8sApiAbnormalRuleInfoResponse(AbstractModel):
+    """ModifyK8sApiAbnormalRuleInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyK8sApiAbnormalRuleStatusRequest(AbstractModel):
+    """ModifyK8sApiAbnormalRuleStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleID: 规则ID
+        :type RuleID: str
+        :param Status: 状态(ture:开 false:关)
+        :type Status: bool
+        """
+        self.RuleID = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.RuleID = params.get("RuleID")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyK8sApiAbnormalRuleStatusResponse(AbstractModel):
+    """ModifyK8sApiAbnormalRuleStatus返回参数结构体
 
     """
 
@@ -24232,6 +25603,34 @@ class ProcessInfo(AbstractModel):
         self.ProcessName = params.get("ProcessName")
         self.HostName = params.get("HostName")
         self.PublicIp = params.get("PublicIp")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ProjectInfo(AbstractModel):
+    """主机所属项目
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectName: 项目名称
+        :type ProjectName: str
+        :param ProjectID: 项目ID
+        :type ProjectID: int
+        """
+        self.ProjectName = None
+        self.ProjectID = None
+
+
+    def _deserialize(self, params):
+        self.ProjectName = params.get("ProjectName")
+        self.ProjectID = params.get("ProjectID")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -26198,6 +27597,34 @@ class SyncAssetImageRegistryAssetResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class TagInfo(AbstractModel):
+    """主机标签信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKey: 标签键
+        :type TagKey: str
+        :param TagValue: 标签值
+        :type TagValue: str
+        """
+        self.TagKey = None
+        self.TagValue = None
+
+
+    def _deserialize(self, params):
+        self.TagKey = params.get("TagKey")
+        self.TagValue = params.get("TagValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class UnauthorizedCoresTendency(AbstractModel):

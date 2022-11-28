@@ -151,6 +151,118 @@ class EssClient(AbstractClient):
 
         注：该接口需要给对应的流程指定一个模板id，并且填充该模板中需要补充的信息。是“发起流程”接口的前置接口。
 
+        【动态表格传参说明】
+        当模板的 ComponentType='DYNAMIC_TABLE'时（渠道版或集成版），FormField.ComponentValue需要传递json格式的字符串参数，用于确定表头&填充动态表格（支持内容的单元格合并）
+        输入示例1：
+
+        ```
+        {
+            "headers":[
+                {
+                    "content":"head1"
+                },
+                {
+                    "content":"head2"
+                },
+                {
+                    "content":"head3"
+                }
+            ],
+            "rowCount":3,
+            "body":{
+                "cells":[
+                    {
+                        "rowStart":1,
+                        "rowEnd":1,
+                        "columnStart":1,
+                        "columnEnd":1,
+                        "content":"123"
+                    },
+                    {
+                        "rowStart":2,
+                        "rowEnd":3,
+                        "columnStart":1,
+                        "columnEnd":2,
+                        "content":"456"
+                    },
+                    {
+                        "rowStart":3,
+                        "rowEnd":3,
+                        "columnStart":3,
+                        "columnEnd":3,
+                        "content":"789"
+                    }
+                ]
+            }
+        }
+
+        ```
+
+        输入示例2（表格表头宽度比例配置）：
+
+        ```
+        {
+            "headers":[
+                {
+                    "content":"head1",
+                    "widthPercent": 30
+                },
+                {
+                    "content":"head2",
+                    "widthPercent": 30
+                },
+                {
+                    "content":"head3",
+                    "widthPercent": 40
+                }
+            ],
+            "rowCount":3,
+            "body":{
+                "cells":[
+                    {
+                        "rowStart":1,
+                        "rowEnd":1,
+                        "columnStart":1,
+                        "columnEnd":1,
+                        "content":"123"
+                    },
+                    {
+                        "rowStart":2,
+                        "rowEnd":3,
+                        "columnStart":1,
+                        "columnEnd":2,
+                        "content":"456"
+                    },
+                    {
+                        "rowStart":3,
+                        "rowEnd":3,
+                        "columnStart":3,
+                        "columnEnd":3,
+                        "content":"789"
+                    }
+                ]
+            }
+        }
+
+        ```
+        表格参数说明
+
+        | 名称                | 类型    | 描述                                              |
+        | ------------------- | ------- | ------------------------------------------------- |
+        | headers             | Array   | 表头：不超过10列，不支持单元格合并，字数不超过100 |
+        | rowCount            | Integer | 表格内容最大行数                                  |
+        | cells.N.rowStart    | Integer | 单元格坐标：行起始index                           |
+        | cells.N.rowEnd      | Integer | 单元格坐标：行结束index                           |
+        | cells.N.columnStart | Integer | 单元格坐标：列起始index                           |
+        | cells.N.columnEnd   | Integer | 单元格坐标：列结束index                           |
+        | cells.N.content     | String  | 单元格内容，字数不超过100                         |
+
+        表格参数headers说明
+        | 名称                | 类型    | 描述                                              |
+        | ------------------- | ------- | ------------------------------------------------- |
+        | widthPercent   | Integer | 表头单元格列占总表头的比例，例如1：30表示 此列占表头的30%，不填写时列宽度平均拆分；例如2：总2列，某一列填写40，剩余列可以为空，按照60计算。；例如3：总3列，某一列填写30，剩余2列可以为空，分别为(100-30)/2=35                    |
+        | content    | String  | 表头单元格内容，字数不超过100                         |
+
         :param request: Request instance for CreateDocument.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateDocumentRequest`
         :rtype: :class:`tencentcloud.ess.v20201111.models.CreateDocumentResponse`
@@ -274,7 +386,7 @@ class EssClient(AbstractClient):
 
 
     def CreateFlowEvidenceReport(self, request):
-        """创建出证报告，返回报告 URL。此接口暂未开放，有问题请联系运营人员。
+        """创建出证报告，返回报告 ID。
 
         :param request: Request instance for CreateFlowEvidenceReport.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowEvidenceReportRequest`
@@ -380,6 +492,37 @@ class EssClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.CreateMultiFlowSignQRCodeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreatePrepareFlow(self, request):
+        """创建快速发起流程
+        适用场景：用户通过API 合同文件及签署信息，并可通过我们返回的URL在页面完成签署控件等信息的编辑与确认，快速发起合同.
+        注：该接口文件的resourceId 是通过上传文件之后获取的。
+
+        :param request: Request instance for CreatePrepareFlow.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreatePrepareFlowRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreatePrepareFlowResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreatePrepareFlow", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.CreatePrepareFlowResponse()
                 model._deserialize(response["Response"])
                 return model
             else:
@@ -509,6 +652,35 @@ class EssClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeFlowBriefsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeFlowEvidenceReport(self, request):
+        """查询出证报告，返回报告 URL。
+
+        :param request: Request instance for DescribeFlowEvidenceReport.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DescribeFlowEvidenceReportRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DescribeFlowEvidenceReportResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFlowEvidenceReport", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeFlowEvidenceReportResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

@@ -574,6 +574,8 @@ class CreateFunctionRequest(AbstractModel):
         :type ProtocolType: str
         :param ProtocolParams: HTTP函数配置ProtocolType访问协议，当前协议可配置的参数
         :type ProtocolParams: :class:`tencentcloud.scf.v20180416.models.ProtocolParams`
+        :param InstanceConcurrencyConfig: 单实例多并发配置。只支持Web函数。
+        :type InstanceConcurrencyConfig: :class:`tencentcloud.scf.v20180416.models.InstanceConcurrencyConfig`
         """
         self.FunctionName = None
         self.Code = None
@@ -601,6 +603,7 @@ class CreateFunctionRequest(AbstractModel):
         self.TraceEnable = None
         self.ProtocolType = None
         self.ProtocolParams = None
+        self.InstanceConcurrencyConfig = None
 
 
     def _deserialize(self, params):
@@ -654,6 +657,9 @@ class CreateFunctionRequest(AbstractModel):
         if params.get("ProtocolParams") is not None:
             self.ProtocolParams = ProtocolParams()
             self.ProtocolParams._deserialize(params.get("ProtocolParams"))
+        if params.get("InstanceConcurrencyConfig") is not None:
+            self.InstanceConcurrencyConfig = InstanceConcurrencyConfig()
+            self.InstanceConcurrencyConfig._deserialize(params.get("InstanceConcurrencyConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1127,7 +1133,7 @@ class DeleteTriggerRequest(AbstractModel):
         :type Namespace: str
         :param TriggerDesc: 如果删除的触发器类型为 COS 触发器，该字段为必填值，存放 JSON 格式的数据 {"event":"cos:ObjectCreated:*"}，数据内容和 SetTrigger 接口中该字段的格式相同；如果删除的触发器类型为定时触发器或 CMQ 触发器，可以不指定该字段
         :type TriggerDesc: str
-        :param Qualifier: 函数的版本信息
+        :param Qualifier: 函数的版本，默认为 $LATEST，建议填写 [$DEFAULT](https://cloud.tencent.com/document/product/583/36149#.E9.BB.98.E8.AE.A4.E5.88.AB.E5.90.8D)方便后续进行版本的灰度发布。
         :type Qualifier: str
         """
         self.FunctionName = None
@@ -2475,6 +2481,9 @@ class ImageConfig(AbstractModel):
         :param Args: 容器的启动参数。该参数为可选参数，如果不填写，则默认使用 Dockerfile 中的 CMD。传入规范，以“空格”作为参数的分割标识，例如 -u app.py
 注意：此字段可能返回 null，表示取不到有效值。
         :type Args: str
+        :param ContainerImageAccelerate: 镜像加速开关，默认False
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContainerImageAccelerate: bool
         """
         self.ImageType = None
         self.ImageUri = None
@@ -2482,6 +2491,7 @@ class ImageConfig(AbstractModel):
         self.EntryPoint = None
         self.Command = None
         self.Args = None
+        self.ContainerImageAccelerate = None
 
 
     def _deserialize(self, params):
@@ -2491,6 +2501,37 @@ class ImageConfig(AbstractModel):
         self.EntryPoint = params.get("EntryPoint")
         self.Command = params.get("Command")
         self.Args = params.get("Args")
+        self.ContainerImageAccelerate = params.get("ContainerImageAccelerate")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstanceConcurrencyConfig(AbstractModel):
+    """多并发执行配置描述
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DynamicEnabled: 是否开启智能动态并发。'FALSE'时是静态并发。''时取消多并发配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DynamicEnabled: str
+        :param MaxConcurrency: 单实例并发数最大值。取值范围 [1,100]
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaxConcurrency: int
+        """
+        self.DynamicEnabled = None
+        self.MaxConcurrency = None
+
+
+    def _deserialize(self, params):
+        self.DynamicEnabled = params.get("DynamicEnabled")
+        self.MaxConcurrency = params.get("MaxConcurrency")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4765,6 +4806,8 @@ class UpdateFunctionConfigurationRequest(AbstractModel):
         :type InitTimeout: int
         :param ProtocolParams: HTTP函数配置ProtocolType访问协议，当前协议可配置的参数
         :type ProtocolParams: :class:`tencentcloud.scf.v20180416.models.ProtocolParams`
+        :param InstanceConcurrencyConfig: 单实例多并发配置。只支持Web函数。
+        :type InstanceConcurrencyConfig: :class:`tencentcloud.scf.v20180416.models.InstanceConcurrencyConfig`
         """
         self.FunctionName = None
         self.Description = None
@@ -4786,6 +4829,7 @@ class UpdateFunctionConfigurationRequest(AbstractModel):
         self.CfsConfig = None
         self.InitTimeout = None
         self.ProtocolParams = None
+        self.InstanceConcurrencyConfig = None
 
 
     def _deserialize(self, params):
@@ -4826,6 +4870,9 @@ class UpdateFunctionConfigurationRequest(AbstractModel):
         if params.get("ProtocolParams") is not None:
             self.ProtocolParams = ProtocolParams()
             self.ProtocolParams._deserialize(params.get("ProtocolParams"))
+        if params.get("InstanceConcurrencyConfig") is not None:
+            self.InstanceConcurrencyConfig = InstanceConcurrencyConfig()
+            self.InstanceConcurrencyConfig._deserialize(params.get("InstanceConcurrencyConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

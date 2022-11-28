@@ -495,7 +495,7 @@ class BizLicenseOCRResponse(AbstractModel):
 注：告警码可以同时存在多个
         :type RecognizeWarnCode: list of int
         :param RecognizeWarnMsg: 告警码说明：
-OCR_WARNING_TPYE_NOT_MATCH 非营业执照
+OCR_WARNING_TYPE_NOT_MATCH 非营业执照
 WARN_COPY_CARD 黑白复印件告警
 注：告警信息可以同时存在多个
         :type RecognizeWarnMsg: list of str
@@ -4100,14 +4100,18 @@ class OnlineTaxiItineraryInfo(AbstractModel):
         :type Name: str
         :param Value: 识别出的字段名称对应的值，也就是字段name对应的字符串结果。
         :type Value: str
+        :param Row: 字段所在行，下标从0开始，非行字段或未能识别行号的返回-1
+        :type Row: int
         """
         self.Name = None
         self.Value = None
+        self.Row = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Value = params.get("Value")
+        self.Row = params.get("Row")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4786,7 +4790,7 @@ class QrcodeResultsInfo(AbstractModel):
         :type TypeName: str
         :param Url: 二维码/条形码包含的地址
         :type Url: str
-        :param Position: 二维码/条形码坐标（二维码会返回位置坐标，条形码暂不返回位置坐标，因此默认X和Y返回值均为-1）
+        :param Position: 二维码/条形码坐标
         :type Position: :class:`tencentcloud.ocr.v20181119.models.QrcodePositionObj`
         """
         self.TypeName = None

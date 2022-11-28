@@ -391,7 +391,8 @@ FILL_IMAGE - 图片控件；
 DYNAMIC_TABLE - 动态表格控件；
 ATTACHMENT - 附件控件；
 SELECTOR - 选择器控件；
-DATE - 日期控件；默认是格式化为xxxx年xx月xx日
+DATE - 日期控件；默认是格式化为xxxx年xx月xx日；
+DISTRICT - 省市区行政区划控件；
 
 如果是SignComponent控件类型，则可选的字段为
 SIGN_SEAL - 签署印章控件；
@@ -422,6 +423,12 @@ SIGN_PAGING_SEAL - 骑缝章；若文件发起，需要对应填充ComponentPosY
         :param ComponentRequired: 是否必选，默认为false
         :type ComponentRequired: bool
         :param ComponentExtra: 扩展参数：
+为JSON格式。
+
+ComponentType为FILL_IMAGE时，支持以下参数：
+NotMakeImageCenter：bool。是否设置图片居中。false：居中（默认）。 true: 不居中
+FillMethod: int. 填充方式。0-铺满（默认）；1-等比例缩放
+
 ComponentType为SIGN_SIGNATURE类型可以控制签署方式
 {“ComponentTypeLimit”: [“xxx”]}
 xxx可以为：
@@ -456,6 +463,15 @@ KEYWORD 关键字，使用ComponentId指定关键字
         :type OffsetX: float
         :param OffsetY: 指定关键字时纵坐标偏移量，单位pt
         :type OffsetY: float
+        :param KeywordOrder: 指定关键字排序规则，Positive-正序，Reverse-倒序。传入Positive时会根据关键字在PDF文件内的顺序进行排列。在指定KeywordIndexes时，0代表在PDF内查找内容时，查找到的第一个关键字。
+传入Reverse时会根据关键字在PDF文件内的反序进行排列。在指定KeywordIndexes时，0代表在PDF内查找内容时，查找到的最后一个关键字。
+        :type KeywordOrder: str
+        :param KeywordPage: 指定关键字页码，可选参数，指定页码后，将只在指定的页码内查找关键字，非该页码的关键字将不会查询出来
+        :type KeywordPage: int
+        :param RelativeLocation: 关键字位置模式，Middle-居中，Below-正下方，Right-正右方，LowerRight-右上角，UpperRight-右下角。示例：如果设置Middle的关键字盖章，则印章的中心会和关键字的中心重合，如果设置Below，则印章在关键字的正下方
+        :type RelativeLocation: str
+        :param KeywordIndexes: 关键字索引，可选参数，如果一个关键字在PDF文件中存在多个，可以通过关键字索引指定使用第几个关键字作为最后的结果，可指定多个索引。示例：[0,2]，说明使用PDF文件内第1个和第3个关键字位置。
+        :type KeywordIndexes: list of int
         """
         self.ComponentType = None
         self.ComponentWidth = None
@@ -475,6 +491,10 @@ KEYWORD 关键字，使用ComponentId指定关键字
         self.ComponentDateFontSize = None
         self.OffsetX = None
         self.OffsetY = None
+        self.KeywordOrder = None
+        self.KeywordPage = None
+        self.RelativeLocation = None
+        self.KeywordIndexes = None
 
 
     def _deserialize(self, params):
@@ -496,6 +516,10 @@ KEYWORD 关键字，使用ComponentId指定关键字
         self.ComponentDateFontSize = params.get("ComponentDateFontSize")
         self.OffsetX = params.get("OffsetX")
         self.OffsetY = params.get("OffsetY")
+        self.KeywordOrder = params.get("KeywordOrder")
+        self.KeywordPage = params.get("KeywordPage")
+        self.RelativeLocation = params.get("RelativeLocation")
+        self.KeywordIndexes = params.get("KeywordIndexes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -571,7 +595,7 @@ class CreateConvertTaskApiRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ResourceType: 资源类型 取值范围doc,docx,html,excel之一
+        :param ResourceType: 资源类型 取值范围doc,docx,html,xls,xlsx之一
         :type ResourceType: str
         :param ResourceName: 资源名称，长度限制为256字符
         :type ResourceName: str
@@ -838,6 +862,8 @@ MobileCheck：手机号验证
         :type ApproverVerifyType: str
         :param FlowDescription: 签署流程描述,最大长度1000个字符
         :type FlowDescription: str
+        :param SignBeanTag: 标识是否允许发起后添加控件。0为不允许1为允许。如果为1，创建的时候不能有签署控件，只能创建后添加。注意发起后添加控件功能不支持添加骑缝章和签批控件
+        :type SignBeanTag: int
         """
         self.Operator = None
         self.FlowName = None
@@ -856,6 +882,7 @@ MobileCheck：手机号验证
         self.Agent = None
         self.ApproverVerifyType = None
         self.FlowDescription = None
+        self.SignBeanTag = None
 
 
     def _deserialize(self, params):
@@ -895,6 +922,7 @@ MobileCheck：手机号验证
             self.Agent._deserialize(params.get("Agent"))
         self.ApproverVerifyType = params.get("ApproverVerifyType")
         self.FlowDescription = params.get("FlowDescription")
+        self.SignBeanTag = params.get("SignBeanTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -971,17 +999,29 @@ class CreateFlowEvidenceReportResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ReportUrl: 出证报告 URL（有效期5分钟）
+        :param ReportId: 出证报告 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReportId: str
+        :param ReportUrl: 废除，字段无效
+注意：此字段可能返回 null，表示取不到有效值。
         :type ReportUrl: str
+        :param Status: 执行中：EvidenceStatusExecuting
+成功：EvidenceStatusSuccess
+失败：EvidenceStatusFailed
+        :type Status: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.ReportId = None
         self.ReportUrl = None
+        self.Status = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.ReportId = params.get("ReportId")
         self.ReportUrl = params.get("ReportUrl")
+        self.Status = params.get("Status")
         self.RequestId = params.get("RequestId")
 
 
@@ -1320,6 +1360,87 @@ class CreateMultiFlowSignQRCodeResponse(AbstractModel):
         if params.get("SignUrls") is not None:
             self.SignUrls = SignUrl()
             self.SignUrls._deserialize(params.get("SignUrls"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreatePrepareFlowRequest(AbstractModel):
+    """CreatePrepareFlow请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 调用方用户信息，userId 必填
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param ResourceId: 资源Id,通过上传uploadfile接口获得
+        :type ResourceId: str
+        :param FlowName: 合同名称
+        :type FlowName: str
+        :param Unordered: 是否顺序签署(true:无序签,false:顺序签)
+        :type Unordered: bool
+        :param Deadline: 签署流程的签署截止时间。
+值为unix时间戳,精确到秒,不传默认为当前时间一年后
+        :type Deadline: int
+        :param UserFlowTypeId: 用户自定义合同类型
+        :type UserFlowTypeId: str
+        :param Approvers: 签署流程参与者信息，最大限制50方
+        :type Approvers: list of FlowCreateApprover
+        :param IntelligentStatus: 打开智能添加填写区(默认开启，打开:"OPEN" 关闭："CLOSE")
+        :type IntelligentStatus: str
+        """
+        self.Operator = None
+        self.ResourceId = None
+        self.FlowName = None
+        self.Unordered = None
+        self.Deadline = None
+        self.UserFlowTypeId = None
+        self.Approvers = None
+        self.IntelligentStatus = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        self.ResourceId = params.get("ResourceId")
+        self.FlowName = params.get("FlowName")
+        self.Unordered = params.get("Unordered")
+        self.Deadline = params.get("Deadline")
+        self.UserFlowTypeId = params.get("UserFlowTypeId")
+        if params.get("Approvers") is not None:
+            self.Approvers = []
+            for item in params.get("Approvers"):
+                obj = FlowCreateApprover()
+                obj._deserialize(item)
+                self.Approvers.append(obj)
+        self.IntelligentStatus = params.get("IntelligentStatus")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreatePrepareFlowResponse(AbstractModel):
+    """CreatePrepareFlow返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Url: 快速发起预览链接
+        :type Url: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Url = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Url = params.get("Url")
         self.RequestId = params.get("RequestId")
 
 
@@ -1735,6 +1856,64 @@ class DescribeFlowBriefsResponse(AbstractModel):
                 obj = FlowBrief()
                 obj._deserialize(item)
                 self.FlowBriefs.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeFlowEvidenceReportRequest(AbstractModel):
+    """DescribeFlowEvidenceReport请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Operator: 调用方用户信息，userId 必填
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param ReportId: 出证报告编号
+        :type ReportId: str
+        """
+        self.Operator = None
+        self.ReportId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self.Operator = UserInfo()
+            self.Operator._deserialize(params.get("Operator"))
+        self.ReportId = params.get("ReportId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeFlowEvidenceReportResponse(AbstractModel):
+    """DescribeFlowEvidenceReport返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ReportUrl: 报告 URL
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReportUrl: str
+        :param Status: 执行中：EvidenceStatusExecuting
+成功：EvidenceStatusSuccess
+失败：EvidenceStatusFailed
+        :type Status: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ReportUrl = None
+        self.Status = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ReportUrl = params.get("ReportUrl")
+        self.Status = params.get("Status")
         self.RequestId = params.get("RequestId")
 
 

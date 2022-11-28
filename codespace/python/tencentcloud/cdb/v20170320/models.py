@@ -1105,7 +1105,7 @@ class CdbSellConfig(AbstractModel):
         :type Info: str
         :param Status: 状态值，0 表示该规格对外售卖
         :type Status: int
-        :param DeviceType: 实例类型，可能的取值范围有：UNIVERSAL (通用型), EXCLUSIVE (独享型), BASIC (基础型)
+        :param DeviceType: 实例类型，可能的取值范围有：UNIVERSAL (通用型), EXCLUSIVE (独享型), BASIC (基础型), BASIC_V2 (基础型v2)
 注意：此字段可能返回 null，表示取不到有效值。
         :type DeviceType: str
         :param EngineType: 引擎类型描述，可能的取值范围有：Innodb，RocksDB
@@ -10600,12 +10600,16 @@ class ReloadBalanceProxyNodeRequest(AbstractModel):
         r"""
         :param ProxyGroupId: 代理组ID
         :type ProxyGroupId: str
+        :param ProxyAddressId: 代理组地址ID
+        :type ProxyAddressId: str
         """
         self.ProxyGroupId = None
+        self.ProxyAddressId = None
 
 
     def _deserialize(self, params):
         self.ProxyGroupId = params.get("ProxyGroupId")
+        self.ProxyAddressId = params.get("ProxyAddressId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

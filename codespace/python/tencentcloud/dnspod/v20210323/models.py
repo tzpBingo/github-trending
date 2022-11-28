@@ -158,6 +158,151 @@ class BatchRecordInfo(AbstractModel):
         
 
 
+class CheckRecordSnapshotRollbackRequest(AbstractModel):
+    """CheckRecordSnapshotRollback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param SnapshotId: 快照 ID
+        :type SnapshotId: str
+        :param Record: 解析记录信息
+        :type Record: :class:`tencentcloud.dnspod.v20210323.models.SnapshotRecord`
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.SnapshotId = None
+        self.Record = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.SnapshotId = params.get("SnapshotId")
+        if params.get("Record") is not None:
+            self.Record = SnapshotRecord()
+            self.Record._deserialize(params.get("Record"))
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CheckRecordSnapshotRollbackResponse(AbstractModel):
+    """CheckRecordSnapshotRollback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Reason: 错误原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Reason: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Reason = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Reason = params.get("Reason")
+        self.RequestId = params.get("RequestId")
+
+
+class CheckSnapshotRollbackRequest(AbstractModel):
+    """CheckSnapshotRollback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param SnapshotId: 快照记录 ID
+        :type SnapshotId: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.SnapshotId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.SnapshotId = params.get("SnapshotId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CheckSnapshotRollbackResponse(AbstractModel):
+    """CheckSnapshotRollback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotId: 快照记录 ID
+        :type SnapshotId: str
+        :param CostMinutes: 回滚时长（分钟）
+        :type CostMinutes: int
+        :param Domain: 快照所属域名
+        :type Domain: str
+        :param Total: 解析记录总数
+        :type Total: int
+        :param Timeout: 值为 1，表示超时
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Timeout: int
+        :param Failed: 检查失败数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Failed: int
+        :param FailedRecordList: 失败记录信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailedRecordList: list of SnapshotRecord
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SnapshotId = None
+        self.CostMinutes = None
+        self.Domain = None
+        self.Total = None
+        self.Timeout = None
+        self.Failed = None
+        self.FailedRecordList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotId = params.get("SnapshotId")
+        self.CostMinutes = params.get("CostMinutes")
+        self.Domain = params.get("Domain")
+        self.Total = params.get("Total")
+        self.Timeout = params.get("Timeout")
+        self.Failed = params.get("Failed")
+        if params.get("FailedRecordList") is not None:
+            self.FailedRecordList = []
+            for item in params.get("FailedRecordList"):
+                obj = SnapshotRecord()
+                obj._deserialize(item)
+                self.FailedRecordList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class CreateDealRequest(AbstractModel):
     """CreateDeal请求参数结构体
 
@@ -265,7 +410,7 @@ class CreateDomainAliasRequest(AbstractModel):
         :type DomainAlias: str
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名ID，参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain
+        :param DomainId: 域名ID，参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.DomainAlias = None
@@ -542,7 +687,7 @@ class CreateDomainRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param GroupId: 域名分组ID
+        :param GroupId: 域名分组ID。可以通过接口DescribeDomainGroupList查看当前域名分组信息
         :type GroupId: int
         :param IsMark: 是否星标域名，”yes”、”no” 分别代表是和否。
         :type IsMark: str
@@ -784,6 +929,59 @@ class CreateRecordBatchResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateRecordGroupRequest(AbstractModel):
+    """CreateRecordGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param GroupName: 分组名称
+        :type GroupName: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.GroupName = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.GroupName = params.get("GroupName")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateRecordGroupResponse(AbstractModel):
+    """CreateRecordGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 新增的分组 ID
+        :type GroupId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateRecordRequest(AbstractModel):
     """CreateRecord请求参数结构体
 
@@ -869,6 +1067,51 @@ class CreateRecordResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateSnapshotRequest(AbstractModel):
+    """CreateSnapshot请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateSnapshotResponse(AbstractModel):
+    """CreateSnapshot返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class Deals(AbstractModel):
     """子订单号列表
 
@@ -904,11 +1147,11 @@ class DeleteDomainAliasRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DomainAliasId: 域名别名ID
+        :param DomainAliasId: 域名别名ID。可以通过接口DescribeDomainAliasList查到所有的域名别名列表以及对应的ID
         :type DomainAliasId: int
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名ID，参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain
+        :param DomainId: 域名ID，参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.DomainAliasId = None
@@ -955,7 +1198,7 @@ class DeleteDomainRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -991,6 +1234,55 @@ class DeleteDomainResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteRecordGroupRequest(AbstractModel):
+    """DeleteRecordGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param GroupId: 分组 ID
+        :type GroupId: int
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.GroupId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.GroupId = params.get("GroupId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteRecordGroupResponse(AbstractModel):
+    """DeleteRecordGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteRecordRequest(AbstractModel):
     """DeleteRecord请求参数结构体
 
@@ -1000,9 +1292,9 @@ class DeleteRecordRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param RecordId: 记录 ID 。
+        :param RecordId: 记录 ID 。可以通过接口DescribeRecordList查到所有的解析记录列表以及对应的RecordId
         :type RecordId: int
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1051,7 +1343,7 @@ class DeleteShareDomainRequest(AbstractModel):
         :type Domain: str
         :param Account: 域名共享的账号
         :type Account: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1074,6 +1366,55 @@ class DeleteShareDomainRequest(AbstractModel):
 
 class DeleteShareDomainResponse(AbstractModel):
     """DeleteShareDomain返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteSnapshotRequest(AbstractModel):
+    """DeleteSnapshot请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param SnapshotId: 快照记录 ID
+        :type SnapshotId: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.SnapshotId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.SnapshotId = params.get("SnapshotId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteSnapshotResponse(AbstractModel):
+    """DeleteSnapshot返回参数结构体
 
     """
 
@@ -1160,7 +1501,7 @@ class DescribeBatchTaskRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param JobId: 任务ID
+        :param JobId: 任务ID。操作批量接口时会返回JobId
         :type JobId: int
         """
         self.JobId = None
@@ -1232,7 +1573,7 @@ class DescribeDomainAliasListRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名ID,域名ID，参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain
+        :param DomainId: 域名ID,域名ID，参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1292,7 +1633,7 @@ class DescribeDomainAnalyticsRequest(AbstractModel):
         :type EndDate: str
         :param DnsFormat: DATE:按天维度统计 HOUR:按小时维度统计
         :type DnsFormat: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1471,7 +1812,7 @@ class DescribeDomainLogListRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         :param Offset: 记录开始的偏移，第一条记录为 0，依次类推，默认为0
         :type Offset: int
@@ -1537,7 +1878,7 @@ class DescribeDomainPurviewRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1591,7 +1932,7 @@ class DescribeDomainRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1642,7 +1983,7 @@ class DescribeDomainShareInfoRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1691,6 +2032,68 @@ class DescribeDomainShareInfoResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeRecordGroupListRequest(AbstractModel):
+    """DescribeRecordGroupList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        :param Offset: 分页开始位置
+        :type Offset: int
+        :param Limit: 分页每页数
+        :type Limit: int
+        """
+        self.Domain = None
+        self.DomainId = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.DomainId = params.get("DomainId")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRecordGroupListResponse(AbstractModel):
+    """DescribeRecordGroupList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupList: 分组列表
+        :type GroupList: list of RecordGroupInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("GroupList") is not None:
+            self.GroupList = []
+            for item in params.get("GroupList"):
+                obj = RecordGroupInfo()
+                obj._deserialize(item)
+                self.GroupList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeRecordLineListRequest(AbstractModel):
     """DescribeRecordLineList请求参数结构体
 
@@ -1704,7 +2107,7 @@ class DescribeRecordLineListRequest(AbstractModel):
 + 旧套餐：D_FREE、D_PLUS、D_EXTRA、D_EXPERT、D_ULTRA 分别对应免费套餐、个人豪华、企业1、企业2、企业3。
 + 新套餐：DP_FREE、DP_PLUS、DP_EXTRA、DP_EXPERT、DP_ULTRA 分别对应新免费、个人专业版、企业创业版、企业标准版、企业旗舰版。
         :type DomainGrade: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1769,17 +2172,17 @@ class DescribeRecordListRequest(AbstractModel):
         r"""
         :param Domain: 要获取的解析记录所属的域名
         :type Domain: str
-        :param DomainId: 要获取的解析记录所属的域名Id，如果传了DomainId，系统将会忽略Domain参数
+        :param DomainId: 要获取的解析记录所属的域名Id，如果传了DomainId，系统将会忽略Domain参数。 可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         :param Subdomain: 解析记录的主机头，如果传了此参数，则只会返回此主机头对应的解析记录
         :type Subdomain: str
         :param RecordType: 获取某种类型的解析记录，如 A，CNAME，NS，AAAA，显性URL，隐性URL，CAA，SPF等
         :type RecordType: str
-        :param RecordLine: 获取某条线路名称的解析记录
+        :param RecordLine: 获取某条线路名称的解析记录。可以通过接口DescribeRecordLineList查看当前域名允许的线路信息
         :type RecordLine: str
-        :param RecordLineId: 获取某个线路Id对应的解析记录，如果传RecordLineId，系统会忽略RecordLine参数
+        :param RecordLineId: 获取某个线路Id对应的解析记录，如果传RecordLineId，系统会忽略RecordLine参数。可以通过接口DescribeRecordLineList查看当前域名允许的线路信息
         :type RecordLineId: str
-        :param GroupId: 获取某个分组下的解析记录时，传这个分组Id
+        :param GroupId: 获取某个分组下的解析记录时，传这个分组Id。
         :type GroupId: int
         :param Keyword: 通过关键字搜索解析记录，当前支持搜索主机头和记录值
         :type Keyword: str
@@ -1871,7 +2274,7 @@ class DescribeRecordRequest(AbstractModel):
         :type Domain: str
         :param RecordId: 记录 ID 。可以通过接口DescribeRecordList查到所有的解析记录列表以及对应的RecordId
         :type RecordId: int
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。DomainId是域名的资源ID，可以通过接口DescribeDomainList查到所有的Domain以及DomainId
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -1912,6 +2315,108 @@ class DescribeRecordResponse(AbstractModel):
         if params.get("RecordInfo") is not None:
             self.RecordInfo = RecordInfo()
             self.RecordInfo._deserialize(params.get("RecordInfo"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeRecordSnapshotRollbackResultRequest(AbstractModel):
+    """DescribeRecordSnapshotRollbackResult请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param JobId: 回滚任务 ID
+        :type JobId: int
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.JobId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.JobId = params.get("JobId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRecordSnapshotRollbackResultResponse(AbstractModel):
+    """DescribeRecordSnapshotRollbackResult返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 回滚任务 ID
+        :type JobId: int
+        :param Status: 回滚状态
+        :type Status: str
+        :param FailedRecordList: 失败的记录信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailedRecordList: list of SnapshotRecord
+        :param Domain: 所属域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
+        :param Progress: 回滚进度
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Progress: int
+        :param LeftMinutes: 回滚剩余时间（单位：分钟）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LeftMinutes: int
+        :param Total: 总记录数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        :param Failed: 失败记录数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Failed: int
+        :param Success: 成功记录数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Success: int
+        :param CosUrl: 快照下载地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosUrl: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.JobId = None
+        self.Status = None
+        self.FailedRecordList = None
+        self.Domain = None
+        self.Progress = None
+        self.LeftMinutes = None
+        self.Total = None
+        self.Failed = None
+        self.Success = None
+        self.CosUrl = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.Status = params.get("Status")
+        if params.get("FailedRecordList") is not None:
+            self.FailedRecordList = []
+            for item in params.get("FailedRecordList"):
+                obj = SnapshotRecord()
+                obj._deserialize(item)
+                self.FailedRecordList.append(obj)
+        self.Domain = params.get("Domain")
+        self.Progress = params.get("Progress")
+        self.LeftMinutes = params.get("LeftMinutes")
+        self.Total = params.get("Total")
+        self.Failed = params.get("Failed")
+        self.Success = params.get("Success")
+        self.CosUrl = params.get("CosUrl")
         self.RequestId = params.get("RequestId")
 
 
@@ -1962,6 +2467,289 @@ class DescribeRecordTypeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeSnapshotConfigRequest(AbstractModel):
+    """DescribeSnapshotConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSnapshotConfigResponse(AbstractModel):
+    """DescribeSnapshotConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotConfig: 解析快照配置
+        :type SnapshotConfig: :class:`tencentcloud.dnspod.v20210323.models.SnapshotConfig`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SnapshotConfig = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("SnapshotConfig") is not None:
+            self.SnapshotConfig = SnapshotConfig()
+            self.SnapshotConfig._deserialize(params.get("SnapshotConfig"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSnapshotListRequest(AbstractModel):
+    """DescribeSnapshotList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSnapshotListResponse(AbstractModel):
+    """DescribeSnapshotList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 分页信息
+        :type Info: :class:`tencentcloud.dnspod.v20210323.models.SnapshotPageInfo`
+        :param SnapshotList: 快照列表
+        :type SnapshotList: list of SnapshotInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Info = None
+        self.SnapshotList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = SnapshotPageInfo()
+            self.Info._deserialize(params.get("Info"))
+        if params.get("SnapshotList") is not None:
+            self.SnapshotList = []
+            for item in params.get("SnapshotList"):
+                obj = SnapshotInfo()
+                obj._deserialize(item)
+                self.SnapshotList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSnapshotRollbackResultRequest(AbstractModel):
+    """DescribeSnapshotRollbackResult请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param TaskId: 快照回滚任务 ID
+        :type TaskId: int
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.TaskId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.TaskId = params.get("TaskId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSnapshotRollbackResultResponse(AbstractModel):
+    """DescribeSnapshotRollbackResult返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 快照所属域名
+        :type Domain: str
+        :param LeftMinutes: 回滚剩余时间（分钟）
+        :type LeftMinutes: int
+        :param Progress: 回滚进度百分比
+        :type Progress: int
+        :param SnapshotId: 快照 ID
+        :type SnapshotId: str
+        :param Status: 回滚状态
+        :type Status: str
+        :param TaskId: 快照回滚任务 ID
+        :type TaskId: int
+        :param Success: 成功数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Success: int
+        :param Failed: 失败数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Failed: int
+        :param Total: 总数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        :param FailedRecordList: 失败详细信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailedRecordList: list of SnapshotRecord
+        :param CosUrl: 快照的下载地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosUrl: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Domain = None
+        self.LeftMinutes = None
+        self.Progress = None
+        self.SnapshotId = None
+        self.Status = None
+        self.TaskId = None
+        self.Success = None
+        self.Failed = None
+        self.Total = None
+        self.FailedRecordList = None
+        self.CosUrl = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.LeftMinutes = params.get("LeftMinutes")
+        self.Progress = params.get("Progress")
+        self.SnapshotId = params.get("SnapshotId")
+        self.Status = params.get("Status")
+        self.TaskId = params.get("TaskId")
+        self.Success = params.get("Success")
+        self.Failed = params.get("Failed")
+        self.Total = params.get("Total")
+        if params.get("FailedRecordList") is not None:
+            self.FailedRecordList = []
+            for item in params.get("FailedRecordList"):
+                obj = SnapshotRecord()
+                obj._deserialize(item)
+                self.FailedRecordList.append(obj)
+        self.CosUrl = params.get("CosUrl")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSnapshotRollbackTaskRequest(AbstractModel):
+    """DescribeSnapshotRollbackTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSnapshotRollbackTaskResponse(AbstractModel):
+    """DescribeSnapshotRollbackTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 快照所属域名
+        :type Domain: str
+        :param SnapshotId: 快照 ID
+        :type SnapshotId: str
+        :param Status: 回滚状态
+        :type Status: str
+        :param TaskId: 快照回滚任务 ID
+        :type TaskId: int
+        :param RecordCount: 总数量
+        :type RecordCount: int
+        :param CreatedOn: 开始回滚时间
+        :type CreatedOn: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Domain = None
+        self.SnapshotId = None
+        self.Status = None
+        self.TaskId = None
+        self.RecordCount = None
+        self.CreatedOn = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.SnapshotId = params.get("SnapshotId")
+        self.Status = params.get("Status")
+        self.TaskId = params.get("TaskId")
+        self.RecordCount = params.get("RecordCount")
+        self.CreatedOn = params.get("CreatedOn")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeSubdomainAnalyticsRequest(AbstractModel):
     """DescribeSubdomainAnalytics请求参数结构体
 
@@ -1979,7 +2767,7 @@ class DescribeSubdomainAnalyticsRequest(AbstractModel):
         :type Subdomain: str
         :param DnsFormat: DATE:按天维度统计 HOUR:按小时维度统计
         :type DnsFormat: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -2571,6 +3359,59 @@ class DomainShareInfo(AbstractModel):
         
 
 
+class DownloadSnapshotRequest(AbstractModel):
+    """DownloadSnapshot请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param SnapshotId: 快照记录 ID
+        :type SnapshotId: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.SnapshotId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.SnapshotId = params.get("SnapshotId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DownloadSnapshotResponse(AbstractModel):
+    """DownloadSnapshot返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CosUrl: 快照下载链接
+        :type CosUrl: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.CosUrl = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.CosUrl = params.get("CosUrl")
+        self.RequestId = params.get("RequestId")
+
+
 class GroupInfo(AbstractModel):
     """域名分组列表
 
@@ -2598,6 +3439,35 @@ class GroupInfo(AbstractModel):
         self.GroupName = params.get("GroupName")
         self.GroupType = params.get("GroupType")
         self.Size = params.get("Size")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KeyValue(AbstractModel):
+    """键值对
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 键
+        :type Key: str
+        :param Value: 值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2714,7 +3584,7 @@ class ModifyDomainLockRequest(AbstractModel):
         :type Domain: str
         :param LockDays: 域名要锁定的天数，最多可锁定的天数可以通过获取域名权限接口获取。
         :type LockDays: int
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -2769,7 +3639,7 @@ class ModifyDomainOwnerRequest(AbstractModel):
         :type Domain: str
         :param Account: 域名需要转入的账号，支持Uin或者邮箱格式
         :type Account: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -2816,7 +3686,7 @@ class ModifyDomainRemarkRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         :param Remark: 域名备注，删除备注请提交空内容。
         :type Remark: str
@@ -2867,7 +3737,7 @@ class ModifyDomainStatusRequest(AbstractModel):
         :type Domain: str
         :param Status: 域名状态，”enable” 、”disable” 分别代表启用和暂停
         :type Status: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -2916,7 +3786,7 @@ class ModifyDomainUnlockRequest(AbstractModel):
         :type Domain: str
         :param LockCode: 域名解锁码，锁定的时候会返回。
         :type LockCode: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -2963,13 +3833,13 @@ class ModifyDynamicDNSRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param RecordId: 记录ID。
+        :param RecordId: 记录ID。 可以通过接口DescribeRecordList查到所有的解析记录列表以及对应的RecordId
         :type RecordId: int
         :param RecordLine: 记录线路，通过 API 记录线路获得，中文，比如：默认。
         :type RecordLine: str
         :param Value: 记录值，如 IP : 200.200.200.200， CNAME : cname.dnspod.com.， MX : mail.dnspod.com.。
         :type Value: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         :param SubDomain: 主机记录，如 www，如果不传，默认为 @。
         :type SubDomain: str
@@ -3034,7 +3904,7 @@ class ModifyPackageAutoRenewRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ResourceId: 资源ID
+        :param ResourceId: 资源ID。可以在控制台查看所有的资源
         :type ResourceId: str
         :param Status: enable 开启自动续费；disable 关闭自动续费
         :type Status: str
@@ -3143,7 +4013,7 @@ class ModifyRecordBatchRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param RecordIdList: 记录ID数组
+        :param RecordIdList: 记录ID数组。可以通过接口DescribeRecordList查到所有的解析记录列表以及对应的RecordId
         :type RecordIdList: list of int non-negative
         :param Change: 要修改的字段，可选值为 [“sub_domain”、”record_type”、”area”、”value”、”mx”、”ttl”、”status”] 中的某一个。
         :type Change: str
@@ -3206,8 +4076,8 @@ class ModifyRecordBatchResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class ModifyRecordRemarkRequest(AbstractModel):
-    """ModifyRecordRemark请求参数结构体
+class ModifyRecordFieldsRequest(AbstractModel):
+    """ModifyRecordFields请求参数结构体
 
     """
 
@@ -3217,7 +4087,126 @@ class ModifyRecordRemarkRequest(AbstractModel):
         :type Domain: str
         :param RecordId: 记录 ID 。
         :type RecordId: int
+        :param FieldList: 要修改的记录属性和值，支持：sub_domain，record_line，record_line_id，record_type，value，ttl，status，mx，weight
+        :type FieldList: list of KeyValue
         :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.RecordId = None
+        self.FieldList = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.RecordId = params.get("RecordId")
+        if params.get("FieldList") is not None:
+            self.FieldList = []
+            for item in params.get("FieldList"):
+                obj = KeyValue()
+                obj._deserialize(item)
+                self.FieldList.append(obj)
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyRecordFieldsResponse(AbstractModel):
+    """ModifyRecordFields返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RecordId: 记录ID
+        :type RecordId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RecordId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RecordId = params.get("RecordId")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyRecordGroupRequest(AbstractModel):
+    """ModifyRecordGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param GroupName: 分组名称
+        :type GroupName: str
+        :param GroupId: 要修改的分组 ID
+        :type GroupId: int
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.GroupName = None
+        self.GroupId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.GroupName = params.get("GroupName")
+        self.GroupId = params.get("GroupId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyRecordGroupResponse(AbstractModel):
+    """ModifyRecordGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 修改的分组 ID
+        :type GroupId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyRecordRemarkRequest(AbstractModel):
+    """ModifyRecordRemark请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param RecordId: 记录 ID 。可以通过接口DescribeRecordList查到所有的解析记录列表以及对应的RecordId
+        :type RecordId: int
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         :param Remark: 解析记录备注，删除备注请提交空内容。
         :type Remark: str
@@ -3274,9 +4263,9 @@ class ModifyRecordRequest(AbstractModel):
         :type RecordLine: str
         :param Value: 记录值，如 IP : 200.200.200.200， CNAME : cname.dnspod.com.， MX : mail.dnspod.com.。
         :type Value: str
-        :param RecordId: 记录 ID 。
+        :param RecordId: 记录 ID 。可以通过接口DescribeRecordList查到所有的解析记录列表以及对应的RecordId
         :type RecordId: int
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         :param SubDomain: 主机记录，如 www，如果不传，默认为 @。
         :type SubDomain: str
@@ -3357,11 +4346,11 @@ class ModifyRecordStatusRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param RecordId: 记录 ID 。
+        :param RecordId: 记录 ID 。可以通过接口DescribeRecordList查到所有的解析记录列表以及对应的RecordId
         :type RecordId: int
         :param Status: 记录的状态。取值范围为 ENABLE 和 DISABLE。如果传入 DISABLE，解析不会生效，也不会验证负载均衡的限制。
         :type Status: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         """
         self.Domain = None
@@ -3405,6 +4394,108 @@ class ModifyRecordStatusResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyRecordToGroupRequest(AbstractModel):
+    """ModifyRecordToGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param GroupId: 分组 ID
+        :type GroupId: int
+        :param RecordId: 记录 ID，多个 ID 用竖线“|”分割
+        :type RecordId: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.GroupId = None
+        self.RecordId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.GroupId = params.get("GroupId")
+        self.RecordId = params.get("RecordId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyRecordToGroupResponse(AbstractModel):
+    """ModifyRecordToGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifySnapshotConfigRequest(AbstractModel):
+    """ModifySnapshotConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param Period: 备件间隔：空字符串-不备份，half_hour-每半小时，hourly-每小时，daily-每天，monthly-每月
+        :type Period: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.Period = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.Period = params.get("Period")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifySnapshotConfigResponse(AbstractModel):
+    """ModifySnapshotConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifySubdomainStatusRequest(AbstractModel):
     """ModifySubdomainStatus请求参数结构体
 
@@ -3418,7 +4509,7 @@ class ModifySubdomainStatusRequest(AbstractModel):
         :type RecordType: str
         :param Status: 记录状态。允许的值为disable。
         :type Status: str
-        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。可以通过接口DescribeDomainList查到所有的Domain以及DomainId
         :type DomainId: int
         :param SubDomain: 主机记录，如 www，如果不传，默认为 @。
         :type SubDomain: str
@@ -3469,7 +4560,7 @@ class ModifyVasAutoRenewStatusRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ResourceId: 资源ID
+        :param ResourceId: 资源ID。可以从控制台查看所有的资源
         :type ResourceId: str
         :param Status: enable 开启自动续费；disable 关闭自动续费
         :type Status: str
@@ -3516,7 +4607,7 @@ class PayOrderWithBalanceRequest(AbstractModel):
         r"""
         :param BigDealIdList: 需要支付的大订单号数组
         :type BigDealIdList: list of str
-        :param VoucherIdList: 代金券ID数组
+        :param VoucherIdList: 代金券ID数组。可以从控制台查到拥有的代金券
         :type VoucherIdList: list of str
         """
         self.BigDealIdList = None
@@ -3615,6 +4706,38 @@ class RecordCountInfo(AbstractModel):
         self.SubdomainCount = params.get("SubdomainCount")
         self.ListCount = params.get("ListCount")
         self.TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RecordGroupInfo(AbstractModel):
+    """解析记录分组信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 分组 ID
+        :type GroupId: int
+        :param GroupName: 分组名称
+        :type GroupName: str
+        :param GroupType: 分组类型：system-系统；user-用户
+        :type GroupType: str
+        """
+        self.GroupId = None
+        self.GroupName = None
+        self.GroupType = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.GroupName = params.get("GroupName")
+        self.GroupType = params.get("GroupType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3770,6 +4893,290 @@ class RecordListItem(AbstractModel):
         self.MonitorStatus = params.get("MonitorStatus")
         self.Remark = params.get("Remark")
         self.TTL = params.get("TTL")
+        self.MX = params.get("MX")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RollbackRecordSnapshotRequest(AbstractModel):
+    """RollbackRecordSnapshot请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param SnapshotId: 快照 ID
+        :type SnapshotId: str
+        :param RecordList: 解析记录信息
+        :type RecordList: list of SnapshotRecord
+        :param TaskId: 之前的快照回滚任务 ID
+        :type TaskId: int
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.SnapshotId = None
+        self.RecordList = None
+        self.TaskId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.SnapshotId = params.get("SnapshotId")
+        if params.get("RecordList") is not None:
+            self.RecordList = []
+            for item in params.get("RecordList"):
+                obj = SnapshotRecord()
+                obj._deserialize(item)
+                self.RecordList.append(obj)
+        self.TaskId = params.get("TaskId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RollbackRecordSnapshotResponse(AbstractModel):
+    """RollbackRecordSnapshot返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 回滚任务 ID
+        :type JobId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.JobId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.RequestId = params.get("RequestId")
+
+
+class RollbackSnapshotRequest(AbstractModel):
+    """RollbackSnapshot请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param SnapshotId: 快照记录 ID
+        :type SnapshotId: str
+        :param DomainId: 域名 ID 。参数 DomainId 优先级比参数 Domain 高，如果传递参数 DomainId 将忽略参数 Domain 。
+        :type DomainId: int
+        """
+        self.Domain = None
+        self.SnapshotId = None
+        self.DomainId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.SnapshotId = params.get("SnapshotId")
+        self.DomainId = params.get("DomainId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RollbackSnapshotResponse(AbstractModel):
+    """RollbackSnapshot返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 回滚任务 ID，用来查询回滚状态
+        :type TaskId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
+class SnapshotConfig(AbstractModel):
+    """域名解析快照配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Config: 配置类型：空字符串-不备份，half_hour-每半小时，hourly-每小时，daily-每天，monthly-每月
+        :type Config: str
+        :param CreatedOn: 添加时间
+        :type CreatedOn: str
+        :param DomainId: 所属域名 ID
+        :type DomainId: str
+        :param Id: 配置 ID
+        :type Id: str
+        :param SnapshotCount: 快照数量
+        :type SnapshotCount: int
+        :param Status: 状态：enable-启用，disable-禁用
+        :type Status: str
+        :param UpdatedOn: 更新时间
+        :type UpdatedOn: str
+        """
+        self.Config = None
+        self.CreatedOn = None
+        self.DomainId = None
+        self.Id = None
+        self.SnapshotCount = None
+        self.Status = None
+        self.UpdatedOn = None
+
+
+    def _deserialize(self, params):
+        self.Config = params.get("Config")
+        self.CreatedOn = params.get("CreatedOn")
+        self.DomainId = params.get("DomainId")
+        self.Id = params.get("Id")
+        self.SnapshotCount = params.get("SnapshotCount")
+        self.Status = params.get("Status")
+        self.UpdatedOn = params.get("UpdatedOn")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SnapshotInfo(AbstractModel):
+    """快照信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CosUrl: 快照的对象存储地址
+        :type CosUrl: str
+        :param CreatedOn: 添加时间
+        :type CreatedOn: str
+        :param Domain: 所属域名
+        :type Domain: str
+        :param Id: 快照记录 ID
+        :type Id: str
+        :param RecordCount: 域名解析记录数
+        :type RecordCount: str
+        :param Status: 状态：normal-正常，create-备份中
+        :type Status: str
+        """
+        self.CosUrl = None
+        self.CreatedOn = None
+        self.Domain = None
+        self.Id = None
+        self.RecordCount = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.CosUrl = params.get("CosUrl")
+        self.CreatedOn = params.get("CreatedOn")
+        self.Domain = params.get("Domain")
+        self.Id = params.get("Id")
+        self.RecordCount = params.get("RecordCount")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SnapshotPageInfo(AbstractModel):
+    """快照列表分页信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 快照总数
+        :type Total: int
+        """
+        self.Total = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SnapshotRecord(AbstractModel):
+    """快照解析记录
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubDomain: 子域名
+        :type SubDomain: str
+        :param RecordType: 记录类型
+        :type RecordType: str
+        :param RecordLine: 解析线路
+        :type RecordLine: str
+        :param Value: 解析值
+        :type Value: str
+        :param TTL: TTL(秒)
+        :type TTL: str
+        :param RecordId: 解析记录 ID
+        :type RecordId: str
+        :param MX: MX优先级
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MX: str
+        """
+        self.SubDomain = None
+        self.RecordType = None
+        self.RecordLine = None
+        self.Value = None
+        self.TTL = None
+        self.RecordId = None
+        self.MX = None
+
+
+    def _deserialize(self, params):
+        self.SubDomain = params.get("SubDomain")
+        self.RecordType = params.get("RecordType")
+        self.RecordLine = params.get("RecordLine")
+        self.Value = params.get("Value")
+        self.TTL = params.get("TTL")
+        self.RecordId = params.get("RecordId")
         self.MX = params.get("MX")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():

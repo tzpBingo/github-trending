@@ -131,6 +131,9 @@ INVALIDPARAMETER_ERRINVALIDACTIONPARAMDUPLICATENAME = 'InvalidParameter.ErrInval
 # 非法操作-非法参数-参数值数量超出限制。
 INVALIDPARAMETER_ERRINVALIDACTIONPARAMTOOMANYVALUES = 'InvalidParameter.ErrInvalidActionParamTooManyValues'
 
+# 非法条件-非法忽略大小写。
+INVALIDPARAMETER_ERRINVALIDCONDITIONIGNORECASE = 'InvalidParameter.ErrInvalidConditionIgnoreCase'
+
 # 非法条件-非法参数名称-匹配类型不支持参数名称。
 INVALIDPARAMETER_ERRINVALIDCONDITIONNAMETARGETNOTSUPPORTNAME = 'InvalidParameter.ErrInvalidConditionNameTargetNotSupportName'
 
@@ -233,13 +236,19 @@ INVALIDPARAMETER_INVALIDWEBSOCKETTIMEOUT = 'InvalidParameter.InvalidWebSocketTim
 # 无效的缓存键。
 INVALIDPARAMETER_KEYRULESINVALIDQUERYSTRINGVALUE = 'InvalidParameter.KeyRulesInvalidQueryStringValue'
 
+# 参数长度超过限制。
+INVALIDPARAMETER_LENGTHEXCEEDSLIMIT = 'InvalidParameter.LengthExceedsLimit'
+
 # 参数错误。
 INVALIDPARAMETER_PARAMETERERROR = 'InvalidParameter.ParameterError'
+
+# 套餐不存在。
+INVALIDPARAMETER_PLANNOTFOUND = 'InvalidParameter.PlanNotFound'
 
 # 参数错误
 INVALIDPARAMETER_SECURITY = 'InvalidParameter.Security'
 
-# 参数错误-setting非法参数。
+# 配置项参数错误。
 INVALIDPARAMETER_SETTINGINVALIDPARAM = 'InvalidParameter.SettingInvalidParam'
 
 # 资源存在错误。
@@ -250,6 +259,9 @@ INVALIDPARAMETER_TASKNOTGENERATED = 'InvalidParameter.TaskNotGenerated'
 
 # 文件上传链接存在问题。
 INVALIDPARAMETER_UPLOADURL = 'InvalidParameter.UploadUrl'
+
+# 站点已被绑定。
+INVALIDPARAMETER_ZONEHASBEENBOUND = 'InvalidParameter.ZoneHasBeenBound'
 
 # 站点不存在。
 INVALIDPARAMETER_ZONENOTFOUND = 'InvalidParameter.ZoneNotFound'
@@ -274,6 +286,9 @@ INVALIDPARAMETERVALUE_INVALIDDNSCONTENT = 'InvalidParameterValue.InvalidDNSConte
 
 # DNS 记录名称错误。
 INVALIDPARAMETERVALUE_INVALIDDNSNAME = 'InvalidParameterValue.InvalidDNSName'
+
+# 加速域名状态不符合要求。
+INVALIDPARAMETERVALUE_INVALIDDOMAINSTATUS = 'InvalidParameterValue.InvalidDomainStatus'
 
 # DNS 代理域名错误。
 INVALIDPARAMETERVALUE_INVALIDPROXYNAME = 'InvalidParameterValue.InvalidProxyName'
@@ -331,6 +346,9 @@ RESOURCEINUSE_DNS = 'ResourceInUse.Dns'
 
 # 已存在相同的别称域名。
 RESOURCEINUSE_DUPLICATENAME = 'ResourceInUse.DuplicateName'
+
+# 资源已被泛域名占用。
+RESOURCEINUSE_GENERICHOST = 'ResourceInUse.GenericHost'
 
 # 资源被本账号的子域名占用。
 RESOURCEINUSE_HOST = 'ResourceInUse.Host'

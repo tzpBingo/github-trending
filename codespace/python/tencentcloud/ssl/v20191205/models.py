@@ -789,14 +789,18 @@ class DeployedResources(AbstractModel):
         :type Count: int
         :param Type: 资源标识:clb,cdn,live,waf,antiddos
         :type Type: str
-        :param ResourceIds: 关联资源ID或关联域名
+        :param ResourceIds: 不建议使用。字段返回和Resources相同。本字段后续只返回null
 注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceIds: list of str
+        :param Resources: 关联资源ID或关联域名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Resources: list of str
         """
         self.CertificateId = None
         self.Count = None
         self.Type = None
         self.ResourceIds = None
+        self.Resources = None
 
 
     def _deserialize(self, params):
@@ -804,6 +808,7 @@ class DeployedResources(AbstractModel):
         self.Count = params.get("Count")
         self.Type = params.get("Type")
         self.ResourceIds = params.get("ResourceIds")
+        self.Resources = params.get("Resources")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1381,6 +1386,8 @@ class DescribeCertificatesRequest(AbstractModel):
         :type FilterSource: str
         :param IsSM: 是否筛选国密证书。1:筛选  0:不筛选
         :type IsSM: int
+        :param FilterExpiring: 筛选证书是否即将过期，传1是筛选，0不筛选
+        :type FilterExpiring: int
         """
         self.Offset = None
         self.Limit = None
@@ -1394,6 +1401,7 @@ class DescribeCertificatesRequest(AbstractModel):
         self.Renew = None
         self.FilterSource = None
         self.IsSM = None
+        self.FilterExpiring = None
 
 
     def _deserialize(self, params):
@@ -1409,6 +1417,7 @@ class DescribeCertificatesRequest(AbstractModel):
         self.Renew = params.get("Renew")
         self.FilterSource = params.get("FilterSource")
         self.IsSM = params.get("IsSM")
+        self.FilterExpiring = params.get("FilterExpiring")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

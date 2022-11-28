@@ -890,12 +890,16 @@ class DataDiskPrice(AbstractModel):
         :type Discount: float
         :param DiscountPrice: 折后总价。
         :type DiscountPrice: float
+        :param InstanceId: 数据盘挂载的实例ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceId: str
         """
         self.DiskId = None
         self.OriginalDiskPrice = None
         self.OriginalPrice = None
         self.Discount = None
         self.DiscountPrice = None
+        self.InstanceId = None
 
 
     def _deserialize(self, params):
@@ -904,6 +908,7 @@ class DataDiskPrice(AbstractModel):
         self.OriginalPrice = params.get("OriginalPrice")
         self.Discount = params.get("Discount")
         self.DiscountPrice = params.get("DiscountPrice")
+        self.InstanceId = params.get("InstanceId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1344,6 +1349,8 @@ class DescribeBundlesRequest(AbstractModel):
 取值： LINUX_UNIX（Linux/Unix系统）；WINDOWS（Windows 系统）
 类型：String
 必选：否
+<li>bundle-type</li>按照 【套餐类型进行过滤】。
+取值：GENERAL_BUNDLE (通用型套餐); STORAGE_BUNDLE(存储型套餐);ENTERPRISE_BUNDLE( 企业型套餐);EXCLUSIVE_BUNDLE(专属型套餐);BEFAST_BUNDLE(蜂驰型套餐);
 每次请求的 Filters 的上限为 10，Filter.Values 的上限为 5。参数不支持同时指定 BundleIds 和 Filters。
         :type Filters: list of Filter
         :param Zones: 可用区列表。默认为全部可用区。
@@ -2362,7 +2369,7 @@ class DescribeKeyPairsRequest(AbstractModel):
 <li>key-id</li>按照【密钥对ID】进行过滤。
 类型：String
 必选：否
-<li>key-name</li>按照【密钥对名称】进行过滤。
+<li>key-name</li>按照【密钥对名称】进行过滤（支持模糊匹配）。
 类型：String
 必选：否
 每次请求的 Filters 的上限为 10，Filter.Values 的上限为 5。参数不支持同时指定 KeyIds 和 Filters。
@@ -2438,6 +2445,10 @@ class DescribeModifyInstanceBundlesRequest(AbstractModel):
 必选：否
 <li>support-platform-type</li>按照【系统类型】进行过滤。
 取值： LINUX_UNIX（Linux/Unix系统）；WINDOWS（Windows 系统）
+类型：String
+必选：否
+<li>bundle-type</li>按照 【套餐类型进行过滤】。
+取值：GENERAL_BUNDLE (通用型套餐); STORAGE_BUNDLE(存储型套餐);ENTERPRISE_BUNDLE( 企业型套餐);EXCLUSIVE_BUNDLE(专属型套餐);BEFAST_BUNDLE(蜂驰型套餐);
 类型：String
 必选：否
 每次请求的 Filters 的上限为 10，Filter.Values 的上限为 5。
@@ -3909,13 +3920,13 @@ class InquirePriceRenewInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceIds: 待续费的实例。
+        :param InstanceIds: 待续费的实例ID。可通过[DescribeInstances](https://cloud.tencent.com/document/api/1207/47573 )接口返回值中的InstanceId获取。每次请求批量实例的上限为50。
         :type InstanceIds: list of str
         :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。若指定实例的付费模式为预付费则该参数必传。
         :type InstanceChargePrepaid: :class:`tencentcloud.lighthouse.v20200324.models.InstanceChargePrepaid`
-        :param RenewDataDisk: 是否续费数据盘
+        :param RenewDataDisk: 是否续费数据盘。默认值: false, 即不续费。
         :type RenewDataDisk: bool
-        :param AlignInstanceExpiredTime: 数据盘是否对齐实例到期时间
+        :param AlignInstanceExpiredTime: 数据盘是否对齐实例到期时间。默认值: false, 即不对齐。
         :type AlignInstanceExpiredTime: bool
         """
         self.InstanceIds = None
@@ -3947,16 +3958,20 @@ class InquirePriceRenewInstancesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Price: 询价信息。
+        :param Price: 询价信息。默认为列表中第一个实例的价格信息。
         :type Price: :class:`tencentcloud.lighthouse.v20200324.models.Price`
         :param DataDiskPriceSet: 数据盘价格信息列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type DataDiskPriceSet: list of DataDiskPrice
+        :param InstancePriceDetailSet: 待续费实例价格列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstancePriceDetailSet: list of InstancePriceDetail
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Price = None
         self.DataDiskPriceSet = None
+        self.InstancePriceDetailSet = None
         self.RequestId = None
 
 
@@ -3970,6 +3985,12 @@ class InquirePriceRenewInstancesResponse(AbstractModel):
                 obj = DataDiskPrice()
                 obj._deserialize(item)
                 self.DataDiskPriceSet.append(obj)
+        if params.get("InstancePriceDetailSet") is not None:
+            self.InstancePriceDetailSet = []
+            for item in params.get("InstancePriceDetailSet"):
+                obj = InstancePriceDetail()
+                obj._deserialize(item)
+                self.InstancePriceDetailSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -4219,6 +4240,38 @@ class InstancePrice(AbstractModel):
         self.OriginalPrice = params.get("OriginalPrice")
         self.Discount = params.get("Discount")
         self.DiscountPrice = params.get("DiscountPrice")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstancePriceDetail(AbstractModel):
+    """实例价格详细信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceId: str
+        :param InstancePrice: 询价信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstancePrice: :class:`tencentcloud.lighthouse.v20200324.models.InstancePrice`
+        """
+        self.InstanceId = None
+        self.InstancePrice = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        if params.get("InstancePrice") is not None:
+            self.InstancePrice = InstancePrice()
+            self.InstancePrice._deserialize(params.get("InstancePrice"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4802,6 +4855,58 @@ class ModifyInstancesAttributeRequest(AbstractModel):
 
 class ModifyInstancesAttributeResponse(AbstractModel):
     """ModifyInstancesAttribute返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyInstancesBundleRequest(AbstractModel):
+    """ModifyInstancesBundle请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceIds: 实例ID列表。一个或多个待操作的实例ID。可通过[DescribeInstances](https://cloud.tencent.com/document/api/1207/47573)接口返回值中的InstanceId获取。每次请求批量实例的上限为30。
+        :type InstanceIds: list of str
+        :param BundleId: 待变更的套餐Id。可通过[DescribeBundles](https://cloud.tencent.com/document/api/1207/47575)接口返回值中的BundleId获取。
+        :type BundleId: str
+        :param AutoVoucher: 是否自动抵扣代金券。取值范围：
+true：表示自动抵扣代金券
+false：表示不自动抵扣代金券
+默认取值：false。
+        :type AutoVoucher: bool
+        """
+        self.InstanceIds = None
+        self.BundleId = None
+        self.AutoVoucher = None
+
+
+    def _deserialize(self, params):
+        self.InstanceIds = params.get("InstanceIds")
+        self.BundleId = params.get("BundleId")
+        self.AutoVoucher = params.get("AutoVoucher")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyInstancesBundleResponse(AbstractModel):
+    """ModifyInstancesBundle返回参数结构体
 
     """
 

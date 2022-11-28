@@ -688,29 +688,25 @@ class AscriptionInfo(AbstractModel):
         
 
 
-class BillingDataFilter(AbstractModel):
-    """Dns数据曲线过滤参数
+class BindZoneToPlanRequest(AbstractModel):
+    """BindZoneToPlan请求参数结构体
 
     """
 
     def __init__(self):
         r"""
-        :param Type: 参数名称，取值范围：
-zone：站点名
-host：域名
-proxy: 四层实例
-plan: 套餐
-        :type Type: str
-        :param Value: 参数值
-        :type Value: str
+        :param ZoneId: 未绑定套餐的站点ID。
+        :type ZoneId: str
+        :param PlanId: 待绑定的目标套餐ID。
+        :type PlanId: str
         """
-        self.Type = None
-        self.Value = None
+        self.ZoneId = None
+        self.PlanId = None
 
 
     def _deserialize(self, params):
-        self.Type = params.get("Type")
-        self.Value = params.get("Value")
+        self.ZoneId = params.get("ZoneId")
+        self.PlanId = params.get("PlanId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -718,6 +714,23 @@ plan: 套餐
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class BindZoneToPlanResponse(AbstractModel):
+    """BindZoneToPlan返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class BotConfig(AbstractModel):
@@ -2316,10 +2329,14 @@ class CreatePlanForZoneRequest(AbstractModel):
 <li> sta_with_bot: 全球内容分发网络（不包括中国大陆）标准版套餐附带bot管理；</li>
 <li> sta_cm: 中国大陆内容分发网络标准版套餐； </li>
 <li> sta_cm_with_bot: 中国大陆内容分发网络标准版套餐附带bot管理；</li>
+<li> sta_global ：全球内容分发网络（包括中国大陆）标准版套餐； </li>
+<li> sta_global_with_bot ：全球内容分发网络（包括中国大陆）标准版套餐附带bot管理；</li>
 <li> ent: 全球内容分发网络（不包括中国大陆）企业版套餐； </li>
 <li> ent_with_bot: 全球内容分发网络（不包括中国大陆）企业版套餐附带bot管理；</li>
 <li> ent_cm: 中国大陆内容分发网络企业版套餐； </li>
-<li> ent_cm_with_bot: 中国大陆内容分发网络企业版套餐附带bot管理。</li>当前账户可购买套餐类型请以<a href="https://tcloud4api.woa.com/document/product/1657/80124?!preview&!document=1">DescribeAvailablePlans</a>返回为准。
+<li> ent_cm_with_bot: 中国大陆内容分发网络企业版套餐附带bot管理。</li>
+<li> ent_global ：全球内容分发网络（包括中国大陆）企业版套餐； </li>
+<li> ent_global_with_bot ：全球内容分发网络（包括中国大陆）企业版套餐附带bot管理。</li>当前账户可购买套餐类型请以<a href="https://tcloud4api.woa.com/document/product/1657/80124?!preview&!document=1">DescribeAvailablePlans</a>返回为准。
         :type PlanType: str
         """
         self.ZoneId = None
@@ -2766,7 +2783,7 @@ class CreateZoneRequest(AbstractModel):
         :type ZoneName: str
         :param Type: 接入方式，取值有：
 <li> full：NS接入；</li>
-<li> partial：CNAME接入。</li>不填写使用默认值full。
+<li> partial：CNAME接入，请先调用认证站点API（IdentifyZone）进行站点归属权校验，校验通过后继续调用本接口创建站点。</li>不填写使用默认值full。
         :type Type: str
         :param JumpStart: 是否跳过站点现有的DNS记录扫描。默认值：false。
         :type JumpStart: bool
@@ -2776,12 +2793,15 @@ class CreateZoneRequest(AbstractModel):
 <li> true：允许重复接入；</li>
 <li> false：不允许重复接入。</li>不填写使用默认值false。
         :type AllowDuplicates: bool
+        :param AliasZoneName: 站点别名。数字、英文、-和_组合，限制20个字符。
+        :type AliasZoneName: str
         """
         self.ZoneName = None
         self.Type = None
         self.JumpStart = None
         self.Tags = None
         self.AllowDuplicates = None
+        self.AliasZoneName = None
 
 
     def _deserialize(self, params):
@@ -2795,6 +2815,7 @@ class CreateZoneRequest(AbstractModel):
                 obj._deserialize(item)
                 self.Tags.append(obj)
         self.AllowDuplicates = params.get("AllowDuplicates")
+        self.AliasZoneName = params.get("AliasZoneName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4382,102 +4403,6 @@ class DescribeAvailablePlansResponse(AbstractModel):
                 obj = PlanInfo()
                 obj._deserialize(item)
                 self.PlanInfo.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeBillingDataRequest(AbstractModel):
-    """DescribeBillingData请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 起始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param Interval: 时间粒度, 支持指定以下几种粒度：
-<ul>
-<li>min：1分钟粒度；</li>
-<li>5min：5分钟粒度；</li>
-<li>hour：1小时粒度；</li>
-<li>day：天粒度；</li>
-</ul>
-        :type Interval: str
-        :param MetricName: 指标名,支持:
-<ul>
-<li>acc_flux: 内容加速流量用量；</li>
-<li>quic_request: QUIC 请求数用量；</li>
-<li>sec_flux: 安全流量用量；</li>
-<li>sec_request_clean: 安全干净流量请求数；</li>
-</ul>
-        :type MetricName: str
-        :param Filters: 筛选条件. 支持:
-<ul>
-<li>zone: 站点级数据；</li>
-<li>plan: 套餐级数据；</li>
-<li>service: l4 / l7分别筛选四七层数据；</li>
-<li>tagKey: 标签Key；</li>
-<li>tagValue: 标签Value。</li>
-</ul>
-        :type Filters: list of BillingDataFilter
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.Interval = None
-        self.MetricName = None
-        self.Filters = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.Interval = params.get("Interval")
-        self.MetricName = params.get("MetricName")
-        if params.get("Filters") is not None:
-            self.Filters = []
-            for item in params.get("Filters"):
-                obj = BillingDataFilter()
-                obj._deserialize(item)
-                self.Filters.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBillingDataResponse(AbstractModel):
-    """DescribeBillingData返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: 统计曲线数据
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of DnsData
-        :param Interval: 时间粒度
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Interval: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.Interval = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = DnsData()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.Interval = params.get("Interval")
         self.RequestId = params.get("RequestId")
 
 
@@ -9070,10 +8995,24 @@ class DescribeZonesRequest(AbstractModel):
         :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
 <li>zone-name<br>   按照【<strong>站点名称</strong>】进行过滤。<br>   类型：String<br>   必选：否</li><li>zone-id<br>   按照【<strong>站点ID</strong>】进行过滤。站点ID形如：zone-xxx。<br>   类型：String<br>   必选：否</li><li>status<br>   按照【<strong>站点状态</strong>】进行过滤。<br>   类型：String<br>   必选：否</li><li>tag-key<br>   按照【<strong>标签键</strong>】进行过滤。<br>   类型：String<br>   必选：否</li><li>tag-value<br>   按照【<strong>标签值</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>模糊查询时仅支持过滤字段名为zone-name。
         :type Filters: list of AdvancedFilter
+        :param Order: 排序字段，取值有：
+<li> type：接入类型；</li>
+<li> area：加速区域；</li>
+<li> create-time：创建时间；</li>
+<li> zone-name：站点名称；</li>
+<li> use-time：最近使用时间；</li>
+<li> active-status：生效状态。</li>不填写使用默认值create-time。
+        :type Order: str
+        :param Direction: 排序方向，取值有：
+<li> asc：从小到大排序；</li>
+<li> desc：从大到小排序。</li>不填写使用默认值desc。
+        :type Direction: str
         """
         self.Offset = None
         self.Limit = None
         self.Filters = None
+        self.Order = None
+        self.Direction = None
 
 
     def _deserialize(self, params):
@@ -9085,6 +9024,8 @@ class DescribeZonesRequest(AbstractModel):
                 obj = AdvancedFilter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.Direction = params.get("Direction")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12343,10 +12284,13 @@ class ModifyZoneRequest(AbstractModel):
         :type Type: str
         :param VanityNameServers: 自定义站点信息，以替代系统默认分配的名称服务器。不填写保持原有配置。
         :type VanityNameServers: :class:`tencentcloud.teo.v20220901.models.VanityNameServers`
+        :param AliasZoneName: 站点别名。数字、英文、-和_组合，限制20个字符。
+        :type AliasZoneName: str
         """
         self.ZoneId = None
         self.Type = None
         self.VanityNameServers = None
+        self.AliasZoneName = None
 
 
     def _deserialize(self, params):
@@ -12355,6 +12299,7 @@ class ModifyZoneRequest(AbstractModel):
         if params.get("VanityNameServers") is not None:
             self.VanityNameServers = VanityNameServers()
             self.VanityNameServers._deserialize(params.get("VanityNameServers"))
+        self.AliasZoneName = params.get("AliasZoneName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12987,10 +12932,14 @@ class PlanInfo(AbstractModel):
 <li> sta_with_bot ：全球内容分发网络（不包括中国大陆）标准版套餐附带bot管理；</li>
 <li> sta_cm ：中国大陆内容分发网络标准版套餐； </li>
 <li> sta_cm_with_bot ：中国大陆内容分发网络标准版套餐附带bot管理；</li>
+<li> sta_global ：全球内容分发网络（包括中国大陆）标准版套餐； </li>
+<li> sta_global_with_bot ：全球内容分发网络（包括中国大陆）标准版套餐附带bot管理；</li>
 <li> ent ：全球内容分发网络（不包括中国大陆）企业版套餐； </li>
 <li> ent_with_bot ： 全球内容分发网络（不包括中国大陆）企业版套餐附带bot管理；</li>
 <li> ent_cm ：中国大陆内容分发网络企业版套餐； </li>
-<li> ent_cm_with_bot ：中国大陆内容分发网络企业版套餐附带bot管理。</li>
+<li> ent_cm_with_bot ：中国大陆内容分发网络企业版套餐附带bot管理；</li>
+<li> ent_global ：全球内容分发网络（包括中国大陆）企业版套餐； </li>
+<li> ent_global_with_bot ：全球内容分发网络（包括中国大陆）企业版套餐附带bot管理。</li>
         :type PlanType: str
         :param Price: 套餐价格（单位：分）。
         :type Price: float
@@ -13000,7 +12949,8 @@ class PlanInfo(AbstractModel):
         :type SiteNumber: int
         :param Area: 套餐加速区域类型，取值有：
 <li> mainland ：中国大陆； </li>
-<li> overseas ：全球（不包括中国大陆）。</li>
+<li> overseas ：全球（不包括中国大陆）；</li>
+<li> global ：全球（包括中国大陆）。 </li>
         :type Area: str
         """
         self.Currency = None
@@ -13974,22 +13924,22 @@ class RuleCondition(AbstractModel):
 <li> notexist: 不存在。</li>
         :type Operator: str
         :param Target: 匹配类型，取值有：
-<li> 文件名: filename； </li>
-<li> 文件后缀: extension； </li>
-<li> HOST: host； </li>
-<li> URL Full: full_url，当前站点下完整 URL 路径，必须包含 HTTP 协议，Host 和 路径； </li>
-<li> URL Path: url，当前站点下 URL 路径的请求； </li><li>客户端国际/地区：client_country；</li>
-<li> 查询字符串: query_string，当前站点下URL请求的查询字符串； </li>
-<li> HTTP 请求头: request_header，HTTP请求头部。 </li>
+<li> filename：文件名； </li>
+<li> extension：文件后缀； </li>
+<li> host：HOST； </li>
+<li> full_url：URL Full，当前站点下完整 URL 路径，必须包含 HTTP 协议，Host 和 路径； </li>
+<li> url：URL Path，当前站点下 URL 路径的请求； </li><li>client_country：客户端国家/地区；</li>
+<li> query_string：查询字符串，当前站点下请求URL的查询字符串； </li>
+<li> request_header：HTTP请求头部。 </li>
         :type Target: str
-        :param Values: 对应匹配类型的参数值，仅在匹配类型为查询字符串或HTTP请求头并且运算符取值为存在或不存在时允许传空数组，对应匹配类型的取值有：
+        :param Values: 对应匹配类型的参数值，仅在匹配类型为查询字符串或HTTP请求头并且运算符取值为存在或不存在时允许传空数组，对应匹配类型有：
 <li> 文件后缀：jpg、txt等文件后缀；</li>
 <li> 文件名称：例如 foo.jpg 中的 foo；</li>
 <li> 全部（站点任意请求）： all； </li>
 <li> HOST：当前站点下的 host ，例如www.maxx55.com；</li>
 <li> URL Path：当前站点下 URL 路径的请求，例如：/example；</li>
 <li> URL Full：当前站点下完整 URL 请求，必须包含 HTTP 协议，Host 和 路径，例如：https://www.maxx55.cn/example；</li>
-<li> 客户端国际/地区：符合ISO3166标准的国家/地区标识；</li>
+<li> 客户端国家/地区：符合ISO3166标准的国家/地区标识；</li>
 <li> 查询字符串: 当前站点下URL请求中查询字符串的参数值，例如lang=cn&version=1中的cn和1； </li>
 <li> HTTP 请求头: HTTP请求头部字段值，例如Accept-Language:zh-CN,zh;q=0.9中的zh-CN,zh;q=0.9。 </li>
         :type Values: list of str
@@ -13999,12 +13949,16 @@ class RuleCondition(AbstractModel):
 <li> query_string（查询字符串）: 当前站点下URL请求中查询字符串的参数名称，例如lang=cn&version=1中的lang和version； </li>
 <li> request_header（HTTP 请求头）: HTTP请求头部字段名，例如Accept-Language:zh-CN,zh;q=0.9中的Accept-Language。 </li>
         :type Name: str
+        :param IgnoreNameCase: 是否忽略参数名称的大小写，默认值为 false。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IgnoreNameCase: bool
         """
         self.Operator = None
         self.Target = None
         self.Values = None
         self.IgnoreCase = None
         self.Name = None
+        self.IgnoreNameCase = None
 
 
     def _deserialize(self, params):
@@ -14013,6 +13967,7 @@ class RuleCondition(AbstractModel):
         self.Values = params.get("Values")
         self.IgnoreCase = params.get("IgnoreCase")
         self.Name = params.get("Name")
+        self.IgnoreNameCase = params.get("IgnoreNameCase")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16363,6 +16318,14 @@ class Zone(AbstractModel):
         :param VanityNameServersIps: 用户自定义 NS IP 信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type VanityNameServersIps: list of VanityNameServersIps
+        :param ActiveStatus: 展示状态，取值有：
+<li> active：已启用；</li>
+<li> inactive：未生效；</li>
+<li> paused：已停用。</li>
+        :type ActiveStatus: str
+        :param AliasZoneName: 站点别名。数字、英文、-和_组合，限制20个字符。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AliasZoneName: str
         """
         self.ZoneId = None
         self.ZoneName = None
@@ -16380,6 +16343,8 @@ class Zone(AbstractModel):
         self.Area = None
         self.VanityNameServers = None
         self.VanityNameServersIps = None
+        self.ActiveStatus = None
+        self.AliasZoneName = None
 
 
     def _deserialize(self, params):
@@ -16416,6 +16381,8 @@ class Zone(AbstractModel):
                 obj = VanityNameServersIps()
                 obj._deserialize(item)
                 self.VanityNameServersIps.append(obj)
+        self.ActiveStatus = params.get("ActiveStatus")
+        self.AliasZoneName = params.get("AliasZoneName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

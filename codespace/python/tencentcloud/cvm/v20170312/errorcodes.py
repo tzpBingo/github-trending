@@ -575,6 +575,9 @@ LIMITEXCEEDED_ENINUMLIMIT = 'LimitExceeded.EniNumLimit'
 # 正在运行中的镜像导出任务已达上限，请等待已有任务完成后，再次发起重试。
 LIMITEXCEEDED_EXPORTIMAGETASKLIMITEXCEEDED = 'LimitExceeded.ExportImageTaskLimitExceeded'
 
+# 已达创建高性能计算集群数的上限。
+LIMITEXCEEDED_HPCCLUSTERQUOTA = 'LimitExceeded.HpcClusterQuota'
+
 # IP数量超过网卡上限。
 LIMITEXCEEDED_IPV6ADDRESSNUM = 'LimitExceeded.IPv6AddressNum'
 
@@ -646,6 +649,9 @@ REGIONABILITYLIMIT_UNSUPPORTEDTOIMPORTIMAGE = 'RegionAbilityLimit.UnsupportedToI
 
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
+
+# 高性能计算集群使用中。
+RESOURCEINUSE_HPCCLUSTER = 'ResourceInUse.HpcCluster'
 
 # 该可用区已售罄
 RESOURCEINSUFFICIENT_AVAILABILITYZONESOLDOUT = 'ResourceInsufficient.AvailabilityZoneSoldOut'
@@ -724,6 +730,9 @@ UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
 # 指定的实例付费模式或者网络付费模式不支持共享带宽包
 UNSUPPORTEDOPERATION_BANDWIDTHPACKAGEIDNOTSUPPORTED = 'UnsupportedOperation.BandwidthPackageIdNotSupported'
+
+# 所选择的边缘可用区不支持云盘操作。
+UNSUPPORTEDOPERATION_EDGEZONENOTSUPPORTCLOUDDISK = 'UnsupportedOperation.EdgeZoneNotSupportCloudDisk'
 
 # 云服务器绑定了弹性网卡，请解绑弹性网卡后再切换私有网络。
 UNSUPPORTEDOPERATION_ELASTICNETWORKINTERFACE = 'UnsupportedOperation.ElasticNetworkInterface'
@@ -815,6 +824,9 @@ UNSUPPORTEDOPERATION_INSTANCESTATETERMINATING = 'UnsupportedOperation.InstanceSt
 # 不支持已启用销毁保护的实例，请先到设置实例销毁保护，关闭实例销毁保护，然后重试。
 UNSUPPORTEDOPERATION_INSTANCESPROTECTED = 'UnsupportedOperation.InstancesProtected'
 
+# 用户创建高性能集群配额已达上限。
+UNSUPPORTEDOPERATION_INSUFFICIENTCLUSTERQUOTA = 'UnsupportedOperation.InsufficientClusterQuota'
+
 # 不支持调整数据盘。
 UNSUPPORTEDOPERATION_INVALIDDATADISK = 'UnsupportedOperation.InvalidDataDisk'
 
@@ -833,6 +845,9 @@ UNSUPPORTEDOPERATION_INVALIDPERMISSIONNONINTERNATIONALACCOUNT = 'UnsupportedOper
 # 指定的地域不支持加密盘。
 UNSUPPORTEDOPERATION_INVALIDREGIONDISKENCRYPT = 'UnsupportedOperation.InvalidRegionDiskEncrypt'
 
+# 该可用区不可售卖。
+UNSUPPORTEDOPERATION_INVALIDZONE = 'UnsupportedOperation.InvalidZone'
+
 # 密钥不支持Windows操作系统
 UNSUPPORTEDOPERATION_KEYPAIRUNSUPPORTEDWINDOWS = 'UnsupportedOperation.KeyPairUnsupportedWindows'
 
@@ -845,7 +860,7 @@ UNSUPPORTEDOPERATION_LOCALDISKMIGRATINGTOCLOUDDISK = 'UnsupportedOperation.Local
 # 从市场镜像创建的自定义镜像不支持导出。
 UNSUPPORTEDOPERATION_MARKETIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.MarketImageExportUnsupported'
 
-# 不支持修改系统盘的加密属性，比如使用非加密镜像重装加密系统盘。
+# 不支持修改系统盘的加密属性，例如使用非加密镜像重装加密系统盘。
 UNSUPPORTEDOPERATION_MODIFYENCRYPTIONNOTSUPPORTED = 'UnsupportedOperation.ModifyEncryptionNotSupported'
 
 # 绑定负载均衡的实例，不支持修改vpc属性。
@@ -916,9 +931,6 @@ UNSUPPORTEDOPERATION_UNSUPPORTEDCHANGEINSTANCEFAMILY = 'UnsupportedOperation.Uns
 
 # 非ARM机型不支持调整到ARM机型。
 UNSUPPORTEDOPERATION_UNSUPPORTEDCHANGEINSTANCEFAMILYTOARM = 'UnsupportedOperation.UnsupportedChangeInstanceFamilyToARM'
-
-# 目标机型是SA3, 不支持变配。
-UNSUPPORTEDOPERATION_UNSUPPORTEDCHANGEINSTANCEFAMILYTOSA3 = 'UnsupportedOperation.UnsupportedChangeInstanceFamilyToSA3'
 
 # 不支持实例变配到此类型机型。
 UNSUPPORTEDOPERATION_UNSUPPORTEDCHANGEINSTANCETOTHISINSTANCEFAMILY = 'UnsupportedOperation.UnsupportedChangeInstanceToThisInstanceFamily'
