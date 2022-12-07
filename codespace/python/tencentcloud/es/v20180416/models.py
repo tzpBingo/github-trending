@@ -4172,7 +4172,7 @@ class UpdateInstanceRequest(AbstractModel):
         :type EsConfig: str
         :param Password: 默认用户elastic的密码（8到16位，至少包括两项（[a-z,A-Z],[0-9]和[-!@#$%&^*+=_:;,.?]的特殊符号）
         :type Password: str
-        :param EsAcl: 访问控制列表
+        :param EsAcl: 可视化组件（Kibana、Cerebro）的公网访问策略
         :type EsAcl: :class:`tencentcloud.es.v20180416.models.EsAcl`
         :param DiskSize: 已废弃请使用NodeInfoList
 磁盘大小（单位GB）
@@ -4195,13 +4195,19 @@ class UpdateInstanceRequest(AbstractModel):
         :type CosBackup: :class:`tencentcloud.es.v20180416.models.CosBackup`
         :param NodeInfoList: 节点信息列表，可以只传递要更新的节点及其对应的规格信息。支持的操作包括<li>修改一种节点的个数</li><li>修改一种节点的节点规格及磁盘大小</li><li>增加一种节点类型（需要同时指定该节点的类型，个数，规格，磁盘等信息）</li>上述操作一次只能进行一种，且磁盘类型不支持修改
         :type NodeInfoList: list of NodeInfo
-        :param PublicAccess: 公网访问状态
+        :param PublicAccess: ES集群公网访问状态
+OPEN 开启
+CLOSE 关闭
         :type PublicAccess: str
         :param EsPublicAcl: 公网访问控制列表
         :type EsPublicAcl: :class:`tencentcloud.es.v20180416.models.EsPublicAcl`
         :param KibanaPublicAccess: Kibana公网访问状态
+OPEN 开启
+CLOSE 关闭
         :type KibanaPublicAccess: str
         :param KibanaPrivateAccess: Kibana内网访问状态
+OPEN 开启
+CLOSE 关闭
         :type KibanaPrivateAccess: str
         :param BasicSecurityType: ES 6.8及以上版本基础版开启或关闭用户认证
         :type BasicSecurityType: int
@@ -4222,14 +4228,20 @@ class UpdateInstanceRequest(AbstractModel):
         :param EnableCerebro: 启用Cerebro
         :type EnableCerebro: bool
         :param CerebroPublicAccess: Cerebro公网访问状态
+OPEN 开启
+CLOSE 关闭
         :type CerebroPublicAccess: str
         :param CerebroPrivateAccess: Cerebro内网访问状态
+OPEN 开启
+CLOSE 关闭
         :type CerebroPrivateAccess: str
         :param EsConfigSet: 新增或修改的配置组信息
         :type EsConfigSet: :class:`tencentcloud.es.v20180416.models.EsConfigSetInfo`
         :param OperationDuration: 可维护时间段
         :type OperationDuration: :class:`tencentcloud.es.v20180416.models.OperationDurationUpdated`
-        :param KibanaAlteringPublicAccess: 是否开启Altering 外网告警输出
+        :param KibanaAlteringPublicAccess: 是否开启Alerting 外网告警输出：
+OPEN 开启
+CLOSE 关闭
         :type KibanaAlteringPublicAccess: str
         """
         self.InstanceId = None

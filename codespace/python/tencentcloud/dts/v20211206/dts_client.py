@@ -234,7 +234,7 @@ class DtsClient(AbstractClient):
 
 
     def DeleteCompareTask(self, request):
-        """删除一致性校验任务
+        """删除一致性校验任务。当一致性校验任务状态为success、failed、canceled 时可以执行此操作。
 
         :param request: Request instance for DeleteCompareTask.
         :type request: :class:`tencentcloud.dts.v20211206.models.DeleteCompareTaskRequest`
@@ -526,7 +526,7 @@ class DtsClient(AbstractClient):
 
 
     def DestroySyncJob(self, request):
-        """下线同步任务，任务在已隔离状态下可以通过此操作进行任务下线，即彻底删除任务。下线操作后可通过查询同步任务信息接口DescribeSyncJobs，获取下线后任务列表，此操作成功后无法看到此任务表示下线成功。
+        """下线同步任务，任务在已隔离状态下可以通过此操作进行任务下线，即彻底删除任务。下线操作后可通过查询同步任务信息接口DescribeSyncJobs获取任务列表查看状态，此操作成功后无法看到此任务表示下线成功。
 
         :param request: Request instance for DestroySyncJob.
         :type request: :class:`tencentcloud.dts.v20211206.models.DestroySyncJobRequest`
@@ -584,7 +584,7 @@ class DtsClient(AbstractClient):
 
 
     def IsolateSyncJob(self, request):
-        """销毁(隔离)同步任务，销毁后可通过查询同步任务信息接口DescribeSyncJobs，获取销毁后状态。在任务销毁后可进行解除隔离(RecoverSyncJob)操作或直接进行立即下线操作。对于不计费任务，调用此接口后会直接删除任务，无法进行恢复操作。
+        """隔离同步任务，隔离后可通过查询同步任务信息接口DescribeSyncJobs获取隔离后状态。在任务隔离后可进行解除隔离(RecoverSyncJob)操作或直接进行下线操作。对于不计费任务，调用此接口后会直接删除任务，无法进行恢复操作。
 
         :param request: Request instance for IsolateSyncJob.
         :type request: :class:`tencentcloud.dts.v20211206.models.IsolateSyncJobRequest`
@@ -1049,7 +1049,7 @@ class DtsClient(AbstractClient):
 
 
     def StopSyncJob(self, request):
-        """终止同步任务
+        """结束同步任务，操作后可通过查询同步任务信息接口DescribeSyncJobs，获取操作后的状态。
 
         :param request: Request instance for StopSyncJob.
         :type request: :class:`tencentcloud.dts.v20211206.models.StopSyncJobRequest`

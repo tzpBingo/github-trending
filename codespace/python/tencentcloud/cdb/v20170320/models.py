@@ -212,80 +212,6 @@ class Address(AbstractModel):
         
 
 
-class ApplyCDBProxyRequest(AbstractModel):
-    """ApplyCDBProxy请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param InstanceId: 主实例唯一标识ID
-        :type InstanceId: str
-        :param UniqVpcId: 私有网络ID
-        :type UniqVpcId: str
-        :param UniqSubnetId: 私有网络子网ID
-        :type UniqSubnetId: str
-        :param ProxyCount: 代理组节点个数
-        :type ProxyCount: int
-        :param Cpu: cpu核数
-        :type Cpu: int
-        :param Mem: 内存
-        :type Mem: int
-        :param SecurityGroup: 安全组
-        :type SecurityGroup: list of str
-        :param Desc: 描述说明，最大支持256位。
-        :type Desc: str
-        """
-        self.InstanceId = None
-        self.UniqVpcId = None
-        self.UniqSubnetId = None
-        self.ProxyCount = None
-        self.Cpu = None
-        self.Mem = None
-        self.SecurityGroup = None
-        self.Desc = None
-
-
-    def _deserialize(self, params):
-        self.InstanceId = params.get("InstanceId")
-        self.UniqVpcId = params.get("UniqVpcId")
-        self.UniqSubnetId = params.get("UniqSubnetId")
-        self.ProxyCount = params.get("ProxyCount")
-        self.Cpu = params.get("Cpu")
-        self.Mem = params.get("Mem")
-        self.SecurityGroup = params.get("SecurityGroup")
-        self.Desc = params.get("Desc")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ApplyCDBProxyResponse(AbstractModel):
-    """ApplyCDBProxy返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param AsyncRequestId: 异步处理ID
-注意：此字段可能返回 null，表示取不到有效值。
-        :type AsyncRequestId: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.AsyncRequestId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.AsyncRequestId = params.get("AsyncRequestId")
-        self.RequestId = params.get("RequestId")
-
-
 class AssociateSecurityGroupsRequest(AbstractModel):
     """AssociateSecurityGroups请求参数结构体
 
@@ -687,6 +613,9 @@ class BackupInfo(AbstractModel):
         :type CosStorageType: int
         :param InstanceId: 实例 ID，格式如：cdb-c1nl9rpv。与云数据库控制台页面中显示的实例 ID 相同。
         :type InstanceId: str
+        :param EncryptionFlag: 备份文件是否加密， on-加密， off-未加密
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EncryptionFlag: str
         """
         self.Name = None
         self.Size = None
@@ -707,6 +636,7 @@ class BackupInfo(AbstractModel):
         self.RemoteInfo = None
         self.CosStorageType = None
         self.InstanceId = None
+        self.EncryptionFlag = None
 
 
     def _deserialize(self, params):
@@ -734,6 +664,7 @@ class BackupInfo(AbstractModel):
                 self.RemoteInfo.append(obj)
         self.CosStorageType = params.get("CosStorageType")
         self.InstanceId = params.get("InstanceId")
+        self.EncryptionFlag = params.get("EncryptionFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8868,77 +8799,6 @@ class ModifyCDBProxyDescResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class ModifyCDBProxyRequest(AbstractModel):
-    """ModifyCDBProxy请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ProxyGroupId: 数据库代理组唯一ID
-        :type ProxyGroupId: str
-        :param IsKickout: 是否开始延迟剔除，默认false，取值："true" | "false"
-        :type IsKickout: bool
-        :param MinCount: 最少保留数，最小为0，最大为实例数量
-        :type MinCount: int
-        :param MaxDelay: 延迟剔除的阈值；如果IsKickOut="true", 该字段必填
-        :type MaxDelay: int
-        :param WeightMode: 读写权重分配模式；系统自动分配："system"， 自定义："custom"
-        :type WeightMode: str
-        :param RoWeightValues: 实例只读权重
-        :type RoWeightValues: :class:`tencentcloud.cdb.v20170320.models.RoWeight`
-        :param FailOver: 是否开启故障转移，代理出现故障后，连接地址将路由到主实例，默认false，取值："true" | "false"
-        :type FailOver: bool
-        :param AutoAddRo: 是否自动添加只读实例，默认false，取值："true" | "false"
-        :type AutoAddRo: bool
-        """
-        self.ProxyGroupId = None
-        self.IsKickout = None
-        self.MinCount = None
-        self.MaxDelay = None
-        self.WeightMode = None
-        self.RoWeightValues = None
-        self.FailOver = None
-        self.AutoAddRo = None
-
-
-    def _deserialize(self, params):
-        self.ProxyGroupId = params.get("ProxyGroupId")
-        self.IsKickout = params.get("IsKickout")
-        self.MinCount = params.get("MinCount")
-        self.MaxDelay = params.get("MaxDelay")
-        self.WeightMode = params.get("WeightMode")
-        if params.get("RoWeightValues") is not None:
-            self.RoWeightValues = RoWeight()
-            self.RoWeightValues._deserialize(params.get("RoWeightValues"))
-        self.FailOver = params.get("FailOver")
-        self.AutoAddRo = params.get("AutoAddRo")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyCDBProxyResponse(AbstractModel):
-    """ModifyCDBProxy返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
 class ModifyCDBProxyVipVPortRequest(AbstractModel):
     """ModifyCDBProxyVipVPort请求参数结构体
 
@@ -9284,7 +9144,7 @@ class ModifyInstancePasswordComplexityRequest(AbstractModel):
         r"""
         :param InstanceIds: 实例短 ID 列表。
         :type InstanceIds: list of str
-        :param ParamList: 要修改的参数列表。每一个元素是 Name 和 CurrentValue 的组合。Name 是参数名，CurrentValue 是要修改成的值。
+        :param ParamList: 要修改的参数列表。每一个元素是Name和CurrentValue的组合。Name是参数名，CurrentValue是要修改成的值。8.0版本Name支持范围：["validate_password.policy","validate_password.length","validate_password.mixed_case_count","validate_password.number_count","validate_password.special_char_count"],5.6和5.7版本支持范围：["validate_password_policy","validate_password_length","validate_password_mixed_case_count","validate_password_number_count","validate_password_special_char_count"]
         :type ParamList: list of Parameter
         """
         self.InstanceIds = None
@@ -11107,12 +10967,6 @@ class RoVipInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
-
-
-class RoWeight(AbstractModel):
-    """实例权重
-
-    """
 
 
 class RoWeightValue(AbstractModel):

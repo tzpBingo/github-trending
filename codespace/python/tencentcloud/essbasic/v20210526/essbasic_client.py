@@ -59,8 +59,7 @@ class EssbasicClient(AbstractClient):
 
 
     def ChannelCancelFlow(self, request):
-        """渠道版撤销签署流程接口
-        仅支持未签署完成的合同
+        """渠道版撤销签署流程接口，可以撤回：未全部签署完成；不可以撤回（终态）：已全部签署完成、已拒签、已过期、已撤回。
         注意:
         能撤回合同的只能是合同的发起人或者发起企业的超管、法人
 
@@ -123,6 +122,7 @@ class EssbasicClient(AbstractClient):
         """指定需要批量撤销的签署流程Id，获取批量撤销链接
         客户指定需要撤销的签署流程Id，最多100个，超过100不处理；
         接口调用成功返回批量撤销合同的链接，通过链接跳转到电子签小程序完成批量撤销;
+        可以撤回：未全部签署完成；不可以撤回（终态）：已全部签署完成、已拒签、已过期、已撤回。
         注意:
         能撤回合同的只能是合同的发起人或者发起企业的超管、法人
 
@@ -153,7 +153,7 @@ class EssbasicClient(AbstractClient):
 
 
     def ChannelCreateBoundFlows(self, request):
-        """此接口（CreateConsoleLoginUrl）用于渠道子客领取合同，经办人需要有相应的角色，领取后的合同不能重复领取
+        """此接口（ChannelCreateBoundFlows）用于渠道子客领取合同，经办人需要有相应的角色，领取后的合同不能重复领取。
 
         :param request: Request instance for ChannelCreateBoundFlows.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateBoundFlowsRequest`
@@ -316,6 +316,36 @@ class EssbasicClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.ChannelCreateMultiFlowSignQRCodeResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ChannelCreateReleaseFlow(self, request):
+        """渠道版发起解除协议，主要应用场景为：基于一份已经签署的合同，进行解除操作。
+        合同发起人必须在电子签已经进行实名。
+
+        :param request: Request instance for ChannelCreateReleaseFlow.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateReleaseFlowRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateReleaseFlowResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreateReleaseFlow", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.ChannelCreateReleaseFlowResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

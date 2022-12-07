@@ -137,6 +137,12 @@ FAILEDOPERATION_KUBERNETESPATCHOPERATIONERROR = 'FailedOperation.KubernetesPatch
 # 底层调用CLB未知错误。
 FAILEDOPERATION_LBCOMMON = 'FailedOperation.LbCommon'
 
+# 获取集群认证信息失败。
+FAILEDOPERATION_MARKETGETAUTHFAILED = 'FailedOperation.MarketGetAuthFailed'
+
+# 操作应用Release失败。
+FAILEDOPERATION_MARKETRELEASEOPERATION = 'FailedOperation.MarketReleaseOperation'
+
 # 修改CLS索引失败。
 FAILEDOPERATION_MODIFYCLSINDEX = 'FailedOperation.ModifyClsIndex'
 
@@ -148,6 +154,9 @@ FAILEDOPERATION_OSNOTSUPPORT = 'FailedOperation.OsNotSupport'
 
 # 参数错误。
 FAILEDOPERATION_PARAM = 'FailedOperation.Param'
+
+# gpe错误。
+FAILEDOPERATION_POLICYSERVERCOMMONERROR = 'FailedOperation.PolicyServerCommonError'
 
 # 超过配额限制。
 FAILEDOPERATION_QUOTAMAXCLSLIMIT = 'FailedOperation.QuotaMaxClsLimit'
@@ -316,6 +325,15 @@ INTERNALERROR_KUBERNETESPATCHOPERATIONERROR = 'InternalError.KubernetesPatchOper
 
 # 底层调用CLB未知错误。
 INTERNALERROR_LBCOMMON = 'InternalError.LbCommon'
+
+# 获取集群认证信息失败。
+INTERNALERROR_MARKETGETAUTHFAILED = 'InternalError.MarketGetAuthFailed'
+
+# 应用市场服务操作错误。
+INTERNALERROR_MARKETINTERNALSERVERERROR = 'InternalError.MarketInternalServerError'
+
+# 操作应用Release失败。
+INTERNALERROR_MARKETRELEASEOPERATION = 'InternalError.MarketReleaseOperation'
 
 # 镜像OS不支持。
 INTERNALERROR_OSNOTSUPPORT = 'InternalError.OsNotSupport'

@@ -2253,6 +2253,9 @@ class Docker(AbstractModel):
         :type MaxRetryCount: int
         :param DelayOnRetry: 拉取Docker镜像失败时延迟时间。单位：秒。
         :type DelayOnRetry: int
+        :param DockerRunOption: Docker命令运行参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DockerRunOption: str
         """
         self.User = None
         self.Password = None
@@ -2260,6 +2263,7 @@ class Docker(AbstractModel):
         self.Server = None
         self.MaxRetryCount = None
         self.DelayOnRetry = None
+        self.DockerRunOption = None
 
 
     def _deserialize(self, params):
@@ -2269,6 +2273,7 @@ class Docker(AbstractModel):
         self.Server = params.get("Server")
         self.MaxRetryCount = params.get("MaxRetryCount")
         self.DelayOnRetry = params.get("DelayOnRetry")
+        self.DockerRunOption = params.get("DockerRunOption")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2943,6 +2948,10 @@ class InstanceTypeQuotaItem(AbstractModel):
         :type Fpga: int
         :param Remark: 实例备注信息。
         :type Remark: str
+        :param GpuCount: 实例机型映射的物理GPU卡数，单位：卡。vGPU卡型小于1，直通卡型大于等于1。vGPU是通过分片虚拟化技术，将物理GPU卡重新划分，同一块GPU卡经虚拟化分割后可分配至不同的实例使用。直通卡型会将GPU设备直接挂载给实例使用。
+        :type GpuCount: float
+        :param Frequency: 实例的CPU主频信息
+        :type Frequency: str
         """
         self.Zone = None
         self.InstanceType = None
@@ -2964,6 +2973,8 @@ class InstanceTypeQuotaItem(AbstractModel):
         self.Gpu = None
         self.Fpga = None
         self.Remark = None
+        self.GpuCount = None
+        self.Frequency = None
 
 
     def _deserialize(self, params):
@@ -2996,6 +3007,8 @@ class InstanceTypeQuotaItem(AbstractModel):
         self.Gpu = params.get("Gpu")
         self.Fpga = params.get("Fpga")
         self.Remark = params.get("Remark")
+        self.GpuCount = params.get("GpuCount")
+        self.Frequency = params.get("Frequency")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3870,7 +3883,7 @@ class OutputMappingConfig(AbstractModel):
 
 
 class Placement(AbstractModel):
-    """描述了实例的抽象位置，包括其所在的可用区，所属的项目，宿主机（仅专用宿主机产品可用），母机ip等
+    """描述了实例的抽象位置，包括其所在的可用区，所属的项目，宿主机（仅专用宿主机产品可用），母机IP等
 
     """
 
@@ -3882,7 +3895,7 @@ class Placement(AbstractModel):
         :type ProjectId: int
         :param HostIds: 实例所属的专用宿主机ID列表，仅用于入参。如果您有购买专用宿主机并且指定了该参数，则您购买的实例就会随机的部署在这些专用宿主机上。
         :type HostIds: list of str
-        :param HostIps: 指定母机ip生产子机
+        :param HostIps: 指定母机IP生产子机
         :type HostIps: list of str
         :param HostId: 实例所属的专用宿主机ID，仅用于出参。
         :type HostId: str

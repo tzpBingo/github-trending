@@ -14,6 +14,9 @@
 # limitations under the License.
 
 
+# 请求头部的 Authorization 不符合腾讯云标准。
+AUTHFAILURE_INVALIDAUTHORIZATION = 'AuthFailure.InvalidAuthorization'
+
 # 操作失败。
 FAILEDOPERATION = 'FailedOperation'
 
@@ -41,7 +44,7 @@ INTERNALERROR = 'InternalError'
 # 资源请求错误
 INTERNALERROR_RESOURCEREQUESTERROR = 'InternalError.ResourceRequestError'
 
-# 服务调用错误
+# 服务调用错误。
 INTERNALERROR_SERVICECALLERROR = 'InternalError.ServiceCallError'
 
 # 参数错误。
@@ -65,7 +68,7 @@ INVALIDPARAMETERVALUE_TEXTTOOLONG = 'InvalidParameterValue.TextTooLong'
 # 参数取值范围错误
 INVALIDPARAMETERVALUE_VALUERANGEERROR = 'InvalidParameterValue.ValueRangeError'
 
-# 资源用量达到上限
+# 资源用量达到上限。
 LIMITEXCEEDED_RESOURCEREACHEDLIMIT = 'LimitExceeded.ResourceReachedLimit'
 
 # 名称已存在

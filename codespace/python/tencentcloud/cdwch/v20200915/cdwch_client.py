@@ -85,7 +85,7 @@ class CdwchClient(AbstractClient):
 
 
     def DescribeCkSqlApis(self, request):
-        """针对驱动sql命令查询ck集群接口
+        """查询集群用户、集群表，数据库等相关信息
 
         :param request: Request instance for DescribeCkSqlApis.
         :type request: :class:`tencentcloud.cdwch.v20200915.models.DescribeCkSqlApisRequest`
@@ -128,6 +128,35 @@ class CdwchClient(AbstractClient):
             response = json.loads(body)
             if "Error" not in response["Response"]:
                 model = models.DescribeInstanceShardsResponse()
+                model._deserialize(response["Response"])
+                return model
+            else:
+                code = response["Response"]["Error"]["Code"]
+                message = response["Response"]["Error"]["Message"]
+                reqid = response["Response"]["RequestId"]
+                raise TencentCloudSDKException(code, message, reqid)
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSpec(self, request):
+        """购买页拉取集群的数据节点和zookeeper节点的规格列表
+
+        :param request: Request instance for DescribeSpec.
+        :type request: :class:`tencentcloud.cdwch.v20200915.models.DescribeSpecRequest`
+        :rtype: :class:`tencentcloud.cdwch.v20200915.models.DescribeSpecResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSpec", params, headers=headers)
+            response = json.loads(body)
+            if "Error" not in response["Response"]:
+                model = models.DescribeSpecResponse()
                 model._deserialize(response["Response"])
                 return model
             else:

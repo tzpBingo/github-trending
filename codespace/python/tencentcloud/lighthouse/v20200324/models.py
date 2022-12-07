@@ -1127,6 +1127,68 @@ class DeniedAction(AbstractModel):
         
 
 
+class DescribeAllScenesRequest(AbstractModel):
+    """DescribeAllScenes请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SceneIds: 使用场景ID列表。
+        :type SceneIds: list of str
+        :param Offset: 偏移量，默认为 0。
+        :type Offset: int
+        :param Limit: 返回数量，默认为 20，最大值为 100。
+        :type Limit: int
+        """
+        self.SceneIds = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SceneIds = params.get("SceneIds")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAllScenesResponse(AbstractModel):
+    """DescribeAllScenes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SceneInfoSet: 使用场景详细信息列表。
+        :type SceneInfoSet: list of SceneInfo
+        :param TotalCount: 使用场景详细信息总数量。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SceneInfoSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("SceneInfoSet") is not None:
+            self.SceneInfoSet = []
+            for item in params.get("SceneInfoSet"):
+                obj = SceneInfo()
+                obj._deserialize(item)
+                self.SceneInfoSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeBlueprintInstancesRequest(AbstractModel):
     """DescribeBlueprintInstances请求参数结构体
 
@@ -1216,7 +1278,7 @@ class DescribeBlueprintsRequest(AbstractModel):
 类型：String
 必选：否
 
-每次请求的 Filters 的上限为 10，Filter.Values 的上限为 5。参数不支持同时指定 BlueprintIds 和 Filters 。
+每次请求的 Filters 的上限为 10，Filter.Values 的上限为 100。参数不支持同时指定 BlueprintIds 和 Filters 。
         :type Filters: list of Filter
         """
         self.BlueprintIds = None
@@ -1351,6 +1413,12 @@ class DescribeBundlesRequest(AbstractModel):
 必选：否
 <li>bundle-type</li>按照 【套餐类型进行过滤】。
 取值：GENERAL_BUNDLE (通用型套餐); STORAGE_BUNDLE(存储型套餐);ENTERPRISE_BUNDLE( 企业型套餐);EXCLUSIVE_BUNDLE(专属型套餐);BEFAST_BUNDLE(蜂驰型套餐);
+类型：String
+必选：否
+<li>bundle-state</li>按照【套餐状态】进行过滤。
+取值: ‘ONLINE’(在线); ‘OFFLINE’(下线);
+类型：String
+必选：否
 每次请求的 Filters 的上限为 10，Filter.Values 的上限为 5。参数不支持同时指定 BundleIds 和 Filters。
         :type Filters: list of Filter
         :param Zones: 可用区列表。默认为全部可用区。
@@ -2451,6 +2519,10 @@ class DescribeModifyInstanceBundlesRequest(AbstractModel):
 取值：GENERAL_BUNDLE (通用型套餐); STORAGE_BUNDLE(存储型套餐);ENTERPRISE_BUNDLE( 企业型套餐);EXCLUSIVE_BUNDLE(专属型套餐);BEFAST_BUNDLE(蜂驰型套餐);
 类型：String
 必选：否
+<li>bundle-state</li>按照【套餐状态】进行过滤。
+取值: ‘ONLINE’(在线); ‘OFFLINE’(下线);
+类型：String
+必选：否
 每次请求的 Filters 的上限为 10，Filter.Values 的上限为 5。
         :type Filters: list of Filter
         :param Offset: 偏移量，默认为 0。关于`Offset`的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/product/1207/47578)中的相关小节。
@@ -2636,6 +2708,68 @@ class DescribeResetInstanceBlueprintsResponse(AbstractModel):
                 obj = ResetInstanceBlueprint()
                 obj._deserialize(item)
                 self.ResetInstanceBlueprintSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeScenesRequest(AbstractModel):
+    """DescribeScenes请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SceneIds: 使用场景ID列表。
+        :type SceneIds: list of str
+        :param Offset: 偏移量，默认为 0。
+        :type Offset: int
+        :param Limit: 返回数量，默认为 20，最大值为 100。
+        :type Limit: int
+        """
+        self.SceneIds = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SceneIds = params.get("SceneIds")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeScenesResponse(AbstractModel):
+    """DescribeScenes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SceneSet: 使用场景列表。
+        :type SceneSet: list of Scene
+        :param TotalCount: 使用场景总数量。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SceneSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("SceneSet") is not None:
+            self.SceneSet = []
+            for item in params.get("SceneSet"):
+                obj = Scene()
+                obj._deserialize(item)
+                self.SceneSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -3966,12 +4100,15 @@ class InquirePriceRenewInstancesResponse(AbstractModel):
         :param InstancePriceDetailSet: 待续费实例价格列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstancePriceDetailSet: list of InstancePriceDetail
+        :param TotalPrice: 总计价格。
+        :type TotalPrice: :class:`tencentcloud.lighthouse.v20200324.models.TotalPrice`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Price = None
         self.DataDiskPriceSet = None
         self.InstancePriceDetailSet = None
+        self.TotalPrice = None
         self.RequestId = None
 
 
@@ -3991,6 +4128,9 @@ class InquirePriceRenewInstancesResponse(AbstractModel):
                 obj = InstancePriceDetail()
                 obj._deserialize(item)
                 self.InstancePriceDetailSet.append(obj)
+        if params.get("TotalPrice") is not None:
+            self.TotalPrice = TotalPrice()
+            self.TotalPrice._deserialize(params.get("TotalPrice"))
         self.RequestId = params.get("RequestId")
 
 
@@ -5460,6 +5600,70 @@ class ResetInstancesPasswordResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class Scene(AbstractModel):
+    """使用场景信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SceneId: 使用场景Id
+        :type SceneId: str
+        :param DisplayName: 使用场景展示名称
+        :type DisplayName: str
+        :param Description: 使用场景描述
+        :type Description: str
+        """
+        self.SceneId = None
+        self.DisplayName = None
+        self.Description = None
+
+
+    def _deserialize(self, params):
+        self.SceneId = params.get("SceneId")
+        self.DisplayName = params.get("DisplayName")
+        self.Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SceneInfo(AbstractModel):
+    """使用场景详细信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SceneId: 使用场景Id。
+        :type SceneId: str
+        :param DisplayName: 使用场景展示名称。
+        :type DisplayName: str
+        :param Description: 使用场景描述信息。
+        :type Description: str
+        """
+        self.SceneId = None
+        self.DisplayName = None
+        self.Description = None
+
+
+    def _deserialize(self, params):
+        self.SceneId = params.get("SceneId")
+        self.DisplayName = params.get("DisplayName")
+        self.Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Snapshot(AbstractModel):
     """描述了快照相关信息。
 
@@ -5870,6 +6074,36 @@ class TerminateInstancesResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class TotalPrice(AbstractModel):
+    """总计价格信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OriginalPrice: 原始总计价格。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginalPrice: float
+        :param DiscountPrice: 折扣总计价格。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DiscountPrice: float
+        """
+        self.OriginalPrice = None
+        self.DiscountPrice = None
+
+
+    def _deserialize(self, params):
+        self.OriginalPrice = params.get("OriginalPrice")
+        self.DiscountPrice = params.get("DiscountPrice")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class TrafficPackage(AbstractModel):

@@ -1398,11 +1398,27 @@ class ApplyFlexPaymentResult(AbstractModel):
         :type AmountAfterTax: str
         :param Tax: 税金
         :type Tax: str
+        :param Vat: 增值税
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Vat: str
+        :param IndividualIncomeTax: 个人所得税
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IndividualIncomeTax: str
+        :param AdditionalTaxSum: 附加税总税额
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AdditionalTaxSum: str
+        :param AdditionalTaxItem: 附加税税项。格式为JSON格式
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AdditionalTaxItem: str
         """
         self.OrderId = None
         self.AmountBeforeTax = None
         self.AmountAfterTax = None
         self.Tax = None
+        self.Vat = None
+        self.IndividualIncomeTax = None
+        self.AdditionalTaxSum = None
+        self.AdditionalTaxItem = None
 
 
     def _deserialize(self, params):
@@ -1410,6 +1426,10 @@ class ApplyFlexPaymentResult(AbstractModel):
         self.AmountBeforeTax = params.get("AmountBeforeTax")
         self.AmountAfterTax = params.get("AmountAfterTax")
         self.Tax = params.get("Tax")
+        self.Vat = params.get("Vat")
+        self.IndividualIncomeTax = params.get("IndividualIncomeTax")
+        self.AdditionalTaxSum = params.get("AdditionalTaxSum")
+        self.AdditionalTaxItem = params.get("AdditionalTaxItem")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8107,8 +8127,6 @@ class CreateOpenBankMerchantRequest(AbstractModel):
         :type OutMerchantId: str
         :param ChannelName: 渠道名称。
 __TENPAY__: 商企付
-__WECHAT__: 微信支付
-__ALIPAY__: 支付宝
         :type ChannelName: str
         :param OutMerchantName: 外部商户名称。
         :type OutMerchantName: str
@@ -8520,7 +8538,7 @@ __ALIPAY__: 支付宝
         :type ChannelSubMerchantId: str
         :param NotifyUrl: 通知地址，如www.test.com。
         :type NotifyUrl: str
-        :param Remark: 备注信息。
+        :param Remark: 备注信息。限制200个字符。
         :type Remark: str
         :param Environment: 环境类型。
 __release__:生产环境
@@ -9864,6 +9882,9 @@ class CreateSinglePaymentRequest(AbstractModel):
     def __init__(self):
         r"""
         :param TransferType: 转账类型
+1 微信企业付款 
+2 支付宝转账 
+3 平安银企直连代发转账
         :type TransferType: int
         :param OrderId: 订单流水号
         :type OrderId: str
@@ -15821,6 +15842,18 @@ FAILED:已失败
         :param ChannelOrderId: 渠道支付订单号
 注意：此字段可能返回 null，表示取不到有效值。
         :type ChannelOrderId: str
+        :param Vat: 增值税
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Vat: str
+        :param IndividualIncomeTax: 个人所得税
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IndividualIncomeTax: str
+        :param AdditionalTaxSum: 附加税总税额
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AdditionalTaxSum: str
+        :param AdditionalTaxItem: 附加税税项。格式为JSON格式
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AdditionalTaxItem: str
         """
         self.IncomeType = None
         self.AmountBeforeTax = None
@@ -15836,6 +15869,10 @@ FAILED:已失败
         self.PayeeId = None
         self.OutUserId = None
         self.ChannelOrderId = None
+        self.Vat = None
+        self.IndividualIncomeTax = None
+        self.AdditionalTaxSum = None
+        self.AdditionalTaxItem = None
 
 
     def _deserialize(self, params):
@@ -15853,6 +15890,10 @@ FAILED:已失败
         self.PayeeId = params.get("PayeeId")
         self.OutUserId = params.get("OutUserId")
         self.ChannelOrderId = params.get("ChannelOrderId")
+        self.Vat = params.get("Vat")
+        self.IndividualIncomeTax = params.get("IndividualIncomeTax")
+        self.AdditionalTaxSum = params.get("AdditionalTaxSum")
+        self.AdditionalTaxItem = params.get("AdditionalTaxItem")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19244,16 +19285,20 @@ __sandbox__:沙箱环境
 __test__:测试环境
 缺省默认为生产环境
         :type Environment: str
+        :param SnapshotDate: 快照日期。格式yyyy-MM-dd
+        :type SnapshotDate: str
         """
         self.PayeeId = None
         self.IncomeType = None
         self.Environment = None
+        self.SnapshotDate = None
 
 
     def _deserialize(self, params):
         self.PayeeId = params.get("PayeeId")
         self.IncomeType = params.get("IncomeType")
         self.Environment = params.get("Environment")
+        self.SnapshotDate = params.get("SnapshotDate")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21256,7 +21301,7 @@ __OPENBANK_PAYMENT__: openbank付款
         :type BankBranchName: str
         :param BankAbbreviation: 银行简称。
         :type BankAbbreviation: str
-        :param PageNumber: 页码。Index和Count必须大于等于1。
+        :param PageNumber: 页码。Index和Count必须大于等于1。Count建议不超过100。
         :type PageNumber: :class:`tencentcloud.cpdp.v20190820.models.Paging`
         :param Environment: 环境类型。
 __release__:生产环境
