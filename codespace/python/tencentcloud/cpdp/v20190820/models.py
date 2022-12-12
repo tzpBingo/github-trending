@@ -15854,6 +15854,9 @@ FAILED:已失败
         :param AdditionalTaxItem: 附加税税项。格式为JSON格式
 注意：此字段可能返回 null，表示取不到有效值。
         :type AdditionalTaxItem: str
+        :param FailReason: 失败原因。当Status为FAILED时，改字段为失败的原因。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailReason: str
         """
         self.IncomeType = None
         self.AmountBeforeTax = None
@@ -15873,6 +15876,7 @@ FAILED:已失败
         self.IndividualIncomeTax = None
         self.AdditionalTaxSum = None
         self.AdditionalTaxItem = None
+        self.FailReason = None
 
 
     def _deserialize(self, params):
@@ -15894,6 +15898,7 @@ FAILED:已失败
         self.IndividualIncomeTax = params.get("IndividualIncomeTax")
         self.AdditionalTaxSum = params.get("AdditionalTaxSum")
         self.AdditionalTaxItem = params.get("AdditionalTaxItem")
+        self.FailReason = params.get("FailReason")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15920,14 +15925,19 @@ FAILED:已失败
         :type Status: str
         :param StatusDesc: 状态描述
         :type StatusDesc: str
+        :param FailReason: 失败原因。当Status为FAILED时，改字段为失败的原因。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailReason: str
         """
         self.Status = None
         self.StatusDesc = None
+        self.FailReason = None
 
 
     def _deserialize(self, params):
         self.Status = params.get("Status")
         self.StatusDesc = params.get("StatusDesc")
+        self.FailReason = params.get("FailReason")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18906,11 +18916,13 @@ class QueryFinancialDataUrlRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param EndTime: 数据查询范围:结束时间
+        :param EndTime: 数据查询范围:结束时间 yyyy-MM-dd HH:mm:ss
         :type EndTime: str
-        :param StartTime: 数据查询范围:开始时间
+        :param StartTime: 数据查询范围:开始时间 yyyy-MM-dd HH:mm:ss
         :type StartTime: str
-        :param DataType: 数据类型：ADDED_INVOICE_REPORT  增值税开票数据，NATURAL_FINANCE_REPORT 自然人金融数据
+        :param DataType: 数据类型：ADDED_INVOICE_REPORT  增值税开票数据，NATURAL_FINANCE_REPORT 自然人金融数据,
+NATURAL_FINANCE_REPORT_BY_TIME 按次报税数据导出,
+NATURAL_FINANCE_REPORT_STAT_BY_DAY 按日累计报税数据导出
         :type DataType: str
         """
         self.EndTime = None
