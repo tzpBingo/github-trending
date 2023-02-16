@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,11 +17,11 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the classes that represent Telegram InputTextMessageContent."""
-
-from typing import List, Tuple, Union
+from typing import Sequence, Tuple
 
 from telegram._inline.inputmessagecontent import InputMessageContent
 from telegram._messageentity import MessageEntity
+from telegram._utils.argumentparsing import parse_sequence_arg
 from telegram._utils.defaultvalue import DEFAULT_NONE
 from telegram._utils.types import JSONDict, ODVInput
 
@@ -42,16 +42,26 @@ class InputTextMessageContent(InputMessageContent):
             :tg-const:`telegram.constants.MessageLimit.MAX_TEXT_LENGTH` characters after entities
             parsing.
         parse_mode (:obj:`str`, optional): |parse_mode|
-        entities (List[:class:`telegram.MessageEntity`], optional): |caption_entities|
+        entities (Sequence[:class:`telegram.MessageEntity`], optional): |caption_entities|
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
+
         disable_web_page_preview (:obj:`bool`, optional): Disables link previews for links in the
             sent message.
 
     Attributes:
         message_text (:obj:`str`): Text of the message to be sent,
-            1-:tg-const:`telegram.constants.MessageLimit.MAX_TEXT_LENGTH` characters after entities
+            :tg-const:`telegram.constants.MessageLimit.MIN_TEXT_LENGTH`-
+            :tg-const:`telegram.constants.MessageLimit.MAX_TEXT_LENGTH` characters after entities
             parsing.
         parse_mode (:obj:`str`): Optional. |parse_mode|
-        entities (List[:class:`telegram.MessageEntity`]): Optional. |caption_entities|
+        entities (Tuple[:class:`telegram.MessageEntity`]): Optional. |captionentitiesattr|
+
+            .. versionchanged:: 20.0
+
+                * |tupleclassattrs|
+                * |alwaystuple|
         disable_web_page_preview (:obj:`bool`): Optional. Disables link previews for links in the
             sent message.
 
@@ -64,16 +74,17 @@ class InputTextMessageContent(InputMessageContent):
         message_text: str,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
         disable_web_page_preview: ODVInput[bool] = DEFAULT_NONE,
-        entities: Union[Tuple[MessageEntity, ...], List[MessageEntity]] = None,
+        entities: Sequence[MessageEntity] = None,
         *,
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        # Required
-        self.message_text = message_text
-        # Optionals
-        self.parse_mode = parse_mode
-        self.entities = entities
-        self.disable_web_page_preview = disable_web_page_preview
+        with self._unfrozen():
+            # Required
+            self.message_text: str = message_text
+            # Optionals
+            self.parse_mode: ODVInput[str] = parse_mode
+            self.entities: Tuple[MessageEntity, ...] = parse_sequence_arg(entities)
+            self.disable_web_page_preview: ODVInput[bool] = disable_web_page_preview
 
-        self._id_attrs = (self.message_text,)
+            self._id_attrs = (self.message_text,)

@@ -14,8 +14,29 @@
 # limitations under the License.
 
 
+# CAM签名/鉴权错误。
+AUTHFAILURE = 'AuthFailure'
+
+# DryRun 操作，代表请求将会是成功的，只是多传了 DryRun 参数。
+DRYRUNOPERATION = 'DryRunOperation'
+
+# 操作失败。
+FAILEDOPERATION = 'FailedOperation'
+
+# 房间状态错误，房间已结束。
+FAILEDOPERATION_CLASSENDED = 'FailedOperation.ClassEnded'
+
+# 房间状态错误，房间已过期。
+FAILEDOPERATION_CLASSEXPIRED = 'FailedOperation.ClassExpired'
+
+# 课堂状态错误，课堂已开始。
+FAILEDOPERATION_CLASSSTARTED = 'FailedOperation.ClassStarted'
+
 # 课堂时长不能超过5小时。
 FAILEDOPERATION_CLASSTOOLONG = 'FailedOperation.ClassTooLong'
+
+# 图片参数错误。
+FAILEDOPERATION_IMAGEARGINVALID = 'FailedOperation.ImageArgInvalid'
 
 # 源账号已存在。
 FAILEDOPERATION_ORIGINIDEXISTS = 'FailedOperation.OriginIdExists'
@@ -29,6 +50,9 @@ INTERNALERROR = 'InternalError'
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
+# 内容包含非法信息（如色情，恐暴，政治等）。
+INVALIDPARAMETER_CONTENT = 'InvalidParameter.Content'
+
 # 结束时间不能早于开始时间。
 INVALIDPARAMETER_ENDTIME = 'InvalidParameter.EndTime'
 
@@ -37,6 +61,24 @@ INVALIDPARAMETER_SDKAPPID = 'InvalidParameter.SdkAppId'
 
 # 开始时间不能早于当前时间。
 INVALIDPARAMETER_STARTTIME = 'InvalidParameter.StartTime'
+
+# 参数取值错误。
+INVALIDPARAMETERVALUE = 'InvalidParameterValue'
+
+# 超过配额限制。
+LIMITEXCEEDED = 'LimitExceeded'
+
+# 缺少参数错误。
+MISSINGPARAMETER = 'MissingParameter'
+
+# 操作被拒绝。
+OPERATIONDENIED = 'OperationDenied'
+
+# 请求的次数超过了频率限制。
+REQUESTLIMITEXCEEDED = 'RequestLimitExceeded'
+
+# 资源被占用。
+RESOURCEINUSE = 'ResourceInUse'
 
 # 资源不足。
 RESOURCEINSUFFICIENT = 'ResourceInsufficient'
@@ -47,6 +89,9 @@ RESOURCEINSUFFICIENT_RECORD = 'ResourceInsufficient.Record'
 # 打开课堂失败，请前往控制台查看用量情况。
 RESOURCEINSUFFICIENT_ROOM = 'ResourceInsufficient.Room'
 
+# 资源不存在。
+RESOURCENOTFOUND = 'ResourceNotFound'
+
 # 文档不存在。
 RESOURCENOTFOUND_DOCUMENT = 'ResourceNotFound.Document'
 
@@ -56,5 +101,20 @@ RESOURCENOTFOUND_ROOM = 'ResourceNotFound.Room'
 # 用户不存在。
 RESOURCENOTFOUND_USER = 'ResourceNotFound.User'
 
+# 资源不可用。
+RESOURCEUNAVAILABLE = 'ResourceUnavailable'
+
 # 房间统计结果计算中，请稍候。
 RESOURCEUNAVAILABLE_ROOMSTATISTICS = 'ResourceUnavailable.RoomStatistics'
+
+# 资源售罄。
+RESOURCESSOLDOUT = 'ResourcesSoldOut'
+
+# 未授权操作。
+UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+
+# 未知参数错误。
+UNKNOWNPARAMETER = 'UnknownParameter'
+
+# 操作不支持。
+UNSUPPORTEDOPERATION = 'UnsupportedOperation'

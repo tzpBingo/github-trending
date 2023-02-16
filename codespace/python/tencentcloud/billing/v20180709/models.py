@@ -1725,7 +1725,7 @@ class DescribeBillDetailRequest(AbstractModel):
         :type PayMode: str
         :param ResourceId: 查询指定资源信息
         :type ResourceId: str
-        :param ActionType: 查询交易类型，如下：
+        :param ActionType: 查询交易类型（请使用交易类型名称入参），入参示例枚举如下：
 包年包月新购
 包年包月续费
 包年包月配置变更
@@ -3046,12 +3046,10 @@ class DescribeDosageDetailByDateRequest(AbstractModel):
 10195   互动直播-边缘机房
 
 cdn业务：
-10180：CDN静态加速流量(国内)
-10181：CDN静态加速带宽(国内)
-10182：CDN静态加速普通流量
-10183：CDN静态加速普通带宽
-10231：CDN静态加速流量(海外)
-10232：CDN静态加速带宽(海外)
+102383：CDN静态加速流量(国内)
+102384：CDN静态加速带宽(国内)
+102385：CDN静态加速流量(海外)
+102386：CDN静态加速带宽(海外)
 
 100967：弹性公网IP-按流量计费
 101065：公网负载均衡-按流量计费

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,10 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram WebhookInfo."""
-
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Optional, Sequence, Tuple
 
 from telegram._telegramobject import TelegramObject
+from telegram._utils.argumentparsing import parse_sequence_arg
 from telegram._utils.datetime import from_timestamp
 from telegram._utils.types import JSONDict
 
@@ -55,8 +55,13 @@ class WebhookInfo(TelegramObject):
             most recent error that happened when trying to deliver an update via webhook.
         max_connections (:obj:`int`, optional): Maximum allowed number of simultaneous HTTPS
             connections to the webhook for update delivery.
-        allowed_updates (List[:obj:`str`], optional): A list of update types the bot is subscribed
-            to. Defaults to all update types, except :attr:`telegram.Update.chat_member`.
+        allowed_updates (Sequence[:obj:`str`], optional): A list of update types the bot is
+            subscribed to. Defaults to all update types, except
+            :attr:`telegram.Update.chat_member`.
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
+
         last_synchronization_error_date (:obj:`int`, optional): Unix time of the most recent error
             that happened when trying to synchronize available updates with Telegram datacenters.
 
@@ -73,8 +78,14 @@ class WebhookInfo(TelegramObject):
             most recent error that happened when trying to deliver an update via webhook.
         max_connections (:obj:`int`): Optional. Maximum allowed number of simultaneous HTTPS
             connections to the webhook for update delivery.
-        allowed_updates (List[:obj:`str`]): Optional. A list of update types the bot is subscribed
-            to. Defaults to all update types, except :attr:`telegram.Update.chat_member`.
+        allowed_updates (Tuple[:obj:`str`]): Optional. A list of update types the bot is
+            subscribed to. Defaults to all update types, except
+            :attr:`telegram.Update.chat_member`.
+
+            .. versionchanged:: 20.0
+
+                * |tupleclassattrs|
+                * |alwaystuple|
         last_synchronization_error_date (:obj:`int`): Optional. Unix time of the most recent error
             that happened when trying to synchronize available updates with Telegram datacenters.
 
@@ -101,7 +112,7 @@ class WebhookInfo(TelegramObject):
         last_error_date: int = None,
         last_error_message: str = None,
         max_connections: int = None,
-        allowed_updates: List[str] = None,
+        allowed_updates: Sequence[str] = None,
         ip_address: str = None,
         last_synchronization_error_date: int = None,
         *,
@@ -109,17 +120,17 @@ class WebhookInfo(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.url = url
-        self.has_custom_certificate = has_custom_certificate
-        self.pending_update_count = pending_update_count
+        self.url: str = url
+        self.has_custom_certificate: bool = has_custom_certificate
+        self.pending_update_count: int = pending_update_count
 
         # Optional
-        self.ip_address = ip_address
-        self.last_error_date = last_error_date
-        self.last_error_message = last_error_message
-        self.max_connections = max_connections
-        self.allowed_updates = allowed_updates
-        self.last_synchronization_error_date = last_synchronization_error_date
+        self.ip_address: Optional[str] = ip_address
+        self.last_error_date: Optional[int] = last_error_date
+        self.last_error_message: Optional[str] = last_error_message
+        self.max_connections: Optional[int] = max_connections
+        self.allowed_updates: Tuple[str, ...] = parse_sequence_arg(allowed_updates)
+        self.last_synchronization_error_date: Optional[int] = last_synchronization_error_date
 
         self._id_attrs = (
             self.url,
@@ -132,6 +143,8 @@ class WebhookInfo(TelegramObject):
             self.allowed_updates,
             self.last_synchronization_error_date,
         )
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["WebhookInfo"]:

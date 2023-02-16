@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram ReplyKeyboardRemove."""
+from typing import Optional
 
 from telegram._telegramobject import TelegramObject
 from telegram._utils.types import JSONDict
@@ -45,13 +46,17 @@ class ReplyKeyboardRemove(TelegramObject):
             for specific users only. Targets:
 
             1) Users that are @mentioned in the text of the :class:`telegram.Message` object.
-            2) If the bot's message is a reply (has `reply_to_message_id`), sender of the original
-               message.
+            2) If the bot's message is a reply (has ``reply_to_message_id``), sender of
+               the original message.
 
     Attributes:
         remove_keyboard (:obj:`True`): Requests clients to remove the custom keyboard.
-        selective (:obj:`bool`): Optional. Use this parameter if you want to remove the keyboard
-            for specific users only.
+        selective (:obj:`bool`): Optional. Remove the keyboard for specific users only.
+            Targets:
+
+            1) Users that are @mentioned in the text of the :class:`telegram.Message` object.
+            2) If the bot's message is a reply (has ``reply_to_message_id``), sender of
+               the original message.
 
     """
 
@@ -60,6 +65,8 @@ class ReplyKeyboardRemove(TelegramObject):
     def __init__(self, selective: bool = None, *, api_kwargs: JSONDict = None):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.remove_keyboard = True
+        self.remove_keyboard: bool = True
         # Optionals
-        self.selective = selective
+        self.selective: Optional[bool] = selective
+
+        self._freeze()

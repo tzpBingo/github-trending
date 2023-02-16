@@ -250,6 +250,8 @@ global：全球加速
         :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
         :param QnPrivateAccess: 七牛云对象存储回源鉴权
         :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
+        :param HttpsBilling: HTTPS服务
+        :type HttpsBilling: :class:`tencentcloud.cdn.v20180606.models.HttpsBilling`
         """
         self.Domain = None
         self.ServiceType = None
@@ -289,6 +291,7 @@ global：全球加速
         self.OssPrivateAccess = None
         self.HwPrivateAccess = None
         self.QnPrivateAccess = None
+        self.HttpsBilling = None
 
 
     def _deserialize(self, params):
@@ -401,6 +404,9 @@ global：全球加速
         if params.get("QnPrivateAccess") is not None:
             self.QnPrivateAccess = QnPrivateAccess()
             self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
+        if params.get("HttpsBilling") is not None:
+            self.HttpsBilling = HttpsBilling()
+            self.HttpsBilling._deserialize(params.get("HttpsBilling"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2121,6 +2127,7 @@ class BriefDomain(AbstractModel):
         :param Status: 加速服务状态
 rejected：域名审核未通过，域名备案过期/被注销导致
 processing：部署中
+closing：关闭中
 online：已启动
 offline：已关闭
         :type Status: str
@@ -4911,6 +4918,81 @@ class DescribeDomainsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeEdgePackTaskStatusRequest(AbstractModel):
+    """DescribeEdgePackTaskStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 开始时间
+        :type StartTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        :param Limit: 分页查询限制数目，默认为 100，最大可设置为 1000
+        :type Limit: int
+        :param Offset: 分页查询偏移量，默认为 0
+        :type Offset: int
+        :param Filters: 查询条件过滤器
+        :type Filters: list of EdgePackTaskFilter
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.Limit = None
+        self.Offset = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = EdgePackTaskFilter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeEdgePackTaskStatusResponse(AbstractModel):
+    """DescribeEdgePackTaskStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EdgePackTaskStatusSet: 动态打包任务状态列表
+        :type EdgePackTaskStatusSet: list of EdgePackTaskStatus
+        :param TotalCount: 总数，用于分页查询
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.EdgePackTaskStatusSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("EdgePackTaskStatusSet") is not None:
+            self.EdgePackTaskStatusSet = []
+            for item in params.get("EdgePackTaskStatusSet"):
+                obj = EdgePackTaskStatus()
+                obj._deserialize(item)
+                self.EdgePackTaskStatusSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeEventLogDataRequest(AbstractModel):
     """DescribeEventLogData请求参数结构体
 
@@ -6730,6 +6812,7 @@ class DetailDomain(AbstractModel):
         :param Status: 加速服务状态
 rejected：域名审核未通过，域名备案过期/被注销导致
 processing：部署中
+closing：关闭中
 online：已启动
 offline：已关闭
         :type Status: str
@@ -6927,6 +7010,9 @@ off：不支持
         :param QnPrivateAccess: 七牛云对象存储回源鉴权
 注意：此字段可能返回 null，表示取不到有效值。
         :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
+        :param HttpsBilling: HTTPS服务，缺省时默认开启
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HttpsBilling: :class:`tencentcloud.cdn.v20180606.models.HttpsBilling`
         """
         self.ResourceId = None
         self.AppId = None
@@ -6992,6 +7078,7 @@ off：不支持
         self.ParentHost = None
         self.HwPrivateAccess = None
         self.QnPrivateAccess = None
+        self.HttpsBilling = None
 
 
     def _deserialize(self, params):
@@ -7163,6 +7250,9 @@ off：不支持
         if params.get("QnPrivateAccess") is not None:
             self.QnPrivateAccess = QnPrivateAccess()
             self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
+        if params.get("HttpsBilling") is not None:
+            self.HttpsBilling = HttpsBilling()
+            self.HttpsBilling._deserialize(params.get("HttpsBilling"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7777,6 +7867,89 @@ class DuplicateDomainConfigResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class EdgePackTaskFilter(AbstractModel):
+    """动态打包任务过滤器
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 过滤字段名
+apk: apk名称
+status: 母包处理进度 done, failed, processing
+        :type Name: str
+        :param Value: 过滤字段值
+        :type Value: list of str
+        :param Fuzzy: 是否启用模糊查询，仅支持过滤字段名为 apk。
+模糊查询时，Value长度最大为1。
+        :type Fuzzy: bool
+        """
+        self.Name = None
+        self.Value = None
+        self.Fuzzy = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Value = params.get("Value")
+        self.Fuzzy = params.get("Fuzzy")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EdgePackTaskStatus(AbstractModel):
+    """动态打包任务状态
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Apk: APK 名称
+        :type Apk: str
+        :param DstDir: 输出目录
+        :type DstDir: str
+        :param UploadTime: 上传时间
+        :type UploadTime: str
+        :param Status: 任务状态
+created: 创建成功
+processing: 处理中
+done: 处理完成
+failed: 处理失败
+        :type Status: str
+        :param SrcDir: 上传目录
+        :type SrcDir: list of str
+        :param StatusDesc: 失败任务状态详情
+        :type StatusDesc: str
+        """
+        self.Apk = None
+        self.DstDir = None
+        self.UploadTime = None
+        self.Status = None
+        self.SrcDir = None
+        self.StatusDesc = None
+
+
+    def _deserialize(self, params):
+        self.Apk = params.get("Apk")
+        self.DstDir = params.get("DstDir")
+        self.UploadTime = params.get("UploadTime")
+        self.Status = params.get("Status")
+        self.SrcDir = params.get("SrcDir")
+        self.StatusDesc = params.get("StatusDesc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class EnableCachesRequest(AbstractModel):
@@ -8513,6 +8686,30 @@ failed：部署失败
         
 
 
+class HttpsBilling(AbstractModel):
+    """HTTPS服务，若关闭，下发配置拦截https请求，开启时会产生计费
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: HTTPS服务，缺省时默认开启【会产生计费】
+        :type Switch: str
+        """
+        self.Switch = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class HwPrivateAccess(AbstractModel):
     """华为云对象存储回源鉴权
 
@@ -8624,8 +8821,7 @@ blacklist：黑名单
         :param FilterRules: IP 黑白名单分路径配置，白名单功能
 注意：此字段可能返回 null，表示取不到有效值。
         :type FilterRules: list of IpFilterPathRule
-        :param ReturnCode: IP 黑白名单验证失败时返回的 HTTP Code
-合法值: 400~499
+        :param ReturnCode: IP 黑白名单验证失败时返回的 code（即将下线）
 注意：此字段可能返回 null，表示取不到有效值。
         :type ReturnCode: int
         """
@@ -11532,7 +11728,7 @@ class QueryStringKey(AbstractModel):
         :param Reorder: 是否重新排序
 注意：此字段可能返回 null，表示取不到有效值。
         :type Reorder: str
-        :param Action: includeAll | excludeAll | includeCustom | excludeAll 使用/排除部分url参数
+        :param Action: includeAll | excludeAll | includeCustom | excludeCustom 使用/排除部分url参数
 注意：此字段可能返回 null，表示取不到有效值。
         :type Action: str
         :param Value: 使用/排除的url参数数组，';' 分割
@@ -14574,6 +14770,8 @@ global：全球加速
         :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
         :param QnPrivateAccess: 七牛云对象存储回源鉴权
         :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
+        :param HttpsBilling: HTTPS服务
+        :type HttpsBilling: :class:`tencentcloud.cdn.v20180606.models.HttpsBilling`
         """
         self.Domain = None
         self.ProjectId = None
@@ -14622,6 +14820,7 @@ global：全球加速
         self.ShareCname = None
         self.HwPrivateAccess = None
         self.QnPrivateAccess = None
+        self.HttpsBilling = None
 
 
     def _deserialize(self, params):
@@ -14756,6 +14955,9 @@ global：全球加速
         if params.get("QnPrivateAccess") is not None:
             self.QnPrivateAccess = QnPrivateAccess()
             self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
+        if params.get("HttpsBilling") is not None:
+            self.HttpsBilling = HttpsBilling()
+            self.HttpsBilling._deserialize(params.get("HttpsBilling"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -54,6 +54,7 @@ __all__ = (  # Keep this alphabetically ordered
     "ChatMemberUpdated",
     "ChatPermissions",
     "ChatPhoto",
+    "ChatShared",
     "ChosenInlineResult",
     "constants",
     "Contact",
@@ -70,9 +71,12 @@ __all__ = (  # Keep this alphabetically ordered
     "ForumTopic",
     "ForumTopicClosed",
     "ForumTopicCreated",
+    "ForumTopicEdited",
     "ForumTopicReopened",
     "Game",
     "GameHighScore",
+    "GeneralForumTopicHidden",
+    "GeneralForumTopicUnhidden",
     "helpers",
     "IdDocumentData",
     "InlineKeyboardButton",
@@ -115,6 +119,8 @@ __all__ = (  # Keep this alphabetically ordered
     "Invoice",
     "KeyboardButton",
     "KeyboardButtonPollType",
+    "KeyboardButtonRequestChat",
+    "KeyboardButtonRequestUser",
     "LabeledPrice",
     "Location",
     "LoginUrl",
@@ -164,6 +170,7 @@ __all__ = (  # Keep this alphabetically ordered
     "Update",
     "User",
     "UserProfilePhotos",
+    "UserShared",
     "Venue",
     "Video",
     "VideoChatEnded",
@@ -176,6 +183,7 @@ __all__ = (  # Keep this alphabetically ordered
     "WebAppData",
     "WebAppInfo",
     "WebhookInfo",
+    "WriteAccessAllowed",
 )
 
 
@@ -234,7 +242,15 @@ from ._files.video import Video
 from ._files.videonote import VideoNote
 from ._files.voice import Voice
 from ._forcereply import ForceReply
-from ._forumtopic import ForumTopic, ForumTopicClosed, ForumTopicCreated, ForumTopicReopened
+from ._forumtopic import (
+    ForumTopic,
+    ForumTopicClosed,
+    ForumTopicCreated,
+    ForumTopicEdited,
+    ForumTopicReopened,
+    GeneralForumTopicHidden,
+    GeneralForumTopicUnhidden,
+)
 from ._games.callbackgame import CallbackGame
 from ._games.game import Game
 from ._games.gamehighscore import GameHighScore
@@ -270,6 +286,7 @@ from ._inline.inputtextmessagecontent import InputTextMessageContent
 from ._inline.inputvenuemessagecontent import InputVenueMessageContent
 from ._keyboardbutton import KeyboardButton
 from ._keyboardbuttonpolltype import KeyboardButtonPollType
+from ._keyboardbuttonrequest import KeyboardButtonRequestChat, KeyboardButtonRequestUser
 from ._loginurl import LoginUrl
 from ._menubutton import MenuButton, MenuButtonCommands, MenuButtonDefault, MenuButtonWebApp
 from ._message import Message
@@ -313,6 +330,7 @@ from ._proximityalerttriggered import ProximityAlertTriggered
 from ._replykeyboardmarkup import ReplyKeyboardMarkup
 from ._replykeyboardremove import ReplyKeyboardRemove
 from ._sentwebappmessage import SentWebAppMessage
+from ._shared import ChatShared, UserShared
 from ._telegramobject import TelegramObject
 from ._update import Update
 from ._user import User
@@ -326,11 +344,12 @@ from ._videochat import (
 from ._webappdata import WebAppData
 from ._webappinfo import WebAppInfo
 from ._webhookinfo import WebhookInfo
+from ._writeaccessallowed import WriteAccessAllowed
 
 #: :obj:`str`: The version of the `python-telegram-bot` library as string.
 #: To get detailed information about the version number, please use :data:`__version_info__`
 #: instead.
-__version__ = _version.__version__
+__version__: str = _version.__version__
 #:  :class:`typing.NamedTuple`: A tuple containing the five components of the version number:
 #:  `major`, `minor`, `micro`, `releaselevel`, and `serial`.
 #:  All values except `releaselevel` are integers.
@@ -339,13 +358,13 @@ __version__ = _version.__version__
 #:  ``__version_info__.major`` and so on.
 #:
 #:  .. versionadded:: 20.0
-__version_info__ = _version.__version_info__
+__version_info__: _version.Version = _version.__version_info__
 #: :obj:`str`: Shortcut for :const:`telegram.constants.BOT_API_VERSION`.
 #:
 #: .. versionchanged:: 20.0
 #:    This constant was previously named ``bot_api_version``.
-__bot_api_version__ = _version.__bot_api_version__
+__bot_api_version__: str = _version.__bot_api_version__
 #: :class:`typing.NamedTuple`: Shortcut for :const:`telegram.constants.BOT_API_VERSION_INFO`.
 #:
 #: .. versionadded:: 20.0
-__bot_api_version_info__ = _version.__bot_api_version_info__
+__bot_api_version_info__: constants._BotAPIVersion = _version.__bot_api_version_info__

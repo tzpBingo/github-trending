@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 #  A library that provides a Python interface to the Telegram Bot API
-#  Copyright (C) 2015-2022
+#  Copyright (C) 2015-2023
 #  Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,9 @@
 #  You should have received a copy of the GNU Lesser Public License
 #  along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the CallbackDataCache class."""
-import logging
 import time
 from datetime import datetime
-from typing import TYPE_CHECKING, Dict, MutableMapping, Optional, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, MutableMapping, Optional, Tuple, Union, cast
 from uuid import uuid4
 
 try:
@@ -42,13 +41,12 @@ if TYPE_CHECKING:
 
 class InvalidCallbackData(TelegramError):
     """
-    Raised when the received callback data has been tempered with or deleted from cache.
+    Raised when the received callback data has been tampered with or deleted from cache.
 
     Examples:
         :any:`Arbitrary Callback Data Bot <examples.arbitrarycallbackdatabot>`
 
-    .. seealso:: `Arbitrary callback_data <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Arbitrary-callback_data>`_
+    .. seealso:: :wiki:`Arbitrary callback_data <Arbitrary-callback_data>`
 
     .. versionadded:: 13.6
 
@@ -68,7 +66,7 @@ class InvalidCallbackData(TelegramError):
             "The object belonging to this callback_data was deleted or the callback_data was "
             "manipulated."
         )
-        self.callback_data = callback_data
+        self.callback_data: Optional[str] = callback_data
 
     def __reduce__(self) -> Tuple[type, Tuple[Optional[str]]]:  # type: ignore[override]
         return self.__class__, (self.callback_data,)
@@ -117,11 +115,8 @@ class CallbackDataCache:
     Examples:
         :any:`Arbitrary Callback Data Bot <examples.arbitrarycallbackdatabot>`
 
-    .. seealso:: :attr:`telegram.ext.ExtBot.callback_data_cache`,
-        `Architecture Overview <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Architecture>`_,
-        `Arbitrary callback_data <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Arbitrary-callback_data>`_
+    .. seealso:: :wiki:`Architecture Overview <Architecture>`,
+        :wiki:`Arbitrary callback_data <Arbitrary-callback_data>`
 
     .. versionadded:: 13.6
 
@@ -144,11 +139,11 @@ class CallbackDataCache:
 
     """
 
-    __slots__ = ("bot", "_maxsize", "_keyboard_data", "_callback_queries", "logger")
+    __slots__ = ("bot", "_maxsize", "_keyboard_data", "_callback_queries")
 
     def __init__(
         self,
-        bot: "ExtBot",
+        bot: "ExtBot[Any]",
         maxsize: int = 1024,
         persistent_data: CDCData = None,
     ):
@@ -158,10 +153,8 @@ class CallbackDataCache:
                 "python-telegram-bot[callback-data]`."
             )
 
-        self.logger = logging.getLogger(__name__)
-
-        self.bot = bot
-        self._maxsize = maxsize
+        self.bot: ExtBot[Any] = bot
+        self._maxsize: int = maxsize
         self._keyboard_data: MutableMapping[str, _KeyboardData] = LRUCache(maxsize=maxsize)
         self._callback_queries: MutableMapping[str, str] = LRUCache(maxsize=maxsize)
 
@@ -381,7 +374,8 @@ class CallbackDataCache:
 
             # Get the cached callback data for the CallbackQuery
             keyboard_uuid, button_data = self.__get_keyboard_uuid_and_button_data(data)
-            callback_query.data = button_data  # type: ignore[assignment]
+            with callback_query._unfrozen():
+                callback_query.data = button_data  # type: ignore[assignment]
 
             # Map the callback queries ID to the keyboards UUID for later use
             if not mapped and not isinstance(button_data, InvalidCallbackData):

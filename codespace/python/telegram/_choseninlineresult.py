@@ -2,7 +2,7 @@
 # pylint: disable=too-many-arguments
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ class ChosenInlineResult(TelegramObject):
     considered equal, if their :attr:`result_id` is equal.
 
     Note:
-        * In Python :keyword:`from` is a reserved word use :paramref:`from_user` instead.
+        * In Python :keyword:`from` is a reserved word. Use :paramref:`from_user` instead.
         * It is necessary to enable inline feedback via `@Botfather <https://t.me/BotFather>`_ in
           order to receive these objects in updates.
 
@@ -56,8 +56,11 @@ class ChosenInlineResult(TelegramObject):
     Attributes:
         result_id (:obj:`str`): The unique identifier for the result that was chosen.
         from_user (:class:`telegram.User`): The user that chose the result.
-        location (:class:`telegram.Location`): Optional. Sender location.
-        inline_message_id (:obj:`str`): Optional. Identifier of the sent inline message.
+        location (:class:`telegram.Location`): Optional. Sender location, only for bots that
+            require user location.
+        inline_message_id (:obj:`str`): Optional. Identifier of the sent inline message. Available
+            only if there is an inline keyboard attached to the message. Will be also received in
+            callback queries and can be used to edit the message.
         query (:obj:`str`): The query that was used to obtain the result.
 
     """
@@ -77,14 +80,16 @@ class ChosenInlineResult(TelegramObject):
         super().__init__(api_kwargs=api_kwargs)
 
         # Required
-        self.result_id = result_id
-        self.from_user = from_user
-        self.query = query
+        self.result_id: str = result_id
+        self.from_user: User = from_user
+        self.query: str = query
         # Optionals
-        self.location = location
-        self.inline_message_id = inline_message_id
+        self.location: Optional[Location] = location
+        self.inline_message_id: Optional[str] = inline_message_id
 
         self._id_attrs = (self.result_id,)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["ChosenInlineResult"]:

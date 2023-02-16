@@ -18,6 +18,51 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class ApplyDiskBackupRequest(AbstractModel):
+    """ApplyDiskBackup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskId: 云硬盘ID，可通过[DescribeDisks](https://cloud.tencent.com/document/api/1207/66093)接口查询。
+        :type DiskId: str
+        :param DiskBackupId: 云硬盘备份点ID，可通过 DescribeDiskBackups 接口查询。
+        :type DiskBackupId: str
+        """
+        self.DiskId = None
+        self.DiskBackupId = None
+
+
+    def _deserialize(self, params):
+        self.DiskId = params.get("DiskId")
+        self.DiskBackupId = params.get("DiskBackupId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ApplyDiskBackupResponse(AbstractModel):
+    """ApplyDiskBackup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ApplyInstanceSnapshotRequest(AbstractModel):
     """ApplyInstanceSnapshot请求参数结构体
 
@@ -623,6 +668,55 @@ class CreateBlueprintResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateDiskBackupRequest(AbstractModel):
+    """CreateDiskBackup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskId: 云硬盘 ID。当前只支持数据盘创建备份点。
+        :type DiskId: str
+        :param DiskBackupName: 云硬盘备份点名称，最大长度90。
+        :type DiskBackupName: str
+        """
+        self.DiskId = None
+        self.DiskBackupName = None
+
+
+    def _deserialize(self, params):
+        self.DiskId = params.get("DiskId")
+        self.DiskBackupName = params.get("DiskBackupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateDiskBackupResponse(AbstractModel):
+    """CreateDiskBackup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupId: 备份点ID。
+        :type DiskBackupId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DiskBackupId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupId = params.get("DiskBackupId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateFirewallRulesRequest(AbstractModel):
     """CreateFirewallRules请求参数结构体
 
@@ -959,6 +1053,47 @@ class DeleteBlueprintsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteDiskBackupsRequest(AbstractModel):
+    """DeleteDiskBackups请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupIds: 云硬盘备份点ID列表，可通过 DescribeDiskBackups接口查询。
+        :type DiskBackupIds: list of str
+        """
+        self.DiskBackupIds = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupIds = params.get("DiskBackupIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteDiskBackupsResponse(AbstractModel):
+    """DeleteDiskBackups返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteFirewallRulesRequest(AbstractModel):
     """DeleteFirewallRules请求参数结构体
 
@@ -1261,7 +1396,7 @@ class DescribeBlueprintsRequest(AbstractModel):
 类型：String
 必选：否
 <li>blueprint-type</li>按照【镜像类型】进行过滤。
-取值：APP_OS（应用镜像 ）；PURE_OS（系统镜像）；PRIVATE（自定义镜像）；SHARED（共享镜像）。
+取值：APP_OS（应用镜像 ）；PURE_OS（系统镜像）；DOCKER（Docker容器镜像）；PRIVATE（自定义镜像）；SHARED（共享镜像）。
 类型：String
 必选：否
 <li>platform-type</li>按照【镜像平台类型】进行过滤。
@@ -1511,6 +1646,142 @@ class DescribeCcnAttachedInstancesResponse(AbstractModel):
                 obj = CcnAttachedInstance()
                 obj._deserialize(item)
                 self.CcnAttachedInstanceSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeDiskBackupsDeniedActionsRequest(AbstractModel):
+    """DescribeDiskBackupsDeniedActions请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupIds: 云硬盘备份点 ID 列表, 可通过 DescribeDiskBackups 接口查询。
+        :type DiskBackupIds: list of str
+        """
+        self.DiskBackupIds = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupIds = params.get("DiskBackupIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDiskBackupsDeniedActionsResponse(AbstractModel):
+    """DescribeDiskBackupsDeniedActions返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupDeniedActionSet: 云硬盘备份点操作限制列表详细信息。
+        :type DiskBackupDeniedActionSet: list of DiskBackupDeniedActions
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DiskBackupDeniedActionSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("DiskBackupDeniedActionSet") is not None:
+            self.DiskBackupDeniedActionSet = []
+            for item in params.get("DiskBackupDeniedActionSet"):
+                obj = DiskBackupDeniedActions()
+                obj._deserialize(item)
+                self.DiskBackupDeniedActionSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeDiskBackupsRequest(AbstractModel):
+    """DescribeDiskBackups请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupIds: 要查询云硬盘备份点的ID列表。参数不支持同时指定 DiskBackupIds 和 Filters。
+        :type DiskBackupIds: list of str
+        :param Filters: 过滤器列表。
+<li>disk-backup-id</li>按照【云硬盘备份点 ID】进行过滤。
+类型：String
+必选：否
+<li>disk-id</li>按照【云硬盘 ID】进行过滤。
+类型：String
+必选：否
+<li>disk-backup-state</li>按照【云硬盘备份点状态】进行过滤。
+类型：String
+必选：否
+取值：参考数据结构DiskBackup下的DiskBackupState取值。
+<li>disk-usage</li>按照【云硬盘类型】进行过滤。
+类型：String
+必选：否
+取值：SYSTEM_DISK或DATA_DISK
+每次请求的 Filters 的上限为 10，Filter.Values 的上限为5。参数不支持同时指定DiskBackupIds 和 Filters。
+        :type Filters: list of Filter
+        :param Offset: 偏移量，默认为 0。
+        :type Offset: int
+        :param Limit: 返回数量，默认为 20，最大值为 100。
+        :type Limit: int
+        """
+        self.DiskBackupIds = None
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupIds = params.get("DiskBackupIds")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDiskBackupsResponse(AbstractModel):
+    """DescribeDiskBackups返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 云硬盘备份点的数量。
+        :type TotalCount: int
+        :param DiskBackupSet: 云硬盘备份点信息列表。
+        :type DiskBackupSet: list of DiskBackup
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.DiskBackupSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("DiskBackupSet") is not None:
+            self.DiskBackupSet = []
+            for item in params.get("DiskBackupSet"):
+                obj = DiskBackup()
+                obj._deserialize(item)
+                self.DiskBackupSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -3302,6 +3573,111 @@ class Disk(AbstractModel):
         
 
 
+class DiskBackup(AbstractModel):
+    """描述了云硬盘备份点相关信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupId: 云硬盘备份点ID。
+        :type DiskBackupId: str
+        :param DiskUsage: 创建此云硬盘备份点的云硬盘类型。取值：<li>DATA_DISK：数据盘</li>
+        :type DiskUsage: str
+        :param DiskId: 创建此云硬盘备份点的云硬盘 ID。
+        :type DiskId: str
+        :param DiskSize: 创建此云硬盘备份点的云硬盘大小，单位 GB。
+        :type DiskSize: int
+        :param DiskBackupName: 云硬盘备份点名称，用户自定义的云硬盘备份点别名。
+        :type DiskBackupName: str
+        :param DiskBackupState: 云硬盘备份点的状态。取值范围：
+<li>NORMAL：正常。 </li>
+<li>CREATING：创建中。</li>
+<li>ROLLBACKING：回滚中。</li>
+<li>DELETING：删除中。</li>
+        :type DiskBackupState: str
+        :param Percent: 创建或回滚云硬盘备份点进度百分比，成功后此字段取值为 100。
+        :type Percent: int
+        :param LatestOperation: 上一次操作
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LatestOperation: str
+        :param LatestOperationState: 上一次操作状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LatestOperationState: str
+        :param LatestOperationRequestId: 上一次请求ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LatestOperationRequestId: str
+        :param CreatedTime: 创建时间。按照 ISO8601 标准表示，并且使用 UTC 时间。 
+格式为： YYYY-MM-DDThh:mm:ssZ。
+        :type CreatedTime: str
+        """
+        self.DiskBackupId = None
+        self.DiskUsage = None
+        self.DiskId = None
+        self.DiskSize = None
+        self.DiskBackupName = None
+        self.DiskBackupState = None
+        self.Percent = None
+        self.LatestOperation = None
+        self.LatestOperationState = None
+        self.LatestOperationRequestId = None
+        self.CreatedTime = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupId = params.get("DiskBackupId")
+        self.DiskUsage = params.get("DiskUsage")
+        self.DiskId = params.get("DiskId")
+        self.DiskSize = params.get("DiskSize")
+        self.DiskBackupName = params.get("DiskBackupName")
+        self.DiskBackupState = params.get("DiskBackupState")
+        self.Percent = params.get("Percent")
+        self.LatestOperation = params.get("LatestOperation")
+        self.LatestOperationState = params.get("LatestOperationState")
+        self.LatestOperationRequestId = params.get("LatestOperationRequestId")
+        self.CreatedTime = params.get("CreatedTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DiskBackupDeniedActions(AbstractModel):
+    """云硬盘备份点操作限制列表。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupId: 云硬盘备份点ID。
+        :type DiskBackupId: str
+        :param DeniedActions: 操作限制列表。
+        :type DeniedActions: list of DeniedAction
+        """
+        self.DiskBackupId = None
+        self.DeniedActions = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupId = params.get("DiskBackupId")
+        if params.get("DeniedActions") is not None:
+            self.DeniedActions = []
+            for item in params.get("DeniedActions"):
+                obj = DeniedAction()
+                obj._deserialize(item)
+                self.DeniedActions.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DiskChargePrepaid(AbstractModel):
     """云硬盘包年包月相关参数设置
 
@@ -4368,11 +4744,15 @@ class InstancePrice(AbstractModel):
         :type Discount: int
         :param DiscountPrice: 折后价。
         :type DiscountPrice: float
+        :param Currency: 价格货币单位。取值范围CNY:人民币。USD:美元。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Currency: str
         """
         self.OriginalBundlePrice = None
         self.OriginalPrice = None
         self.Discount = None
         self.DiscountPrice = None
+        self.Currency = None
 
 
     def _deserialize(self, params):
@@ -4380,6 +4760,7 @@ class InstancePrice(AbstractModel):
         self.OriginalPrice = params.get("OriginalPrice")
         self.Discount = params.get("Discount")
         self.DiscountPrice = params.get("DiscountPrice")
+        self.Currency = params.get("Currency")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4402,9 +4783,13 @@ class InstancePriceDetail(AbstractModel):
         :param InstancePrice: 询价信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstancePrice: :class:`tencentcloud.lighthouse.v20200324.models.InstancePrice`
+        :param DiscountDetail: 折扣梯度详情，每个梯度包含的信息有：时长，折扣数，总价，折扣价，折扣详情（用户折扣、官网折扣、最终折扣）。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DiscountDetail: list of DiscountDetail
         """
         self.InstanceId = None
         self.InstancePrice = None
+        self.DiscountDetail = None
 
 
     def _deserialize(self, params):
@@ -4412,6 +4797,12 @@ class InstancePriceDetail(AbstractModel):
         if params.get("InstancePrice") is not None:
             self.InstancePrice = InstancePrice()
             self.InstancePrice._deserialize(params.get("InstancePrice"))
+        if params.get("DiscountDetail") is not None:
+            self.DiscountDetail = []
+            for item in params.get("DiscountDetail"):
+                obj = DiscountDetail()
+                obj._deserialize(item)
+                self.DiscountDetail.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4768,6 +5159,51 @@ class ModifyBundle(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class ModifyDiskBackupsAttributeRequest(AbstractModel):
+    """ModifyDiskBackupsAttribute请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupIds: 云硬盘备份点ID列表。
+        :type DiskBackupIds: list of str
+        :param DiskBackupName: 云硬盘备份点名称，最大长度90。
+        :type DiskBackupName: str
+        """
+        self.DiskBackupIds = None
+        self.DiskBackupName = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupIds = params.get("DiskBackupIds")
+        self.DiskBackupName = params.get("DiskBackupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyDiskBackupsAttributeResponse(AbstractModel):
+    """ModifyDiskBackupsAttribute返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class ModifyDisksAttributeRequest(AbstractModel):
@@ -5210,16 +5646,27 @@ class PolicyDetail(AbstractModel):
         :type CommonDiscount: int
         :param FinalDiscount: 最终折扣。
         :type FinalDiscount: int
+        :param ActivityDiscount: 活动折扣。取值为null，表示无有效值，即没有折扣。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ActivityDiscount: float
+        :param DiscountType: 折扣类型。
+user：用户折扣; common：官网折扣; activity：活动折扣。 取值为null，表示无有效值，即没有折扣。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DiscountType: str
         """
         self.UserDiscount = None
         self.CommonDiscount = None
         self.FinalDiscount = None
+        self.ActivityDiscount = None
+        self.DiscountType = None
 
 
     def _deserialize(self, params):
         self.UserDiscount = params.get("UserDiscount")
         self.CommonDiscount = params.get("CommonDiscount")
         self.FinalDiscount = params.get("FinalDiscount")
+        self.ActivityDiscount = params.get("ActivityDiscount")
+        self.DiscountType = params.get("DiscountType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

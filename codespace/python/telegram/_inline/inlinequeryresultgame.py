@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the classes that represent Telegram InlineQueryResultGame."""
+from typing import Optional
 
 from telegram._inline.inlinekeyboardmarkup import InlineKeyboardMarkup
 from telegram._inline.inlinequeryresult import InlineQueryResult
@@ -58,7 +59,8 @@ class InlineQueryResultGame(InlineQueryResult):
     ):
         # Required
         super().__init__(InlineQueryResultType.GAME, id, api_kwargs=api_kwargs)
-        self.id = id
-        self.game_short_name = game_short_name
+        with self._unfrozen():
+            self.id: str = id
+            self.game_short_name: str = game_short_name
 
-        self.reply_markup = reply_markup
+            self.reply_markup: Optional[InlineKeyboardMarkup] = reply_markup

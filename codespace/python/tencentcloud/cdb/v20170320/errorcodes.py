@@ -17,6 +17,9 @@
 # CAM签名/鉴权错误。
 AUTHFAILURE = 'AuthFailure'
 
+# 授权无效。
+AUTHFAILURE_INVALIDAUTHORIZATION = 'AuthFailure.InvalidAuthorization'
+
 # 子账号无权限。
 AUTHFAILURE_SUBACCOUNTDENIED = 'AuthFailure.SubAccountDenied'
 
@@ -82,6 +85,9 @@ FAILEDOPERATION_JSONUNMARSHALERROR = 'FailedOperation.JsonUnmarshalError'
 
 # 不是延迟复制RO。
 FAILEDOPERATION_NOTDELAYRO = 'FailedOperation.NotDelayRo'
+
+# 实例正在执行其他操作，请稍后重试。
+FAILEDOPERATION_OPERATIONINCONFLICTERR = 'FailedOperation.OperationInConflictErr'
 
 # 执行的权限修改操作非法。您可以参照产品文档，了解当前实例支持哪些权限修改操作，如有疑问，请您咨询客服进行处理。
 FAILEDOPERATION_PRIVILEGEDATAILLEGAL = 'FailedOperation.PrivilegeDataIllegal'
@@ -182,6 +188,9 @@ INTERNALERROR_FTPERROR = 'InternalError.FtpError'
 # Http请求异常。
 INTERNALERROR_HTTPERROR = 'InternalError.HttpError'
 
+# 导入失败。
+INTERNALERROR_IMPORTERROR = 'InternalError.ImportError'
+
 # 内部服务错误。
 INTERNALERROR_INNERCOMMONERROR = 'InternalError.InnerCommonError'
 
@@ -199,6 +208,9 @@ INTERNALERROR_INTERNALSERVICEERRORERR = 'InternalError.InternalServiceErrorErr'
 
 # json解析失败。
 INTERNALERROR_JSONERROR = 'InternalError.JSONError'
+
+# 开通加密失败。
+INTERNALERROR_KMSERROR = 'InternalError.KmsError'
 
 # 网络错误。
 INTERNALERROR_NETWORKERROR = 'InternalError.NetworkError'
@@ -352,6 +364,9 @@ MISSINGPARAMETER_MISSINGPARAMERROR = 'MissingParameter.MissingParamError'
 
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'
+
+# 云账号权限不足，不支持该操作。
+OPERATIONDENIED_ACCOUNTOPERATIONDENIED = 'OperationDenied.AccountOperationDenied'
 
 # 实例正在执行其他任务。
 OPERATIONDENIED_ACTIONINPROCESS = 'OperationDenied.ActionInProcess'

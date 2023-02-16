@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,12 @@
 import abc
 import asyncio
 import json
-from contextlib import AbstractAsyncContextManager
 from http import HTTPStatus
 from types import TracebackType
-from typing import ClassVar, Optional, Tuple, Type, TypeVar, Union
+from typing import AsyncContextManager, ClassVar, List, Optional, Tuple, Type, TypeVar, Union
 
 from telegram._utils.defaultvalue import DEFAULT_NONE as _DEFAULT_NONE
+from telegram._utils.defaultvalue import DefaultValue
 from telegram._utils.types import JSONDict, ODVInput
 from telegram._version import __version__ as ptb_ver
 from telegram.error import (
@@ -44,7 +44,7 @@ RT = TypeVar("RT", bound="BaseRequest")
 
 
 class BaseRequest(
-    AbstractAsyncContextManager,
+    AsyncContextManager["BaseRequest"],
     abc.ABC,
 ):
     """Abstract interface class that allows python-telegram-bot to make requests to the Bot API.
@@ -73,10 +73,8 @@ class BaseRequest(
         To use a custom library for this, you can override :meth:`parse_json_payload` and implement
         custom logic to encode the keys of :attr:`telegram.request.RequestData.parameters`.
 
-    .. seealso:: `Architecture Overview <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Architecture>`_,
-        `Builder Pattern <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Builder-Pattern>`_
+    .. seealso:: :wiki:`Architecture Overview <Architecture>`,
+        :wiki:`Builder Pattern <Builder-Pattern>`
 
     .. versionadded:: 20.0
     """
@@ -86,7 +84,7 @@ class BaseRequest(
     USER_AGENT: ClassVar[str] = f"python-telegram-bot v{ptb_ver} (https://python-telegram-bot.org)"
     """:obj:`str`: A description that can be used as user agent for requests made to the Bot API.
     """
-    DEFAULT_NONE: ClassVar = _DEFAULT_NONE
+    DEFAULT_NONE: ClassVar[DefaultValue[None]] = _DEFAULT_NONE
     """:class:`object`: A special object that indicates that an argument of a function was not
     explicitly passed. Used for the timeout parameters of :meth:`post` and :meth:`do_request`.
 
@@ -132,7 +130,7 @@ class BaseRequest(
         write_timeout: ODVInput[float] = DEFAULT_NONE,
         connect_timeout: ODVInput[float] = DEFAULT_NONE,
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
-    ) -> Union[JSONDict, bool]:
+    ) -> Union[JSONDict, List[JSONDict], bool]:
         """Makes a request to the Bot API handles the return code and parses the answer.
 
         Warning:
@@ -161,7 +159,7 @@ class BaseRequest(
                 :attr:`DEFAULT_NONE`.
 
         Returns:
-          Dict[:obj:`str`, ...]: The JSON response of the Bot API.
+          The JSON response of the Bot API.
 
         """
         result = await self._request_wrapper(

@@ -4534,6 +4534,39 @@ class ApplyUploadResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ArtifactRepairInfo(AbstractModel):
+    """去伪影（毛刺）控制信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 去伪影（毛刺）控制开关，可选值：
+<li>ON：开启去伪影（毛刺）；</li>
+<li>OFF：关闭去伪影（毛刺）。</li>
+        :type Switch: str
+        :param Type: 去伪影（毛刺）类型，仅当去伪影（毛刺）控制开关为 ON 时有效，可选值：
+<li>weak：轻去伪影（毛刺）；</li>
+<li>strong：强去伪影（毛刺）。</li>
+默认值：weak。
+        :type Type: str
+        """
+        self.Switch = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AsrFullTextConfigureInfo(AbstractModel):
     """语音全文识别任务控制参数
 
@@ -4731,6 +4764,40 @@ class AttachMediaSubtitlesResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class AudioDenoiseInfo(AbstractModel):
+    """音频降噪控制信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 音频降噪控制开关，可选值：
+<li>ON：开启音频降噪；</li>
+<li>OFF：关闭音频降噪。</li>
+        :type Switch: str
+        :param Type: 音频降噪类型，仅当音频降噪控制开关为 ON 时有效，可选值：
+<li>weak：轻音频降噪；</li>
+<li>normal：正常音频降噪；</li>
+<li>strong：强音频降噪。</li>
+默认值：weak。
+        :type Type: str
+        """
+        self.Switch = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class AudioTemplateInfo(AbstractModel):
@@ -5169,6 +5236,40 @@ class ClipTask2017(AbstractModel):
         if params.get("FileInfo") is not None:
             self.FileInfo = ClipFileInfo2017()
             self.FileInfo._deserialize(params.get("FileInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ColorEnhanceInfo(AbstractModel):
+    """色彩增强控制参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 色彩增强控制开关，可选值：
+<li>ON：开启综合增强；</li>
+<li>OFF：关闭综合增强。</li>
+        :type Switch: str
+        :param Type: 色彩增强类型，仅当色彩增强控制开关为 ON 时有效，可选值：
+<li>weak：轻色彩增强；</li>
+<li>normal：正常色彩增强；</li>
+<li>strong：强色彩增强。</li>
+默认值：weak。
+        :type Type: str
+        """
+        self.Switch = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6910,12 +7011,15 @@ class CreateProcedureTemplateRequest(AbstractModel):
         :type Comment: str
         :param MediaProcessTask: 视频处理类型任务参数。
         :type MediaProcessTask: :class:`tencentcloud.vod.v20180717.models.MediaProcessTaskInput`
-        :param AiContentReviewTask: AI 内容审核类型任务参数。
+        :param AiContentReviewTask: AI 内容审核类型任务参数 \*。
+<font color=red>\*：该参数用于发起旧版审核，不建议使用。推荐使用 ReviewAudioVideoTask 参数发起审核。</font> 
         :type AiContentReviewTask: :class:`tencentcloud.vod.v20180717.models.AiContentReviewTaskInput`
         :param AiAnalysisTask: AI 内容分析类型任务参数。
         :type AiAnalysisTask: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskInput`
         :param AiRecognitionTask: AI 内容识别类型任务参数。
         :type AiRecognitionTask: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskInput`
+        :param ReviewAudioVideoTask: 音视频审核类型任务参数。
+        :type ReviewAudioVideoTask: :class:`tencentcloud.vod.v20180717.models.ProcedureReviewAudioVideoTaskInput`
         """
         self.Name = None
         self.SubAppId = None
@@ -6924,6 +7028,7 @@ class CreateProcedureTemplateRequest(AbstractModel):
         self.AiContentReviewTask = None
         self.AiAnalysisTask = None
         self.AiRecognitionTask = None
+        self.ReviewAudioVideoTask = None
 
 
     def _deserialize(self, params):
@@ -6942,6 +7047,9 @@ class CreateProcedureTemplateRequest(AbstractModel):
         if params.get("AiRecognitionTask") is not None:
             self.AiRecognitionTask = AiRecognitionTaskInput()
             self.AiRecognitionTask._deserialize(params.get("AiRecognitionTask"))
+        if params.get("ReviewAudioVideoTask") is not None:
+            self.ReviewAudioVideoTask = ProcedureReviewAudioVideoTaskInput()
+            self.ReviewAudioVideoTask._deserialize(params.get("ReviewAudioVideoTask"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6965,6 +7073,141 @@ class CreateProcedureTemplateResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class CreateReviewTemplateRequest(AbstractModel):
+    """CreateReviewTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Labels: 需要返回的违规标签列表，可选值为：
+<li>Porn：色情；</li>
+<li>Terror：暴力；</li>
+<li>Polity：不适宜的信息；</li>
+<li>Illegal：违法；</li>
+<li>Abuse：谩骂；</li>
+<li>Ad：广告；</li>
+<li>Moan：娇喘。</li>
+        :type Labels: list of str
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: str
+        :param Name: 审核模板名称，长度限制：64 个字符。
+        :type Name: str
+        :param Comment: 审核模板描述信息，长度限制：256 个字符。
+        :type Comment: str
+        """
+        self.Labels = None
+        self.SubAppId = None
+        self.Name = None
+        self.Comment = None
+
+
+    def _deserialize(self, params):
+        self.Labels = params.get("Labels")
+        self.SubAppId = params.get("SubAppId")
+        self.Name = params.get("Name")
+        self.Comment = params.get("Comment")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateReviewTemplateResponse(AbstractModel):
+    """CreateReviewTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 审核模板唯一标识。
+        :type Definition: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Definition = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateRoundPlayRequest(AbstractModel):
+    """CreateRoundPlay请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 启播时间，格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#52)。
+        :type StartTime: str
+        :param RoundPlaylist: 轮播列表。
+<li>数组长度限制：100。</li>
+        :type RoundPlaylist: list of RoundPlayListItemInfo
+        :param SubAppId: <b>点播 [子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param Name: 轮播播单名称，长度限制：64 个字符。
+        :type Name: str
+        :param Desc: 轮播播单描述信息，长度限制：256 个字符。
+        :type Desc: str
+        """
+        self.StartTime = None
+        self.RoundPlaylist = None
+        self.SubAppId = None
+        self.Name = None
+        self.Desc = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        if params.get("RoundPlaylist") is not None:
+            self.RoundPlaylist = []
+            for item in params.get("RoundPlaylist"):
+                obj = RoundPlayListItemInfo()
+                obj._deserialize(item)
+                self.RoundPlaylist.append(obj)
+        self.SubAppId = params.get("SubAppId")
+        self.Name = params.get("Name")
+        self.Desc = params.get("Desc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateRoundPlayResponse(AbstractModel):
+    """CreateRoundPlay返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoundPlayId: 轮播播单唯一标识。
+        :type RoundPlayId: str
+        :param Url: 轮播播放地址。
+        :type Url: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RoundPlayId = None
+        self.Url = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RoundPlayId = params.get("RoundPlayId")
+        self.Url = params.get("Url")
         self.RequestId = params.get("RequestId")
 
 
@@ -8272,6 +8515,96 @@ class DeleteProcedureTemplateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteReviewTemplateRequest(AbstractModel):
+    """DeleteReviewTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 审核模板唯一标识。
+        :type Definition: int
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        """
+        self.Definition = None
+        self.SubAppId = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.SubAppId = params.get("SubAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteReviewTemplateResponse(AbstractModel):
+    """DeleteReviewTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteRoundPlayRequest(AbstractModel):
+    """DeleteRoundPlay请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoundPlayId: 轮播播单唯一标识。
+        :type RoundPlayId: str
+        :param SubAppId: <b>点播 [子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        """
+        self.RoundPlayId = None
+        self.SubAppId = None
+
+
+    def _deserialize(self, params):
+        self.RoundPlayId = params.get("RoundPlayId")
+        self.SubAppId = params.get("SubAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteRoundPlayResponse(AbstractModel):
+    """DeleteRoundPlay返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteSampleSnapshotTemplateRequest(AbstractModel):
     """DeleteSampleSnapshotTemplate请求参数结构体
 
@@ -9432,8 +9765,9 @@ class DescribeDailyMostPlayedStatRequest(AbstractModel):
         :param Metric: Top 数据的统计指标，取值有：
 <li>Traffic：播放流量，按播放流量统计 Top100 的数据。</li>
 <li>PlayTimes：播放次数，按播放次数统计播放 Top100 的数据。</li>
+默认值为Traffic。
         :type Metric: str
-        :param SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
         """
         self.Date = None
@@ -9549,12 +9883,16 @@ class DescribeDrmDataKeyRequest(AbstractModel):
         r"""
         :param EdkList: 加密后的数据密钥列表，最大支持10个。
         :type EdkList: list of str
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID 。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
         """
         self.EdkList = None
+        self.SubAppId = None
 
 
     def _deserialize(self, params):
         self.EdkList = params.get("EdkList")
+        self.SubAppId = params.get("SubAppId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10235,6 +10573,8 @@ class DescribeMediaInfosRequest(AbstractModel):
         r"""
         :param FileIds: 媒体文件 ID 列表，N 从 0 开始取值，最大 19。
         :type FileIds: list of str
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID 。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
         :param Filters: 指定所有媒体文件需要返回的信息，可同时指定多个信息，N 从 0 开始递增。如果未填写该字段，默认返回所有信息。选项有：
 <li>basicInfo（视频基础信息）。</li>
 <li>metaData（视频元信息）。</li>
@@ -10246,19 +10586,19 @@ class DescribeMediaInfosRequest(AbstractModel):
 <li>keyFrameDescInfo（打点信息）。</li>
 <li>adaptiveDynamicStreamingInfo（转自适应码流信息）。</li>
 <li>miniProgramReviewInfo（小程序审核信息）。</li>
+<li>subtitleInfo（字幕信息）。</li>
+<li>reviewInfo（审核信息）。</li>
         :type Filters: list of str
-        :param SubAppId: 点播[子应用](/document/product/266/14574) ID 。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
-        :type SubAppId: int
         """
         self.FileIds = None
-        self.Filters = None
         self.SubAppId = None
+        self.Filters = None
 
 
     def _deserialize(self, params):
         self.FileIds = params.get("FileIds")
-        self.Filters = params.get("Filters")
         self.SubAppId = params.get("SubAppId")
+        self.Filters = params.get("Filters")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10562,6 +10902,8 @@ class DescribeProcedureTemplatesRequest(AbstractModel):
 
     def __init__(self):
         r"""
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
         :param Names: 任务流模板名字过滤条件，数组长度限制：100。
         :type Names: list of str
         :param Type: 任务流模板类型过滤条件，可选值：
@@ -10572,22 +10914,20 @@ class DescribeProcedureTemplatesRequest(AbstractModel):
         :type Offset: int
         :param Limit: 返回记录条数，默认值：10，最大值：100。
         :type Limit: int
-        :param SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
-        :type SubAppId: int
         """
+        self.SubAppId = None
         self.Names = None
         self.Type = None
         self.Offset = None
         self.Limit = None
-        self.SubAppId = None
 
 
     def _deserialize(self, params):
+        self.SubAppId = params.get("SubAppId")
         self.Names = params.get("Names")
         self.Type = params.get("Type")
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
-        self.SubAppId = params.get("SubAppId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10690,6 +11030,144 @@ class DescribeReviewDetailsResponse(AbstractModel):
                 obj = StatDataItem()
                 obj._deserialize(item)
                 self.Data.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeReviewTemplatesRequest(AbstractModel):
+    """DescribeReviewTemplates请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param Definitions: 审核模版唯一标识过滤条件，数组长度限制：100。
+        :type Definitions: list of int
+        :param Type: 模板类型过滤条件，可选值：
+<li>Preset：系统预置模板；</li>
+<li>Custom：用户自定义模板。</li>
+        :type Type: str
+        :param Offset: 分页偏移量，默认值：0。
+        :type Offset: int
+        :param Limit: 返回记录条数，默认值：10，最大值：100。
+        :type Limit: int
+        """
+        self.SubAppId = None
+        self.Definitions = None
+        self.Type = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SubAppId = params.get("SubAppId")
+        self.Definitions = params.get("Definitions")
+        self.Type = params.get("Type")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeReviewTemplatesResponse(AbstractModel):
+    """DescribeReviewTemplates返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 符合过滤条件的记录总数。
+        :type TotalCount: int
+        :param ReviewTemplateSet: 审核模板详情列表。
+        :type ReviewTemplateSet: list of ReviewTemplate
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.ReviewTemplateSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("ReviewTemplateSet") is not None:
+            self.ReviewTemplateSet = []
+            for item in params.get("ReviewTemplateSet"):
+                obj = ReviewTemplate()
+                obj._deserialize(item)
+                self.ReviewTemplateSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeRoundPlaysRequest(AbstractModel):
+    """DescribeRoundPlays请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubAppId: <b>点播 [子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param RoundPlayIds: 轮播播单标识过滤条件，数组长度限制：100。
+        :type RoundPlayIds: list of str
+        :param Offset: 分页偏移量，默认值：0。
+        :type Offset: int
+        :param Limit: 返回记录条数，默认值：10，最大值：100。
+        :type Limit: int
+        """
+        self.SubAppId = None
+        self.RoundPlayIds = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SubAppId = params.get("SubAppId")
+        self.RoundPlayIds = params.get("RoundPlayIds")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRoundPlaysResponse(AbstractModel):
+    """DescribeRoundPlays返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 符合过滤条件的轮播播单总数。
+        :type TotalCount: int
+        :param RoundPlaySet: 轮播播单详情列表。
+        :type RoundPlaySet: list of RoundPlayInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.RoundPlaySet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("RoundPlaySet") is not None:
+            self.RoundPlaySet = []
+            for item in params.get("RoundPlaySet"):
+                obj = RoundPlayInfo()
+                obj._deserialize(item)
+                self.RoundPlaySet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -11949,6 +12427,38 @@ class DrmStreamingsInfoForUpdate(AbstractModel):
         
 
 
+class DynamicRangeInfo(AbstractModel):
+    """画面动态范围信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 画面动态范围信息。可取值：
+<li>SDR：Standard Dynamic Range 标准动态范围；</li>
+<li>HDR：High Dynamic Range 高动态范围。</li>
+        :type Type: str
+        :param HDRType: 高动态范围类型，当 Type 为 HDR 时有效。目前支持的可取值：
+<li>hdr10：表示 hdr10 标准；</li>
+<li>hlg：表示 hlg 标准。</li>
+        :type HDRType: str
+        """
+        self.Type = None
+        self.HDRType = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.HDRType = params.get("HDRType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class EditMediaFileInfo(AbstractModel):
     """编辑点播视频文件信息
 
@@ -12217,8 +12727,10 @@ class EditMediaTask(AbstractModel):
         :type Output: :class:`tencentcloud.vod.v20180717.models.EditMediaTaskOutput`
         :param MetaData: 输出视频的元信息。
         :type MetaData: :class:`tencentcloud.vod.v20180717.models.MediaMetaData`
-        :param ProcedureTaskId: 若发起视频编辑任务时指定了视频处理流程，则该字段为流程任务 ID。
+        :param ProcedureTaskId: 任务类型为 Procedure 的任务 ID。若发起[编辑视频](https://cloud.tencent.com/document/api/266/34783)任务时指定了任务流模板(ProcedureName)，当该任务流模板指定了 MediaProcessTask、AiAnalysisTask、AiRecognitionTask 中的一个或多个时发起该任务。
         :type ProcedureTaskId: str
+        :param ReviewAudioVideoTaskId: 任务类型为 ReviewAudioVideo 的任务 ID。若发起[编辑视频](https://cloud.tencent.com/document/api/266/34783)任务时指定了任务流模板(ProcedureName)，当该任务流模板指定了 ReviewAudioVideoTask 时，发起该任务。
+        :type ReviewAudioVideoTaskId: str
         :param SessionId: 用于去重的识别码，如果七天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
         :type SessionId: str
         :param SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长 1000 个字符。
@@ -12234,6 +12746,7 @@ class EditMediaTask(AbstractModel):
         self.Output = None
         self.MetaData = None
         self.ProcedureTaskId = None
+        self.ReviewAudioVideoTaskId = None
         self.SessionId = None
         self.SessionContext = None
 
@@ -12255,6 +12768,7 @@ class EditMediaTask(AbstractModel):
             self.MetaData = MediaMetaData()
             self.MetaData._deserialize(params.get("MetaData"))
         self.ProcedureTaskId = params.get("ProcedureTaskId")
+        self.ReviewAudioVideoTaskId = params.get("ReviewAudioVideoTaskId")
         self.SessionId = params.get("SessionId")
         self.SessionContext = params.get("SessionContext")
         memeber_set = set(params.keys())
@@ -12435,13 +12949,14 @@ class EventContent(AbstractModel):
 <li>NewFileUpload：视频上传完成；</li>
 <li>ProcedureStateChanged：任务流状态变更；</li>
 <li>FileDeleted：视频删除完成；</li>
+<li>RestoreMediaComplete：视频取回完成；</li>
 <li>PullComplete：视频转拉完成；</li>
 <li>EditMediaComplete：视频编辑完成；</li>
 <li>SplitMediaComplete：视频拆分完成；</li>
-<li>WechatPublishComplete：微信发布完成；</li>
 <li>ComposeMediaComplete：制作媒体文件完成；</li>
 <li>WechatMiniProgramPublishComplete：微信小程序发布完成。</li>
-<li>FastClipMediaComplete：快速剪辑完成；</li>
+<li>RemoveWatermark：智能去除水印完成。</li>
+<li>RebuildMediaComplete：音画质重生完成事件。</li>
 <li>ReviewAudioVideoComplete：音视频审核完成；</li>
 <li>ExtractTraceWatermarkComplete：提取溯源水印完成；</li>
 <li>DescribeFileAttributesComplete：获取文件属性完成；</li>
@@ -12467,7 +12982,7 @@ class EventContent(AbstractModel):
         :param EditMediaCompleteEvent: 视频编辑完成事件，当事件类型为 EditMediaComplete 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type EditMediaCompleteEvent: :class:`tencentcloud.vod.v20180717.models.EditMediaTask`
-        :param SplitMediaCompleteEvent: 视频拆条完成事件，当事件类型为 SplitMediaComplete 时有效。
+        :param SplitMediaCompleteEvent: 视频拆分完成事件，当事件类型为 SplitMediaComplete 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SplitMediaCompleteEvent: :class:`tencentcloud.vod.v20180717.models.SplitMediaTask`
         :param ComposeMediaCompleteEvent: 制作媒体文件任务完成事件，当事件类型为 ComposeMediaComplete 时有效。
@@ -12494,13 +13009,16 @@ class EventContent(AbstractModel):
         :param WechatMiniProgramPublishCompleteEvent: 微信小程序发布任务完成事件，当事件类型为 WechatMiniProgramPublishComplete 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type WechatMiniProgramPublishCompleteEvent: :class:`tencentcloud.vod.v20180717.models.WechatMiniProgramPublishTask`
-        :param RemoveWatermarkCompleteEvent: 智能去除水印任务完成事件，当事件类型为 RemoveWatermark 有效。
+        :param RemoveWatermarkCompleteEvent: 智能去除水印完成事件，当事件类型为 RemoveWatermark 有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RemoveWatermarkCompleteEvent: :class:`tencentcloud.vod.v20180717.models.RemoveWatermarkTask`
-        :param RestoreMediaCompleteEvent: 视频取回完成事件，当事件类型为RestoreMediaComplete 时有效。
+        :param RestoreMediaCompleteEvent: 视频取回完成事件，当事件类型为 RestoreMediaComplete 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RestoreMediaCompleteEvent: :class:`tencentcloud.vod.v20180717.models.RestoreMediaTask`
-        :param ExtractTraceWatermarkCompleteEvent: 溯源水印提取完成事件，当事件类型为ExtractTraceWatermarkComplete 时有效。
+        :param RebuildMediaCompleteEvent: 音画质重生完成事件，当事件类型为 RebuildMediaComplete 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RebuildMediaCompleteEvent: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTask`
+        :param ExtractTraceWatermarkCompleteEvent: 溯源水印提取完成事件，当事件类型为 ExtractTraceWatermarkComplete 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExtractTraceWatermarkCompleteEvent: :class:`tencentcloud.vod.v20180717.models.ExtractTraceWatermarkTask`
         :param ReviewAudioVideoCompleteEvent: 音视频审核完成事件，当事件类型为 ReviewAudioVideoComplete 时有效。
@@ -12531,6 +13049,7 @@ class EventContent(AbstractModel):
         self.WechatMiniProgramPublishCompleteEvent = None
         self.RemoveWatermarkCompleteEvent = None
         self.RestoreMediaCompleteEvent = None
+        self.RebuildMediaCompleteEvent = None
         self.ExtractTraceWatermarkCompleteEvent = None
         self.ReviewAudioVideoCompleteEvent = None
         self.ReduceMediaBitrateCompleteEvent = None
@@ -12588,6 +13107,9 @@ class EventContent(AbstractModel):
         if params.get("RestoreMediaCompleteEvent") is not None:
             self.RestoreMediaCompleteEvent = RestoreMediaTask()
             self.RestoreMediaCompleteEvent._deserialize(params.get("RestoreMediaCompleteEvent"))
+        if params.get("RebuildMediaCompleteEvent") is not None:
+            self.RebuildMediaCompleteEvent = RebuildMediaTask()
+            self.RebuildMediaCompleteEvent._deserialize(params.get("RebuildMediaCompleteEvent"))
         if params.get("ExtractTraceWatermarkCompleteEvent") is not None:
             self.ExtractTraceWatermarkCompleteEvent = ExtractTraceWatermarkTask()
             self.ExtractTraceWatermarkCompleteEvent._deserialize(params.get("ExtractTraceWatermarkCompleteEvent"))
@@ -12683,6 +13205,9 @@ class ExtractTraceWatermarkRequest(AbstractModel):
         r"""
         :param Url: 需要提取水印的媒体 URL。
         :type Url: str
+        :param FileId: 媒体文件 ID。Url 对应的原始媒体文件 ID。
+<li><font color=red>注意</font>：此字段必填。</li>
+        :type FileId: str
         :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
         :param SessionContext: 标识来源上下文，用于透传用户请求信息，在ExtractTraceWatermarkComplete回调和任务流状态变更回调将返回该字段值，最长 1000个字符。
@@ -12695,6 +13220,7 @@ class ExtractTraceWatermarkRequest(AbstractModel):
         :type ExtInfo: str
         """
         self.Url = None
+        self.FileId = None
         self.SubAppId = None
         self.SessionContext = None
         self.SessionId = None
@@ -12704,6 +13230,7 @@ class ExtractTraceWatermarkRequest(AbstractModel):
 
     def _deserialize(self, params):
         self.Url = params.get("Url")
+        self.FileId = params.get("FileId")
         self.SubAppId = params.get("SubAppId")
         self.SessionContext = params.get("SessionContext")
         self.SessionId = params.get("SessionId")
@@ -12955,6 +13482,37 @@ class FaceConfigureInfoForUpdate(AbstractModel):
         
 
 
+class FaceEnhanceInfo(AbstractModel):
+    """人脸增强控制
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 人脸增强控制开关，可选值：
+<li>ON：开启人脸增强；</li>
+<li>OFF：关闭人脸增强。</li>
+        :type Switch: str
+        :param Intensity: 人脸增强强度，仅当人脸增强控制开关为 ON 时有效，取值范围：0.0~1.0。
+默认：0.0。
+        :type Intensity: float
+        """
+        self.Switch = None
+        self.Intensity = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Intensity = params.get("Intensity")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class FileDeleteResultItem(AbstractModel):
     """文件删除结果信息
 
@@ -13022,6 +13580,44 @@ class FileDeleteTask(AbstractModel):
         
 
 
+class FileReviewInfo(AbstractModel):
+    """文件审核信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MediaReviewInfo: 媒体审核信息\*。
+
+\* 只展示通过 [音视频审核(ReviewAudioVideo)](https://cloud.tencent.com/document/api/266/80283) 或 [图片审核(ReviewImage)](https://cloud.tencent.com/document/api/266/73217) 发起的审核结果信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MediaReviewInfo: :class:`tencentcloud.vod.v20180717.models.ReviewInfo`
+        :param CoverReviewInfo: 媒体封面审核信息\*。
+
+\* 只展示通过 [音视频审核(ReviewAudioVideo)](https://cloud.tencent.com/document/api/266/80283) 或 [图片审核(ReviewImage)](https://cloud.tencent.com/document/api/266/73217) 发起的审核结果信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CoverReviewInfo: :class:`tencentcloud.vod.v20180717.models.ReviewInfo`
+        """
+        self.MediaReviewInfo = None
+        self.CoverReviewInfo = None
+
+
+    def _deserialize(self, params):
+        if params.get("MediaReviewInfo") is not None:
+            self.MediaReviewInfo = ReviewInfo()
+            self.MediaReviewInfo._deserialize(params.get("MediaReviewInfo"))
+        if params.get("CoverReviewInfo") is not None:
+            self.CoverReviewInfo = ReviewInfo()
+            self.CoverReviewInfo._deserialize(params.get("CoverReviewInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class FileUploadTask(AbstractModel):
     """文件上传任务信息
 
@@ -13033,8 +13629,10 @@ class FileUploadTask(AbstractModel):
         :type FileId: str
         :param MediaBasicInfo: 上传完成后生成的媒体文件基础信息。
         :type MediaBasicInfo: :class:`tencentcloud.vod.v20180717.models.MediaBasicInfo`
-        :param ProcedureTaskId: 若视频上传时指定了视频处理流程，则该字段为流程任务 ID。
+        :param ProcedureTaskId: 任务类型为 Procedure 的任务 ID。若视频[上传时指定要执行的任务(procedure)](https://cloud.tencent.com/document/product/266/33475#.E4.BB.BB.E5.8A.A1.E5.8F.91.E8.B5.B7)，当该任务流模板指定了 MediaProcessTask、AiAnalysisTask、AiRecognitionTask 中的一个或多个时发起该任务。
         :type ProcedureTaskId: str
+        :param ReviewAudioVideoTaskId: 任务类型为 ReviewAudioVideo 的任务 ID。若视频[上传时指定要执行的任务(procedure)](https://cloud.tencent.com/document/product/266/33475#.E4.BB.BB.E5.8A.A1.E5.8F.91.E8.B5.B7)，当该任务流模板指定了 ReviewAudioVideoTask 时，发起该任务。
+        :type ReviewAudioVideoTaskId: str
         :param MetaData: 元信息。包括大小、时长、视频流信息、音频流信息等。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MetaData: :class:`tencentcloud.vod.v20180717.models.MediaMetaData`
@@ -13042,6 +13640,7 @@ class FileUploadTask(AbstractModel):
         self.FileId = None
         self.MediaBasicInfo = None
         self.ProcedureTaskId = None
+        self.ReviewAudioVideoTaskId = None
         self.MetaData = None
 
 
@@ -13051,6 +13650,7 @@ class FileUploadTask(AbstractModel):
             self.MediaBasicInfo = MediaBasicInfo()
             self.MediaBasicInfo._deserialize(params.get("MediaBasicInfo"))
         self.ProcedureTaskId = params.get("ProcedureTaskId")
+        self.ReviewAudioVideoTaskId = params.get("ReviewAudioVideoTaskId")
         if params.get("MetaData") is not None:
             self.MetaData = MediaMetaData()
             self.MetaData._deserialize(params.get("MetaData"))
@@ -13167,6 +13767,42 @@ class FrameTagConfigureInfoForUpdate(AbstractModel):
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.ScreenshotInterval = params.get("ScreenshotInterval")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class HDRInfo(AbstractModel):
+    """高动态范围类型控制参数。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 高动态范围类型控制开关，可选值：
+<li>ON：开启高动态范围类型转换；</li>
+<li>OFF：关闭高动态范围类型转换。</li>
+        :type Switch: str
+        :param Type: 高动态范围类型，可选值：
+<li>hdr10：表示 hdr10 标准；</li>
+<li>hlg：表示 hlg 标准。</li>
+
+注意：
+<li> 仅当高动态范围类型控制开关为 ON 时有效；</li>
+<li>当画质重生目标参数中指定视频输出参数的视频流编码格式 Codec 为 libx265 时有效。</li>
+        :type Type: str
+        """
+        self.Switch = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14135,6 +14771,38 @@ class LiveRealTimeClipStreamInfo(AbstractModel):
         
 
 
+class LowLightEnhanceInfo(AbstractModel):
+    """低光照增强控制
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 低光照增强控制开关，可选值：
+<li>ON：开启低光照增强；</li>
+<li>OFF：关闭低光照增强。</li>
+        :type Switch: str
+        :param Type: 低光照增强类型，仅当低光照增强控制开关为 ON 时有效，可选值：
+<li>normal：正常低光照增强；</li>
+默认值：normal。
+        :type Type: str
+        """
+        self.Switch = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ManageTaskRequest(AbstractModel):
     """ManageTask请求参数结构体
 
@@ -15072,6 +15740,9 @@ class MediaInfo(AbstractModel):
         :type SubtitleInfo: :class:`tencentcloud.vod.v20180717.models.MediaSubtitleInfo`
         :param FileId: 媒体文件唯一标识 ID。
         :type FileId: str
+        :param ReviewInfo: 审核信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReviewInfo: :class:`tencentcloud.vod.v20180717.models.FileReviewInfo`
         """
         self.BasicInfo = None
         self.MetaData = None
@@ -15085,6 +15756,7 @@ class MediaInfo(AbstractModel):
         self.MiniProgramReviewInfo = None
         self.SubtitleInfo = None
         self.FileId = None
+        self.ReviewInfo = None
 
 
     def _deserialize(self, params):
@@ -15122,6 +15794,9 @@ class MediaInfo(AbstractModel):
             self.SubtitleInfo = MediaSubtitleInfo()
             self.SubtitleInfo._deserialize(params.get("SubtitleInfo"))
         self.FileId = params.get("FileId")
+        if params.get("ReviewInfo") is not None:
+            self.ReviewInfo = FileReviewInfo()
+            self.ReviewInfo._deserialize(params.get("ReviewInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16582,6 +17257,9 @@ class MediaVideoStreamItem(AbstractModel):
         :type Fps: int
         :param CodecTag: 编码标签，仅当 Codec 为 hevc 时有效。
         :type CodecTag: str
+        :param DynamicRangeInfo: 画面动态范围信息。
+<li><font color=red>注意</font>：在 2023-01-10T00:00:00Z 后处理的转码文件，此字段有效。</li>
+        :type DynamicRangeInfo: :class:`tencentcloud.vod.v20180717.models.DynamicRangeInfo`
         """
         self.Bitrate = None
         self.Height = None
@@ -16589,6 +17267,7 @@ class MediaVideoStreamItem(AbstractModel):
         self.Codec = None
         self.Fps = None
         self.CodecTag = None
+        self.DynamicRangeInfo = None
 
 
     def _deserialize(self, params):
@@ -16598,6 +17277,9 @@ class MediaVideoStreamItem(AbstractModel):
         self.Codec = params.get("Codec")
         self.Fps = params.get("Fps")
         self.CodecTag = params.get("CodecTag")
+        if params.get("DynamicRangeInfo") is not None:
+            self.DynamicRangeInfo = DynamicRangeInfo()
+            self.DynamicRangeInfo._deserialize(params.get("DynamicRangeInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17670,6 +18352,139 @@ class ModifyPersonSampleResponse(AbstractModel):
                 obj = AiSampleFailFaceInfo()
                 obj._deserialize(item)
                 self.FailFaceInfoSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyReviewTemplateRequest(AbstractModel):
+    """ModifyReviewTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 审核模板唯一标识。
+        :type Definition: int
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param Name: 审核模板名称，长度限制：64 个字符。
+        :type Name: str
+        :param Comment: 审核模板描述信息，长度限制：256 个字符。
+        :type Comment: str
+        :param Labels: 需要返回的违规标签列表，可选值为：
+<li>Porn：色情；</li>
+<li>Terror：暴力；</li>
+<li>Polity：不适宜的信息；</li>
+<li>Illegal：违法；</li>
+<li>Abuse：谩骂；</li>
+<li>Ad：广告；</li>
+<li>Moan：娇喘。</li>
+
+注意：不填表示不更新。
+        :type Labels: list of str
+        """
+        self.Definition = None
+        self.SubAppId = None
+        self.Name = None
+        self.Comment = None
+        self.Labels = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.SubAppId = params.get("SubAppId")
+        self.Name = params.get("Name")
+        self.Comment = params.get("Comment")
+        self.Labels = params.get("Labels")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyReviewTemplateResponse(AbstractModel):
+    """ModifyReviewTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyRoundPlayRequest(AbstractModel):
+    """ModifyRoundPlay请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoundPlayId: 轮播播单唯一标识。
+        :type RoundPlayId: str
+        :param SubAppId: <b>点播 [子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
+        :param StartTime: 启播时间，格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#52)。
+        :type StartTime: str
+        :param RoundPlaylist: 轮播列表。
+<li>数组长度限制：100。</li>
+        :type RoundPlaylist: list of RoundPlayListItemInfo
+        :param Name: 轮播播单名称，长度限制：64 个字符。
+        :type Name: str
+        :param Desc: 轮播播单描述信息，长度限制：256 个字符。
+        :type Desc: str
+        """
+        self.RoundPlayId = None
+        self.SubAppId = None
+        self.StartTime = None
+        self.RoundPlaylist = None
+        self.Name = None
+        self.Desc = None
+
+
+    def _deserialize(self, params):
+        self.RoundPlayId = params.get("RoundPlayId")
+        self.SubAppId = params.get("SubAppId")
+        self.StartTime = params.get("StartTime")
+        if params.get("RoundPlaylist") is not None:
+            self.RoundPlaylist = []
+            for item in params.get("RoundPlaylist"):
+                obj = RoundPlayListItemInfo()
+                obj._deserialize(item)
+                self.RoundPlaylist.append(obj)
+        self.Name = params.get("Name")
+        self.Desc = params.get("Desc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyRoundPlayResponse(AbstractModel):
+    """ModifyRoundPlay返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -19660,6 +20475,37 @@ class PornOcrReviewTemplateInfoForUpdate(AbstractModel):
         
 
 
+class ProcedureReviewAudioVideoTaskInput(AbstractModel):
+    """任务流模板音视频审核输入参数类型。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 审核模板。
+        :type Definition: int
+        :param ReviewContents: 审核的内容，可选值：
+<li>Media：原始音视频；</li>
+<li>Cover：封面。</li>
+不填或填空数组时，默认为审核 Media。
+        :type ReviewContents: list of str
+        """
+        self.Definition = None
+        self.ReviewContents = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.ReviewContents = params.get("ReviewContents")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ProcedureTask(AbstractModel):
     """音视频处理任务信息
 
@@ -19806,7 +20652,8 @@ class ProcedureTemplate(AbstractModel):
         :param MediaProcessTask: 视频处理类型任务参数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MediaProcessTask: :class:`tencentcloud.vod.v20180717.models.MediaProcessTaskInput`
-        :param AiContentReviewTask: AI 智能审核类型任务参数。
+        :param AiContentReviewTask: AI 智能审核类型任务参数 \*。
+<font color=red>\*：该参数用于发起旧版审核，不建议使用。推荐使用 ReviewAudioVideoTask 参数发起审核。</font> 
 注意：此字段可能返回 null，表示取不到有效值。
         :type AiContentReviewTask: :class:`tencentcloud.vod.v20180717.models.AiContentReviewTaskInput`
         :param AiAnalysisTask: AI 智能内容分析类型任务参数。
@@ -19818,6 +20665,9 @@ class ProcedureTemplate(AbstractModel):
         :param MiniProgramPublishTask: 微信小程序发布任务参数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MiniProgramPublishTask: :class:`tencentcloud.vod.v20180717.models.WechatMiniProgramPublishTaskInput`
+        :param ReviewAudioVideoTask: 音视频审核类型任务参数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReviewAudioVideoTask: :class:`tencentcloud.vod.v20180717.models.ProcedureReviewAudioVideoTaskInput`
         :param CreateTime: 模板创建时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
         :type CreateTime: str
         :param UpdateTime: 模板最后修改时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
@@ -19831,6 +20681,7 @@ class ProcedureTemplate(AbstractModel):
         self.AiAnalysisTask = None
         self.AiRecognitionTask = None
         self.MiniProgramPublishTask = None
+        self.ReviewAudioVideoTask = None
         self.CreateTime = None
         self.UpdateTime = None
 
@@ -19854,6 +20705,9 @@ class ProcedureTemplate(AbstractModel):
         if params.get("MiniProgramPublishTask") is not None:
             self.MiniProgramPublishTask = WechatMiniProgramPublishTaskInput()
             self.MiniProgramPublishTask._deserialize(params.get("MiniProgramPublishTask"))
+        if params.get("ReviewAudioVideoTask") is not None:
+            self.ReviewAudioVideoTask = ProcedureReviewAudioVideoTaskInput()
+            self.ReviewAudioVideoTask._deserialize(params.get("ReviewAudioVideoTask"))
         self.CreateTime = params.get("CreateTime")
         self.UpdateTime = params.get("UpdateTime")
         memeber_set = set(params.keys())
@@ -19988,17 +20842,21 @@ class ProcessMediaByProcedureResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 任务 ID。
+        :param TaskId: 任务类型为 Procedure 的任务 ID，当入参 ProcedureName 对应的任务流模板指定了 MediaProcessTask、AiAnalysisTask、AiRecognitionTask 中的一个或多个时发起该任务。
         :type TaskId: str
+        :param ReviewAudioVideoTaskId: 任务类型为 ReviewAudioVideo 的任务 ID，当入参 ProcedureName 对应的任务流模板指定了 ReviewAudioVideoTask 时，发起该任务。
+        :type ReviewAudioVideoTaskId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.TaskId = None
+        self.ReviewAudioVideoTaskId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.TaskId = params.get("TaskId")
+        self.ReviewAudioVideoTaskId = params.get("ReviewAudioVideoTaskId")
         self.RequestId = params.get("RequestId")
 
 
@@ -20106,7 +20964,8 @@ class ProcessMediaRequest(AbstractModel):
         :type SubAppId: int
         :param MediaProcessTask: 视频处理类型任务参数。
         :type MediaProcessTask: :class:`tencentcloud.vod.v20180717.models.MediaProcessTaskInput`
-        :param AiContentReviewTask: 音视频内容审核类型任务参数。
+        :param AiContentReviewTask: 音视频内容审核类型任务参数 \*。
+<font color=red>\* 不建议使用</font>，推荐使用 [音视频审核(ReviewAudioVideo)](https://cloud.tencent.com/document/api/266/80283) 或 [图片审核(ReviewImage)](https://cloud.tencent.com/document/api/266/73217)。
         :type AiContentReviewTask: :class:`tencentcloud.vod.v20180717.models.AiContentReviewTaskInput`
         :param AiAnalysisTask: 音视频内容分析类型任务参数。
         :type AiAnalysisTask: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskInput`
@@ -20661,13 +21520,13 @@ class PullUploadResponse(AbstractModel):
 
 
 class PullUploadTask(AbstractModel):
-    """视频转拉任务信息
+    """拉取上传任务信息
 
     """
 
     def __init__(self):
         r"""
-        :param TaskId: 转拉上传任务 ID。
+        :param TaskId: 拉取上传任务 ID。
         :type TaskId: str
         :param Status: 任务流状态，取值：
 <li>PROCESSING：处理中；</li>
@@ -20680,22 +21539,24 @@ class PullUploadTask(AbstractModel):
         :type ErrCode: int
         :param Message: 错误信息。
         :type Message: str
-        :param FileId: 转拉上传完成后生成的视频 ID。
+        :param FileId: 拉取上传完成后生成的视频 ID。
         :type FileId: str
-        :param MediaBasicInfo: 转拉完成后生成的媒体文件基础信息。
+        :param MediaBasicInfo: 拉取上传完成后生成的媒体文件基础信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MediaBasicInfo: :class:`tencentcloud.vod.v20180717.models.MediaBasicInfo`
         :param MetaData: 输出视频的元信息。
         :type MetaData: :class:`tencentcloud.vod.v20180717.models.MediaMetaData`
-        :param FileUrl: 转拉上传完成后生成的播放地址。
+        :param FileUrl: 拉取上传完成后生成的播放地址。
         :type FileUrl: str
-        :param ProcedureTaskId: 若转拉上传时指定了视频处理流程，则该参数为流程任务 ID。
+        :param ProcedureTaskId: 任务类型为 Procedure 的任务 ID。若[拉取上传](https://cloud.tencent.com/document/api/266/35575)时指定了媒体后续任务操作(Procedure)，当该任务流模板指定了 MediaProcessTask、AiAnalysisTask、AiRecognitionTask 中的一个或多个时发起该任务。
         :type ProcedureTaskId: str
-        :param SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长 1000 个字符。
+        :param ReviewAudioVideoTaskId: 任务类型为 ReviewAudioVideo 的任务 ID。若[拉取上传](https://cloud.tencent.com/document/api/266/35575)时指定了媒体后续任务操作(Procedure)，当该任务流模板指定了 ReviewAudioVideoTask 时，发起该任务。
+        :type ReviewAudioVideoTaskId: str
+        :param SessionContext: 来源上下文，用于透传用户请求信息，[URL 拉取视频上传完成](https://cloud.tencent.com/document/product/266/7831)将返回该字段值，最长 1000 个字符。
         :type SessionContext: str
         :param SessionId: 用于去重的识别码，如果七天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
         :type SessionId: str
-        :param Progress: 转拉任务进度，取值范围 [0-100] 。
+        :param Progress: 拉取上传进度，取值范围 [0-100] 。
         :type Progress: int
         """
         self.TaskId = None
@@ -20707,6 +21568,7 @@ class PullUploadTask(AbstractModel):
         self.MetaData = None
         self.FileUrl = None
         self.ProcedureTaskId = None
+        self.ReviewAudioVideoTaskId = None
         self.SessionContext = None
         self.SessionId = None
         self.Progress = None
@@ -20726,6 +21588,7 @@ class PullUploadTask(AbstractModel):
             self.MetaData._deserialize(params.get("MetaData"))
         self.FileUrl = params.get("FileUrl")
         self.ProcedureTaskId = params.get("ProcedureTaskId")
+        self.ReviewAudioVideoTaskId = params.get("ReviewAudioVideoTaskId")
         self.SessionContext = params.get("SessionContext")
         self.SessionId = params.get("SessionId")
         self.Progress = params.get("Progress")
@@ -20781,6 +21644,448 @@ class PushUrlCacheResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class RebuildMediaTargetAudioStream(AbstractModel):
+    """画质重生输出的音频信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Codec: 音频流的编码格式。
+当外层参数 Container 为 mp3 时，可选值为：
+<li>libmp3lame。</li>
+当外层参数 Container 为 ogg 或 flac 时，可选值为：
+<li>flac。</li>
+当外层参数 Container 为 m4a 时，可选值为：
+<li>libfdk_aac；</li>
+<li>libmp3lame；</li>
+<li>ac3。</li>
+当外层参数 Container 为 mp4 或 flv 时，可选值为：
+<li>libfdk_aac：更适合 mp4；</li>
+<li>libmp3lame：更适合 flv；</li>
+<li>mp2。</li>
+当外层参数 Container 为 hls 时，可选值为：
+<li>libfdk_aac。</li>
+        :type Codec: str
+        :param Bitrate: 音频流的码率，取值范围：0 和 [26, 256]，单位：kbps。
+当取值为 0，表示音频码率和原始音频保持一致。
+        :type Bitrate: int
+        :param SampleRate: 音频流的采样率，可选值：
+<li>32000</li>
+<li>44100</li>
+<li>48000</li>
+
+单位：Hz。
+        :type SampleRate: int
+        :param AudioChannel: 音频通道方式，可选值：
+<li>1：单通道</li>
+<li>2：双通道</li>
+<li>6：立体声</li>
+
+当媒体的封装格式是音频格式时（flac，ogg，mp3，m4a）时，声道数不允许设为立体声。
+默认值：2。
+        :type AudioChannel: int
+        """
+        self.Codec = None
+        self.Bitrate = None
+        self.SampleRate = None
+        self.AudioChannel = None
+
+
+    def _deserialize(self, params):
+        self.Codec = params.get("Codec")
+        self.Bitrate = params.get("Bitrate")
+        self.SampleRate = params.get("SampleRate")
+        self.AudioChannel = params.get("AudioChannel")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RebuildMediaTargetInfo(AbstractModel):
+    """画质重生目标参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MediaName: 输出文件名，最长 64 个字符。缺省由系统指定生成文件名。
+        :type MediaName: str
+        :param Description: 描述信息，最长 128 个字符。缺省描述信息为空。
+        :type Description: str
+        :param ClassId: 分类ID，用于对媒体进行分类管理，可通过 [创建分类](/document/product/266/7812) 接口，创建分类，获得分类 ID。
+<li>默认值：0，表示其他分类。</li>
+        :type ClassId: int
+        :param ExpireTime: 输出文件的过期时间，超过该时间文件将被删除，默认为永久不过期，格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type ExpireTime: str
+        :param Container: 输出文件封装格式，可选值：mp4、flv、hls。默认mp4。
+        :type Container: str
+        :param VideoStream: 输出的视频信息。
+        :type VideoStream: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetVideoStream`
+        :param AudioStream: 输出的音频信息。
+        :type AudioStream: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetAudioStream`
+        :param RemoveVideo: 是否去除视频数据，可选值：
+<li>0：保留</li>
+<li>1：去除</li>
+
+默认值：0。
+        :type RemoveVideo: int
+        :param RemoveAudio: 是否去除音频数据，可选值：
+<li>0：保留</li>
+<li>1：去除</li>
+
+默认值：0。
+        :type RemoveAudio: int
+        """
+        self.MediaName = None
+        self.Description = None
+        self.ClassId = None
+        self.ExpireTime = None
+        self.Container = None
+        self.VideoStream = None
+        self.AudioStream = None
+        self.RemoveVideo = None
+        self.RemoveAudio = None
+
+
+    def _deserialize(self, params):
+        self.MediaName = params.get("MediaName")
+        self.Description = params.get("Description")
+        self.ClassId = params.get("ClassId")
+        self.ExpireTime = params.get("ExpireTime")
+        self.Container = params.get("Container")
+        if params.get("VideoStream") is not None:
+            self.VideoStream = RebuildMediaTargetVideoStream()
+            self.VideoStream._deserialize(params.get("VideoStream"))
+        if params.get("AudioStream") is not None:
+            self.AudioStream = RebuildMediaTargetAudioStream()
+            self.AudioStream._deserialize(params.get("AudioStream"))
+        self.RemoveVideo = params.get("RemoveVideo")
+        self.RemoveAudio = params.get("RemoveAudio")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RebuildMediaTargetVideoStream(AbstractModel):
+    """画质重生输出的视频信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Codec: 视频流的编码格式，可选值：
+<li>libx264：H.264 编码；</li>
+<li>libx265：H.265 编码；</li>
+<li>av1：AOMedia Video 1 编码。</li>
+默认视频流的编码格式为 H.264 编码。
+        :type Codec: str
+        :param Bitrate: 视频流的码率，取值范围：0 和 [128, 35000]，单位：kbps。
+当取值为 0，表示视频码率和原始视频保持一致。
+        :type Bitrate: int
+        :param Fps: 视频帧率，取值范围：[0, 100]，单位：Hz。 当取值为 0，表示帧率和原始视频保持一致。
+        :type Fps: int
+        :param ResolutionAdaptive: 分辨率自适应，可选值：
+<li>open：开启，此时，Width 代表视频的长边，Height 表示视频的短边；</li>
+<li>close：关闭，此时，Width 代表视频的宽度，Height 表示视频的高度。</li>
+
+默认值：open。
+        :type ResolutionAdaptive: str
+        :param Width: 视频流宽度（或长边）的最大值，取值范围：0 和 [128, 8192]，单位：px。
+<li>当 Width、Height 均为 0，则分辨率同源；</li>
+<li>当 Width 为 0，Height 非 0，则 Width 按比例缩放；</li>
+<li>当 Width 非 0，Height 为 0，则 Height 按比例缩放；</li>
+<li>当 Width、Height 均非 0，则分辨率按用户指定。</li>
+
+默认值：0。
+        :type Width: int
+        :param Height: 视频流高度（或短边）的最大值，取值范围：0 和 [128, 8192]，单位：px。
+<li>当 Width、Height 均为 0，则分辨率同源；</li>
+<li>当 Width 为 0，Height 非 0，则 Width 按比例缩放；</li>
+<li>当 Width 非 0，Height 为 0，则 Height 按比例缩放；</li>
+<li>当 Width、Height 均非 0，则分辨率按用户指定。</li>
+
+默认值：0。
+        :type Height: int
+        :param FillType: 填充方式，当视频流配置宽高参数与原始视频的宽高比不一致时，对转码的处理方式，即为“填充”。可选填充方式：
+<li>stretch：拉伸，对每一帧进行拉伸，填满整个画面，可能导致转码后的视频被“压扁“或者“拉长“；</li>
+<li>black：留黑，保持视频宽高比不变，边缘剩余部分使用黑色填充。</li>
+
+默认值：stretch 。
+        :type FillType: str
+        :param Gop: 关键帧 I 帧之间的间隔，取值范围：0 和 [1, 100000]，单位：帧数。
+当填 0 或不填时，系统将自动设置 gop 长度。
+        :type Gop: int
+        """
+        self.Codec = None
+        self.Bitrate = None
+        self.Fps = None
+        self.ResolutionAdaptive = None
+        self.Width = None
+        self.Height = None
+        self.FillType = None
+        self.Gop = None
+
+
+    def _deserialize(self, params):
+        self.Codec = params.get("Codec")
+        self.Bitrate = params.get("Bitrate")
+        self.Fps = params.get("Fps")
+        self.ResolutionAdaptive = params.get("ResolutionAdaptive")
+        self.Width = params.get("Width")
+        self.Height = params.get("Height")
+        self.FillType = params.get("FillType")
+        self.Gop = params.get("Gop")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RebuildMediaTask(AbstractModel):
+    """音画质重生任务
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务 ID。
+        :type TaskId: str
+        :param Status: 任务流状态，取值：
+<li>PROCESSING：处理中；</li>
+<li>FINISH：已完成。</li>
+        :type Status: str
+        :param ErrCode: 错误码，0 表示成功，其他值表示失败：
+<li>40000：输入参数不合法，请检查输入参数；</li>
+<li>60000：源文件错误（如视频数据损坏），请确认源文件是否正常；</li>
+<li>70000：内部服务错误，建议重试。</li>
+        :type ErrCode: int
+        :param Message: 错误信息。
+        :type Message: str
+        :param ErrCodeExt: 错误码，空字符串表示成功，其他值表示失败，取值请参考 [视频处理类错误码](https://cloud.tencent.com/document/product/266/50368#.E8.A7.86.E9.A2.91.E5.A4.84.E7.90.86.E7.B1.BB.E9.94.99.E8.AF.AF.E7.A0.81) 列表。
+        :type ErrCodeExt: str
+        :param Progress: 音画质重生任务进度，取值范围 [0-100] 。
+        :type Progress: int
+        :param Input: 音画质重生任务的输入。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Input: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTaskInput`
+        :param Output: 音画质重生任务的输出。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Output: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTaskOutput`
+        :param MetaData: 音画质重生输出视频的元信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MetaData: :class:`tencentcloud.vod.v20180717.models.MediaMetaData`
+        :param SessionId: 用于去重的识别码，如果七天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
+        :type SessionId: str
+        :param SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长 1000 个字符。
+        :type SessionContext: str
+        """
+        self.TaskId = None
+        self.Status = None
+        self.ErrCode = None
+        self.Message = None
+        self.ErrCodeExt = None
+        self.Progress = None
+        self.Input = None
+        self.Output = None
+        self.MetaData = None
+        self.SessionId = None
+        self.SessionContext = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.Status = params.get("Status")
+        self.ErrCode = params.get("ErrCode")
+        self.Message = params.get("Message")
+        self.ErrCodeExt = params.get("ErrCodeExt")
+        self.Progress = params.get("Progress")
+        if params.get("Input") is not None:
+            self.Input = RebuildMediaTaskInput()
+            self.Input._deserialize(params.get("Input"))
+        if params.get("Output") is not None:
+            self.Output = RebuildMediaTaskOutput()
+            self.Output._deserialize(params.get("Output"))
+        if params.get("MetaData") is not None:
+            self.MetaData = MediaMetaData()
+            self.MetaData._deserialize(params.get("MetaData"))
+        self.SessionId = params.get("SessionId")
+        self.SessionContext = params.get("SessionContext")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RebuildMediaTaskInput(AbstractModel):
+    """音画质重生任务的输入。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileId: 媒体文件 ID。
+        :type FileId: str
+        :param StartTimeOffset: 起始偏移时间，单位：秒，不填表示从视频开始截取。
+        :type StartTimeOffset: float
+        :param EndTimeOffset: 结束偏移时间，单位：秒，不填表示截取到视频末尾。
+        :type EndTimeOffset: float
+        :param RepairInfo: 画质修复控制参数。
+        :type RepairInfo: :class:`tencentcloud.vod.v20180717.models.RepairInfo`
+        :param VideoFrameInterpolationInfo: 智能插帧控制参数。
+        :type VideoFrameInterpolationInfo: :class:`tencentcloud.vod.v20180717.models.VideoFrameInterpolationInfo`
+        :param SuperResolutionInfo: 画面超分控制参数。
+        :type SuperResolutionInfo: :class:`tencentcloud.vod.v20180717.models.SuperResolutionInfo`
+        :param HDRInfo: 高动态范围类型控制参数。
+        :type HDRInfo: :class:`tencentcloud.vod.v20180717.models.HDRInfo`
+        :param VideoDenoiseInfo: 视频降噪控制参数。
+        :type VideoDenoiseInfo: :class:`tencentcloud.vod.v20180717.models.VideoDenoiseInfo`
+        :param AudioDenoiseInfo: 音频降噪控制参数。
+        :type AudioDenoiseInfo: :class:`tencentcloud.vod.v20180717.models.AudioDenoiseInfo`
+        :param ColorInfo: 色彩增强控制参数。
+        :type ColorInfo: :class:`tencentcloud.vod.v20180717.models.ColorEnhanceInfo`
+        :param SharpInfo: 细节增强控制参数。
+        :type SharpInfo: :class:`tencentcloud.vod.v20180717.models.SharpEnhanceInfo`
+        :param FaceInfo: 人脸增强控制参数。
+        :type FaceInfo: :class:`tencentcloud.vod.v20180717.models.FaceEnhanceInfo`
+        :param LowLightInfo: 低光照控制参数。
+        :type LowLightInfo: :class:`tencentcloud.vod.v20180717.models.LowLightEnhanceInfo`
+        :param ScratchRepairInfo: 去划痕控制参数。
+        :type ScratchRepairInfo: :class:`tencentcloud.vod.v20180717.models.ScratchRepairInfo`
+        :param ArtifactRepairInfo: 去伪影（毛刺）控制参数。
+        :type ArtifactRepairInfo: :class:`tencentcloud.vod.v20180717.models.ArtifactRepairInfo`
+        :param TargetInfo: 音画质重生输出目标参数。
+        :type TargetInfo: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetInfo`
+        """
+        self.FileId = None
+        self.StartTimeOffset = None
+        self.EndTimeOffset = None
+        self.RepairInfo = None
+        self.VideoFrameInterpolationInfo = None
+        self.SuperResolutionInfo = None
+        self.HDRInfo = None
+        self.VideoDenoiseInfo = None
+        self.AudioDenoiseInfo = None
+        self.ColorInfo = None
+        self.SharpInfo = None
+        self.FaceInfo = None
+        self.LowLightInfo = None
+        self.ScratchRepairInfo = None
+        self.ArtifactRepairInfo = None
+        self.TargetInfo = None
+
+
+    def _deserialize(self, params):
+        self.FileId = params.get("FileId")
+        self.StartTimeOffset = params.get("StartTimeOffset")
+        self.EndTimeOffset = params.get("EndTimeOffset")
+        if params.get("RepairInfo") is not None:
+            self.RepairInfo = RepairInfo()
+            self.RepairInfo._deserialize(params.get("RepairInfo"))
+        if params.get("VideoFrameInterpolationInfo") is not None:
+            self.VideoFrameInterpolationInfo = VideoFrameInterpolationInfo()
+            self.VideoFrameInterpolationInfo._deserialize(params.get("VideoFrameInterpolationInfo"))
+        if params.get("SuperResolutionInfo") is not None:
+            self.SuperResolutionInfo = SuperResolutionInfo()
+            self.SuperResolutionInfo._deserialize(params.get("SuperResolutionInfo"))
+        if params.get("HDRInfo") is not None:
+            self.HDRInfo = HDRInfo()
+            self.HDRInfo._deserialize(params.get("HDRInfo"))
+        if params.get("VideoDenoiseInfo") is not None:
+            self.VideoDenoiseInfo = VideoDenoiseInfo()
+            self.VideoDenoiseInfo._deserialize(params.get("VideoDenoiseInfo"))
+        if params.get("AudioDenoiseInfo") is not None:
+            self.AudioDenoiseInfo = AudioDenoiseInfo()
+            self.AudioDenoiseInfo._deserialize(params.get("AudioDenoiseInfo"))
+        if params.get("ColorInfo") is not None:
+            self.ColorInfo = ColorEnhanceInfo()
+            self.ColorInfo._deserialize(params.get("ColorInfo"))
+        if params.get("SharpInfo") is not None:
+            self.SharpInfo = SharpEnhanceInfo()
+            self.SharpInfo._deserialize(params.get("SharpInfo"))
+        if params.get("FaceInfo") is not None:
+            self.FaceInfo = FaceEnhanceInfo()
+            self.FaceInfo._deserialize(params.get("FaceInfo"))
+        if params.get("LowLightInfo") is not None:
+            self.LowLightInfo = LowLightEnhanceInfo()
+            self.LowLightInfo._deserialize(params.get("LowLightInfo"))
+        if params.get("ScratchRepairInfo") is not None:
+            self.ScratchRepairInfo = ScratchRepairInfo()
+            self.ScratchRepairInfo._deserialize(params.get("ScratchRepairInfo"))
+        if params.get("ArtifactRepairInfo") is not None:
+            self.ArtifactRepairInfo = ArtifactRepairInfo()
+            self.ArtifactRepairInfo._deserialize(params.get("ArtifactRepairInfo"))
+        if params.get("TargetInfo") is not None:
+            self.TargetInfo = RebuildMediaTargetInfo()
+            self.TargetInfo._deserialize(params.get("TargetInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RebuildMediaTaskOutput(AbstractModel):
+    """音画质重生任务输出
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileType: 文件类型，例如 mp4、flv 等。
+        :type FileType: str
+        :param FileUrl: 媒体文件播放地址。
+        :type FileUrl: str
+        :param FileId: 媒体文件 ID。
+        :type FileId: str
+        :param MediaName: 输出文件名，最长 64 个字符。缺省由系统指定生成文件名。
+        :type MediaName: str
+        :param ClassId: 分类ID，用于对媒体进行分类管理，可通过 [创建分类](/document/product/266/7812) 接口，创建分类，获得分类 ID。
+<li>默认值：0，表示其他分类。</li>
+        :type ClassId: int
+        :param ExpireTime: 输出文件的过期时间，超过该时间文件将被删除，默认为永久不过期，格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type ExpireTime: str
+        """
+        self.FileType = None
+        self.FileUrl = None
+        self.FileId = None
+        self.MediaName = None
+        self.ClassId = None
+        self.ExpireTime = None
+
+
+    def _deserialize(self, params):
+        self.FileType = params.get("FileType")
+        self.FileUrl = params.get("FileUrl")
+        self.FileId = params.get("FileId")
+        self.MediaName = params.get("MediaName")
+        self.ClassId = params.get("ClassId")
+        self.ExpireTime = params.get("ExpireTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class ReduceMediaBitrateAdaptiveDynamicStreamingResult(AbstractModel):
@@ -21275,6 +22580,40 @@ class RemoveWatermarkTask(AbstractModel):
         
 
 
+class RepairInfo(AbstractModel):
+    """画质修复控制参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 画质修复控制开关，可选值：
+<li>ON：开启画质修复；</li>
+<li>OFF：关闭画质修复。</li>
+        :type Switch: str
+        :param Type: 画质修复类型，仅当画质修复控制开关为 ON 时有效，可选值：
+<li>weak：轻画质修复；</li>
+<li>normal：正常画质修复；</li>
+<li>strong：强画质修复。</li>
+默认值：weak。
+        :type Type: str
+        """
+        self.Switch = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ResetProcedureTemplateRequest(AbstractModel):
     """ResetProcedureTemplate请求参数结构体
 
@@ -21284,30 +22623,35 @@ class ResetProcedureTemplateRequest(AbstractModel):
         r"""
         :param Name: 任务流名字
         :type Name: str
+        :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
         :param Comment: 模板描述信息，长度限制：256 个字符。
         :type Comment: str
         :param MediaProcessTask: 视频处理类型任务参数。
         :type MediaProcessTask: :class:`tencentcloud.vod.v20180717.models.MediaProcessTaskInput`
-        :param AiContentReviewTask: AI 智能内容审核类型任务参数。
+        :param AiContentReviewTask: AI 智能内容审核类型任务参数 \*。
+<font color=red>\*：该参数用于发起旧版审核，不建议使用。推荐使用 ReviewAudioVideoTask 参数发起审核。</font> 
         :type AiContentReviewTask: :class:`tencentcloud.vod.v20180717.models.AiContentReviewTaskInput`
         :param AiAnalysisTask: AI 智能内容分析类型任务参数。
         :type AiAnalysisTask: :class:`tencentcloud.vod.v20180717.models.AiAnalysisTaskInput`
         :param AiRecognitionTask: AI 内容识别类型任务参数。
         :type AiRecognitionTask: :class:`tencentcloud.vod.v20180717.models.AiRecognitionTaskInput`
-        :param SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
-        :type SubAppId: int
+        :param ReviewAudioVideoTask: 音视频审核类型任务参数。
+        :type ReviewAudioVideoTask: :class:`tencentcloud.vod.v20180717.models.ProcedureReviewAudioVideoTaskInput`
         """
         self.Name = None
+        self.SubAppId = None
         self.Comment = None
         self.MediaProcessTask = None
         self.AiContentReviewTask = None
         self.AiAnalysisTask = None
         self.AiRecognitionTask = None
-        self.SubAppId = None
+        self.ReviewAudioVideoTask = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
+        self.SubAppId = params.get("SubAppId")
         self.Comment = params.get("Comment")
         if params.get("MediaProcessTask") is not None:
             self.MediaProcessTask = MediaProcessTaskInput()
@@ -21321,7 +22665,9 @@ class ResetProcedureTemplateRequest(AbstractModel):
         if params.get("AiRecognitionTask") is not None:
             self.AiRecognitionTask = AiRecognitionTaskInput()
             self.AiRecognitionTask._deserialize(params.get("AiRecognitionTask"))
-        self.SubAppId = params.get("SubAppId")
+        if params.get("ReviewAudioVideoTask") is not None:
+            self.ReviewAudioVideoTask = ProcedureReviewAudioVideoTaskInput()
+            self.ReviewAudioVideoTask._deserialize(params.get("ReviewAudioVideoTask"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21525,8 +22871,13 @@ class ReviewAudioVideoRequest(AbstractModel):
         :type FileId: str
         :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
-        :param Definition: 音视频审核模板 ID，默认值为 10。取值范围：
-<li>10：预置模板，支持检测的违规标签包括色情（Porn）、暴恐（Terror）和不适宜的信息（Polity）。</li>
+        :param ReviewContents: 审核的内容，可选值有：
+<li>Media：原始音视频；</li>
+<li>Cover：封面。</li>
+不填或填空数组时，默认为审核 Media。
+        :type ReviewContents: list of str
+        :param Definition: 审核模板 ID，默认值为 10。取值范围：
+<li>10：预置模板，支持检测的违规标签包括色情（Porn）、暴力（Terror）和不适宜的信息（Polity）。</li>
         :type Definition: int
         :param TasksPriority: 任务流的优先级，数值越大优先级越高，取值范围是 -10 到 10，不填代表 0。
         :type TasksPriority: int
@@ -21539,6 +22890,7 @@ class ReviewAudioVideoRequest(AbstractModel):
         """
         self.FileId = None
         self.SubAppId = None
+        self.ReviewContents = None
         self.Definition = None
         self.TasksPriority = None
         self.SessionContext = None
@@ -21549,6 +22901,7 @@ class ReviewAudioVideoRequest(AbstractModel):
     def _deserialize(self, params):
         self.FileId = params.get("FileId")
         self.SubAppId = params.get("SubAppId")
+        self.ReviewContents = params.get("ReviewContents")
         self.Definition = params.get("Definition")
         self.TasksPriority = params.get("TasksPriority")
         self.SessionContext = params.get("SessionContext")
@@ -21603,11 +22956,10 @@ class ReviewAudioVideoSegmentItem(AbstractModel):
         :type Suggestion: str
         :param Label: 嫌疑片段最可能的违规的标签，取值范围：
 <li>Porn：色情；</li>
-<li>Terror：暴恐；</li>
+<li>Terror：暴力；</li>
 <li>Polity：不适宜的信息；</li>
 <li>Ad：广告；</li>
 <li>Illegal：违法；</li>
-<li>Religion：宗教；</li>
 <li>Abuse：谩骂；</li>
 <li>Moan：娇喘。</li>
         :type Label: str
@@ -21738,14 +23090,20 @@ class ReviewAudioVideoTaskInput(AbstractModel):
         :type FileId: str
         :param Definition: 音视频审核模板 ID。
         :type Definition: int
+        :param ReviewContents: 审核的内容，可选值：
+<li>Media：原始音视频；</li>
+<li>Cover：封面。</li>
+        :type ReviewContents: list of str
         """
         self.FileId = None
         self.Definition = None
+        self.ReviewContents = None
 
 
     def _deserialize(self, params):
         self.FileId = params.get("FileId")
         self.Definition = params.get("Definition")
+        self.ReviewContents = params.get("ReviewContents")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21769,11 +23127,10 @@ class ReviewAudioVideoTaskOutput(AbstractModel):
         :type Suggestion: str
         :param Label: 当 Suggestion 为 review 或 block 时有效，表示音视频最可能的违规的标签，取值范围：
 <li>Porn：色情；</li>
-<li>Terror：暴恐；</li>
+<li>Terror：暴力；</li>
 <li>Polity：不适宜的信息；</li>
 <li>Ad：广告；</li>
 <li>Illegal：违法；</li>
-<li>Religion：宗教；</li>
 <li>Abuse：谩骂；</li>
 <li>Moan：娇喘。</li>
         :type Label: str
@@ -21790,6 +23147,9 @@ class ReviewAudioVideoTaskOutput(AbstractModel):
         :type SegmentSetFileUrl: str
         :param SegmentSetFileUrlExpireTime: 涉及违规信息的嫌疑的视频片段列表文件 URL 失效时间，使用  [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
         :type SegmentSetFileUrlExpireTime: str
+        :param CoverReviewResult: 封面审核结果。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CoverReviewResult: :class:`tencentcloud.vod.v20180717.models.ReviewImageResult`
         """
         self.Suggestion = None
         self.Label = None
@@ -21797,6 +23157,7 @@ class ReviewAudioVideoTaskOutput(AbstractModel):
         self.SegmentSet = None
         self.SegmentSetFileUrl = None
         self.SegmentSetFileUrlExpireTime = None
+        self.CoverReviewResult = None
 
 
     def _deserialize(self, params):
@@ -21811,6 +23172,9 @@ class ReviewAudioVideoTaskOutput(AbstractModel):
                 self.SegmentSet.append(obj)
         self.SegmentSetFileUrl = params.get("SegmentSetFileUrl")
         self.SegmentSetFileUrlExpireTime = params.get("SegmentSetFileUrlExpireTime")
+        if params.get("CoverReviewResult") is not None:
+            self.CoverReviewResult = ReviewImageResult()
+            self.CoverReviewResult._deserialize(params.get("CoverReviewResult"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21829,7 +23193,8 @@ class ReviewImageRequest(AbstractModel):
         r"""
         :param FileId: 媒体文件 ID，即该文件在云点播上的全局唯一标识符。本接口要求媒体文件必须是图片格式。
         :type FileId: str
-        :param Definition: 图片审核模板 ID，当前固定填 10。
+        :param Definition: 图片审核模板 ID，取值范围：
+<li>10：预置模板，支持检测的违规标签包括色情（Porn）、暴力（Terror）和不适宜的信息（Polity）。</li>
         :type Definition: int
         :param SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
@@ -21860,11 +23225,16 @@ class ReviewImageResponse(AbstractModel):
     def __init__(self):
         r"""
         :param ReviewResultSet: 图片审核任务结果。
+<font color=red>注意：该字段已废弃，建议使用 MediaReviewResult。</font> 
         :type ReviewResultSet: list of ContentReviewResult
+        :param MediaReviewResult: 图片审核任务结果。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MediaReviewResult: :class:`tencentcloud.vod.v20180717.models.ReviewImageResult`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.ReviewResultSet = None
+        self.MediaReviewResult = None
         self.RequestId = None
 
 
@@ -21875,7 +23245,315 @@ class ReviewImageResponse(AbstractModel):
                 obj = ContentReviewResult()
                 obj._deserialize(item)
                 self.ReviewResultSet.append(obj)
+        if params.get("MediaReviewResult") is not None:
+            self.MediaReviewResult = ReviewImageResult()
+            self.MediaReviewResult._deserialize(params.get("MediaReviewResult"))
         self.RequestId = params.get("RequestId")
+
+
+class ReviewImageResult(AbstractModel):
+    """图片审核结果。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Suggestion: 图片审核的结果建议，取值范围：
+<li>pass：建议通过；</li>
+<li>review：建议复审；</li>
+<li>block：建议封禁。</li>
+        :type Suggestion: str
+        :param Label: 当 Suggestion 为 review 或 block 时有效，表示最可能的违规的标签，取值范围：
+<li>Porn：色情；</li>
+<li>Terror：暴力；</li>
+<li>Polity：不适宜的信息；</li>
+<li>Ad：广告；</li>
+<li>Illegal：违法；</li>
+<li>Abuse：谩骂。</li>
+        :type Label: str
+        :param Form: 当 Suggestion 为 review 或 block 时有效，表示最可能的违禁的形式，取值范围：
+<li>Image：画面上的人物或图标；</li>
+<li>OCR：画面上的文字。</li>
+        :type Form: str
+        :param SegmentSet: 有违规信息的嫌疑的视频片段列表。
+<font color=red>注意</font> ：该列表最多仅展示前 10个 元素。如希望获得完整结果，请从 SegmentSetFileUrl 对应的文件中获取。
+        :type SegmentSet: list of ReviewImageSegmentItem
+        :param SegmentSetFileUrl: 涉及违规信息的嫌疑的视频片段列表文件 URL。文件的内容为 JSON，数据结构与 SegmentSet 字段一致。 （文件不会永久存储，到达SegmentSetFileUrlExpireTime 时间点后文件将被删除）。
+        :type SegmentSetFileUrl: str
+        :param SegmentSetFileUrlExpireTime: 涉及违规信息的嫌疑的视频片段列表文件 URL 失效时间，使用  [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type SegmentSetFileUrlExpireTime: str
+        """
+        self.Suggestion = None
+        self.Label = None
+        self.Form = None
+        self.SegmentSet = None
+        self.SegmentSetFileUrl = None
+        self.SegmentSetFileUrlExpireTime = None
+
+
+    def _deserialize(self, params):
+        self.Suggestion = params.get("Suggestion")
+        self.Label = params.get("Label")
+        self.Form = params.get("Form")
+        if params.get("SegmentSet") is not None:
+            self.SegmentSet = []
+            for item in params.get("SegmentSet"):
+                obj = ReviewImageSegmentItem()
+                obj._deserialize(item)
+                self.SegmentSet.append(obj)
+        self.SegmentSetFileUrl = params.get("SegmentSetFileUrl")
+        self.SegmentSetFileUrlExpireTime = params.get("SegmentSetFileUrlExpireTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ReviewImageSegmentItem(AbstractModel):
+    """图片审核片段。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Confidence: 嫌疑片段涉及令人反感的信息的分数。
+        :type Confidence: float
+        :param Suggestion: 嫌疑片段鉴别涉及违规信息的结果建议，取值范围：
+<li>review：疑似违规，建议复审；</li>
+<li>block：确认违规，建议封禁。</li>
+        :type Suggestion: str
+        :param Label: 嫌疑片段最可能的违规的标签，取值范围：
+<li>Porn：色情；</li>
+<li>Terror：暴力；</li>
+<li>Polity：不适宜的信息；</li>
+<li>Ad：广告；</li>
+<li>Illegal：违法；</li>
+<li>Abuse：谩骂。</li>
+        :type Label: str
+        :param SubLabel: 违规子标签。
+        :type SubLabel: str
+        :param Form: 嫌疑片段违禁的形式，取值范围：
+<li>Image：画面上的人物或图标；</li>
+<li>OCR：画面上的文字。</li>
+        :type Form: str
+        :param AreaCoordSet: 嫌疑人物、图标或文字出现的区域坐标 (像素级)，[x1, y1, x2, y2]，即左上角坐标、右下角坐标。
+        :type AreaCoordSet: list of int
+        :param Text: 当 Form 为 OCR 时有效，表示识别出来的 OCR 文本内容。
+        :type Text: str
+        :param KeywordSet: 当 Form 为 OCR 时有效，表示嫌疑片段命中的违规关键词列表。
+        :type KeywordSet: list of str
+        """
+        self.Confidence = None
+        self.Suggestion = None
+        self.Label = None
+        self.SubLabel = None
+        self.Form = None
+        self.AreaCoordSet = None
+        self.Text = None
+        self.KeywordSet = None
+
+
+    def _deserialize(self, params):
+        self.Confidence = params.get("Confidence")
+        self.Suggestion = params.get("Suggestion")
+        self.Label = params.get("Label")
+        self.SubLabel = params.get("SubLabel")
+        self.Form = params.get("Form")
+        self.AreaCoordSet = params.get("AreaCoordSet")
+        self.Text = params.get("Text")
+        self.KeywordSet = params.get("KeywordSet")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ReviewInfo(AbstractModel):
+    """审核信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 审核模板 ID。
+        :type Definition: int
+        :param Suggestion: 审核的结果建议，取值范围：
+<li>pass：建议通过；</li>
+<li>review：建议复审；</li>
+<li>block：建议封禁。</li>
+        :type Suggestion: str
+        :param TypeSet: 审核类型，当 Suggestion 为 review 或 block 时有效，格式为：Form.Label。
+Form 表示违禁的形式，取值范围：
+<li>Image：画面上的人物或图标；</li>
+<li>OCR：画面上的文字；</li>
+<li>ASR：语音中的文字；</li>
+<li>Voice：声音。</li>
+Label 表示违禁的标签，取值范围：
+<li>Porn：色情；</li>
+<li>Terror：暴力；</li>
+<li>Polity：不适宜的信息；</li>
+<li>Ad：广告；</li>
+<li>Illegal：违法；</li>
+<li>Abuse：谩骂；</li>
+<li>Moan：娇喘。</li>
+        :type TypeSet: list of str
+        :param ReviewTime: 审核时间，使用  [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type ReviewTime: str
+        """
+        self.Definition = None
+        self.Suggestion = None
+        self.TypeSet = None
+        self.ReviewTime = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.Suggestion = params.get("Suggestion")
+        self.TypeSet = params.get("TypeSet")
+        self.ReviewTime = params.get("ReviewTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ReviewTemplate(AbstractModel):
+    """审核模版详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Definition: 审核模版唯一标签。
+        :type Definition: int
+        :param Name: 模板名称。
+        :type Name: str
+        :param Comment: 模板描述信息。
+        :type Comment: str
+        :param Type: 模板类型，可选值：
+<li>Preset：系统预置模板；</li>
+<li>Custom：用户自定义模板。</li>
+        :type Type: str
+        :param Labels: 需要返回的违规标签列表。
+        :type Labels: list of str
+        :param CreateTime: 模板创建时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type CreateTime: str
+        :param UpdateTime: 模板最后修改时间，使用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type UpdateTime: str
+        """
+        self.Definition = None
+        self.Name = None
+        self.Comment = None
+        self.Type = None
+        self.Labels = None
+        self.CreateTime = None
+        self.UpdateTime = None
+
+
+    def _deserialize(self, params):
+        self.Definition = params.get("Definition")
+        self.Name = params.get("Name")
+        self.Comment = params.get("Comment")
+        self.Type = params.get("Type")
+        self.Labels = params.get("Labels")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RoundPlayInfo(AbstractModel):
+    """轮播任务信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoundPlayId: 轮播播单标识。
+        :type RoundPlayId: str
+        :param StartTime: 启播时间，格式按照 ISO 8601标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#52)。
+        :type StartTime: str
+        :param RoundPlaylist: 轮播列表。
+        :type RoundPlaylist: list of RoundPlayListItemInfo
+        :param Name: 轮播播单名称，长度限制：64 个字符。
+        :type Name: str
+        :param Desc: 轮播播单描述信息，长度限制：256 个字符。
+        :type Desc: str
+        """
+        self.RoundPlayId = None
+        self.StartTime = None
+        self.RoundPlaylist = None
+        self.Name = None
+        self.Desc = None
+
+
+    def _deserialize(self, params):
+        self.RoundPlayId = params.get("RoundPlayId")
+        self.StartTime = params.get("StartTime")
+        if params.get("RoundPlaylist") is not None:
+            self.RoundPlaylist = []
+            for item in params.get("RoundPlaylist"):
+                obj = RoundPlayListItemInfo()
+                obj._deserialize(item)
+                self.RoundPlaylist.append(obj)
+        self.Name = params.get("Name")
+        self.Desc = params.get("Desc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RoundPlayListItemInfo(AbstractModel):
+    """加权轮播媒体文件信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileId: 媒体文件标识。
+        :type FileId: str
+        :param AudioVideoType: 播放的音视频类型，可选值：
+<li>Transcode：转码输出；转码输出会有多个模版，必须指定 Definition 字段</li>
+<li>Original：原始音视频。</li>
+Type 对应的格式必须为 HLS 格式。
+        :type AudioVideoType: str
+        :param Definition: 指定播放的转码模版，当 AudioVideoType 为 Transcode 时必须指定。
+        :type Definition: int
+        """
+        self.FileId = None
+        self.AudioVideoType = None
+        self.Definition = None
+
+
+    def _deserialize(self, params):
+        self.FileId = params.get("FileId")
+        self.AudioVideoType = params.get("AudioVideoType")
+        self.Definition = params.get("Definition")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class SDMCDrmKeyProviderInfo(AbstractModel):
@@ -22039,6 +23717,43 @@ class SampleSnapshotTemplate(AbstractModel):
         
 
 
+class ScratchRepairInfo(AbstractModel):
+    """去划痕控制信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 去划痕控制开关，可选值：
+<li>ON：开启去划痕；</li>
+<li>OFF：关闭去划痕。</li>
+        :type Switch: str
+        :param Intensity: 去划痕强度，仅当去划痕控制开关为 ON 时有效，取值范围：0.0~1.0。
+默认：0.0。
+        :type Intensity: float
+        :param Type: 去划痕类型，仅当去划痕控制开关为 ON 时有效，可选值：
+<li>normal：正常去划痕；</li>
+默认值：normal。
+        :type Type: str
+        """
+        self.Switch = None
+        self.Intensity = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Intensity = params.get("Intensity")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SearchMediaRequest(AbstractModel):
     """SearchMedia请求参数结构体
 
@@ -22053,11 +23768,11 @@ class SearchMediaRequest(AbstractModel):
 <li>单个 ID 长度限制：40个字符。</li>
         :type FileIds: list of str
         :param Names: 文件名集合，模糊匹配媒体文件的文件名，匹配度越高，排序越优先。
-<li>单个文件名长度限制：40个字符。</li>
+<li>单个文件名长度限制：100个字符。</li>
 <li>数组长度限制：10。</li>
         :type Names: list of str
         :param NamePrefixes: 文件名前缀，前缀匹配媒体文件的文件名。
-<li>单个文件名前缀长度限制：20个字符。</li>
+<li>单个文件名前缀长度限制：100个字符。</li>
 <li>数组长度限制：10。</li>
         :type NamePrefixes: list of str
         :param Descriptions: 文件描述集合，模糊匹配媒体文件的描述，匹配度越高，排序越优先。
@@ -22068,8 +23783,8 @@ class SearchMediaRequest(AbstractModel):
 <li>数组长度限制：10。</li>
         :type ClassIds: list of int
         :param Tags: 标签集合，匹配集合中任意元素。
-<li>单个标签长度限制：16个字符。</li>
-<li>数组长度限制：10。</li>
+<li>单个标签长度限制：32个字符。</li>
+<li>数组长度限制：16。</li>
         :type Tags: list of str
         :param Categories: 文件类型。匹配集合中的任意元素：
 <li>Video: 视频文件</li>
@@ -22353,6 +24068,37 @@ class SetDrmKeyProviderInfoResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class SharpEnhanceInfo(AbstractModel):
+    """细节增强控制
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 细节增强控制开关，可选值：
+<li>ON：开启细节增强；</li>
+<li>OFF：关闭细节增强。</li>
+        :type Switch: str
+        :param Intensity: 细节增强强度，仅当细节增强控制开关为 ON 时有效，取值范围：0.0~1.0。
+默认：0.0。
+        :type Intensity: float
+        """
+        self.Switch = None
+        self.Intensity = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Intensity = params.get("Intensity")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class SimpleAesEdkPair(AbstractModel):
@@ -23017,12 +24763,15 @@ class SplitMediaTaskSegmentInfo(AbstractModel):
         :param Output: 视频拆条任务输出信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Output: :class:`tencentcloud.vod.v20180717.models.TaskOutputMediaInfo`
-        :param ProcedureTaskId: 若发起视频拆条任务时指定了视频处理流程，则该字段为流程任务 ID。
+        :param ProcedureTaskId: 任务类型为 Procedure 的任务 ID。若发起[视频拆条](https://cloud.tencent.com/document/api/266/51098)任务时，视频拆条任务信息列表指定了任务流模板(ProcedureName)，当该任务流模板指定了 MediaProcessTask、AiAnalysisTask、AiRecognitionTask 中的一个或多个时发起该任务。
         :type ProcedureTaskId: str
+        :param ReviewAudioVideoTaskId: 任务类型为 ReviewAudioVideo 的任务 ID。若发起[视频拆条](https://cloud.tencent.com/document/api/266/51098)任务时，视频拆条任务信息列表指定了任务流模板(ProcedureName)，当该任务流模板指定了 ReviewAudioVideoTask 时，发起该任务。
+        :type ReviewAudioVideoTaskId: str
         """
         self.Input = None
         self.Output = None
         self.ProcedureTaskId = None
+        self.ReviewAudioVideoTaskId = None
 
 
     def _deserialize(self, params):
@@ -23033,6 +24782,7 @@ class SplitMediaTaskSegmentInfo(AbstractModel):
             self.Output = TaskOutputMediaInfo()
             self.Output._deserialize(params.get("Output"))
         self.ProcedureTaskId = params.get("ProcedureTaskId")
+        self.ReviewAudioVideoTaskId = params.get("ReviewAudioVideoTaskId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -23329,6 +25079,45 @@ class SubtitleFormatsOperation(AbstractModel):
         
 
 
+class SuperResolutionInfo(AbstractModel):
+    """画面超分控制参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 画面超分控制开关，可选值：
+<li>ON：开启画面超分；</li>
+<li>OFF：关闭画面超分。</li>
+当开启画面超分时，默认2倍超分。
+        :type Switch: str
+        :param Type: 画面超分类型，仅当画面超分控制开关为 ON 时有效，可选值：
+<li>lq：针对低清晰度有较多噪声视频的超分；</li>
+<li>hq：针对高清晰度视频超分。</li>
+默认值：lq。
+        :type Type: str
+        :param Size: 超分倍数，可选值：2。
+默认值：2。
+        :type Size: int
+        """
+        self.Switch = None
+        self.Type = None
+        self.Size = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
+        self.Size = params.get("Size")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SvgWatermarkInput(AbstractModel):
     """SVG水印模板输入参数
 
@@ -23582,9 +25371,10 @@ class TaskSimpleInfo(AbstractModel):
         :type FileId: str
         :param TaskType: 任务类型，取值：
 <li>Procedure：视频处理任务；</li>
-<li>EditMedia：视频编辑任务</li>
-<li>ReduceMediaBitrate：降码率任务</li>
-<li>WechatDistribute：微信发布任务。</li>
+<li>EditMedia：视频编辑任务；</li>
+<li>ReduceMediaBitrate：降码率任务；</li>
+<li>WechatDistribute：微信发布任务；</li>
+<li>ReviewAudioVideo：音视频审核任务。</li>
 兼容 2017 版的任务类型：
 <li>Transcode：视频转码任务；</li>
 <li>SnapshotByTimeOffset：视频截图任务；</li>
@@ -24920,6 +26710,69 @@ class UserDefineOcrTextReviewTemplateInfoForUpdate(AbstractModel):
         self.LabelSet = params.get("LabelSet")
         self.BlockConfidence = params.get("BlockConfidence")
         self.ReviewConfidence = params.get("ReviewConfidence")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VideoDenoiseInfo(AbstractModel):
+    """视频降噪控制参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 视频降噪控制开关，可选值：
+<li>ON：开启视频降噪；</li>
+<li>OFF：关闭视频降噪。</li>
+        :type Switch: str
+        :param Type: 视频降噪类型，仅当视频降噪控制开关为 ON 时有效，可选值：
+<li>weak：轻视频降噪；</li>
+<li>strong：强视频降噪。</li>
+默认值：weak。
+        :type Type: str
+        """
+        self.Switch = None
+        self.Type = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VideoFrameInterpolationInfo(AbstractModel):
+    """智能插帧控制参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 智能插帧控制开关，可选值：
+<li>ON：开启智能插帧；</li>
+<li>OFF：关闭智能插帧。</li>
+        :type Switch: str
+        :param Fps: 智能插帧帧率，帧率范围为 (0, 60]，仅当智能插帧控制开关为 ON 时有效。默认跟源文件帧率一致。
+        :type Fps: int
+        """
+        self.Switch = None
+        self.Fps = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Fps = params.get("Fps")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

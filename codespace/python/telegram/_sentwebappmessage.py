@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram Sent Web App Message."""
+from typing import Optional
 
 from telegram._telegramobject import TelegramObject
 from telegram._utils.types import JSONDict
@@ -46,6 +47,8 @@ class SentWebAppMessage(TelegramObject):
     def __init__(self, inline_message_id: str = None, *, api_kwargs: JSONDict = None):
         super().__init__(api_kwargs=api_kwargs)
         # Optionals
-        self.inline_message_id = inline_message_id
+        self.inline_message_id: Optional[str] = inline_message_id
 
         self._id_attrs = (self.inline_message_id,)
+
+        self._freeze()

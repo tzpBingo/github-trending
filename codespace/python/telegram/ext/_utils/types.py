@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ if TYPE_CHECKING:
     from telegram import Bot
     from telegram.ext import BaseRateLimiter, CallbackContext, JobQueue
 
-CCT = TypeVar("CCT", bound="CallbackContext")
+CCT = TypeVar("CCT", bound="CallbackContext[Any, Any, Any, Any]")
 """An instance of :class:`telegram.ext.CallbackContext` or a custom subclass.
 
 .. versionadded:: 13.6
@@ -113,3 +113,4 @@ RLARGS = TypeVar("RLARGS")
 """Type of the rate limiter arguments.
 
 .. versionadded:: 20.0"""
+FilterDataDict = Dict[str, List[Any]]

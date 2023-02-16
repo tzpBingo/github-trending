@@ -305,6 +305,9 @@ MISSINGPARAMETER_SIGNCOMPONENTS = 'MissingParameter.SignComponents'
 # 缺少模板参数。
 MISSINGPARAMETER_TEMPLATES = 'MissingParameter.Templates'
 
+# 缺少用户ID参数
+MISSINGPARAMETER_USERID = 'MissingParameter.UserId'
+
 # OpenId不存在。
 MISSINGPARAMETER_USEROPENID = 'MissingParameter.UserOpenId'
 
@@ -365,6 +368,12 @@ OPERATIONDENIED_OPERATORHASNOPERMISSION = 'OperationDenied.OperatorHasNoPermissi
 # 超出查询上限。
 OPERATIONDENIED_OUTQUERYLIMIT = 'OperationDenied.OutQueryLimit'
 
+# 当前企业员工没有开通境外签署能力。
+OPERATIONDENIED_OVERSEAABILITYNOTOPEN = 'OperationDenied.OverseaAbilityNotOpen'
+
+# 出证计费额度不足。
+OPERATIONDENIED_PROVENOQUOTA = 'OperationDenied.ProveNoQuota'
+
 # 用户不归属于当前企业，无法操作，请检查后重试。
 OPERATIONDENIED_USERNOTINORGANIZATION = 'OperationDenied.UserNotInOrganization'
 
@@ -395,6 +404,9 @@ RESOURCENOTFOUND_FLOWAPPROVER = 'ResourceNotFound.FlowApprover'
 # 签署人信息不存在，请检查后重试。
 RESOURCENOTFOUND_FLOWAPPROVERS = 'ResourceNotFound.FlowApprovers'
 
+# 合同组不存在。
+RESOURCENOTFOUND_FLOWGROUP = 'ResourceNotFound.FlowGroup'
+
 # 机构不存在。
 RESOURCENOTFOUND_ORGANIZATION = 'ResourceNotFound.Organization'
 
@@ -424,6 +436,9 @@ RESOURCEUNAVAILABLE = 'ResourceUnavailable'
 
 # 未授权操作。
 UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+
+# 请升级到对应版本后即可使用该接口。
+UNAUTHORIZEDOPERATION_NOPERMISSIONFEATURE = 'UnauthorizedOperation.NoPermissionFeature'
 
 # 未授权下载权限。
 UNAUTHORIZEDOPERATION_UNAUTHORIZEDOPERATIONDOWNLOAD = 'UnauthorizedOperation.UnauthorizedOperationDownload'

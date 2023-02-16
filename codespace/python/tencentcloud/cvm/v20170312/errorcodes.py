@@ -473,6 +473,9 @@ INVALIDPARAMETERVALUE_MUSTDHCPENABLEDVPC = 'InvalidParameterValue.MustDhcpEnable
 # 子网不属于该cdc集群。
 INVALIDPARAMETERVALUE_NOTCDCSUBNET = 'InvalidParameterValue.NotCdcSubnet'
 
+# 输入参数值不能为空。
+INVALIDPARAMETERVALUE_NOTEMPTY = 'InvalidParameterValue.NotEmpty'
+
 # 不支持的操作。
 INVALIDPARAMETERVALUE_NOTSUPPORTED = 'InvalidParameterValue.NotSupported'
 
@@ -502,6 +505,9 @@ INVALIDPARAMETERVALUE_TOOLARGE = 'InvalidParameterValue.TooLarge'
 
 # 无效参数值。参数值太长。
 INVALIDPARAMETERVALUE_TOOLONG = 'InvalidParameterValue.TooLong'
+
+# uuid不合要求。
+INVALIDPARAMETERVALUE_UUIDMALFORMED = 'InvalidParameterValue.UuidMalformed'
 
 # VPC ID`xxx`不合要求，请提供规范的Vpc ID， 类似vpc-xxxxxxxx，字母x代表小写字符或者数字。
 INVALIDPARAMETERVALUE_VPCIDMALFORMED = 'InvalidParameterValue.VpcIdMalformed'
@@ -731,6 +737,9 @@ UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 # 指定的实例付费模式或者网络付费模式不支持共享带宽包
 UNSUPPORTEDOPERATION_BANDWIDTHPACKAGEIDNOTSUPPORTED = 'UnsupportedOperation.BandwidthPackageIdNotSupported'
 
+# 实例创建快照的时间距今不到24小时。
+UNSUPPORTEDOPERATION_DISKSNAPCREATETIMETOOOLD = 'UnsupportedOperation.DiskSnapCreateTimeTooOld'
+
 # 所选择的边缘可用区不支持云盘操作。
 UNSUPPORTEDOPERATION_EDGEZONENOTSUPPORTCLOUDDISK = 'UnsupportedOperation.EdgeZoneNotSupportCloudDisk'
 
@@ -842,6 +851,9 @@ UNSUPPORTEDOPERATION_INVALIDIMAGELICENSETYPEFORRESET = 'UnsupportedOperation.Inv
 # 不支持已经设置了释放时间的实例，请在实例详情页撤销实例定时销毁后再试。
 UNSUPPORTEDOPERATION_INVALIDINSTANCENOTSUPPORTEDPROTECTEDINSTANCE = 'UnsupportedOperation.InvalidInstanceNotSupportedProtectedInstance'
 
+# 不支持有swap盘的实例。
+UNSUPPORTEDOPERATION_INVALIDINSTANCEWITHSWAPDISK = 'UnsupportedOperation.InvalidInstanceWithSwapDisk'
+
 # 当前操作只支持国际版用户。
 UNSUPPORTEDOPERATION_INVALIDPERMISSIONNONINTERNATIONALACCOUNT = 'UnsupportedOperation.InvalidPermissionNonInternationalAccount'
 
@@ -869,6 +881,9 @@ UNSUPPORTEDOPERATION_MODIFYENCRYPTIONNOTSUPPORTED = 'UnsupportedOperation.Modify
 # 绑定负载均衡的实例，不支持修改vpc属性。
 UNSUPPORTEDOPERATION_MODIFYVPCWITHCLB = 'UnsupportedOperation.ModifyVPCWithCLB'
 
+# 实例基础网络已互通VPC网络，请自行解除关联，再进行切换VPC。
+UNSUPPORTEDOPERATION_MODIFYVPCWITHCLASSLINK = 'UnsupportedOperation.ModifyVPCWithClassLink'
+
 # 该实例类型不支持竞价计费
 UNSUPPORTEDOPERATION_NOINSTANCETYPESUPPORTSPOT = 'UnsupportedOperation.NoInstanceTypeSupportSpot'
 
@@ -895,6 +910,9 @@ UNSUPPORTEDOPERATION_PUBLICIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.Public
 
 # 当前镜像不支持对该实例的重装操作。
 UNSUPPORTEDOPERATION_RAWLOCALDISKINSREINSTALLTOQCOW2 = 'UnsupportedOperation.RawLocalDiskInsReinstalltoQcow2'
+
+# RedHat镜像不支持导出。
+UNSUPPORTEDOPERATION_REDHATIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.RedHatImageExportUnsupported'
 
 # 实例使用商业操作系统，不支持退还。
 UNSUPPORTEDOPERATION_REDHATINSTANCETERMINATEUNSUPPORTED = 'UnsupportedOperation.RedHatInstanceTerminateUnsupported'

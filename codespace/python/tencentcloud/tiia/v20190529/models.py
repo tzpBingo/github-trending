@@ -457,9 +457,9 @@ class CreateGroupRequest(AbstractModel):
         :type GroupId: str
         :param GroupName: 图库名称描述。
         :type GroupName: str
-        :param MaxCapacity: 图库可容纳的最大图片特征数量，一张图片对应一条图片特征数据。
-达到最大容量后无法在图库中继续创建图片，否则将会报错。
-MaxCapacity不支持修改，请合理评估容量上限，按需创建。
+        :param MaxCapacity: 图片库可容纳的最大图片特征条数，一张图片对应一条图片特征数据，不支持修改。
+单个图片库容量最大可达亿级，达到容量限制后继续创建图片将会报错。
+注意，包月计费下支持绑定的最小库容量为500万。
         :type MaxCapacity: int
         :param Brief: 图库简介。
         :type Brief: str
@@ -2641,4 +2641,57 @@ class SearchImageResponse(AbstractModel):
         if params.get("Object") is not None:
             self.Object = ObjectInfo()
             self.Object._deserialize(params.get("Object"))
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateImageRequest(AbstractModel):
+    """UpdateImage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 图库ID。
+        :type GroupId: str
+        :param EntityId: 物品ID，最多支持64个字符。
+        :type EntityId: str
+        :param PicName: 图片名称，最多支持64个字符。
+        :type PicName: str
+        :param Tags: 新的自定义标签，最多不超过10个，格式为JSON。
+        :type Tags: str
+        """
+        self.GroupId = None
+        self.EntityId = None
+        self.PicName = None
+        self.Tags = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.EntityId = params.get("EntityId")
+        self.PicName = params.get("PicName")
+        self.Tags = params.get("Tags")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateImageResponse(AbstractModel):
+    """UpdateImage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")

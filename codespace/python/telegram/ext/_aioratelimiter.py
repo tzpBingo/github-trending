@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 #  A library that provides a Python interface to the Telegram Bot API
-#  Copyright (C) 2015-2022
+#  Copyright (C) 2015-2023
 #  Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ import asyncio
 import contextlib
 import logging
 import sys
-from typing import Any, AsyncIterator, Callable, Coroutine, Dict, Optional, Union
+from typing import Any, AsyncIterator, Callable, Coroutine, Dict, List, Optional, Union
 
 try:
     from aiolimiter import AsyncLimiter
@@ -90,8 +90,7 @@ class AIORateLimiter(BaseRateLimiter[int]):
         welcome you to implement your own subclass of :class:`~telegram.ext.BaseRateLimiter`.
         Feel free to check out the source code of this class for inspiration.
 
-    .. seealso:: `Avoiding Flood Limits <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Avoiding-flood-limits>`_
+    .. seealso:: :wiki:`Avoiding Flood Limits <Avoiding-flood-limits>`
 
     .. versionadded:: 20.0
 
@@ -106,7 +105,7 @@ class AIORateLimiter(BaseRateLimiter[int]):
             to groups and channels per :paramref:`group_time_period`.  When set to 0, no rate
             limiting will be applied. Defaults to 20.
         group_time_period (:obj:`float`): The time period (in seconds) during which the
-            :paramref:`group_time_period` is enforced.  When set to 0, no rate limiting will be
+            :paramref:`group_max_rate` is enforced.  When set to 0, no rate limiting will be
             applied. Defaults to 60.
         max_retries (:obj:`int`): The maximum number of retries to be made in case of a
             :exc:`~telegram.error.RetryAfter` exception.
@@ -145,14 +144,14 @@ class AIORateLimiter(BaseRateLimiter[int]):
             self._base_limiter = None
 
         if group_max_rate and group_time_period:
-            self._group_max_rate = group_max_rate
-            self._group_time_period = group_time_period
+            self._group_max_rate: float = group_max_rate
+            self._group_time_period: float = group_time_period
         else:
             self._group_max_rate = 0
             self._group_time_period = 0
 
         self._group_limiters: Dict[Union[str, int], AsyncLimiter] = {}
-        self._max_retries = max_retries
+        self._max_retries: int = max_retries
         self._logger = logging.getLogger(__name__)
         self._retry_after_event = asyncio.Event()
         self._retry_after_event.set()
@@ -187,10 +186,10 @@ class AIORateLimiter(BaseRateLimiter[int]):
         self,
         chat: bool,
         group: Union[str, int, bool],
-        callback: Callable[..., Coroutine[Any, Any, Union[bool, JSONDict, None]]],
+        callback: Callable[..., Coroutine[Any, Any, Union[bool, JSONDict, List[JSONDict]]]],
         args: Any,
         kwargs: Dict[str, Any],
-    ) -> Union[bool, JSONDict, None]:
+    ) -> Union[bool, JSONDict, List[JSONDict]]:
         base_context = self._base_limiter if (chat and self._base_limiter) else null_context()
         group_context = (
             self._get_group_limiter(group) if group and self._group_max_rate else null_context()
@@ -206,13 +205,13 @@ class AIORateLimiter(BaseRateLimiter[int]):
     # mypy doesn't understand that the last run of the for loop raises an exception
     async def process_request(  # type: ignore[return]
         self,
-        callback: Callable[..., Coroutine[Any, Any, Union[bool, JSONDict, None]]],
+        callback: Callable[..., Coroutine[Any, Any, Union[bool, JSONDict, List[JSONDict]]]],
         args: Any,
         kwargs: Dict[str, Any],
         endpoint: str,  # skipcq: PYL-W0613
         data: Dict[str, Any],
         rate_limit_args: Optional[int],
-    ) -> Union[bool, JSONDict, None]:
+    ) -> Union[bool, JSONDict, List[JSONDict]]:
         """
         Processes a request by applying rate limiting.
 

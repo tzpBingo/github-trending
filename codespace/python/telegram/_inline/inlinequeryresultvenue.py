@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the classes that represent Telegram InlineQueryResultVenue."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from telegram._inline.inlinekeyboardmarkup import InlineKeyboardMarkup
 from telegram._inline.inlinequeryresult import InlineQueryResult
@@ -58,7 +58,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         reply_markup (:class:`telegram.InlineKeyboardMarkup`, optional): Inline keyboard attached
             to the message.
         input_message_content (:class:`telegram.InputMessageContent`, optional): Content of the
-            message to be sent instead of the location.
+            message to be sent instead of the venue.
         thumb_url (:obj:`str`, optional): Url of the thumbnail for the result.
         thumb_width (:obj:`int`, optional): Thumbnail width.
         thumb_height (:obj:`int`, optional): Thumbnail height.
@@ -74,8 +74,12 @@ class InlineQueryResultVenue(InlineQueryResult):
         address (:obj:`str`): Address of the venue.
         foursquare_id (:obj:`str`): Optional. Foursquare identifier of the venue if known.
         foursquare_type (:obj:`str`): Optional. Foursquare type of the venue, if known.
+            (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or
+            "food/icecream".)
         google_place_id (:obj:`str`): Optional. Google Places identifier of the venue.
-        google_place_type (:obj:`str`): Optional. Google Places type of the venue.
+        google_place_type (:obj:`str`): Optional. Google Places type of the venue. (See
+            `supported types <https://developers.google.com/maps/documentation/places/web-service\
+            /supported_types>`_.)
         reply_markup (:class:`telegram.InlineKeyboardMarkup`): Optional. Inline keyboard attached
             to the message.
         input_message_content (:class:`telegram.InputMessageContent`): Optional. Content of the
@@ -121,21 +125,21 @@ class InlineQueryResultVenue(InlineQueryResult):
         *,
         api_kwargs: JSONDict = None,
     ):
-
         # Required
         super().__init__(InlineQueryResultType.VENUE, id, api_kwargs=api_kwargs)
-        self.latitude = latitude
-        self.longitude = longitude
-        self.title = title
-        self.address = address
+        with self._unfrozen():
+            self.latitude: float = latitude
+            self.longitude: float = longitude
+            self.title: str = title
+            self.address: str = address
 
-        # Optional
-        self.foursquare_id = foursquare_id
-        self.foursquare_type = foursquare_type
-        self.google_place_id = google_place_id
-        self.google_place_type = google_place_type
-        self.reply_markup = reply_markup
-        self.input_message_content = input_message_content
-        self.thumb_url = thumb_url
-        self.thumb_width = thumb_width
-        self.thumb_height = thumb_height
+            # Optional
+            self.foursquare_id: Optional[str] = foursquare_id
+            self.foursquare_type: Optional[str] = foursquare_type
+            self.google_place_id: Optional[str] = google_place_id
+            self.google_place_type: Optional[str] = google_place_type
+            self.reply_markup: Optional[InlineKeyboardMarkup] = reply_markup
+            self.input_message_content: Optional[InputMessageContent] = input_message_content
+            self.thumb_url: Optional[str] = thumb_url
+            self.thumb_width: Optional[int] = thumb_width
+            self.thumb_height: Optional[int] = thumb_height

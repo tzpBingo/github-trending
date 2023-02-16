@@ -2,7 +2,7 @@
 # pylint: disable=redefined-builtin
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram User."""
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Optional, Sequence, Tuple, Union
 
 from telegram._inline.inlinekeyboardbutton import InlineKeyboardButton
 from telegram._menubutton import MenuButton
@@ -70,9 +70,9 @@ class User(TelegramObject):
     Args:
         id (:obj:`int`): Unique identifier for this user or bot.
         is_bot (:obj:`bool`): :obj:`True`, if this user is a bot.
-        first_name (:obj:`str`): User's or bots first name.
-        last_name (:obj:`str`, optional): User's or bots last name.
-        username (:obj:`str`, optional): User's or bots username.
+        first_name (:obj:`str`): User's or bot's first name.
+        last_name (:obj:`str`, optional): User's or bot's last name.
+        username (:obj:`str`, optional): User's or bot's username.
         language_code (:obj:`str`, optional): IETF language tag of the user's language.
         can_join_groups (:obj:`str`, optional): :obj:`True`, if the bot can be invited to groups.
             Returned only in :attr:`telegram.Bot.get_me` requests.
@@ -109,6 +109,9 @@ class User(TelegramObject):
             the bot to the attachment menu.
 
             .. versionadded:: 20.0
+    .. |user_chat_id_note| replace:: This shortcuts build on the assumption that :attr:`User.id`
+        coincides with the :attr:`Chat.id` of the private chat with the user. This has been the
+        case so far, but Telegram does not guarantee that this stays this way.
     """
 
     __slots__ = (
@@ -143,20 +146,22 @@ class User(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.id = id  # pylint: disable=invalid-name
-        self.first_name = first_name
-        self.is_bot = is_bot
+        self.id: int = id  # pylint: disable=invalid-name
+        self.first_name: str = first_name
+        self.is_bot: bool = is_bot
         # Optionals
-        self.last_name = last_name
-        self.username = username
-        self.language_code = language_code
-        self.can_join_groups = can_join_groups
-        self.can_read_all_group_messages = can_read_all_group_messages
-        self.supports_inline_queries = supports_inline_queries
-        self.is_premium = is_premium
-        self.added_to_attachment_menu = added_to_attachment_menu
+        self.last_name: Optional[str] = last_name
+        self.username: Optional[str] = username
+        self.language_code: Optional[str] = language_code
+        self.can_join_groups: Optional[bool] = can_join_groups
+        self.can_read_all_group_messages: Optional[bool] = can_read_all_group_messages
+        self.supports_inline_queries: Optional[bool] = supports_inline_queries
+        self.is_premium: Optional[bool] = is_premium
+        self.added_to_attachment_menu: Optional[bool] = added_to_attachment_menu
 
         self._id_attrs = (self.id,)
+
+        self._freeze()
 
     @property
     def name(self) -> str:
@@ -291,6 +296,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.pin_chat_message`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :obj:`bool`: On success, :obj:`True` is returned.
 
@@ -322,6 +330,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.unpin_chat_message`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :obj:`bool`: On success, :obj:`True` is returned.
 
@@ -352,6 +363,9 @@ class User(TelegramObject):
         For the documentation of the arguments, please see
         :meth:`telegram.Bot.unpin_all_chat_messages`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :obj:`bool`: On success, :obj:`True` is returned.
 
@@ -374,7 +388,7 @@ class User(TelegramObject):
         reply_to_message_id: int = None,
         reply_markup: ReplyMarkup = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -389,6 +403,9 @@ class User(TelegramObject):
              await bot.send_message(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_message`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -422,9 +439,10 @@ class User(TelegramObject):
         reply_markup: ReplyMarkup = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
+        has_spoiler: bool = None,
         *,
         filename: str = None,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -438,6 +456,9 @@ class User(TelegramObject):
              await bot.send_photo(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_photo`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -461,11 +482,12 @@ class User(TelegramObject):
             connect_timeout=connect_timeout,
             pool_timeout=pool_timeout,
             api_kwargs=api_kwargs,
+            has_spoiler=has_spoiler,
         )
 
     async def send_media_group(
         self,
-        media: List[
+        media: Sequence[
             Union["InputMediaAudio", "InputMediaDocument", "InputMediaPhoto", "InputMediaVideo"]
         ],
         disable_notification: ODVInput[bool] = DEFAULT_NONE,
@@ -481,16 +503,20 @@ class User(TelegramObject):
         api_kwargs: JSONDict = None,
         caption: Optional[str] = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
-    ) -> List["Message"]:
+        caption_entities: Sequence["MessageEntity"] = None,
+    ) -> Tuple["Message", ...]:
         """Shortcut for::
 
              await bot.send_media_group(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_media_group`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
-            List[:class:`telegram.Message`:] On success, instance representing the message posted.
+            Tuple[:class:`telegram.Message`:] On success, a tuple of :class:`~telegram.Message`
+            instances that were sent is returned.
 
         """
         return await self.get_bot().send_media_group(
@@ -524,7 +550,7 @@ class User(TelegramObject):
         parse_mode: ODVInput[str] = DEFAULT_NONE,
         thumb: FileInput = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -540,6 +566,9 @@ class User(TelegramObject):
              await bot.send_audio(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_audio`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -572,6 +601,7 @@ class User(TelegramObject):
     async def send_chat_action(
         self,
         action: str,
+        message_thread_id: int = None,
         *,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
         write_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -585,6 +615,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_chat_action`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :obj:`True`: On success.
 
@@ -592,6 +625,7 @@ class User(TelegramObject):
         return await self.get_bot().send_chat_action(
             chat_id=self.id,
             action=action,
+            message_thread_id=message_thread_id,
             read_timeout=read_timeout,
             write_timeout=write_timeout,
             connect_timeout=connect_timeout,
@@ -627,6 +661,9 @@ class User(TelegramObject):
              await bot.send_contact(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_contact`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -674,6 +711,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_dice`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
 
@@ -705,7 +745,7 @@ class User(TelegramObject):
         thumb: FileInput = None,
         disable_content_type_detection: bool = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -721,6 +761,9 @@ class User(TelegramObject):
              await bot.send_document(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_document`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -770,6 +813,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_game`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
 
@@ -797,7 +843,7 @@ class User(TelegramObject):
         payload: str,
         provider_token: str,
         currency: str,
-        prices: List["LabeledPrice"],
+        prices: Sequence["LabeledPrice"],
         start_parameter: str = None,
         photo_url: str = None,
         photo_size: int = None,
@@ -816,7 +862,7 @@ class User(TelegramObject):
         send_email_to_provider: bool = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
         max_tip_amount: int = None,
-        suggested_tip_amounts: List[int] = None,
+        suggested_tip_amounts: Sequence[int] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -837,6 +883,9 @@ class User(TelegramObject):
             is an optional argument and therefore the
             order of the arguments had to be changed. Use keyword arguments to make sure that the
             arguments are passed correctly.
+
+        Note:
+            |user_chat_id_note|
 
         .. versionchanged:: 13.5
             As of Bot API 5.2, the parameter
@@ -910,6 +959,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_location`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
 
@@ -949,9 +1001,10 @@ class User(TelegramObject):
         reply_to_message_id: int = None,
         reply_markup: ReplyMarkup = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
+        has_spoiler: bool = None,
         *,
         filename: str = None,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -965,6 +1018,9 @@ class User(TelegramObject):
              await bot.send_animation(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_animation`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -992,6 +1048,7 @@ class User(TelegramObject):
             filename=filename,
             protect_content=protect_content,
             message_thread_id=message_thread_id,
+            has_spoiler=has_spoiler,
         )
 
     async def send_sticker(
@@ -1015,6 +1072,9 @@ class User(TelegramObject):
              await bot.send_sticker(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_sticker`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -1050,9 +1110,10 @@ class User(TelegramObject):
         supports_streaming: bool = None,
         thumb: FileInput = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
+        has_spoiler: bool = None,
         *,
         filename: str = None,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -1066,6 +1127,9 @@ class User(TelegramObject):
              await bot.send_video(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_video`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -1094,6 +1158,7 @@ class User(TelegramObject):
             filename=filename,
             protect_content=protect_content,
             message_thread_id=message_thread_id,
+            has_spoiler=has_spoiler,
         )
 
     async def send_venue(
@@ -1125,6 +1190,9 @@ class User(TelegramObject):
              await bot.send_venue(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_venue`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -1180,6 +1248,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_video_note`.
 
+        Note:
+            |user_chat_id_note|
+
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
 
@@ -1214,7 +1285,7 @@ class User(TelegramObject):
         reply_markup: ReplyMarkup = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -1230,6 +1301,9 @@ class User(TelegramObject):
              await bot.send_voice(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_voice`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -1259,7 +1333,7 @@ class User(TelegramObject):
     async def send_poll(
         self,
         question: str,
-        options: List[str],
+        options: Sequence[str],
         is_anonymous: bool = None,
         type: str = None,
         allows_multiple_answers: bool = None,
@@ -1273,7 +1347,7 @@ class User(TelegramObject):
         open_period: int = None,
         close_date: Union[int, datetime] = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        explanation_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        explanation_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -1288,6 +1362,9 @@ class User(TelegramObject):
              await bot.send_poll(update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_poll`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -1326,7 +1403,7 @@ class User(TelegramObject):
         message_id: int,
         caption: str = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
-        caption_entities: Union[Tuple["MessageEntity", ...], List["MessageEntity"]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         disable_notification: DVInput[bool] = DEFAULT_NONE,
         reply_to_message_id: int = None,
         allow_sending_without_reply: DVInput[bool] = DEFAULT_NONE,
@@ -1345,6 +1422,9 @@ class User(TelegramObject):
              await bot.copy_message(chat_id=update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.copy_message`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -1376,7 +1456,7 @@ class User(TelegramObject):
         message_id: int,
         caption: str = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
-        caption_entities: Union[Tuple["MessageEntity", ...], List["MessageEntity"]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         disable_notification: DVInput[bool] = DEFAULT_NONE,
         reply_to_message_id: int = None,
         allow_sending_without_reply: DVInput[bool] = DEFAULT_NONE,
@@ -1395,6 +1475,9 @@ class User(TelegramObject):
              await bot.copy_message(from_chat_id=update.effective_user.id, *args, **kwargs)
 
         For the documentation of the arguments, please see :meth:`telegram.Bot.copy_message`.
+
+        Note:
+            |user_chat_id_note|
 
         Returns:
             :class:`telegram.Message`: On success, instance representing the message posted.
@@ -1437,6 +1520,9 @@ class User(TelegramObject):
         For the documentation of the arguments, please see
         :meth:`telegram.Bot.approve_chat_join_request`.
 
+        Note:
+            |user_chat_id_note|
+
         .. versionadded:: 13.8
 
         Returns:
@@ -1469,6 +1555,9 @@ class User(TelegramObject):
 
         For the documentation of the arguments, please see
         :meth:`telegram.Bot.decline_chat_join_request`.
+
+        Note:
+            |user_chat_id_note|
 
         .. versionadded:: 13.8
 
@@ -1505,6 +1594,9 @@ class User(TelegramObject):
 
         .. seealso:: :meth:`get_menu_button`
 
+        Note:
+            |user_chat_id_note|
+
         .. versionadded:: 20.0
 
         Returns:
@@ -1537,6 +1629,9 @@ class User(TelegramObject):
         :meth:`telegram.Bot.get_chat_menu_button`.
 
         .. seealso:: :meth:`set_menu_button`
+
+        Note:
+            |user_chat_id_note|
 
         .. versionadded:: 20.0
 

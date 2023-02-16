@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -50,11 +50,13 @@ class GameHighScore(TelegramObject):
 
     def __init__(self, position: int, user: User, score: int, *, api_kwargs: JSONDict = None):
         super().__init__(api_kwargs=api_kwargs)
-        self.position = position
-        self.user = user
-        self.score = score
+        self.position: int = position
+        self.user: User = user
+        self.score: int = score
 
         self._id_attrs = (self.position, self.user, self.score)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["GameHighScore"]:

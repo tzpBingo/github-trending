@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -54,7 +54,9 @@ class WebAppData(TelegramObject):
     def __init__(self, data: str, button_text: str, *, api_kwargs: JSONDict = None):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.data = data
-        self.button_text = button_text
+        self.data: str = data
+        self.button_text: str = button_text
 
         self._id_attrs = (self.data, self.button_text)
+
+        self._freeze()

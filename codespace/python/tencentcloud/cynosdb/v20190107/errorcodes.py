@@ -95,6 +95,9 @@ INVALIDPARAMETER = 'InvalidParameter'
 # 未找到该接口。
 INVALIDPARAMETER_CONTROLLERNOTFOUNDERROR = 'InvalidParameter.ControllerNotFoundError'
 
+# 参数传参错误。
+INVALIDPARAMETER_EXCEPTIONPARAM = 'InvalidParameter.ExceptionParam'
+
 # 未知参数，请检查参数是否有效。
 INVALIDPARAMETER_INVALIDPARAMETERERROR = 'InvalidParameter.InvalidParameterError'
 
@@ -188,11 +191,17 @@ INVALIDPARAMETERVALUE_VPCNOTFOUND = 'InvalidParameterValue.VpcNotFound'
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'
 
+# 集群中节点数超过最大限制。
+LIMITEXCEEDED_CLUSTERINSTANCELIMIT = 'LimitExceeded.ClusterInstanceLimit'
+
 # 用户实例个数超出限制。
 LIMITEXCEEDED_USERINSTANCELIMIT = 'LimitExceeded.UserInstanceLimit'
 
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
+
+# 权限校验失败。
+OPERATIONDENIED_CAMDENIEDERROR = 'OperationDenied.CamDeniedError'
 
 # 由于操作禁止，当前集群不允许该操作。
 OPERATIONDENIED_CLUSTEROPNOTALLOWEDERROR = 'OperationDenied.ClusterOpNotAllowedError'

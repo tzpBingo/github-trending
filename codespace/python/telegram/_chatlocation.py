@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -40,10 +40,13 @@ class ChatLocation(TelegramObject):
             Can't be a live location.
         address (:obj:`str`): Location address;
             :tg-const:`telegram.ChatLocation.MIN_ADDRESS`-
-            :tg-const:`telegram.ChatLocation.MAX_ADDRESS` characters, as defined by the chat owner
+            :tg-const:`telegram.ChatLocation.MAX_ADDRESS` characters, as defined by the chat owner.
     Attributes:
         location (:class:`telegram.Location`): The location to which the supergroup is connected.
-        address (:obj:`str`): Location address, as defined by the chat owner
+            Can't be a live location.
+        address (:obj:`str`): Location address;
+            :tg-const:`telegram.ChatLocation.MIN_ADDRESS`-
+            :tg-const:`telegram.ChatLocation.MAX_ADDRESS` characters, as defined by the chat owner.
 
     """
 
@@ -57,10 +60,12 @@ class ChatLocation(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.location = location
-        self.address = address
+        self.location: Location = location
+        self.address: str = address
 
         self._id_attrs = (self.location,)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["ChatLocation"]:

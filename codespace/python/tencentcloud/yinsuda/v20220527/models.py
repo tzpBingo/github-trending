@@ -18,6 +18,103 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class AMEMusicBaseInfo(AbstractModel):
+    """AME 曲库歌曲基础信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MusicId: 歌曲 Id。
+        :type MusicId: str
+        :param Name: 歌曲名称。
+        :type Name: str
+        :param SingerSet: 歌手列表。
+        :type SingerSet: list of str
+        """
+        self.MusicId = None
+        self.Name = None
+        self.SingerSet = None
+
+
+    def _deserialize(self, params):
+        self.MusicId = params.get("MusicId")
+        self.Name = params.get("Name")
+        self.SingerSet = params.get("SingerSet")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ApplyChorusRequest(AbstractModel):
+    """ApplyChorus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppName: 应用名称。
+        :type AppName: str
+        :param UserId: 用户标识。
+        :type UserId: str
+        :param RoomId: 房间号。
+        :type RoomId: str
+        :param MusicId: 歌曲 Id。
+        :type MusicId: str
+        :param MaxChorusNum: 最大合唱人数，默认值为 8，最大值为 20。
+        :type MaxChorusNum: int
+        :param ChorusUserIds: 合唱用户标识列表。
+        :type ChorusUserIds: list of str
+        """
+        self.AppName = None
+        self.UserId = None
+        self.RoomId = None
+        self.MusicId = None
+        self.MaxChorusNum = None
+        self.ChorusUserIds = None
+
+
+    def _deserialize(self, params):
+        self.AppName = params.get("AppName")
+        self.UserId = params.get("UserId")
+        self.RoomId = params.get("RoomId")
+        self.MusicId = params.get("MusicId")
+        self.MaxChorusNum = params.get("MaxChorusNum")
+        self.ChorusUserIds = params.get("ChorusUserIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ApplyChorusResponse(AbstractModel):
+    """ApplyChorus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ChorusToken: 合唱 Token。
+        :type ChorusToken: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ChorusToken = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ChorusToken = params.get("ChorusToken")
+        self.RequestId = params.get("RequestId")
+
+
 class BatchDescribeKTVMusicDetailsRequest(AbstractModel):
     """BatchDescribeKTVMusicDetails请求参数结构体
 
@@ -788,9 +885,13 @@ class KTVMatchMusic(AbstractModel):
         :type KTVMusicBaseInfo: :class:`tencentcloud.yinsuda.v20220527.models.KTVMusicBaseInfo`
         :param MatchRule: 命中规则。
         :type MatchRule: :class:`tencentcloud.yinsuda.v20220527.models.KTVMatchRule`
+        :param AMEMusicBaseInfo: AME 歌曲基础信息，仅在使用音速达歌曲 Id 匹配 AME 曲库时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AMEMusicBaseInfo: :class:`tencentcloud.yinsuda.v20220527.models.AMEMusicBaseInfo`
         """
         self.KTVMusicBaseInfo = None
         self.MatchRule = None
+        self.AMEMusicBaseInfo = None
 
 
     def _deserialize(self, params):
@@ -800,6 +901,9 @@ class KTVMatchMusic(AbstractModel):
         if params.get("MatchRule") is not None:
             self.MatchRule = KTVMatchRule()
             self.MatchRule._deserialize(params.get("MatchRule"))
+        if params.get("AMEMusicBaseInfo") is not None:
+            self.AMEMusicBaseInfo = AMEMusicBaseInfo()
+            self.AMEMusicBaseInfo._deserialize(params.get("AMEMusicBaseInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -821,9 +925,12 @@ class KTVMatchRule(AbstractModel):
         :param MusicInfo: 歌曲匹配信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MusicInfo: :class:`tencentcloud.yinsuda.v20220527.models.KTVMatchRuleMusicInfo`
+        :param MusicIdToMatchAME: 音速达歌曲 Id，用于匹配 AME 曲库歌曲。
+        :type MusicIdToMatchAME: str
         """
         self.AMEMusicId = None
         self.MusicInfo = None
+        self.MusicIdToMatchAME = None
 
 
     def _deserialize(self, params):
@@ -831,6 +938,7 @@ class KTVMatchRule(AbstractModel):
         if params.get("MusicInfo") is not None:
             self.MusicInfo = KTVMatchRuleMusicInfo()
             self.MusicInfo._deserialize(params.get("MusicInfo"))
+        self.MusicIdToMatchAME = params.get("MusicIdToMatchAME")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

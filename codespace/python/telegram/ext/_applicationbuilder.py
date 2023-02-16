@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ from typing import (
 
 from telegram._bot import Bot
 from telegram._utils.defaultvalue import DEFAULT_FALSE, DEFAULT_NONE, DefaultValue
-from telegram._utils.types import DVInput, FilePathInput, ODVInput
+from telegram._utils.types import DVInput, DVType, FilePathInput, ODVInput
 from telegram.ext._application import Application
 from telegram.ext._contexttypes import ContextTypes
 from telegram.ext._extbot import ExtBot
@@ -70,12 +70,14 @@ _BOT_CHECKS = [
     ("connect_timeout", "connect_timeout"),
     ("read_timeout", "read_timeout"),
     ("write_timeout", "write_timeout"),
+    ("http_version", "http_version"),
     ("get_updates_connection_pool_size", "get_updates_connection_pool_size"),
     ("get_updates_proxy_url", "get_updates_proxy_url"),
     ("get_updates_pool_timeout", "get_updates_pool_timeout"),
     ("get_updates_connect_timeout", "get_updates_connect_timeout"),
     ("get_updates_read_timeout", "get_updates_read_timeout"),
     ("get_updates_write_timeout", "get_updates_write_timeout"),
+    ("get_updates_http_version", "get_updates_http_version"),
     ("base_file_url", "base_file_url"),
     ("base_url", "base_url"),
     ("token", "token"),
@@ -112,10 +114,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         * Unless a custom :class:`telegram.Bot` instance is set via :meth:`bot`, :meth:`build` will
           use :class:`telegram.ext.ExtBot` for the bot.
 
-    .. seealso:: `Your First Bot <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Extensions-–-Your-first-Bot>`_,
-        `Builder Pattern for Application <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Builder-Pattern>`_
+    .. seealso:: :wiki:`Your First Bot <Extensions-–-Your-first-Bot>`,
+        :wiki:`Builder Pattern <Builder-Pattern>`
 
     .. _`builder pattern`: https://en.wikipedia.org/wiki/Builder_pattern
     """
@@ -139,11 +139,13 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         "_get_updates_read_timeout",
         "_get_updates_request",
         "_get_updates_write_timeout",
+        "_get_updates_http_version",
         "_job_queue",
         "_persistence",
         "_pool_timeout",
         "_post_init",
         "_post_shutdown",
+        "_post_stop",
         "_private_key",
         "_private_key_password",
         "_proxy_url",
@@ -155,12 +157,13 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         "_updater",
         "_write_timeout",
         "_local_mode",
+        "_http_version",
     )
 
     def __init__(self: "InitApplicationBuilder"):
-        self._token: DVInput[str] = DefaultValue("")
-        self._base_url: DVInput[str] = DefaultValue("https://api.telegram.org/bot")
-        self._base_file_url: DVInput[str] = DefaultValue("https://api.telegram.org/file/bot")
+        self._token: DVType[str] = DefaultValue("")
+        self._base_url: DVType[str] = DefaultValue("https://api.telegram.org/bot")
+        self._base_file_url: DVType[str] = DefaultValue("https://api.telegram.org/file/bot")
         self._connection_pool_size: DVInput[int] = DEFAULT_NONE
         self._proxy_url: DVInput[str] = DEFAULT_NONE
         self._connect_timeout: ODVInput[float] = DEFAULT_NONE
@@ -175,13 +178,14 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         self._get_updates_write_timeout: ODVInput[float] = DEFAULT_NONE
         self._get_updates_pool_timeout: ODVInput[float] = DEFAULT_NONE
         self._get_updates_request: DVInput["BaseRequest"] = DEFAULT_NONE
+        self._get_updates_http_version: DVInput[str] = DefaultValue("2")
         self._private_key: ODVInput[bytes] = DEFAULT_NONE
         self._private_key_password: ODVInput[bytes] = DEFAULT_NONE
         self._defaults: ODVInput["Defaults"] = DEFAULT_NONE
-        self._arbitrary_callback_data: DVInput[Union[bool, int]] = DEFAULT_FALSE
-        self._local_mode: DVInput[bool] = DEFAULT_FALSE
+        self._arbitrary_callback_data: Union[DefaultValue[bool], int] = DEFAULT_FALSE
+        self._local_mode: DVType[bool] = DEFAULT_FALSE
         self._bot: DVInput[Bot] = DEFAULT_NONE
-        self._update_queue: DVInput[Queue] = DefaultValue(Queue())
+        self._update_queue: DVType[Queue] = DefaultValue(Queue())
 
         try:
             self._job_queue: ODVInput["JobQueue"] = DefaultValue(JobQueue())
@@ -191,14 +195,16 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
             self._job_queue = DEFAULT_NONE
 
         self._persistence: ODVInput["BasePersistence"] = DEFAULT_NONE
-        self._context_types: DVInput[ContextTypes] = DefaultValue(ContextTypes())
-        self._application_class: DVInput[Type[Application]] = DefaultValue(Application)
+        self._context_types: DVType[ContextTypes] = DefaultValue(ContextTypes())
+        self._application_class: DVType[Type[Application]] = DefaultValue(Application)
         self._application_kwargs: Dict[str, object] = {}
-        self._concurrent_updates: DVInput[Union[int, bool]] = DEFAULT_FALSE
+        self._concurrent_updates: Union[int, DefaultValue[bool]] = DEFAULT_FALSE
         self._updater: ODVInput[Updater] = DEFAULT_NONE
         self._post_init: Optional[Callable[[Application], Coroutine[Any, Any, None]]] = None
         self._post_shutdown: Optional[Callable[[Application], Coroutine[Any, Any, None]]] = None
+        self._post_stop: Optional[Callable[[Application], Coroutine[Any, Any, None]]] = None
         self._rate_limiter: ODVInput["BaseRateLimiter"] = DEFAULT_NONE
+        self._http_version: DVInput[str] = DefaultValue("2")
 
     def _build_request(self, get_updates: bool) -> BaseRequest:
         prefix = "_get_updates_" if get_updates else "_"
@@ -215,20 +221,23 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
                 DefaultValue.get_value(getattr(self, f"{prefix}connection_pool_size")) or 256
             )
 
-        timeouts = dict(
-            connect_timeout=getattr(self, f"{prefix}connect_timeout"),
-            read_timeout=getattr(self, f"{prefix}read_timeout"),
-            write_timeout=getattr(self, f"{prefix}write_timeout"),
-            pool_timeout=getattr(self, f"{prefix}pool_timeout"),
-        )
+        timeouts = {
+            "connect_timeout": getattr(self, f"{prefix}connect_timeout"),
+            "read_timeout": getattr(self, f"{prefix}read_timeout"),
+            "write_timeout": getattr(self, f"{prefix}write_timeout"),
+            "pool_timeout": getattr(self, f"{prefix}pool_timeout"),
+        }
         # Get timeouts that were actually set-
         effective_timeouts = {
             key: value for key, value in timeouts.items() if not isinstance(value, DefaultValue)
         }
 
+        http_version = DefaultValue.get_value(getattr(self, f"{prefix}http_version")) or "2"
+
         return HTTPXRequest(
             connection_pool_size=connection_pool_size,
             proxy_url=proxy_url,
+            http_version=http_version,
             **effective_timeouts,
         )
 
@@ -303,11 +312,12 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
             context_types=DefaultValue.get_value(self._context_types),
             post_init=self._post_init,
             post_shutdown=self._post_shutdown,
+            post_stop=self._post_stop,
             **self._application_kwargs,  # For custom Application subclasses
         )
 
         if job_queue is not None:
-            job_queue.set_application(application)
+            job_queue.set_application(application)  # type: ignore[arg-type]
 
         if persistence is not None:
             # This raises an exception if persistence.store_data.callback_data is True
@@ -317,7 +327,9 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         return application
 
     def application_class(
-        self: BuilderType, application_class: Type[Application], kwargs: Dict[str, object] = None
+        self: BuilderType,
+        application_class: Type[Application[Any, Any, Any, Any, Any, Any]],
+        kwargs: Dict[str, object] = None,
     ) -> BuilderType:
         """Sets a custom subclass instead of :class:`telegram.ext.Application`. The
         subclass's ``__init__`` should look like this
@@ -359,9 +371,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets the base URL for :attr:`telegram.ext.Application.bot`. If not called,
         will default to ``'https://api.telegram.org/bot'``.
 
-        .. seealso:: :paramref:`telegram.Bot.base_url`, `Local Bot API Server <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Local-Bot-API-Server>`_,
-            :meth:`base_file_url`
+        .. seealso:: :paramref:`telegram.Bot.base_url`,
+            :wiki:`Local Bot API Server <Local-Bot-API-Server>`, :meth:`base_file_url`
 
         Args:
             base_url (:obj:`str`): The URL.
@@ -378,9 +389,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets the base file URL for :attr:`telegram.ext.Application.bot`. If not
         called, will default to ``'https://api.telegram.org/file/bot'``.
 
-        .. seealso:: :paramref:`telegram.Bot.base_file_url`, `Local Bot API Server <https://\
-            github.com/python-telegram-bot/python-telegram-bot/wiki/Local-Bot-API-Server>`_,
-            :meth:`base_url`
+        .. seealso:: :paramref:`telegram.Bot.base_file_url`,
+            :wiki:`Local Bot API Server <Local-Bot-API-Server>`, :meth:`base_url`
 
         Args:
             base_file_url (:obj:`str`): The URL.
@@ -402,11 +412,18 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         for attr in ("connect_timeout", "read_timeout", "write_timeout", "pool_timeout"):
             if not isinstance(getattr(self, f"_{prefix}{attr}"), DefaultValue):
                 raise RuntimeError(_TWO_ARGS_REQ.format(name, attr))
+
         if not isinstance(getattr(self, f"_{prefix}connection_pool_size"), DefaultValue):
             raise RuntimeError(_TWO_ARGS_REQ.format(name, "connection_pool_size"))
+
         if not isinstance(getattr(self, f"_{prefix}proxy_url"), DefaultValue):
             raise RuntimeError(_TWO_ARGS_REQ.format(name, "proxy_url"))
+
+        if not isinstance(getattr(self, f"_{prefix}http_version"), DefaultValue):
+            raise RuntimeError(_TWO_ARGS_REQ.format(name, "http_version"))
+
         self._bot_check(name)
+
         if self._updater not in (DEFAULT_NONE, None):
             raise RuntimeError(_TWO_ARGS_REQ.format(name, "updater instance"))
 
@@ -529,7 +546,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
     def pool_timeout(self: BuilderType, pool_timeout: Optional[float]) -> BuilderType:
         """Sets the connection pool's connection freeing timeout for the
         :paramref:`~telegram.request.HTTPXRequest.pool_timeout` parameter of
-        :attr:`telegram.Bot.request`. Defaults to :obj:`None`.
+        :attr:`telegram.Bot.request`. Defaults to ``1.0``.
 
         .. include:: inclusions/pool_size_tip.rst
 
@@ -542,6 +559,26 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """
         self._request_param_check(name="pool_timeout", get_updates=False)
         self._pool_timeout = pool_timeout
+        return self
+
+    def http_version(self: BuilderType, http_version: str) -> BuilderType:
+        """Sets the HTTP protocol version which is used for the
+        :paramref:`~telegram.request.HTTPXRequest.http_version` parameter of
+        :attr:`telegram.Bot.request`. By default, HTTP/2 is used.
+
+        .. seealso:: :meth:`get_updates_http_version`
+
+        .. versionadded:: 20.1
+
+        Args:
+            http_version (:obj:`str`): Pass ``"1.1"`` if you'd like to use HTTP/1.1 for making
+                requests to Telegram. Defaults to ``"2"``, in which case HTTP/2 is used.
+
+        Returns:
+            :class:`ApplicationBuilder`: The same builder with the updated argument.
+        """
+        self._request_param_check(name="http_version", get_updates=False)
+        self._http_version = http_version
         return self
 
     def get_updates_request(self: BuilderType, get_updates_request: BaseRequest) -> BuilderType:
@@ -652,7 +689,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
     ) -> BuilderType:
         """Sets the connection pool's connection freeing timeout for the
         :paramref:`~telegram.request.HTTPXRequest.pool_timeout` parameter which is used for the
-        :meth:`telegram.Bot.get_updates` request. Defaults to :obj:`None`.
+        :meth:`telegram.Bot.get_updates` request. Defaults to ``1.0``.
 
         Args:
             get_updates_pool_timeout (:obj:`float`): See
@@ -665,6 +702,26 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         self._get_updates_pool_timeout = get_updates_pool_timeout
         return self
 
+    def get_updates_http_version(self: BuilderType, get_updates_http_version: str) -> BuilderType:
+        """Sets the HTTP protocol version which is used for the
+        :paramref:`~telegram.request.HTTPXRequest.http_version` parameter which is used in the
+        :meth:`telegram.Bot.get_updates` request. By default, HTTP/2 is used.
+
+        .. seealso:: :meth:`http_version`
+
+        .. versionadded:: 20.1
+
+        Args:
+            get_updates_http_version (:obj:`str`): Pass ``"1.1"`` if you'd like to use HTTP/1.1 for
+                making requests to Telegram. Defaults to ``"2"``, in which case HTTP/2 is used.
+
+        Returns:
+            :class:`ApplicationBuilder`: The same builder with the updated argument.
+        """
+        self._request_param_check(name="http_version", get_updates=True)
+        self._get_updates_http_version = get_updates_http_version
+        return self
+
     def private_key(
         self: BuilderType,
         private_key: Union[bytes, FilePathInput],
@@ -673,8 +730,10 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets the private key and corresponding password for decryption of telegram passport data
         for :attr:`telegram.ext.Application.bot`.
 
-        .. seealso:: :any:`examples.passportbot`, `Telegram Passports
-            <https://github.com/python-telegram-bot/python-telegram-bot/wiki/Telegram-Passport>`_
+        Examples:
+            :any:`Passport Bot <examples.passportbot>`
+
+        .. seealso:: :wiki:`Telegram Passports <Telegram-Passport>`
 
         Args:
             private_key (:obj:`bytes` | :obj:`str` | :obj:`pathlib.Path`): The private key or the
@@ -704,8 +763,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets the :class:`telegram.ext.Defaults` instance for
         :attr:`telegram.ext.Application.bot`.
 
-        .. seealso:: `Adding Defaults <https://github.com/python-telegram-bot/python-telegram-bot\
-            /wiki/Adding-defaults-to-your-bot>`_
+        .. seealso:: :wiki:`Adding Defaults to Your Bot <Adding-defaults-to-your-bot>`
 
         Args:
             defaults (:class:`telegram.ext.Defaults`): The defaults instance.
@@ -734,9 +792,10 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
                pip install python-telegram-bot[callback-data]
 
-        .. seealso:: `Arbitrary callback_data <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Arbitrary-callback_data>`_,
-            :any:`examples.arbitrarycallbackdatabot`
+        Examples:
+            :any:`Arbitrary callback_data Bot <examples.arbitrarycallbackdatabot>`
+
+        .. seealso:: :wiki:`Arbitrary callback_data <Arbitrary-callback_data>`
 
         Args:
             arbitrary_callback_data (:obj:`bool` | :obj:`int`): If :obj:`True` is passed, the
@@ -753,11 +812,10 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
     def local_mode(self: BuilderType, local_mode: bool) -> BuilderType:
         """Specifies the value for :paramref:`~telegram.Bot.local_mode` for the
-         :attr:`telegram.ext.Application.bot`.
-         If not called, will default to :obj:`False`.
+        :attr:`telegram.ext.Application.bot`.
+        If not called, will default to :obj:`False`.
 
-        .. seealso:: `Local Bot API Server <https://github.com/python-telegram-bot/\
-            python-telegram-bot/wiki/Local-Bot-API-Server>`_,
+        .. seealso:: :wiki:`Local Bot API Server <Local-Bot-API-Server>`
 
         Args:
             local_mode (:obj:`bool`): Whether the bot should run in local mode.
@@ -791,7 +849,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         self._bot = bot
         return self  # type: ignore[return-value]
 
-    def update_queue(self: BuilderType, update_queue: Queue) -> BuilderType:
+    def update_queue(self: BuilderType, update_queue: "Queue[object]") -> BuilderType:
         """Sets a :class:`asyncio.Queue` instance for
         :attr:`telegram.ext.Application.update_queue`, i.e. the queue that the application will
         fetch updates from. Will also be used for the :attr:`telegram.ext.Application.updater`.
@@ -812,6 +870,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
     def concurrent_updates(self: BuilderType, concurrent_updates: Union[bool, int]) -> BuilderType:
         """Specifies if and how many updates may be processed concurrently instead of one by one.
+        If not called, updates will be processed one by one.
 
         Warning:
             Processing updates concurrently is not recommended when stateful handlers like
@@ -842,8 +901,10 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         :attr:`telegram.ext.Application.job_queue`. If not called, a job queue will be
         instantiated if the requirements of :class:`telegram.ext.JobQueue` are installed.
 
-        .. seealso:: `JobQueue <https://github.com/python-telegram-bot/python-telegram-bot/wiki\
-            /Extensions-%E2%80%93-JobQueue>`_, :any:`examples.timerbot`
+        Examples:
+            :any:`Timer Bot <examples.timerbot>`
+
+        .. seealso:: :wiki:`Job Queue <Extensions-%E2%80%93-JobQueue>`
 
         Note:
             * :meth:`telegram.ext.JobQueue.set_application` will be called automatically by
@@ -865,7 +926,9 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         self._job_queue = job_queue
         return self  # type: ignore[return-value]
 
-    def persistence(self: BuilderType, persistence: "BasePersistence") -> BuilderType:
+    def persistence(
+        self: BuilderType, persistence: "BasePersistence[Any, Any, Any]"
+    ) -> BuilderType:
         """Sets a :class:`telegram.ext.BasePersistence` instance for
         :attr:`telegram.ext.Application.persistence`.
 
@@ -878,9 +941,10 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
             :func:`copy.deepcopy`. This is due to the data being deep copied before handing it over
             to the persistence in order to avoid race conditions.
 
-        .. seealso:: `Making your bot persistent <https://github.com/python-telegram-bot\
-            /python-telegram-bot/wiki/Making-your-bot-persistent>`_,
-            :any:`examples.persistentconversationbot`
+        Examples:
+            :any:`Persistent Conversation Bot <examples.persistentconversationbot>`
+
+        .. seealso:: :wiki:`Making Your Bot Persistent <Making-your-bot-persistent>`
 
         Warning:
             If a :class:`telegram.ext.ContextTypes` instance is set via :meth:`context_types`,
@@ -902,7 +966,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets a :class:`telegram.ext.ContextTypes` instance for
         :attr:`telegram.ext.Application.context_types`.
 
-        .. seealso:: :any:`examples.contexttypesbot`
+        Examples:
+            :any:`Context Types Bot <examples.contexttypesbot>`
 
         Args:
             context_types (:class:`telegram.ext.ContextTypes`): The context types.
@@ -966,6 +1031,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
                 application = Application.builder().token("TOKEN").post_init(post_init).build()
 
+        .. seealso:: :meth:`post_stop`, :meth:`post_shutdown`
+
         Args:
             post_init (:term:`coroutine function`): The custom callback. Must be a
                 :term:`coroutine function` and must accept exactly one positional argument, which
@@ -1002,6 +1069,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
                                         .post_shutdown(post_shutdown)
                                         .build()
 
+        .. seealso:: :meth:`post_init`, :meth:`post_stop`
+
         Args:
             post_shutdown (:term:`coroutine function`): The custom callback. Must be a
                 :term:`coroutine function` and must accept exactly one positional argument, which
@@ -1013,6 +1082,46 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
             :class:`ApplicationBuilder`: The same builder with the updated argument.
         """
         self._post_shutdown = post_shutdown
+        return self
+
+    def post_stop(
+        self: BuilderType, post_stop: Callable[[Application], Coroutine[Any, Any, None]]
+    ) -> BuilderType:
+        """
+        Sets a callback to be executed by :meth:`Application.run_polling` and
+        :meth:`Application.run_webhook` *after* executing :meth:`Updater.stop`
+        and :meth:`Application.stop`.
+
+        .. versionadded:: 20.1
+
+        Tip:
+            This can be used for custom stop logic that requires to await coroutines, e.g.
+            sending message to a chat before shutting down the bot
+
+        Example:
+            .. code::
+
+                async def post_stop(application: Application) -> None:
+                    await application.bot.send_message(123456, "Shutting down...")
+
+                application = Application.builder()
+                                        .token("TOKEN")
+                                        .post_stop(post_stop)
+                                        .build()
+
+        .. seealso:: :meth:`post_init`, :meth:`post_shutdown`
+
+        Args:
+            post_stop (:term:`coroutine function`): The custom callback. Must be a
+                :term:`coroutine function` and must accept exactly one positional argument, which
+                is the :class:`~telegram.ext.Application`::
+
+                    async def post_stop(application: Application) -> None:
+
+        Returns:
+            :class:`ApplicationBuilder`: The same builder with the updated argument.
+        """
+        self._post_stop = post_stop
         return self
 
     def rate_limiter(
@@ -1039,9 +1148,9 @@ InitApplicationBuilder = (  # This is defined all the way down here so that its 
     ApplicationBuilder[  # by Pylance correctly.
         ExtBot[None],
         ContextTypes.DEFAULT_TYPE,
-        Dict,
-        Dict,
-        Dict,
-        JobQueue,
+        Dict[Any, Any],
+        Dict[Any, Any],
+        Dict[Any, Any],
+        JobQueue[ContextTypes.DEFAULT_TYPE],
     ]
 )

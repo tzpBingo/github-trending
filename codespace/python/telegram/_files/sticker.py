@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,14 +17,14 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains objects that represent stickers."""
-
-from typing import TYPE_CHECKING, ClassVar, List, Optional
+from typing import TYPE_CHECKING, ClassVar, Optional, Sequence, Tuple
 
 from telegram import constants
 from telegram._files._basethumbedmedium import _BaseThumbedMedium
 from telegram._files.file import File
 from telegram._files.photosize import PhotoSize
 from telegram._telegramobject import TelegramObject
+from telegram._utils.argumentparsing import parse_sequence_arg
 from telegram._utils.types import JSONDict
 
 if TYPE_CHECKING:
@@ -62,10 +62,9 @@ class Sticker(_BaseThumbedMedium):
         thumb (:class:`telegram.PhotoSize`, optional): Sticker thumbnail in the ``.WEBP`` or
             ``.JPG`` format.
         emoji (:obj:`str`, optional): Emoji associated with the sticker
-        set_name (:obj:`str`, optional): Name of the sticker set to which the sticker
-            belongs.
-        mask_position (:class:`telegram.MaskPosition`, optional): For mask stickers, the
-            position where the mask should be placed.
+        set_name (:obj:`str`, optional): Name of the sticker set to which the sticker belongs.
+        mask_position (:class:`telegram.MaskPosition`, optional): For mask stickers, the position
+            where the mask should be placed.
         file_size (:obj:`int`, optional): File size in bytes.
 
         premium_animation (:class:`telegram.File`, optional): For premium regular stickers,
@@ -78,7 +77,8 @@ class Sticker(_BaseThumbedMedium):
             .. versionadded:: 20.0
 
     Attributes:
-        file_id (:obj:`str`): Identifier for this file.
+        file_id (:obj:`str`): Identifier for this file, which can be used to download
+            or reuse the file.
         file_unique_id (:obj:`str`): Unique identifier for this file, which
             is supposed to be the same over time and for different bots.
             Can't be used to download or reuse the file.
@@ -150,18 +150,19 @@ class Sticker(_BaseThumbedMedium):
             thumb=thumb,
             api_kwargs=api_kwargs,
         )
-        # Required
-        self.width = width
-        self.height = height
-        self.is_animated = is_animated
-        self.is_video = is_video
-        self.type = type
-        # Optional
-        self.emoji = emoji
-        self.set_name = set_name
-        self.mask_position = mask_position
-        self.premium_animation = premium_animation
-        self.custom_emoji_id = custom_emoji_id
+        with self._unfrozen():
+            # Required
+            self.width: int = width
+            self.height: int = height
+            self.is_animated: bool = is_animated
+            self.is_video: bool = is_video
+            self.type: str = type
+            # Optional
+            self.emoji: Optional[str] = emoji
+            self.set_name: Optional[str] = set_name
+            self.mask_position: Optional[MaskPosition] = mask_position
+            self.premium_animation: Optional[File] = premium_animation
+            self.custom_emoji_id: Optional[str] = custom_emoji_id
 
     REGULAR: ClassVar[str] = constants.StickerType.REGULAR
     """:const:`telegram.constants.StickerType.REGULAR`"""
@@ -196,7 +197,7 @@ class StickerSet(TelegramObject):
         arguments had to be changed. Use keyword arguments to make sure that the arguments are
         passed correctly.
 
-    .. versionchanged:: 20.0:
+    .. versionchanged:: 20.0
         The parameter ``contains_masks`` has been removed. Use :paramref:`sticker_type` instead.
 
     Args:
@@ -206,7 +207,11 @@ class StickerSet(TelegramObject):
         is_video (:obj:`bool`): :obj:`True`, if the sticker set contains video stickers.
 
             .. versionadded:: 13.11
-        stickers (List[:class:`telegram.Sticker`]): List of all set stickers.
+        stickers (Sequence[:class:`telegram.Sticker`]): List of all set stickers.
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
+
         sticker_type (:obj:`str`): Type of stickers in the set, currently one of
             :attr:`telegram.Sticker.REGULAR`, :attr:`telegram.Sticker.MASK`,
             :attr:`telegram.Sticker.CUSTOM_EMOJI`.
@@ -222,12 +227,18 @@ class StickerSet(TelegramObject):
         is_video (:obj:`bool`): :obj:`True`, if the sticker set contains video stickers.
 
             .. versionadded:: 13.11
-        stickers (List[:class:`telegram.Sticker`]): List of all set stickers.
-        sticker_type (:obj:`str`): Type of stickers in the set.
+        stickers (Tuple[:class:`telegram.Sticker`]): List of all set stickers.
+
+            .. versionchanged:: 20.0
+                |tupleclassattrs|
+
+        sticker_type (:obj:`str`): Type of stickers in the set, currently one of
+            :attr:`telegram.Sticker.REGULAR`, :attr:`telegram.Sticker.MASK`,
+            :attr:`telegram.Sticker.CUSTOM_EMOJI`.
 
             .. versionadded:: 20.0
         thumb (:class:`telegram.PhotoSize`): Optional. Sticker set thumbnail in the ``.WEBP``,
-            ``.TGS`` or ``.WEBM`` format.
+            ``.TGS``, or ``.WEBM`` format.
 
     """
 
@@ -246,7 +257,7 @@ class StickerSet(TelegramObject):
         name: str,
         title: str,
         is_animated: bool,
-        stickers: List[Sticker],
+        stickers: Sequence[Sticker],
         is_video: bool,
         sticker_type: str,
         thumb: PhotoSize = None,
@@ -254,16 +265,18 @@ class StickerSet(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.name = name
-        self.title = title
-        self.is_animated = is_animated
-        self.is_video = is_video
-        self.stickers = stickers
-        self.sticker_type = sticker_type
+        self.name: str = name
+        self.title: str = title
+        self.is_animated: bool = is_animated
+        self.is_video: bool = is_video
+        self.stickers: Tuple[Sticker, ...] = parse_sequence_arg(stickers)
+        self.sticker_type: str = sticker_type
         # Optional
-        self.thumb = thumb
+        self.thumb: Optional[PhotoSize] = thumb
 
         self._id_attrs = (self.name,)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["StickerSet"]:
@@ -305,9 +318,11 @@ class MaskPosition(TelegramObject):
         point (:obj:`str`): The part of the face relative to which the mask should be placed.
             One of :attr:`FOREHEAD`, :attr:`EYES`, :attr:`MOUTH`, or :attr:`CHIN`.
         x_shift (:obj:`float`): Shift by X-axis measured in widths of the mask scaled to the face
-            size, from left to right.
+            size, from left to right. For example, choosing ``-1.0`` will place mask just to the
+            left of the default mask position.
         y_shift (:obj:`float`): Shift by Y-axis measured in heights of the mask scaled to the face
-            size, from top to bottom.
+            size, from top to bottom. For example, ``1.0`` will place the mask just below the
+            default mask position.
         scale (:obj:`float`): Mask scaling coefficient. For example, ``2.0`` means double size.
 
     """
@@ -333,9 +348,11 @@ class MaskPosition(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.point = point
-        self.x_shift = x_shift
-        self.y_shift = y_shift
-        self.scale = scale
+        self.point: str = point
+        self.x_shift: float = x_shift
+        self.y_shift: float = y_shift
+        self.scale: float = scale
 
         self._id_attrs = (self.point, self.x_shift, self.y_shift, self.scale)
+
+        self._freeze()

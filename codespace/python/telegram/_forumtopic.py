@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains objects related to Telegram forum topics."""
+from typing import Optional
 
 from telegram._telegramobject import TelegramObject
 from telegram._utils.types import JSONDict
@@ -59,12 +60,14 @@ class ForumTopic(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.message_thread_id = message_thread_id
-        self.name = name
-        self.icon_color = icon_color
-        self.icon_custom_emoji_id = icon_custom_emoji_id
+        self.message_thread_id: int = message_thread_id
+        self.name: str = name
+        self.icon_color: int = icon_color
+        self.icon_custom_emoji_id: Optional[str] = icon_custom_emoji_id
 
         self._id_attrs = (self.message_thread_id, self.name, self.icon_color)
+
+        self._freeze()
 
 
 class ForumTopicCreated(TelegramObject):
@@ -101,11 +104,13 @@ class ForumTopicCreated(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.name = name
-        self.icon_color = icon_color
-        self.icon_custom_emoji_id = icon_custom_emoji_id
+        self.name: str = name
+        self.icon_color: int = icon_color
+        self.icon_custom_emoji_id: Optional[str] = icon_custom_emoji_id
 
         self._id_attrs = (self.name, self.icon_color)
+
+        self._freeze()
 
 
 class ForumTopicClosed(TelegramObject):
@@ -118,6 +123,11 @@ class ForumTopicClosed(TelegramObject):
 
     __slots__ = ()
 
+    def __init__(self, *, api_kwargs: JSONDict = None) -> None:
+        super().__init__(api_kwargs=api_kwargs)
+
+        self._freeze()
+
 
 class ForumTopicReopened(TelegramObject):
     """
@@ -128,3 +138,78 @@ class ForumTopicReopened(TelegramObject):
     """
 
     __slots__ = ()
+
+    def __init__(self, *, api_kwargs: JSONDict = None) -> None:
+        super().__init__(api_kwargs=api_kwargs)
+
+        self._freeze()
+
+
+class ForumTopicEdited(TelegramObject):
+    """
+    This object represents a service message about an edited forum topic.
+
+    Objects of this class are comparable in terms of equality. Two objects of this class are
+    considered equal, if their :attr:`name` and :attr:`icon_custom_emoji_id` are equal.
+
+    .. versionadded:: 20.0
+
+    Args:
+        name (:obj:`str`, optional): New name of the topic, if it was edited.
+        icon_custom_emoji_id (:obj:`str`, optional): New identifier of the custom emoji shown as
+            the topic icon, if it was edited; an empty string if the icon was removed.
+
+    Attributes:
+        name (:obj:`str`): Optional. New name of the topic, if it was edited.
+        icon_custom_emoji_id (:obj:`str`): Optional. New identifier of the custom emoji shown as
+            the topic icon, if it was edited; an empty string if the icon was removed.
+    """
+
+    __slots__ = ("name", "icon_custom_emoji_id")
+
+    def __init__(
+        self,
+        name: str = None,
+        icon_custom_emoji_id: str = None,
+        *,
+        api_kwargs: JSONDict = None,
+    ):
+        super().__init__(api_kwargs=api_kwargs)
+        self.name: Optional[str] = name
+        self.icon_custom_emoji_id: Optional[str] = icon_custom_emoji_id
+
+        self._id_attrs = (self.name, self.icon_custom_emoji_id)
+
+        self._freeze()
+
+
+class GeneralForumTopicHidden(TelegramObject):
+    """
+    This object represents a service message about General forum topic hidden in the chat.
+    Currently holds no information.
+
+    .. versionadded:: 20.0
+    """
+
+    __slots__ = ()
+
+    def __init__(self, *, api_kwargs: JSONDict = None):
+        super().__init__(api_kwargs=api_kwargs)
+
+        self._freeze()
+
+
+class GeneralForumTopicUnhidden(TelegramObject):
+    """
+    This object represents a service message about General forum topic unhidden in the chat.
+    Currently holds no information.
+
+    .. versionadded:: 20.0
+    """
+
+    __slots__ = ()
+
+    def __init__(self, *, api_kwargs: JSONDict = None):
+        super().__init__(api_kwargs=api_kwargs)
+
+        self._freeze()

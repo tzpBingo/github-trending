@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@
 """This module contains the CallbackQueryHandler class."""
 import asyncio
 import re
-from typing import TYPE_CHECKING, Callable, Match, Optional, Pattern, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, Callable, Match, Optional, Pattern, TypeVar, Union, cast
 
 from telegram import Update
 from telegram._utils.defaultvalue import DEFAULT_TRUE
-from telegram._utils.types import DVInput
+from telegram._utils.types import DVType
 from telegram.ext._handler import BaseHandler
 from telegram.ext._utils.types import CCT, HandlerCallback
 
@@ -81,8 +81,7 @@ class CallbackQueryHandler(BaseHandler[Update, CCT]):
             If :attr:`telegram.CallbackQuery.data` is :obj:`None`, the
             :class:`telegram.CallbackQuery` update will not be handled.
 
-            .. seealso:: `Arbitrary callback_data <https://github.com/\
-                python-telegram-bot/python-telegram-bot/wiki/Arbitrary-callback_data>`_
+            .. seealso:: :wiki:`Arbitrary callback_data <Arbitrary-callback_data>`
 
             .. versionchanged:: 13.6
                Added support for arbitrary callback data.
@@ -90,8 +89,7 @@ class CallbackQueryHandler(BaseHandler[Update, CCT]):
             be awaited before processing the next handler in
             :meth:`telegram.ext.Application.process_update`. Defaults to :obj:`True`.
 
-            .. seealso:: `Concurrency <https://github.com/\
-                python-telegram-bot/python-telegram-bot/wiki/Concurrency>`_
+            .. seealso:: :wiki:`Concurrency`
 
     Attributes:
         callback (:term:`coroutine function`): The callback function for this handler.
@@ -111,8 +109,8 @@ class CallbackQueryHandler(BaseHandler[Update, CCT]):
     def __init__(
         self,
         callback: HandlerCallback[Update, CCT, RT],
-        pattern: Union[str, Pattern, type, Callable[[object], Optional[bool]]] = None,
-        block: DVInput[bool] = DEFAULT_TRUE,
+        pattern: Union[str, Pattern[str], type, Callable[[object], Optional[bool]]] = None,
+        block: DVType[bool] = DEFAULT_TRUE,
     ):
         super().__init__(callback, block=block)
 
@@ -124,7 +122,9 @@ class CallbackQueryHandler(BaseHandler[Update, CCT]):
         if isinstance(pattern, str):
             pattern = re.compile(pattern)
 
-        self.pattern = pattern
+        self.pattern: Optional[
+            Union[str, Pattern[str], type, Callable[[object], Optional[bool]]]
+        ] = pattern
 
     def check_update(self, update: object) -> Optional[Union[bool, object]]:
         """Determines whether an update should be passed to this handler's :attr:`callback`.
@@ -159,8 +159,8 @@ class CallbackQueryHandler(BaseHandler[Update, CCT]):
         self,
         context: CCT,
         update: Update,  # skipcq: BAN-B301
-        application: "Application",  # skipcq: BAN-B301
-        check_result: Union[bool, Match],
+        application: "Application[Any, CCT, Any, Any, Any, Any]",  # skipcq: BAN-B301
+        check_result: Union[bool, Match[str]],
     ) -> None:
         """Add the result of ``re.match(pattern, update.callback_query.data)`` to
         :attr:`CallbackContext.matches` as list with one element.

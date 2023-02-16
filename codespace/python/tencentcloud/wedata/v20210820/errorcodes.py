@@ -41,6 +41,9 @@ INTERNALERROR_INTERNALCALLCLOUDAPIERROR = 'InternalError.InternalCallCloudApiErr
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
+# ClientIp未被授权。
+INVALIDPARAMETER_CLIENTIPNOTAUTHORIZED = 'InvalidParameter.ClientIpNotAuthorized'
+
 # 名称重复。
 INVALIDPARAMETER_DUPLICATENAME = 'InvalidParameter.DuplicateName'
 
@@ -49,6 +52,9 @@ INVALIDPARAMETER_INVALIDFILTERPARAMETER = 'InvalidParameter.InvalidFilterParamet
 
 # 规则不存在。
 INVALIDPARAMETER_RULENOTEXIST = 'InvalidParameter.RuleNotExist'
+
+# 规则模版不存在。
+INVALIDPARAMETER_RULETEMPLATENOTEXIST = 'InvalidParameter.RuleTemplateNotExist'
 
 # 服务繁忙，请稍后重试。
 INVALIDPARAMETER_SERVICEISBUSY = 'InvalidParameter.ServiceIsBusy'

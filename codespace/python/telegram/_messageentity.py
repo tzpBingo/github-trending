@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ class MessageEntity(TelegramObject):
             :attr:`CUSTOM_EMOJI` (for inline custom emoji stickers).
 
             .. versionadded:: 20.0
-                added inline custom emoji
+                Added inline custom emoji
         offset (:obj:`int`): Offset in UTF-16 code units to the start of the entity.
         length (:obj:`int`): Length of the entity in UTF-16 code units.
         url (:obj:`str`, optional): For :attr:`TEXT_LINK` only, url that will be opened after
@@ -77,8 +77,9 @@ class MessageEntity(TelegramObject):
         length (:obj:`int`): Length of the entity in UTF-16 code units.
         url (:obj:`str`): Optional. For :attr:`TEXT_LINK` only, url that will be opened after
             user taps on the text.
-        user (:class:`telegram.User`): Optional. The mentioned user.
-        language (:obj:`str`): Optional. For :attr:`PRE` only, The programming language of
+        user (:class:`telegram.User`): Optional. For :attr:`TEXT_MENTION` only, the mentioned
+             user.
+        language (:obj:`str`): Optional. For :attr:`PRE` only, the programming language of
             the entity text.
         custom_emoji_id (:obj:`str`): Optional. For :attr:`CUSTOM_EMOJI` only, unique identifier
             of the custom emoji. Use :meth:`telegram.Bot.get_custom_emoji_stickers` to get full
@@ -104,16 +105,18 @@ class MessageEntity(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.type = enum.get_member(constants.MessageEntityType, type, type)
-        self.offset = offset
-        self.length = length
+        self.type: str = enum.get_member(constants.MessageEntityType, type, type)
+        self.offset: int = offset
+        self.length: int = length
         # Optionals
-        self.url = url
-        self.user = user
-        self.language = language
-        self.custom_emoji_id = custom_emoji_id
+        self.url: Optional[str] = url
+        self.user: Optional[User] = user
+        self.language: Optional[str] = language
+        self.custom_emoji_id: Optional[str] = custom_emoji_id
 
         self._id_attrs = (self.type, self.offset, self.length)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["MessageEntity"]:

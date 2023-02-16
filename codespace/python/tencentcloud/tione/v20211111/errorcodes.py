@@ -179,8 +179,17 @@ INTERNALERROR_NOTALLOW = 'InternalError.NotAllow'
 # 获取HDFS存储信息失败。
 INTERNALERROR_QUERYHDFSINFOFAILED = 'InternalError.QueryHDFSInfoFailed'
 
+# 查询预付费资源组详情失败。
+INTERNALERROR_QUERYRESOURCEGROUPFAILED = 'InternalError.QueryResourceGroupFailed'
+
+# 停止任务失败。
+INTERNALERROR_STOPJOBINSTANCEFAILED = 'InternalError.StopJobInstanceFailed'
+
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
+
+# 模型包不符合规范。
+INVALIDPARAMETER_MODELFILEINVALID = 'InvalidParameter.ModelFileInvalid'
 
 # 无效的接口。
 INVALIDPARAMETER_TGWINVALIDINTERFACE = 'InvalidParameter.TgwInvalidInterface'
@@ -239,6 +248,9 @@ INVALIDPARAMETERVALUE_INVALIDFILTER = 'InvalidParameterValue.InvalidFilter'
 # 参数值数量超过限制。
 INVALIDPARAMETERVALUE_LIMITEXCEEDED = 'InvalidParameterValue.LimitExceeded'
 
+# 操作不允许。
+INVALIDPARAMETERVALUE_NOTALLOW = 'InvalidParameterValue.NotAllow'
+
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'
 
@@ -251,11 +263,17 @@ OPERATIONDENIED = 'OperationDenied'
 # 余额不足，创建/更新失败。
 OPERATIONDENIED_BALANCEINSUFFICIENT = 'OperationDenied.BalanceInsufficient'
 
+# 后付费资源售罄。
+OPERATIONDENIED_BILLINGSTATUSRESOURCEINSUFFICIENT = 'OperationDenied.BillingStatusResourceInsufficient'
+
 # 觅影资源包余额不足，请先充值。
 OPERATIONDENIED_MIYINGBALANCEINSUFFICIENT = 'OperationDenied.MIYINGBalanceInsufficient'
 
 # 网段不合法。
 OPERATIONDENIED_NETWORKCIDRILLEGAL = 'OperationDenied.NetworkCidrIllegal'
+
+# 预付费资源组余量不足。
+OPERATIONDENIED_RESOURCEGROUPINSUFFICIENT = 'OperationDenied.ResourceGroupInsufficient'
 
 # 白名单免费配额不足。
 OPERATIONDENIED_WHITELISTQUOTAEXCEED = 'OperationDenied.WhitelistQuotaExceed'

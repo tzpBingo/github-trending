@@ -428,6 +428,9 @@ class BonusInfo(AbstractModel):
         :type ExpireTime: int
         :param CreateTime: 资源包创建时间
         :type CreateTime: int
+        :param Status: 资源包状态 0.未使用 1.使用中 2.已退款 3.已过期
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
         """
         self.BonusId = None
         self.UserId = None
@@ -436,6 +439,7 @@ class BonusInfo(AbstractModel):
         self.Used = None
         self.ExpireTime = None
         self.CreateTime = None
+        self.Status = None
 
 
     def _deserialize(self, params):
@@ -446,6 +450,7 @@ class BonusInfo(AbstractModel):
         self.Used = params.get("Used")
         self.ExpireTime = params.get("ExpireTime")
         self.CreateTime = params.get("CreateTime")
+        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6745,16 +6750,20 @@ class TransferCloudStorageRequest(AbstractModel):
         :type DeviceName: str
         :param ToDeviceName: 未开通云存的设备名称
         :type ToDeviceName: str
+        :param ToProductId: 未开通云存的设备产品ID
+        :type ToProductId: str
         """
         self.ProductId = None
         self.DeviceName = None
         self.ToDeviceName = None
+        self.ToProductId = None
 
 
     def _deserialize(self, params):
         self.ProductId = params.get("ProductId")
         self.DeviceName = params.get("DeviceName")
         self.ToDeviceName = params.get("ToDeviceName")
+        self.ToProductId = params.get("ToProductId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

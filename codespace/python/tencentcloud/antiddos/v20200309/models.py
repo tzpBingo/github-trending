@@ -333,6 +333,12 @@ class BGPIPInstance(AbstractModel):
         :param ConvoyId: 重保实例
 注意：此字段可能返回 null，表示取不到有效值。
         :type ConvoyId: str
+        :param ElasticBandwidth: 带宽后付费
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ElasticBandwidth: int
+        :param EOFlag: 是否为EO代播的ip: 1是，0不是
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EOFlag: int
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -358,6 +364,8 @@ class BGPIPInstance(AbstractModel):
         self.AnycastOutPackRelation = None
         self.InstanceVersion = None
         self.ConvoyId = None
+        self.ElasticBandwidth = None
+        self.EOFlag = None
 
 
     def _deserialize(self, params):
@@ -408,6 +416,8 @@ class BGPIPInstance(AbstractModel):
             self.AnycastOutPackRelation._deserialize(params.get("AnycastOutPackRelation"))
         self.InstanceVersion = params.get("InstanceVersion")
         self.ConvoyId = params.get("ConvoyId")
+        self.ElasticBandwidth = params.get("ElasticBandwidth")
+        self.EOFlag = params.get("EOFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -557,6 +567,11 @@ class BGPInstance(AbstractModel):
         :type IpCountNewFlag: int
         :param VitalityVersion: 攻击封堵套餐标记
         :type VitalityVersion: int
+        :param Line: 网络线路
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Line: int
+        :param ElasticServiceBandwidth: 弹性业务带宽开关
+        :type ElasticServiceBandwidth: int
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -574,6 +589,8 @@ class BGPInstance(AbstractModel):
         self.TagInfoList = None
         self.IpCountNewFlag = None
         self.VitalityVersion = None
+        self.Line = None
+        self.ElasticServiceBandwidth = None
 
 
     def _deserialize(self, params):
@@ -613,6 +630,8 @@ class BGPInstance(AbstractModel):
                 self.TagInfoList.append(obj)
         self.IpCountNewFlag = params.get("IpCountNewFlag")
         self.VitalityVersion = params.get("VitalityVersion")
+        self.Line = params.get("Line")
+        self.ElasticServiceBandwidth = params.get("ElasticServiceBandwidth")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3542,6 +3561,86 @@ class DescribeBgpBizTrendResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeBizHttpStatusRequest(AbstractModel):
+    """DescribeBizHttpStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Statistics: 统计方式，仅支持sum
+        :type Statistics: str
+        :param Business: 大禹子产品代号（bgpip表示高防IP）
+        :type Business: str
+        :param Period: 统计周期，可取值60，300，1800，3600， 21600，86400，单位秒
+        :type Period: int
+        :param StartTime: 统计开始时间。 如2020-02-01 12:04:12
+        :type StartTime: str
+        :param EndTime: 统计结束时间。如2020-02-03 18:03:23
+        :type EndTime: str
+        :param Id: 资源Id
+        :type Id: str
+        :param Domain: 特定域名查询
+        :type Domain: str
+        :param ProtoInfo: 协议及端口列表，协议可取值TCP, UDP, HTTP, HTTPS，仅统计纬度为连接数时有效
+        :type ProtoInfo: list of ProtocolPort
+        """
+        self.Statistics = None
+        self.Business = None
+        self.Period = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Id = None
+        self.Domain = None
+        self.ProtoInfo = None
+
+
+    def _deserialize(self, params):
+        self.Statistics = params.get("Statistics")
+        self.Business = params.get("Business")
+        self.Period = params.get("Period")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Id = params.get("Id")
+        self.Domain = params.get("Domain")
+        if params.get("ProtoInfo") is not None:
+            self.ProtoInfo = []
+            for item in params.get("ProtoInfo"):
+                obj = ProtocolPort()
+                obj._deserialize(item)
+                self.ProtoInfo.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBizHttpStatusResponse(AbstractModel):
+    """DescribeBizHttpStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param HttpStatusMap: 业务流量http状态码统计数据
+        :type HttpStatusMap: :class:`tencentcloud.antiddos.v20200309.models.HttpStatusMap`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.HttpStatusMap = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("HttpStatusMap") is not None:
+            self.HttpStatusMap = HttpStatusMap()
+            self.HttpStatusMap._deserialize(params.get("HttpStatusMap"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeBizTrendRequest(AbstractModel):
     """DescribeBizTrend请求参数结构体
 
@@ -3553,7 +3652,7 @@ class DescribeBizTrendRequest(AbstractModel):
         :type Statistics: str
         :param Business: 大禹子产品代号（bgpip表示高防IP）
         :type Business: str
-        :param Period: 统计周期，可取值300，1800，3600，21600，86400，单位秒
+        :param Period: 统计周期，可取值60，300，1800，3600，21600，86400，单位秒
         :type Period: int
         :param StartTime: 统计开始时间。 例：“2020-09-22 00:00:00”
         :type StartTime: str
@@ -4782,7 +4881,7 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         :type FilterBoundStatus: str
         :param FilterInstanceIdList: 实例id数组
         :type FilterInstanceIdList: list of str
-        :param FilterEnterpriseFlag: 企业版搜索
+        :param FilterEnterpriseFlag: 企业版搜索,  1：包含重保护航套餐下的企业版列表, 2: 不包含重保护航套餐的企业版列表
         :type FilterEnterpriseFlag: int
         :param FilterLightFlag: 轻量版搜索
         :type FilterLightFlag: int
@@ -4794,6 +4893,8 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         :type FilterTrialFlag: int
         :param FilterConvoy: 重保护航搜索
         :type FilterConvoy: int
+        :param ExcludeAdvancedInfo: 默认false；接口传true，返回数据中不包含高级信息，高级信息包含：InstanceList[0].Usage。
+        :type ExcludeAdvancedInfo: bool
         """
         self.Offset = None
         self.Limit = None
@@ -4811,6 +4912,7 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterTag = None
         self.FilterTrialFlag = None
         self.FilterConvoy = None
+        self.ExcludeAdvancedInfo = None
 
 
     def _deserialize(self, params):
@@ -4832,6 +4934,7 @@ class DescribeListBGPInstancesRequest(AbstractModel):
             self.FilterTag._deserialize(params.get("FilterTag"))
         self.FilterTrialFlag = params.get("FilterTrialFlag")
         self.FilterConvoy = params.get("FilterConvoy")
+        self.ExcludeAdvancedInfo = params.get("ExcludeAdvancedInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6430,6 +6533,66 @@ UDP
         
 
 
+class HttpStatusMap(AbstractModel):
+    """业务流量的http状态码聚合数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SourceHttp2xx: http2xx回源状态码
+        :type SourceHttp2xx: list of float
+        :param Http5xx: http5xx状态码
+        :type Http5xx: list of float
+        :param SourceHttp5xx: http5xx回源状态码
+        :type SourceHttp5xx: list of float
+        :param SourceHttp404: http404回源状态码
+        :type SourceHttp404: list of float
+        :param Http4xx: http4xx状态码
+        :type Http4xx: list of float
+        :param SourceHttp4xx: http4xx回源状态码
+        :type SourceHttp4xx: list of float
+        :param Http2xx: http2xx状态码
+        :type Http2xx: list of float
+        :param Http404: http404状态码
+        :type Http404: list of float
+        :param SourceHttp3xx: http3xx回源状态码
+        :type SourceHttp3xx: list of float
+        :param Http3xx: http3xx状态码
+        :type Http3xx: list of float
+        """
+        self.SourceHttp2xx = None
+        self.Http5xx = None
+        self.SourceHttp5xx = None
+        self.SourceHttp404 = None
+        self.Http4xx = None
+        self.SourceHttp4xx = None
+        self.Http2xx = None
+        self.Http404 = None
+        self.SourceHttp3xx = None
+        self.Http3xx = None
+
+
+    def _deserialize(self, params):
+        self.SourceHttp2xx = params.get("SourceHttp2xx")
+        self.Http5xx = params.get("Http5xx")
+        self.SourceHttp5xx = params.get("SourceHttp5xx")
+        self.SourceHttp404 = params.get("SourceHttp404")
+        self.Http4xx = params.get("Http4xx")
+        self.SourceHttp4xx = params.get("SourceHttp4xx")
+        self.Http2xx = params.get("Http2xx")
+        self.Http404 = params.get("Http404")
+        self.SourceHttp3xx = params.get("SourceHttp3xx")
+        self.Http3xx = params.get("Http3xx")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class IPAlarmThresholdRelation(AbstractModel):
     """单IP告警阈值配置
 
@@ -6835,6 +6998,8 @@ class L7RuleHealth(AbstractModel):
         :type FailedThreshold: int
         :param PassiveStatusCode: 被动探测判定正常状态码，1xx =1, 2xx=2, 3xx=4, 4xx=8,5xx=16，多个状态码值加和
         :type PassiveStatusCode: int
+        :param PassiveStatus: 被动探测配置状态，0： 正常，1：配置中，2：配置失败
+        :type PassiveStatus: int
         """
         self.Status = None
         self.Enable = None
@@ -6851,6 +7016,7 @@ class L7RuleHealth(AbstractModel):
         self.FailedCountInter = None
         self.FailedThreshold = None
         self.PassiveStatusCode = None
+        self.PassiveStatus = None
 
 
     def _deserialize(self, params):
@@ -6869,6 +7035,7 @@ class L7RuleHealth(AbstractModel):
         self.FailedCountInter = params.get("FailedCountInter")
         self.FailedThreshold = params.get("FailedThreshold")
         self.PassiveStatusCode = params.get("PassiveStatusCode")
+        self.PassiveStatus = params.get("PassiveStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6957,12 +7124,18 @@ class Layer7Rule(AbstractModel):
         :type InstanceDetails: list of InstanceRelation
         :param InstanceDetailRule: 规则所属的资源实例
         :type InstanceDetailRule: list of RuleInstanceRelation
+        :param Protocol: 协议
+        :type Protocol: str
+        :param Vport: 端口号
+        :type Vport: int
         """
         self.Domain = None
         self.ProxyTypeList = None
         self.RealServers = None
         self.InstanceDetails = None
         self.InstanceDetailRule = None
+        self.Protocol = None
+        self.Vport = None
 
 
     def _deserialize(self, params):
@@ -6991,6 +7164,8 @@ class Layer7Rule(AbstractModel):
                 obj = RuleInstanceRelation()
                 obj._deserialize(item)
                 self.InstanceDetailRule.append(obj)
+        self.Protocol = params.get("Protocol")
+        self.Vport = params.get("Vport")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7895,6 +8070,9 @@ class NewL7RuleEntry(AbstractModel):
         :type RewriteHttps: int
         :param ErrCode: 规则配置失败时的详细错误原因(仅当Status=2时有效)，1001证书不存在，1002证书获取失败，1003证书上传失败，1004证书已过期
         :type ErrCode: int
+        :param Version: 版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Version: int
         """
         self.Protocol = None
         self.Domain = None
@@ -7922,6 +8100,7 @@ class NewL7RuleEntry(AbstractModel):
         self.VirtualPort = None
         self.RewriteHttps = None
         self.ErrCode = None
+        self.Version = None
 
 
     def _deserialize(self, params):
@@ -7956,6 +8135,7 @@ class NewL7RuleEntry(AbstractModel):
         self.VirtualPort = params.get("VirtualPort")
         self.RewriteHttps = params.get("RewriteHttps")
         self.ErrCode = params.get("ErrCode")
+        self.Version = params.get("Version")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8669,16 +8849,20 @@ class SourceServer(AbstractModel):
         :type RsType: int
         :param Weight: 源站的回源权重，取值1~100
         :type Weight: int
+        :param Port: 端口号：0~65535
+        :type Port: int
         """
         self.RealServer = None
         self.RsType = None
         self.Weight = None
+        self.Port = None
 
 
     def _deserialize(self, params):
         self.RealServer = params.get("RealServer")
         self.RsType = params.get("RsType")
         self.Weight = params.get("Weight")
+        self.Port = params.get("Port")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8803,14 +8987,18 @@ class SwitchWaterPrintConfigRequest(AbstractModel):
         :type InstanceId: str
         :param OpenStatus: 水印开启/关闭状态，1表示开启；0表示关闭
         :type OpenStatus: int
+        :param CloudSdkProxy: 是否开启代理，1开启则忽略IP+端口校验；0关闭则需要IP+端口校验
+        :type CloudSdkProxy: int
         """
         self.InstanceId = None
         self.OpenStatus = None
+        self.CloudSdkProxy = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.OpenStatus = params.get("OpenStatus")
+        self.CloudSdkProxy = params.get("CloudSdkProxy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8916,12 +9104,16 @@ checkall（普通模式）
 shortfpcheckall（精简模式）
 ]
         :type Verify: str
+        :param CloudSdkProxy: 是否开启代理，1开启则忽略IP+端口校验；0关闭则需要IP+端口校验
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CloudSdkProxy: int
         """
         self.Offset = None
         self.OpenStatus = None
         self.Listeners = None
         self.Keys = None
         self.Verify = None
+        self.CloudSdkProxy = None
 
 
     def _deserialize(self, params):
@@ -8940,6 +9132,7 @@ shortfpcheckall（精简模式）
                 obj._deserialize(item)
                 self.Keys.append(obj)
         self.Verify = params.get("Verify")
+        self.CloudSdkProxy = params.get("CloudSdkProxy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

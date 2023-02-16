@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import pickle
 from copy import deepcopy
 from pathlib import Path
 from sys import version_info as py_ver
-from typing import Any, Callable, Dict, Optional, Set, Tuple, Type, TypeVar, cast, overload
+from typing import Any, Callable, Dict, Optional, Set, Tuple, Type, TypeVar, Union, cast, overload
 
 from telegram import Bot, TelegramObject
 from telegram._utils.types import FilePathInput
@@ -63,6 +63,9 @@ def _custom_reduction(cls: TelegramObj) -> Tuple[Callable, Tuple[Type[TelegramOb
     works as intended.
     """
     data = cls._get_attrs(include_private=True)  # pylint: disable=protected-access
+    # MappingProxyType is not pickable, so we convert it to a dict
+    # no need to convert back to MPT in _reconstruct_to, since it's done in __setstate__
+    data["api_kwargs"] = dict(data["api_kwargs"])  # type: ignore[arg-type]
     return _reconstruct_to, (cls.__class__, data)
 
 
@@ -133,8 +136,7 @@ class PicklePersistence(BasePersistence[UD, CD, BD]):
     Examples:
         :any:`Persistent Conversation Bot <examples.persistentconversationbot>`
 
-    .. seealso:: `Making Your Bot Persistent <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Making-your-bot-persistent>`_
+    .. seealso:: :wiki:`Making Your Bot Persistent <Making-your-bot-persistent>`
 
     .. versionchanged:: 20.0
 
@@ -145,9 +147,9 @@ class PicklePersistence(BasePersistence[UD, CD, BD]):
     Args:
         filepath (:obj:`str` | :obj:`pathlib.Path`): The filepath for storing the pickle files.
             When :attr:`single_file` is :obj:`False` this will be used as a prefix.
-        store_data (:class:`PersistenceInput`, optional): Specifies which kinds of data will be
-            saved by this persistence instance. By default, all available kinds of data will be
-            saved.
+        store_data (:class:`~telegram.ext.PersistenceInput`, optional): Specifies which kinds of
+            data will be saved by this persistence instance. By default, all available kinds of
+            data will be saved.
         single_file (:obj:`bool`, optional): When :obj:`False` will store 5 separate files of
             `filename_user_data`, `filename_bot_data`, `filename_chat_data`,
             `filename_callback_data` and `filename_conversations`. Default is :obj:`True`.
@@ -170,8 +172,8 @@ class PicklePersistence(BasePersistence[UD, CD, BD]):
     Attributes:
         filepath (:obj:`str` | :obj:`pathlib.Path`): The filepath for storing the pickle files.
             When :attr:`single_file` is :obj:`False` this will be used as a prefix.
-        store_data (:class:`PersistenceInput`): Specifies which kinds of data will be saved by this
-            persistence instance.
+        store_data (:class:`~telegram.ext.PersistenceInput`): Specifies which kinds of data will
+            be saved by this persistence instance.
         single_file (:obj:`bool`): Optional. When :obj:`False` will store 5 separate files of
             `filename_user_data`, `filename_bot_data`, `filename_chat_data`,
             `filename_callback_data` and `filename_conversations`. Default is :obj:`True`.
@@ -199,7 +201,7 @@ class PicklePersistence(BasePersistence[UD, CD, BD]):
 
     @overload
     def __init__(
-        self: "PicklePersistence[Dict, Dict, Dict]",
+        self: "PicklePersistence[Dict[Any, Any], Dict[Any, Any], Dict[Any, Any]]",
         filepath: FilePathInput,
         store_data: PersistenceInput = None,
         single_file: bool = True,
@@ -230,15 +232,17 @@ class PicklePersistence(BasePersistence[UD, CD, BD]):
         context_types: ContextTypes[Any, UD, CD, BD] = None,
     ):
         super().__init__(store_data=store_data, update_interval=update_interval)
-        self.filepath = Path(filepath)
-        self.single_file = single_file
-        self.on_flush = on_flush
+        self.filepath: Path = Path(filepath)
+        self.single_file: Optional[bool] = single_file
+        self.on_flush: Optional[bool] = on_flush
         self.user_data: Optional[Dict[int, UD]] = None
         self.chat_data: Optional[Dict[int, CD]] = None
         self.bot_data: Optional[BD] = None
         self.callback_data: Optional[CDCData] = None
-        self.conversations: Optional[Dict[str, Dict[Tuple, object]]] = None
-        self.context_types = cast(ContextTypes[Any, UD, CD, BD], context_types or ContextTypes())
+        self.conversations: Optional[Dict[str, Dict[Tuple[Union[int, str], ...], object]]] = None
+        self.context_types: ContextTypes[Any, UD, CD, BD] = cast(
+            ContextTypes[Any, UD, CD, BD], context_types or ContextTypes()
+        )
 
     def _load_singlefile(self) -> None:
         try:

@@ -2020,8 +2020,12 @@ class CompareRule(AbstractModel):
         :param Items: 比较条件列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type Items: list of CompareRuleItem
+        :param CycleStep: 周期性模板默认周期，单位秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CycleStep: int
         """
         self.Items = None
+        self.CycleStep = None
 
 
     def _deserialize(self, params):
@@ -2031,6 +2035,7 @@ class CompareRule(AbstractModel):
                 obj = CompareRuleItem()
                 obj._deserialize(item)
                 self.Items.append(obj)
+        self.CycleStep = params.get("CycleStep")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3238,6 +3243,36 @@ class CreateWorkflowResponse(AbstractModel):
             self.Data = CommonId()
             self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
+
+
+class CvmAgentStatus(AbstractModel):
+    """采集器状态统计
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: agent状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param Count: 对应状态的agent总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Count: int
+        """
+        self.Status = None
+        self.Count = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        self.Count = params.get("Count")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DailyScoreInfo(AbstractModel):
@@ -5559,7 +5594,7 @@ class DescribeInLongAgentListRequest(AbstractModel):
         :type AgentId: str
         :param AgentName: Agent Name
         :type AgentName: str
-        :param AgentType: 集群类型，1：TKE Agent，2：BOSS SDK，默认：1
+        :param AgentType: 集群类型，1：TKE Agent，2：BOSS SDK，默认：1，3：CVM，4：自建服务器 【传多个用逗号分割】
         :type AgentType: int
         :param Status: Agent状态(running运行中，initializing 操作中，failed心跳异常)
         :type Status: str
@@ -5571,6 +5606,8 @@ class DescribeInLongAgentListRequest(AbstractModel):
         :type PageSize: int
         :param Like: 名称搜索是否开启模糊匹配，1：开启，0：不开启（精确匹配）
         :type Like: int
+        :param AgentTypes: agent类型【多个用逗号分隔】
+        :type AgentTypes: str
         """
         self.ProjectId = None
         self.AgentId = None
@@ -5581,6 +5618,7 @@ class DescribeInLongAgentListRequest(AbstractModel):
         self.PageIndex = None
         self.PageSize = None
         self.Like = None
+        self.AgentTypes = None
 
 
     def _deserialize(self, params):
@@ -5593,6 +5631,7 @@ class DescribeInLongAgentListRequest(AbstractModel):
         self.PageIndex = params.get("PageIndex")
         self.PageSize = params.get("PageSize")
         self.Like = params.get("Like")
+        self.AgentTypes = params.get("AgentTypes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11163,6 +11202,26 @@ class GenHiveTableDDLSqlRequest(AbstractModel):
         :type SchemaName: str
         :param SourceFieldInfoList: 上游节点的字段信息
         :type SourceFieldInfoList: list of SourceFieldInfo
+        :param Partitions: 分区字段
+        :type Partitions: list of Partition
+        :param Properties: 建表属性
+        :type Properties: list of Property
+        :param TableMode: 建表模式，0:向导模式，1:ddl
+        :type TableMode: int
+        :param TableVersion: DLC表版本，v1/v2
+        :type TableVersion: str
+        :param UpsertFlag: 是否upsert写入
+        :type UpsertFlag: bool
+        :param TableComment: 表描述信息
+        :type TableComment: str
+        :param AddDataFiles: 增加的文件数量阈值, 超过值将触发小文件合并
+        :type AddDataFiles: int
+        :param AddEqualityDeletes: 增加的Equality delete数量阈值, 超过值将触发小文件合并
+        :type AddEqualityDeletes: int
+        :param AddPositionDeletes: 增加的Position delete数量阈值, 超过值将触发小文件合并
+        :type AddPositionDeletes: int
+        :param AddDeleteFiles: 增加的delete file数量阈值
+        :type AddDeleteFiles: int
         """
         self.ProjectId = None
         self.SinkDatabase = None
@@ -11174,6 +11233,16 @@ class GenHiveTableDDLSqlRequest(AbstractModel):
         self.SinkType = None
         self.SchemaName = None
         self.SourceFieldInfoList = None
+        self.Partitions = None
+        self.Properties = None
+        self.TableMode = None
+        self.TableVersion = None
+        self.UpsertFlag = None
+        self.TableComment = None
+        self.AddDataFiles = None
+        self.AddEqualityDeletes = None
+        self.AddPositionDeletes = None
+        self.AddDeleteFiles = None
 
 
     def _deserialize(self, params):
@@ -11192,6 +11261,26 @@ class GenHiveTableDDLSqlRequest(AbstractModel):
                 obj = SourceFieldInfo()
                 obj._deserialize(item)
                 self.SourceFieldInfoList.append(obj)
+        if params.get("Partitions") is not None:
+            self.Partitions = []
+            for item in params.get("Partitions"):
+                obj = Partition()
+                obj._deserialize(item)
+                self.Partitions.append(obj)
+        if params.get("Properties") is not None:
+            self.Properties = []
+            for item in params.get("Properties"):
+                obj = Property()
+                obj._deserialize(item)
+                self.Properties.append(obj)
+        self.TableMode = params.get("TableMode")
+        self.TableVersion = params.get("TableVersion")
+        self.UpsertFlag = params.get("UpsertFlag")
+        self.TableComment = params.get("TableComment")
+        self.AddDataFiles = params.get("AddDataFiles")
+        self.AddEqualityDeletes = params.get("AddEqualityDeletes")
+        self.AddPositionDeletes = params.get("AddPositionDeletes")
+        self.AddDeleteFiles = params.get("AddDeleteFiles")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11470,6 +11559,15 @@ class InLongAgentDetail(AbstractModel):
         :type ExecutorGroupName: str
         :param TaskCount: 关联任务数
         :type TaskCount: int
+        :param AgentGroupId: 采集器组ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AgentGroupId: str
+        :param CvmAgentStatusList: agent状态统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CvmAgentStatusList: list of CvmAgentStatus
+        :param AgentTotal: agent数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AgentTotal: int
         """
         self.AgentId = None
         self.AgentName = None
@@ -11481,6 +11579,9 @@ class InLongAgentDetail(AbstractModel):
         self.ExecutorGroupId = None
         self.ExecutorGroupName = None
         self.TaskCount = None
+        self.AgentGroupId = None
+        self.CvmAgentStatusList = None
+        self.AgentTotal = None
 
 
     def _deserialize(self, params):
@@ -11494,6 +11595,14 @@ class InLongAgentDetail(AbstractModel):
         self.ExecutorGroupId = params.get("ExecutorGroupId")
         self.ExecutorGroupName = params.get("ExecutorGroupName")
         self.TaskCount = params.get("TaskCount")
+        self.AgentGroupId = params.get("AgentGroupId")
+        if params.get("CvmAgentStatusList") is not None:
+            self.CvmAgentStatusList = []
+            for item in params.get("CvmAgentStatusList"):
+                obj = CvmAgentStatus()
+                obj._deserialize(item)
+                self.CvmAgentStatusList.append(obj)
+        self.AgentTotal = params.get("AgentTotal")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14636,6 +14745,38 @@ class ParamInfo(AbstractModel):
         
 
 
+class Partition(AbstractModel):
+    """分区参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Transform: 分区转换策略
+        :type Transform: str
+        :param Name: 分区字段名
+        :type Name: str
+        :param TransformArgs: 策略参数
+        :type TransformArgs: list of str
+        """
+        self.Transform = None
+        self.Name = None
+        self.TransformArgs = None
+
+
+    def _deserialize(self, params):
+        self.Transform = params.get("Transform")
+        self.Name = params.get("Name")
+        self.TransformArgs = params.get("TransformArgs")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ProdSchedulerTask(AbstractModel):
     """数据质量生产调度任务业务实体
 
@@ -14662,6 +14803,34 @@ class ProdSchedulerTask(AbstractModel):
         self.WorkflowId = params.get("WorkflowId")
         self.TaskId = params.get("TaskId")
         self.TaskName = params.get("TaskName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Property(AbstractModel):
+    """dlc建表属性
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: key值
+        :type Key: str
+        :param Value: value值
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -71,6 +71,9 @@ FAILEDOPERATION_USERINFONOMATCH = 'FailedOperation.UserInfoNoMatch'
 # 内部错误。
 INTERNALERROR = 'InternalError'
 
+# 第三方接口失败。
+INTERNALERROR_API = 'InternalError.Api'
+
 # 缓存错误。
 INTERNALERROR_CACHE = 'InternalError.Cache'
 
@@ -565,6 +568,9 @@ RESOURCEUNAVAILABLE = 'ResourceUnavailable'
 
 # 未授权操作。
 UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+
+# 请升级到对应版本后即可使用该接口。
+UNAUTHORIZEDOPERATION_NOPERMISSIONFEATURE = 'UnauthorizedOperation.NoPermissionFeature'
 
 # 未知参数错误。
 UNKNOWNPARAMETER = 'UnknownParameter'

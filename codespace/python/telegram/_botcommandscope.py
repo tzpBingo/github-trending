@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -77,8 +77,10 @@ class BotCommandScope(TelegramObject):
 
     def __init__(self, type: str, *, api_kwargs: JSONDict = None):
         super().__init__(api_kwargs=api_kwargs)
-        self.type = type
+        self.type: str = type
         self._id_attrs = (self.type,)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["BotCommandScope"]:
@@ -128,6 +130,7 @@ class BotCommandScopeDefault(BotCommandScope):
 
     def __init__(self, *, api_kwargs: JSONDict = None):
         super().__init__(type=BotCommandScope.DEFAULT, api_kwargs=api_kwargs)
+        self._freeze()
 
 
 class BotCommandScopeAllPrivateChats(BotCommandScope):
@@ -143,6 +146,7 @@ class BotCommandScopeAllPrivateChats(BotCommandScope):
 
     def __init__(self, *, api_kwargs: JSONDict = None):
         super().__init__(type=BotCommandScope.ALL_PRIVATE_CHATS, api_kwargs=api_kwargs)
+        self._freeze()
 
 
 class BotCommandScopeAllGroupChats(BotCommandScope):
@@ -157,6 +161,7 @@ class BotCommandScopeAllGroupChats(BotCommandScope):
 
     def __init__(self, *, api_kwargs: JSONDict = None):
         super().__init__(type=BotCommandScope.ALL_GROUP_CHATS, api_kwargs=api_kwargs)
+        self._freeze()
 
 
 class BotCommandScopeAllChatAdministrators(BotCommandScope):
@@ -171,6 +176,7 @@ class BotCommandScopeAllChatAdministrators(BotCommandScope):
 
     def __init__(self, *, api_kwargs: JSONDict = None):
         super().__init__(type=BotCommandScope.ALL_CHAT_ADMINISTRATORS, api_kwargs=api_kwargs)
+        self._freeze()
 
 
 class BotCommandScopeChat(BotCommandScope):
@@ -193,10 +199,11 @@ class BotCommandScopeChat(BotCommandScope):
 
     def __init__(self, chat_id: Union[str, int], *, api_kwargs: JSONDict = None):
         super().__init__(type=BotCommandScope.CHAT, api_kwargs=api_kwargs)
-        self.chat_id = (
-            chat_id if isinstance(chat_id, str) and chat_id.startswith("@") else int(chat_id)
-        )
-        self._id_attrs = (self.type, self.chat_id)
+        with self._unfrozen():
+            self.chat_id: Union[str, int] = (
+                chat_id if isinstance(chat_id, str) and chat_id.startswith("@") else int(chat_id)
+            )
+            self._id_attrs = (self.type, self.chat_id)
 
 
 class BotCommandScopeChatAdministrators(BotCommandScope):
@@ -219,10 +226,11 @@ class BotCommandScopeChatAdministrators(BotCommandScope):
 
     def __init__(self, chat_id: Union[str, int], *, api_kwargs: JSONDict = None):
         super().__init__(type=BotCommandScope.CHAT_ADMINISTRATORS, api_kwargs=api_kwargs)
-        self.chat_id = (
-            chat_id if isinstance(chat_id, str) and chat_id.startswith("@") else int(chat_id)
-        )
-        self._id_attrs = (self.type, self.chat_id)
+        with self._unfrozen():
+            self.chat_id: Union[str, int] = (
+                chat_id if isinstance(chat_id, str) and chat_id.startswith("@") else int(chat_id)
+            )
+            self._id_attrs = (self.type, self.chat_id)
 
 
 class BotCommandScopeChatMember(BotCommandScope):
@@ -248,8 +256,9 @@ class BotCommandScopeChatMember(BotCommandScope):
 
     def __init__(self, chat_id: Union[str, int], user_id: int, *, api_kwargs: JSONDict = None):
         super().__init__(type=BotCommandScope.CHAT_MEMBER, api_kwargs=api_kwargs)
-        self.chat_id = (
-            chat_id if isinstance(chat_id, str) and chat_id.startswith("@") else int(chat_id)
-        )
-        self.user_id = user_id
-        self._id_attrs = (self.type, self.chat_id, self.user_id)
+        with self._unfrozen():
+            self.chat_id: Union[str, int] = (
+                chat_id if isinstance(chat_id, str) and chat_id.startswith("@") else int(chat_id)
+            )
+            self.user_id: int = user_id
+            self._id_attrs = (self.type, self.chat_id, self.user_id)

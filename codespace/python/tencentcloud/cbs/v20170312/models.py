@@ -575,6 +575,55 @@ class CreateAutoSnapshotPolicyResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateDiskBackupRequest(AbstractModel):
+    """CreateDiskBackup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskId: 要创建备份点的云硬盘名称。
+        :type DiskId: str
+        :param DiskBackupName: 云硬盘备份点名称。长度不能超过100个字符。
+        :type DiskBackupName: str
+        """
+        self.DiskId = None
+        self.DiskBackupName = None
+
+
+    def _deserialize(self, params):
+        self.DiskId = params.get("DiskId")
+        self.DiskBackupName = params.get("DiskBackupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateDiskBackupResponse(AbstractModel):
+    """CreateDiskBackup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DiskBackupId: 云硬盘备份点的ID。
+        :type DiskBackupId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DiskBackupId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DiskBackupId = params.get("DiskBackupId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateDisksRequest(AbstractModel):
     """CreateDisks请求参数结构体
 
@@ -1454,14 +1503,14 @@ class DescribeSnapshotOperationLogsRequest(AbstractModel):
         :param Filters: 过滤条件。支持以下条件：
 <li>snapshot-id - Array of String - 是否必填：是 - 按快照ID过滤，每个请求最多可指定10个快照ID。
         :type Filters: list of Filter
-        :param BeginTime: 要查询的操作日志的起始时间，例如：“2019-11-22 00:00:00"
-        :type BeginTime: str
         :param EndTime: 要查询的操作日志的截止时间，例如：“2019-11-22 23:59:59"
         :type EndTime: str
+        :param BeginTime: 要查询的操作日志的起始时间，例如：“2019-11-22 00:00:00"
+        :type BeginTime: str
         """
         self.Filters = None
-        self.BeginTime = None
         self.EndTime = None
+        self.BeginTime = None
 
 
     def _deserialize(self, params):
@@ -1471,8 +1520,8 @@ class DescribeSnapshotOperationLogsRequest(AbstractModel):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
-        self.BeginTime = params.get("BeginTime")
         self.EndTime = params.get("EndTime")
+        self.BeginTime = params.get("BeginTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1776,6 +1825,8 @@ class Disk(AbstractModel):
         :type CreateTime: str
         :param DeleteSnapshot: 销毁云盘时删除关联的非永久保留快照。0 表示非永久快照不随云盘销毁而销毁，1表示非永久快照随云盘销毁而销毁，默认取0。快照是否永久保留可以通过DescribeSnapshots接口返回的快照详情的IsPermanent字段来判断，true表示永久快照，false表示非永久快照。
         :type DeleteSnapshot: int
+        :param DiskBackupQuota: 云硬盘备份点配额。表示最大可以保留的备份点数量。
+        :type DiskBackupQuota: int
         :param DiskBackupCount: 云硬盘备份点已使用的数量。
         :type DiskBackupCount: int
         :param InstanceType: 云硬盘挂载实例的类型。取值范围：<br><li>CVM<br><li>EKS
@@ -1817,6 +1868,7 @@ class Disk(AbstractModel):
         self.Shareable = None
         self.CreateTime = None
         self.DeleteSnapshot = None
+        self.DiskBackupQuota = None
         self.DiskBackupCount = None
         self.InstanceType = None
 
@@ -1865,6 +1917,7 @@ class Disk(AbstractModel):
         self.Shareable = params.get("Shareable")
         self.CreateTime = params.get("CreateTime")
         self.DeleteSnapshot = params.get("DeleteSnapshot")
+        self.DiskBackupQuota = params.get("DiskBackupQuota")
         self.DiskBackupCount = params.get("DiskBackupCount")
         self.InstanceType = params.get("InstanceType")
         memeber_set = set(params.keys())
@@ -2748,9 +2801,9 @@ class ModifyDisksChargeTypeRequest(AbstractModel):
         r"""
         :param DiskIds: 一个或多个待操作的云硬盘ID。每次请求批量云盘上限为100。
         :type DiskIds: list of str
-        :param DiskChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。
+        :param DiskChargePrepaid: 设置为预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。
         :type DiskChargePrepaid: :class:`tencentcloud.cbs.v20170312.models.DiskChargePrepaid`
-        :param DiskChargePostpaid: 后付费模式
+        :param DiskChargePostpaid: 设置为后付费模式
         :type DiskChargePostpaid: bool
         """
         self.DiskIds = None
@@ -2844,23 +2897,23 @@ class ModifySnapshotAttributeRequest(AbstractModel):
         r"""
         :param SnapshotId: 快照ID, 可通过[DescribeSnapshots](/document/product/362/15647)查询。
         :type SnapshotId: str
-        :param SnapshotName: 新的快照名称。最长为60个字符。
-        :type SnapshotName: str
         :param IsPermanent: 快照的保留方式，FALSE表示非永久保留，TRUE表示永久保留。
         :type IsPermanent: bool
+        :param SnapshotName: 新的快照名称。最长为60个字符。
+        :type SnapshotName: str
         :param Deadline: 快照的到期时间；设置好快照将会被同时设置为非永久保留方式；超过到期时间后快照将会被自动删除。
         :type Deadline: str
         """
         self.SnapshotId = None
-        self.SnapshotName = None
         self.IsPermanent = None
+        self.SnapshotName = None
         self.Deadline = None
 
 
     def _deserialize(self, params):
         self.SnapshotId = params.get("SnapshotId")
-        self.SnapshotName = params.get("SnapshotName")
         self.IsPermanent = params.get("IsPermanent")
+        self.SnapshotName = params.get("SnapshotName")
         self.Deadline = params.get("Deadline")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -3411,15 +3464,24 @@ class SnapshotCopyResult(AbstractModel):
 
 
 class SnapshotOperationLog(AbstractModel):
-    """快照操作日志。
+    """快照操作日志，已废弃。
 
     """
 
     def __init__(self):
         r"""
+        :param OperationState: 操作的状态。取值范围：
+SUCCESS :表示操作成功 
+FAILED :表示操作失败 
+PROCESSING :表示操作中。
+        :type OperationState: str
+        :param StartTime: 开始时间。
+        :type StartTime: str
         :param Operator: 操作者的UIN。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Operator: str
+        :param SnapshotId: 操作的快照ID。
+        :type SnapshotId: str
         :param Operation: 操作类型。取值范围：
 SNAP_OPERATION_DELETE：删除快照
 SNAP_OPERATION_ROLLBACK：回滚快照
@@ -3429,32 +3491,23 @@ SNAP_OPERATION_COPY：跨地域复制快照
 ASP_OPERATION_CREATE_SNAP：由定期快照策略创建快照
 ASP_OPERATION_DELETE_SNAP：由定期快照策略删除快照
         :type Operation: str
-        :param SnapshotId: 操作的快照ID。
-        :type SnapshotId: str
-        :param OperationState: 操作的状态。取值范围：
-SUCCESS :表示操作成功 
-FAILED :表示操作失败 
-PROCESSING :表示操作中。
-        :type OperationState: str
-        :param StartTime: 开始时间。
-        :type StartTime: str
         :param EndTime: 结束时间。
         :type EndTime: str
         """
-        self.Operator = None
-        self.Operation = None
-        self.SnapshotId = None
         self.OperationState = None
         self.StartTime = None
+        self.Operator = None
+        self.SnapshotId = None
+        self.Operation = None
         self.EndTime = None
 
 
     def _deserialize(self, params):
-        self.Operator = params.get("Operator")
-        self.Operation = params.get("Operation")
-        self.SnapshotId = params.get("SnapshotId")
         self.OperationState = params.get("OperationState")
         self.StartTime = params.get("StartTime")
+        self.Operator = params.get("Operator")
+        self.SnapshotId = params.get("SnapshotId")
+        self.Operation = params.get("Operation")
         self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():

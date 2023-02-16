@@ -49,15 +49,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateAgeDetectTask", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateAgeDetectTaskResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateAgeDetectTaskResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -78,15 +72,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateApp", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateAppResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateAppResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -95,7 +83,7 @@ class GmeClient(AbstractClient):
 
 
     def CreateCustomization(self, request):
-        """用户使用该接口可以创建语音消息转文本自学习模型，以供识别调用
+        """用户使用该接口可以创建语音消息转文本热句模型，以供识别调用
 
         :param request: Request instance for CreateCustomization.
         :type request: :class:`tencentcloud.gme.v20180711.models.CreateCustomizationRequest`
@@ -107,15 +95,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateCustomization", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateCustomizationResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateCustomizationResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -136,15 +118,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateScanUser", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateScanUserResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateScanUserResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -153,7 +129,7 @@ class GmeClient(AbstractClient):
 
 
     def DeleteCustomization(self, request):
-        """用户通过该接口可以删除语音消息转文本自学习模型
+        """用户通过该接口可以删除语音消息转文本热句模型
 
         :param request: Request instance for DeleteCustomization.
         :type request: :class:`tencentcloud.gme.v20180711.models.DeleteCustomizationRequest`
@@ -165,15 +141,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteCustomization", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteCustomizationResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteCustomizationResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -194,15 +164,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteRoomMember", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteRoomMemberResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteRoomMemberResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -223,15 +187,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteScanUser", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteScanUserResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteScanUserResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -252,15 +210,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAgeDetectTask", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAgeDetectTaskResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAgeDetectTaskResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -281,15 +233,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAppStatistics", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAppStatisticsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAppStatisticsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -310,15 +256,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeApplicationData", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeApplicationDataResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeApplicationDataResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -339,15 +279,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeApplicationList", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeApplicationListResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeApplicationListResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -368,15 +302,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeRealtimeScanConfig", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeRealtimeScanConfigResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeRealtimeScanConfigResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -397,15 +325,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeRoomInfo", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeRoomInfoResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeRoomInfoResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -427,15 +349,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeScanResultList", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeScanResultListResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeScanResultListResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -456,15 +372,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeUserInAndOutTime", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeUserInAndOutTimeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeUserInAndOutTimeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -473,7 +383,7 @@ class GmeClient(AbstractClient):
 
 
     def GetCustomizationList(self, request):
-        """查询语音消息转文本自学习模型列表
+        """查询语音消息转文本热句模型列表
 
         :param request: Request instance for GetCustomizationList.
         :type request: :class:`tencentcloud.gme.v20180711.models.GetCustomizationListRequest`
@@ -485,15 +395,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("GetCustomizationList", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.GetCustomizationListResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.GetCustomizationListResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -514,15 +418,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyAppStatus", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyAppStatusResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyAppStatusResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -531,7 +429,7 @@ class GmeClient(AbstractClient):
 
 
     def ModifyCustomization(self, request):
-        """用户通过该接口可以更新语音消息转文本自学习模型。
+        """用户通过该接口可以更新语音消息转文本热句模型。
 
         :param request: Request instance for ModifyCustomization.
         :type request: :class:`tencentcloud.gme.v20180711.models.ModifyCustomizationRequest`
@@ -543,15 +441,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyCustomization", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyCustomizationResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyCustomizationResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -560,7 +452,7 @@ class GmeClient(AbstractClient):
 
 
     def ModifyCustomizationState(self, request):
-        """通过该接口，用户可以修改语音消息转文本自学习模型状态，上下线自学习模型
+        """通过该接口，用户可以修改语音消息转文本热句模型状态，上下线热句模型
 
         :param request: Request instance for ModifyCustomizationState.
         :type request: :class:`tencentcloud.gme.v20180711.models.ModifyCustomizationStateRequest`
@@ -572,15 +464,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyCustomizationState", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyCustomizationStateResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyCustomizationStateResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -603,15 +489,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyUserMicStatus", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyUserMicStatusResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyUserMicStatusResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -674,7 +554,7 @@ class GmeClient(AbstractClient):
         <h4 id="Callback_Declare"><b>回调相关说明：</b></h4>
         <li>如果在请求参数中指定了回调地址参数 Callback，即一个 HTTP(S) 协议接口的 URL，则需要支持 POST 方法，传输数据编码采用 UTF-8。</li>
         <li>在推送回调数据后，接收到的 HTTP 状态码为 200 时，表示推送成功。</li>
-        <li>HTTP 头参数说明：</li>
+        <li>HTTP 请求参数（query）说明：</li>
         <table>
         <thread>
         <tr>
@@ -716,32 +596,32 @@ class GmeClient(AbstractClient):
         		"HitFlag": true,
         		"MainType": "abuse",
         		"RoomId": "123",
-        		"OpenId": "xxx",
+        		"OpenId": "111",
         		"Info":"",
         		"Offset": 0,
         		"Duration": 3400,
         		"PieceStartTime":1574684231,
         		"ScanDetail": [{
         			"EndTime": 1110,
-        			"KeyWord": "xxx",
+        			"KeyWord": "违规字",
         			"Label": "abuse",
         			"Rate": "90.00",
         			"StartTime": 1110
         		}, {
         			"EndTime": 1380,
-        			"KeyWord": "xxx",
+        			"KeyWord": "违规字",
         			"Label": "abuse",
         			"Rate": "90.00",
         			"StartTime": 930
         		}, {
         			"EndTime": 1560,
-        			"KeyWord": "xxx",
+        			"KeyWord": "违规字",
         			"Label": "abuse",
         			"Rate": "90.00",
         			"StartTime": 930
         		}, {
         			"EndTime": 2820,
-        			"KeyWord": "xxx",
+        			"KeyWord": "违规字",
         			"Label": "abuse",
         			"Rate": "90.00",
         			"StartTime": 2490
@@ -752,7 +632,7 @@ class GmeClient(AbstractClient):
         		"default"
         	],
         	"Status": "Success",
-        	"TaskId": "xxx",
+        	"TaskId": "6330xxxx-9xx7-11ed-98e3-52xxxxe4ac3b",
         	"Url": "https://xxx/xxx.m4a"
         }
         </code></pre>
@@ -767,15 +647,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("ScanVoice", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ScanVoiceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ScanVoiceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -796,15 +670,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("UpdateScanRooms", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UpdateScanRoomsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UpdateScanRoomsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -825,15 +693,9 @@ class GmeClient(AbstractClient):
             headers = request.headers
             body = self.call("UpdateScanUsers", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UpdateScanUsersResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UpdateScanUsersResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise

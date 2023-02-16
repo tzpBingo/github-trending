@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram LoginUrl."""
+from typing import Optional
 
 from telegram._telegramobject import TelegramObject
 from telegram._utils.types import JSONDict
@@ -44,7 +45,7 @@ class LoginUrl(TelegramObject):
             the original URL without information about the user will be opened. The data added is
             the same as described in
             `Receiving authorization data
-            <https://core.telegram.org/widgets/login#receiving-authorization-data>`_
+            <https://core.telegram.org/widgets/login#receiving-authorization-data>`_.
         forward_text (:obj:`str`, optional): New text of the button in forwarded messages.
         bot_username (:obj:`str`, optional): Username of a bot, which will be used for user
             authorization. See
@@ -59,10 +60,22 @@ class LoginUrl(TelegramObject):
             for your bot to send messages to the user.
 
     Attributes:
-        url (:obj:`str`): An HTTPS URL to be opened with user authorization data.
+        url (:obj:`str`): An HTTPS URL to be opened with user authorization data added to the query
+            string when the button is pressed. If the user refuses to provide authorization data,
+            the original URL without information about the user will be opened. The data added is
+            the same as described in
+            `Receiving authorization data
+            <https://core.telegram.org/widgets/login#receiving-authorization-data>`_.
         forward_text (:obj:`str`): Optional. New text of the button in forwarded messages.
         bot_username (:obj:`str`): Optional. Username of a bot, which will be used for user
-            authorization.
+            authorization. See
+            `Setting up a bot <https://core.telegram.org/widgets/login#setting-up-a-bot>`_
+            for more details. If not specified, the current
+            bot's username will be assumed. The url's domain must be the same as the domain linked
+            with the bot. See
+            `Linking your domain to the bot
+            <https://core.telegram.org/widgets/login#linking-your-domain-to-the-bot>`_
+            for more details.
         request_write_access (:obj:`bool`): Optional. Pass :obj:`True` to request the permission
             for your bot to send messages to the user.
 
@@ -81,10 +94,12 @@ class LoginUrl(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.url = url
+        self.url: str = url
         # Optional
-        self.forward_text = forward_text
-        self.bot_username = bot_username
-        self.request_write_access = request_write_access
+        self.forward_text: Optional[bool] = forward_text
+        self.bot_username: Optional[str] = bot_username
+        self.request_write_access: Optional[bool] = request_write_access
 
         self._id_attrs = (self.url,)
+
+        self._freeze()

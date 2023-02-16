@@ -2173,6 +2173,10 @@ class CreateRocketMQGroupRequest(AbstractModel):
         :type ClusterId: str
         :param Remark: 说明信息，最长128个字符
         :type Remark: str
+        :param GroupType: Group类型（TCP/HTTP）
+        :type GroupType: str
+        :param RetryMaxTimes: Group最大重试次数
+        :type RetryMaxTimes: int
         """
         self.GroupId = None
         self.Namespaces = None
@@ -2180,6 +2184,8 @@ class CreateRocketMQGroupRequest(AbstractModel):
         self.BroadcastEnable = None
         self.ClusterId = None
         self.Remark = None
+        self.GroupType = None
+        self.RetryMaxTimes = None
 
 
     def _deserialize(self, params):
@@ -2189,6 +2195,8 @@ class CreateRocketMQGroupRequest(AbstractModel):
         self.BroadcastEnable = params.get("BroadcastEnable")
         self.ClusterId = params.get("ClusterId")
         self.Remark = params.get("Remark")
+        self.GroupType = params.get("GroupType")
+        self.RetryMaxTimes = params.get("RetryMaxTimes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2283,7 +2291,7 @@ class CreateRocketMQTopicRequest(AbstractModel):
         :type Topic: str
         :param Namespaces: 主题所在的命名空间，目前支持在单个命名空间下创建主题
         :type Namespaces: list of str
-        :param Type: 主题类型，可选值为Normal, GlobalOrder, PartitionedOrder
+        :param Type: 主题类型，可选值为Normal, PartitionedOrder, Transaction, DelayScheduled。
         :type Type: str
         :param ClusterId: 集群ID
         :type ClusterId: str
@@ -5150,16 +5158,43 @@ class DescribeRabbitMQNodeListRequest(AbstractModel):
         :type Offset: int
         :param Limit: 一页限制
         :type Limit: int
+        :param NodeName: 模糊搜索节点名字
+        :type NodeName: str
+        :param Filters: 过滤参数的名字和数值
+现在只有一个nodeStatus
+running/down
+数组类型，兼容后续添加过滤参数
+
+        :type Filters: list of Filter
+        :param SortElement: 按指定元素排序，现在只有2个
+cpuUsage/diskUsage
+        :type SortElement: str
+        :param SortOrder: 升序/降序
+ascend/descend
+        :type SortOrder: str
         """
         self.InstanceId = None
         self.Offset = None
         self.Limit = None
+        self.NodeName = None
+        self.Filters = None
+        self.SortElement = None
+        self.SortOrder = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
+        self.NodeName = params.get("NodeName")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.SortElement = params.get("SortElement")
+        self.SortOrder = params.get("SortOrder")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5436,6 +5471,8 @@ class DescribeRocketMQGroupsRequest(AbstractModel):
         :type SortOrder: str
         :param FilterOneGroup: 订阅组名称，指定此参数后将只返回该订阅组信息
         :type FilterOneGroup: str
+        :param Types: group类型
+        :type Types: list of str
         """
         self.ClusterId = None
         self.NamespaceId = None
@@ -5446,6 +5483,7 @@ class DescribeRocketMQGroupsRequest(AbstractModel):
         self.SortedBy = None
         self.SortOrder = None
         self.FilterOneGroup = None
+        self.Types = None
 
 
     def _deserialize(self, params):
@@ -5458,6 +5496,7 @@ class DescribeRocketMQGroupsRequest(AbstractModel):
         self.SortedBy = params.get("SortedBy")
         self.SortOrder = params.get("SortOrder")
         self.FilterOneGroup = params.get("FilterOneGroup")
+        self.Types = params.get("Types")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6181,6 +6220,9 @@ class InternalTenant(AbstractModel):
         :param MaxRetentionSizeInMB: 消息最大保留空间，MB为单位
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxRetentionSizeInMB: int
+        :param PublicAccessEnabled: public Access Enabled
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PublicAccessEnabled: bool
         """
         self.TenantId = None
         self.TenantName = None
@@ -6203,6 +6245,7 @@ class InternalTenant(AbstractModel):
         self.MaxDispatchRateInBytes = None
         self.MaxPublishRateInBytes = None
         self.MaxRetentionSizeInMB = None
+        self.PublicAccessEnabled = None
 
 
     def _deserialize(self, params):
@@ -6227,6 +6270,7 @@ class InternalTenant(AbstractModel):
         self.MaxDispatchRateInBytes = params.get("MaxDispatchRateInBytes")
         self.MaxPublishRateInBytes = params.get("MaxPublishRateInBytes")
         self.MaxRetentionSizeInMB = params.get("MaxRetentionSizeInMB")
+        self.PublicAccessEnabled = params.get("PublicAccessEnabled")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6928,6 +6972,8 @@ class ModifyRocketMQGroupRequest(AbstractModel):
         :type ReadEnable: bool
         :param BroadcastEnable: 是否开启广播消费
         :type BroadcastEnable: bool
+        :param RetryMaxTimes: 最大重试次数
+        :type RetryMaxTimes: int
         """
         self.ClusterId = None
         self.NamespaceId = None
@@ -6935,6 +6981,7 @@ class ModifyRocketMQGroupRequest(AbstractModel):
         self.Remark = None
         self.ReadEnable = None
         self.BroadcastEnable = None
+        self.RetryMaxTimes = None
 
 
     def _deserialize(self, params):
@@ -6944,6 +6991,7 @@ class ModifyRocketMQGroupRequest(AbstractModel):
         self.Remark = params.get("Remark")
         self.ReadEnable = params.get("ReadEnable")
         self.BroadcastEnable = params.get("BroadcastEnable")
+        self.RetryMaxTimes = params.get("RetryMaxTimes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7423,12 +7471,37 @@ class RabbitMQPrivateNode(AbstractModel):
         :param NodeName: 节点名字
 注意：此字段可能返回 null，表示取不到有效值。
         :type NodeName: str
+        :param NodeStatus: 节点状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NodeStatus: str
+        :param CPUUsage: CPU使用率
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CPUUsage: str
+        :param Memory: 内存使用情况，单位MB
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Memory: int
+        :param DiskUsage: 磁盘使用率
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DiskUsage: str
+        :param ProcessNumber: Rabbitmq的Erlang进程数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProcessNumber: int
         """
         self.NodeName = None
+        self.NodeStatus = None
+        self.CPUUsage = None
+        self.Memory = None
+        self.DiskUsage = None
+        self.ProcessNumber = None
 
 
     def _deserialize(self, params):
         self.NodeName = params.get("NodeName")
+        self.NodeStatus = params.get("NodeStatus")
+        self.CPUUsage = params.get("CPUUsage")
+        self.Memory = params.get("Memory")
+        self.DiskUsage = params.get("DiskUsage")
+        self.ProcessNumber = params.get("ProcessNumber")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7475,6 +7548,9 @@ class RabbitMQVipInstance(AbstractModel):
         :type Remark: str
         :param SpecName: 实例配置ID
         :type SpecName: str
+        :param ExceptionInformation: 集群异常。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExceptionInformation: str
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -7490,6 +7566,7 @@ class RabbitMQVipInstance(AbstractModel):
         self.PayMode = None
         self.Remark = None
         self.SpecName = None
+        self.ExceptionInformation = None
 
 
     def _deserialize(self, params):
@@ -7507,6 +7584,7 @@ class RabbitMQVipInstance(AbstractModel):
         self.PayMode = params.get("PayMode")
         self.Remark = params.get("Remark")
         self.SpecName = params.get("SpecName")
+        self.ExceptionInformation = params.get("ExceptionInformation")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7834,6 +7912,9 @@ class RocketMQClusterConfig(AbstractModel):
         :type MaxRetentionTime: int
         :param MaxLatencyTime: 消息最长延时，以毫秒为单位
         :type MaxLatencyTime: int
+        :param MaxQueuesPerTopic: 单个主题最大队列数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaxQueuesPerTopic: int
         """
         self.MaxTpsPerNamespace = None
         self.MaxNamespaceNum = None
@@ -7844,6 +7925,7 @@ class RocketMQClusterConfig(AbstractModel):
         self.UsedGroupNum = None
         self.MaxRetentionTime = None
         self.MaxLatencyTime = None
+        self.MaxQueuesPerTopic = None
 
 
     def _deserialize(self, params):
@@ -7856,6 +7938,7 @@ class RocketMQClusterConfig(AbstractModel):
         self.UsedGroupNum = params.get("UsedGroupNum")
         self.MaxRetentionTime = params.get("MaxRetentionTime")
         self.MaxLatencyTime = params.get("MaxLatencyTime")
+        self.MaxQueuesPerTopic = params.get("MaxQueuesPerTopic")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7936,6 +8019,18 @@ class RocketMQClusterInfo(AbstractModel):
         :param RocketMQFlag: Rocketmq集群标识
 注意：此字段可能返回 null，表示取不到有效值。
         :type RocketMQFlag: bool
+        :param Status: 计费状态，1表示正常，2表示已停服，3表示已销毁
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param IsolateTime: 欠费停服时间，毫秒为单位
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsolateTime: int
+        :param HttpPublicEndpoint: HTTP协议公网接入地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HttpPublicEndpoint: str
+        :param HttpVpcEndpoint: HTTP协议VPC接入地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HttpVpcEndpoint: str
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -7948,6 +8043,10 @@ class RocketMQClusterInfo(AbstractModel):
         self.Vpcs = None
         self.IsVip = None
         self.RocketMQFlag = None
+        self.Status = None
+        self.IsolateTime = None
+        self.HttpPublicEndpoint = None
+        self.HttpVpcEndpoint = None
 
 
     def _deserialize(self, params):
@@ -7967,6 +8066,10 @@ class RocketMQClusterInfo(AbstractModel):
                 self.Vpcs.append(obj)
         self.IsVip = params.get("IsVip")
         self.RocketMQFlag = params.get("RocketMQFlag")
+        self.Status = params.get("Status")
+        self.IsolateTime = params.get("IsolateTime")
+        self.HttpPublicEndpoint = params.get("HttpPublicEndpoint")
+        self.HttpVpcEndpoint = params.get("HttpVpcEndpoint")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8048,6 +8151,12 @@ class RocketMQGroup(AbstractModel):
         :type ConsumerType: str
         :param BroadcastEnabled: 是否开启广播消费
         :type BroadcastEnabled: bool
+        :param GroupType: Group类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupType: str
+        :param RetryMaxTimes: 重试次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RetryMaxTimes: int
         """
         self.Name = None
         self.ConsumerNum = None
@@ -8062,6 +8171,8 @@ class RocketMQGroup(AbstractModel):
         self.Remark = None
         self.ConsumerType = None
         self.BroadcastEnabled = None
+        self.GroupType = None
+        self.RetryMaxTimes = None
 
 
     def _deserialize(self, params):
@@ -8078,6 +8189,8 @@ class RocketMQGroup(AbstractModel):
         self.Remark = params.get("Remark")
         self.ConsumerType = params.get("ConsumerType")
         self.BroadcastEnabled = params.get("BroadcastEnabled")
+        self.GroupType = params.get("GroupType")
+        self.RetryMaxTimes = params.get("RetryMaxTimes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8143,6 +8256,10 @@ class RocketMQTopic(AbstractModel):
         r"""
         :param Name: 主题名称
         :type Name: str
+        :param Type: 主题的类别，为枚举类型，Normal，GlobalOrder，PartitionedOrder，Transaction，Retry及DeadLetter
+        :type Type: str
+        :param GroupNum: 订阅组数量
+        :type GroupNum: int
         :param Remark: 说明
 注意：此字段可能返回 null，表示取不到有效值。
         :type Remark: str
@@ -8154,6 +8271,8 @@ class RocketMQTopic(AbstractModel):
         :type UpdateTime: int
         """
         self.Name = None
+        self.Type = None
+        self.GroupNum = None
         self.Remark = None
         self.PartitionNum = None
         self.CreateTime = None
@@ -8162,6 +8281,8 @@ class RocketMQTopic(AbstractModel):
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
+        self.Type = params.get("Type")
+        self.GroupNum = params.get("GroupNum")
         self.Remark = params.get("Remark")
         self.PartitionNum = params.get("PartitionNum")
         self.CreateTime = params.get("CreateTime")
@@ -8189,7 +8310,7 @@ class RocketMQVipInstance(AbstractModel):
         :param InstanceVersion: 实例版本
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceVersion: str
-        :param Status: 实例状态，0表示创建中，1表示正常，2表示隔离中，3表示已销毁，4 - 异常
+        :param Status: 实例状态，0表示创建中，1表示正常，2表示隔离中，3表示已销毁，4 - 异常, 5 - 发货失败
         :type Status: int
         :param NodeCount: 节点数量
         :type NodeCount: int

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # flake8: noqa: E501
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,12 +18,13 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram EncryptedPassportElement."""
 from base64 import b64decode
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Optional, Sequence, Tuple
 
 from telegram._passport.credentials import decrypt_json
 from telegram._passport.data import IdDocumentData, PersonalDetails, ResidentialAddress
 from telegram._passport.passportfile import PassportFile
 from telegram._telegramobject import TelegramObject
+from telegram._utils.argumentparsing import parse_sequence_arg
 from telegram._utils.types import JSONDict
 
 if TYPE_CHECKING:
@@ -58,9 +59,14 @@ class EncryptedPassportElement(TelegramObject):
             "phone_number" type.
         email (:obj:`str`, optional): User's verified email address, available only for "email"
             type.
-        files (List[:class:`telegram.PassportFile`], optional): Array of encrypted/decrypted files
+        files (Sequence[:class:`telegram.PassportFile`], optional): Array of encrypted/decrypted
+            files
             with documents provided by the user, available for "utility_bill", "bank_statement",
             "rental_agreement", "passport_registration" and "temporary_registration" types.
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
+
         front_side (:class:`telegram.PassportFile`, optional): Encrypted/decrypted file with the
             front side of the document, provided by the user. Available for "passport",
             "driver_license", "identity_card" and "internal_passport".
@@ -70,11 +76,15 @@ class EncryptedPassportElement(TelegramObject):
         selfie (:class:`telegram.PassportFile`, optional): Encrypted/decrypted file with the
             selfie of the user holding a document, provided by the user; available for "passport",
             "driver_license", "identity_card" and "internal_passport".
-        translation (List[:class:`telegram.PassportFile`], optional): Array of encrypted/decrypted
+        translation (Sequence[:class:`telegram.PassportFile`], optional): Array of
+            encrypted/decrypted
             files with translated versions of documents provided by the user. Available if
             requested for "passport", "driver_license", "identity_card", "internal_passport",
             "utility_bill", "bank_statement", "rental_agreement", "passport_registration" and
             "temporary_registration" types.
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
 
     Attributes:
         type (:obj:`str`): Element type. One of "personal_details", "passport", "driver_license",
@@ -91,9 +101,16 @@ class EncryptedPassportElement(TelegramObject):
             "phone_number" type.
         email (:obj:`str`): Optional. User's verified email address, available only for "email"
             type.
-        files (List[:class:`telegram.PassportFile`]): Optional. Array of encrypted/decrypted files
+        files (Tuple[:class:`telegram.PassportFile`]): Optional. Array of encrypted/decrypted
+            files
             with documents provided by the user, available for "utility_bill", "bank_statement",
             "rental_agreement", "passport_registration" and "temporary_registration" types.
+
+            .. versionchanged:: 20.0
+
+                * |tupleclassattrs|
+                * |alwaystuple|
+
         front_side (:class:`telegram.PassportFile`): Optional. Encrypted/decrypted file with the
             front side of the document, provided by the user. Available for "passport",
             "driver_license", "identity_card" and "internal_passport".
@@ -103,11 +120,17 @@ class EncryptedPassportElement(TelegramObject):
         selfie (:class:`telegram.PassportFile`): Optional. Encrypted/decrypted file with the
             selfie of the user holding a document, provided by the user; available for "passport",
             "driver_license", "identity_card" and "internal_passport".
-        translation (List[:class:`telegram.PassportFile`]): Optional. Array of encrypted/decrypted
+        translation (Tuple[:class:`telegram.PassportFile`]): Optional. Array of
+            encrypted/decrypted
             files with translated versions of documents provided by the user. Available if
             requested for "passport", "driver_license", "identity_card", "internal_passport",
             "utility_bill", "bank_statement", "rental_agreement", "passport_registration" and
             "temporary_registration" types.
+
+            .. versionchanged:: 20.0
+
+                * |tupleclassattrs|
+                * |alwaystuple|
 
     """
 
@@ -131,11 +154,11 @@ class EncryptedPassportElement(TelegramObject):
         data: PersonalDetails = None,
         phone_number: str = None,
         email: str = None,
-        files: List[PassportFile] = None,
+        files: Sequence[PassportFile] = None,
         front_side: PassportFile = None,
         reverse_side: PassportFile = None,
         selfie: PassportFile = None,
-        translation: List[PassportFile] = None,
+        translation: Sequence[PassportFile] = None,
         credentials: "Credentials" = None,  # pylint: disable=unused-argument
         *,
         api_kwargs: JSONDict = None,
@@ -143,17 +166,17 @@ class EncryptedPassportElement(TelegramObject):
         super().__init__(api_kwargs=api_kwargs)
 
         # Required
-        self.type = type
+        self.type: str = type
         # Optionals
-        self.data = data
-        self.phone_number = phone_number
-        self.email = email
-        self.files = files
-        self.front_side = front_side
-        self.reverse_side = reverse_side
-        self.selfie = selfie
-        self.translation = translation
-        self.hash = hash
+        self.data: Optional[PersonalDetails] = data
+        self.phone_number: Optional[str] = phone_number
+        self.email: Optional[str] = email
+        self.files: Tuple[PassportFile, ...] = parse_sequence_arg(files)
+        self.front_side: Optional[PassportFile] = front_side
+        self.reverse_side: Optional[PassportFile] = reverse_side
+        self.selfie: Optional[PassportFile] = selfie
+        self.translation: Tuple[PassportFile, ...] = parse_sequence_arg(translation)
+        self.hash: str = hash
 
         self._id_attrs = (
             self.type,
@@ -165,6 +188,8 @@ class EncryptedPassportElement(TelegramObject):
             self.reverse_side,
             self.selfie,
         )
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["EncryptedPassportElement"]:

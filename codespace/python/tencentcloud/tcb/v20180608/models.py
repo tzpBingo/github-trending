@@ -986,6 +986,12 @@ class CloudBaseRunServerVersionItem(AbstractModel):
         
 
 
+class CloudBaseRunServiceVolumeHostPath(AbstractModel):
+    """主机路径挂载参数
+
+    """
+
+
 class CloudBaseRunServiceVolumeMount(AbstractModel):
     """对标 EKS VolumeMount
 
@@ -1495,12 +1501,16 @@ class CloudRunServiceVolume(AbstractModel):
         :param EmptyDir: emptydir数据卷详细信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type EmptyDir: :class:`tencentcloud.tcb.v20180608.models.CloudBaseRunEmptyDirVolumeSource`
+        :param HostPath: 主机路径挂载信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostPath: :class:`tencentcloud.tcb.v20180608.models.CloudBaseRunServiceVolumeHostPath`
         """
         self.Name = None
         self.NFS = None
         self.SecretName = None
         self.EnableEmptyDirVolume = None
         self.EmptyDir = None
+        self.HostPath = None
 
 
     def _deserialize(self, params):
@@ -1513,6 +1523,9 @@ class CloudRunServiceVolume(AbstractModel):
         if params.get("EmptyDir") is not None:
             self.EmptyDir = CloudBaseRunEmptyDirVolumeSource()
             self.EmptyDir._deserialize(params.get("EmptyDir"))
+        if params.get("HostPath") is not None:
+            self.HostPath = CloudBaseRunServiceVolumeHostPath()
+            self.HostPath._deserialize(params.get("HostPath"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2423,6 +2436,10 @@ Activity：活动来源
         :type SubNetIds: list of str
         :param IsOpenCloudInvoke: 是否打开云调用
         :type IsOpenCloudInvoke: bool
+        :param Source: 创建来源：wechat | cloud
+        :type Source: str
+        :param Channel: 渠道：wechat | cloud
+        :type Channel: str
         """
         self.WxAppId = None
         self.Alias = None
@@ -2431,6 +2448,8 @@ Activity：活动来源
         self.VpcId = None
         self.SubNetIds = None
         self.IsOpenCloudInvoke = None
+        self.Source = None
+        self.Channel = None
 
 
     def _deserialize(self, params):
@@ -2441,6 +2460,8 @@ Activity：活动来源
         self.VpcId = params.get("VpcId")
         self.SubNetIds = params.get("SubNetIds")
         self.IsOpenCloudInvoke = params.get("IsOpenCloudInvoke")
+        self.Source = params.get("Source")
+        self.Channel = params.get("Channel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4061,6 +4082,12 @@ class DescribeCloudBaseRunServerVersionResponse(AbstractModel):
         :param PolicyDetail: 自动扩缩容策略组
 注意：此字段可能返回 null，表示取不到有效值。
         :type PolicyDetail: list of HpaPolicy
+        :param TkeClusterInfo: Tke集群信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TkeClusterInfo: :class:`tencentcloud.tcb.v20180608.models.TkeClusterInfo`
+        :param TkeWorkloadType: 版本工作负载类型；deployment/deamonset
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TkeWorkloadType: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4101,6 +4128,8 @@ class DescribeCloudBaseRunServerVersionResponse(AbstractModel):
         self.EntryPoint = None
         self.RepoLanguage = None
         self.PolicyDetail = None
+        self.TkeClusterInfo = None
+        self.TkeWorkloadType = None
         self.RequestId = None
 
 
@@ -4147,6 +4176,10 @@ class DescribeCloudBaseRunServerVersionResponse(AbstractModel):
                 obj = HpaPolicy()
                 obj._deserialize(item)
                 self.PolicyDetail.append(obj)
+        if params.get("TkeClusterInfo") is not None:
+            self.TkeClusterInfo = TkeClusterInfo()
+            self.TkeClusterInfo._deserialize(params.get("TkeClusterInfo"))
+        self.TkeWorkloadType = params.get("TkeWorkloadType")
         self.RequestId = params.get("RequestId")
 
 
@@ -4272,6 +4305,15 @@ class DescribeCloudBaseRunVersionResponse(AbstractModel):
         :param MemSize: MEM 大小
 注意：此字段可能返回 null，表示取不到有效值。
         :type MemSize: float
+        :param PolicyDetail: 扩缩容策略详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PolicyDetail: list of HpaPolicy
+        :param Cpu: Cpu的Request值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Cpu: float
+        :param Mem: Mem的Request值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Mem: float
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4305,6 +4347,9 @@ class DescribeCloudBaseRunVersionResponse(AbstractModel):
         self.ImageUrl = None
         self.CpuSize = None
         self.MemSize = None
+        self.PolicyDetail = None
+        self.Cpu = None
+        self.Mem = None
         self.RequestId = None
 
 
@@ -4339,6 +4384,14 @@ class DescribeCloudBaseRunVersionResponse(AbstractModel):
         self.ImageUrl = params.get("ImageUrl")
         self.CpuSize = params.get("CpuSize")
         self.MemSize = params.get("MemSize")
+        if params.get("PolicyDetail") is not None:
+            self.PolicyDetail = []
+            for item in params.get("PolicyDetail"):
+                obj = HpaPolicy()
+                obj._deserialize(item)
+                self.PolicyDetail.append(obj)
+        self.Cpu = params.get("Cpu")
+        self.Mem = params.get("Mem")
         self.RequestId = params.get("RequestId")
 
 
@@ -4465,6 +4518,11 @@ class DescribeCurveDataRequest(AbstractModel):
 <li> TkeCpuUsed: 容器CPU使用量 </li>
 <li> TkeMemUsed: 容器内存使用量 </li>
 <li> TkeInvokeNum: 调用量 </li>
+<li> FunctionConcurrentExecutions: 云函数并发执行个数</li>
+<li> FunctionIdleProvisioned: 云函数预置并发闲置量 </li>
+<li> FunctionConcurrencyMemoryMB: 云函数并发执行内存量 </li>
+<li> FunctionThrottle: 云函数受限次数 </li>
+<li> FunctionProvisionedConcurrency: 云函数预置并发 </li>
         :type MetricName: str
         :param StartTime: 开始时间，如2018-08-24 10:50:00, 开始时间需要早于结束时间至少五分钟(原因是因为目前统计粒度最小是5分钟).
         :type StartTime: str
@@ -4514,6 +4572,8 @@ class DescribeCurveDataResponse(AbstractModel):
         :type Values: list of int
         :param Time: 时间数据, 标识监控数据Values中的点是哪个时间段上报的.
         :type Time: list of int
+        :param NewValues: 有效的监控数据, 每个有效监控数据的上报时间可以从时间数组中的对应位置上获取到.
+        :type NewValues: float
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4523,6 +4583,7 @@ class DescribeCurveDataResponse(AbstractModel):
         self.Period = None
         self.Values = None
         self.Time = None
+        self.NewValues = None
         self.RequestId = None
 
 
@@ -4533,6 +4594,7 @@ class DescribeCurveDataResponse(AbstractModel):
         self.Period = params.get("Period")
         self.Values = params.get("Values")
         self.Time = params.get("Time")
+        self.NewValues = params.get("NewValues")
         self.RequestId = params.get("RequestId")
 
 
@@ -5144,10 +5206,13 @@ class DescribeEnvsResponse(AbstractModel):
         r"""
         :param EnvList: 环境信息列表
         :type EnvList: list of EnvInfo
+        :param Total: 环境个数
+        :type Total: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.EnvList = None
+        self.Total = None
         self.RequestId = None
 
 
@@ -5158,6 +5223,7 @@ class DescribeEnvsResponse(AbstractModel):
                 obj = EnvInfo()
                 obj._deserialize(item)
                 self.EnvList.append(obj)
+        self.Total = params.get("Total")
         self.RequestId = params.get("RequestId")
 
 
@@ -6492,13 +6558,18 @@ class EstablishCloudBaseRunServerResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param Result: 创建服务是否成功
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.Result = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.Result = params.get("Result")
         self.RequestId = params.get("RequestId")
 
 
@@ -8348,6 +8419,41 @@ class Tag(AbstractModel):
     def _deserialize(self, params):
         self.Key = params.get("Key")
         self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TkeClusterInfo(AbstractModel):
+    """tke集群信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        :param VpcId: 集群的vpcId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param VersionClbSubnetId: 版本内网CLB所在子网Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VersionClbSubnetId: str
+        """
+        self.ClusterId = None
+        self.VpcId = None
+        self.VersionClbSubnetId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.VpcId = params.get("VpcId")
+        self.VersionClbSubnetId = params.get("VersionClbSubnetId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

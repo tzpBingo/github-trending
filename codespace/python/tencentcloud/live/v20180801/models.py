@@ -461,8 +461,10 @@ class CallBackRuleInfo(AbstractModel):
     def __init__(self):
         r"""
         :param CreateTime: 规则创建时间。
+注：此字段为北京时间（UTC+8时区）。
         :type CreateTime: str
         :param UpdateTime: 规则更新时间。
+注：此字段为北京时间（UTC+8时区）。
         :type UpdateTime: str
         :param TemplateId: 模板 ID。
         :type TemplateId: int
@@ -520,6 +522,9 @@ class CallBackTemplateInfo(AbstractModel):
         :type PornCensorshipNotifyUrl: str
         :param CallbackKey: 回调的鉴权 key。
         :type CallbackKey: str
+        :param PushExceptionNotifyUrl: 推流异常回调 URL。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PushExceptionNotifyUrl: str
         """
         self.TemplateId = None
         self.TemplateName = None
@@ -531,6 +536,7 @@ class CallBackTemplateInfo(AbstractModel):
         self.SnapshotNotifyUrl = None
         self.PornCensorshipNotifyUrl = None
         self.CallbackKey = None
+        self.PushExceptionNotifyUrl = None
 
 
     def _deserialize(self, params):
@@ -544,6 +550,7 @@ class CallBackTemplateInfo(AbstractModel):
         self.SnapshotNotifyUrl = params.get("SnapshotNotifyUrl")
         self.PornCensorshipNotifyUrl = params.get("PornCensorshipNotifyUrl")
         self.CallbackKey = params.get("CallbackKey")
+        self.PushExceptionNotifyUrl = params.get("PushExceptionNotifyUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -697,6 +704,7 @@ class CertInfo(AbstractModel):
         :param Description: 描述信息。
         :type Description: str
         :param CreateTime: 创建时间，UTC 格式。
+注：此字段为北京时间（UTC+8时区）。
         :type CreateTime: str
         :param HttpsCrt: 证书内容。
         :type HttpsCrt: str
@@ -705,6 +713,7 @@ class CertInfo(AbstractModel):
 1：腾讯云托管证书。
         :type CertType: int
         :param CertExpireTime: 证书过期时间，UTC 格式。
+注：此字段为北京时间（UTC+8时区）。
         :type CertExpireTime: str
         :param DomainList: 使用此证书的域名列表。
         :type DomainList: list of str
@@ -992,7 +1001,7 @@ class CommonMixOutputParams(AbstractModel):
 当期望生成的混流结果成为一条新流时，该值填为1。
 该值为1时，output_stream_id 不能出现在 input_stram_list 中，且直播后台中，不能存在相同 ID 的流。
         :type OutputStreamType: int
-        :param OutputStreamBitRate: 输出流比特率。取值范围[1，50000]。
+        :param OutputStreamBitRate: 输出流比特率。取值范围[1，10000]。
 不填的情况下，系统会自动判断。
         :type OutputStreamBitRate: int
         :param OutputStreamGop: 输出流GOP大小。取值范围[1,10]。
@@ -1227,6 +1236,8 @@ class CreateLiveCallbackTemplateRequest(AbstractModel):
         :type CallbackKey: str
         :param StreamMixNotifyUrl: 参数已弃用。
         :type StreamMixNotifyUrl: str
+        :param PushExceptionNotifyUrl: 推流异常回调 URL。
+        :type PushExceptionNotifyUrl: str
         """
         self.TemplateName = None
         self.Description = None
@@ -1237,6 +1248,7 @@ class CreateLiveCallbackTemplateRequest(AbstractModel):
         self.PornCensorshipNotifyUrl = None
         self.CallbackKey = None
         self.StreamMixNotifyUrl = None
+        self.PushExceptionNotifyUrl = None
 
 
     def _deserialize(self, params):
@@ -1249,6 +1261,7 @@ class CreateLiveCallbackTemplateRequest(AbstractModel):
         self.PornCensorshipNotifyUrl = params.get("PornCensorshipNotifyUrl")
         self.CallbackKey = params.get("CallbackKey")
         self.StreamMixNotifyUrl = params.get("StreamMixNotifyUrl")
+        self.PushExceptionNotifyUrl = params.get("PushExceptionNotifyUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1861,6 +1874,142 @@ class CreateLiveSnapshotTemplateRequest(AbstractModel):
 
 class CreateLiveSnapshotTemplateResponse(AbstractModel):
     """CreateLiveSnapshotTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板Id。
+        :type TemplateId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TemplateId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateLiveTimeShiftRuleRequest(AbstractModel):
+    """CreateLiveTimeShiftRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainName: 推流域名。
+        :type DomainName: str
+        :param AppName: 推流路径，与推流和播放地址中的AppName保持一致，默认为 live。
+        :type AppName: str
+        :param StreamName: 流名称。
+注：如果本参数设置为非空字符串，规则将只对此推流起作用。
+        :type StreamName: str
+        :param TemplateId: 模板 ID。
+        :type TemplateId: int
+        """
+        self.DomainName = None
+        self.AppName = None
+        self.StreamName = None
+        self.TemplateId = None
+
+
+    def _deserialize(self, params):
+        self.DomainName = params.get("DomainName")
+        self.AppName = params.get("AppName")
+        self.StreamName = params.get("StreamName")
+        self.TemplateId = params.get("TemplateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateLiveTimeShiftRuleResponse(AbstractModel):
+    """CreateLiveTimeShiftRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class CreateLiveTimeShiftTemplateRequest(AbstractModel):
+    """CreateLiveTimeShiftTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateName: 模板名称。
+长度上限：255字节。
+仅支持中文、英文、数字、_、-。
+        :type TemplateName: str
+        :param Duration: 时移时长。
+单位：s。
+        :type Duration: int
+        :param Description: 描述信息。
+仅支持中文、英文、数字、_、-。
+        :type Description: str
+        :param Area: 地域。
+Mainland：中国大陆。
+Overseas：海外及港澳台地区。
+默认值：Mainland。
+        :type Area: str
+        :param ItemDuration: 分片时长。
+可取3-10。
+单位：s。
+默认值：5。
+        :type ItemDuration: int
+        :param RemoveWatermark: 是否去除水印。
+传true则将录制原始流。
+默认值：false。
+        :type RemoveWatermark: bool
+        :param TranscodeTemplateIds: 转码流id列表。
+此参数仅在 RemoveWatermark为false时生效。
+        :type TranscodeTemplateIds: list of int
+        """
+        self.TemplateName = None
+        self.Duration = None
+        self.Description = None
+        self.Area = None
+        self.ItemDuration = None
+        self.RemoveWatermark = None
+        self.TranscodeTemplateIds = None
+
+
+    def _deserialize(self, params):
+        self.TemplateName = params.get("TemplateName")
+        self.Duration = params.get("Duration")
+        self.Description = params.get("Description")
+        self.Area = params.get("Area")
+        self.ItemDuration = params.get("ItemDuration")
+        self.RemoveWatermark = params.get("RemoveWatermark")
+        self.TranscodeTemplateIds = params.get("TranscodeTemplateIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateLiveTimeShiftTemplateResponse(AbstractModel):
+    """CreateLiveTimeShiftTemplate返回参数结构体
 
     """
 
@@ -2872,6 +3021,99 @@ class DeleteLiveSnapshotTemplateRequest(AbstractModel):
 
 class DeleteLiveSnapshotTemplateResponse(AbstractModel):
     """DeleteLiveSnapshotTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteLiveTimeShiftRuleRequest(AbstractModel):
+    """DeleteLiveTimeShiftRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainName: 推流域名。
+域名+AppName+StreamName唯一标识单个时移规则，如需删除需要强匹配，例如AppName为空也需要传空字符串进行强匹配。
+        :type DomainName: str
+        :param AppName: 推流路径，与推流和播放地址中的AppName保持一致，默认为 live。
+域名+AppName+StreamName唯一标识单个时移规则，如需删除需要强匹配，例如AppName为空也需要传空字符串进行强匹配。
+        :type AppName: str
+        :param StreamName: 流名称。
+域名+AppName+StreamName唯一标识单个时移规则，如需删除需要强匹配，例如AppName为空也需要传空字符串进行强匹配。
+        :type StreamName: str
+        """
+        self.DomainName = None
+        self.AppName = None
+        self.StreamName = None
+
+
+    def _deserialize(self, params):
+        self.DomainName = params.get("DomainName")
+        self.AppName = params.get("AppName")
+        self.StreamName = params.get("StreamName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteLiveTimeShiftRuleResponse(AbstractModel):
+    """DeleteLiveTimeShiftRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteLiveTimeShiftTemplateRequest(AbstractModel):
+    """DeleteLiveTimeShiftTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 模板 ID。
+        :type TemplateId: int
+        """
+        self.TemplateId = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteLiveTimeShiftTemplateResponse(AbstractModel):
+    """DeleteLiveTimeShiftTemplate返回参数结构体
 
     """
 
@@ -5495,6 +5737,70 @@ class DescribeLiveTimeShiftBillInfoListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeLiveTimeShiftRulesRequest(AbstractModel):
+    """DescribeLiveTimeShiftRules请求参数结构体
+
+    """
+
+
+class DescribeLiveTimeShiftRulesResponse(AbstractModel):
+    """DescribeLiveTimeShiftRules返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Rules: 规则信息列表。
+        :type Rules: list of RuleInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Rules = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Rules") is not None:
+            self.Rules = []
+            for item in params.get("Rules"):
+                obj = RuleInfo()
+                obj._deserialize(item)
+                self.Rules.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeLiveTimeShiftTemplatesRequest(AbstractModel):
+    """DescribeLiveTimeShiftTemplates请求参数结构体
+
+    """
+
+
+class DescribeLiveTimeShiftTemplatesResponse(AbstractModel):
+    """DescribeLiveTimeShiftTemplates返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Templates: 直播时移模板信息。
+        :type Templates: list of TimeShiftTemplate
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Templates = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Templates") is not None:
+            self.Templates = []
+            for item in params.get("Templates"):
+                obj = TimeShiftTemplate()
+                obj._deserialize(item)
+                self.Templates.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeLiveTranscodeDetailInfoRequest(AbstractModel):
     """DescribeLiveTranscodeDetailInfo请求参数结构体
 
@@ -6997,6 +7303,161 @@ class DescribeStreamPushInfoListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTimeShiftRecordDetailRequest(AbstractModel):
+    """DescribeTimeShiftRecordDetail请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 推流域名。
+        :type Domain: str
+        :param AppName: 推流路径。
+        :type AppName: str
+        :param StreamName: 流名称。
+        :type StreamName: str
+        :param StartTime: 查询范围起始时间，Unix 时间戳。
+        :type StartTime: int
+        :param EndTime: 查询范围终止时间，Unix 时间戳。 
+        :type EndTime: int
+        :param DomainGroup: 推流域名所属组，没有域名组或者域名组为空字符串可不填。
+        :type DomainGroup: str
+        :param TransCodeId: 转码模板ID，转码模板ID为0可不填。
+        :type TransCodeId: int
+        """
+        self.Domain = None
+        self.AppName = None
+        self.StreamName = None
+        self.StartTime = None
+        self.EndTime = None
+        self.DomainGroup = None
+        self.TransCodeId = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.AppName = params.get("AppName")
+        self.StreamName = params.get("StreamName")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.DomainGroup = params.get("DomainGroup")
+        self.TransCodeId = params.get("TransCodeId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTimeShiftRecordDetailResponse(AbstractModel):
+    """DescribeTimeShiftRecordDetail返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RecordList: 时移录制会话数组。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecordList: list of TimeShiftRecord
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RecordList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("RecordList") is not None:
+            self.RecordList = []
+            for item in params.get("RecordList"):
+                obj = TimeShiftRecord()
+                obj._deserialize(item)
+                self.RecordList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTimeShiftStreamListRequest(AbstractModel):
+    """DescribeTimeShiftStreamList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 查询范围起始时间，Unix 时间戳。
+        :type StartTime: int
+        :param EndTime: 查询范围结束时间，Unix 时间戳。
+        :type EndTime: int
+        :param StreamName: 流名称。
+        :type StreamName: str
+        :param Domain: 推流域名。
+        :type Domain: str
+        :param DomainGroup: 推流域名所属域名组。
+        :type DomainGroup: str
+        :param PageSize: 用户指定要返回的最大结果数，取值范围[0,100]，不指定或者指定为0时，API 
+默认值为100。指定超过100时，API 强制使用100。指定值为负数时，接口返回错误。
+        :type PageSize: int
+        :param PageNum: 指定拉取的页码，不传时默认为1。
+        :type PageNum: int
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.StreamName = None
+        self.Domain = None
+        self.DomainGroup = None
+        self.PageSize = None
+        self.PageNum = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.StreamName = params.get("StreamName")
+        self.Domain = params.get("Domain")
+        self.DomainGroup = params.get("DomainGroup")
+        self.PageSize = params.get("PageSize")
+        self.PageNum = params.get("PageNum")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTimeShiftStreamListResponse(AbstractModel):
+    """DescribeTimeShiftStreamList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalSize: 时间段内所有的数据量。
+        :type TotalSize: int
+        :param StreamList: 流列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StreamList: list of TimeShiftStreamInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalSize = None
+        self.StreamList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalSize = params.get("TotalSize")
+        if params.get("StreamList") is not None:
+            self.StreamList = []
+            for item in params.get("StreamList"):
+                obj = TimeShiftStreamInfo()
+                obj._deserialize(item)
+                self.StreamList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeTopClientIpSumInfoListRequest(AbstractModel):
     """DescribeTopClientIpSumInfoList请求参数结构体
 
@@ -7338,6 +7799,7 @@ class DomainCertInfo(AbstractModel):
         :param Description: 描述信息。
         :type Description: str
         :param CreateTime: 创建时间，UTC格式。
+注：此字段为北京时间（UTC+8时区）。
         :type CreateTime: str
         :param HttpsCrt: 证书内容。
         :type HttpsCrt: str
@@ -7346,6 +7808,7 @@ class DomainCertInfo(AbstractModel):
 1：腾讯云托管证书。
         :type CertType: int
         :param CertExpireTime: 证书过期时间，UTC格式。
+注：此字段为北京时间（UTC+8时区）。
         :type CertExpireTime: str
         :param DomainName: 使用此证书的域名名称。
         :type DomainName: str
@@ -7453,6 +7916,7 @@ class DomainInfo(AbstractModel):
 1: 启用。
         :type Status: int
         :param CreateTime: 添加时间。
+注：此字段为北京时间（UTC+8时区）。
         :type CreateTime: str
         :param BCName: 是否有 CName 到固定规则域名:
 0: 否。
@@ -7474,6 +7938,7 @@ class DomainInfo(AbstractModel):
         :param RentTag: 失效参数，可忽略。
         :type RentTag: int
         :param RentExpireTime: 失效参数，可忽略。
+注：此字段为北京时间（UTC+8时区）。
         :type RentExpireTime: str
         :param IsMiniProgramLive: 0: 标准直播。
 1: 小程序直播。
@@ -7776,8 +8241,10 @@ class ForbidStreamInfo(AbstractModel):
         :param StreamName: 流名称。
         :type StreamName: str
         :param CreateTime: 创建时间。
+注：此字段为北京时间（UTC+8时区）。
         :type CreateTime: str
         :param ExpireTime: 禁推过期时间。
+注：此字段为北京时间（UTC+8时区）。
         :type ExpireTime: str
         :param AppName: 推流路径。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8049,12 +8516,14 @@ class LiveDomainCertBindings(AbstractModel):
 0：已关闭。
         :type Status: int
         :param CertExpireTime: 证书过期时间。
+注：此字段为北京时间（UTC+8时区）。
         :type CertExpireTime: str
         :param CertId: 证书Id。
         :type CertId: int
         :param CloudCertId: 腾讯云ssl的证书Id。
         :type CloudCertId: str
         :param UpdateTime: 规则最后更新时间。
+注：此字段为北京时间（UTC+8时区）。
 注意：此字段可能返回 null，表示取不到有效值。
         :type UpdateTime: str
         """
@@ -8110,8 +8579,10 @@ class LivePackageInfo(AbstractModel):
 当为连麦包时单位为小时。
         :type Left: int
         :param BuyTime: 购买时间。
+注：此字段为北京时间（UTC+8时区）。
         :type BuyTime: str
         :param ExpireTime: 过期时间。
+注：此字段为北京时间（UTC+8时区）。
         :type ExpireTime: str
         :param Type: 包类型，可选值:
 0: 流量包。
@@ -8168,6 +8639,7 @@ class LogInfo(AbstractModel):
         :param LogUrl: 日志 URL。
         :type LogUrl: str
         :param LogTime: 日志生成时间。
+注：此字段为北京时间（UTC+8时区）。
         :type LogTime: str
         :param FileSize: 文件大小。
         :type FileSize: int
@@ -8218,6 +8690,8 @@ class ModifyLiveCallbackTemplateRequest(AbstractModel):
         :param CallbackKey: 回调 Key，回调 URL 公用，回调签名详见事件消息通知文档。
 [事件消息通知](/document/product/267/32744)。
         :type CallbackKey: str
+        :param PushExceptionNotifyUrl: 推流异常回调 URL。
+        :type PushExceptionNotifyUrl: str
         """
         self.TemplateId = None
         self.TemplateName = None
@@ -8228,6 +8702,7 @@ class ModifyLiveCallbackTemplateRequest(AbstractModel):
         self.SnapshotNotifyUrl = None
         self.PornCensorshipNotifyUrl = None
         self.CallbackKey = None
+        self.PushExceptionNotifyUrl = None
 
 
     def _deserialize(self, params):
@@ -8240,6 +8715,7 @@ class ModifyLiveCallbackTemplateRequest(AbstractModel):
         self.SnapshotNotifyUrl = params.get("SnapshotNotifyUrl")
         self.PornCensorshipNotifyUrl = params.get("PornCensorshipNotifyUrl")
         self.CallbackKey = params.get("CallbackKey")
+        self.PushExceptionNotifyUrl = params.get("PushExceptionNotifyUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8901,6 +9377,88 @@ class ModifyLiveSnapshotTemplateRequest(AbstractModel):
 
 class ModifyLiveSnapshotTemplateResponse(AbstractModel):
     """ModifyLiveSnapshotTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyLiveTimeShiftTemplateRequest(AbstractModel):
+    """ModifyLiveTimeShiftTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateId: 时移模板id。
+        :type TemplateId: int
+        :param TemplateName: 模板名称。
+仅支持中文、英文、数字、_、-。
+        :type TemplateName: str
+        :param Description: 描述信息。
+长度上限：1024字节。
+仅支持中文、英文、数字、_、-。
+        :type Description: str
+        :param Duration: 时移时长。
+单位：s。
+        :type Duration: int
+        :param ItemDuration: 分片时长。
+可取3-10。
+单位：s。
+默认值：5。
+        :type ItemDuration: int
+        :param RemoveWatermark: 是否去除水印。
+传true则将录制原始流。
+默认值：false。
+        :type RemoveWatermark: bool
+        :param TranscodeTemplateIds: 转码流id列表。
+此参数仅在 RemoveWatermark为false时生效。
+        :type TranscodeTemplateIds: list of int
+        :param Area: 地域。
+Mainland：中国大陆。
+Overseas：海外及港澳台地区。
+默认值：Mainland。
+        :type Area: str
+        """
+        self.TemplateId = None
+        self.TemplateName = None
+        self.Description = None
+        self.Duration = None
+        self.ItemDuration = None
+        self.RemoveWatermark = None
+        self.TranscodeTemplateIds = None
+        self.Area = None
+
+
+    def _deserialize(self, params):
+        self.TemplateId = params.get("TemplateId")
+        self.TemplateName = params.get("TemplateName")
+        self.Description = params.get("Description")
+        self.Duration = params.get("Duration")
+        self.ItemDuration = params.get("ItemDuration")
+        self.RemoveWatermark = params.get("RemoveWatermark")
+        self.TranscodeTemplateIds = params.get("TranscodeTemplateIds")
+        self.Area = params.get("Area")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyLiveTimeShiftTemplateResponse(AbstractModel):
+    """ModifyLiveTimeShiftTemplate返回参数结构体
 
     """
 
@@ -10477,8 +11035,10 @@ class RuleInfo(AbstractModel):
     def __init__(self):
         r"""
         :param CreateTime: 规则创建时间。
+注：此字段为北京时间（UTC+8时区）。
         :type CreateTime: str
         :param UpdateTime: 规则更新时间。
+注：此字段为北京时间（UTC+8时区）。
         :type UpdateTime: str
         :param TemplateId: 模板 ID。
         :type TemplateId: int
@@ -11100,6 +11660,159 @@ class TimeShiftBillData(AbstractModel):
         
 
 
+class TimeShiftRecord(AbstractModel):
+    """时移录制段。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Sid: 时移录制会话标识。
+        :type Sid: str
+        :param StartTime: 录制会话开始时间，Unix 时间戳。
+        :type StartTime: int
+        :param EndTime: 录制会话结束时间，Unix 时间戳。
+        :type EndTime: int
+        """
+        self.Sid = None
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.Sid = params.get("Sid")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TimeShiftStreamInfo(AbstractModel):
+    """时移流。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DomainGroup: 推流域名所属组。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DomainGroup: str
+        :param Domain: 推流域名。
+        :type Domain: str
+        :param AppName: 推流路径。
+        :type AppName: str
+        :param StreamName: 流名称。
+        :type StreamName: str
+        :param StartTime: 流起始时间，Unix 时间戳。
+        :type StartTime: int
+        :param EndTime: 截止查询时流结束时间，Unix 时间戳。
+        :type EndTime: int
+        :param TransCodeId: 转码模板ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TransCodeId: int
+        :param StreamType: 流类型，取值0为原始流，1为水印流，2为转码流。
+        :type StreamType: int
+        :param Duration: 时移数据存储时长，单位秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Duration: int
+        """
+        self.DomainGroup = None
+        self.Domain = None
+        self.AppName = None
+        self.StreamName = None
+        self.StartTime = None
+        self.EndTime = None
+        self.TransCodeId = None
+        self.StreamType = None
+        self.Duration = None
+
+
+    def _deserialize(self, params):
+        self.DomainGroup = params.get("DomainGroup")
+        self.Domain = params.get("Domain")
+        self.AppName = params.get("AppName")
+        self.StreamName = params.get("StreamName")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.TransCodeId = params.get("TransCodeId")
+        self.StreamType = params.get("StreamType")
+        self.Duration = params.get("Duration")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TimeShiftTemplate(AbstractModel):
+    """直播时移模板配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TemplateName: 模板名称。
+        :type TemplateName: str
+        :param Duration: 时移时长。
+单位：秒。
+        :type Duration: int
+        :param ItemDuration: 分片时长。
+可取3-10。
+单位：s。
+默认值：5。
+        :type ItemDuration: int
+        :param TemplateId: 模板id。
+        :type TemplateId: int
+        :param Description: 模板描述。
+        :type Description: str
+        :param Area: 地域：
+Mainland：中国大陆；
+Overseas：海外及港澳台地区；
+默认值：Mainland。
+        :type Area: str
+        :param RemoveWatermark: 是否去除水印。
+为true则将录制原始流。
+默认值：false。
+        :type RemoveWatermark: bool
+        :param TranscodeTemplateIds: 转码流id列表。
+此参数仅在 RemoveWatermark为false时生效。
+        :type TranscodeTemplateIds: list of int non-negative
+        """
+        self.TemplateName = None
+        self.Duration = None
+        self.ItemDuration = None
+        self.TemplateId = None
+        self.Description = None
+        self.Area = None
+        self.RemoveWatermark = None
+        self.TranscodeTemplateIds = None
+
+
+    def _deserialize(self, params):
+        self.TemplateName = params.get("TemplateName")
+        self.Duration = params.get("Duration")
+        self.ItemDuration = params.get("ItemDuration")
+        self.TemplateId = params.get("TemplateId")
+        self.Description = params.get("Description")
+        self.Area = params.get("Area")
+        self.RemoveWatermark = params.get("RemoveWatermark")
+        self.TranscodeTemplateIds = params.get("TranscodeTemplateIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TimeValue(AbstractModel):
     """某个时间点的指标的数值是多少。
 
@@ -11409,6 +12122,7 @@ class WatermarkInfo(AbstractModel):
         :param Status: 当前状态。0：未使用，1:使用中。
         :type Status: int
         :param CreateTime: 添加时间。
+注：此字段为北京时间（UTC+8时区）。
         :type CreateTime: str
         :param Width: 水印宽。
         :type Width: int

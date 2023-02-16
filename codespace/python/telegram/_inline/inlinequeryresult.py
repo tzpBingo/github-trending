@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -59,10 +59,12 @@ class InlineQueryResult(TelegramObject):
         super().__init__(api_kwargs=api_kwargs)
 
         # Required
-        self.type = type
-        self.id = str(id)  # pylint: disable=invalid-name
+        self.type: str = type
+        self.id: str = str(id)  # pylint: disable=invalid-name
 
         self._id_attrs = (self.id,)
+
+        self._freeze()
 
     MIN_ID_LENGTH: ClassVar[int] = constants.InlineQueryResultLimit.MIN_ID_LENGTH
     """:const:`telegram.constants.InlineQueryResultLimit.MIN_ID_LENGTH`

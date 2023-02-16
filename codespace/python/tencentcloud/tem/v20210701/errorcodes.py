@@ -15,6 +15,30 @@
 
 
 # 请求响应超时。
+FAILEDOPERATION_ACTIONREADTIMEOUT = 'FailedOperation.ActionReadTimeout'
+
+# 创建服务失败。
+FAILEDOPERATION_CREATESERVICEERROR = 'FailedOperation.CreateServiceError'
+
+# 服务器繁忙,请稍后再试。
+FAILEDOPERATION_DEFAULTINTERNALERROR = 'FailedOperation.DefaultInternalError'
+
+# 删除应用失败。
+FAILEDOPERATION_DELETESERVICEERROR = 'FailedOperation.DeleteServiceError'
+
+# 查询 ingress 列表失败。
+FAILEDOPERATION_DESCRIBEINGRESSLISTERROR = 'FailedOperation.DescribeIngressListError'
+
+# 查询实例信息失败。
+FAILEDOPERATION_DESCRIBERUNPODLISTERROR = 'FailedOperation.DescribeRunPodListError'
+
+# 查询service失败。
+FAILEDOPERATION_DESCRIBESERVICEERROR = 'FailedOperation.DescribeServiceError'
+
+# 查询service列表失败。
+FAILEDOPERATION_DESCRIBESERVICELISTERROR = 'FailedOperation.DescribeServiceListError'
+
+# 请求响应超时。
 INTERNALERROR_ACTIONREADTIMEOUT = 'InternalError.ActionReadTimeout'
 
 # 添加子网/虚拟节点异常。
@@ -115,6 +139,12 @@ INVALIDPARAMETER_SERVICEUSERESERVESUFFIX = 'InvalidParameter.ServiceUseReserveSu
 
 # PortMapping规则数量超过限制。
 INVALIDPARAMETER_TOOMANYPORTMAPPINGRULES = 'InvalidParameter.TooManyPortMappingRules'
+
+# 权限不足或缺少相关角色
+INVALIDPARAMETER_UNAUTHORIZEDORMISSINGROLE = 'InvalidParameter.UnauthorizedOrMissingRole'
+
+# 自动创建将超过 vpc 限额。
+INVALIDPARAMETER_VPCOVERQUOTA = 'InvalidParameter.VpcOverQuota'
 
 # APM 没有与当前环境绑定。
 INVALIDPARAMETERVALUE_APMNOTBIND = 'InvalidParameterValue.ApmNotBind'
@@ -227,6 +257,9 @@ INVALIDPARAMETERVALUE_PORTDUPLICATEERROR = 'InvalidParameterValue.PortDuplicateE
 # 服务端口是保留端口。
 INVALIDPARAMETERVALUE_PORTISRESERVED = 'InvalidParameterValue.PortIsReserved'
 
+# post start 不合法。
+INVALIDPARAMETERVALUE_POSTSTARTNOTVALID = 'InvalidParameterValue.PostStartNotValid'
+
 # 公有镜像参数错误。
 INVALIDPARAMETERVALUE_PUBLICREPOTYPEPARAMETERERROR = 'InvalidParameterValue.PublicRepoTypeParameterError'
 
@@ -274,6 +307,9 @@ INVALIDPARAMETERVALUE_VERSIONLOWERCASE = 'InvalidParameterValue.VersionLowerCase
 
 # 版本的路由流量不为0。
 INVALIDPARAMETERVALUE_VERSIONROUTERATENOTZERO = 'InvalidParameterValue.VersionRouteRateNotZero'
+
+# vpc错误, 与环境vpc不一致。
+INVALIDPARAMETERVALUE_VPCINVALID = 'InvalidParameterValue.VpcInvalid'
 
 # 弹性规则名称不能为空。
 MISSINGPARAMETER_AUTOSCALERNAMENULL = 'MissingParameter.AutoScalerNameNull'
@@ -332,8 +368,14 @@ RESOURCEINUSE_RESOURCEALREADYUSED = 'ResourceInUse.ResourceAlreadyUsed'
 # 服务部署中。
 RESOURCEINUSE_SERVICEDEPLOYING = 'ResourceInUse.ServiceDeploying'
 
+# 配置不存在。
+RESOURCENOTFOUND_CONFIGDATANOTFOUND = 'ResourceNotFound.ConfigDataNotFound'
+
 # 未提供该接口。
 RESOURCENOTFOUND_INTERFACENOTFOUND = 'ResourceNotFound.InterfaceNotFound'
+
+# 日志配置不存在。
+RESOURCENOTFOUND_LOGCONFIGNOTFOUND = 'ResourceNotFound.LogConfigNotFound'
 
 # 目标微服务已离线。
 RESOURCENOTFOUND_MICROSERVICEOFFLINE = 'ResourceNotFound.MicroserviceOffline'

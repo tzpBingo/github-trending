@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -49,13 +49,15 @@ a local file path as string, :class:`pathlib.Path` or the file contents as :obj:
 JSONDict = Dict[str, Any]
 """Dictionary containing response from Telegram or data to send to the API."""
 
-DVType = TypeVar("DVType")  # pylint: disable=invalid-name
-ODVInput = Optional[Union["DefaultValue[DVType]", DVType]]
+DVValueType = TypeVar("DVValueType")  # pylint: disable=invalid-name
+DVType = Union[DVValueType, "DefaultValue[DVValueType]"]
+"""Generic type for a variable which can be either `type` or `DefaultVaule[type]`."""
+ODVInput = Optional[Union["DefaultValue[DVValueType]", DVValueType, "DefaultValue[None]"]]
 """Generic type for bot method parameters which can have defaults. ``ODVInput[type]`` is the same
-as ``Optional[Union[DefaultValue, type]]``."""
-DVInput = Union["DefaultValue[DVType]", DVType]
+as ``Optional[Union[DefaultValue[type], type, DefaultValue[None]]``."""
+DVInput = Union["DefaultValue[DVValueType]", DVValueType, "DefaultValue[None]"]
 """Generic type for bot method parameters which can have defaults. ``DVInput[type]`` is the same
-as ``Union[DefaultValue, type]``."""
+as ``Union[DefaultValue[type], type, DefaultValue[None]]``."""
 
 RT = TypeVar("RT")
 SCT = Union[RT, Collection[RT]]

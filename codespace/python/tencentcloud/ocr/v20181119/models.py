@@ -5212,6 +5212,8 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         :type Vaccination: str
         :param SpotName: 场所名称（允许返回空值）
         :type SpotName: str
+        :param VaccinationTime: 疫苗接种时间
+        :type VaccinationTime: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -5224,6 +5226,7 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         self.TestingTime = None
         self.Vaccination = None
         self.SpotName = None
+        self.VaccinationTime = None
         self.RequestId = None
 
 
@@ -5237,6 +5240,7 @@ class RecognizeHealthCodeOCRResponse(AbstractModel):
         self.TestingTime = params.get("TestingTime")
         self.Vaccination = params.get("Vaccination")
         self.SpotName = params.get("SpotName")
+        self.VaccinationTime = params.get("VaccinationTime")
         self.RequestId = params.get("RequestId")
 
 
@@ -9532,6 +9536,8 @@ class VerifyOfdVatInvoiceOCRResponse(AbstractModel):
         :param Type: 发票类型
 026:增值税电子普通发票
 028:增值税电子专用发票
+010:电子发票（普通发票）
+020:电子发票（增值税专用发票）
         :type Type: str
         :param InvoiceCode: 发票代码
         :type InvoiceCode: str

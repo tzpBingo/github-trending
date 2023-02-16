@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,12 +17,12 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains objects related to Telegram video chats."""
-
 import datetime as dtm
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Optional, Sequence, Tuple
 
 from telegram._telegramobject import TelegramObject
 from telegram._user import User
+from telegram._utils.argumentparsing import parse_sequence_arg
 from telegram._utils.datetime import from_timestamp
 from telegram._utils.types import JSONDict
 
@@ -41,6 +41,11 @@ class VideoChatStarted(TelegramObject):
     """
 
     __slots__ = ()
+
+    def __init__(self, *, api_kwargs: JSONDict = None) -> None:
+        super().__init__(api_kwargs=api_kwargs)
+
+        self._freeze()
 
 
 class VideoChatEnded(TelegramObject):
@@ -73,8 +78,10 @@ class VideoChatEnded(TelegramObject):
         api_kwargs: JSONDict = None,
     ) -> None:
         super().__init__(api_kwargs=api_kwargs)
-        self.duration = duration
+        self.duration: int = duration
         self._id_attrs = (self.duration,)
+
+        self._freeze()
 
 
 class VideoChatParticipantsInvited(TelegramObject):
@@ -89,10 +96,16 @@ class VideoChatParticipantsInvited(TelegramObject):
         This class was renamed from ``VoiceChatParticipantsInvited`` in accordance to Bot API 6.0.
 
     Args:
-        users (List[:class:`telegram.User`]): New members that were invited to the video chat.
+        users (Sequence[:class:`telegram.User`]): New members that were invited to the video chat.
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
 
     Attributes:
-        users (List[:class:`telegram.User`]): New members that were invited to the video chat.
+        users (Tuple[:class:`telegram.User`]): New members that were invited to the video chat.
+
+            .. versionchanged:: 20.0
+                |tupleclassattrs|
 
     """
 
@@ -100,13 +113,15 @@ class VideoChatParticipantsInvited(TelegramObject):
 
     def __init__(
         self,
-        users: List[User],
+        users: Sequence[User],
         *,
         api_kwargs: JSONDict = None,
     ) -> None:
         super().__init__(api_kwargs=api_kwargs)
-        self.users = users
+        self.users: Tuple[User, ...] = parse_sequence_arg(users)
         self._id_attrs = (self.users,)
+
+        self._freeze()
 
     @classmethod
     def de_json(
@@ -120,9 +135,6 @@ class VideoChatParticipantsInvited(TelegramObject):
 
         data["users"] = User.de_list(data.get("users", []), bot)
         return super().de_json(data=data, bot=bot)
-
-    def __hash__(self) -> int:
-        return hash(None) if self.users is None else hash(tuple(self.users))
 
 
 class VideoChatScheduled(TelegramObject):
@@ -152,9 +164,11 @@ class VideoChatScheduled(TelegramObject):
         api_kwargs: JSONDict = None,
     ) -> None:
         super().__init__(api_kwargs=api_kwargs)
-        self.start_date = start_date
+        self.start_date: dtm.datetime = start_date
 
         self._id_attrs = (self.start_date,)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["VideoChatScheduled"]:

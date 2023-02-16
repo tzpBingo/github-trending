@@ -38,6 +38,9 @@ FAILEDOPERATION_GRANTPOLICYFAILED = 'FailedOperation.GrantPolicyFailed'
 # HTTP客户端请求失败。
 FAILEDOPERATION_HTTPCLIENTDOREQUESTFAILED = 'FailedOperation.HttpClientDoRequestFailed'
 
+# 没有操作权限。
+FAILEDOPERATION_NOPERMISSION = 'FailedOperation.NoPermission'
+
 # 取消授权失败。
 FAILEDOPERATION_REVOKEPOLICYFAILED = 'FailedOperation.RevokePolicyFailed'
 
@@ -122,8 +125,14 @@ INVALIDPARAMETER_TASKALREADYFINISHED = 'InvalidParameter.TaskAlreadyFinished'
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
 
+# 超过配额限制。
+LIMITEXCEEDED = 'LimitExceeded'
+
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
+
+# 操作被拒绝。
+OPERATIONDENIED = 'OperationDenied'
 
 # 资源不存在。
 RESOURCENOTFOUND = 'ResourceNotFound'
@@ -131,8 +140,17 @@ RESOURCENOTFOUND = 'ResourceNotFound'
 # 指定数据源连接没有找到。
 RESOURCENOTFOUND_DATASOURCENOTFOUND = 'ResourceNotFound.DatasourceNotFound'
 
+# 当前无资源创建session，请稍后重试或使用包年包月集群。
+RESOURCENOTFOUND_RESOURCENOTFOUNDCODE_SESSIONINSUFFICIENTRESOURCES = 'ResourceNotFound.ResourceNotFoundCode_SessionInsufficientResources'
+
 # 未找到结果路径。
 RESOURCENOTFOUND_RESULTOUTPUTPATHNOTFOUND = 'ResourceNotFound.ResultOutputPathNotFound'
+
+# session不存在。
+RESOURCENOTFOUND_SESSIONNOTFOUND = 'ResourceNotFound.SessionNotFound'
+
+# session已消亡。
+RESOURCENOTFOUND_SESSIONSTATEDEAD = 'ResourceNotFound.SessionStateDead'
 
 # 资源不可用。
 RESOURCEUNAVAILABLE = 'ResourceUnavailable'
@@ -182,6 +200,9 @@ UNAUTHORIZEDOPERATION_MODIFYUSERINFO = 'UnauthorizedOperation.ModifyUserInfo'
 # 子用户不是管理员，无权修改工作组信息。
 UNAUTHORIZEDOPERATION_MODIFYWORKGROUPINFO = 'UnauthorizedOperation.ModifyWorkgroupInfo'
 
+# 子用户无权操作引擎。
+UNAUTHORIZEDOPERATION_OPERATECOMPUTINGENGINE = 'UnauthorizedOperation.OperateComputingEngine'
+
 # 子用户无权取消特定权限。
 UNAUTHORIZEDOPERATION_REVOKEPOLICY = 'UnauthorizedOperation.RevokePolicy'
 
@@ -193,6 +214,9 @@ UNAUTHORIZEDOPERATION_USECOMPUTINGENGINE = 'UnauthorizedOperation.UseComputingEn
 
 # 子用户不存在。
 UNAUTHORIZEDOPERATION_USERNOTEXIST = 'UnauthorizedOperation.UserNotExist'
+
+# 未知参数错误。
+UNKNOWNPARAMETER = 'UnknownParameter'
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'

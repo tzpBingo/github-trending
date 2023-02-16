@@ -26,6 +26,9 @@ INVALIDPARAMETER_MALFORMED = 'InvalidParameter.Malformed'
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
 
+# 参数值数量超过限制。
+INVALIDPARAMETERVALUE_LIMITEXCEEDED = 'InvalidParameterValue.LimitExceeded'
+
 # 不支持该参数值。
 INVALIDPARAMETERVALUE_NOTSUPPORTED = 'InvalidParameterValue.NotSupported'
 
@@ -37,6 +40,9 @@ INVALIDPARAMETERVALUE_TOOLARGE = 'InvalidParameterValue.TooLarge'
 
 # 参数长度过长。
 INVALIDPARAMETERVALUE_TOOLONG = 'InvalidParameterValue.TooLong'
+
+# 无效参数值。参数值太短。
+INVALIDPARAMETERVALUE_TOOSHORT = 'InvalidParameterValue.TooShort'
 
 # 参数值过小。
 INVALIDPARAMETERVALUE_TOOSMALL = 'InvalidParameterValue.TooSmall'

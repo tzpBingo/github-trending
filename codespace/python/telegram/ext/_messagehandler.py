@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,11 +17,11 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the MessageHandler class."""
-from typing import TYPE_CHECKING, Dict, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, TypeVar, Union
 
 from telegram import Update
 from telegram._utils.defaultvalue import DEFAULT_TRUE
-from telegram._utils.types import DVInput
+from telegram._utils.types import DVType
 from telegram.ext import filters as filters_module
 from telegram.ext._handler import BaseHandler
 from telegram.ext._utils.types import CCT, HandlerCallback
@@ -44,14 +44,10 @@ class MessageHandler(BaseHandler[Update, CCT]):
         filters (:class:`telegram.ext.filters.BaseFilter`): A filter inheriting from
             :class:`telegram.ext.filters.BaseFilter`. Standard filters can be found in
             :mod:`telegram.ext.filters`. Filters can be combined using bitwise
-            operators (& for and, | for or, ~ for not). This defaults to all message updates
-            being: :attr:`telegram.Update.message`, :attr:`telegram.Update.edited_message`,
-            :attr:`telegram.Update.channel_post` and :attr:`telegram.Update.edited_channel_post`.
-            If you don't want or need any of those pass ``~filters.UpdateType.*`` in the filter
-            argument.
+            operators (& for and, | for or, ~ for not). Passing :obj:`None` is a shortcut
+            to passing :class:`telegram.ext.filters.ALL`.
 
-            .. seealso:: `Advanced Filters <https://github.com/\
-                python-telegram-bot/python-telegram-bot/wiki/Extensions-–-Advanced-Filters>`_
+            .. seealso:: :wiki:`Advanced Filters <Extensions-–-Advanced-Filters>`
         callback (:term:`coroutine function`): The callback function for this handler. Will be
             called when :meth:`check_update` has determined that an update should be processed by
             this handler. Callback signature::
@@ -64,8 +60,7 @@ class MessageHandler(BaseHandler[Update, CCT]):
             be awaited before processing the next handler in
             :meth:`telegram.ext.Application.process_update`. Defaults to :obj:`True`.
 
-            .. seealso:: `Concurrency <https://github.com/\
-                python-telegram-bot/python-telegram-bot/wiki/Concurrency>`_
+            .. seealso:: :wiki:`Concurrency`
 
     Attributes:
         filters (:class:`telegram.ext.filters.BaseFilter`): Only allow updates with these Filters.
@@ -83,13 +78,14 @@ class MessageHandler(BaseHandler[Update, CCT]):
         self,
         filters: filters_module.BaseFilter,
         callback: HandlerCallback[Update, CCT, RT],
-        block: DVInput[bool] = DEFAULT_TRUE,
+        block: DVType[bool] = DEFAULT_TRUE,
     ):
-
         super().__init__(callback, block=block)
-        self.filters = filters if filters is not None else filters_module.ALL
+        self.filters: filters_module.BaseFilter = (
+            filters if filters is not None else filters_module.ALL
+        )
 
-    def check_update(self, update: object) -> Optional[Union[bool, Dict[str, list]]]:
+    def check_update(self, update: object) -> Optional[Union[bool, Dict[str, List[Any]]]]:
         """Determines whether an update should be passed to this handler's :attr:`callback`.
 
         Args:
@@ -107,7 +103,7 @@ class MessageHandler(BaseHandler[Update, CCT]):
         self,
         context: CCT,
         update: Update,  # skipcq: BAN-B301
-        application: "Application",  # skipcq: BAN-B301
+        application: "Application[Any, CCT, Any, Any, Any, Any]",  # skipcq: BAN-B301
         check_result: Optional[Union[bool, Dict[str, object]]],
     ) -> None:
         """Adds possible output of data filters to the :class:`CallbackContext`."""

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ class ChatPhoto(TelegramObject):
     equal.
 
     Args:
-        small_file_id (:obj:`str`): Unique file identifier of small
+        small_file_id (:obj:`str`): File identifier of small
             (:tg-const:`telegram.ChatPhoto.SIZE_SMALL` x :tg-const:`telegram.ChatPhoto.SIZE_SMALL`)
             chat photo. This file_id can be used only for photo download and only for as long
             as the photo is not changed.
@@ -44,7 +44,7 @@ class ChatPhoto(TelegramObject):
             (:tg-const:`telegram.ChatPhoto.SIZE_SMALL` x :tg-const:`telegram.ChatPhoto.SIZE_SMALL`)
             chat photo, which is supposed to be the same over time and for different bots.
             Can't be used to download or reuse the file.
-        big_file_id (:obj:`str`): Unique file identifier of big
+        big_file_id (:obj:`str`): File identifier of big
             (:tg-const:`telegram.ChatPhoto.SIZE_BIG` x :tg-const:`telegram.ChatPhoto.SIZE_BIG`)
             chat photo. This file_id can be used only for photo download and only for as long as
             the photo is not changed.
@@ -90,15 +90,17 @@ class ChatPhoto(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.small_file_id = small_file_id
-        self.small_file_unique_id = small_file_unique_id
-        self.big_file_id = big_file_id
-        self.big_file_unique_id = big_file_unique_id
+        self.small_file_id: str = small_file_id
+        self.small_file_unique_id: str = small_file_unique_id
+        self.big_file_id: str = big_file_id
+        self.big_file_unique_id: str = big_file_unique_id
 
         self._id_attrs = (
             self.small_file_unique_id,
             self.big_file_unique_id,
         )
+
+        self._freeze()
 
     async def get_small_file(
         self,
@@ -109,7 +111,7 @@ class ChatPhoto(TelegramObject):
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
         api_kwargs: JSONDict = None,
     ) -> "File":
-        """Convenience wrapper over :attr:`telegram.Bot.get_file` for getting the small
+        """Convenience wrapper over :meth:`telegram.Bot.get_file` for getting the small
         (:tg-const:`telegram.ChatPhoto.SIZE_SMALL` x :tg-const:`telegram.ChatPhoto.SIZE_SMALL`)
         chat photo
 
@@ -140,7 +142,7 @@ class ChatPhoto(TelegramObject):
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
         api_kwargs: JSONDict = None,
     ) -> "File":
-        """Convenience wrapper over :attr:`telegram.Bot.get_file` for getting the
+        """Convenience wrapper over :meth:`telegram.Bot.get_file` for getting the
         big (:tg-const:`telegram.ChatPhoto.SIZE_BIG` x :tg-const:`telegram.ChatPhoto.SIZE_BIG`)
         chat photo
 

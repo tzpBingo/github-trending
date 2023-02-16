@@ -44,6 +44,62 @@ class AccelerateType(AbstractModel):
         
 
 
+class AccelerationDomain(AbstractModel):
+    """加速域名
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OriginDetail: 源站信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginDetail: :class:`tencentcloud.teo.v20220901.models.OriginDetail`
+        :param CreatedOn: 创建时间。
+        :type CreatedOn: str
+        :param DomainName: 加速域名名称。
+        :type DomainName: str
+        :param ModifiedOn: 修改时间。
+        :type ModifiedOn: str
+        :param ZoneId: 站点 ID。
+        :type ZoneId: str
+        :param DomainStatus: 加速域名状态，取值有：
+<li>online：已生效；</li>
+<li>process：部署中；</li>
+<li>offline：已停用；</li>
+<li>forbidden：已封禁；</li>
+<li>init：未生效，待激活站点；</li>
+        :type DomainStatus: str
+        :param Cname: CNAME 地址。
+        :type Cname: str
+        """
+        self.OriginDetail = None
+        self.CreatedOn = None
+        self.DomainName = None
+        self.ModifiedOn = None
+        self.ZoneId = None
+        self.DomainStatus = None
+        self.Cname = None
+
+
+    def _deserialize(self, params):
+        if params.get("OriginDetail") is not None:
+            self.OriginDetail = OriginDetail()
+            self.OriginDetail._deserialize(params.get("OriginDetail"))
+        self.CreatedOn = params.get("CreatedOn")
+        self.DomainName = params.get("DomainName")
+        self.ModifiedOn = params.get("ModifiedOn")
+        self.ZoneId = params.get("ZoneId")
+        self.DomainStatus = params.get("DomainStatus")
+        self.Cname = params.get("Cname")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AclCondition(AbstractModel):
     """精准防护条件
 
@@ -121,9 +177,13 @@ class AclConfig(AbstractModel):
         :type Switch: str
         :param AclUserRules: 用户自定义规则。
         :type AclUserRules: list of AclUserRule
+        :param Customizes: 托管定制规则
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Customizes: list of AclUserRule
         """
         self.Switch = None
         self.AclUserRules = None
+        self.Customizes = None
 
 
     def _deserialize(self, params):
@@ -134,6 +194,12 @@ class AclConfig(AbstractModel):
                 obj = AclUserRule()
                 obj._deserialize(item)
                 self.AclUserRules.append(obj)
+        if params.get("Customizes") is not None:
+            self.Customizes = []
+            for item in params.get("Customizes"):
+                obj = AclUserRule()
+                obj._deserialize(item)
+                self.Customizes.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -271,7 +337,8 @@ class Action(AbstractModel):
 <li> TlsVersion；</li>
 <li> OcspStapling；</li>
 <li> HTTP/2 访问（Http2）；</li>
-<li> 回源跟随重定向(UpstreamFollowRedirect)。</li>
+<li> 回源跟随重定向(UpstreamFollowRedirect)；</li>
+<li> 修改源站(Origin)。</li>
 注意：此字段可能返回 null，表示取不到有效值。
         :type NormalAction: :class:`tencentcloud.teo.v20220901.models.NormalAction`
         :param RewriteAction: 带有请求头/响应头的功能操作，选择该类型的功能项有：
@@ -334,43 +401,6 @@ class AdvancedFilter(AbstractModel):
         self.Name = params.get("Name")
         self.Values = params.get("Values")
         self.Fuzzy = params.get("Fuzzy")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class AdvancedOriginGroup(AbstractModel):
-    """高级回源配置
-
-    """
-
-    def __init__(self):
-        r"""
-        :param OriginGroupConditions: 高级回源配置的匹配条件。其中相同的Target只能出现一次。
-        :type OriginGroupConditions: list of OriginGroupCondition
-        :param OriginGroupId: 主源站组ID。
-        :type OriginGroupId: str
-        :param BackupOriginGroupId: 备用源站组ID。
-        :type BackupOriginGroupId: str
-        """
-        self.OriginGroupConditions = None
-        self.OriginGroupId = None
-        self.BackupOriginGroupId = None
-
-
-    def _deserialize(self, params):
-        if params.get("OriginGroupConditions") is not None:
-            self.OriginGroupConditions = []
-            for item in params.get("OriginGroupConditions"):
-                obj = OriginGroupCondition()
-                obj._deserialize(item)
-                self.OriginGroupConditions.append(obj)
-        self.OriginGroupId = params.get("OriginGroupId")
-        self.BackupOriginGroupId = params.get("BackupOriginGroupId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -779,122 +809,6 @@ class BotConfig(AbstractModel):
         
 
 
-class BotLog(AbstractModel):
-    """Bot攻击日志
-
-    """
-
-    def __init__(self):
-        r"""
-        :param AttackTime: 攻击时间，采用unix秒级时间戳。
-        :type AttackTime: int
-        :param AttackIp: 攻击源（客户端）ip。
-        :type AttackIp: str
-        :param Domain: 受攻击域名。
-        :type Domain: str
-        :param RequestUri: URI。
-        :type RequestUri: str
-        :param RequestMethod: 请求方法。
-        :type RequestMethod: str
-        :param AttackContent: 攻击内容。
-        :type AttackContent: str
-        :param SipCountryCode: IP所在国家iso-3166中alpha-2编码，编码信息请参考[ISO-3166](https://git.woa.com/edgeone/iso-3166/blob/master/all/all.json)。
-        :type SipCountryCode: str
-        :param Ua: user agent。
-        :type Ua: str
-        :param EventId: 攻击事件ID。
-        :type EventId: str
-        :param RuleId: 规则ID。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleId: int
-        :param AttackType: 攻击类型。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type AttackType: str
-        :param DisposalMethod: 处置方式。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DisposalMethod: str
-        :param HttpLog: HTTP日志。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type HttpLog: str
-        :param RiskLevel: 攻击等级。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RiskLevel: str
-        :param DetectionMethod: 检出方法。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DetectionMethod: str
-        :param Confidence: 置信度。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Confidence: str
-        :param Maliciousness: 恶意度。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Maliciousness: str
-        :param RuleDetailList: 规则相关信息列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleDetailList: list of SecRuleRelatedInfo
-        :param Label: Bot标签。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Label: str
-        :param Area: 日志所属的区域。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Area: str
-        """
-        self.AttackTime = None
-        self.AttackIp = None
-        self.Domain = None
-        self.RequestUri = None
-        self.RequestMethod = None
-        self.AttackContent = None
-        self.SipCountryCode = None
-        self.Ua = None
-        self.EventId = None
-        self.RuleId = None
-        self.AttackType = None
-        self.DisposalMethod = None
-        self.HttpLog = None
-        self.RiskLevel = None
-        self.DetectionMethod = None
-        self.Confidence = None
-        self.Maliciousness = None
-        self.RuleDetailList = None
-        self.Label = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.AttackTime = params.get("AttackTime")
-        self.AttackIp = params.get("AttackIp")
-        self.Domain = params.get("Domain")
-        self.RequestUri = params.get("RequestUri")
-        self.RequestMethod = params.get("RequestMethod")
-        self.AttackContent = params.get("AttackContent")
-        self.SipCountryCode = params.get("SipCountryCode")
-        self.Ua = params.get("Ua")
-        self.EventId = params.get("EventId")
-        self.RuleId = params.get("RuleId")
-        self.AttackType = params.get("AttackType")
-        self.DisposalMethod = params.get("DisposalMethod")
-        self.HttpLog = params.get("HttpLog")
-        self.RiskLevel = params.get("RiskLevel")
-        self.DetectionMethod = params.get("DetectionMethod")
-        self.Confidence = params.get("Confidence")
-        self.Maliciousness = params.get("Maliciousness")
-        if params.get("RuleDetailList") is not None:
-            self.RuleDetailList = []
-            for item in params.get("RuleDetailList"):
-                obj = SecRuleRelatedInfo()
-                obj._deserialize(item)
-                self.RuleDetailList.append(obj)
-        self.Label = params.get("Label")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
 class BotManagedRule(AbstractModel):
     """Bot 规则，下列规则ID可参考接口 DescribeBotManagedRules返回的ID信息
 
@@ -943,42 +857,6 @@ class BotManagedRule(AbstractModel):
         self.CapManagedIds = params.get("CapManagedIds")
         self.MonManagedIds = params.get("MonManagedIds")
         self.DropManagedIds = params.get("DropManagedIds")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class BotManagedRuleDetail(AbstractModel):
-    """bot托管规则详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RuleId: 规则ID。
-        :type RuleId: int
-        :param Description: 规则描述。
-        :type Description: str
-        :param RuleTypeName: 规则分类。
-        :type RuleTypeName: str
-        :param Status: 该规则开启/关闭状态。
-        :type Status: str
-        """
-        self.RuleId = None
-        self.Description = None
-        self.RuleTypeName = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.RuleId = params.get("RuleId")
-        self.Description = params.get("Description")
-        self.RuleTypeName = params.get("RuleTypeName")
-        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1059,38 +937,6 @@ class CC(AbstractModel):
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.PolicyId = params.get("PolicyId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CCInterceptEvent(AbstractModel):
-    """CC拦截事件
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ClientIp: 客户端IP。
-        :type ClientIp: str
-        :param InterceptNum: 拦截次数/min。
-        :type InterceptNum: int
-        :param InterceptTime: 速拦截时间，分钟时间/min，单位为s。
-        :type InterceptTime: int
-        """
-        self.ClientIp = None
-        self.InterceptNum = None
-        self.InterceptTime = None
-
-
-    def _deserialize(self, params):
-        self.ClientIp = params.get("ClientIp")
-        self.InterceptNum = params.get("InterceptNum")
-        self.InterceptTime = params.get("InterceptTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1562,6 +1408,57 @@ class Compression(AbstractModel):
         
 
 
+class CreateAccelerationDomainRequest(AbstractModel):
+    """CreateAccelerationDomain请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 加速域名所属站点ID。
+        :type ZoneId: str
+        :param DomainName: 加速域名名称。
+        :type DomainName: str
+        :param OriginInfo: 源站信息。
+        :type OriginInfo: :class:`tencentcloud.teo.v20220901.models.OriginInfo`
+        """
+        self.ZoneId = None
+        self.DomainName = None
+        self.OriginInfo = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        self.DomainName = params.get("DomainName")
+        if params.get("OriginInfo") is not None:
+            self.OriginInfo = OriginInfo()
+            self.OriginInfo._deserialize(params.get("OriginInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateAccelerationDomainResponse(AbstractModel):
+    """CreateAccelerationDomain返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CreateAliasDomainRequest(AbstractModel):
     """CreateAliasDomain请求参数结构体
 
@@ -1577,8 +1474,7 @@ class CreateAliasDomainRequest(AbstractModel):
         :type TargetName: str
         :param CertType: 证书配置，取值有：
 <li> none：不配置；</li>
-<li> hosting：SSL托管证书；</li>
-<li> apply：申请免费证书。</li>默认取值为 none。
+<li> hosting：SSL托管证书。</li>默认取值为 none。
         :type CertType: str
         :param CertId: 当 CertType 取值为 hosting 时需填入相应证书 ID。
         :type CertId: list of str
@@ -1831,417 +1727,6 @@ class CreateCredentialResponse(AbstractModel):
 
 
     def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class CreateCustomErrorPageRequest(AbstractModel):
-    """CreateCustomErrorPage请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param Entity: 子域名。
-        :type Entity: str
-        :param Name: 自定义页面的文件名。
-        :type Name: str
-        :param Content: 自定义页面的内容，本字段的内容需要将数据经过urlencode后传入。
-        :type Content: str
-        """
-        self.ZoneId = None
-        self.Entity = None
-        self.Name = None
-        self.Content = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        self.Name = params.get("Name")
-        self.Content = params.get("Content")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateCustomErrorPageResponse(AbstractModel):
-    """CreateCustomErrorPage返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param PageId: 自定义页面上传后的唯一id。
-        :type PageId: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.PageId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.PageId = params.get("PageId")
-        self.RequestId = params.get("RequestId")
-
-
-class CreateDnsRecordRequest(AbstractModel):
-    """CreateDnsRecord请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: DNS记录所属站点ID。
-        :type ZoneId: str
-        :param Type: DNS记录类型，取值有：
-<li>A：将域名指向一个外网 IPv4 地址，如 8.8.8.8；</li>
-<li>AAAA：将域名指向一个外网 IPv6 地址；</li>
-<li>MX：用于邮箱服务器，相关记录值/优先级参数由邮件注册商提供。存在多条 MX 记录时，优先级越低越优先；</li>
-<li>CNAME：将域名指向另一个域名，再由该域名解析出最终 IP 地址；</li>
-<li>TXT：对域名进行标识和说明，常用于域名验证和 SPF 记录（反垃圾邮件）；</li>
-<li>NS：如果需要将子域名交给其他 DNS 服务商解析，则需要添加 NS 记录。根域名无法添加 NS 记录；</li>
-<li>CAA：指定可为本站点颁发证书的 CA；</li>
-<li>SRV：标识某台服务器使用了某个服务，常见于微软系统的目录管理。</li>
-        :type Type: str
-        :param Name: DNS记录名。
-        :type Name: str
-        :param Content: DNS记录内容。
-        :type Content: str
-        :param Mode: 代理模式，取值有：
-<li>dns_only：仅DNS解析；</li>
-<li>proxied：代理加速。</li>
-        :type Mode: str
-        :param TTL: 缓存时间，数值越小，修改记录各地生效时间越快，默认为300，单位：秒。
-        :type TTL: int
-        :param Priority: 该参数在创建MX记录时生效，值越小优先级越高，用户可指定值范围1~50，不指定默认为0。
-        :type Priority: int
-        """
-        self.ZoneId = None
-        self.Type = None
-        self.Name = None
-        self.Content = None
-        self.Mode = None
-        self.TTL = None
-        self.Priority = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Type = params.get("Type")
-        self.Name = params.get("Name")
-        self.Content = params.get("Content")
-        self.Mode = params.get("Mode")
-        self.TTL = params.get("TTL")
-        self.Priority = params.get("Priority")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateDnsRecordResponse(AbstractModel):
-    """CreateDnsRecord返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DnsRecordId: DNS解析记录ID。
-        :type DnsRecordId: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.DnsRecordId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.DnsRecordId = params.get("DnsRecordId")
-        self.RequestId = params.get("RequestId")
-
-
-class CreateIpTableListRequest(AbstractModel):
-    """CreateIpTableList请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。
-        :type Entity: str
-        :param IpTableRules: 基础访问管控Ip规则列表。
-        :type IpTableRules: list of IpTableRule
-        """
-        self.ZoneId = None
-        self.Entity = None
-        self.IpTableRules = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        if params.get("IpTableRules") is not None:
-            self.IpTableRules = []
-            for item in params.get("IpTableRules"):
-                obj = IpTableRule()
-                obj._deserialize(item)
-                self.IpTableRules.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateIpTableListResponse(AbstractModel):
-    """CreateIpTableList返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class CreateLoadBalancingRequest(AbstractModel):
-    """CreateLoadBalancing请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param Host: 负载均衡域名。
-        :type Host: str
-        :param Type: 代理模式，取值有：
-<li>dns_only：仅DNS；</li>
-<li>proxied：开启代理。</li>
-        :type Type: str
-        :param OriginGroupId: 主源站源站组ID。
-        :type OriginGroupId: str
-        :param BackupOriginGroupId: 备用源站源站组ID，当Type=proxied时可以填写，为空表示不使用备用源站。
-        :type BackupOriginGroupId: str
-        :param TTL: 当Type=dns_only时，指解析记录在DNS服务器缓存的生存时间。
-取值范围60-86400，单位：秒，不填写使用默认值：600。
-        :type TTL: int
-        :param OriginType: 回源类型，取值有：
-<li>normal：主备回源；</li>
-<li>advanced：高级回源配置（仅当Type=proxied时可以使用）。</li>为空表示使用主备回源。
-        :type OriginType: str
-        :param AdvancedOriginGroups: 高级回源配置，当OriginType=advanced时有效。
-        :type AdvancedOriginGroups: list of AdvancedOriginGroup
-        """
-        self.ZoneId = None
-        self.Host = None
-        self.Type = None
-        self.OriginGroupId = None
-        self.BackupOriginGroupId = None
-        self.TTL = None
-        self.OriginType = None
-        self.AdvancedOriginGroups = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Host = params.get("Host")
-        self.Type = params.get("Type")
-        self.OriginGroupId = params.get("OriginGroupId")
-        self.BackupOriginGroupId = params.get("BackupOriginGroupId")
-        self.TTL = params.get("TTL")
-        self.OriginType = params.get("OriginType")
-        if params.get("AdvancedOriginGroups") is not None:
-            self.AdvancedOriginGroups = []
-            for item in params.get("AdvancedOriginGroups"):
-                obj = AdvancedOriginGroup()
-                obj._deserialize(item)
-                self.AdvancedOriginGroups.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateLoadBalancingResponse(AbstractModel):
-    """CreateLoadBalancing返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LoadBalancingId: 负载均衡ID。
-        :type LoadBalancingId: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.LoadBalancingId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.LoadBalancingId = params.get("LoadBalancingId")
-        self.RequestId = params.get("RequestId")
-
-
-class CreateLogSetRequest(AbstractModel):
-    """CreateLogSet请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LogSetName: 日志集名称。
-        :type LogSetName: str
-        :param LogSetRegion: 日志集归属的地域。
-        :type LogSetRegion: str
-        """
-        self.LogSetName = None
-        self.LogSetRegion = None
-
-
-    def _deserialize(self, params):
-        self.LogSetName = params.get("LogSetName")
-        self.LogSetRegion = params.get("LogSetRegion")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateLogSetResponse(AbstractModel):
-    """CreateLogSet返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LogSetId: 创建成功的日志集ID。
-        :type LogSetId: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.LogSetId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.LogSetId = params.get("LogSetId")
-        self.RequestId = params.get("RequestId")
-
-
-class CreateLogTopicTaskRequest(AbstractModel):
-    """CreateLogTopicTask请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LogSetId: 日志集ID。
-        :type LogSetId: str
-        :param LogSetRegion: 日志集所属的地域。
-        :type LogSetRegion: str
-        :param TopicName: 日志集主题名。
-        :type TopicName: str
-        :param TaskName: 推送任务的名称。
-        :type TaskName: str
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param ZoneName: 站点名称。
-        :type ZoneName: str
-        :param EntityType: 数据推送类型，取值有：
-<li>domain：七层代理日志；</li>
-<li>application：四层代理日志；</li>
-<li>web-rateLiming：速率限制日志；</li>
-<li>web-attack：Web攻击防护日志；</li>
-<li>web-rule：自定义规则日志；</li>
-<li>web-bot：Bot管理日志。</li>
-        :type EntityType: str
-        :param Period: 日志主题保存时间，单位为天，取值范围为：1-366。
-        :type Period: int
-        :param EntityList: 推送任务实体列表。
-        :type EntityList: list of str
-        :param Area: 加速区域，取值有：
-<li>mainland：中国大陆境内；</li>
-<li>overseas：全球（不含中国大陆）。</li>不填将根据用户的地域智能选择加速区域。
-        :type Area: str
-        """
-        self.LogSetId = None
-        self.LogSetRegion = None
-        self.TopicName = None
-        self.TaskName = None
-        self.ZoneId = None
-        self.ZoneName = None
-        self.EntityType = None
-        self.Period = None
-        self.EntityList = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.LogSetId = params.get("LogSetId")
-        self.LogSetRegion = params.get("LogSetRegion")
-        self.TopicName = params.get("TopicName")
-        self.TaskName = params.get("TaskName")
-        self.ZoneId = params.get("ZoneId")
-        self.ZoneName = params.get("ZoneName")
-        self.EntityType = params.get("EntityType")
-        self.Period = params.get("Period")
-        self.EntityList = params.get("EntityList")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateLogTopicTaskResponse(AbstractModel):
-    """CreateLogTopicTask返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TopicId: 创建成功的主题ID。
-        :type TopicId: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.TopicId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.TopicId = params.get("TopicId")
         self.RequestId = params.get("RequestId")
 
 
@@ -2664,79 +2149,6 @@ class CreateRuleResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class CreateSecurityDropPageRequest(AbstractModel):
-    """CreateSecurityDropPage请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type Entity: str
-        :param Name: 自定义页面的文件名。
-        :type Name: str
-        :param Content: 自定义页面的内容，本字段的内容需要将数据经过urlencode后传入。
-        :type Content: str
-        :param Type: 上传的类型，取值有：
-<li> file：将页面文件内容进行urlencode编码，填入Content字段；</li>
-<li> url：将待上传的url地址进行urlencode编码，填入Content字段，即时下载，内容不会自动更新。</li>
-        :type Type: str
-        :param Module: 页面所属的模块，取值有：
-<li> waf ：托管规则模块；</li>
-<li> rate：自定义规则模块。</li>
-        :type Module: str
-        :param TemplateId: 模板Id。当使用模板Id时可不填ZoneId和Entity，否则必须填写ZoneId和Entity。
-        :type TemplateId: str
-        """
-        self.ZoneId = None
-        self.Entity = None
-        self.Name = None
-        self.Content = None
-        self.Type = None
-        self.Module = None
-        self.TemplateId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        self.Name = params.get("Name")
-        self.Content = params.get("Content")
-        self.Type = params.get("Type")
-        self.Module = params.get("Module")
-        self.TemplateId = params.get("TemplateId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class CreateSecurityDropPageResponse(AbstractModel):
-    """CreateSecurityDropPage返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param PageId: 自定义页面上传后的唯一id。
-        :type PageId: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.PageId = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.PageId = params.get("PageId")
-        self.RequestId = params.get("RequestId")
-
-
 class CreateSpeedTestingRequest(AbstractModel):
     """CreateSpeedTesting请求参数结构体
 
@@ -2882,827 +2294,6 @@ class DDoS(AbstractModel):
         
 
 
-class DDoSAcl(AbstractModel):
-    """DDoS端口过滤
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DDoSAclRules: 端口过滤规则数组。
-        :type DDoSAclRules: list of DDoSAclRule
-        :param Switch: 清空规则标识，取值有：
-<li>off ：清空端口过滤规则列表，DDoSAclRules无需填写；</li>
-<li>on ：配置端口过滤规则，需填写DDoSAclRules参数。</li>
-        :type Switch: str
-        """
-        self.DDoSAclRules = None
-        self.Switch = None
-
-
-    def _deserialize(self, params):
-        if params.get("DDoSAclRules") is not None:
-            self.DDoSAclRules = []
-            for item in params.get("DDoSAclRules"):
-                obj = DDoSAclRule()
-                obj._deserialize(item)
-                self.DDoSAclRules.append(obj)
-        self.Switch = params.get("Switch")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSAclRule(AbstractModel):
-    """DDoS配置端口过滤
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DportEnd: 目的端口结束，取值范围0-65535。
-        :type DportEnd: int
-        :param DportStart: 目的端口开始，取值范围0-65535。
-        :type DportStart: int
-        :param SportEnd: 源端口结束，取值范围0-65535。
-        :type SportEnd: int
-        :param SportStart: 源端口开始，取值范围0-65535。
-        :type SportStart: int
-        :param Protocol: 协议，取值有：
-<li>tcp ：tcp协议 ；</li>
-<li>udp ：udp协议 ；</li>
-<li>all ：全部协议 。</li>
-        :type Protocol: str
-        :param Action: 执行动作，取值为：
-<li>drop ：丢弃 ；</li>
-<li>transmit ：放行 ；</li>
-<li>forward ：继续防护 。</li>
-        :type Action: str
-        """
-        self.DportEnd = None
-        self.DportStart = None
-        self.SportEnd = None
-        self.SportStart = None
-        self.Protocol = None
-        self.Action = None
-
-
-    def _deserialize(self, params):
-        self.DportEnd = params.get("DportEnd")
-        self.DportStart = params.get("DportStart")
-        self.SportEnd = params.get("SportEnd")
-        self.SportStart = params.get("SportStart")
-        self.Protocol = params.get("Protocol")
-        self.Action = params.get("Action")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSAllowBlock(AbstractModel):
-    """DDoS黑白名单
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DDoSAllowBlockRules: 黑白名单数组。
-        :type DDoSAllowBlockRules: list of DDoSAllowBlockRule
-        :param Switch: 开关标识防护是否清空，取值有：
-<li>off ：关闭黑白名单；</li>
-<li>on ：开启黑白名单，需填写UserAllowBlockIp参数。</li>
-        :type Switch: str
-        """
-        self.DDoSAllowBlockRules = None
-        self.Switch = None
-
-
-    def _deserialize(self, params):
-        if params.get("DDoSAllowBlockRules") is not None:
-            self.DDoSAllowBlockRules = []
-            for item in params.get("DDoSAllowBlockRules"):
-                obj = DDoSAllowBlockRule()
-                obj._deserialize(item)
-                self.DDoSAllowBlockRules.append(obj)
-        self.Switch = params.get("Switch")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSAllowBlockRule(AbstractModel):
-    """DDoS黑白名单规则详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Ip: 客户端IP，支持格式有：单IP、IP范围、网段、网段范围。例如"1.1.1.1","1.1.1.2-1.1.1.3","1.2.1.0/24-1.2.2.0/24"。
-        :type Ip: str
-        :param Type: 类型，取值有：
-<li> block ：丢弃 ；</li><li> allow ：允许。</li>
-        :type Type: str
-        :param UpdateTime: 10位时间戳，例如1199116800。不填写系统取当前时间。
-        :type UpdateTime: int
-        """
-        self.Ip = None
-        self.Type = None
-        self.UpdateTime = None
-
-
-    def _deserialize(self, params):
-        self.Ip = params.get("Ip")
-        self.Type = params.get("Type")
-        self.UpdateTime = params.get("UpdateTime")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSAntiPly(AbstractModel):
-    """DDoS协议防护+连接防护
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DropTcp: tcp协议封禁，取值有：
-<li>off ：关闭 ；</li>
-<li>on ：开启 。</li>
-        :type DropTcp: str
-        :param DropUdp: udp协议封禁，取值有：
-<li>off ：关闭 ；</li>
-<li>on ：开启 。</li>
-        :type DropUdp: str
-        :param DropIcmp: icmp协议封禁，取值有：
-<li>off ：关闭 ；</li>
-<li>on ：开启 。</li>
-        :type DropIcmp: str
-        :param DropOther: 其他协议封禁，取值有：
-<li>off ：关闭 ；</li>
-<li>on ：开启 。</li>
-        :type DropOther: str
-        :param SourceCreateLimit: 源站每秒新连接限速，取值范围0-4294967295。
-        :type SourceCreateLimit: int
-        :param SourceConnectLimit: 源站并发连接控制，取值范围0-4294967295。
-        :type SourceConnectLimit: int
-        :param DestinationCreateLimit: 目的端口每秒新连接限速，取值范围0-4294967295。
-        :type DestinationCreateLimit: int
-        :param DestinationConnectLimit: 目的端口并发连接控制，取值范围0-4294967295。
-        :type DestinationConnectLimit: int
-        :param AbnormalConnectNum: 每秒异常连接数阈值，取值范围0-4294967295。
-        :type AbnormalConnectNum: int
-        :param AbnormalSynRatio: 异常syn报文百分比阈值，取值范围0-100。
-        :type AbnormalSynRatio: int
-        :param AbnormalSynNum: 异常syn报文阈值，取值范围0-65535。
-        :type AbnormalSynNum: int
-        :param ConnectTimeout: 每秒连接超时检测，取值范围0-65535。
-        :type ConnectTimeout: int
-        :param EmptyConnectProtect: 空连接防护开启，取值有：
-<li>off ：关闭 ；</li>
-<li>on ：开启 。</li>
-        :type EmptyConnectProtect: str
-        :param UdpShard: UDP分片开关，取值有：
-<li>off ：关闭 ；</li>
-<li>on ：开启 。</li>
-        :type UdpShard: str
-        """
-        self.DropTcp = None
-        self.DropUdp = None
-        self.DropIcmp = None
-        self.DropOther = None
-        self.SourceCreateLimit = None
-        self.SourceConnectLimit = None
-        self.DestinationCreateLimit = None
-        self.DestinationConnectLimit = None
-        self.AbnormalConnectNum = None
-        self.AbnormalSynRatio = None
-        self.AbnormalSynNum = None
-        self.ConnectTimeout = None
-        self.EmptyConnectProtect = None
-        self.UdpShard = None
-
-
-    def _deserialize(self, params):
-        self.DropTcp = params.get("DropTcp")
-        self.DropUdp = params.get("DropUdp")
-        self.DropIcmp = params.get("DropIcmp")
-        self.DropOther = params.get("DropOther")
-        self.SourceCreateLimit = params.get("SourceCreateLimit")
-        self.SourceConnectLimit = params.get("SourceConnectLimit")
-        self.DestinationCreateLimit = params.get("DestinationCreateLimit")
-        self.DestinationConnectLimit = params.get("DestinationConnectLimit")
-        self.AbnormalConnectNum = params.get("AbnormalConnectNum")
-        self.AbnormalSynRatio = params.get("AbnormalSynRatio")
-        self.AbnormalSynNum = params.get("AbnormalSynNum")
-        self.ConnectTimeout = params.get("ConnectTimeout")
-        self.EmptyConnectProtect = params.get("EmptyConnectProtect")
-        self.UdpShard = params.get("UdpShard")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSAttackEvent(AbstractModel):
-    """DDoS攻击事件对象
-
-    """
-
-    def __init__(self):
-        r"""
-        :param EventId: 事件ID。
-        :type EventId: str
-        :param AttackType: 攻击类型(对应交互事件名称)。
-        :type AttackType: str
-        :param AttackStatus: 攻击状态。
-        :type AttackStatus: int
-        :param AttackMaxBandWidth: 攻击最大带宽。
-        :type AttackMaxBandWidth: int
-        :param AttackPacketMaxRate: 攻击包速率峰值。
-        :type AttackPacketMaxRate: int
-        :param AttackStartTime: 攻击开始时间，单位为s。
-        :type AttackStartTime: int
-        :param AttackEndTime: 攻击结束时间，单位为s。
-        :type AttackEndTime: int
-        :param PolicyId: DDoS策略组ID。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type PolicyId: int
-        :param ZoneId: 站点ID。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type ZoneId: str
-        """
-        self.EventId = None
-        self.AttackType = None
-        self.AttackStatus = None
-        self.AttackMaxBandWidth = None
-        self.AttackPacketMaxRate = None
-        self.AttackStartTime = None
-        self.AttackEndTime = None
-        self.PolicyId = None
-        self.ZoneId = None
-
-
-    def _deserialize(self, params):
-        self.EventId = params.get("EventId")
-        self.AttackType = params.get("AttackType")
-        self.AttackStatus = params.get("AttackStatus")
-        self.AttackMaxBandWidth = params.get("AttackMaxBandWidth")
-        self.AttackPacketMaxRate = params.get("AttackPacketMaxRate")
-        self.AttackStartTime = params.get("AttackStartTime")
-        self.AttackEndTime = params.get("AttackEndTime")
-        self.PolicyId = params.get("PolicyId")
-        self.ZoneId = params.get("ZoneId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSAttackEventDetailData(AbstractModel):
-    """DDoS攻击事件的详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param AttackStatus: 攻击状态，取值有：
-<li>1 ：观察中 ；</li>
-<li>2 ：攻击开始 ；</li>
-<li>3 ：攻击结束 。</li>
-        :type AttackStatus: int
-        :param AttackType: 攻击类型。
-        :type AttackType: str
-        :param EndTime: 结束时间。
-        :type EndTime: int
-        :param StartTime: 开始时间。
-        :type StartTime: int
-        :param MaxBandWidth: 最大带宽。
-        :type MaxBandWidth: int
-        :param PacketMaxRate: 最大包速率。
-        :type PacketMaxRate: int
-        :param EventId: 事件Id。
-        :type EventId: str
-        :param PolicyId: DDoS策略组ID。
-        :type PolicyId: int
-        """
-        self.AttackStatus = None
-        self.AttackType = None
-        self.EndTime = None
-        self.StartTime = None
-        self.MaxBandWidth = None
-        self.PacketMaxRate = None
-        self.EventId = None
-        self.PolicyId = None
-
-
-    def _deserialize(self, params):
-        self.AttackStatus = params.get("AttackStatus")
-        self.AttackType = params.get("AttackType")
-        self.EndTime = params.get("EndTime")
-        self.StartTime = params.get("StartTime")
-        self.MaxBandWidth = params.get("MaxBandWidth")
-        self.PacketMaxRate = params.get("PacketMaxRate")
-        self.EventId = params.get("EventId")
-        self.PolicyId = params.get("PolicyId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSAttackSourceEvent(AbstractModel):
-    """DDoS攻击事件对象
-
-    """
-
-    def __init__(self):
-        r"""
-        :param AttackSourceIp: 攻击源ip。
-        :type AttackSourceIp: str
-        :param AttackRegion: 地区（国家）。
-        :type AttackRegion: str
-        :param AttackFlow: 累计攻击流量。
-        :type AttackFlow: int
-        :param AttackPacketNum: 累计攻击包量。
-        :type AttackPacketNum: int
-        """
-        self.AttackSourceIp = None
-        self.AttackRegion = None
-        self.AttackFlow = None
-        self.AttackPacketNum = None
-
-
-    def _deserialize(self, params):
-        self.AttackSourceIp = params.get("AttackSourceIp")
-        self.AttackRegion = params.get("AttackRegion")
-        self.AttackFlow = params.get("AttackFlow")
-        self.AttackPacketNum = params.get("AttackPacketNum")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSBlockData(AbstractModel):
-    """DDoS封禁解封信息
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间，采用unix时间戳。
-        :type StartTime: int
-        :param EndTime: 结束时间，采用unix时间戳。
-        :type EndTime: int
-        """
-        self.StartTime = None
-        self.EndTime = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSFeaturesFilter(AbstractModel):
-    """DDoS特征过滤，下列可选入参按需求进行填写，可选字段不可全部不填写。
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Action: 执行动作，取值有：
-<li>drop ：丢弃 ；</li>
-<li>transmit ：放行 ；</li>
-<li>drop_block ：丢弃并拉黑 ；</li>
-<li>forward ：继续防护 。</li>
-        :type Action: str
-        :param Protocol: 协议，取值有：
-<li>tcp ：tcp协议 ；</li>
-<li>udp ：udp协议 ；</li>
-<li>icmp ：icmp协议 ；</li>
-<li>all ：全部协议 。</li>
-        :type Protocol: str
-        :param DportStart: 目标端口开始，取值范围0-65535。
-        :type DportStart: int
-        :param DportEnd: 目标端口结束，取值范围0-65535。
-        :type DportEnd: int
-        :param PacketMin: 最小包长，取值范围0-1500。
-        :type PacketMin: int
-        :param PacketMax: 最大包长，取值范围0-1500。
-        :type PacketMax: int
-        :param SportStart: 源端口开始，取值范围0-65535。
-        :type SportStart: int
-        :param SportEnd: 源端口结束，取值范围0-65535。
-        :type SportEnd: int
-        :param MatchType: 匹配方式1，【特征1】，取值有：
-<li>pcre ：正则匹配 ；</li>
-<li>sunday ：字符串匹配 。</li>默认为空字符串。
-        :type MatchType: str
-        :param IsNot: 取非判断，该参数对MatchType配合使用，【特征1】，取值有：
-<li>0 ：匹配 ；</li>
-<li>1 ：不匹配 。</li>
-        :type IsNot: int
-        :param Offset: 偏移量1，【特征1】，取值范围0-1500。
-        :type Offset: int
-        :param Depth: 检测包字符深度，【特征1】，取值范围1-1500。
-        :type Depth: int
-        :param MatchBegin: 匹配开始层级，层级参考计算机网络结构，取值有：
-<li>begin_l5 ：载荷开始检测 ；</li>
-<li>begin_l4 ：tcp/udp首部开始检测 ；</li>
-<li>begin_l3 ：ip首部开始检测 。</li>
-        :type MatchBegin: str
-        :param Str: 正则或字符串匹配的内容，【特征1】。
-        :type Str: str
-        :param MatchType2: 匹配方式2，【特征2】，取值有：
-<li>pcre ：正则匹配 ；</li>
-<li>sunday ：字符串匹配 。</li>默认为空字符串。
-        :type MatchType2: str
-        :param IsNot2: 取非判断2，该参数对MatchType2配合使用，【特征2】，取值有：
-<li>0 ：匹配 ；</li>
-<li>1 ：不匹配 。</li>
-        :type IsNot2: int
-        :param Offset2: 偏移量2，【特征2】，取值范围0-1500。
-        :type Offset2: int
-        :param Depth2: 检测包字符深度，【特征2】，取值范围1-1500。
-        :type Depth2: int
-        :param MatchBegin2: 匹配开始层级，层级参考计算机网络结构，取值有：
-<li>begin_l5 ：载荷开始检测 ；</li>
-<li>begin_l4 ：tcp/udp首部开始检测；</li>
-<li>begin_l3 ：ip首部开始检测 。</li>
-        :type MatchBegin2: str
-        :param Str2: 正则或字符串匹配的内容，【特征2】。
-        :type Str2: str
-        :param MatchLogic: 多特征关系，仅配置【特征1】时填 none，存在【特征2】配置可不填。
-        :type MatchLogic: str
-        """
-        self.Action = None
-        self.Protocol = None
-        self.DportStart = None
-        self.DportEnd = None
-        self.PacketMin = None
-        self.PacketMax = None
-        self.SportStart = None
-        self.SportEnd = None
-        self.MatchType = None
-        self.IsNot = None
-        self.Offset = None
-        self.Depth = None
-        self.MatchBegin = None
-        self.Str = None
-        self.MatchType2 = None
-        self.IsNot2 = None
-        self.Offset2 = None
-        self.Depth2 = None
-        self.MatchBegin2 = None
-        self.Str2 = None
-        self.MatchLogic = None
-
-
-    def _deserialize(self, params):
-        self.Action = params.get("Action")
-        self.Protocol = params.get("Protocol")
-        self.DportStart = params.get("DportStart")
-        self.DportEnd = params.get("DportEnd")
-        self.PacketMin = params.get("PacketMin")
-        self.PacketMax = params.get("PacketMax")
-        self.SportStart = params.get("SportStart")
-        self.SportEnd = params.get("SportEnd")
-        self.MatchType = params.get("MatchType")
-        self.IsNot = params.get("IsNot")
-        self.Offset = params.get("Offset")
-        self.Depth = params.get("Depth")
-        self.MatchBegin = params.get("MatchBegin")
-        self.Str = params.get("Str")
-        self.MatchType2 = params.get("MatchType2")
-        self.IsNot2 = params.get("IsNot2")
-        self.Offset2 = params.get("Offset2")
-        self.Depth2 = params.get("Depth2")
-        self.MatchBegin2 = params.get("MatchBegin2")
-        self.Str2 = params.get("Str2")
-        self.MatchLogic = params.get("MatchLogic")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSGeoIp(AbstractModel):
-    """DDoS地域封禁
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Switch: 区域封禁清空标识，取值有：
-<li>off ：清空地域封禁列表 ；</li>
-<li>on ：不做处理 。</li>
-        :type Switch: str
-        :param RegionIds: 地域信息，ID参考[DescribeSecurityPolicyRegions](https://tcloud4api.woa.com/document/product/1657/81247?!preview&!document=1)。
-        :type RegionIds: list of int
-        """
-        self.Switch = None
-        self.RegionIds = None
-
-
-    def _deserialize(self, params):
-        self.Switch = params.get("Switch")
-        self.RegionIds = params.get("RegionIds")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSHost(AbstractModel):
-    """DDoS7层应用
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Host: 二级域名
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Host: str
-        :param Status: 域名状态；
-init  待切ns
-offline 需要dns开启站点加速
-process 在部署中，稍等一会
-online 正常状态
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Status: str
-        :param AccelerateType: 加速开关；on-开启加速；off-关闭加速（AccelerateType：on，SecurityType：on，安全加速，未开防护增强；AccelerateType：off，SecurityType：on，安全加速，开启防护增强；AccelerateType：on，SecurityType：off，内容加速，未开防护增强）
-注意：此字段可能返回 null，表示取不到有效值。
-        :type AccelerateType: str
-        :param SecurityType: 安全开关；on-开启安全；off-关闭安全（AccelerateType：on，SecurityType：on，安全加速，未开防护增强；AccelerateType：off，SecurityType：on，安全加速，开启防护增强；AccelerateType：on，SecurityType：off，内容加速，未开防护增强）
-注意：此字段可能返回 null，表示取不到有效值。
-        :type SecurityType: str
-        """
-        self.Host = None
-        self.Status = None
-        self.AccelerateType = None
-        self.SecurityType = None
-
-
-    def _deserialize(self, params):
-        self.Host = params.get("Host")
-        self.Status = params.get("Status")
-        self.AccelerateType = params.get("AccelerateType")
-        self.SecurityType = params.get("SecurityType")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSMajorAttackEvent(AbstractModel):
-    """DDoS主攻击事件
-
-    """
-
-    def __init__(self):
-        r"""
-        :param PolicyId: ddos 策略组id。
-        :type PolicyId: int
-        :param AttackMaxBandWidth: 攻击最大带宽。
-        :type AttackMaxBandWidth: int
-        :param AttackTime: 攻击请求时间，采用unix秒级时间戳。
-        :type AttackTime: int
-        """
-        self.PolicyId = None
-        self.AttackMaxBandWidth = None
-        self.AttackTime = None
-
-
-    def _deserialize(self, params):
-        self.PolicyId = params.get("PolicyId")
-        self.AttackMaxBandWidth = params.get("AttackMaxBandWidth")
-        self.AttackTime = params.get("AttackTime")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSPacketFilter(AbstractModel):
-    """DDoS特征过滤
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DDoSFeaturesFilters: 特征过滤规则数组。
-        :type DDoSFeaturesFilters: list of DDoSFeaturesFilter
-        :param Switch: 特征过滤清空标识，取值有：
-<li>off ：清空特征过滤规则，无需填写 DDoSFeaturesFilters 参数 ；</li>
-<li>on ：配置特征过滤规则，需填写 DDoSFeaturesFilters 参数。</li>
-        :type Switch: str
-        """
-        self.DDoSFeaturesFilters = None
-        self.Switch = None
-
-
-    def _deserialize(self, params):
-        if params.get("DDoSFeaturesFilters") is not None:
-            self.DDoSFeaturesFilters = []
-            for item in params.get("DDoSFeaturesFilters"):
-                obj = DDoSFeaturesFilter()
-                obj._deserialize(item)
-                self.DDoSFeaturesFilters.append(obj)
-        self.Switch = params.get("Switch")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSRule(AbstractModel):
-    """DDoS防护配置
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DDoSStatusInfo: DDoS防护等级。如果为null，默认使用历史配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSStatusInfo: :class:`tencentcloud.teo.v20220901.models.DDoSStatusInfo`
-        :param DDoSGeoIp: DDoS地域封禁。如果为null，默认使用历史配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSGeoIp: :class:`tencentcloud.teo.v20220901.models.DDoSGeoIp`
-        :param DDoSAllowBlock: DDoS黑白名单。如果为null，默认使用历史配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSAllowBlock: :class:`tencentcloud.teo.v20220901.models.DDoSAllowBlock`
-        :param DDoSAntiPly: DDoS 协议封禁+连接防护。如果为null，默认使用历史配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSAntiPly: :class:`tencentcloud.teo.v20220901.models.DDoSAntiPly`
-        :param DDoSPacketFilter: DDoS特征过滤。如果为null，默认使用历史配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSPacketFilter: :class:`tencentcloud.teo.v20220901.models.DDoSPacketFilter`
-        :param DDoSAcl: DDoS端口过滤。如果为null，默认使用历史配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSAcl: :class:`tencentcloud.teo.v20220901.models.DDoSAcl`
-        :param Switch: DDoS开关，取值有:
-<li>on ：开启 ；</li>
-<li>off ：关闭 。</li>如果为null，默认使用历史配置。
-        :type Switch: str
-        :param UdpShardOpen: UDP分片功能是否支持，取值有:
-<li>on ：支持 ；</li>
-<li>off ：不支持 。</li>仅出参字段，入参无需填写。
-        :type UdpShardOpen: str
-        :param DDoSSpeedLimit: DDoS源站访问速率限制。如果为null，默认使用历史配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSSpeedLimit: :class:`tencentcloud.teo.v20220901.models.DDoSSpeedLimit`
-        """
-        self.DDoSStatusInfo = None
-        self.DDoSGeoIp = None
-        self.DDoSAllowBlock = None
-        self.DDoSAntiPly = None
-        self.DDoSPacketFilter = None
-        self.DDoSAcl = None
-        self.Switch = None
-        self.UdpShardOpen = None
-        self.DDoSSpeedLimit = None
-
-
-    def _deserialize(self, params):
-        if params.get("DDoSStatusInfo") is not None:
-            self.DDoSStatusInfo = DDoSStatusInfo()
-            self.DDoSStatusInfo._deserialize(params.get("DDoSStatusInfo"))
-        if params.get("DDoSGeoIp") is not None:
-            self.DDoSGeoIp = DDoSGeoIp()
-            self.DDoSGeoIp._deserialize(params.get("DDoSGeoIp"))
-        if params.get("DDoSAllowBlock") is not None:
-            self.DDoSAllowBlock = DDoSAllowBlock()
-            self.DDoSAllowBlock._deserialize(params.get("DDoSAllowBlock"))
-        if params.get("DDoSAntiPly") is not None:
-            self.DDoSAntiPly = DDoSAntiPly()
-            self.DDoSAntiPly._deserialize(params.get("DDoSAntiPly"))
-        if params.get("DDoSPacketFilter") is not None:
-            self.DDoSPacketFilter = DDoSPacketFilter()
-            self.DDoSPacketFilter._deserialize(params.get("DDoSPacketFilter"))
-        if params.get("DDoSAcl") is not None:
-            self.DDoSAcl = DDoSAcl()
-            self.DDoSAcl._deserialize(params.get("DDoSAcl"))
-        self.Switch = params.get("Switch")
-        self.UdpShardOpen = params.get("UdpShardOpen")
-        if params.get("DDoSSpeedLimit") is not None:
-            self.DDoSSpeedLimit = DDoSSpeedLimit()
-            self.DDoSSpeedLimit._deserialize(params.get("DDoSSpeedLimit"))
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSSpeedLimit(AbstractModel):
-    """DDoS端口限速
-
-    """
-
-    def __init__(self):
-        r"""
-        :param PackageLimit: 源站包量限制，支持单位有pps、Kpps、Mpps、Gpps。支持范围1 pps-10000 Gpps。"0 pps"或其他单位数值为0，即不限包。""为不更新。
-        :type PackageLimit: str
-        :param FluxLimit: 源站流量限制，支持单位有bps、Kbps、Mbps、Gbps，支持范围1 bps-10000 Gbps。"0 bps"或其他单位数值为0，即不限流。""为不更新。
-        :type FluxLimit: str
-        """
-        self.PackageLimit = None
-        self.FluxLimit = None
-
-
-    def _deserialize(self, params):
-        self.PackageLimit = params.get("PackageLimit")
-        self.FluxLimit = params.get("FluxLimit")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DDoSStatusInfo(AbstractModel):
-    """DDoS封禁等级
-
-    """
-
-    def __init__(self):
-        r"""
-        :param PlyLevel: 策略等级，取值有:
-<li>low ：宽松 ；</li>
-<li>middle ：适中 ；</li>
-<li>high : 严格。 </li>
-        :type PlyLevel: str
-        """
-        self.PlyLevel = None
-
-
-    def _deserialize(self, params):
-        self.PlyLevel = params.get("PlyLevel")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
 class DefaultServerCertInfo(AbstractModel):
     """https 服务端证书配置
 
@@ -3777,6 +2368,57 @@ class DefaultServerCertInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class DeleteAccelerationDomainsRequest(AbstractModel):
+    """DeleteAccelerationDomains请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 加速域名所属站点ID。
+        :type ZoneId: str
+        :param DomainNames: 需要删除的加速域名ID列表。
+        :type DomainNames: list of str
+        :param Force: 是否强制删除。当域名存在关联资源（如马甲域名、流量调度功能）时，是否强制删除该域名，取值有：
+<li> true：删除该域名及所有关联资源；</li>
+<li> false：当该加速域名存在关联资源时，不允许删除。</li>不填写，默认值为：false。
+        :type Force: bool
+        """
+        self.ZoneId = None
+        self.DomainNames = None
+        self.Force = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        self.DomainNames = params.get("DomainNames")
+        self.Force = params.get("Force")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteAccelerationDomainsResponse(AbstractModel):
+    """DeleteAccelerationDomains返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class DeleteAliasDomainRequest(AbstractModel):
@@ -3903,141 +2545,6 @@ class DeleteApplicationProxyRuleRequest(AbstractModel):
 
 class DeleteApplicationProxyRuleResponse(AbstractModel):
     """DeleteApplicationProxyRule返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class DeleteDnsRecordsRequest(AbstractModel):
-    """DeleteDnsRecords请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 待删除记录所属站点 ID。
-        :type ZoneId: str
-        :param DnsRecordIds: 待删除记录 ID。
-        :type DnsRecordIds: list of str
-        """
-        self.ZoneId = None
-        self.DnsRecordIds = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.DnsRecordIds = params.get("DnsRecordIds")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DeleteDnsRecordsResponse(AbstractModel):
-    """DeleteDnsRecords返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class DeleteLoadBalancingRequest(AbstractModel):
-    """DeleteLoadBalancing请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param LoadBalancingId: 负载均衡ID。
-        :type LoadBalancingId: str
-        """
-        self.ZoneId = None
-        self.LoadBalancingId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.LoadBalancingId = params.get("LoadBalancingId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DeleteLoadBalancingResponse(AbstractModel):
-    """DeleteLoadBalancing返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class DeleteLogTopicTaskRequest(AbstractModel):
-    """DeleteLogTopicTask请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TopicId: 待删除的推送任务ID。
-        :type TopicId: str
-        :param LogSetRegion: 推送任务所属日志集地域，此字段仅用于CLS推送任务。
-        :type LogSetRegion: str
-        """
-        self.TopicId = None
-        self.LogSetRegion = None
-
-
-    def _deserialize(self, params):
-        self.TopicId = params.get("TopicId")
-        self.LogSetRegion = params.get("LogSetRegion")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DeleteLogTopicTaskResponse(AbstractModel):
-    """DeleteLogTopicTask返回参数结构体
 
     """
 
@@ -4181,6 +2688,100 @@ class DeleteZoneResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAccelerationDomainsRequest(AbstractModel):
+    """DescribeAccelerationDomains请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 加速域名所属站点ID。不填写该参数默认返回所有站点下的加速域名。
+        :type ZoneId: str
+        :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
+<li>domain-name<br>   按照【<strong>加速域名名称</strong>】进行过滤。<br>   类型：String<br>   必选：否
+<li>origin-type<br>   按照【<strong>源站类型</strong>】进行过滤。<br>   类型：String<br>   必选：否
+<li>origin<br>   按照【<strong>主源站地址</strong>】进行过滤。<br>   类型：String<br>   必选：否
+<li>backup-origin<br>   按照【<strong>备用源站地址</strong>】进行过滤。<br>   类型：String<br>   必选：否
+        :type Filters: list of AdvancedFilter
+        :param Direction: 列表排序方式，取值有：
+<li>asc：升序排列；</li>
+<li>desc：降序排列。</li>默认值为asc。
+        :type Direction: str
+        :param Match: 匹配方式，取值有：
+<li>all：返回匹配所有查询条件的加速域名；</li>
+<li>any：返回匹配任意一个查询条件的加速域名。</li>默认值为all。
+        :type Match: str
+        :param Limit: 分页查询限制数目，默认值：20，上限：200。
+        :type Limit: int
+        :param Offset: 分页查询偏移量，默认为 0。
+        :type Offset: int
+        :param Order: 排序依据，取值有：
+<li>created_on：加速域名创建时间；</li>
+<li>domain-name：加速域名名称；</li>
+</li>默认根据domain-name属性排序。
+        :type Order: str
+        """
+        self.ZoneId = None
+        self.Filters = None
+        self.Direction = None
+        self.Match = None
+        self.Limit = None
+        self.Offset = None
+        self.Order = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = AdvancedFilter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Direction = params.get("Direction")
+        self.Match = params.get("Match")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.Order = params.get("Order")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAccelerationDomainsResponse(AbstractModel):
+    """DescribeAccelerationDomains返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 加速域名总数。
+        :type TotalCount: int
+        :param AccelerationDomains: 加速域名列表。
+        :type AccelerationDomains: list of AccelerationDomain
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.AccelerationDomains = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("AccelerationDomains") is not None:
+            self.AccelerationDomains = []
+            for item in params.get("AccelerationDomains"):
+                obj = AccelerationDomain()
+                obj._deserialize(item)
+                self.AccelerationDomains.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -4416,586 +3017,6 @@ class DescribeAvailablePlansResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class DescribeBotClientIpListRequest(AbstractModel):
-    """DescribeBotClientIpList请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param Domains: 子域名列表，不填默认选择全部子域名。
-        :type Domains: list of str
-        :param Interval: 查询时间粒度，取值有：
-<li>min ：1分钟；</li>
-<li>5min ：5分钟；</li>
-<li>hour ：1小时；</li>
-<li>day ：1天。 </li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
-        :type Interval: str
-        :param QueryCondition: 筛选条件，key可选的值有：
-<li>action: 执行动作。 </li>
-        :type QueryCondition: list of QueryCondition
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        :param Area: 数据归属地区，取值有：
-<li>overseas ：全球（除中国大陆地区）数据； </li>
-<li>mainland ：中国大陆地区数据。 </li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.ZoneIds = None
-        self.Domains = None
-        self.Interval = None
-        self.QueryCondition = None
-        self.Limit = None
-        self.Offset = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Domains = params.get("Domains")
-        self.Interval = params.get("Interval")
-        if params.get("QueryCondition") is not None:
-            self.QueryCondition = []
-            for item in params.get("QueryCondition"):
-                obj = QueryCondition()
-                obj._deserialize(item)
-                self.QueryCondition.append(obj)
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBotClientIpListResponse(AbstractModel):
-    """DescribeBotClientIpList返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: 客户端Ip相关数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of SecClientIp
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = SecClientIp()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeBotDataRequest(AbstractModel):
-    """DescribeBotData请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param MetricNames: 统计指标列表，取值有：
-<li>bot_interceptNum ：bot拦截次数 ；</li>
-<li>bot_noneRequestNum ：未分类bot请求次数 ；</li>
-<li> bot_maliciousRequestNum：恶意bot请求次数 ；</li>
-<li>bot_suspectedRequestNum ：疑似bot请求次数 ；</li>
-<li>bot_friendlyRequestNum ：友好bot请求次数 ；</li>
-<li>bot_normalRequestNum ：正常bot请求次数 。</li>
-        :type MetricNames: list of str
-        :param Domains: 查询的子域名列表，不填默认选择全部子域名。
-        :type Domains: list of str
-        :param ZoneIds: 站点列表，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param Interval: 查询时间粒度，取值有：
-<li>min：1分钟；</li>
-<li>5min：5分钟；</li>
-<li>hour：1小时；</li>
-<li>day：1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
-        :type Interval: str
-        :param QueryCondition: 筛选条件，key可选的值有：
-<li>action：执行动作 。</li>
-        :type QueryCondition: list of QueryCondition
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据； </li>
-<li>mainland：中国大陆地区数据。 </li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.MetricNames = None
-        self.Domains = None
-        self.ZoneIds = None
-        self.Interval = None
-        self.QueryCondition = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.MetricNames = params.get("MetricNames")
-        self.Domains = params.get("Domains")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Interval = params.get("Interval")
-        if params.get("QueryCondition") is not None:
-            self.QueryCondition = []
-            for item in params.get("QueryCondition"):
-                obj = QueryCondition()
-                obj._deserialize(item)
-                self.QueryCondition.append(obj)
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBotDataResponse(AbstractModel):
-    """DescribeBotData返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: Bot攻击的数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of SecEntry
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = SecEntry()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeBotHitRuleDetailRequest(AbstractModel):
-    """DescribeBotHitRuleDetail请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param Domains: 子域名列表，不填默认选择全部子域名。
-        :type Domains: list of str
-        :param Interval: 查询时间粒度，取值有：
-<li>min：1分钟；</li>
-<li>5min：5分钟；</li>
-<li>hour：1小时；</li>
-<li>day：1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
-        :type Interval: str
-        :param QueryCondition: 筛选条件，key可选的值有：
-<li>action: 执行动作。</li>
-        :type QueryCondition: list of QueryCondition
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据； </li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.ZoneIds = None
-        self.Domains = None
-        self.Interval = None
-        self.QueryCondition = None
-        self.Limit = None
-        self.Offset = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Domains = params.get("Domains")
-        self.Interval = params.get("Interval")
-        if params.get("QueryCondition") is not None:
-            self.QueryCondition = []
-            for item in params.get("QueryCondition"):
-                obj = QueryCondition()
-                obj._deserialize(item)
-                self.QueryCondition.append(obj)
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBotHitRuleDetailResponse(AbstractModel):
-    """DescribeBotHitRuleDetail返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: 命中规则列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of SecHitRuleInfo
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = SecHitRuleInfo()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeBotLogRequest(AbstractModel):
-    """DescribeBotLog请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param ZoneIds: 查询的站点集合，不填默认查询所有站点。
-        :type ZoneIds: list of str
-        :param Domains: 查询的域名集合，不填默认查询所有子域名。
-        :type Domains: list of str
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        :param QueryCondition: 筛选条件，当前key的可选条件有：
-<li>action：执行动作（处置方式）；</li>
-<li>sipCountryCode：ip所在国家；</li>
-<li>attackIp：攻击ip；</li>
-<li>ruleId：规则id；</li>
-<li>eventId：事件id；</li>
-<li>ua：用户代理；</li>
-<li>requestMethod：请求方法；</li>
-<li>uri：统一资源标识符 。</li>
-        :type QueryCondition: list of QueryCondition
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.ZoneIds = None
-        self.Domains = None
-        self.Limit = None
-        self.Offset = None
-        self.QueryCondition = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Domains = params.get("Domains")
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        if params.get("QueryCondition") is not None:
-            self.QueryCondition = []
-            for item in params.get("QueryCondition"):
-                obj = QueryCondition()
-                obj._deserialize(item)
-                self.QueryCondition.append(obj)
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBotLogResponse(AbstractModel):
-    """DescribeBotLog返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: Bot攻击数据信息列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of BotLog
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = BotLog()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeBotManagedRulesRequest(AbstractModel):
-    """DescribeBotManagedRules请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Offset: 分页查询偏移量。默认值：0。
-        :type Offset: int
-        :param Limit: 分页查询限制数目。默认值：20，最大值：1000。
-        :type Limit: int
-        :param ZoneId: 站点Id。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type Entity: str
-        :param RuleType: 规则类型，取值有：
-<li> idcid；</li>
-<li>sipbot；</li>
-<li>uabot。</li>传空或不传，即全部类型。
-        :type RuleType: str
-        :param TemplateId: 模板Id。当使用模板Id时可不填ZoneId和Entity，否则必须填写ZoneId和Entity。
-        :type TemplateId: str
-        """
-        self.Offset = None
-        self.Limit = None
-        self.ZoneId = None
-        self.Entity = None
-        self.RuleType = None
-        self.TemplateId = None
-
-
-    def _deserialize(self, params):
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        self.RuleType = params.get("RuleType")
-        self.TemplateId = params.get("TemplateId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBotManagedRulesResponse(AbstractModel):
-    """DescribeBotManagedRules返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Count: 本次返回的规则数。
-        :type Count: int
-        :param BotManagedRuleDetails: Bot规则。
-        :type BotManagedRuleDetails: list of BotManagedRuleDetail
-        :param Total: 总规则数。
-        :type Total: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Count = None
-        self.BotManagedRuleDetails = None
-        self.Total = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.Count = params.get("Count")
-        if params.get("BotManagedRuleDetails") is not None:
-            self.BotManagedRuleDetails = []
-            for item in params.get("BotManagedRuleDetails"):
-                obj = BotManagedRuleDetail()
-                obj._deserialize(item)
-                self.BotManagedRuleDetails.append(obj)
-        self.Total = params.get("Total")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeBotTopDataRequest(AbstractModel):
-    """DescribeBotTopData请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param MetricName: 统计指标列表，取值有：
-<li>bot_requestNum_labelType：请求次数标签类型分布排行；</li>
-<li>bot_requestNum_url：请求次数url分布排行；</li>
-<li>bot_cipRequestNum_region：请求次数区域客户端ip分布排行。</li>
-        :type MetricName: str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param Domains: 域名集合，不填默认选择全部子域名。
-        :type Domains: list of str
-        :param Limit: 查询前多少个数据，最多值为1000，不填默认默认为：10， 表示查询前top 10的数据。
-        :type Limit: int
-        :param Interval: 查询时间粒度，取值有：
-<li>min：1分钟；</li>
-<li>5min：5分钟；</li>
-<li>hour：1小时；</li>
-<li>day：1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
-        :type Interval: str
-        :param QueryCondition: 筛选条件，key可选的值有：
-<li>action：执行动作 。</li>
-        :type QueryCondition: list of QueryCondition
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.MetricName = None
-        self.ZoneIds = None
-        self.Domains = None
-        self.Limit = None
-        self.Interval = None
-        self.QueryCondition = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.MetricName = params.get("MetricName")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Domains = params.get("Domains")
-        self.Limit = params.get("Limit")
-        self.Interval = params.get("Interval")
-        if params.get("QueryCondition") is not None:
-            self.QueryCondition = []
-            for item in params.get("QueryCondition"):
-                obj = QueryCondition()
-                obj._deserialize(item)
-                self.QueryCondition.append(obj)
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeBotTopDataResponse(AbstractModel):
-    """DescribeBotTopData返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: Bot攻击TopN数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of TopEntry
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = TopEntry()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
 class DescribeClientRuleListRequest(AbstractModel):
     """DescribeClientRuleList请求参数结构体
 
@@ -5161,41 +3182,27 @@ class DescribeDDoSAttackDataRequest(AbstractModel):
 <li>ddos_attackBandwidth：攻击带宽曲线；</li>
 <li>ddos_attackPackageRate：攻击包速率曲线。</li>
         :type MetricNames: list of str
-        :param Port: 端口号。
-        :type Port: int
-        :param AttackType: 攻击类型，取值有：
-<li>flood：泛洪攻击；</li>
-<li>icmpFlood：icmp泛洪攻击；</li>
-<li>all：全部攻击类型。</li>不填默认为all，表示查询全部攻击类型。
-        :type AttackType: str
         :param ZoneIds: 站点集合，不填默认选择全部站点。
         :type ZoneIds: list of str
-        :param PolicyIds: DDOS策略组id列表，不填默认选择全部策略id。
+        :param PolicyIds: DDoS策略组ID列表，不填默认选择全部策略ID。
         :type PolicyIds: list of int
-        :param ProtocolType: 协议类型，取值有：
-<li>tcp：tcp协议；</li>
-<li>udp：udp协议；</li>
-<li>all：全部协议。</li>不填默认为all，表示获取全部协议类型。
-        :type ProtocolType: str
         :param Interval: 查询时间粒度，取值有：
 <li>min：1分钟；</li>
 <li>5min：5分钟；</li>
 <li>hour：1小时；</li>
-<li>day：1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
+<li>day：1天。</li>不填将根据开始时间与结束时间的间隔自动推算粒度，具体为：1小时范围内以min粒度查询，2天范围内以5min粒度查询，7天范围内以hour粒度查询，超过7天以day粒度查询。
         :type Interval: str
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
         """
         self.StartTime = None
         self.EndTime = None
         self.MetricNames = None
-        self.Port = None
-        self.AttackType = None
         self.ZoneIds = None
         self.PolicyIds = None
-        self.ProtocolType = None
         self.Interval = None
         self.Area = None
 
@@ -5204,11 +3211,8 @@ class DescribeDDoSAttackDataRequest(AbstractModel):
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
         self.MetricNames = params.get("MetricNames")
-        self.Port = params.get("Port")
-        self.AttackType = params.get("AttackType")
         self.ZoneIds = params.get("ZoneIds")
         self.PolicyIds = params.get("PolicyIds")
-        self.ProtocolType = params.get("ProtocolType")
         self.Interval = params.get("Interval")
         self.Area = params.get("Area")
         memeber_set = set(params.keys())
@@ -5227,260 +3231,27 @@ class DescribeDDoSAttackDataResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TotalCount: 查询结果的总条数。
+        :type TotalCount: int
         :param Data: DDoS攻击数据内容列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Data: list of SecEntry
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
-        self.Data = None
         self.TotalCount = None
+        self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
         if params.get("Data") is not None:
             self.Data = []
             for item in params.get("Data"):
                 obj = SecEntry()
                 obj._deserialize(item)
                 self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDDoSAttackEventDetailRequest(AbstractModel):
-    """DescribeDDoSAttackEventDetail请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param EventId: 查询的事件ID。
-        :type EventId: str
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.EventId = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.EventId = params.get("EventId")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDDoSAttackEventDetailResponse(AbstractModel):
-    """DescribeDDoSAttackEventDetail返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: DDoS攻击事件详情。
-        :type Data: :class:`tencentcloud.teo.v20220901.models.DDoSAttackEventDetailData`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = DDoSAttackEventDetailData()
-            self.Data._deserialize(params.get("Data"))
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDDoSAttackEventRequest(AbstractModel):
-    """DescribeDDoSAttackEvent请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param ProtocolType: 协议类型，取值有：
-<li>tcp：tcp协议；</li>
-<li>udp：udp协议；</li>
-<li>all：全部协议。</li>默认为: all，表示获取全部协议类型。
-        :type ProtocolType: str
-        :param PolicyIds: ddos策略组集合，不填默认选择全部策略。
-        :type PolicyIds: list of int
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        :param ShowDetail: 是否展示详细信息。
-        :type ShowDetail: bool
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.ProtocolType = None
-        self.PolicyIds = None
-        self.ZoneIds = None
-        self.Limit = None
-        self.Offset = None
-        self.ShowDetail = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.ProtocolType = params.get("ProtocolType")
-        self.PolicyIds = params.get("PolicyIds")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        self.ShowDetail = params.get("ShowDetail")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDDoSAttackEventResponse(AbstractModel):
-    """DescribeDDoSAttackEvent返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: DDOS攻击事件数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of DDoSAttackEvent
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = DDoSAttackEvent()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDDoSAttackSourceEventRequest(AbstractModel):
-    """DescribeDDoSAttackSourceEvent请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param ProtocolType: 协议类型，取值有：
-<li>tcp：tcp协议；</li>
-<li>udp：udp协议；</li>
-<li>all：全部协议。</li>不填默认为: all，表示获取全部协议类型。
-        :type ProtocolType: str
-        :param PolicyIds: DDoS策略组集合，不填默认选择全部策略。
-        :type PolicyIds: list of int
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.ProtocolType = None
-        self.PolicyIds = None
-        self.ZoneIds = None
-        self.Limit = None
-        self.Offset = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.ProtocolType = params.get("ProtocolType")
-        self.PolicyIds = params.get("PolicyIds")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDDoSAttackSourceEventResponse(AbstractModel):
-    """DescribeDDoSAttackSourceEvent返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: DDoS攻击源数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of DDoSAttackSourceEvent
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = DDoSAttackSourceEvent()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -5496,12 +3267,12 @@ class DescribeDDoSAttackTopDataRequest(AbstractModel):
         :param EndTime: 结束时间。
         :type EndTime: str
         :param MetricName: 查询的统计指标，取值有：
-<li>ddos_attackFlux_protocol：攻击总流量协议类型分布排行；</li>
-<li>ddos_attackPackageNum_protocol：攻击总包量协议类型分布排行；</li>
-<li>ddos_attackNum_attackType：攻击总次数攻击类型分布排行；</li>
-<li>ddos_attackNum_sregion：攻击总次数攻击源地区分布排行；</li>
-<li>ddos_attackFlux_sip：攻击总流量攻击源ip分布排行；</li>
-<li>ddos_attackFlux_sregion：攻击总流量攻击源地区分布排行。</li>
+<li>ddos_attackFlux_protocol：按各协议的攻击流量排行；</li>
+<li>ddos_attackPackageNum_protocol：按各协议的攻击包量排行；</li>
+<li>ddos_attackNum_attackType：按各攻击类型的攻击数量排行；</li>
+<li>ddos_attackNum_sregion：按攻击源地区的攻击数量排行；</li>
+<li>ddos_attackFlux_sip：按攻击源IP的攻击数量排行；</li>
+<li>ddos_attackFlux_sregion：按攻击源地区的攻击数量排行。</li>
         :type MetricName: str
         :param ZoneIds: 站点ID集合，不填默认选择全部站点。
         :type ZoneIds: list of str
@@ -5586,226 +3357,6 @@ class DescribeDDoSAttackTopDataResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Data.append(obj)
         self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDDoSBlockListRequest(AbstractModel):
-    """DescribeDDoSBlockList请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 攻击事件起始时间。
-        :type StartTime: str
-        :param EventIds: 攻击事件列表。
-        :type EventIds: list of str
-        :param ZoneIds: 站点列表，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param PolicyIds: 策略列表，不填默认选择全部策略。
-        :type PolicyIds: list of int
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EventIds = None
-        self.ZoneIds = None
-        self.PolicyIds = None
-        self.Limit = None
-        self.Offset = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EventIds = params.get("EventIds")
-        self.ZoneIds = params.get("ZoneIds")
-        self.PolicyIds = params.get("PolicyIds")
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDDoSBlockListResponse(AbstractModel):
-    """DescribeDDoSBlockList返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: 封禁解封信息。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of DDoSBlockData
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = DDoSBlockData()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDDoSMajorAttackEventRequest(AbstractModel):
-    """DescribeDDoSMajorAttackEvent请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param ZoneIds: 站点id列表，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param PolicyIds: ddos策略组id集合，不填默认选择全部策略id。
-        :type PolicyIds: list of int
-        :param ProtocolType: 协议类型，可选的协议类型有：
-<li>tcp：tcp协议；</li>
-<li>udp：udp协议；</li>
-<li>all：全部协议。</li>不填默认为all, 表示获取全部协议类型。
-        :type ProtocolType: str
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        :param Area: 数据归属地区，取值有：
-<li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
-        :type Area: str
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.ZoneIds = None
-        self.PolicyIds = None
-        self.ProtocolType = None
-        self.Limit = None
-        self.Offset = None
-        self.Area = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.ZoneIds = params.get("ZoneIds")
-        self.PolicyIds = params.get("PolicyIds")
-        self.ProtocolType = params.get("ProtocolType")
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDDoSMajorAttackEventResponse(AbstractModel):
-    """DescribeDDoSMajorAttackEvent返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: DDos主攻击事件数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of DDoSMajorAttackEvent
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = DDoSMajorAttackEvent()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDDoSPolicyRequest(AbstractModel):
-    """DescribeDDoSPolicy请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param PolicyId: 策略Id。
-        :type PolicyId: int
-        """
-        self.ZoneId = None
-        self.PolicyId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.PolicyId = params.get("PolicyId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDDoSPolicyResponse(AbstractModel):
-    """DescribeDDoSPolicy返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DDoSRule: DDoS防护配置。
-        :type DDoSRule: :class:`tencentcloud.teo.v20220901.models.DDoSRule`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.DDoSRule = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("DDoSRule") is not None:
-            self.DDoSRule = DDoSRule()
-            self.DDoSRule._deserialize(params.get("DDoSRule"))
         self.RequestId = params.get("RequestId")
 
 
@@ -5953,162 +3504,6 @@ class DescribeDnsDataResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class DescribeDnsRecordsRequest(AbstractModel):
-    """DescribeDnsRecords请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: DNS记录所属站点ID。不填写该参数默认返回所有站点下的记录。
-        :type ZoneId: str
-        :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
-<li>record-id<br>   按照【<strong>DNS记录id</strong>】进行过滤。DNS记录ID形如：record-1a8df68z。<br>   类型：String<br>   必选：否
-<li>record-name<br>   按照【<strong>DNS记录名称</strong>】进行过滤。<br>   类型：String<br>   必选：否
-<li>record-type<br>   按照【<strong>DNS记录类型</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   A：将域名指向一个外网 IPv4 地址，如 8.8.8.8<br>   AAAA：将域名指向一个外网 IPv6 地址<br>   CNAME：将域名指向另一个域名，再由该域名解析出最终 IP 地址<br>   TXT：对域名进行标识和说明，常用于域名验证和 SPF 记录（反垃圾邮件）<br>   NS：如果需要将子域名交给其他 DNS 服务商解析，则需要添加 NS 记录。根域名无法添加 NS 记录<br>   CAA：指定可为本站点颁发证书的 CA<br>   SRV：标识某台服务器使用了某个服务，常见于微软系统的目录管理<br>   MX：指定收件人邮件服务器。
-<li>mode<br>   按照【<strong>代理模式</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   dns_only：仅DNS解析<br>   proxied：代理加速
-<li>ttl<br>   按照【<strong>解析生效时间</strong>】进行过滤。<br>   类型：string<br>   必选：否
-        :type Filters: list of AdvancedFilter
-        :param Direction: 列表排序方式，取值有：
-<li>asc：升序排列；</li>
-<li>desc：降序排列。</li>默认值为asc。
-        :type Direction: str
-        :param Match: 匹配方式，取值有：
-<li>all：返回匹配所有查询条件的记录；</li>
-<li>any：返回匹配任意一个查询条件的记录。</li>默认值为all。
-        :type Match: str
-        :param Limit: 分页查询限制数目，默认值：20，上限：1000。
-        :type Limit: int
-        :param Offset: 分页查询偏移量，默认为 0。
-        :type Offset: int
-        :param Order: 排序依据，取值有：
-<li>content：DNS记录内容；</li>
-<li>created_on：DNS记录创建时间；</li>
-<li>mode：代理模式；</li>
-<li>record-name：DNS记录名称；</li>
-<li>ttl：解析记录生效时间；</li>
-<li>record-type：DNS记录类型。</li>默认根据record-type, recrod-name属性组合排序。
-        :type Order: str
-        """
-        self.ZoneId = None
-        self.Filters = None
-        self.Direction = None
-        self.Match = None
-        self.Limit = None
-        self.Offset = None
-        self.Order = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        if params.get("Filters") is not None:
-            self.Filters = []
-            for item in params.get("Filters"):
-                obj = AdvancedFilter()
-                obj._deserialize(item)
-                self.Filters.append(obj)
-        self.Direction = params.get("Direction")
-        self.Match = params.get("Match")
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        self.Order = params.get("Order")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDnsRecordsResponse(AbstractModel):
-    """DescribeDnsRecords返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TotalCount: DNS记录总数。
-        :type TotalCount: int
-        :param DnsRecords: DNS 记录列表。
-        :type DnsRecords: list of DnsRecord
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.TotalCount = None
-        self.DnsRecords = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.TotalCount = params.get("TotalCount")
-        if params.get("DnsRecords") is not None:
-            self.DnsRecords = []
-            for item in params.get("DnsRecords"):
-                obj = DnsRecord()
-                obj._deserialize(item)
-                self.DnsRecords.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeDnssecRequest(AbstractModel):
-    """DescribeDnssec请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        """
-        self.ZoneId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeDnssecResponse(AbstractModel):
-    """DescribeDnssec返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Status: DNSSEC状态信息，取值有：
-<li>enabled：开启；</li>
-<li>disabled：关闭。</li>
-        :type Status: str
-        :param DnssecInfo: DNSSEC相关信息。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DnssecInfo: :class:`tencentcloud.teo.v20220901.models.DnssecInfo`
-        :param ModifiedOn: 站点信息更新时间。
-        :type ModifiedOn: str
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Status = None
-        self.DnssecInfo = None
-        self.ModifiedOn = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.Status = params.get("Status")
-        if params.get("DnssecInfo") is not None:
-            self.DnssecInfo = DnssecInfo()
-            self.DnssecInfo._deserialize(params.get("DnssecInfo"))
-        self.ModifiedOn = params.get("ModifiedOn")
-        self.RequestId = params.get("RequestId")
-
-
 class DescribeHostsSettingRequest(AbstractModel):
     """DescribeHostsSetting请求参数结构体
 
@@ -6249,76 +3644,6 @@ class DescribeIdentificationsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class DescribeLoadBalancingRequest(AbstractModel):
-    """DescribeLoadBalancing请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Offset: 分页查询偏移量，默认为0。
-        :type Offset: int
-        :param Limit: 分页查询限制数目，默认为10，取值：1-1000。
-        :type Limit: int
-        :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
-<li>zone-id<br>   按照【<strong>站点ID</strong>】进行过滤。站点ID形如：zone-1a8df68z<br>   类型：String<br>   必选：否<br>   模糊查询：不支持
-</li><li>load-balancing-id<br>   按照【<strong>负载均衡ID</strong>】进行过滤。负载均衡ID形如：lb-d21bfaf7-8d72-11ec-841d-00ff977fb3c8<br>   类型：String<br>   必选：否<br>   模糊查询：不支持
-</li><li>host<br>   按照【<strong>负载均衡host</strong>】进行过滤。host形如：lb.tencent.com<br>   类型：String<br>   必选：否<br>   模糊查询：支持，模糊查询时仅支持一个host</li>
-        :type Filters: list of AdvancedFilter
-        """
-        self.Offset = None
-        self.Limit = None
-        self.Filters = None
-
-
-    def _deserialize(self, params):
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        if params.get("Filters") is not None:
-            self.Filters = []
-            for item in params.get("Filters"):
-                obj = AdvancedFilter()
-                obj._deserialize(item)
-                self.Filters.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeLoadBalancingResponse(AbstractModel):
-    """DescribeLoadBalancing返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TotalCount: 记录总数。
-        :type TotalCount: int
-        :param Data: 负载均衡信息。
-        :type Data: list of LoadBalancing
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.TotalCount = None
-        self.Data = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.TotalCount = params.get("TotalCount")
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = LoadBalancing()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
 class DescribeLogSetsRequest(AbstractModel):
     """DescribeLogSets请求参数结构体
 
@@ -6379,58 +3704,6 @@ class DescribeLogSetsResponse(AbstractModel):
                 obj._deserialize(item)
                 self.LogSetList.append(obj)
         self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeLogTopicTaskDetailRequest(AbstractModel):
-    """DescribeLogTopicTaskDetail请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TopicId: 推送任务ID。
-        :type TopicId: str
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        """
-        self.TopicId = None
-        self.ZoneId = None
-
-
-    def _deserialize(self, params):
-        self.TopicId = params.get("TopicId")
-        self.ZoneId = params.get("ZoneId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeLogTopicTaskDetailResponse(AbstractModel):
-    """DescribeLogTopicTaskDetail返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LogTopicDetailInfo: 推送任务详情。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type LogTopicDetailInfo: :class:`tencentcloud.teo.v20220901.models.LogTopicDetailInfo`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.LogTopicDetailInfo = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("LogTopicDetailInfo") is not None:
-            self.LogTopicDetailInfo = LogTopicDetailInfo()
-            self.LogTopicDetailInfo._deserialize(params.get("LogTopicDetailInfo"))
         self.RequestId = params.get("RequestId")
 
 
@@ -6565,6 +3838,76 @@ class DescribeOriginGroupResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeOriginProtectionRequest(AbstractModel):
+    """DescribeOriginProtection请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneIds: 查询的站点集合，不填默认查询所有站点。
+        :type ZoneIds: list of str
+        :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
+<li>need-update<br>   按照【<strong>站点是否需要更新源站防护IP白名单</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   true：需要更新<br>   false：无需更新<br></li>
+<li>plan-support<br>   按照【<strong>站点套餐是否支持源站防护</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   true：支持<br>   false：不支持<br></li>
+        :type Filters: list of Filter
+        :param Offset: 分页查询偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 分页查询限制数目。默认值：20，最大值：1000。
+        :type Limit: int
+        """
+        self.ZoneIds = None
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.ZoneIds = params.get("ZoneIds")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOriginProtectionResponse(AbstractModel):
+    """DescribeOriginProtection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OriginProtectionInfo: 源站防护信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginProtectionInfo: list of OriginProtectionInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.OriginProtectionInfo = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("OriginProtectionInfo") is not None:
+            self.OriginProtectionInfo = []
+            for item in params.get("OriginProtectionInfo"):
+                obj = OriginProtectionInfo()
+                obj._deserialize(item)
+                self.OriginProtectionInfo.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeOverviewL7DataRequest(AbstractModel):
     """DescribeOverviewL7Data请求参数结构体
 
@@ -6582,7 +3925,8 @@ class DescribeOverviewL7DataRequest(AbstractModel):
 <li>l7Flow_outBandwidth: 访问带宽；</li>
 <li>l7Flow_hit_outFlux: 缓存命中流量。</li>
         :type MetricNames: list of str
-        :param ZoneIds: 查询的站点集合，不填默认查询所有站点。
+        :param ZoneIds: 站点集合。
+若不填写，默认选择全部站点，且最多只能查询近30天的数据；若填写，则可查询站点绑定套餐支持的<a href="https://cloud.tencent.com/document/product/1552/77380#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>。
         :type ZoneIds: list of str
         :param Domains: 查询的域名集合，不填默认查询所有子域名。
         :type Domains: list of str
@@ -6590,22 +3934,23 @@ class DescribeOverviewL7DataRequest(AbstractModel):
 <li>http: http协议；</li>
 <li>https: https协议；</li>
 <li>http2: http2协议；</li>
-<li>all:  所有协议。</li>不填默认为: all，表示查询所有协议。
+<li>all:  所有协议。</li>不填默认为all，此参数暂未生效。
         :type Protocol: str
         :param Interval: 查询时间粒度，取值有：
 <li>min：1分钟；</li>
 <li>5min：5分钟；</li>
 <li>hour：1小时；</li>
-<li>day：1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
+<li>day：1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：1小时范围内以min粒度查询，2天范围内以5min粒度查询，7天范围内以hour粒度查询，超过7天以day粒度查询。
         :type Interval: str
+        :param Filters: 过滤条件，详细的过滤条件Key值如下：
+<li>tagKey<br>   按照【<strong>标签Key</strong>】进行过滤。</li>
+<li>tagValue<br>   按照【<strong>标签Value</strong>】进行过滤。</li>
+        :type Filters: list of QueryCondition
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户的地域智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
-        :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
-<li>tagKey<br>   按照【<strong>标签Key</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
-<li>tagValue<br>   按照【<strong>标签Value</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
-        :type Filters: list of QueryCondition
         """
         self.StartTime = None
         self.EndTime = None
@@ -6614,8 +3959,8 @@ class DescribeOverviewL7DataRequest(AbstractModel):
         self.Domains = None
         self.Protocol = None
         self.Interval = None
-        self.Area = None
         self.Filters = None
+        self.Area = None
 
 
     def _deserialize(self, params):
@@ -6626,13 +3971,13 @@ class DescribeOverviewL7DataRequest(AbstractModel):
         self.Domains = params.get("Domains")
         self.Protocol = params.get("Protocol")
         self.Interval = params.get("Interval")
-        self.Area = params.get("Area")
         if params.get("Filters") is not None:
             self.Filters = []
             for item in params.get("Filters"):
                 obj = QueryCondition()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.Area = params.get("Area")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6828,60 +4173,6 @@ class DescribePurgeTasksResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class DescribeRateLimitIntelligenceRuleRequest(AbstractModel):
-    """DescribeRateLimitIntelligenceRule请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。
-        :type Entity: str
-        """
-        self.ZoneId = None
-        self.Entity = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeRateLimitIntelligenceRuleResponse(AbstractModel):
-    """DescribeRateLimitIntelligenceRule返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RateLimitIntelligenceRuleDetails: 速率限制智能规则。
-        :type RateLimitIntelligenceRuleDetails: list of RateLimitIntelligenceRuleDetail
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RateLimitIntelligenceRuleDetails = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("RateLimitIntelligenceRuleDetails") is not None:
-            self.RateLimitIntelligenceRuleDetails = []
-            for item in params.get("RateLimitIntelligenceRuleDetails"):
-                obj = RateLimitIntelligenceRuleDetail()
-                obj._deserialize(item)
-                self.RateLimitIntelligenceRuleDetails.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
 class DescribeRulesRequest(AbstractModel):
     """DescribeRules请求参数结构体
 
@@ -6892,7 +4183,7 @@ class DescribeRulesRequest(AbstractModel):
         :param ZoneId: 站点 ID。
         :type ZoneId: str
         :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
-<li>rule-id<br>   按照【<strong>规则ID</strong>】进行过滤。<br>   类型：string<br>   必选：否
+<li>rule-id<br>   按照【<strong>规则ID</strong>】进行过滤。<br>   类型：string<br>   必选：否</li>
         :type Filters: list of Filter
         """
         self.ZoneId = None
@@ -6978,384 +4269,6 @@ class DescribeRulesSettingResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class DescribeSecurityGroupManagedRulesRequest(AbstractModel):
-    """DescribeSecurityGroupManagedRules请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type Entity: str
-        :param Offset: 分页查询偏移量。默认值：0。
-        :type Offset: int
-        :param Limit: 分页查询限制数目。默认值：20，最大值：1000。
-        :type Limit: int
-        :param TemplateId: 模板Id。当使用模板Id时可不填ZoneId和Entity，否则必须填写ZoneId和Entity。
-        :type TemplateId: str
-        """
-        self.ZoneId = None
-        self.Entity = None
-        self.Offset = None
-        self.Limit = None
-        self.TemplateId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        self.TemplateId = params.get("TemplateId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeSecurityGroupManagedRulesResponse(AbstractModel):
-    """DescribeSecurityGroupManagedRules返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Count: 本次返回的规则数。
-        :type Count: int
-        :param Total: 总规则数。
-        :type Total: int
-        :param WafGroupInfo: 托管规则信息。
-        :type WafGroupInfo: :class:`tencentcloud.teo.v20220901.models.WafGroupInfo`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Count = None
-        self.Total = None
-        self.WafGroupInfo = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.Count = params.get("Count")
-        self.Total = params.get("Total")
-        if params.get("WafGroupInfo") is not None:
-            self.WafGroupInfo = WafGroupInfo()
-            self.WafGroupInfo._deserialize(params.get("WafGroupInfo"))
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeSecurityPolicyListRequest(AbstractModel):
-    """DescribeSecurityPolicyList请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        """
-        self.ZoneId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeSecurityPolicyListResponse(AbstractModel):
-    """DescribeSecurityPolicyList返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param SecurityEntities: 防护资源列表。
-        :type SecurityEntities: list of SecurityEntity
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.SecurityEntities = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("SecurityEntities") is not None:
-            self.SecurityEntities = []
-            for item in params.get("SecurityEntities"):
-                obj = SecurityEntity()
-                obj._deserialize(item)
-                self.SecurityEntities.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeSecurityPolicyRegionsRequest(AbstractModel):
-    """DescribeSecurityPolicyRegions请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Offset: 分页查询偏移量。默认值：0。
-        :type Offset: int
-        :param Limit: 分页查询限制数目。默认值：20，最大值：1000。
-        :type Limit: int
-        """
-        self.Offset = None
-        self.Limit = None
-
-
-    def _deserialize(self, params):
-        self.Offset = params.get("Offset")
-        self.Limit = params.get("Limit")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeSecurityPolicyRegionsResponse(AbstractModel):
-    """DescribeSecurityPolicyRegions返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Count: 总地域信息数。
-        :type Count: int
-        :param GeoIps: 地域信息。
-        :type GeoIps: list of GeoIp
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Count = None
-        self.GeoIps = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.Count = params.get("Count")
-        if params.get("GeoIps") is not None:
-            self.GeoIps = []
-            for item in params.get("GeoIps"):
-                obj = GeoIp()
-                obj._deserialize(item)
-                self.GeoIps.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeSecurityPolicyRequest(AbstractModel):
-    """DescribeSecurityPolicy请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。当使用Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type Entity: str
-        :param TemplateId: 模板策略id。当使用模板Id时可不填Entity，否则必须填写Entity。
-        :type TemplateId: str
-        """
-        self.ZoneId = None
-        self.Entity = None
-        self.TemplateId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        self.TemplateId = params.get("TemplateId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeSecurityPolicyResponse(AbstractModel):
-    """DescribeSecurityPolicy返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param SecurityConfig: 安全配置。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type SecurityConfig: :class:`tencentcloud.teo.v20220901.models.SecurityConfig`
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.SecurityConfig = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("SecurityConfig") is not None:
-            self.SecurityConfig = SecurityConfig()
-            self.SecurityConfig._deserialize(params.get("SecurityConfig"))
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeSecurityPortraitRulesRequest(AbstractModel):
-    """DescribeSecurityPortraitRules请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。当使用ZoneId和Entity时可不填写TemplateId，否则必须填写TemplateId。
-        :type Entity: str
-        :param TemplateId: 模板Id。当使用模板Id时可不填ZoneId和Entity，否则必须填写ZoneId和Entity。
-        :type TemplateId: str
-        """
-        self.ZoneId = None
-        self.Entity = None
-        self.TemplateId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        self.TemplateId = params.get("TemplateId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeSecurityPortraitRulesResponse(AbstractModel):
-    """DescribeSecurityPortraitRules返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Count: 本次返回的规则数。
-        :type Count: int
-        :param PortraitManagedRuleDetails: Bot用户画像规则。
-        :type PortraitManagedRuleDetails: list of PortraitManagedRuleDetail
-        :param Total: 总规则数。
-        :type Total: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Count = None
-        self.PortraitManagedRuleDetails = None
-        self.Total = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.Count = params.get("Count")
-        if params.get("PortraitManagedRuleDetails") is not None:
-            self.PortraitManagedRuleDetails = []
-            for item in params.get("PortraitManagedRuleDetails"):
-                obj = PortraitManagedRuleDetail()
-                obj._deserialize(item)
-                self.PortraitManagedRuleDetails.append(obj)
-        self.Total = params.get("Total")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeSecurityRuleIdRequest(AbstractModel):
-    """DescribeSecurityRuleId请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RuleType: 规则类型，取值有：
-<li>waf：web托管规则；</li>
-<li>acl：自定义规则；</li>
-<li>rate：速率限制规则；</li>
-<li>bot：Bot基础规则。</li>
-        :type RuleType: str
-        :param Entity: 子域名/应用名。
-        :type Entity: str
-        :param RuleIdList: 规则Id数组。 当为空时查询 子域名或者应用名下所有规则
-        :type RuleIdList: list of int
-        :param Domains: 子域名数组。
-        :type Domains: list of str
-        """
-        self.RuleType = None
-        self.Entity = None
-        self.RuleIdList = None
-        self.Domains = None
-
-
-    def _deserialize(self, params):
-        self.RuleType = params.get("RuleType")
-        self.Entity = params.get("Entity")
-        self.RuleIdList = params.get("RuleIdList")
-        self.Domains = params.get("Domains")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeSecurityRuleIdResponse(AbstractModel):
-    """DescribeSecurityRuleId返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param WafGroupRules: 托管规则类型的规则列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type WafGroupRules: list of WafGroupRule
-        :param SecurityRules: 自定义规则、速率限制、Bot规则的规则列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type SecurityRules: list of SecurityRule
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.WafGroupRules = None
-        self.SecurityRules = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("WafGroupRules") is not None:
-            self.WafGroupRules = []
-            for item in params.get("WafGroupRules"):
-                obj = WafGroupRule()
-                obj._deserialize(item)
-                self.WafGroupRules.append(obj)
-        if params.get("SecurityRules") is not None:
-            self.SecurityRules = []
-            for item in params.get("SecurityRules"):
-                obj = SecurityRule()
-                obj._deserialize(item)
-                self.SecurityRules.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
 class DescribeSingleL7AnalysisDataRequest(AbstractModel):
     """DescribeSingleL7AnalysisData请求参数结构体
 
@@ -7370,24 +4283,27 @@ class DescribeSingleL7AnalysisDataRequest(AbstractModel):
         :param MetricNames: 查询的指标，取值有:
 <li> l7Flow_singleIpRequest：独立IP请求数。</li>
         :type MetricNames: list of str
-        :param ZoneIds: 查询的站点集合，不填默认查询所有站点。
+        :param ZoneIds: 站点集合。
+若不填写，默认选择全部站点，且最多只能查询近30天的数据；
+若填写，则可查询站点绑定套餐支持的<a href="https://cloud.tencent.com/document/product/1552/77380#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>。
         :type ZoneIds: list of str
-        :param Filters: 筛选条件, key可选的值有：
-<li>country：国家/地区；</li>
-<li>domain：域名；</li>
-<li>protocol：协议类型；</li>
-<li>tagKey：标签Key；</li>
-<li>tagValue；标签Value。</li>
+        :param Filters: 过滤条件，详细的过滤条件Key值如下：
+<li>country<br>   按照【<strong>国家/地区</strong>】进行过滤，国家/地区遵循<a href="https://zh.wikipedia.org/wiki/ISO_3166-1">ISO 3166</a>规范。</li>
+<li>domain<br>   按照【<strong>子域名</strong>】进行过滤，子域名形如： test.example.com。</li>
+<li>protocol<br>   按照【<strong>HTTP协议</strong>】进行过滤。<br>   对应的Value可选项如下：<br>   HTTP/1.0：HTTP 1.0；<br>   HTTP/1.1：HTTP 1.1；<br>   HTTP/2.0：HTTP 2.0；<br>   HTTP/3.0：HTTP 3.0；<br>   WebSocket：WebSocket。</li>
+<li>tagKey<br>   按照【<strong>标签Key</strong>】进行过滤。</li>
+<li>tagValue<br>   按照【<strong>标签Value</strong>】进行过滤。</li>
         :type Filters: list of QueryCondition
         :param Interval: 查询时间粒度，取值有：
 <li>min：1分钟；</li>
 <li>5min：5分钟；</li>
 <li>hour：1小时；</li>
-<li>day：1天;。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
+<li>day：1天;。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：1小时范围内以min粒度查询，2天范围内以5min粒度查询，7天范围内以hour粒度查询，超过7天以day粒度查询。
         :type Interval: str
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
         """
         self.StartTime = None
@@ -7611,7 +4527,9 @@ class DescribeTimingL4DataRequest(AbstractModel):
 <li>l4Flow_outFlux: 访问出流量；</li>
 <li> l4Flow_outPkt: 访问出包量。</li>
         :type MetricNames: list of str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
+        :param ZoneIds: 站点集合。
+若不填写，默认选择全部站点，且最多只能查询近30天的数据；
+若填写，则可查询站点绑定套餐支持的<a href="https://cloud.tencent.com/document/product/1552/77380#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>。
         :type ZoneIds: list of str
         :param ProxyIds: 四层实例列表, 不填表示选择全部实例。
         :type ProxyIds: list of str
@@ -7619,15 +4537,16 @@ class DescribeTimingL4DataRequest(AbstractModel):
 <li>min: 1分钟 ；</li>
 <li>5min: 5分钟 ；</li>
 <li>hour: 1小时 ；</li>
-<li>day: 1天 。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
+<li>day: 1天 。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：1小时范围内以min粒度查询，2天范围内以5min粒度查询，7天范围内以hour粒度查询，超过7天以day粒度查询。
         :type Interval: str
-        :param Filters: 筛选条件, key可选的值有：
-<li>ruleId: 根据规则Id进行过滤；</li>
-<li>proxyId: 根据通道Id进行过滤。</li>
+        :param Filters: 过滤条件，详细的过滤条件Key值如下：
+<li>ruleId<br>   按照【<strong>转发规则ID</strong>】进行过滤。</li>
+<li>proxyId<br>   按照【<strong>四层代理实例ID</strong>】进行过滤。</li>
         :type Filters: list of QueryCondition
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
         """
         self.StartTime = None
@@ -7710,33 +4629,37 @@ class DescribeTimingL7AnalysisDataRequest(AbstractModel):
 <li>l7Flow_request: 访问请求数；</li>
 <li>l7Flow_outBandwidth: 访问带宽。</li>
         :type MetricNames: list of str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
+        :param ZoneIds: 站点集合。
+若不填写，默认选择全部站点，且最多只能查询近30天的数据；若填写，则可查询站点绑定套餐支持的<a href="https://cloud.tencent.com/document/product/1552/77380#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>。
         :type ZoneIds: list of str
         :param Interval: 查询时间粒度，取值有：
 <li>min: 1分钟；</li>
 <li>5min: 5分钟；</li>
 <li>hour: 1小时；</li>
-<li>day: 1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
+<li>day: 1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：1小时范围内以min粒度查询，2天范围内以5min粒度查询，7天范围内以hour粒度查询，超过7天以day粒度查询。
         :type Interval: str
-        :param Filters: 筛选条件，key可选的值有：
-<li>country：国家/地区；</li>
-<li>domain：域名；</li>
-<li>protocol：协议类型；</li>
-<li>resourceType：资源类型；</li>
-<li>statusCode：状态码；</li>
-<li> browserType：浏览器类型；</li>
-<li>deviceType：设备类型；</li>
-<li>operatingSystemType：操作系统类型；</li>
-<li>tlsVersion：tls版本；</li>
-<li>url：url地址；</li>
-<li>referer：refer头信息；</li>
-<li>ipVersion：ip版本；</li>
-<li>tagKey：标签Key；</li>
-<li>tagValue：标签Value。</li>
+        :param Filters: 过滤条件，详细的过滤条件Key值如下：
+<li>country<br>   按照【<strong>国家/地区</strong>】进行过滤，国家/地区遵循<a href="https://zh.wikipedia.org/wiki/ISO_3166-1">ISO 3166</a>规范。</li>
+<li>province<br>   按照【<strong>省份</strong>】进行过滤，此参数只支持服务区域为中国大陆。</li>
+<li>isp<br>   按照【<strong>运营商</strong>】进行过滤，此参数只支持服务区域为中国大陆。<br>   对应的Value可选项如下：<br>   2：中国电信；<br>   26：中国联通；<br>   1046：中国移动；<br>   3947：中国铁通；<br>   38：教育网；<br>   43：长城宽带；<br>   0：其他运营商。</li>
+<li>domain<br>   按照【<strong>子域名</strong>】进行过滤，子域名形如： test.example.com。</li>
+<li>url<br>   按照【<strong>URL Path</strong>】进行过滤，URL Path形如：/content或/content/test.jpg。<br>   若只填写url参数，则最多可查询近30天的数据；<br>   若同时填写url+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。</li>
+<li>referer<br>   按照【<strong>Referer头信息</strong>】进行过滤, Referer形如：example.com。<br>   若只填写referer参数，则最多可查询近30天的数据；<br>   若同时填写referer+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。</li>
+<li>resourceType<br>   按照【<strong>资源类型</strong>】进行过滤，资源类型一般是文件后缀，形如: .jpg, .css。<br>   若只填写resourceType参数，则最多可查询近30天的数据；<br>   若同时填写resourceType+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。</li>
+<li>protocol<br>   按照【<strong>HTTP协议</strong>】进行过滤。<br>   对应的Value可选项如下：<br>   HTTP/1.0：HTTP 1.0；<br>   HTTP/1.1：HTTP 1.1；<br>   HTTP/2.0：HTTP 2.0；<br>   HTTP/3.0：HTTP 3.0；<br>   WebSocket：WebSocket。</li>
+<li>statusCode<br>   按照【<strong>状态码</strong>】进行过滤。<br>   若只填写statusCode参数，则最多可查询近30天的数据；<br>   若同时填写statusCode+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。<br>   对应的Value可选项如下：<br>   1XX：1xx类型的状态码；<br>   100：100状态码；<br>   101：101状态码；<br>   102：102状态码；<br>   2XX：2xx类型的状态码；<br>   200：200状态码；<br>   201：201状态码；<br>   202：202状态码；<br>   203：203状态码；<br>   204：204状态码；<br>   205：205状态码；<br>   206：206状态码；<br>   207：207状态码；<br>   3XX：3xx类型的状态码；<br>   300：300状态码；<br>   301：301状态码；<br>   302：302状态码；<br>   303：303状态码；<br>   304：304状态码；<br>   305：305状态码；<br>   307：307状态码；<br>   4XX：4xx类型的状态码；<br>   400：400状态码；<br>   401：401状态码；<br>   402：402状态码；<br>   403：403状态码；<br>   404：404状态码；<br>   405：405状态码；<br>   406：406状态码；<br>   407：407状态码；<br>   408：408状态码；<br>   409：409状态码；<br>   410：410状态码；<br>   411：411状态码；<br>   412：412状态码；<br>   412：413状态码；<br>   414：414状态码；<br>   415：415状态码；<br>   416：416状态码；<br>   417：417状态码；<br>   422：422状态码；<br>   423：423状态码；<br>   424：424状态码；<br>   426：426状态码；<br>   451：451状态码；<br>   5XX：5xx类型的状态码；<br>   500：500状态码；<br>   501：501状态码；<br>   502：502状态码；<br>   503：503状态码；<br>   504：504状态码；<br>   505：505状态码；<br>   506：506状态码；<br>   507：507状态码；<br>   510：510状态码；<br>   514：514状态码；<br>   544：544状态码。</li>
+<li>browserType<br>   按照【<strong>浏览器类型</strong>】进行过滤。<br>   若只填写browserType参数，则最多可查询近30天的数据；<br>   若同时填写browserType+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。<br>   对应Value的可选项如下：<br>   Firefox：Firefox浏览器；<br>   Chrome：Chrome浏览器；<br>   Safari：Safari浏览器；<br>   Other：其他浏览器类型；<br>   Empty：浏览器类型为空；<br>   Bot：搜索引擎爬虫；<br>   MicrosoftEdge：MicrosoftEdge浏览器；<br>   IE：IE浏览器；<br>   Opera：Opera浏览器；<br>   QQBrowser：QQ浏览器；<br>   LBBrowser：LB浏览器；<br>   MaxthonBrowser：Maxthon浏览器；<br>   SouGouBrowser：搜狗浏览器；<br>   BIDUBrowser：百度浏览器；<br>   TaoBrowser：淘浏览器；<br>   UBrowser：UC浏览器。</li>
+<li>deviceType<br>   按照【<strong>设备类型</strong>】进行过滤。<br>   若只填写deviceType参数，则最多可查询近30天的数据；<br>   若同时填写deviceType+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。<br>   对应Value的可选项如下：<br>   TV：TV设备；<br>   Tablet：Tablet设备；<br>   Mobile：Mobile设备；<br>   Desktop：Desktop设备；<br>   Other：其他设备类型；<br>   Empty：设备类型为空。</li>
+<li>operatingSystemType<br>   按照【<strong>操作系统类型</strong>】进行过滤。<br>   若只填写operatingSystemType参数，则最多可查询近30天的数据；<br>   若同时填写operatingSystemType+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。<br>   对应Value的可选项如下：<br>   Linux：Linux操作系统；<br>   MacOS：MacOs操作系统；<br>   Android：Android操作系统；<br>   IOS：IOS操作系统；<br>   Windows：Windows操作系统；<br>   NetBSD：NetBSD；<br>   ChromiumOS：ChromiumOS；<br>   Bot：搜索引擎爬虫；<br>   Other：其他类型的操作系统；<br>   Empty：操作系统为空。</li>
+<li>tlsVersion<br>   按照【<strong>TLS版本</strong>】进行过滤。<br>   若只填写tlsVersion参数，则最多可查询近30天的数据；<br>   若同时填写tlsVersion+Zonelds参数，则支持的查询数据范围为套餐支持的<a href="https://tcloud.woa.com/document/product/1552/77380?!preview#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>与30天两者中的较小值。<br>   对应Value的可选项如下：<br>   TLS1.0：TLS 1.0；<br>   TLS1.1：TLS 1.1；<br>   TLS1.2：TLS 1.2；<br>   TLS1.3：TLS 1.3。</li>
+<li>ipVersion<br>   按照【<strong>IP版本</strong>】进行过滤。<br>   对应Value的可选项如下：<br>   4：Ipv4；<br>   6：Ipv6。</li>
+<li>tagKey<br>   按照【<strong>标签Key</strong>】进行过滤。</li>
+<li>tagValue<br>   按照【<strong>标签Value</strong>】进行过滤。</li>
         :type Filters: list of QueryCondition
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户的地域智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
         """
         self.StartTime = None
@@ -7777,27 +4700,27 @@ class DescribeTimingL7AnalysisDataResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TotalCount: 查询结果的总条数。
+        :type TotalCount: int
         :param Data: 时序流量数据列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Data: list of TimingDataRecord
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
-        self.Data = None
         self.TotalCount = None
+        self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
         if params.get("Data") is not None:
             self.Data = []
             for item in params.get("Data"):
                 obj = TimingDataRecord()
                 obj._deserialize(item)
                 self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -7819,13 +4742,14 @@ class DescribeTimingL7CacheDataRequest(AbstractModel):
         :type MetricNames: list of str
         :param ZoneIds: 站点集合，不填默认选择全部站点。
         :type ZoneIds: list of str
-        :param Filters: 筛选条件，key可选的值有：
-<li> cacheType：缓存类型(状态)；</li>
-<li>domain：Host/域名；</li>
-<li>resourceType：资源类型；</li>
-<li>url：url地址；</li>
-<li>tagKey：标签Key；</li>
-<li>tagValue：标签Value。</li>
+        :param Filters: 过滤条件，详细的过滤条件如下：
+<li>domain<br>   按照【<strong>子域名</strong>】进行过滤，子域名形如： test.example.com。<br>   类型：String<br>   必选：否</li>
+<li>url<br>   按照【<strong>URL</strong>】进行过滤，此参数只支持30天的时间范围，URL形如：/content。<br>   类型：String<br>   必选：否</li>
+<li>resourceType<br>   按照【<strong>资源类型</strong>】进行过滤，此参数只支持30天的时间范围，资源类型形如：jpg，png。<br>   类型：String<br>   必选：否</li>
+<li>cacheType<br>   按照【<strong>缓存类型</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   hit：命中缓存；<br>   dynamic：资源不可缓存；<br>   miss：未命中缓存。</li>
+<li>statusCode<br>   按照【<strong>状态码</strong>】进行过滤，此参数只支持30天的时间范围。<br>   类型：String<br>   必选：否<br>   可选项：<br>   1XX：1xx类型的状态码；<br>   100：100状态码；<br>   101：101状态码；<br>   102：102状态码；<br>   2XX：2xx类型的状态码；<br>   200：200状态码；<br>   201：201状态码；<br>   202：202状态码；<br>   203：203状态码；<br>   204：204状态码；<br>   100：100状态码；<br>   206：206状态码；<br>   207：207状态码；<br>   3XX：3xx类型的状态码；<br>   300：300状态码；<br>   301：301状态码；<br>   302：302状态码；<br>   303：303状态码；<br>   304：304状态码；<br>   305：305状态码；<br>   307：307状态码；<br>   4XX：4xx类型的状态码；<br>   400：400状态码；<br>   401：401状态码；<br>   402：402状态码；<br>   403：403状态码；<br>   404：404状态码；<br>   405：405状态码；<br>   406：406状态码；<br>   407：407状态码；<br>   408：408状态码；<br>   409：409状态码；<br>   410：410状态码；<br>   411：411状态码；<br>   412：412状态码；<br>   412：413状态码；<br>   414：414状态码；<br>   415：415状态码；<br>   416：416状态码；<br>   417：417状态码；<br>   422：422状态码；<br>   423：423状态码；<br>   424：424状态码；<br>   426：426状态码；<br>   451：451状态码；<br>   5XX：5xx类型的状态码；<br>   500：500状态码；<br>   501：501状态码；<br>   502：502状态码；<br>   503：503状态码；<br>   504：504状态码；<br>   505：505状态码；<br>   506：506状态码；<br>   507：507状态码；<br>   510：510状态码；<br>   514：514状态码；<br>   544：544状态码。</li>
+<li>tagKey<br>   按照【<strong>标签Key</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
+<li>tagValue<br>   按照【<strong>标签Value</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
         :type Filters: list of QueryCondition
         :param Interval: 查询时间粒度，可选的值有：
 <li>min：1分钟的时间粒度；</li>
@@ -7835,7 +4759,8 @@ class DescribeTimingL7CacheDataRequest(AbstractModel):
         :type Interval: str
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
         """
         self.StartTime = None
@@ -7876,27 +4801,127 @@ class DescribeTimingL7CacheDataResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TotalCount: 查询结果的总条数。
+        :type TotalCount: int
         :param Data: 七层缓存分析时序类流量数据列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Data: list of TimingDataRecord
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
-        self.Data = None
         self.TotalCount = None
+        self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
         if params.get("Data") is not None:
             self.Data = []
             for item in params.get("Data"):
                 obj = TimingDataRecord()
                 obj._deserialize(item)
                 self.Data.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTimingL7SourceDataRequest(AbstractModel):
+    """DescribeTimingL7SourceData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 开始时间。
+        :type StartTime: str
+        :param EndTime: 结束时间。
+        :type EndTime: str
+        :param MetricNames: 指标列表，取值有:
+<li>l7Flow_outFlux_hy: Edgeone请求流量；</li>
+<li>l7Flow_outBandwidth_hy: Edgeone请求带宽；</li>
+<li>l7Flow_inFlux_hy: 源站响应流量；</li>
+<li>l7Flow_inBandwidth_hy: 源站响应带宽；</li>
+<li>l7Flow_request_hy: 回源请求数；</li>
+        :type MetricNames: list of str
+        :param ZoneIds: 站点集合，不填默认选择全部站点。
+        :type ZoneIds: list of str
+        :param Interval: 查询时间粒度，取值有：
+<li>min: 1分钟；</li>
+<li>5min: 5分钟；</li>
+<li>hour: 1小时；</li>
+<li>day: 1天。</li>不填将根据开始时间跟结束时间的间距自动推算粒度，具体为：一小时范围内以min粒度查询，两天范围内以5min粒度查询，七天范围内以hour粒度查询，超过七天以day粒度查询。
+        :type Interval: str
+        :param Filters: 过滤条件，详细的过滤条件如下：
+<li>domain<br>   按照【<strong>回源Host</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
+<li>origin<br>   按照【<strong>源站</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
+<li>originGroup<br>   按照【<strong>源站组</strong>】进行过滤，源站组形如：origin-xxxxx。<br>   类型：String<br>   必选：否</li>
+<li>flowType<br>   按照【<strong>源站响应类型</strong>】进行过滤，优先级高于 MetricNames.N 参数。<br>   类型：String<br>   必选：否<br>   可选项：<br>   inFlow：源站响应流量，对应MetricNames中l7Flow_inFlux_hy、l7Flow_inBandwidth_hy、l7Flow_request_hy三个指标；<br>   outFlow：EdgeOne请求流量，对应MetricNames中l7Flow_outFlux_hy、l7Flow_outBandwidth_hy、l7Flow_request_hy三个指标。</li>
+        :type Filters: list of QueryCondition
+        :param Area: 数据归属地区，取值有：
+<li>overseas：全球（除中国大陆地区）数据；</li>
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
+        :type Area: str
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.MetricNames = None
+        self.ZoneIds = None
+        self.Interval = None
+        self.Filters = None
+        self.Area = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.MetricNames = params.get("MetricNames")
+        self.ZoneIds = params.get("ZoneIds")
+        self.Interval = params.get("Interval")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = QueryCondition()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Area = params.get("Area")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTimingL7SourceDataResponse(AbstractModel):
+    """DescribeTimingL7SourceData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 查询结果的总条数。
+        :type TotalCount: int
+        :param TimingDataRecords: 时序流量数据列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TimingDataRecords: list of TimingDataRecord
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.TimingDataRecords = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.TotalCount = params.get("TotalCount")
+        if params.get("TimingDataRecords") is not None:
+            self.TimingDataRecords = []
+            for item in params.get("TimingDataRecords"):
+                obj = TimingDataRecord()
+                obj._deserialize(item)
+                self.TimingDataRecords.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -7927,21 +4952,23 @@ class DescribeTopL7AnalysisDataRequest(AbstractModel):
         :type ZoneIds: list of str
         :param Limit: 查询前多少个数据，最大值为1000，不填默认默认为: 10， 表示查询前top10的数据。
         :type Limit: int
-        :param Filters: 筛选条件，key可选的值有：
-<li>country：国家/地区；</li>
-<li>domain：域名；</li>
-<li>protocol：协议类型；</li>
-<li>resourceType：资源类型；</li>
-<li>statusCode：状态码；</li>
-<li> browserType：浏览器类型；</li>
-<li>deviceType：设备类型；</li>
-<li>operatingSystemType：操作系统类型；</li>
-<li>tlsVersion：tls版本；</li>
-<li>url：url地址；</li>
-<li>referer：refer头信息；</li>
-<li>ipVersion：ip版本；</li>
-<li>tagKey：标签Key；</li>
-<li>tagValue：标签Value。</li>
+        :param Filters: 过滤条件，详细的过滤条件如下：
+<li>country<br>   按照【<strong>国家/地区</strong>】进行过滤，国家/地区遵循<a href="https://zh.wikipedia.org/wiki/ISO_3166-1">ISO 3166</a>规范。<br>   类型：String<br>   必选：否</li>
+<li>province<br>   按照【<strong>省份</strong>】进行过滤，此参数只支持服务区域为中国大陆。<br>   类型：String<br>   必选：否</li>
+<li>isp<br>   按照【<strong>运营商</strong>】进行过滤，此参数只支持服务区域为中国大陆。<br>   类型：String<br>   必选：否<br>   可选项：<br>   2：中国电信；<br>   26：中国联通；<br>   1046：中国移动；<br>   3947：中国铁通；<br>   38：教育网；<br>   43：长城带宽；<br>   0：其他运营商。</li>
+<li>domain<br>   按照【<strong>子域名</strong>】进行过滤，子域名形如： test.example.com。<br>   类型：String<br>   必选：否</li>
+<li>url<br>   按照【<strong>URL</strong>】进行过滤，此参数最长支持30天的查询范围，如果需要过滤多个值，多个值之间使用分号间隔，URL形如：/content,。<br>   类型：String<br>   必选：否</li>
+<li>referer<br>   按照【<strong>Referer头信息</strong>】进行过滤, 此参数最长支持30天的查询范围，Referer形如：example.com。<br>   类型：String<br>   必选：否</li>   必选：否</li>
+<li>resourceType<br>   按照【<strong>资源类型</strong>】进行过滤，此参数最长支持30天的的查询范围，资源类型形如：jpg，png。<br>   类型：String<br>   必选：否</li>
+<li>protocol<br>   按照【<strong>HTTP协议</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   HTTP/1.0：HTTP 1.0；<br>   HTTP/1.1：HTTP 1.1；<br>   HTTP/2.0：HTTP 2.0；<br>   HTTP/3.0：HTTP 3.0；<br>   WebSocket：WebSocket。</li>
+<li>statusCode<br>   按照【<strong>状态码</strong>】进行过滤，此参数最长支持30天的查询范围。<br>   类型：String<br>   必选：否<br>   可选项：<br>   1XX：1xx类型的状态码；<br>   100：100状态码；<br>   101：101状态码；<br>   102：102状态码；<br>   2XX：2xx类型的状态码；<br>   200：200状态码；<br>   201：201状态码；<br>   202：202状态码；<br>   203：203状态码；<br>   204：204状态码；<br>   100：100状态码；<br>   206：206状态码；<br>   207：207状态码；<br>   3XX：3xx类型的状态码；<br>   300：300状态码；<br>   301：301状态码；<br>   302：302状态码；<br>   303：303状态码；<br>   304：304状态码；<br>   305：305状态码；<br>   307：307状态码；<br>   4XX：4xx类型的状态码；<br>   400：400状态码；<br>   401：401状态码；<br>   402：402状态码；<br>   403：403状态码；<br>   404：404状态码；<br>   405：405状态码；<br>   406：406状态码；<br>   407：407状态码；<br>   408：408状态码；<br>   409：409状态码；<br>   410：410状态码；<br>   411：411状态码；<br>   412：412状态码；<br>   412：413状态码；<br>   414：414状态码；<br>   415：415状态码；<br>   416：416状态码；<br>   417：417状态码；<br>   422：422状态码；<br>   423：423状态码；<br>   424：424状态码；<br>   426：426状态码；<br>   451：451状态码；<br>   5XX：5xx类型的状态码；<br>   500：500状态码；<br>   501：501状态码；<br>   502：502状态码；<br>   503：503状态码；<br>   504：504状态码；<br>   505：505状态码；<br>   506：506状态码；<br>   507：507状态码；<br>   510：510状态码；<br>   514：514状态码；<br>   544：544状态码。</li>
+<li>browserType<br>   按照【<strong>浏览器类型</strong>】进行过滤，此参数最长支持30天的查询范围。<br>   类型：String<br>   必选：否<br>   可选项：<br>   Firefox：Firefox浏览器；<br>   Chrome：Chrome浏览器；<br>   Safari：Safari浏览器；<br>   Other：其他浏览器类型；<br>   Empty：浏览器类型为空；<br>   Bot：Bot攻击；<br>   MicrosoftEdge：MicrosoftEdge浏览器；<br>   IE：IE浏览器；<br>   Opera：Opera浏览器；<br>   QQBrowser：QQ浏览器；<br>   LBBrowser：LB浏览器；<br>   MaxthonBrowser：Maxthon浏览器；<br>   SouGouBrowser：搜狗浏览器；<br>   BIDUBrowser：BIDU浏览器；<br>   TaoBrowser：淘浏览器；<br>   UBrowser：UB浏览器。</li>
+<li>deviceType<br>   按照【<strong>设备类型</strong>】进行过滤，此参数最长支持30天的查询范围。<br>   类型：String<br>   必选：否<br>   可选项：<br>   TV：TV设备；<br>   Tablet：Tablet设备；<br>   Mobile：Mobile设备；<br>   Desktop：Desktop设备；<br>   Other：其他设备类型；<br>   Empty：设备类型为空。</li>
+<li>operatingSystemType<br>   按照【<strong>操作系统类型</strong>】进行过滤，此参数最长支持30天的查询范围。<br>   类型：String<br>   必选：否<br>   可选项：<br>   Linux：Linux操作系统；<br>   MacOS：MacOs操作系统；<br>   Android：Android操作系统；<br>   IOS：IOS操作系统；<br>   Windows：Windows操作系统；<br>   NetBSD：NetBSD；<br>   ChromiumOS：ChromiumOS；<br>   Bot：Bot攻击；<br>   Other：其他类型的操作系统；<br>   Empty：操作系统为空。</li>
+<li>tlsVersion<br>   按照【<strong>TLS版本</strong>】进行过滤，此参数最长支持30天的查询范围。<br>   类型：String<br>   必选：否<br>   可选项：<br>   TLS1.0：TLS 1.0；<br>   TLS1.1：TLS 1.1；<br>   TLS1.2：TLS 1.2；<br>   TLS1.3：TLS 1.3。</li>
+<li>ipVersion<br>   按照【<strong>IP版本</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   4：Ipv4；<br>   6：Ipv6。</li>
+<li>tagKey<br>   按照【<strong>标签Key</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
+<li>tagValue<br>   按照【<strong>标签Value</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
         :type Filters: list of QueryCondition
         :param Interval: 查询时间粒度，取值有：
 <li>min：1分钟；</li>
@@ -7951,7 +4978,8 @@ class DescribeTopL7AnalysisDataRequest(AbstractModel):
         :type Interval: str
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
         """
         self.StartTime = None
@@ -7994,27 +5022,27 @@ class DescribeTopL7AnalysisDataResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TotalCount: 查询结果的总条数。
+        :type TotalCount: int
         :param Data: 七层流量前topN数据列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Data: list of TopDataRecord
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
-        self.Data = None
         self.TotalCount = None
+        self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
         if params.get("Data") is not None:
             self.Data = []
             for item in params.get("Data"):
                 obj = TopDataRecord()
                 obj._deserialize(item)
                 self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -8039,13 +5067,14 @@ class DescribeTopL7CacheDataRequest(AbstractModel):
         :type ZoneIds: list of str
         :param Limit: 查询前多少个数据，不填默认默认为10， 表示查询前top 10的数据。
         :type Limit: int
-        :param Filters: 筛选条件，key可选的值有：
-<li> cacheType：缓存类型(状态)；</li>
-<li>domain：Host/域名；</li>
-<li>resourceType：资源类型；</li>
-<li>url：url地址；</li>
-<li>tagKey：标签Key；</li>
-<li>tagValue：标签Value。</li>
+        :param Filters: 过滤条件，详细的过滤条件如下：
+<li>domain<br>   按照【<strong>子域名</strong>】进行过滤，子域名形如： test.example.com。<br>   类型：String<br>   必选：否</li>
+<li>url<br>   按照【<strong>URL</strong>】进行过滤，此参数只支持30天的时间范围，URL形如：/content。<br>   类型：String<br>   必选：否</li>
+<li>resourceType<br>   按照【<strong>资源类型</strong>】进行过滤，此参数只支持30天的时间范围，资源类型形如：jpg，png。<br>   类型：String<br>   必选：否</li>
+<li>cacheType<br>   按照【<strong>缓存类型</strong>】进行过滤。<br>   类型：String<br>   必选：否<br>   可选项：<br>   hit：命中缓存；<br>   dynamic：资源不可缓存；<br>   miss：未命中缓存。</li>
+<li>statusCode<br>   按照【<strong>状态码</strong>】进行过滤，此参数只支持30天的时间范围。<br>   类型：String<br>   必选：否<br>   可选项：<br>   1XX：1xx类型的状态码；<br>   100：100状态码；<br>   101：101状态码；<br>   102：102状态码；<br>   2XX：2xx类型的状态码；<br>   200：200状态码；<br>   201：201状态码；<br>   202：202状态码；<br>   203：203状态码；<br>   204：204状态码；<br>   100：100状态码；<br>   206：206状态码；<br>   207：207状态码；<br>   3XX：3xx类型的状态码；<br>   300：300状态码；<br>   301：301状态码；<br>   302：302状态码；<br>   303：303状态码；<br>   304：304状态码；<br>   305：305状态码；<br>   307：307状态码；<br>   4XX：4xx类型的状态码；<br>   400：400状态码；<br>   401：401状态码；<br>   402：402状态码；<br>   403：403状态码；<br>   404：404状态码；<br>   405：405状态码；<br>   406：406状态码；<br>   407：407状态码；<br>   408：408状态码；<br>   409：409状态码；<br>   410：410状态码；<br>   411：411状态码；<br>   412：412状态码；<br>   412：413状态码；<br>   414：414状态码；<br>   415：415状态码；<br>   416：416状态码；<br>   417：417状态码；<br>   422：422状态码；<br>   423：423状态码；<br>   424：424状态码；<br>   426：426状态码；<br>   451：451状态码；<br>   5XX：5xx类型的状态码；<br>   500：500状态码；<br>   501：501状态码；<br>   502：502状态码；<br>   503：503状态码；<br>   504：504状态码；<br>   505：505状态码；<br>   506：506状态码；<br>   507：507状态码；<br>   510：510状态码；<br>   514：514状态码；<br>   544：544状态码。</li>
+<li>tagKey<br>   按照【<strong>标签Key</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
+<li>tagValue<br>   按照【<strong>标签Value</strong>】进行过滤。<br>   类型：String<br>   必选：否</li>
         :type Filters: list of QueryCondition
         :param Interval: 查询时间粒度，取值有：
 <li>min: 1分钟；</li>
@@ -8055,7 +5084,8 @@ class DescribeTopL7CacheDataRequest(AbstractModel):
         :type Interval: str
         :param Area: 数据归属地区，取值有：
 <li>overseas：全球（除中国大陆地区）数据；</li>
-<li>mainland：中国大陆地区数据。</li>不填将根据用户所在地智能选择地区。
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据。</li>不填默认取值为global。
         :type Area: str
         """
         self.StartTime = None
@@ -8098,27 +5128,27 @@ class DescribeTopL7CacheDataResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TotalCount: 查询结果的总条数。
+        :type TotalCount: int
         :param Data: 七层缓存TopN流量数据列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Data: list of TopDataRecord
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
-        self.Data = None
         self.TotalCount = None
+        self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
         if params.get("Data") is not None:
             self.Data = []
             for item in params.get("Data"):
                 obj = TopDataRecord()
                 obj._deserialize(item)
                 self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -8343,6 +5373,7 @@ class DescribeWebManagedRulesLogRequest(AbstractModel):
 <li>ruleId：规则id；</li>
 <li>sipCountryCode：ip所在国家；</li>
 <li>attackIp：攻击ip；</li>
+<li>realClientIp：真实客户端ip；</li>
 <li>oriDomain：被攻击的子域名；</li>
 <li>eventId：事件id；</li>
 <li>ua：用户代理；</li>
@@ -8412,81 +5443,6 @@ class DescribeWebManagedRulesLogResponse(AbstractModel):
             self.Data = []
             for item in params.get("Data"):
                 obj = WebLogs()
-                obj._deserialize(item)
-                self.Data.append(obj)
-        self.TotalCount = params.get("TotalCount")
-        self.RequestId = params.get("RequestId")
-
-
-class DescribeWebProtectionAttackEventsRequest(AbstractModel):
-    """DescribeWebProtectionAttackEvents请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param StartTime: 开始时间。
-        :type StartTime: str
-        :param EndTime: 结束时间。
-        :type EndTime: str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
-        :type ZoneIds: list of str
-        :param Domains: 域名集合，不填默认选择全部子域名。
-        :type Domains: list of str
-        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
-        :type Limit: int
-        :param Offset: 分页的偏移量，默认值为0。
-        :type Offset: int
-        """
-        self.StartTime = None
-        self.EndTime = None
-        self.ZoneIds = None
-        self.Domains = None
-        self.Limit = None
-        self.Offset = None
-
-
-    def _deserialize(self, params):
-        self.StartTime = params.get("StartTime")
-        self.EndTime = params.get("EndTime")
-        self.ZoneIds = params.get("ZoneIds")
-        self.Domains = params.get("Domains")
-        self.Limit = params.get("Limit")
-        self.Offset = params.get("Offset")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeWebProtectionAttackEventsResponse(AbstractModel):
-    """DescribeWebProtectionAttackEvents返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Data: CC相关攻击事件列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of CCInterceptEvent
-        :param TotalCount: 查询结果的总条数。
-        :type TotalCount: int
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.Data = None
-        self.TotalCount = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("Data") is not None:
-            self.Data = []
-            for item in params.get("Data"):
-                obj = CCInterceptEvent()
                 obj._deserialize(item)
                 self.Data.append(obj)
         self.TotalCount = params.get("TotalCount")
@@ -8898,66 +5854,6 @@ class DescribeWebProtectionTopDataResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class DescribeZoneDDoSPolicyRequest(AbstractModel):
-    """DescribeZoneDDoSPolicy请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        """
-        self.ZoneId = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DescribeZoneDDoSPolicyResponse(AbstractModel):
-    """DescribeZoneDDoSPolicy返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ShieldAreas: DDoS防护分区。
-        :type ShieldAreas: list of ShieldArea
-        :param DDoSHosts: 所有开启代理的子域名信息。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSHosts: list of DDoSHost
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.ShieldAreas = None
-        self.DDoSHosts = None
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        if params.get("ShieldAreas") is not None:
-            self.ShieldAreas = []
-            for item in params.get("ShieldAreas"):
-                obj = ShieldArea()
-                obj._deserialize(item)
-                self.ShieldAreas.append(obj)
-        if params.get("DDoSHosts") is not None:
-            self.DDoSHosts = []
-            for item in params.get("DDoSHosts"):
-                obj = DDoSHost()
-                obj._deserialize(item)
-                self.DDoSHosts.append(obj)
-        self.RequestId = params.get("RequestId")
-
-
 class DescribeZoneSettingRequest(AbstractModel):
     """DescribeZoneSetting请求参数结构体
 
@@ -9247,6 +6143,50 @@ class DetailHost(AbstractModel):
         
 
 
+class DiffIPWhitelist(AbstractModel):
+    """最新IP白名单列表相比于当前IP白名单列表的区别
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LatestIPWhitelist: 最新IP白名单列表。
+        :type LatestIPWhitelist: :class:`tencentcloud.teo.v20220901.models.IPWhitelist`
+        :param AddedIPWhitelist: 最新IP白名单列表相比于当前IP白名单列表，新增部分。
+        :type AddedIPWhitelist: :class:`tencentcloud.teo.v20220901.models.IPWhitelist`
+        :param RemovedIPWhitelist: 最新IP白名单列表相比于当前IP白名单列表，删减部分。
+        :type RemovedIPWhitelist: :class:`tencentcloud.teo.v20220901.models.IPWhitelist`
+        :param NoChangeIPWhitelist: 最新IP白名单列表相比于当前IP白名单列表，不变部分。
+        :type NoChangeIPWhitelist: :class:`tencentcloud.teo.v20220901.models.IPWhitelist`
+        """
+        self.LatestIPWhitelist = None
+        self.AddedIPWhitelist = None
+        self.RemovedIPWhitelist = None
+        self.NoChangeIPWhitelist = None
+
+
+    def _deserialize(self, params):
+        if params.get("LatestIPWhitelist") is not None:
+            self.LatestIPWhitelist = IPWhitelist()
+            self.LatestIPWhitelist._deserialize(params.get("LatestIPWhitelist"))
+        if params.get("AddedIPWhitelist") is not None:
+            self.AddedIPWhitelist = IPWhitelist()
+            self.AddedIPWhitelist._deserialize(params.get("AddedIPWhitelist"))
+        if params.get("RemovedIPWhitelist") is not None:
+            self.RemovedIPWhitelist = IPWhitelist()
+            self.RemovedIPWhitelist._deserialize(params.get("RemovedIPWhitelist"))
+        if params.get("NoChangeIPWhitelist") is not None:
+            self.NoChangeIPWhitelist = IPWhitelist()
+            self.NoChangeIPWhitelist._deserialize(params.get("NoChangeIPWhitelist"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DistrictStatistics(AbstractModel):
     """拨测分地域统计数据
 
@@ -9294,158 +6234,6 @@ class DnsData(AbstractModel):
     def _deserialize(self, params):
         self.Time = params.get("Time")
         self.Value = params.get("Value")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DnsRecord(AbstractModel):
-    """DNS 记录
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DnsRecordId: 记录 ID。
-        :type DnsRecordId: str
-        :param DnsRecordType: DNS记录类型，取值有：
-<li>A：将域名指向一个外网 IPv4 地址，如 8.8.8.8；</li>
-<li>AAAA：将域名指向一个外网 IPv6 地址；</li>
-<li>MX：用于邮箱服务器，相关记录值/优先级参数由邮件注册商提供。存在多条 MX 记录时，优先级越低越优先；</li>
-<li>CNAME：将域名指向另一个域名，再由该域名解析出最终 IP 地址；</li>
-<li>TXT：对域名进行标识和说明，常用于域名验证和 SPF 记录（反垃圾邮件）；</li>
-<li>NS：如果需要将子域名交给其他 DNS 服务商解析，则需要添加 NS 记录。根域名无法添加 NS 记录；</li>
-<li>CAA：指定可为本站点颁发证书的 CA；</li>
-<li>SRV：标识某台服务器使用了某个服务，常见于微软系统的目录管理。</li>
-        :type DnsRecordType: str
-        :param DnsRecordName: 记录名称。
-        :type DnsRecordName: str
-        :param Content: 记录值。
-        :type Content: str
-        :param Mode: 代理模式，取值有：
-<li>dns_only：仅DNS解析；</li>
-<li>proxied：代理加速。</li>
-        :type Mode: str
-        :param TTL: 缓存时间，数值越小，修改记录各地生效时间越快，单位：秒。
-        :type TTL: int
-        :param Priority: MX记录优先级，数值越小越优先。
-        :type Priority: int
-        :param CreatedOn: 创建时间。
-        :type CreatedOn: str
-        :param ModifiedOn: 修改时间。
-        :type ModifiedOn: str
-        :param Locked: 域名锁定状态。
-        :type Locked: bool
-        :param ZoneId: 站点 ID。
-        :type ZoneId: str
-        :param ZoneName: 站点名称。
-        :type ZoneName: str
-        :param Status: 记录解析状态，取值有：
-<li>active：生效；</li>
-<li>pending：不生效。</li>
-        :type Status: str
-        :param Cname: CNAME 地址。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Cname: str
-        :param DomainStatus: 域名服务类型，取值有：
-<li>lb：负载均衡；</li>
-<li>security：安全；</li>
-<li>l4：四层代理。</li>
-        :type DomainStatus: list of str
-        """
-        self.DnsRecordId = None
-        self.DnsRecordType = None
-        self.DnsRecordName = None
-        self.Content = None
-        self.Mode = None
-        self.TTL = None
-        self.Priority = None
-        self.CreatedOn = None
-        self.ModifiedOn = None
-        self.Locked = None
-        self.ZoneId = None
-        self.ZoneName = None
-        self.Status = None
-        self.Cname = None
-        self.DomainStatus = None
-
-
-    def _deserialize(self, params):
-        self.DnsRecordId = params.get("DnsRecordId")
-        self.DnsRecordType = params.get("DnsRecordType")
-        self.DnsRecordName = params.get("DnsRecordName")
-        self.Content = params.get("Content")
-        self.Mode = params.get("Mode")
-        self.TTL = params.get("TTL")
-        self.Priority = params.get("Priority")
-        self.CreatedOn = params.get("CreatedOn")
-        self.ModifiedOn = params.get("ModifiedOn")
-        self.Locked = params.get("Locked")
-        self.ZoneId = params.get("ZoneId")
-        self.ZoneName = params.get("ZoneName")
-        self.Status = params.get("Status")
-        self.Cname = params.get("Cname")
-        self.DomainStatus = params.get("DomainStatus")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class DnssecInfo(AbstractModel):
-    """DNSSEC 相关信息
-
-    """
-
-    def __init__(self):
-        r"""
-        :param Flags: 标志。
-        :type Flags: int
-        :param Algorithm: 加密算法。
-        :type Algorithm: str
-        :param KeyType: 加密类型。
-        :type KeyType: str
-        :param DigestType: 摘要类型。
-        :type DigestType: str
-        :param DigestAlgorithm: 摘要算法。
-        :type DigestAlgorithm: str
-        :param Digest: 摘要信息。
-        :type Digest: str
-        :param DS: DS 记录值。
-        :type DS: str
-        :param KeyTag: 密钥标签。
-        :type KeyTag: int
-        :param PublicKey: 公钥。
-        :type PublicKey: str
-        """
-        self.Flags = None
-        self.Algorithm = None
-        self.KeyType = None
-        self.DigestType = None
-        self.DigestAlgorithm = None
-        self.Digest = None
-        self.DS = None
-        self.KeyTag = None
-        self.PublicKey = None
-
-
-    def _deserialize(self, params):
-        self.Flags = params.get("Flags")
-        self.Algorithm = params.get("Algorithm")
-        self.KeyType = params.get("KeyType")
-        self.DigestType = params.get("DigestType")
-        self.DigestAlgorithm = params.get("DigestAlgorithm")
-        self.Digest = params.get("Digest")
-        self.DS = params.get("DS")
-        self.KeyTag = params.get("KeyTag")
-        self.PublicKey = params.get("PublicKey")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9987,6 +6775,38 @@ class Filter(AbstractModel):
         
 
 
+class FirstPartConfig(AbstractModel):
+    """慢速攻击的首段包配置。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 开关，取值有：
+<li>on：开启；</li>
+<li>off：关闭。</li>
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Switch: str
+        :param StatTime: 首段包的统计时长，单位是秒，即期望首段包的统计时长是多少，默认5秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatTime: int
+        """
+        self.Switch = None
+        self.StatTime = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.StatTime = params.get("StatTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class FollowOrigin(AbstractModel):
     """缓存遵循源站配置
 
@@ -10004,16 +6824,21 @@ class FollowOrigin(AbstractModel):
         :param DefaultCache: 源站未返回 Cache-Control 头时, 设置缓存/不缓存
 注意：此字段可能返回 null，表示取不到有效值。
         :type DefaultCache: str
+        :param DefaultCacheStrategy: 源站未返回 Cache-Control 头时, 使用/不使用默认缓存策略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DefaultCacheStrategy: str
         """
         self.Switch = None
         self.DefaultCacheTime = None
         self.DefaultCache = None
+        self.DefaultCacheStrategy = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.DefaultCacheTime = params.get("DefaultCacheTime")
         self.DefaultCache = params.get("DefaultCache")
+        self.DefaultCacheStrategy = params.get("DefaultCacheStrategy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10056,33 +6881,23 @@ class ForceRedirect(AbstractModel):
         
 
 
-class GeoIp(AbstractModel):
-    """地域信息
+class Grpc(AbstractModel):
+    """Grpc配置项
 
     """
 
     def __init__(self):
         r"""
-        :param RegionId: 地域ID。
-        :type RegionId: int
-        :param Country: 国家名。
-        :type Country: str
-        :param Continent: 所属洲。
-        :type Continent: str
-        :param Province: 城市名。
-        :type Province: str
+        :param Switch: 是否开启Grpc配置，取值有：
+<li>on：开启；</li>
+<li>off：关闭。</li>
+        :type Switch: str
         """
-        self.RegionId = None
-        self.Country = None
-        self.Continent = None
-        self.Province = None
+        self.Switch = None
 
 
     def _deserialize(self, params):
-        self.RegionId = params.get("RegionId")
-        self.Country = params.get("Country")
-        self.Continent = params.get("Continent")
-        self.Province = params.get("Province")
+        self.Switch = params.get("Switch")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10223,6 +7038,34 @@ class Https(AbstractModel):
                 obj._deserialize(item)
                 self.CertInfo.append(obj)
         self.ApplyType = params.get("ApplyType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IPWhitelist(AbstractModel):
+    """源站防护IP白名单
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IPv4: IPv4列表。
+        :type IPv4: list of str
+        :param IPv6: IPv6列表。
+        :type IPv6: list of str
+        """
+        self.IPv4 = None
+        self.IPv6 = None
+
+
+    def _deserialize(self, params):
+        self.IPv4 = params.get("IPv4")
+        self.IPv6 = params.get("IPv6")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10631,86 +7474,6 @@ class L7OfflineLog(AbstractModel):
         
 
 
-class LoadBalancing(AbstractModel):
-    """负载均衡信息
-
-    """
-
-    def __init__(self):
-        r"""
-        :param LoadBalancingId: 负载均衡ID。
-        :type LoadBalancingId: str
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param Host: 子域名，填写@表示根域。
-        :type Host: str
-        :param Type: 代理模式，取值有：
-<li>dns_only：仅DNS；</li>
-<li>proxied：开启代理。</li>
-        :type Type: str
-        :param TTL: 当Type=dns_only表示DNS记录的缓存时间。
-        :type TTL: int
-        :param Status: 状态，取值有：
-<li>online：部署成功；</li>
-<li>process：部署中。</li>
-        :type Status: str
-        :param Cname: 调度域名。
-        :type Cname: str
-        :param OriginGroupId: 主源源站组ID。
-        :type OriginGroupId: str
-        :param BackupOriginGroupId: 备用源站源站组ID。为空表示不适用备用源站。
-        :type BackupOriginGroupId: str
-        :param UpdateTime: 更新时间。
-        :type UpdateTime: str
-        :param OriginType: 回源类型，取值有：
-<li>normal：主备回源；</li>
-<li>advanced：高级回源配置。</li>
-        :type OriginType: str
-        :param AdvancedOriginGroups: 高级回源配置，当OriginType=advanced时有效。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type AdvancedOriginGroups: list of AdvancedOriginGroup
-        """
-        self.LoadBalancingId = None
-        self.ZoneId = None
-        self.Host = None
-        self.Type = None
-        self.TTL = None
-        self.Status = None
-        self.Cname = None
-        self.OriginGroupId = None
-        self.BackupOriginGroupId = None
-        self.UpdateTime = None
-        self.OriginType = None
-        self.AdvancedOriginGroups = None
-
-
-    def _deserialize(self, params):
-        self.LoadBalancingId = params.get("LoadBalancingId")
-        self.ZoneId = params.get("ZoneId")
-        self.Host = params.get("Host")
-        self.Type = params.get("Type")
-        self.TTL = params.get("TTL")
-        self.Status = params.get("Status")
-        self.Cname = params.get("Cname")
-        self.OriginGroupId = params.get("OriginGroupId")
-        self.BackupOriginGroupId = params.get("BackupOriginGroupId")
-        self.UpdateTime = params.get("UpdateTime")
-        self.OriginType = params.get("OriginType")
-        if params.get("AdvancedOriginGroups") is not None:
-            self.AdvancedOriginGroups = []
-            for item in params.get("AdvancedOriginGroups"):
-                obj = AdvancedOriginGroup()
-                obj._deserialize(item)
-                self.AdvancedOriginGroups.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
 class LogSetInfo(AbstractModel):
     """日志集基本信息
 
@@ -10739,92 +7502,6 @@ class LogSetInfo(AbstractModel):
         self.LogSetRegion = params.get("LogSetRegion")
         self.LogSetName = params.get("LogSetName")
         self.LogSetId = params.get("LogSetId")
-        self.Deleted = params.get("Deleted")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class LogTopicDetailInfo(AbstractModel):
-    """推送任务详细信息
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TaskName: 推送任务的任务名称。
-        :type TaskName: str
-        :param LogSetRegion: 日志集所属的地域。
-        :type LogSetRegion: str
-        :param EntityType: 推送任务的类型。
-        :type EntityType: str
-        :param EntityList: 任务实体列表。
-        :type EntityList: list of str
-        :param LogSetId: 日志集ID。
-        :type LogSetId: str
-        :param LogSetName: 日志集名称。
-        :type LogSetName: str
-        :param TopicId: 推送任务主题ID。
-        :type TopicId: str
-        :param TopicName: 推送任务主题名称。
-        :type TopicName: str
-        :param Period: 推送任务主题保存时间，单位为天。
-        :type Period: int
-        :param Enabled: 推送任务是否开启。
-        :type Enabled: bool
-        :param CreateTime: 推送任务创建时间，时间格式为: YYYY-mm-dd HH:MM:SS。
-        :type CreateTime: str
-        :param Area: 加速区域，取值有：
-<li>mainland：中国大陆境内;</li>
-<li>overseas：全球（不含中国大陆）。</li>
-        :type Area: str
-        :param ZoneId: 站点ID。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type ZoneId: str
-        :param ZoneName: 站点名称。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type ZoneName: str
-        :param Deleted: 是否被删除了，取值有：
-<li>yes: 已经被删除；</li>
-<li>no: 没有被删除。</li>
-        :type Deleted: str
-        """
-        self.TaskName = None
-        self.LogSetRegion = None
-        self.EntityType = None
-        self.EntityList = None
-        self.LogSetId = None
-        self.LogSetName = None
-        self.TopicId = None
-        self.TopicName = None
-        self.Period = None
-        self.Enabled = None
-        self.CreateTime = None
-        self.Area = None
-        self.ZoneId = None
-        self.ZoneName = None
-        self.Deleted = None
-
-
-    def _deserialize(self, params):
-        self.TaskName = params.get("TaskName")
-        self.LogSetRegion = params.get("LogSetRegion")
-        self.EntityType = params.get("EntityType")
-        self.EntityList = params.get("EntityList")
-        self.LogSetId = params.get("LogSetId")
-        self.LogSetName = params.get("LogSetName")
-        self.TopicId = params.get("TopicId")
-        self.TopicName = params.get("TopicName")
-        self.Period = params.get("Period")
-        self.Enabled = params.get("Enabled")
-        self.CreateTime = params.get("CreateTime")
-        self.Area = params.get("Area")
-        self.ZoneId = params.get("ZoneId")
-        self.ZoneName = params.get("ZoneName")
         self.Deleted = params.get("Deleted")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -10866,38 +7543,31 @@ class MaxAge(AbstractModel):
         
 
 
-class ModifyAlarmConfigRequest(AbstractModel):
-    """ModifyAlarmConfig请求参数结构体
+class ModifyAccelerationDomainRequest(AbstractModel):
+    """ModifyAccelerationDomain请求参数结构体
 
     """
 
     def __init__(self):
         r"""
-        :param ServiceType: 告警服务类型，取值有：
-<li>ddos：ddos告警服务。</li>
-        :type ServiceType: str
-        :param ZoneId: 站点ID。
+        :param ZoneId: 加速域名所属站点ID。
         :type ZoneId: str
-        :param EntityList: 告警维度值列表。
-        :type EntityList: list of str
-        :param Threshold: 告警阈值，不传或者传0表示不修改阈值。
-        :type Threshold: int
-        :param IsDefault: 是否使用默认值，只有在不传Threshold或者Threshold=0时该参数有效。
-        :type IsDefault: bool
+        :param DomainName: 加速域名名称。
+        :type DomainName: str
+        :param OriginInfo: 源站信息。
+        :type OriginInfo: :class:`tencentcloud.teo.v20220901.models.OriginInfo`
         """
-        self.ServiceType = None
         self.ZoneId = None
-        self.EntityList = None
-        self.Threshold = None
-        self.IsDefault = None
+        self.DomainName = None
+        self.OriginInfo = None
 
 
     def _deserialize(self, params):
-        self.ServiceType = params.get("ServiceType")
         self.ZoneId = params.get("ZoneId")
-        self.EntityList = params.get("EntityList")
-        self.Threshold = params.get("Threshold")
-        self.IsDefault = params.get("IsDefault")
+        self.DomainName = params.get("DomainName")
+        if params.get("OriginInfo") is not None:
+            self.OriginInfo = OriginInfo()
+            self.OriginInfo._deserialize(params.get("OriginInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10907,8 +7577,8 @@ class ModifyAlarmConfigRequest(AbstractModel):
         
 
 
-class ModifyAlarmConfigResponse(AbstractModel):
-    """ModifyAlarmConfig返回参数结构体
+class ModifyAccelerationDomainResponse(AbstractModel):
+    """ModifyAccelerationDomain返回参数结构体
 
     """
 
@@ -10924,34 +7594,37 @@ class ModifyAlarmConfigResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class ModifyAlarmDefaultThresholdRequest(AbstractModel):
-    """ModifyAlarmDefaultThreshold请求参数结构体
+class ModifyAccelerationDomainStatusesRequest(AbstractModel):
+    """ModifyAccelerationDomainStatuses请求参数结构体
 
     """
 
     def __init__(self):
         r"""
-        :param ServiceType: 告警服务类型，取值有：
-<li>ddos：ddos告警服务。</li>
-        :type ServiceType: str
-        :param ZoneId: 站点ID。
+        :param ZoneId: 加速域名所属站点ID。
         :type ZoneId: str
-        :param Threshold: 新的阈值，单位为Mbps，最小阈值为10。
-        :type Threshold: int
-        :param Entity: 防护实体，如果是四层防护，防护实体为通道ID。如果是七层防护，防护实体为站点名称。
-        :type Entity: str
+        :param DomainNames: 要执行状态变更的加速域名列表。
+        :type DomainNames: list of str
+        :param Status: 加速域名状态，取值有：
+<li>online：启用；</li>
+<li>offline：停用。</li>
+        :type Status: str
+        :param Force: 是否强制停用。当域名存在关联资源（如马甲域名、流量调度功能）时，是否强制停用该域名，取值有：
+<li> true：停用该域名及所有关联资源；</li>
+<li> false：当该加速域名存在关联资源时，不允许停用。</li>不填写，默认值为：false。
+        :type Force: bool
         """
-        self.ServiceType = None
         self.ZoneId = None
-        self.Threshold = None
-        self.Entity = None
+        self.DomainNames = None
+        self.Status = None
+        self.Force = None
 
 
     def _deserialize(self, params):
-        self.ServiceType = params.get("ServiceType")
         self.ZoneId = params.get("ZoneId")
-        self.Threshold = params.get("Threshold")
-        self.Entity = params.get("Entity")
+        self.DomainNames = params.get("DomainNames")
+        self.Status = params.get("Status")
+        self.Force = params.get("Force")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10961,8 +7634,8 @@ class ModifyAlarmDefaultThresholdRequest(AbstractModel):
         
 
 
-class ModifyAlarmDefaultThresholdResponse(AbstractModel):
-    """ModifyAlarmDefaultThreshold返回参数结构体
+class ModifyAccelerationDomainStatusesResponse(AbstractModel):
+    """ModifyAccelerationDomainStatuses返回参数结构体
 
     """
 
@@ -11357,118 +8030,6 @@ class ModifyApplicationProxyStatusResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class ModifyDDoSPolicyHostRequest(AbstractModel):
-    """ModifyDDoSPolicyHost请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param Host: 子域名/应用名。
-        :type Host: str
-        :param AccelerateType: 加速开关，取值有：
-<li>on：开启加速；</li>
-<li>off：关闭加速。</li>
-        :type AccelerateType: str
-        :param PolicyId: 策略id。
-        :type PolicyId: int
-        :param SecurityType: 安全开关，取值有：
-<li>on：开启安全；</li>
-<li>off：关闭安全。</li>
-        :type SecurityType: str
-        """
-        self.ZoneId = None
-        self.Host = None
-        self.AccelerateType = None
-        self.PolicyId = None
-        self.SecurityType = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Host = params.get("Host")
-        self.AccelerateType = params.get("AccelerateType")
-        self.PolicyId = params.get("PolicyId")
-        self.SecurityType = params.get("SecurityType")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyDDoSPolicyHostResponse(AbstractModel):
-    """ModifyDDoSPolicyHost返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyDDoSPolicyRequest(AbstractModel):
-    """ModifyDDoSPolicy请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param PolicyId: 策略Id。
-        :type PolicyId: int
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param DDoSRule: DDoS防护配置详情。
-        :type DDoSRule: :class:`tencentcloud.teo.v20220901.models.DDoSRule`
-        """
-        self.PolicyId = None
-        self.ZoneId = None
-        self.DDoSRule = None
-
-
-    def _deserialize(self, params):
-        self.PolicyId = params.get("PolicyId")
-        self.ZoneId = params.get("ZoneId")
-        if params.get("DDoSRule") is not None:
-            self.DDoSRule = DDoSRule()
-            self.DDoSRule._deserialize(params.get("DDoSRule"))
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyDDoSPolicyResponse(AbstractModel):
-    """ModifyDDoSPolicy返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
 class ModifyDefaultCertificateRequest(AbstractModel):
     """ModifyDefaultCertificate请求参数结构体
 
@@ -11505,132 +8066,6 @@ class ModifyDefaultCertificateRequest(AbstractModel):
 
 class ModifyDefaultCertificateResponse(AbstractModel):
     """ModifyDefaultCertificate返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyDnsRecordRequest(AbstractModel):
-    """ModifyDnsRecord请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param DnsRecordId: 记录ID。
-        :type DnsRecordId: str
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param DnsRecordType: DNS记录类型，取值有：
-<li>A：将域名指向一个外网 IPv4 地址，如 8.8.8.8；</li>
-<li>AAAA：将域名指向一个外网 IPv6 地址；</li>
-<li>MX：用于邮箱服务器，相关记录值/优先级参数由邮件注册商提供。存在多条 MX 记录时，优先级越低越优先；</li>
-<li>CNAME：将域名指向另一个域名，再由该域名解析出最终 IP 地址；</li>
-<li>TXT：对域名进行标识和说明，常用于域名验证和 SPF 记录（反垃圾邮件）；</li>
-<li>NS：如果需要将子域名交给其他 DNS 服务商解析，则需要添加 NS 记录。根域名无法添加 NS 记录；</li>
-<li>CAA：指定可为本站点颁发证书的 CA；</li>
-<li>SRV：标识某台服务器使用了某个服务，常见于微软系统的目录管理。</li>不填写保持原有配置。
-        :type DnsRecordType: str
-        :param DnsRecordName: 记录名称，由主机记录+站点名称组成，不填写保持原有配置。
-        :type DnsRecordName: str
-        :param Content: 记录内容，不填写保持原有配置。
-        :type Content: str
-        :param TTL: 缓存时间，数值越小，修改记录各地生效时间越快，默认为300，单位：秒，不填写保持原有配置。
-        :type TTL: int
-        :param Priority: 该参数在修改MX记录时生效，值越小优先级越高，用户可指定值范围为1~50，不指定默认为0，不填写保持原有配置。
-        :type Priority: int
-        :param Mode: 代理模式，取值有：
-<li>dns_only：仅DNS解析；</li>
-<li>proxied：代理加速。</li>不填写保持原有配置。
-        :type Mode: str
-        """
-        self.DnsRecordId = None
-        self.ZoneId = None
-        self.DnsRecordType = None
-        self.DnsRecordName = None
-        self.Content = None
-        self.TTL = None
-        self.Priority = None
-        self.Mode = None
-
-
-    def _deserialize(self, params):
-        self.DnsRecordId = params.get("DnsRecordId")
-        self.ZoneId = params.get("ZoneId")
-        self.DnsRecordType = params.get("DnsRecordType")
-        self.DnsRecordName = params.get("DnsRecordName")
-        self.Content = params.get("Content")
-        self.TTL = params.get("TTL")
-        self.Priority = params.get("Priority")
-        self.Mode = params.get("Mode")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyDnsRecordResponse(AbstractModel):
-    """ModifyDnsRecord返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyDnssecRequest(AbstractModel):
-    """ModifyDnssec请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param Status: DNSSEC状态，取值有
-<li>enabled：开启；</li>
-<li>disabled：关闭。</li>
-        :type Status: str
-        """
-        self.ZoneId = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Status = params.get("Status")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyDnssecResponse(AbstractModel):
-    """ModifyDnssec返回参数结构体
 
     """
 
@@ -11691,224 +8126,6 @@ class ModifyHostsCertificateRequest(AbstractModel):
 
 class ModifyHostsCertificateResponse(AbstractModel):
     """ModifyHostsCertificate返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyLoadBalancingRequest(AbstractModel):
-    """ModifyLoadBalancing请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param LoadBalancingId: 负载均衡ID。
-        :type LoadBalancingId: str
-        :param Type: 代理模式，取值有：
-<li>dns_only：仅DNS；</li>
-<li>proxied：开启代理。</li>
-        :type Type: str
-        :param OriginGroupId: 主源站源站组ID。
-        :type OriginGroupId: str
-        :param BackupOriginGroupId: 备用源站源站组ID，当Type=proxied时可以填写，为空表示不使用备用源站。
-        :type BackupOriginGroupId: str
-        :param TTL: 当Type=dns_only时，指解析记录在DNS服务器缓存的生存时间。
-取值范围60-86400，单位：秒，不填写使用默认值：600。
-        :type TTL: int
-        :param OriginType: 回源类型，取值有：
-<li>normal：主备回源；</li>
-<li>advanced：高级回源配置（仅当Type=proxied时可以使用）。</li>不填写表示使用主备回源。
-        :type OriginType: str
-        :param AdvancedOriginGroups: 高级回源配置，当OriginType=advanced时有效。
-不填写表示不使用高级回源配置。
-        :type AdvancedOriginGroups: list of AdvancedOriginGroup
-        """
-        self.ZoneId = None
-        self.LoadBalancingId = None
-        self.Type = None
-        self.OriginGroupId = None
-        self.BackupOriginGroupId = None
-        self.TTL = None
-        self.OriginType = None
-        self.AdvancedOriginGroups = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.LoadBalancingId = params.get("LoadBalancingId")
-        self.Type = params.get("Type")
-        self.OriginGroupId = params.get("OriginGroupId")
-        self.BackupOriginGroupId = params.get("BackupOriginGroupId")
-        self.TTL = params.get("TTL")
-        self.OriginType = params.get("OriginType")
-        if params.get("AdvancedOriginGroups") is not None:
-            self.AdvancedOriginGroups = []
-            for item in params.get("AdvancedOriginGroups"):
-                obj = AdvancedOriginGroup()
-                obj._deserialize(item)
-                self.AdvancedOriginGroups.append(obj)
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyLoadBalancingResponse(AbstractModel):
-    """ModifyLoadBalancing返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyLoadBalancingStatusRequest(AbstractModel):
-    """ModifyLoadBalancingStatus请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param LoadBalancingId: 负载均衡ID。
-        :type LoadBalancingId: str
-        :param Status: 负载均衡状态，取值有：
-<li>online：启用；</li>
-<li>offline：停用。</li>
-        :type Status: str
-        """
-        self.ZoneId = None
-        self.LoadBalancingId = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.LoadBalancingId = params.get("LoadBalancingId")
-        self.Status = params.get("Status")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyLoadBalancingStatusResponse(AbstractModel):
-    """ModifyLoadBalancingStatus返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
-class ModifyLogTopicTaskRequest(AbstractModel):
-    """ModifyLogTopicTask请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点ID。
-        :type ZoneId: str
-        :param LogSetRegion: 日志集所属地区。
-        :type LogSetRegion: str
-        :param LogSetId: 日志集ID。
-        :type LogSetId: str
-        :param TopicId: 日志主题ID。
-        :type TopicId: str
-        :param EntityType: 数据推送类型，可选的类型有：
-<li>domain：七层代理日志；</li>
-<li>application：四层代理日志；</li>
-<li>web-rateLiming：速率限制日志；</li>
-<li>web-attack：Web攻击防护日志；</li>
-<li>web-rule：自定义规则日志；</li>
-<li>web-bot：Bot管理日志。</li>
-        :type EntityType: str
-        :param TaskName: 推送任务名。
-        :type TaskName: str
-        :param TopicName: 待更新的主题名称，不填表示不更新主题名称。
-        :type TopicName: str
-        :param LogSetName: 更新后的日志集名称。
-        :type LogSetName: str
-        :param Period: 更新后的日志集保存时间。
-        :type Period: int
-        :param DropEntityList: 待添加的推送任务实体列表。
-        :type DropEntityList: list of str
-        :param AddedEntityList: 待删除的推送任务实例列表。
-        :type AddedEntityList: list of str
-        """
-        self.ZoneId = None
-        self.LogSetRegion = None
-        self.LogSetId = None
-        self.TopicId = None
-        self.EntityType = None
-        self.TaskName = None
-        self.TopicName = None
-        self.LogSetName = None
-        self.Period = None
-        self.DropEntityList = None
-        self.AddedEntityList = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.LogSetRegion = params.get("LogSetRegion")
-        self.LogSetId = params.get("LogSetId")
-        self.TopicId = params.get("TopicId")
-        self.EntityType = params.get("EntityType")
-        self.TaskName = params.get("TaskName")
-        self.TopicName = params.get("TopicName")
-        self.LogSetName = params.get("LogSetName")
-        self.Period = params.get("Period")
-        self.DropEntityList = params.get("DropEntityList")
-        self.AddedEntityList = params.get("AddedEntityList")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyLogTopicTaskResponse(AbstractModel):
-    """ModifyLogTopicTask返回参数结构体
 
     """
 
@@ -12264,53 +8481,6 @@ class ModifySecurityWafGroupPolicyResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
-class ModifyZoneCnameSpeedUpRequest(AbstractModel):
-    """ModifyZoneCnameSpeedUp请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点 ID。
-        :type ZoneId: str
-        :param Status: CNAME 加速状态，取值有：
-<li> enabled：开启；</li>
-<li> disabled：关闭。</li>
-        :type Status: str
-        """
-        self.ZoneId = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Status = params.get("Status")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ModifyZoneCnameSpeedUpResponse(AbstractModel):
-    """ModifyZoneCnameSpeedUp返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
 class ModifyZoneRequest(AbstractModel):
     """ModifyZone请求参数结构体
 
@@ -12428,6 +8598,9 @@ class ModifyZoneSettingRequest(AbstractModel):
         :param ClientIpCountry: 回源时是否携带客户端IP所属地域信息的配置。
 不填写表示保持原有配置。
         :type ClientIpCountry: :class:`tencentcloud.teo.v20220901.models.ClientIpCountry`
+        :param Grpc: Grpc协议支持配置。
+不填写表示保持原有配置。
+        :type Grpc: :class:`tencentcloud.teo.v20220901.models.Grpc`
         """
         self.ZoneId = None
         self.CacheConfig = None
@@ -12447,6 +8620,7 @@ class ModifyZoneSettingRequest(AbstractModel):
         self.CachePrefresh = None
         self.Ipv6 = None
         self.ClientIpCountry = None
+        self.Grpc = None
 
 
     def _deserialize(self, params):
@@ -12502,6 +8676,9 @@ class ModifyZoneSettingRequest(AbstractModel):
         if params.get("ClientIpCountry") is not None:
             self.ClientIpCountry = ClientIpCountry()
             self.ClientIpCountry._deserialize(params.get("ClientIpCountry"))
+        if params.get("Grpc") is not None:
+            self.Grpc = Grpc()
+            self.Grpc._deserialize(params.get("Grpc"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12744,6 +8921,67 @@ class Origin(AbstractModel):
         
 
 
+class OriginDetail(AbstractModel):
+    """加速域名源站信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OriginType: 源站类型，取值有：
+<li>IP_DOMAIN：IPV4、IPV6或域名类型源站；</li>
+<li>COS：COS源。</li>
+<li>ORIGIN_GROUP：源站组类型源站。</li>
+<li>AWS_S3：AWS S3对象存储源站。</li>
+        :type OriginType: str
+        :param Origin: 源站地址，当OriginType参数指定为ORIGIN_GROUP时，该参数填写源站组ID，其他情况下填写源站地址。
+        :type Origin: str
+        :param BackupOrigin: 备用源站组ID，该参数在OriginType参数指定为ORIGIN_GROUP时生效，为空表示不使用备用源站。
+        :type BackupOrigin: str
+        :param OriginGroupName: 主源源站组名称，当OriginType参数指定为ORIGIN_GROUP时该参数生效。
+        :type OriginGroupName: str
+        :param BackOriginGroupName: 备用源站源站组名称，当OriginType参数指定为ORIGIN_GROUP，且用户指定了被用源站时该参数生效。
+        :type BackOriginGroupName: str
+        :param PrivateAccess: 指定是否允许访问私有对象存储源站。当源站类型OriginType=COS或AWS_S3时有效 取值有：
+<li>on：使用私有鉴权；</li>
+<li>off：不使用私有鉴权。</li>
+不填写，默认值为off。
+        :type PrivateAccess: str
+        :param PrivateParameters: 私有鉴权使用参数，当源站类型PrivateAccess=on时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrivateParameters: list of PrivateParameter
+        """
+        self.OriginType = None
+        self.Origin = None
+        self.BackupOrigin = None
+        self.OriginGroupName = None
+        self.BackOriginGroupName = None
+        self.PrivateAccess = None
+        self.PrivateParameters = None
+
+
+    def _deserialize(self, params):
+        self.OriginType = params.get("OriginType")
+        self.Origin = params.get("Origin")
+        self.BackupOrigin = params.get("BackupOrigin")
+        self.OriginGroupName = params.get("OriginGroupName")
+        self.BackOriginGroupName = params.get("BackOriginGroupName")
+        self.PrivateAccess = params.get("PrivateAccess")
+        if params.get("PrivateParameters") is not None:
+            self.PrivateParameters = []
+            for item in params.get("PrivateParameters"):
+                obj = PrivateParameter()
+                obj._deserialize(item)
+                self.PrivateParameters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class OriginGroup(AbstractModel):
     """源站组信息
 
@@ -12812,32 +9050,118 @@ class OriginGroup(AbstractModel):
         
 
 
-class OriginGroupCondition(AbstractModel):
-    """回源配置的条件参数
+class OriginInfo(AbstractModel):
+    """加速域名源站信息。
 
     """
 
     def __init__(self):
         r"""
-        :param Target: 匹配类型，取值有：
-<li>url：当前站点下匹配URL路径的请求，例如：/example 或 /example/foo.jpg。支持*表示通配符，支持?表示匹配一个字符。
-</li>
-        :type Target: str
-        :param Operator: 运算符，取值有：
-<li>equal：等于。</li>
-        :type Operator: str
-        :param Values: 对应匹配类型的取值。
-        :type Values: list of str
+        :param OriginType: 源站类型，取值有：
+<li>IP_DOMAIN：IPV4、IPV6或域名类型源站；</li>
+<li>COS：COS源。</li>
+<li>ORIGIN_GROUP：源站组类型源站。</li>
+<li>AWS_S3：AWS S3对象存储源站。</li>
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginType: str
+        :param Origin: 源站地址，当OriginType参数指定为ORIGIN_GROUP时，该参数填写源站组ID，其他情况下填写源站地址。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Origin: str
+        :param BackupOrigin: 备用源站组ID，该参数在OriginType参数指定为ORIGIN_GROUP时生效，为空表示不使用备用源站。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BackupOrigin: str
+        :param PrivateAccess: 指定是否允许访问私有对象存储源站，当源站类型OriginType=COS或AWS_S3时有效，取值有：
+<li>on：使用私有鉴权；</li>
+<li>off：不使用私有鉴权。</li>不填写，默认值为：off。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrivateAccess: str
+        :param PrivateParameters: 私有鉴权使用参数，当源站类型PrivateAccess=on时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrivateParameters: list of PrivateParameter
         """
-        self.Target = None
-        self.Operator = None
-        self.Values = None
+        self.OriginType = None
+        self.Origin = None
+        self.BackupOrigin = None
+        self.PrivateAccess = None
+        self.PrivateParameters = None
 
 
     def _deserialize(self, params):
-        self.Target = params.get("Target")
-        self.Operator = params.get("Operator")
-        self.Values = params.get("Values")
+        self.OriginType = params.get("OriginType")
+        self.Origin = params.get("Origin")
+        self.BackupOrigin = params.get("BackupOrigin")
+        self.PrivateAccess = params.get("PrivateAccess")
+        if params.get("PrivateParameters") is not None:
+            self.PrivateParameters = []
+            for item in params.get("PrivateParameters"):
+                obj = PrivateParameter()
+                obj._deserialize(item)
+                self.PrivateParameters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OriginProtectionInfo(AbstractModel):
+    """源站防护信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 站点ID。
+        :type ZoneId: str
+        :param Hosts: 域名列表。
+        :type Hosts: list of str
+        :param ProxyIds: 代理ID列表。
+        :type ProxyIds: list of str
+        :param CurrentIPWhitelist: 当前版本的IP白名单。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CurrentIPWhitelist: :class:`tencentcloud.teo.v20220901.models.IPWhitelist`
+        :param NeedUpdate: 该站点是否需要更新源站白名单，取值有：
+<li>true ：需要更新IP白名单 ；</li>
+<li>false ：无需更新IP白名单。</li>
+        :type NeedUpdate: bool
+        :param Status: 源站防护状态，取值有：
+<li>online ：源站防护启用中 ；</li>
+<li>offline ：源站防护已停用 ；</li>
+<li>nonactivate ：源站防护未激活，仅在从未使用过源站防护功能的站点调用中返回。</li>
+        :type Status: str
+        :param PlanSupport: 站点套餐是否支持源站防护，取值有：
+<li>true ：支持 ；</li>
+<li>false ：不支持。</li>
+        :type PlanSupport: bool
+        :param DiffIPWhitelist: 最新IP白名单与当前IP白名单的对比。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DiffIPWhitelist: :class:`tencentcloud.teo.v20220901.models.DiffIPWhitelist`
+        """
+        self.ZoneId = None
+        self.Hosts = None
+        self.ProxyIds = None
+        self.CurrentIPWhitelist = None
+        self.NeedUpdate = None
+        self.Status = None
+        self.PlanSupport = None
+        self.DiffIPWhitelist = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        self.Hosts = params.get("Hosts")
+        self.ProxyIds = params.get("ProxyIds")
+        if params.get("CurrentIPWhitelist") is not None:
+            self.CurrentIPWhitelist = IPWhitelist()
+            self.CurrentIPWhitelist._deserialize(params.get("CurrentIPWhitelist"))
+        self.NeedUpdate = params.get("NeedUpdate")
+        self.Status = params.get("Status")
+        self.PlanSupport = params.get("PlanSupport")
+        if params.get("DiffIPWhitelist") is not None:
+            self.DiffIPWhitelist = DiffIPWhitelist()
+            self.DiffIPWhitelist._deserialize(params.get("DiffIPWhitelist"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13014,51 +9338,6 @@ class PlanInfo(AbstractModel):
         self.Request = params.get("Request")
         self.SiteNumber = params.get("SiteNumber")
         self.Area = params.get("Area")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class PortraitManagedRuleDetail(AbstractModel):
-    """用户画像规则详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RuleId: 规则唯一id。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleId: int
-        :param Description: 规则的描述。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Description: str
-        :param RuleTypeName: 规则所属类型的名字, botdb(用户画像)。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleTypeName: str
-        :param ClassificationId: 规则内的功能分类Id。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type ClassificationId: int
-        :param Status: 规则当前所属动作状态。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Status: str
-        """
-        self.RuleId = None
-        self.Description = None
-        self.RuleTypeName = None
-        self.ClassificationId = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.RuleId = params.get("RuleId")
-        self.Description = params.get("Description")
-        self.RuleTypeName = params.get("RuleTypeName")
-        self.ClassificationId = params.get("ClassificationId")
-        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13275,7 +9554,7 @@ class Quota(AbstractModel):
 
 
 class RateLimitConfig(AbstractModel):
-    """RateLimit配置
+    """速率限制规则
 
     """
 
@@ -13293,11 +9572,15 @@ class RateLimitConfig(AbstractModel):
         :param RateLimitIntelligence: 智能客户端过滤。如果为null，默认使用历史配置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RateLimitIntelligence: :class:`tencentcloud.teo.v20220901.models.RateLimitIntelligence`
+        :param RateLimitCustomizes: 速率限制-托管定制规则。如果为null，默认使用历史配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RateLimitCustomizes: list of RateLimitUserRule
         """
         self.Switch = None
         self.RateLimitUserRules = None
         self.RateLimitTemplate = None
         self.RateLimitIntelligence = None
+        self.RateLimitCustomizes = None
 
 
     def _deserialize(self, params):
@@ -13314,6 +9597,12 @@ class RateLimitConfig(AbstractModel):
         if params.get("RateLimitIntelligence") is not None:
             self.RateLimitIntelligence = RateLimitIntelligence()
             self.RateLimitIntelligence._deserialize(params.get("RateLimitIntelligence"))
+        if params.get("RateLimitCustomizes") is not None:
+            self.RateLimitCustomizes = []
+            for item in params.get("RateLimitCustomizes"):
+                obj = RateLimitUserRule()
+                obj._deserialize(item)
+                self.RateLimitCustomizes.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13350,50 +9639,6 @@ class RateLimitIntelligence(AbstractModel):
         self.Switch = params.get("Switch")
         self.Action = params.get("Action")
         self.RuleId = params.get("RuleId")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class RateLimitIntelligenceRuleDetail(AbstractModel):
-    """速率限制智能客户端过滤规则详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param MatchContent: 智能识别到的客户端IP。
-        :type MatchContent: str
-        :param Action: 应用的动作。
-        :type Action: str
-        :param EffectiveTime: 更新时间。
-        :type EffectiveTime: str
-        :param ExpireTime: 失效时间。
-        :type ExpireTime: str
-        :param RuleId: 规则id。
-        :type RuleId: int
-        :param Status: 处置状态，allowed即已经人为放行。
-        :type Status: str
-        """
-        self.MatchContent = None
-        self.Action = None
-        self.EffectiveTime = None
-        self.ExpireTime = None
-        self.RuleId = None
-        self.Status = None
-
-
-    def _deserialize(self, params):
-        self.MatchContent = params.get("MatchContent")
-        self.Action = params.get("Action")
-        self.EffectiveTime = params.get("EffectiveTime")
-        self.ExpireTime = params.get("ExpireTime")
-        self.RuleId = params.get("RuleId")
-        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13713,6 +9958,7 @@ class Resource(AbstractModel):
         :param Area: 地域，取值有：
 <li>mainland：国内；</li>
 <li>overseas：海外。</li>
+<li>global：全球。</li>
         :type Area: str
         """
         self.Id = None
@@ -14615,6 +10861,9 @@ class SecurityConfig(AbstractModel):
         :param TemplateConfig: 模板配置。此处仅出参数使用。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TemplateConfig: :class:`tencentcloud.teo.v20220901.models.TemplateConfig`
+        :param SlowPostConfig: 慢速攻击配置。如果为null，默认使用历史配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SlowPostConfig: :class:`tencentcloud.teo.v20220901.models.SlowPostConfig`
         """
         self.WafConfig = None
         self.RateLimitConfig = None
@@ -14625,6 +10874,7 @@ class SecurityConfig(AbstractModel):
         self.ExceptConfig = None
         self.DropPageConfig = None
         self.TemplateConfig = None
+        self.SlowPostConfig = None
 
 
     def _deserialize(self, params):
@@ -14655,104 +10905,9 @@ class SecurityConfig(AbstractModel):
         if params.get("TemplateConfig") is not None:
             self.TemplateConfig = TemplateConfig()
             self.TemplateConfig._deserialize(params.get("TemplateConfig"))
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class SecurityEntity(AbstractModel):
-    """安全防护实例
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param Entity: 子域名/应用名。
-        :type Entity: str
-        :param EntityType: 类型，取值有：
-<li> domain：7层子域名； </li>
-<li> application：4层应用名。 </li>
-        :type EntityType: str
-        """
-        self.ZoneId = None
-        self.Entity = None
-        self.EntityType = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.Entity = params.get("Entity")
-        self.EntityType = params.get("EntityType")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class SecurityRule(AbstractModel):
-    """托管规则详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RuleId: 规则id。
-        :type RuleId: int
-        :param Description: 规则描述。
-        :type Description: str
-        :param RuleTypeName: 规则类型名。
-        :type RuleTypeName: str
-        :param RuleLevelDesc: 等级描述。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleLevelDesc: str
-        :param RuleTypeId: 规则类型id。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleTypeId: int
-        :param RuleTypeDesc: 规则类型描述。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleTypeDesc: str
-        :param RuleTags: 规则标签。部分类型的规则不存在该参数。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleTags: list of str
-        :param Status: 状态，取值有：
-<li>on：开启；</li>
-<li>off：关闭。</li>为空时对应接口Status无意义，例如仅查询规则详情时。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Status: str
-        :param Entity: 子域名/应用名
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Entity: str
-        """
-        self.RuleId = None
-        self.Description = None
-        self.RuleTypeName = None
-        self.RuleLevelDesc = None
-        self.RuleTypeId = None
-        self.RuleTypeDesc = None
-        self.RuleTags = None
-        self.Status = None
-        self.Entity = None
-
-
-    def _deserialize(self, params):
-        self.RuleId = params.get("RuleId")
-        self.Description = params.get("Description")
-        self.RuleTypeName = params.get("RuleTypeName")
-        self.RuleLevelDesc = params.get("RuleLevelDesc")
-        self.RuleTypeId = params.get("RuleTypeId")
-        self.RuleTypeDesc = params.get("RuleTypeDesc")
-        self.RuleTags = params.get("RuleTags")
-        self.Status = params.get("Status")
-        self.Entity = params.get("Entity")
+        if params.get("SlowPostConfig") is not None:
+            self.SlowPostConfig = SlowPostConfig()
+            self.SlowPostConfig._deserialize(params.get("SlowPostConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14837,66 +10992,6 @@ class ServerCertInfo(AbstractModel):
         self.DeployTime = params.get("DeployTime")
         self.SignAlgo = params.get("SignAlgo")
         self.CommonName = params.get("CommonName")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class ShieldArea(AbstractModel):
-    """DDoS防护分区
-
-    """
-
-    def __init__(self):
-        r"""
-        :param ZoneId: 站点Id。
-        :type ZoneId: str
-        :param PolicyId: DDoS策略Id。
-        :type PolicyId: int
-        :param Type: 防护类型，参考值：
-<li>domain：7层子域；</li>
-<li>application：4层应用。</li>
-        :type Type: str
-        :param EntityName: 7层站点名。
-        :type EntityName: str
-        :param DDoSHosts: 该防护分区下的7层子域名。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type DDoSHosts: list of DDoSHost
-        :param TcpNum: 四层tcp转发规则数。
-        :type TcpNum: int
-        :param UdpNum: 四层udp转发规则数。
-        :type UdpNum: int
-        :param Entity: 实例名称。
-        :type Entity: str
-        """
-        self.ZoneId = None
-        self.PolicyId = None
-        self.Type = None
-        self.EntityName = None
-        self.DDoSHosts = None
-        self.TcpNum = None
-        self.UdpNum = None
-        self.Entity = None
-
-
-    def _deserialize(self, params):
-        self.ZoneId = params.get("ZoneId")
-        self.PolicyId = params.get("PolicyId")
-        self.Type = params.get("Type")
-        self.EntityName = params.get("EntityName")
-        if params.get("DDoSHosts") is not None:
-            self.DDoSHosts = []
-            for item in params.get("DDoSHosts"):
-                obj = DDoSHost()
-                obj._deserialize(item)
-                self.DDoSHosts.append(obj)
-        self.TcpNum = params.get("TcpNum")
-        self.UdpNum = params.get("UdpNum")
-        self.Entity = params.get("Entity")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15021,6 +11116,94 @@ class SkipCondition(AbstractModel):
         self.MatchFrom = params.get("MatchFrom")
         self.MatchContentType = params.get("MatchContentType")
         self.MatchContent = params.get("MatchContent")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SlowPostConfig(AbstractModel):
+    """慢速攻击配置。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 开关，取值有：
+<li>on：开启；</li>
+<li>off：关闭。</li>
+        :type Switch: str
+        :param FirstPartConfig: 首包配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FirstPartConfig: :class:`tencentcloud.teo.v20220901.models.FirstPartConfig`
+        :param SlowRateConfig: 基础配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SlowRateConfig: :class:`tencentcloud.teo.v20220901.models.SlowRateConfig`
+        :param Action: 慢速攻击的处置动作，取值有：
+<li>monitor：观察；</li>
+<li>drop：拦截。</li>
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Action: str
+        :param RuleId: 本规则的Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleId: int
+        """
+        self.Switch = None
+        self.FirstPartConfig = None
+        self.SlowRateConfig = None
+        self.Action = None
+        self.RuleId = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        if params.get("FirstPartConfig") is not None:
+            self.FirstPartConfig = FirstPartConfig()
+            self.FirstPartConfig._deserialize(params.get("FirstPartConfig"))
+        if params.get("SlowRateConfig") is not None:
+            self.SlowRateConfig = SlowRateConfig()
+            self.SlowRateConfig._deserialize(params.get("SlowRateConfig"))
+        self.Action = params.get("Action")
+        self.RuleId = params.get("RuleId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SlowRateConfig(AbstractModel):
+    """慢速攻击的基础配置。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 开关，取值有：
+<li>on：开启；</li>
+<li>off：关闭。</li>
+        :type Switch: str
+        :param Interval: 统计的间隔，单位是秒，即在首段包传输结束后，将数据传输轴按照本参数切分，每个分片独立计算慢速攻击。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Interval: int
+        :param Threshold: 统计时应用的速率阈值，单位是bps，即如果本分片中的传输速率没达到本参数的值，则判定为慢速攻击，应用慢速攻击的处置方式。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Threshold: int
+        """
+        self.Switch = None
+        self.Interval = None
+        self.Threshold = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.Interval = params.get("Interval")
+        self.Threshold = params.get("Threshold")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15533,53 +11716,6 @@ class SwitchConfig(AbstractModel):
         
 
 
-class SwitchLogTopicTaskRequest(AbstractModel):
-    """SwitchLogTopicTask请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param TopicId: 推送任务的主题ID。
-        :type TopicId: str
-        :param IsOpen: 是否开启推送，可选的动作有：
-<li>true：开启推送任务；</li>
-<li>false：关闭推送任务。</li>
-        :type IsOpen: bool
-        """
-        self.TopicId = None
-        self.IsOpen = None
-
-
-    def _deserialize(self, params):
-        self.TopicId = params.get("TopicId")
-        self.IsOpen = params.get("IsOpen")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class SwitchLogTopicTaskResponse(AbstractModel):
-    """SwitchLogTopicTask返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self.RequestId = None
-
-
-    def _deserialize(self, params):
-        self.RequestId = params.get("RequestId")
-
-
 class Tag(AbstractModel):
     """标签配置
 
@@ -15911,6 +12047,47 @@ class TopEntryValue(AbstractModel):
         
 
 
+class UpdateOriginProtectionIPWhitelistRequest(AbstractModel):
+    """UpdateOriginProtectionIPWhitelist请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 站点ID。
+        :type ZoneId: str
+        """
+        self.ZoneId = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateOriginProtectionIPWhitelistResponse(AbstractModel):
+    """UpdateOriginProtectionIPWhitelist返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class UpstreamHttp2(AbstractModel):
     """Http2回源配置
 
@@ -16120,168 +12297,6 @@ class WafGroup(AbstractModel):
         
 
 
-class WafGroupDetail(AbstractModel):
-    """托管规则组详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RuleTypeId: 规则类型ID。
-        :type RuleTypeId: int
-        :param RuleTypeName: 规则类型名称。
-        :type RuleTypeName: str
-        :param RuleTypeDesc: 规则类型描述。
-        :type RuleTypeDesc: str
-        :param WafGroupRules: 规则列表。
-        :type WafGroupRules: list of WafGroupRule
-        :param Level: 规则等级。
-        :type Level: str
-        :param Action: 动作。
-        :type Action: str
-        """
-        self.RuleTypeId = None
-        self.RuleTypeName = None
-        self.RuleTypeDesc = None
-        self.WafGroupRules = None
-        self.Level = None
-        self.Action = None
-
-
-    def _deserialize(self, params):
-        self.RuleTypeId = params.get("RuleTypeId")
-        self.RuleTypeName = params.get("RuleTypeName")
-        self.RuleTypeDesc = params.get("RuleTypeDesc")
-        if params.get("WafGroupRules") is not None:
-            self.WafGroupRules = []
-            for item in params.get("WafGroupRules"):
-                obj = WafGroupRule()
-                obj._deserialize(item)
-                self.WafGroupRules.append(obj)
-        self.Level = params.get("Level")
-        self.Action = params.get("Action")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class WafGroupInfo(AbstractModel):
-    """托管规则
-
-    """
-
-    def __init__(self):
-        r"""
-        :param WafGroupDetails: 托管规则组列表。
-        :type WafGroupDetails: list of WafGroupDetail
-        :param Level: 规则组等级，取值有：
-<li> loose：宽松；</li>
-<li> normal：正常；</li>
-<li> strict：严格；</li>
-<li> stricter：超严格。</li>
-        :type Level: str
-        :param Act: 保留字段。
-        :type Act: str
-        :param Mode: 模式，取值有：
-<li> block：阻断；</li>
-<li> observe：观察。</li>
-        :type Mode: str
-        :param Switch: 开关，取值有：
-<li> on：开启；</li>
-<li> off：关闭。</li>
-        :type Switch: str
-        """
-        self.WafGroupDetails = None
-        self.Level = None
-        self.Act = None
-        self.Mode = None
-        self.Switch = None
-
-
-    def _deserialize(self, params):
-        if params.get("WafGroupDetails") is not None:
-            self.WafGroupDetails = []
-            for item in params.get("WafGroupDetails"):
-                obj = WafGroupDetail()
-                obj._deserialize(item)
-                self.WafGroupDetails.append(obj)
-        self.Level = params.get("Level")
-        self.Act = params.get("Act")
-        self.Mode = params.get("Mode")
-        self.Switch = params.get("Switch")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class WafGroupRule(AbstractModel):
-    """托管规则详情
-
-    """
-
-    def __init__(self):
-        r"""
-        :param RuleId: 规则id。
-        :type RuleId: int
-        :param Description: 规则描述。
-        :type Description: str
-        :param RuleLevelDesc: 等级描述。
-        :type RuleLevelDesc: str
-        :param RuleTags: 规则标签。部分类型的规则不存在该参数。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleTags: list of str
-        :param UpdateTime: 更新时间，格式为YYYY-MM-DD hh:mm:ss。部分类型的规则不存在该参数。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type UpdateTime: str
-        :param Status: 状态，取值有：
-<li>on：开启；</li>
-<li>off：关闭。</li>为空时对应接口Status无意义，例如仅查询规则详情时。
-        :type Status: str
-        :param RuleTypeName: 规则类型名。
-        :type RuleTypeName: str
-        :param RuleTypeId: 规则类型id。
-        :type RuleTypeId: int
-        :param RuleTypeDesc: 规则类型描述。
-        :type RuleTypeDesc: str
-        """
-        self.RuleId = None
-        self.Description = None
-        self.RuleLevelDesc = None
-        self.RuleTags = None
-        self.UpdateTime = None
-        self.Status = None
-        self.RuleTypeName = None
-        self.RuleTypeId = None
-        self.RuleTypeDesc = None
-
-
-    def _deserialize(self, params):
-        self.RuleId = params.get("RuleId")
-        self.Description = params.get("Description")
-        self.RuleLevelDesc = params.get("RuleLevelDesc")
-        self.RuleTags = params.get("RuleTags")
-        self.UpdateTime = params.get("UpdateTime")
-        self.Status = params.get("Status")
-        self.RuleTypeName = params.get("RuleTypeName")
-        self.RuleTypeId = params.get("RuleTypeId")
-        self.RuleTypeDesc = params.get("RuleTypeDesc")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            if name in memeber_set:
-                memeber_set.remove(name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
 class WafRule(AbstractModel):
     """Waf规则
 
@@ -16325,60 +12340,68 @@ class WebLogs(AbstractModel):
         r"""
         :param EventId: 请求（事件）ID。
         :type EventId: str
-        :param AttackIp: 攻击源（客户端）Ip。
-        :type AttackIp: str
-        :param Domain: 受攻击子域名。
-        :type Domain: str
         :param HttpLog: http 日志内容。
         :type HttpLog: str
+        :param Domain: 受攻击子域名。
+        :type Domain: str
+        :param AttackIp: 攻击源（客户端）Ip。
+        :type AttackIp: str
         :param SipCountryCode: IP所在国家iso-3166中alpha-2编码，编码信息请参考[ISO-3166](https://git.woa.com/edgeone/iso-3166/blob/master/all/all.json)
         :type SipCountryCode: str
+        :param RealClientIp: 真实客户端Ip。
+        :type RealClientIp: str
+        :param RealClientIpCountryCode: 真实客户端Ip所在国家iso-3166中alpha-2编码。
+        :type RealClientIpCountryCode: str
         :param AttackTime: 攻击时间，采用unix秒级时间戳。
         :type AttackTime: int
         :param RequestUri: 请求地址。
         :type RequestUri: str
-        :param AttackContent: 攻击内容。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type AttackContent: str
-        :param RuleDetailList: 规则相关信息列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type RuleDetailList: list of SecRuleRelatedInfo
         :param ReqMethod: 请求类型。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ReqMethod: str
+        :param RuleDetailList: 规则相关信息列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleDetailList: list of SecRuleRelatedInfo
+        :param AttackContent: 攻击内容。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttackContent: str
         :param Area: 日志所属区域。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Area: str
         """
         self.EventId = None
-        self.AttackIp = None
-        self.Domain = None
         self.HttpLog = None
+        self.Domain = None
+        self.AttackIp = None
         self.SipCountryCode = None
+        self.RealClientIp = None
+        self.RealClientIpCountryCode = None
         self.AttackTime = None
         self.RequestUri = None
-        self.AttackContent = None
-        self.RuleDetailList = None
         self.ReqMethod = None
+        self.RuleDetailList = None
+        self.AttackContent = None
         self.Area = None
 
 
     def _deserialize(self, params):
         self.EventId = params.get("EventId")
-        self.AttackIp = params.get("AttackIp")
-        self.Domain = params.get("Domain")
         self.HttpLog = params.get("HttpLog")
+        self.Domain = params.get("Domain")
+        self.AttackIp = params.get("AttackIp")
         self.SipCountryCode = params.get("SipCountryCode")
+        self.RealClientIp = params.get("RealClientIp")
+        self.RealClientIpCountryCode = params.get("RealClientIpCountryCode")
         self.AttackTime = params.get("AttackTime")
         self.RequestUri = params.get("RequestUri")
-        self.AttackContent = params.get("AttackContent")
+        self.ReqMethod = params.get("ReqMethod")
         if params.get("RuleDetailList") is not None:
             self.RuleDetailList = []
             for item in params.get("RuleDetailList"):
                 obj = SecRuleRelatedInfo()
                 obj._deserialize(item)
                 self.RuleDetailList.append(obj)
-        self.ReqMethod = params.get("ReqMethod")
+        self.AttackContent = params.get("AttackContent")
         self.Area = params.get("Area")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -16611,6 +12634,9 @@ class ZoneSetting(AbstractModel):
         :param ClientIpCountry: 回源时是否携带客户端IP所属地域信息的配置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClientIpCountry: :class:`tencentcloud.teo.v20220901.models.ClientIpCountry`
+        :param Grpc: Grpc协议支持配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Grpc: :class:`tencentcloud.teo.v20220901.models.Grpc`
         """
         self.ZoneName = None
         self.Area = None
@@ -16631,6 +12657,7 @@ class ZoneSetting(AbstractModel):
         self.Ipv6 = None
         self.Https = None
         self.ClientIpCountry = None
+        self.Grpc = None
 
 
     def _deserialize(self, params):
@@ -16687,6 +12714,9 @@ class ZoneSetting(AbstractModel):
         if params.get("ClientIpCountry") is not None:
             self.ClientIpCountry = ClientIpCountry()
             self.ClientIpCountry._deserialize(params.get("ClientIpCountry"))
+        if params.get("Grpc") is not None:
+            self.Grpc = Grpc()
+            self.Grpc._deserialize(params.get("Grpc"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

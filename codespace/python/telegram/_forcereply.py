@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram ForceReply."""
 
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from telegram import constants
 from telegram._telegramobject import TelegramObject
@@ -59,9 +59,17 @@ class ForceReply(TelegramObject):
     Attributes:
         force_reply (:obj:`True`): Shows reply interface to the user, as if they manually selected
             the bots message and tapped 'Reply'.
-        selective (:obj:`bool`): Optional. Force reply from specific users only.
-        input_field_placeholder (:obj:`str`): Optional. The placeholder shown in the input
-            field when the reply is active.
+        selective (:obj:`bool`): Optional. Force reply from specific users only. Targets:
+
+            1) Users that are @mentioned in the :attr:`~telegram.Message.text` of the
+               :class:`telegram.Message` object.
+            2) If the bot's message is a reply (has ``reply_to_message_id``), sender of the
+               original message.
+        input_field_placeholder (:obj:`str`): Optional. The placeholder to be shown in the input
+            field when the reply is active;
+            :tg-const:`telegram.ForceReply.MIN_INPUT_FIELD_PLACEHOLDER`-
+            :tg-const:`telegram.ForceReply.MAX_INPUT_FIELD_PLACEHOLDER`
+            characters.
 
             .. versionadded:: 13.7
 
@@ -77,11 +85,13 @@ class ForceReply(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.force_reply = True
-        self.selective = selective
-        self.input_field_placeholder = input_field_placeholder
+        self.force_reply: bool = True
+        self.selective: Optional[bool] = selective
+        self.input_field_placeholder: Optional[str] = input_field_placeholder
 
         self._id_attrs = (self.selective,)
+
+        self._freeze()
 
     MIN_INPUT_FIELD_PLACEHOLDER: ClassVar[int] = constants.ReplyLimit.MIN_INPUT_FIELD_PLACEHOLDER
     """:const:`telegram.constants.ReplyLimit.MIN_INPUT_FIELD_PLACEHOLDER`

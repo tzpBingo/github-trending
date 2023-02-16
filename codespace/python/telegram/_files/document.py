@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram Document."""
+from typing import Optional
 
 from telegram._files._basethumbedmedium import _BaseThumbedMedium
 from telegram._files.photosize import PhotoSize
@@ -41,15 +42,14 @@ class Document(_BaseThumbedMedium):
         file_size (:obj:`int`, optional): File size in bytes.
 
     Attributes:
-        file_id (:obj:`str`): File identifier.
-        file_unique_id (:obj:`str`): Unique identifier for this file, which
-            is supposed to be the same over time and for different bots.
-            Can't be used to download or reuse the file.
-        thumb (:class:`telegram.PhotoSize`): Optional. Document thumbnail.
-        file_name (:obj:`str`): Original filename.
-        mime_type (:obj:`str`): Optional. MIME type of the file.
+        file_id (:obj:`str`): Identifier for this file, which can be used to download
+            or reuse the file.
+        file_unique_id (:obj:`str`): Unique identifier for this file, which is supposed to be
+            the same over time and for different bots. Can't be used to download or reuse the file.
+        thumb (:class:`telegram.PhotoSize`): Optional. Document thumbnail as defined by sender.
+        file_name (:obj:`str`): Optional. Original filename as defined by sender.
+        mime_type (:obj:`str`): Optional. MIME type of the file as defined by sender.
         file_size (:obj:`int`): Optional. File size in bytes.
-
 
     """
 
@@ -73,6 +73,7 @@ class Document(_BaseThumbedMedium):
             thumb=thumb,
             api_kwargs=api_kwargs,
         )
-        # Optional
-        self.mime_type = mime_type
-        self.file_name = file_name
+        with self._unfrozen():
+            # Optional
+            self.mime_type: Optional[str] = mime_type
+            self.file_name: Optional[str] = file_name

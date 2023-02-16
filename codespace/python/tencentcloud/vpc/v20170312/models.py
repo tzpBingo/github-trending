@@ -745,6 +745,8 @@ AnycastEIP是否用于绑定负载均衡。
         :type BandwidthPackageId: str
         :param AddressName: EIP名称，用于申请EIP时用户自定义该EIP的个性化名称，默认值：未命名
         :type AddressName: str
+        :param Egress: 网络出口，默认是：center_egress1
+        :type Egress: str
         """
         self.AddressCount = None
         self.InternetServiceProvider = None
@@ -757,6 +759,7 @@ AnycastEIP是否用于绑定负载均衡。
         self.Tags = None
         self.BandwidthPackageId = None
         self.AddressName = None
+        self.Egress = None
 
 
     def _deserialize(self, params):
@@ -778,6 +781,7 @@ AnycastEIP是否用于绑定负载均衡。
                 self.Tags.append(obj)
         self.BandwidthPackageId = params.get("BandwidthPackageId")
         self.AddressName = params.get("AddressName")
+        self.Egress = params.get("Egress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -884,7 +888,7 @@ class AssignIpv6AddressesRequest(AbstractModel):
         :type NetworkInterfaceId: str
         :param Ipv6Addresses: 指定的`IPv6`地址列表，单次最多指定10个。与入参`Ipv6AddressCount`合并计算配额。与Ipv6AddressCount必填一个。
         :type Ipv6Addresses: list of Ipv6Address
-        :param Ipv6AddressCount: 自动分配`IPv6`地址个数，内网IP地址个数总和不能超过配数。与入参`Ipv6Addresses`合并计算配额。与Ipv6Addresses必填一个。
+        :param Ipv6AddressCount: 自动分配`IPv6`地址个数，内网IP地址个数总和不能超过配额数。与入参`Ipv6Addresses`合并计算配额。与Ipv6Addresses必填一个。
         :type Ipv6AddressCount: int
         """
         self.NetworkInterfaceId = None
@@ -967,7 +971,7 @@ class AssignIpv6CidrBlockResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Ipv6CidrBlock: 分配的 `IPv6` 网段。形如：`3402:4e00:20:1000::/56`
+        :param Ipv6CidrBlock: 分配的 `IPv6` 网段。形如：`3402:4e00:20:1000::/56`。
         :type Ipv6CidrBlock: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1374,7 +1378,7 @@ class AssociateNetworkAclSubnetsRequest(AbstractModel):
         r"""
         :param NetworkAclId: 网络ACL实例ID。例如：acl-12345678。
         :type NetworkAclId: str
-        :param SubnetIds: 子网实例ID数组。例如：[subnet-12345678]
+        :param SubnetIds: 子网实例ID数组。例如：[subnet-12345678]。
         :type SubnetIds: list of str
         """
         self.NetworkAclId = None
@@ -1603,6 +1607,56 @@ class AttachNetworkInterfaceResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class AttachSnapshotInstancesRequest(AbstractModel):
+    """AttachSnapshotInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param Instances: 关联实例信息。
+        :type Instances: list of SnapshotInstance
+        """
+        self.SnapshotPolicyId = None
+        self.Instances = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        if params.get("Instances") is not None:
+            self.Instances = []
+            for item in params.get("Instances"):
+                obj = SnapshotInstance()
+                obj._deserialize(item)
+                self.Instances.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AttachSnapshotInstancesResponse(AbstractModel):
+    """AttachSnapshotInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class AuditCrossBorderComplianceRequest(AbstractModel):
     """AuditCrossBorderCompliance请求参数结构体
 
@@ -1652,6 +1706,34 @@ class AuditCrossBorderComplianceResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class BackupPolicy(AbstractModel):
+    """时间备份策略详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BackupDay: 备份周期时间，取值为monday, tuesday, wednesday, thursday, friday, saturday, sunday。
+        :type BackupDay: str
+        :param BackupTime: 备份时间点，格式：HH:mm:ss。
+        :type BackupTime: str
+        """
+        self.BackupDay = None
+        self.BackupTime = None
+
+
+    def _deserialize(self, params):
+        self.BackupDay = params.get("BackupDay")
+        self.BackupTime = params.get("BackupTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class BandwidthPackage(AbstractModel):
     """描述带宽包信息的结构
 
@@ -1661,7 +1743,7 @@ class BandwidthPackage(AbstractModel):
         r"""
         :param BandwidthPackageId: 带宽包唯一标识Id
         :type BandwidthPackageId: str
-        :param NetworkType: 带宽包类型，包括'BGP','SINGLEISP','ANYCAST'
+        :param NetworkType: 带宽包类型，包括'BGP','SINGLEISP','ANYCAST','SINGLEISP_CMCC','SINGLEISP_CTCC','SINGLEISP_CUCC'
         :type NetworkType: str
         :param ChargeType: 带宽包计费类型，包括'TOP5_POSTPAID_BY_MONTH'和'PERCENT95_POSTPAID_BY_MONTH'
         :type ChargeType: str
@@ -1717,13 +1799,54 @@ class BandwidthPackageBillBandwidth(AbstractModel):
     def __init__(self):
         r"""
         :param BandwidthUsage: 当前计费用量，单位为 Mbps
-        :type BandwidthUsage: int
+        :type BandwidthUsage: float
         """
         self.BandwidthUsage = None
 
 
     def _deserialize(self, params):
         self.BandwidthUsage = params.get("BandwidthUsage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchModifySnapshotPolicy(AbstractModel):
+    """批量修改快照策略信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param SnapshotPolicyName: 快照策略名称。
+        :type SnapshotPolicyName: str
+        :param BackupPolicies: 备份策略。
+        :type BackupPolicies: list of BackupPolicy
+        :param KeepTime: 快照保留时间，支持1～365天。
+        :type KeepTime: int
+        """
+        self.SnapshotPolicyId = None
+        self.SnapshotPolicyName = None
+        self.BackupPolicies = None
+        self.KeepTime = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        self.SnapshotPolicyName = params.get("SnapshotPolicyName")
+        if params.get("BackupPolicies") is not None:
+            self.BackupPolicies = []
+            for item in params.get("BackupPolicies"):
+                obj = BackupPolicy()
+                obj._deserialize(item)
+                self.BackupPolicies.append(obj)
+        self.KeepTime = params.get("KeepTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1757,19 +1880,25 @@ class CCN(AbstractModel):
         :param InstanceChargeType: 付费类型，PREPAID为预付费，POSTPAID为后付费。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceChargeType: str
-        :param BandwidthLimitType: 限速类型，INTER_REGION_LIMIT为地域间限速；OUTER_REGION_LIMIT为地域出口限速。
+        :param BandwidthLimitType: 限速类型，`INTER_REGION_LIMIT` 为地域间限速；`OUTER_REGION_LIMIT` 为地域出口限速。
 注意：此字段可能返回 null，表示取不到有效值。
         :type BandwidthLimitType: str
         :param TagSet: 标签键值对。
         :type TagSet: list of Tag
-        :param RoutePriorityFlag: 是否支持云联网路由优先级的功能。False：不支持，True：支持。
+        :param RoutePriorityFlag: 是否支持云联网路由优先级的功能。`False`：不支持，`True`：支持。
         :type RoutePriorityFlag: bool
         :param RouteTableCount: 实例关联的路由表个数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RouteTableCount: int
-        :param RouteTableFlag: 是否开启云联网多路由表特性。False：未开启，True：开启。
+        :param RouteTableFlag: 是否开启云联网多路由表特性。`False`：未开启，`True`：开启。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RouteTableFlag: bool
+        :param IsSecurityLock: `true`：实例已被封禁，流量不通，`false`:解封禁。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsSecurityLock: bool
+        :param RouteBroadcastPolicyFlag: 是否开启云联网路由传播策略。`False` 未开启，`True` 开启。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RouteBroadcastPolicyFlag: bool
         """
         self.CcnId = None
         self.CcnName = None
@@ -1784,6 +1913,8 @@ class CCN(AbstractModel):
         self.RoutePriorityFlag = None
         self.RouteTableCount = None
         self.RouteTableFlag = None
+        self.IsSecurityLock = None
+        self.RouteBroadcastPolicyFlag = None
 
 
     def _deserialize(self, params):
@@ -1805,6 +1936,8 @@ class CCN(AbstractModel):
         self.RoutePriorityFlag = params.get("RoutePriorityFlag")
         self.RouteTableCount = params.get("RouteTableCount")
         self.RouteTableFlag = params.get("RouteTableFlag")
+        self.IsSecurityLock = params.get("IsSecurityLock")
+        self.RouteBroadcastPolicyFlag = params.get("RouteBroadcastPolicyFlag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1961,6 +2094,41 @@ class CcnBandwidthInfo(AbstractModel):
         
 
 
+class CcnFlowLock(AbstractModel):
+    """云联网限速实例锁对象，该对象特用于运营端使用，用于封禁实例流量。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CcnId: 带宽所属的云联网ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CcnId: str
+        :param UserAccountID: 实例所属用户主账号ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserAccountID: str
+        :param RegionFlowControlId: 带宽实例的唯一ID。作为`UnlockCcnBandwidths`接口和`LockCcnBandwidths`接口的入参时，该字段必传。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegionFlowControlId: str
+        """
+        self.CcnId = None
+        self.UserAccountID = None
+        self.RegionFlowControlId = None
+
+
+    def _deserialize(self, params):
+        self.CcnId = params.get("CcnId")
+        self.UserAccountID = params.get("UserAccountID")
+        self.RegionFlowControlId = params.get("RegionFlowControlId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CcnInstance(AbstractModel):
     """云联网（CCN）关联实例（Instance）对象。
 
@@ -2004,6 +2172,12 @@ class CcnInstance(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class CcnInstanceInfo(AbstractModel):
+    """云联网实例对象，该对象特用于运营端使用，不建议给租户的接口中提供该复杂类型。
+
+    """
 
 
 class CcnRegionBandwidthLimit(AbstractModel):
@@ -2128,9 +2302,9 @@ class CheckAssistantCidrRequest(AbstractModel):
         r"""
         :param VpcId: `VPC`实例`ID`。形如：`vpc-6v2ht8q5`
         :type VpcId: str
-        :param NewCidrBlocks: 待添加的负载CIDR。CIDR数组，格式如["10.0.0.0/16", "172.16.0.0/16"]。入参NewCidrBlocks和OldCidrBlocks至少需要其一。
+        :param NewCidrBlocks: 待添加的辅助CIDR。CIDR数组，格式如["10.0.0.0/16", "172.16.0.0/16"]。入参NewCidrBlocks和OldCidrBlocks至少需要其一。
         :type NewCidrBlocks: list of str
-        :param OldCidrBlocks: 待删除的负载CIDR。CIDR数组，格式如["10.0.0.0/16", "172.16.0.0/16"]。入参NewCidrBlocks和OldCidrBlocks至少需要其一。
+        :param OldCidrBlocks: 待删除的辅助CIDR。CIDR数组，格式如["10.0.0.0/16", "172.16.0.0/16"]。入参NewCidrBlocks和OldCidrBlocks至少需要其一。
         :type OldCidrBlocks: list of str
         """
         self.VpcId = None
@@ -2231,20 +2405,6 @@ class CheckNetDetectStateRequest(AbstractModel):
         r"""
         :param DetectDestinationIp: 探测目的IPv4地址数组，最多两个。
         :type DetectDestinationIp: list of str
-        :param NextHopType: 下一跳类型，目前我们支持的类型有：
-VPN：VPN网关；
-DIRECTCONNECT：专线网关；
-PEERCONNECTION：对等连接；
-NAT：NAT网关；
-NORMAL_CVM：普通云服务器；
-        :type NextHopType: str
-        :param NextHopDestination: 下一跳目的网关，取值与“下一跳类型”相关：
-下一跳类型为VPN，取值VPN网关ID，形如：vpngw-12345678；
-下一跳类型为DIRECTCONNECT，取值专线网关ID，形如：dcg-12345678；
-下一跳类型为PEERCONNECTION，取值对等连接ID，形如：pcx-12345678；
-下一跳类型为NAT，取值Nat网关，形如：nat-12345678；
-下一跳类型为NORMAL_CVM，取值云服务器IPv4地址，形如：10.0.0.12；
-        :type NextHopDestination: str
         :param NetDetectId: 网络探测实例ID。形如：netd-12345678。该参数与（VpcId，SubnetId，NetDetectName），至少要有一个。当NetDetectId存在时，使用NetDetectId。
         :type NetDetectId: str
         :param VpcId: `VPC`实例`ID`。形如：`vpc-12345678`。该参数与（SubnetId，NetDetectName）配合使用，与NetDetectId至少要有一个。当NetDetectId存在时，使用NetDetectId。
@@ -2253,24 +2413,42 @@ NORMAL_CVM：普通云服务器；
         :type SubnetId: str
         :param NetDetectName: 网络探测名称，最大长度不能超过60个字节。该参数与（VpcId，SubnetId）配合使用，与NetDetectId至少要有一个。当NetDetectId存在时，使用NetDetectId。
         :type NetDetectName: str
+        :param NextHopType: 下一跳类型，目前我们支持的类型有：
+VPN：VPN网关；
+DIRECTCONNECT：专线网关；
+PEERCONNECTION：对等连接；
+NAT：NAT网关；
+NORMAL_CVM：普通云服务器；
+CCN：云联网网关；
+NONEXTHOP：无下一跳；
+        :type NextHopType: str
+        :param NextHopDestination: 下一跳目的网关，取值与“下一跳类型”相关：
+下一跳类型为VPN，取值VPN网关ID，形如：vpngw-12345678；
+下一跳类型为DIRECTCONNECT，取值专线网关ID，形如：dcg-12345678；
+下一跳类型为PEERCONNECTION，取值对等连接ID，形如：pcx-12345678；
+下一跳类型为NAT，取值Nat网关，形如：nat-12345678；
+下一跳类型为NORMAL_CVM，取值云服务器IPv4地址，形如：10.0.0.12；
+下一跳类型为CCN，取值云联网ID，形如：ccn-12345678；
+下一跳类型为NONEXTHOP，指定网络探测为无下一跳的网络探测；
+        :type NextHopDestination: str
         """
         self.DetectDestinationIp = None
-        self.NextHopType = None
-        self.NextHopDestination = None
         self.NetDetectId = None
         self.VpcId = None
         self.SubnetId = None
         self.NetDetectName = None
+        self.NextHopType = None
+        self.NextHopDestination = None
 
 
     def _deserialize(self, params):
         self.DetectDestinationIp = params.get("DetectDestinationIp")
-        self.NextHopType = params.get("NextHopType")
-        self.NextHopDestination = params.get("NextHopDestination")
         self.NetDetectId = params.get("NetDetectId")
         self.VpcId = params.get("VpcId")
         self.SubnetId = params.get("SubnetId")
         self.NetDetectName = params.get("NetDetectName")
+        self.NextHopType = params.get("NextHopType")
+        self.NextHopDestination = params.get("NextHopDestination")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2778,6 +2956,8 @@ class CreateBandwidthPackageRequest(AbstractModel):
         :type Tags: list of Tag
         :param Protocol: 带宽包协议类型。当前支持'ipv4'和'ipv6'协议带宽包，默认值是'ipv4'。
         :type Protocol: str
+        :param TimeSpan: 预付费包月带宽包的购买时长，单位: 月，取值范围: 1~60。
+        :type TimeSpan: int
         """
         self.NetworkType = None
         self.ChargeType = None
@@ -2786,6 +2966,7 @@ class CreateBandwidthPackageRequest(AbstractModel):
         self.InternetMaxBandwidth = None
         self.Tags = None
         self.Protocol = None
+        self.TimeSpan = None
 
 
     def _deserialize(self, params):
@@ -2801,6 +2982,7 @@ class CreateBandwidthPackageRequest(AbstractModel):
                 obj._deserialize(item)
                 self.Tags.append(obj)
         self.Protocol = params.get("Protocol")
+        self.TimeSpan = params.get("TimeSpan")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2846,11 +3028,11 @@ class CreateCcnRequest(AbstractModel):
         :type CcnName: str
         :param CcnDescription: CCN描述信息，最大长度不能超过100个字节。
         :type CcnDescription: str
-        :param QosLevel: CCN服务质量，'PT'：白金，'AU'：金，'AG'：银，默认为‘AU’。
+        :param QosLevel: CCN服务质量，`PT`：白金，`AU`：金，`AG`：银，默认为`AU`。
         :type QosLevel: str
-        :param InstanceChargeType: 计费模式，PREPAID：表示预付费，即包年包月，POSTPAID：表示后付费，即按量计费。默认：POSTPAID。
+        :param InstanceChargeType: 计费模式，`PREPAID`：表示预付费，即包年包月，`POSTPAID`：表示后付费，即按量计费。默认：`POSTPAID`。
         :type InstanceChargeType: str
-        :param BandwidthLimitType: 限速类型，OUTER_REGION_LIMIT表示地域出口限速，INTER_REGION_LIMIT为地域间限速，默认为OUTER_REGION_LIMIT。预付费模式仅支持地域间限速，后付费模式支持地域间限速和地域出口限速。
+        :param BandwidthLimitType: 限速类型，`OUTER_REGION_LIMIT`表示地域出口限速，`INTER_REGION_LIMIT`为地域间限速，默认为`OUTER_REGION_LIMIT`。预付费模式仅支持地域间限速，后付费模式支持地域间限速和地域出口限速。
         :type BandwidthLimitType: str
         :param Tags: 指定绑定的标签列表，例如：[{"Key": "city", "Value": "shanghai"}]
         :type Tags: list of Tag
@@ -3078,7 +3260,7 @@ class CreateDhcpIpRequest(AbstractModel):
         :type SubnetId: str
         :param DhcpIpName: `DhcpIp`名称。
         :type DhcpIpName: str
-        :param SecondaryPrivateIpAddressCount: 新申请的内网IP地址个数。总数不能超过64个。
+        :param SecondaryPrivateIpAddressCount: 新申请的内网IP地址个数。总数不能超过64个，为了兼容性，当前参数必填。
         :type SecondaryPrivateIpAddressCount: int
         """
         self.VpcId = None
@@ -3108,7 +3290,7 @@ class CreateDhcpIpResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DhcpIpSet: 新创建的`DhcpIp`信息
+        :param DhcpIpSet: 新创建的`DhcpIp`信息。
         :type DhcpIpSet: list of DhcpIp
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3469,11 +3651,11 @@ class CreateLocalGatewayRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LocalGatewayName: 本地网关名称
+        :param LocalGatewayName: 本地网关名称。
         :type LocalGatewayName: str
-        :param VpcId: VPC实例ID
+        :param VpcId: VPC实例ID。
         :type VpcId: str
-        :param CdcId: CDC实例ID
+        :param CdcId: CDC实例ID。
         :type CdcId: str
         """
         self.LocalGatewayName = None
@@ -3501,7 +3683,7 @@ class CreateLocalGatewayResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LocalGateway: 本地网关信息
+        :param LocalGateway: 本地网关信息。
         :type LocalGateway: :class:`tencentcloud.vpc.v20170312.models.LocalGateway`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3861,7 +4043,7 @@ class CreateNetworkAclRequest(AbstractModel):
         :type VpcId: str
         :param NetworkAclName: 网络ACL名称，最大长度不能超过60个字节。
         :type NetworkAclName: str
-        :param NetworkAclType: 网络ACL类型，三元组(TRIPLE)或五元组(QUINTUPLE)
+        :param NetworkAclType: 网络ACL类型，三元组(TRIPLE)或五元组(QUINTUPLE)。
         :type NetworkAclType: str
         :param Tags: 指定绑定的标签列表，例如：[{"Key": "city", "Value": "shanghai"}]。
         :type Tags: list of Tag
@@ -4305,7 +4487,7 @@ class CreateServiceTemplateGroupRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ServiceTemplateGroupName: 协议端口模板集合名称
+        :param ServiceTemplateGroupName: 协议端口模板集合名称。
         :type ServiceTemplateGroupName: str
         :param ServiceTemplateIds: 协议端口模板实例ID，例如：ppm-4dw6agho。
         :type ServiceTemplateIds: list of str
@@ -4356,7 +4538,7 @@ class CreateServiceTemplateRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ServiceTemplateName: 协议端口模板名称
+        :param ServiceTemplateName: 协议端口模板名称。
         :type ServiceTemplateName: str
         :param Services: 支持单个端口、多个端口、连续端口及所有端口，协议支持：TCP、UDP、ICMP、GRE 协议。Services与ServicesExtra必填其一。
         :type Services: list of str
@@ -4406,6 +4588,61 @@ class CreateServiceTemplateResponse(AbstractModel):
         if params.get("ServiceTemplate") is not None:
             self.ServiceTemplate = ServiceTemplate()
             self.ServiceTemplate._deserialize(params.get("ServiceTemplate"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreateSnapshotPoliciesRequest(AbstractModel):
+    """CreateSnapshotPolicies请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicies: 快照策略详情。
+        :type SnapshotPolicies: list of SnapshotPolicy
+        """
+        self.SnapshotPolicies = None
+
+
+    def _deserialize(self, params):
+        if params.get("SnapshotPolicies") is not None:
+            self.SnapshotPolicies = []
+            for item in params.get("SnapshotPolicies"):
+                obj = SnapshotPolicy()
+                obj._deserialize(item)
+                self.SnapshotPolicies.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateSnapshotPoliciesResponse(AbstractModel):
+    """CreateSnapshotPolicies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicies: 快照策略。
+        :type SnapshotPolicies: list of SnapshotPolicy
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SnapshotPolicies = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("SnapshotPolicies") is not None:
+            self.SnapshotPolicies = []
+            for item in params.get("SnapshotPolicies"):
+                obj = SnapshotPolicy()
+                obj._deserialize(item)
+                self.SnapshotPolicies.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -4488,11 +4725,11 @@ class CreateSubnetsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param VpcId: `VPC`实例`ID`。形如：`vpc-6v2ht8q5`
+        :param VpcId: `VPC`实例`ID`。形如：`vpc-6v2ht8q5`。
         :type VpcId: str
         :param Subnets: 子网对象列表。
         :type Subnets: list of SubnetInput
-        :param Tags: 指定绑定的标签列表，注意这里的标签集合为列表中所有子网对象所共享，不能为每个子网对象单独指定标签，例如：[{"Key": "city", "Value": "shanghai"}]
+        :param Tags: 指定绑定的标签列表，注意这里的标签集合为列表中所有子网对象所共享，不能为每个子网对象单独指定标签，例如：[{"Key": "city", "Value": "shanghai"}]。
         :type Tags: list of Tag
         :param CdcId: 需要增加到的CDC实例ID。
         :type CdcId: str
@@ -4550,6 +4787,69 @@ class CreateSubnetsResponse(AbstractModel):
                 obj = Subnet()
                 obj._deserialize(item)
                 self.SubnetSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class CreateTrafficPackagesRequest(AbstractModel):
+    """CreateTrafficPackages请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TrafficAmount: 流量包规格。可选值:
+<li>10: 10GB流量，有效期一个月</li>
+<li>50: 50GB流量，有效期一个月</li>
+<li>512: 512GB流量，有效期一个月</li>
+<li>1024: 1TB流量，有效期一个月</li>
+<li>5120: 5TB流量，有效期一个月</li>
+<li>51200: 50TB流量，有效期一个月</li>
+<li>60: 60GB流量，有效期半年</li>
+<li>300: 300GB流量，有效期半年</li>
+<li>600: 600GB流量，有效期半年</li>
+<li>3072: 3TB流量，有效期半年</li>
+<li>6144: 6TB流量，有效期半年</li>
+<li>30720: 30TB流量，有效期半年</li>
+<li>61440: 60TB流量，有效期半年</li>
+<li>307200: 300TB流量，有效期半年</li>
+        :type TrafficAmount: int
+        :param TrafficPackageCount: 流量包数量，可选范围 1~20。
+        :type TrafficPackageCount: int
+        """
+        self.TrafficAmount = None
+        self.TrafficPackageCount = None
+
+
+    def _deserialize(self, params):
+        self.TrafficAmount = params.get("TrafficAmount")
+        self.TrafficPackageCount = params.get("TrafficPackageCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateTrafficPackagesResponse(AbstractModel):
+    """CreateTrafficPackages返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TrafficPackageSet: 创建的流量包ID列表。
+        :type TrafficPackageSet: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TrafficPackageSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TrafficPackageSet = params.get("TrafficPackageSet")
         self.RequestId = params.get("RequestId")
 
 
@@ -4635,14 +4935,17 @@ class CreateVpcEndPointServiceRequest(AbstractModel):
         :type AutoAcceptFlag: bool
         :param ServiceInstanceId: 后端服务ID，比如lb-xxx。
         :type ServiceInstanceId: str
-        :param IsPassService: 是否是PassService类型。
+        :param IsPassService: ~~是否是PassService类型。该字段已废弃，请不要使用该字段。~~
         :type IsPassService: bool
+        :param ServiceType: 挂载的PAAS服务类型，CLB,CDB,CRS，不填默认挂载为CLB。
+        :type ServiceType: str
         """
         self.VpcId = None
         self.EndPointServiceName = None
         self.AutoAcceptFlag = None
         self.ServiceInstanceId = None
         self.IsPassService = None
+        self.ServiceType = None
 
 
     def _deserialize(self, params):
@@ -4651,6 +4954,7 @@ class CreateVpcEndPointServiceRequest(AbstractModel):
         self.AutoAcceptFlag = params.get("AutoAcceptFlag")
         self.ServiceInstanceId = params.get("ServiceInstanceId")
         self.IsPassService = params.get("IsPassService")
+        self.ServiceType = params.get("ServiceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5340,13 +5644,13 @@ class CrossBorderFlowMonitorData(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InBandwidth: 入带宽
+        :param InBandwidth: 入带宽，单位：`bps`。
         :type InBandwidth: list of int
-        :param OutBandwidth: 出带宽
+        :param OutBandwidth: 出带宽，单位：`bps`。
         :type OutBandwidth: list of int
-        :param InPkg: 入包
+        :param InPkg: 入包，单位：`pps`。
         :type InPkg: list of int
-        :param OutPkg: 出包
+        :param OutPkg: 出包，单位：`pps`。
         :type OutPkg: list of int
         """
         self.InBandwidth = None
@@ -5622,9 +5926,9 @@ class DeleteAssistantCidrRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param VpcId: `VPC`实例`ID`。形如：`vpc-6v2ht8q5`
+        :param VpcId: `VPC`实例`ID`。形如：`vpc-6v2ht8q5`。
         :type VpcId: str
-        :param CidrBlocks: CIDR数组，格式如["10.0.0.0/16", "172.16.0.0/16"]
+        :param CidrBlocks: CIDR数组，格式如["10.0.0.0/16", "172.16.0.0/16"]。
         :type CidrBlocks: list of str
         """
         self.VpcId = None
@@ -6044,11 +6348,11 @@ class DeleteLocalGatewayRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LocalGatewayId: 本地网关实例ID
+        :param LocalGatewayId: 本地网关实例ID。
         :type LocalGatewayId: str
-        :param CdcId: CDC实例ID
+        :param CdcId: CDC实例ID。
         :type CdcId: str
-        :param VpcId: VPC实例ID
+        :param VpcId: VPC实例ID。
         :type VpcId: str
         """
         self.LocalGatewayId = None
@@ -6662,6 +6966,47 @@ class DeleteServiceTemplateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteSnapshotPoliciesRequest(AbstractModel):
+    """DeleteSnapshotPolicies请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyIds: 快照策略Id。
+        :type SnapshotPolicyIds: list of str
+        """
+        self.SnapshotPolicyIds = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyIds = params.get("SnapshotPolicyIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteSnapshotPoliciesResponse(AbstractModel):
+    """DeleteSnapshotPolicies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteSubnetRequest(AbstractModel):
     """DeleteSubnet请求参数结构体
 
@@ -7155,7 +7500,7 @@ class DescribeAccountAttributesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AccountAttributeSet: 用户账号属性对象
+        :param AccountAttributeSet: 用户账号属性对象。
         :type AccountAttributeSet: list of AccountAttribute
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -7679,9 +8024,9 @@ class DescribeBandwidthPackagesRequest(AbstractModel):
 <li> tag-value - String - 是否必填：否 - （过滤条件）按照标签值进行过滤。</li>
 <li> tag:tag-key - String - 是否必填：否 - （过滤条件）按照标签键值对进行过滤。tag-key使用具体的标签键进行替换。</li>
         :type Filters: list of Filter
-        :param Offset: 查询带宽包偏移量
+        :param Offset: 查询带宽包偏移量，默认为0。关于Offset的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小结。
         :type Offset: int
-        :param Limit: 查询带宽包数量限制
+        :param Limit: 查询带宽包返回数量，默认为20，最大值为100。关于Limit的更进一步介绍请参考 API [简介](https://cloud.tencent.com/document/api/213/15688)中的相关小结。
         :type Limit: int
         """
         self.BandwidthPackageIds = None
@@ -7829,7 +8174,7 @@ class DescribeCcnRegionBandwidthLimitsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CcnId: CCN实例ID。形如：ccn-f49l6u0z。
+        :param CcnId: CCN实例ID，形如：ccn-f49l6u0z。
         :type CcnId: str
         """
         self.CcnId = None
@@ -7879,9 +8224,9 @@ class DescribeCcnRoutesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CcnId: CCN实例ID，形如：ccn-gree226l。
+        :param CcnId: CCN实例ID，形如：`ccn-gree226l`。
         :type CcnId: str
-        :param RouteIds: CCN路由策略唯一ID。形如：ccnr-f49l6u0z。
+        :param RouteIds: CCN路由策略唯一ID，形如：`ccnr-f49l6u0z`。
         :type RouteIds: list of str
         :param Filters: 过滤条件，参数不支持同时指定RouteIds和Filters。
 <li>route-id - String -（过滤条件）路由策略ID。</li>
@@ -7963,7 +8308,7 @@ class DescribeCcnsRequest(AbstractModel):
         :param CcnIds: CCN实例ID。形如：ccn-f49l6u0z。每次请求的实例的上限为100。参数不支持同时指定CcnIds和Filters。
         :type CcnIds: list of str
         :param Filters: 过滤条件，参数不支持同时指定CcnIds和Filters。
-<li>ccn-id - String - （过滤条件）CCN唯一ID，形如：vpc-f49l6u0z。</li>
+<li>ccn-id - String - （过滤条件）CCN唯一ID，形如：`ccn-f49l6u0z`。</li>
 <li>ccn-name - String - （过滤条件）CCN名称。</li>
 <li>ccn-description - String - （过滤条件）CCN描述。</li>
 <li>state - String - （过滤条件）实例状态， 'ISOLATED': 隔离中（欠费停服），'AVAILABLE'：运行中。</li>
@@ -8049,9 +8394,9 @@ class DescribeClassicLinkInstancesRequest(AbstractModel):
 <li>vpc-id - String - （过滤条件）VPC实例ID。</li>
 <li>vm-ip - String - （过滤条件）基础网络云服务器IP。</li>
         :type Filters: list of FilterObject
-        :param Offset: 偏移量
+        :param Offset: 偏移量，默认值0。
         :type Offset: str
-        :param Limit: 返回数量
+        :param Limit: 返回数量，默认为20，最大值为100。
         :type Limit: str
         """
         self.Filters = None
@@ -8259,19 +8604,19 @@ class DescribeCrossBorderFlowMonitorRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SourceRegion: 源地域
+        :param SourceRegion: 源地域。
         :type SourceRegion: str
-        :param DestinationRegion: 目的地域
+        :param DestinationRegion: 目的地域。
         :type DestinationRegion: str
-        :param CcnId: 云联网Id
+        :param CcnId: 云联网ID。
         :type CcnId: str
-        :param CcnUin: 云联网所属账号
+        :param CcnUin: 云联网所属账号。
         :type CcnUin: str
-        :param Period: 时间粒度
+        :param Period: 时间粒度。
         :type Period: int
-        :param StartTime: 开始时间
+        :param StartTime: 开始时间。
         :type StartTime: str
-        :param EndTime: 结束时间
+        :param EndTime: 结束时间。
         :type EndTime: str
         """
         self.SourceRegion = None
@@ -8836,9 +9181,9 @@ class DescribeGatewayFlowMonitorDetailRequest(AbstractModel):
         :type PeeringConnectionId: str
         :param NatId: NAT网关实例ID，形如：`nat-ltjahce6`。
         :type NatId: str
-        :param Offset: 偏移量。
+        :param Offset: 偏移量，默认为0。
         :type Offset: int
-        :param Limit: 返回数量。
+        :param Limit: 返回数量，默认为20，最大值为100。
         :type Limit: int
         :param OrderField: 排序字段。支持 `InPkg` `OutPkg` `InTraffic` `OutTraffic`。
         :type OrderField: str
@@ -8991,9 +9336,11 @@ class DescribeHaVipsRequest(AbstractModel):
 <li>vip - String - `HAVIP`的地址`VIP`。</li>
 <li>address-ip - String - `HAVIP`绑定的弹性公网`IP`。</li>
         :type Filters: list of Filter
-        :param Offset: 偏移量
+        :param Offset: 偏移量，默认为0。
+
         :type Offset: int
-        :param Limit: 返回数量
+        :param Limit: 返回数量，默认为20，最大值为100。
+
         :type Limit: int
         """
         self.HaVipIds = None
@@ -9404,9 +9751,9 @@ class DescribeLocalGatewayResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LocalGatewaySet: 本地网关信息集合
+        :param LocalGatewaySet: 本地网关信息集合。
         :type LocalGatewaySet: list of LocalGateway
-        :param TotalCount: 本地网关总数
+        :param TotalCount: 本地网关总数。
         :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -9873,6 +10220,33 @@ class DescribeNetDetectsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeNetworkAccountTypeRequest(AbstractModel):
+    """DescribeNetworkAccountType请求参数结构体
+
+    """
+
+
+class DescribeNetworkAccountTypeResponse(AbstractModel):
+    """DescribeNetworkAccountType返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NetworkAccountType: 用户账号的网络类型，STANDARD为标准用户，LEGACY为传统用户
+        :type NetworkAccountType: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.NetworkAccountType = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.NetworkAccountType = params.get("NetworkAccountType")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeNetworkAclQuintupleEntriesRequest(AbstractModel):
     """DescribeNetworkAclQuintupleEntries请求参数结构体
 
@@ -10032,7 +10406,7 @@ class DescribeNetworkInterfaceLimitRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 要查询的CVM实例ID或弹性网卡ID
+        :param InstanceId: 要查询的CVM实例ID或弹性网卡ID。
         :type InstanceId: str
         """
         self.InstanceId = None
@@ -10056,20 +10430,20 @@ class DescribeNetworkInterfaceLimitResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param EniQuantity: 标准型弹性网卡配额
+        :param EniQuantity: 标准型弹性网卡配额。
         :type EniQuantity: int
-        :param EniPrivateIpAddressQuantity: 每个标准型弹性网卡可以分配的IP配额
+        :param EniPrivateIpAddressQuantity: 每个标准型弹性网卡可以分配的IP配额。
         :type EniPrivateIpAddressQuantity: int
-        :param ExtendEniQuantity: 扩展型网卡配额
+        :param ExtendEniQuantity: 扩展型网卡配额。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExtendEniQuantity: int
-        :param ExtendEniPrivateIpAddressQuantity: 每个扩展型弹性网卡可以分配的IP配额
+        :param ExtendEniPrivateIpAddressQuantity: 每个扩展型弹性网卡可以分配的IP配额。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExtendEniPrivateIpAddressQuantity: int
-        :param SubEniQuantity: 中继网卡配额
+        :param SubEniQuantity: 中继网卡配额。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SubEniQuantity: int
-        :param SubEniPrivateIpAddressQuantity: 每个中继网卡可以分配的IP配额
+        :param SubEniPrivateIpAddressQuantity: 每个中继网卡可以分配的IP配额。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SubEniPrivateIpAddressQuantity: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -10211,9 +10585,9 @@ class DescribeProductQuotaResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProductQuotaSet: ProductQuota对象数组
+        :param ProductQuotaSet: ProductQuota对象数组。
         :type ProductQuotaSet: list of ProductQuota
-        :param TotalCount: 符合条件的产品类型个数
+        :param TotalCount: 符合条件的产品类型个数。
         :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -10243,7 +10617,7 @@ class DescribeRouteConflictsRequest(AbstractModel):
         r"""
         :param RouteTableId: 路由表实例ID，例如：rtb-azd4dt1c。
         :type RouteTableId: str
-        :param DestinationCidrBlocks: 要检查的与之冲突的目的端列表
+        :param DestinationCidrBlocks: 要检查的与之冲突的目的端列表。
         :type DestinationCidrBlocks: list of str
         """
         self.RouteTableId = None
@@ -10269,7 +10643,7 @@ class DescribeRouteConflictsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param RouteConflictSet: 路由策略冲突列表
+        :param RouteConflictSet: 路由策略冲突列表。
         :type RouteConflictSet: list of RouteConflict
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -10516,7 +10890,7 @@ class DescribeSecurityGroupReferencesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SecurityGroupIds: 安全组实例ID数组。格式如：['sg-12345678']
+        :param SecurityGroupIds: 安全组实例ID数组。格式如：['sg-12345678']。
         :type SecurityGroupIds: list of str
         """
         self.SecurityGroupIds = None
@@ -10775,6 +11149,314 @@ class DescribeServiceTemplatesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeSgSnapshotFileContentRequest(AbstractModel):
+    """DescribeSgSnapshotFileContent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param SnapshotFileId: 快照文件Id。
+        :type SnapshotFileId: str
+        :param SecurityGroupId: 安全组Id。
+        :type SecurityGroupId: str
+        """
+        self.SnapshotPolicyId = None
+        self.SnapshotFileId = None
+        self.SecurityGroupId = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        self.SnapshotFileId = params.get("SnapshotFileId")
+        self.SecurityGroupId = params.get("SecurityGroupId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSgSnapshotFileContentResponse(AbstractModel):
+    """DescribeSgSnapshotFileContent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例Id，即安全组Id。
+        :type InstanceId: str
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param SnapshotFileId: 快照文件Id。
+        :type SnapshotFileId: str
+        :param BackupTime: 备份时间。
+        :type BackupTime: str
+        :param Operator: 操作者。
+        :type Operator: str
+        :param OriginalData: 原始数据。
+        :type OriginalData: list of SecurityGroupPolicy
+        :param BackupData: 备份数据。
+        :type BackupData: list of SecurityGroupPolicy
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InstanceId = None
+        self.SnapshotPolicyId = None
+        self.SnapshotFileId = None
+        self.BackupTime = None
+        self.Operator = None
+        self.OriginalData = None
+        self.BackupData = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        self.SnapshotFileId = params.get("SnapshotFileId")
+        self.BackupTime = params.get("BackupTime")
+        self.Operator = params.get("Operator")
+        if params.get("OriginalData") is not None:
+            self.OriginalData = []
+            for item in params.get("OriginalData"):
+                obj = SecurityGroupPolicy()
+                obj._deserialize(item)
+                self.OriginalData.append(obj)
+        if params.get("BackupData") is not None:
+            self.BackupData = []
+            for item in params.get("BackupData"):
+                obj = SecurityGroupPolicy()
+                obj._deserialize(item)
+                self.BackupData.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSnapshotAttachedInstancesRequest(AbstractModel):
+    """DescribeSnapshotAttachedInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param Filters: 过滤条件。
+支持的过滤条件如下：
+<li>instance-id：实例ID。</li>
+<li>instance-region：实例所在地域。</li>
+        :type Filters: list of Filter
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 返回数量，默认为20，最大为200。
+        :type Limit: int
+        """
+        self.SnapshotPolicyId = None
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSnapshotAttachedInstancesResponse(AbstractModel):
+    """DescribeSnapshotAttachedInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceSet: 实例列表
+        :type InstanceSet: list of SnapshotInstance
+        :param TotalCount: 符合条件的对象数。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InstanceSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("InstanceSet") is not None:
+            self.InstanceSet = []
+            for item in params.get("InstanceSet"):
+                obj = SnapshotInstance()
+                obj._deserialize(item)
+                self.InstanceSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSnapshotFilesRequest(AbstractModel):
+    """DescribeSnapshotFiles请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BusinessType: 业务类型，目前支持安全组：securitygroup。
+        :type BusinessType: str
+        :param InstanceId: 实例Id。
+        :type InstanceId: str
+        :param StartDate: 开始日期，格式%Y-%m-%d %H:%M:%S。
+        :type StartDate: str
+        :param EndDate: 结束日期，格式%Y-%m-%d %H:%M:%S。
+        :type EndDate: str
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 返回数量，默认为20，最大为200。
+        :type Limit: int
+        """
+        self.BusinessType = None
+        self.InstanceId = None
+        self.StartDate = None
+        self.EndDate = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.BusinessType = params.get("BusinessType")
+        self.InstanceId = params.get("InstanceId")
+        self.StartDate = params.get("StartDate")
+        self.EndDate = params.get("EndDate")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSnapshotFilesResponse(AbstractModel):
+    """DescribeSnapshotFiles返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotFileSet: 快照文件集合。
+        :type SnapshotFileSet: list of SnapshotFileInfo
+        :param TotalCount: 符合条件的对象数。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SnapshotFileSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("SnapshotFileSet") is not None:
+            self.SnapshotFileSet = []
+            for item in params.get("SnapshotFileSet"):
+                obj = SnapshotFileInfo()
+                obj._deserialize(item)
+                self.SnapshotFileSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSnapshotPoliciesRequest(AbstractModel):
+    """DescribeSnapshotPolicies请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyIds: 快照策略Id。
+        :type SnapshotPolicyIds: list of str
+        :param Filters: 过滤条件，参数不支持同时指定SnapshotPolicyIds和Filters。
+<li>snapshot-policy-id - String -（过滤条件）快照策略ID。</li>
+<li>snapshot-policy-name - String -（过滤条件）快照策略名称。</li>
+        :type Filters: list of Filter
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 返回数量，默认为20，最大为200。
+        :type Limit: int
+        """
+        self.SnapshotPolicyIds = None
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyIds = params.get("SnapshotPolicyIds")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSnapshotPoliciesResponse(AbstractModel):
+    """DescribeSnapshotPolicies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicySet: 快照策略。
+        :type SnapshotPolicySet: list of SnapshotPolicy
+        :param TotalCount: 符合条件的对象数。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SnapshotPolicySet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("SnapshotPolicySet") is not None:
+            self.SnapshotPolicySet = []
+            for item in params.get("SnapshotPolicySet"):
+                obj = SnapshotPolicy()
+                obj._deserialize(item)
+                self.SnapshotPolicySet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeSubnetsRequest(AbstractModel):
     """DescribeSubnets请求参数结构体
 
@@ -10944,6 +11626,39 @@ class DescribeTenantCcnsRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param Filters: 过滤条件，目前`value`值个数只支持一个，允许可支持的字段有：
+<li>`ccn-ids` 云联网ID数组，值形如：`["ccn-12345678"]`</li> 
+<li>`user-account-id` 用户账号ID，值形如：`["12345678"]`</li><li>`is-security-lock` 是否锁定，值形如：`["true"]`</li>
+        :type Filters: list of Filter
+        :param Offset: 偏移量，默认0。
+        :type Offset: int
+        :param Limit: 单页返回数据量，可选值0到100之间的整数，默认20。
+        :type Limit: int
+        """
+        self.Filters = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class DescribeTenantCcnsResponse(AbstractModel):
     """DescribeTenantCcns返回参数结构体
@@ -10952,13 +11667,27 @@ class DescribeTenantCcnsResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param CcnSet: 云联网（CCN）对象。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CcnSet: list of CcnInstanceInfo
+        :param TotalCount: 符合条件的对象总数。
+        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.CcnSet = None
+        self.TotalCount = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        if params.get("CcnSet") is not None:
+            self.CcnSet = []
+            for item in params.get("CcnSet"):
+                obj = CcnInstanceInfo()
+                obj._deserialize(item)
+                self.CcnSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -11266,9 +11995,9 @@ class DescribeVpcInstancesRequest(AbstractModel):
 <li>instance-id - String - （过滤条件）云主机实例ID。</li>
 <li>instance-name - String - （过滤条件）云主机名称。</li>
         :type Filters: list of Filter
-        :param Offset: 偏移量。
+        :param Offset: 偏移量，默认为0。
         :type Offset: int
-        :param Limit: 请求对象个数。
+        :param Limit: 返回数量，默认为20，最大值为100。
         :type Limit: int
         """
         self.Filters = None
@@ -11335,15 +12064,18 @@ class DescribeVpcIpv6AddressesRequest(AbstractModel):
         :type VpcId: str
         :param Ipv6Addresses: `IP`地址列表，批量查询单次请求最多支持`10`个。
         :type Ipv6Addresses: list of str
-        :param Offset: 偏移量。
+        :param Offset: 偏移量，默认为0。
         :type Offset: int
-        :param Limit: 返回数量。
+        :param Limit: 返回数量，默认为20，最大值为100。
         :type Limit: int
+        :param SubnetId: VPC下的子网ID。
+        :type SubnetId: str
         """
         self.VpcId = None
         self.Ipv6Addresses = None
         self.Offset = None
         self.Limit = None
+        self.SubnetId = None
 
 
     def _deserialize(self, params):
@@ -11351,6 +12083,7 @@ class DescribeVpcIpv6AddressesRequest(AbstractModel):
         self.Ipv6Addresses = params.get("Ipv6Addresses")
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
+        self.SubnetId = params.get("SubnetId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11579,17 +12312,27 @@ class DescribeVpcTaskResultResponse(AbstractModel):
         :type Status: str
         :param Output: 异步任务执行输出。
         :type Output: str
+        :param Result: 异步任务详细结果。只用于特殊场景，如批量删除弹性网卡时查询成功的网卡列表和失败的列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: list of VpcTaskResultDetailInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Status = None
         self.Output = None
+        self.Result = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Status = params.get("Status")
         self.Output = params.get("Output")
+        if params.get("Result") is not None:
+            self.Result = []
+            for item in params.get("Result"):
+                obj = VpcTaskResultDetailInfo()
+                obj._deserialize(item)
+                self.Result.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -12299,6 +13042,56 @@ class DetachNetworkInterfaceResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DetachSnapshotInstancesRequest(AbstractModel):
+    """DetachSnapshotInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param Instances: 实例信息。
+        :type Instances: list of SnapshotInstance
+        """
+        self.SnapshotPolicyId = None
+        self.Instances = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        if params.get("Instances") is not None:
+            self.Instances = []
+            for item in params.get("Instances"):
+                obj = SnapshotInstance()
+                obj._deserialize(item)
+                self.Instances.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DetachSnapshotInstancesResponse(AbstractModel):
+    """DetachSnapshotInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DhcpIp(AbstractModel):
     """描述 DhcpIp 信息
 
@@ -12742,6 +13535,47 @@ class DisableRoutesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DisableSnapshotPoliciesRequest(AbstractModel):
+    """DisableSnapshotPolicies请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyIds: 快照策略Id。
+        :type SnapshotPolicyIds: list of str
+        """
+        self.SnapshotPolicyIds = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyIds = params.get("SnapshotPolicyIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DisableSnapshotPoliciesResponse(AbstractModel):
+    """DisableSnapshotPolicies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DisableVpnGatewaySslClientCertRequest(AbstractModel):
     """DisableVpnGatewaySslClientCert请求参数结构体
 
@@ -12980,7 +13814,7 @@ class DisassociateNetworkAclSubnetsRequest(AbstractModel):
         r"""
         :param NetworkAclId: 网络ACL实例ID。例如：acl-12345678。
         :type NetworkAclId: str
-        :param SubnetIds: 子网实例ID数组。例如：[subnet-12345678]
+        :param SubnetIds: 子网实例ID数组。例如：[subnet-12345678]。
         :type SubnetIds: list of str
         """
         self.NetworkAclId = None
@@ -13410,6 +14244,47 @@ class EnableRoutesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class EnableSnapshotPoliciesRequest(AbstractModel):
+    """EnableSnapshotPolicies请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyIds: 快照策略Id。
+        :type SnapshotPolicyIds: list of str
+        """
+        self.SnapshotPolicyIds = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyIds = params.get("SnapshotPolicyIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EnableSnapshotPoliciesResponse(AbstractModel):
+    """EnableSnapshotPolicies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class EnableVpcEndPointConnectRequest(AbstractModel):
     """EnableVpcEndPointConnect请求参数结构体
 
@@ -13606,6 +14481,8 @@ class EndPointService(AbstractModel):
         :type EndPointSet: list of EndPoint
         :param CreateTime: 创建时间。
         :type CreateTime: str
+        :param ServiceType: 挂载的PAAS服务类型，CLB,CDB,CRS
+        :type ServiceType: str
         """
         self.EndPointServiceId = None
         self.VpcId = None
@@ -13617,6 +14494,7 @@ class EndPointService(AbstractModel):
         self.EndPointCount = None
         self.EndPointSet = None
         self.CreateTime = None
+        self.ServiceType = None
 
 
     def _deserialize(self, params):
@@ -13635,6 +14513,7 @@ class EndPointService(AbstractModel):
                 obj._deserialize(item)
                 self.EndPointSet.append(obj)
         self.CreateTime = params.get("CreateTime")
+        self.ServiceType = params.get("ServiceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14051,9 +14930,9 @@ class HaVipAssociateAddressIpRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param HaVipId: `HAVIP`唯一`ID`，形如：`havip-9o233uri`。必须是没有绑定`EIP`的`HAVIP`
+        :param HaVipId: `HAVIP`唯一`ID`，形如：`havip-9o233uri`。必须是没有绑定`EIP`的`HAVIP`。
         :type HaVipId: str
-        :param AddressIp: 弹性公网`IP`。必须是没有绑定`HAVIP`的`EIP`
+        :param AddressIp: 弹性公网`IP`。必须是没有绑定`HAVIP`的`EIP`。
         :type AddressIp: str
         """
         self.HaVipId = None
@@ -14923,6 +15802,29 @@ class LockCcnBandwidthsRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param Instances: 带宽实例的唯一ID数组。
+        :type Instances: list of CcnFlowLock
+        """
+        self.Instances = None
+
+
+    def _deserialize(self, params):
+        if params.get("Instances") is not None:
+            self.Instances = []
+            for item in params.get("Instances"):
+                obj = CcnFlowLock()
+                obj._deserialize(item)
+                self.Instances.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class LockCcnBandwidthsResponse(AbstractModel):
     """LockCcnBandwidths返回参数结构体
@@ -15369,7 +16271,7 @@ class ModifyAssistantCidrRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param VpcId: `VPC`实例`ID`。形如：`vpc-6v2ht8q5`
+        :param VpcId: `VPC`实例`ID`。形如：`vpc-6v2ht8q5`。
         :type VpcId: str
         :param NewCidrBlocks: 待添加的辅助CIDR。CIDR数组，格式如["10.0.0.0/16", "172.16.0.0/16"]，入参NewCidrBlocks和OldCidrBlocks至少需要其一。
         :type NewCidrBlocks: list of str
@@ -15432,22 +16334,19 @@ class ModifyBandwidthPackageAttributeRequest(AbstractModel):
         :type BandwidthPackageId: str
         :param BandwidthPackageName: 带宽包名称
         :type BandwidthPackageName: str
-        :param ChargeType: 带宽包计费模式
+        :param ChargeType: 带宽包计费模式，示例 ：
+'TOP5_POSTPAID_BY_MONTH'（后付费-TOP5计费）
         :type ChargeType: str
-        :param MigrateOnRefund: 退款时迁移为后付费带宽包。默认值：否
-        :type MigrateOnRefund: bool
         """
         self.BandwidthPackageId = None
         self.BandwidthPackageName = None
         self.ChargeType = None
-        self.MigrateOnRefund = None
 
 
     def _deserialize(self, params):
         self.BandwidthPackageId = params.get("BandwidthPackageId")
         self.BandwidthPackageName = params.get("BandwidthPackageName")
         self.ChargeType = params.get("ChargeType")
-        self.MigrateOnRefund = params.get("MigrateOnRefund")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16075,7 +16974,7 @@ class ModifyIpv6AddressesAttributeRequest(AbstractModel):
         r"""
         :param NetworkInterfaceId: 弹性网卡实例`ID`，形如：`eni-m6dyj72l`。
         :type NetworkInterfaceId: str
-        :param Ipv6Addresses: 指定的内网IPv6`地址信息。
+        :param Ipv6Addresses: 指定的内网IPv6地址信息。
         :type Ipv6Addresses: list of Ipv6Address
         """
         self.NetworkInterfaceId = None
@@ -16123,13 +17022,13 @@ class ModifyLocalGatewayRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LocalGatewayName: 本地网关名称
+        :param LocalGatewayName: 本地网关名称。
         :type LocalGatewayName: str
-        :param CdcId: CDC实例ID
+        :param CdcId: CDC实例ID。
         :type CdcId: str
-        :param LocalGatewayId: 本地网关实例ID
+        :param LocalGatewayId: 本地网关实例ID。
         :type LocalGatewayId: str
-        :param VpcId: VPC实例ID
+        :param VpcId: VPC实例ID。
         :type VpcId: str
         """
         self.LocalGatewayName = None
@@ -16952,6 +17851,52 @@ class ModifyServiceTemplateGroupAttributeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifySnapshotPoliciesRequest(AbstractModel):
+    """ModifySnapshotPolicies请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPoliciesInfo: 快照策略修改信息。
+        :type SnapshotPoliciesInfo: list of BatchModifySnapshotPolicy
+        """
+        self.SnapshotPoliciesInfo = None
+
+
+    def _deserialize(self, params):
+        if params.get("SnapshotPoliciesInfo") is not None:
+            self.SnapshotPoliciesInfo = []
+            for item in params.get("SnapshotPoliciesInfo"):
+                obj = BatchModifySnapshotPolicy()
+                obj._deserialize(item)
+                self.SnapshotPoliciesInfo.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifySnapshotPoliciesResponse(AbstractModel):
+    """ModifySnapshotPolicies返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifySubnetAttributeRequest(AbstractModel):
     """ModifySubnetAttribute请求参数结构体
 
@@ -17073,9 +18018,9 @@ class ModifyVpcAttributeRequest(AbstractModel):
         :type VpcName: str
         :param EnableMulticast: 是否开启组播。true: 开启, false: 关闭。
         :type EnableMulticast: str
-        :param DnsServers: DNS地址，最多支持4个，第1个默认为主，其余为备
+        :param DnsServers: DNS地址，最多支持4个，第1个默认为主，其余为备。
         :type DnsServers: list of str
-        :param DomainName: 域名
+        :param DomainName: 域名。
         :type DomainName: str
         """
         self.VpcId = None
@@ -19681,6 +20626,55 @@ class ResourceDashboard(AbstractModel):
         
 
 
+class ResumeSnapshotInstanceRequest(AbstractModel):
+    """ResumeSnapshotInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param SnapshotFileId: 快照文件Id。
+        :type SnapshotFileId: str
+        :param InstanceId: 实例Id。
+        :type InstanceId: str
+        """
+        self.SnapshotPolicyId = None
+        self.SnapshotFileId = None
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        self.SnapshotFileId = params.get("SnapshotFileId")
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResumeSnapshotInstanceResponse(AbstractModel):
+    """ResumeSnapshotInstance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ReturnNormalAddressesRequest(AbstractModel):
     """ReturnNormalAddresses请求参数结构体
 
@@ -19688,7 +20682,7 @@ class ReturnNormalAddressesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AddressIps: 1
+        :param AddressIps: EIP 的 IP 地址,示例：101.35.139.183
         :type AddressIps: list of str
         """
         self.AddressIps = None
@@ -20395,7 +21389,7 @@ class SetCcnRegionBandwidthLimitsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CcnId: CCN实例ID。形如：ccn-f49l6u0z。
+        :param CcnId: CCN实例ID，形如：ccn-f49l6u0z。
         :type CcnId: str
         :param CcnRegionBandwidthLimits: 云联网（CCN）各地域出带宽上限。
         :type CcnRegionBandwidthLimits: list of CcnRegionBandwidthLimit
@@ -20490,6 +21484,154 @@ class SetVpnGatewaysRenewFlagResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class SnapshotFileInfo(AbstractModel):
+    """快照文件信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param InstanceId: 实例Id。
+        :type InstanceId: str
+        :param SnapshotFileId: 快照文件Id。
+        :type SnapshotFileId: str
+        :param BackupTime: 备份时间。
+        :type BackupTime: str
+        :param Operator: 操作者Uin。
+        :type Operator: str
+        """
+        self.SnapshotPolicyId = None
+        self.InstanceId = None
+        self.SnapshotFileId = None
+        self.BackupTime = None
+        self.Operator = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        self.InstanceId = params.get("InstanceId")
+        self.SnapshotFileId = params.get("SnapshotFileId")
+        self.BackupTime = params.get("BackupTime")
+        self.Operator = params.get("Operator")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SnapshotInstance(AbstractModel):
+    """快照策略关联实例信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例Id。
+        :type InstanceId: str
+        :param InstanceType: 实例类型，目前支持安全组：securitygroup。
+        :type InstanceType: str
+        :param InstanceRegion: 实例所在地域。
+        :type InstanceRegion: str
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param InstanceName: 实例名称。
+        :type InstanceName: str
+        """
+        self.InstanceId = None
+        self.InstanceType = None
+        self.InstanceRegion = None
+        self.SnapshotPolicyId = None
+        self.InstanceName = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.InstanceType = params.get("InstanceType")
+        self.InstanceRegion = params.get("InstanceRegion")
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        self.InstanceName = params.get("InstanceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SnapshotPolicy(AbstractModel):
+    """快照策略
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SnapshotPolicyName: 快照策略名称。
+        :type SnapshotPolicyName: str
+        :param BackupType: 备份策略类型，operate-操作备份，time-定时备份。
+        :type BackupType: str
+        :param KeepTime: 保留时间，支持1～365天。
+        :type KeepTime: int
+        :param CreateNewCos: 是否创建新的cos桶，默认为False。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateNewCos: bool
+        :param CosRegion: cos桶所在地域。
+        :type CosRegion: str
+        :param CosBucket: cos桶。
+        :type CosBucket: str
+        :param SnapshotPolicyId: 快照策略Id。
+        :type SnapshotPolicyId: str
+        :param BackupPolicies: 时间备份策略。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BackupPolicies: list of BackupPolicy
+        :param Enable: 启用状态，True-启用，False-停用，默认为True。
+        :type Enable: bool
+        :param CreateTime: 创建时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        """
+        self.SnapshotPolicyName = None
+        self.BackupType = None
+        self.KeepTime = None
+        self.CreateNewCos = None
+        self.CosRegion = None
+        self.CosBucket = None
+        self.SnapshotPolicyId = None
+        self.BackupPolicies = None
+        self.Enable = None
+        self.CreateTime = None
+
+
+    def _deserialize(self, params):
+        self.SnapshotPolicyName = params.get("SnapshotPolicyName")
+        self.BackupType = params.get("BackupType")
+        self.KeepTime = params.get("KeepTime")
+        self.CreateNewCos = params.get("CreateNewCos")
+        self.CosRegion = params.get("CosRegion")
+        self.CosBucket = params.get("CosBucket")
+        self.SnapshotPolicyId = params.get("SnapshotPolicyId")
+        if params.get("BackupPolicies") is not None:
+            self.BackupPolicies = []
+            for item in params.get("BackupPolicies"):
+                obj = BackupPolicy()
+                obj._deserialize(item)
+                self.BackupPolicies.append(obj)
+        self.Enable = params.get("Enable")
+        self.CreateTime = params.get("CreateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class SourceIpTranslationNatRule(AbstractModel):
@@ -21058,13 +22200,21 @@ class TransformAddressResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TaskId: 异步任务TaskId。可以使用[DescribeTaskResult](https://cloud.tencent.com/document/api/215/36271)接口查询任务状态。
+        :type TaskId: int
+        :param AddressId: 转为弹性公网IP后的唯一ID
+        :type AddressId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.TaskId = None
+        self.AddressId = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.AddressId = params.get("AddressId")
         self.RequestId = params.get("RequestId")
 
 
@@ -21127,7 +22277,7 @@ class UnassignIpv6CidrBlockRequest(AbstractModel):
         r"""
         :param VpcId: `VPC`实例`ID`，形如：`vpc-f49l6u0z`。
         :type VpcId: str
-        :param Ipv6CidrBlock: `IPv6`网段。形如：`3402:4e00:20:1000::/56`
+        :param Ipv6CidrBlock: `IPv6`网段。形如：`3402:4e00:20:1000::/56`。
         :type Ipv6CidrBlock: str
         """
         self.VpcId = None
@@ -21271,6 +22421,29 @@ class UnlockCcnBandwidthsRequest(AbstractModel):
     """UnlockCcnBandwidths请求参数结构体
 
     """
+
+    def __init__(self):
+        r"""
+        :param Instances: 带宽实例对象数组。
+        :type Instances: list of CcnFlowLock
+        """
+        self.Instances = None
+
+
+    def _deserialize(self, params):
+        if params.get("Instances") is not None:
+            self.Instances = []
+            for item in params.get("Instances"):
+                obj = CcnFlowLock()
+                obj._deserialize(item)
+                self.Instances.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class UnlockCcnBandwidthsResponse(AbstractModel):
@@ -21527,6 +22700,36 @@ class VpcPrivateIpAddress(AbstractModel):
         self.CidrBlock = params.get("CidrBlock")
         self.PrivateIpAddressType = params.get("PrivateIpAddressType")
         self.CreatedTime = params.get("CreatedTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VpcTaskResultDetailInfo(AbstractModel):
+    """Vpc任务结果详细信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResourceId: 资源ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceId: str
+        :param Status: 状态。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        """
+        self.ResourceId = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.ResourceId = params.get("ResourceId")
+        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21904,14 +23107,18 @@ class VpngwCcnRoutes(AbstractModel):
 ENABLE：启用该路由
 DISABLE：不启用该路由
         :type Status: str
+        :param DestinationCidrBlock: 路由CIDR
+        :type DestinationCidrBlock: str
         """
         self.RouteId = None
         self.Status = None
+        self.DestinationCidrBlock = None
 
 
     def _deserialize(self, params):
         self.RouteId = params.get("RouteId")
         self.Status = params.get("Status")
+        self.DestinationCidrBlock = params.get("DestinationCidrBlock")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

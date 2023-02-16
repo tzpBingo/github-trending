@@ -18,6 +18,53 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class AddClusterStorageOptionRequest(AbstractModel):
+    """AddClusterStorageOption请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID。
+        :type ClusterId: str
+        :param StorageOption: 集群存储选项。
+        :type StorageOption: :class:`tencentcloud.thpc.v20220401.models.StorageOption`
+        """
+        self.ClusterId = None
+        self.StorageOption = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        if params.get("StorageOption") is not None:
+            self.StorageOption = StorageOption()
+            self.StorageOption._deserialize(params.get("StorageOption"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AddClusterStorageOptionResponse(AbstractModel):
+    """AddClusterStorageOption返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class AddNodesRequest(AbstractModel):
     """AddNodes请求参数结构体
 
@@ -29,12 +76,12 @@ class AddNodesRequest(AbstractModel):
         :type Placement: :class:`tencentcloud.thpc.v20220401.models.Placement`
         :param ClusterId: 集群ID。
         :type ClusterId: str
-        :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前仅支持公有镜。
-        :type ImageId: str
         :param VirtualPrivateCloud: 私有网络相关信息配置。
         :type VirtualPrivateCloud: :class:`tencentcloud.thpc.v20220401.models.VirtualPrivateCloud`
         :param Count: 添加节点数量。
         :type Count: int
+        :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前仅支持公有镜像和特定自定义镜像。
+        :type ImageId: str
         :param InstanceChargeType: 节点[计费类型](https://cloud.tencent.com/document/product/213/2180)。<br><li>PREPAID：预付费，即包年包月<br><li>POSTPAID_BY_HOUR：按小时后付费<br><li>SPOTPAID：竞价付费<br>默认值：POSTPAID_BY_HOUR。
         :type InstanceChargeType: str
         :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月节点的购买时长、是否设置自动续费等属性。若指定节点的付费模式为预付费则该参数必传。
@@ -57,7 +104,9 @@ class AddNodesRequest(AbstractModel):
         :type SecurityGroupIds: list of str
         :param ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
         :type ClientToken: str
-        :param QueueName: 队列名称。
+        :param QueueName: 队列名称。不指定则为默认队列。<br><li>SLURM默认队列为：compute。<br>
+<li>SGE默认队列为：all.q。<br>
+
         :type QueueName: str
         :param NodeRole: 添加节点类型。默认值：Compute<br><li>Compute：计算节点。<br><li>Login：登录节点。
         :type NodeRole: str
@@ -70,9 +119,9 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         """
         self.Placement = None
         self.ClusterId = None
-        self.ImageId = None
         self.VirtualPrivateCloud = None
         self.Count = None
+        self.ImageId = None
         self.InstanceChargeType = None
         self.InstanceChargePrepaid = None
         self.InstanceType = None
@@ -93,11 +142,11 @@ false（默认）：发送正常请求，通过检查后直接创建实例
             self.Placement = Placement()
             self.Placement._deserialize(params.get("Placement"))
         self.ClusterId = params.get("ClusterId")
-        self.ImageId = params.get("ImageId")
         if params.get("VirtualPrivateCloud") is not None:
             self.VirtualPrivateCloud = VirtualPrivateCloud()
             self.VirtualPrivateCloud._deserialize(params.get("VirtualPrivateCloud"))
         self.Count = params.get("Count")
+        self.ImageId = params.get("ImageId")
         self.InstanceChargeType = params.get("InstanceChargeType")
         if params.get("InstanceChargePrepaid") is not None:
             self.InstanceChargePrepaid = InstanceChargePrepaid()
@@ -237,11 +286,50 @@ class CFSOption(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LocalPath: 文件系统本地挂载路径
+        :param LocalPath: 文件系统本地挂载路径。
         :type LocalPath: str
-        :param RemotePath: 文件系统远程挂载ip及路径
+        :param RemotePath: 文件系统远程挂载ip及路径。
         :type RemotePath: str
         :param Protocol: 文件系统协议类型，默认值NFS 3.0。
+<li>NFS 3.0。
+<li>NFS 4.0。
+<li>TURBO。
+        :type Protocol: str
+        :param StorageType: 文件系统存储类型，默认值SD；其中 SD 为通用标准型标准型存储， HP为通用性能型存储， TB为turbo标准型， TP 为turbo性能型。
+        :type StorageType: str
+        """
+        self.LocalPath = None
+        self.RemotePath = None
+        self.Protocol = None
+        self.StorageType = None
+
+
+    def _deserialize(self, params):
+        self.LocalPath = params.get("LocalPath")
+        self.RemotePath = params.get("RemotePath")
+        self.Protocol = params.get("Protocol")
+        self.StorageType = params.get("StorageType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CFSOptionOverview(AbstractModel):
+    """CFS存储选项概览信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LocalPath: 文件系统本地挂载路径。
+        :type LocalPath: str
+        :param RemotePath: 文件系统远程挂载ip及路径。
+        :type RemotePath: str
+        :param Protocol: 文件系统协议类型。
 <li>NFS 3.0。
 <li>NFS 4.0。
 <li>TURBO。
@@ -729,6 +817,51 @@ class DeleteClusterResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteClusterStorageOptionRequest(AbstractModel):
+    """DeleteClusterStorageOption请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID。
+        :type ClusterId: str
+        :param LocalPath: 本地挂载路径。
+        :type LocalPath: str
+        """
+        self.ClusterId = None
+        self.LocalPath = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.LocalPath = params.get("LocalPath")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteClusterStorageOptionResponse(AbstractModel):
+    """DeleteClusterStorageOption返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteNodesRequest(AbstractModel):
     """DeleteNodes请求参数结构体
 
@@ -771,6 +904,68 @@ class DeleteNodesResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAutoScalingConfigurationRequest(AbstractModel):
+    """DescribeAutoScalingConfiguration请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID。	
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAutoScalingConfigurationResponse(AbstractModel):
+    """DescribeAutoScalingConfiguration返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID。
+        :type ClusterId: str
+        :param ExpansionBusyTime: 任务连续等待时间，队列的任务处于连续等待的时间。单位秒。
+        :type ExpansionBusyTime: int
+        :param ShrinkIdleTime: 节点连续空闲（未运行作业）时间，一个节点连续处于空闲状态时间。
+        :type ShrinkIdleTime: int
+        :param QueueConfigs: 扩容队列配置概览列表。
+        :type QueueConfigs: list of QueueConfigOverview
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ClusterId = None
+        self.ExpansionBusyTime = None
+        self.ShrinkIdleTime = None
+        self.QueueConfigs = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.ExpansionBusyTime = params.get("ExpansionBusyTime")
+        self.ShrinkIdleTime = params.get("ShrinkIdleTime")
+        if params.get("QueueConfigs") is not None:
+            self.QueueConfigs = []
+            for item in params.get("QueueConfigs"):
+                obj = QueueConfigOverview()
+                obj._deserialize(item)
+                self.QueueConfigs.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -833,6 +1028,53 @@ class DescribeClusterActivitiesResponse(AbstractModel):
                 obj._deserialize(item)
                 self.ClusterActivitySet.append(obj)
         self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeClusterStorageOptionRequest(AbstractModel):
+    """DescribeClusterStorageOption请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID。
+        :type ClusterId: str
+        """
+        self.ClusterId = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeClusterStorageOptionResponse(AbstractModel):
+    """DescribeClusterStorageOption返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StorageOption: 集群存储选项信息概览。
+        :type StorageOption: :class:`tencentcloud.thpc.v20220401.models.StorageOptionOverview`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.StorageOption = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("StorageOption") is not None:
+            self.StorageOption = StorageOptionOverview()
+            self.StorageOption._deserialize(params.get("StorageOption"))
         self.RequestId = params.get("RequestId")
 
 
@@ -945,6 +1187,86 @@ class ExpansionNodeConfig(AbstractModel):
         
 
 
+class ExpansionNodeConfigOverview(AbstractModel):
+    """扩容节点配置信息概览。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceType: 节点机型。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceType: str
+        :param Placement: 扩容实例所在的位置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Placement: :class:`tencentcloud.thpc.v20220401.models.Placement`
+        :param InstanceChargeType: 节点[计费类型](https://cloud.tencent.com/document/product/213/2180)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceChargeType: str
+        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月节点的购买时长、是否设置自动续费等属性。若指定节点的付费模式为预付费则该参数必传。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceChargePrepaid: :class:`tencentcloud.thpc.v20220401.models.InstanceChargePrepaid`
+        :param VirtualPrivateCloud: 私有网络相关信息配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VirtualPrivateCloud: :class:`tencentcloud.thpc.v20220401.models.VirtualPrivateCloud`
+        :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImageId: str
+        :param InternetAccessible: 公网带宽相关信息设置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InternetAccessible: :class:`tencentcloud.thpc.v20220401.models.InternetAccessible`
+        :param SystemDisk: 节点系统盘配置信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SystemDisk: :class:`tencentcloud.thpc.v20220401.models.SystemDisk`
+        :param DataDisks: 节点数据盘配置信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataDisks: list of DataDisk
+        """
+        self.InstanceType = None
+        self.Placement = None
+        self.InstanceChargeType = None
+        self.InstanceChargePrepaid = None
+        self.VirtualPrivateCloud = None
+        self.ImageId = None
+        self.InternetAccessible = None
+        self.SystemDisk = None
+        self.DataDisks = None
+
+
+    def _deserialize(self, params):
+        self.InstanceType = params.get("InstanceType")
+        if params.get("Placement") is not None:
+            self.Placement = Placement()
+            self.Placement._deserialize(params.get("Placement"))
+        self.InstanceChargeType = params.get("InstanceChargeType")
+        if params.get("InstanceChargePrepaid") is not None:
+            self.InstanceChargePrepaid = InstanceChargePrepaid()
+            self.InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        if params.get("VirtualPrivateCloud") is not None:
+            self.VirtualPrivateCloud = VirtualPrivateCloud()
+            self.VirtualPrivateCloud._deserialize(params.get("VirtualPrivateCloud"))
+        self.ImageId = params.get("ImageId")
+        if params.get("InternetAccessible") is not None:
+            self.InternetAccessible = InternetAccessible()
+            self.InternetAccessible._deserialize(params.get("InternetAccessible"))
+        if params.get("SystemDisk") is not None:
+            self.SystemDisk = SystemDisk()
+            self.SystemDisk._deserialize(params.get("SystemDisk"))
+        if params.get("DataDisks") is not None:
+            self.DataDisks = []
+            for item in params.get("DataDisks"):
+                obj = DataDisk()
+                obj._deserialize(item)
+                self.DataDisks.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class GooseFSOption(AbstractModel):
     """描述GooseFS挂载信息
 
@@ -952,11 +1274,43 @@ class GooseFSOption(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LocalPath: 文件系统本地挂载路径
+        :param LocalPath: 文件系统本地挂载路径。
         :type LocalPath: str
-        :param RemotePath: 文件系统远程挂载路径
+        :param RemotePath: 文件系统远程挂载路径。
         :type RemotePath: str
-        :param Masters: 文件系统master的ip和端口
+        :param Masters: 文件系统master的ip和端口。
+        :type Masters: list of str
+        """
+        self.LocalPath = None
+        self.RemotePath = None
+        self.Masters = None
+
+
+    def _deserialize(self, params):
+        self.LocalPath = params.get("LocalPath")
+        self.RemotePath = params.get("RemotePath")
+        self.Masters = params.get("Masters")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GooseFSOptionOverview(AbstractModel):
+    """GooseFS存储选项概览信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LocalPath: 文件系统本地挂载路径。
+        :type LocalPath: str
+        :param RemotePath: 文件系统远程挂载路径。
+        :type RemotePath: str
+        :param Masters: 文件系统master的ip和端口。
         :type Masters: list of str
         """
         self.LocalPath = None
@@ -1385,6 +1739,55 @@ class QueueConfig(AbstractModel):
         
 
 
+class QueueConfigOverview(AbstractModel):
+    """扩容队列配置概览。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param QueueName: 队列名称。
+        :type QueueName: str
+        :param MinSize: 队列中弹性节点数量最小值。取值范围0～200。
+        :type MinSize: int
+        :param MaxSize: 队列中弹性节点数量最大值。取值范围0～200。
+        :type MaxSize: int
+        :param EnableAutoExpansion: 是否开启自动扩容。
+        :type EnableAutoExpansion: bool
+        :param EnableAutoShrink: 是否开启自动缩容。
+        :type EnableAutoShrink: bool
+        :param ExpansionNodeConfigs: 扩容节点配置信息。
+        :type ExpansionNodeConfigs: list of ExpansionNodeConfigOverview
+        """
+        self.QueueName = None
+        self.MinSize = None
+        self.MaxSize = None
+        self.EnableAutoExpansion = None
+        self.EnableAutoShrink = None
+        self.ExpansionNodeConfigs = None
+
+
+    def _deserialize(self, params):
+        self.QueueName = params.get("QueueName")
+        self.MinSize = params.get("MinSize")
+        self.MaxSize = params.get("MaxSize")
+        self.EnableAutoExpansion = params.get("EnableAutoExpansion")
+        self.EnableAutoShrink = params.get("EnableAutoShrink")
+        if params.get("ExpansionNodeConfigs") is not None:
+            self.ExpansionNodeConfigs = []
+            for item in params.get("ExpansionNodeConfigs"):
+                obj = ExpansionNodeConfigOverview()
+                obj._deserialize(item)
+                self.ExpansionNodeConfigs.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SetAutoScalingConfigurationRequest(AbstractModel):
     """SetAutoScalingConfiguration请求参数结构体
 
@@ -1478,6 +1881,44 @@ class StorageOption(AbstractModel):
             self.GooseFSOptions = []
             for item in params.get("GooseFSOptions"):
                 obj = GooseFSOption()
+                obj._deserialize(item)
+                self.GooseFSOptions.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StorageOptionOverview(AbstractModel):
+    """集群存储选项概览信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CFSOptions: CFS存储选项概览信息列表。
+        :type CFSOptions: list of CFSOptionOverview
+        :param GooseFSOptions: GooseFS存储选项概览信息列表。
+        :type GooseFSOptions: list of GooseFSOptionOverview
+        """
+        self.CFSOptions = None
+        self.GooseFSOptions = None
+
+
+    def _deserialize(self, params):
+        if params.get("CFSOptions") is not None:
+            self.CFSOptions = []
+            for item in params.get("CFSOptions"):
+                obj = CFSOptionOverview()
+                obj._deserialize(item)
+                self.CFSOptions.append(obj)
+        if params.get("GooseFSOptions") is not None:
+            self.GooseFSOptions = []
+            for item in params.get("GooseFSOptions"):
+                obj = GooseFSOptionOverview()
                 obj._deserialize(item)
                 self.GooseFSOptions.append(obj)
         memeber_set = set(params.keys())

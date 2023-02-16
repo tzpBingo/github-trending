@@ -375,6 +375,31 @@ class AuthorizeTokenResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class BatchAnalyseParam(AbstractModel):
+    """批量解析
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Format: ONE_BY_ONE单条输出，MERGE合并输出
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Format: str
+        """
+        self.Format = None
+
+
+    def _deserialize(self, params):
+        self.Format = params.get("Format")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class BatchContent(AbstractModel):
     """批量发送消息内容
 
@@ -1446,6 +1471,9 @@ class ConsumerRecord(AbstractModel):
         :param Timestamp: 消息时间戳
 注意：此字段可能返回 null，表示取不到有效值。
         :type Timestamp: int
+        :param Headers: 消息headers
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Headers: str
         """
         self.Topic = None
         self.Partition = None
@@ -1453,6 +1481,7 @@ class ConsumerRecord(AbstractModel):
         self.Key = None
         self.Value = None
         self.Timestamp = None
+        self.Headers = None
 
 
     def _deserialize(self, params):
@@ -1462,6 +1491,7 @@ class ConsumerRecord(AbstractModel):
         self.Key = params.get("Key")
         self.Value = params.get("Value")
         self.Timestamp = params.get("Timestamp")
+        self.Headers = params.get("Headers")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2851,6 +2881,9 @@ class DatahubResource(AbstractModel):
         :param CtsdbParam: Ctsdb配置，Type为CTSDB时必填
 注意：此字段可能返回 null，表示取不到有效值。
         :type CtsdbParam: :class:`tencentcloud.ckafka.v20190819.models.CtsdbParam`
+        :param ScfParam: Scf配置，Type为SCF时必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScfParam: :class:`tencentcloud.ckafka.v20190819.models.ScfParam`
         """
         self.Type = None
         self.KafkaParam = None
@@ -2868,6 +2901,7 @@ class DatahubResource(AbstractModel):
         self.MariaDBParam = None
         self.SQLServerParam = None
         self.CtsdbParam = None
+        self.ScfParam = None
 
 
     def _deserialize(self, params):
@@ -2917,6 +2951,9 @@ class DatahubResource(AbstractModel):
         if params.get("CtsdbParam") is not None:
             self.CtsdbParam = CtsdbParam()
             self.CtsdbParam._deserialize(params.get("CtsdbParam"))
+        if params.get("ScfParam") is not None:
+            self.ScfParam = ScfParam()
+            self.ScfParam._deserialize(params.get("ScfParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3845,6 +3882,41 @@ class DescribeCkafkaZoneResponse(AbstractModel):
             self.Result = ZoneResponse()
             self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
+
+
+class DescribeConnectInfoResultDTO(AbstractModel):
+    """topic链接信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param IpAddr: ip地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IpAddr: str
+        :param Time: 连结时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Time: str
+        :param IsUnSupportVersion: 是否支持的版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsUnSupportVersion: bool
+        """
+        self.IpAddr = None
+        self.Time = None
+        self.IsUnSupportVersion = None
+
+
+    def _deserialize(self, params):
+        self.IpAddr = params.get("IpAddr")
+        self.Time = params.get("Time")
+        self.IsUnSupportVersion = params.get("IsUnSupportVersion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DescribeConnectResource(AbstractModel):
@@ -4910,7 +4982,7 @@ class DescribeInstancesDetailRequest(AbstractModel):
         r"""
         :param InstanceId: （过滤条件）按照实例ID过滤
         :type InstanceId: str
-        :param SearchWord: （过滤条件）按照实例名称过滤，支持模糊查询
+        :param SearchWord: （过滤条件）按照实例名,实例Id,可用区,私有网络id,子网id 过滤，支持模糊查询
         :type SearchWord: str
         :param Status: （过滤条件）实例的状态。0：创建中，1：运行中，2：删除中，不填默认返回全部
         :type Status: list of int
@@ -5277,6 +5349,60 @@ class DescribeTopicDetailResponse(AbstractModel):
         if params.get("Result") is not None:
             self.Result = TopicDetailResponse()
             self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTopicProduceConnectionRequest(AbstractModel):
+    """DescribeTopicProduceConnection请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param TopicName: topic名称
+        :type TopicName: str
+        """
+        self.InstanceId = None
+        self.TopicName = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.TopicName = params.get("TopicName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTopicProduceConnectionResponse(AbstractModel):
+    """DescribeTopicProduceConnection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 链接信息返回结果集
+        :type Result: list of DescribeConnectInfoResultDTO
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = []
+            for item in params.get("Result"):
+                obj = DescribeConnectInfoResultDTO()
+                obj._deserialize(item)
+                self.Result.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -6101,6 +6227,8 @@ class EsParam(AbstractModel):
         :type DropCls: :class:`tencentcloud.ckafka.v20190819.models.DropCls`
         :param DatabasePrimaryKey: 转储到ES的消息为Database的binlog时，如果需要同步数据库操作，即增删改的操作到ES时填写数据库表主键
         :type DatabasePrimaryKey: str
+        :param DropDlq: 死信队列
+        :type DropDlq: :class:`tencentcloud.ckafka.v20190819.models.FailureParam`
         """
         self.Resource = None
         self.Port = None
@@ -6118,6 +6246,7 @@ class EsParam(AbstractModel):
         self.IndexType = None
         self.DropCls = None
         self.DatabasePrimaryKey = None
+        self.DropDlq = None
 
 
     def _deserialize(self, params):
@@ -6139,6 +6268,9 @@ class EsParam(AbstractModel):
             self.DropCls = DropCls()
             self.DropCls._deserialize(params.get("DropCls"))
         self.DatabasePrimaryKey = params.get("DatabasePrimaryKey")
+        if params.get("DropDlq") is not None:
+            self.DropDlq = FailureParam()
+            self.DropDlq._deserialize(params.get("DropDlq"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6901,9 +7033,13 @@ class GroupResponse(AbstractModel):
         :param GroupList: GroupList
 注意：此字段可能返回 null，表示取不到有效值。
         :type GroupList: list of DescribeGroup
+        :param GroupCountQuota: 消费分组配额
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupCountQuota: int
         """
         self.TotalCount = None
         self.GroupList = None
+        self.GroupCountQuota = None
 
 
     def _deserialize(self, params):
@@ -6914,6 +7050,7 @@ class GroupResponse(AbstractModel):
                 obj = DescribeGroup()
                 obj._deserialize(item)
                 self.GroupList.append(obj)
+        self.GroupCountQuota = params.get("GroupCountQuota")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8028,6 +8165,9 @@ class KafkaParam(AbstractModel):
         :param CompressionType: 写入Topic时是否进行压缩，不开启填"none"，开启的话，填写"open"。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CompressionType: str
+        :param MsgMultiple: 源topic消息1条扩增成msgMultiple条写入目标topic(该参数目前只有ckafka流入ckafka适用)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MsgMultiple: int
         """
         self.SelfBuilt = None
         self.Resource = None
@@ -8044,6 +8184,7 @@ class KafkaParam(AbstractModel):
         self.UseTableMapping = None
         self.UseAutoCreateTopic = None
         self.CompressionType = None
+        self.MsgMultiple = None
 
 
     def _deserialize(self, params):
@@ -8067,6 +8208,7 @@ class KafkaParam(AbstractModel):
         self.UseTableMapping = params.get("UseTableMapping")
         self.UseAutoCreateTopic = params.get("UseAutoCreateTopic")
         self.CompressionType = params.get("CompressionType")
+        self.MsgMultiple = params.get("MsgMultiple")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8575,7 +8717,7 @@ class ModifyInstanceAttributesRequest(AbstractModel):
         :type DynamicRetentionConfig: :class:`tencentcloud.ckafka.v20190819.models.DynamicRetentionTime`
         :param RebalanceTime: 修改升配置rebalance时间
         :type RebalanceTime: int
-        :param PublicNetwork: 时间戳
+        :param PublicNetwork: 公网带宽
         :type PublicNetwork: int
         :param DynamicDiskConfig: 动态硬盘扩容策略配置
         :type DynamicDiskConfig: :class:`tencentcloud.ckafka.v20190819.models.DynamicDiskConfig`
@@ -10232,6 +10374,49 @@ class SaleInfo(AbstractModel):
         
 
 
+class ScfParam(AbstractModel):
+    """Scf类型入参
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionName: SCF云函数函数名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FunctionName: str
+        :param Namespace: SCF云函数命名空间, 默认为default
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Namespace: str
+        :param Qualifier: SCF云函数版本及别名, 默认为$DEFAULT
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Qualifier: str
+        :param BatchSize: 每批最大发送消息数, 默认为1000
+        :type BatchSize: int
+        :param MaxRetries: SCF调用失败后重试次数, 默认为5
+        :type MaxRetries: int
+        """
+        self.FunctionName = None
+        self.Namespace = None
+        self.Qualifier = None
+        self.BatchSize = None
+        self.MaxRetries = None
+
+
+    def _deserialize(self, params):
+        self.FunctionName = params.get("FunctionName")
+        self.Namespace = params.get("Namespace")
+        self.Qualifier = params.get("Qualifier")
+        self.BatchSize = params.get("BatchSize")
+        self.MaxRetries = params.get("MaxRetries")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SecondaryAnalyseParam(AbstractModel):
     """数据处理——二次解析参数
 
@@ -10857,6 +11042,9 @@ class TopicParam(AbstractModel):
         :param UseAutoCreateTopic: 使用的Topic是否需要自动创建（目前只支持SOURCE流入任务）
 注意：此字段可能返回 null，表示取不到有效值。
         :type UseAutoCreateTopic: bool
+        :param MsgMultiple: 源topic消息1条扩增成msgMultiple条写入目标topic(该参数目前只有ckafka流入ckafka适用)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MsgMultiple: int
         """
         self.Resource = None
         self.OffsetType = None
@@ -10864,6 +11052,7 @@ class TopicParam(AbstractModel):
         self.TopicId = None
         self.CompressionType = None
         self.UseAutoCreateTopic = None
+        self.MsgMultiple = None
 
 
     def _deserialize(self, params):
@@ -10873,6 +11062,7 @@ class TopicParam(AbstractModel):
         self.TopicId = params.get("TopicId")
         self.CompressionType = params.get("CompressionType")
         self.UseAutoCreateTopic = params.get("UseAutoCreateTopic")
+        self.MsgMultiple = params.get("MsgMultiple")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11147,6 +11337,9 @@ class TransformsParam(AbstractModel):
         :param KeepMetadata: 是否保留数据源Topic元数据信息（源Topic、Partition、Offset），默认为false
 注意：此字段可能返回 null，表示取不到有效值。
         :type KeepMetadata: bool
+        :param BatchAnalyse: 数组解析
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BatchAnalyse: :class:`tencentcloud.ckafka.v20190819.models.BatchAnalyseParam`
         """
         self.Content = None
         self.FieldChain = None
@@ -11157,6 +11350,7 @@ class TransformsParam(AbstractModel):
         self.OutputFormat = None
         self.RowParam = None
         self.KeepMetadata = None
+        self.BatchAnalyse = None
 
 
     def _deserialize(self, params):
@@ -11183,6 +11377,9 @@ class TransformsParam(AbstractModel):
             self.RowParam = RowParam()
             self.RowParam._deserialize(params.get("RowParam"))
         self.KeepMetadata = params.get("KeepMetadata")
+        if params.get("BatchAnalyse") is not None:
+            self.BatchAnalyse = BatchAnalyseParam()
+            self.BatchAnalyse._deserialize(params.get("BatchAnalyse"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,18 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the CallbackContext class."""
-from typing import TYPE_CHECKING, Coroutine, Dict, Generic, List, Match, NoReturn, Optional, Type
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Coroutine,
+    Dict,
+    Generic,
+    List,
+    Match,
+    NoReturn,
+    Optional,
+    Type,
+)
 
 from telegram._callbackquery import CallbackQuery
 from telegram._update import Update
@@ -27,7 +38,6 @@ from telegram.ext._utils.types import BD, BT, CD, UD
 
 if TYPE_CHECKING:
     from asyncio import Queue
-    from typing import Any
 
     from telegram.ext import Application, Job, JobQueue  # noqa: F401
     from telegram.ext._utils.types import CCT
@@ -72,8 +82,7 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
         * :any:`Custom Webhook Bot <examples.customwebhookbot>`
 
     .. seealso:: :attr:`telegram.ext.ContextTypes.DEFAULT_TYPE`,
-        `Job Queue <https://github.com/python-telegram-bot/
-        python-telegram-bot/wiki/Extensions-%E2%80%93-JobQueue>`_
+        :wiki:`Job Queue <Extensions-%E2%80%93-JobQueue>`
 
     Args:
         application (:class:`telegram.ext.Application`): The application associated with this
@@ -127,14 +136,14 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
         chat_id: int = None,
         user_id: int = None,
     ):
-        self._application = application
-        self._chat_id = chat_id
-        self._user_id = user_id
+        self._application: Application[BT, CCT, UD, CD, BD, Any] = application
+        self._chat_id: Optional[int] = chat_id
+        self._user_id: Optional[int] = user_id
         self.args: Optional[List[str]] = None
-        self.matches: Optional[List[Match]] = None
+        self.matches: Optional[List[Match[str]]] = None
         self.error: Optional[Exception] = None
-        self.job: Optional["Job"] = None
-        self.coroutine: Optional[Coroutine] = None
+        self.job: Optional["Job[CCT]"] = None
+        self.coroutine: Optional[Coroutine[Any, Any, Any]] = None
 
     @property
     def application(self) -> "Application[BT, CCT, UD, CD, BD, Any]":
@@ -146,9 +155,8 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
         """:obj:`ContextTypes.bot_data`: Optional. An object that can be used to keep any data in.
         For each update it will be the same :attr:`ContextTypes.bot_data`. Defaults to :obj:`dict`.
 
-        .. seealso:: `Storing Bot, User and Chat Related Data <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Storing-bot%2C-user-and-\
-            chat-related-data>`_,
+        .. seealso:: :wiki:`Storing Bot, User and Chat Related Data\
+            <Storing-bot%2C-user-and-chat-related-data>`
         """
         return self.application.bot_data
 
@@ -166,13 +174,11 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
 
         Warning:
             When a group chat migrates to a supergroup, its chat id will change and the
-            ``chat_data`` needs to be transferred. For details see our `wiki page
-            <https://github.com/python-telegram-bot/python-telegram-bot/wiki/
-            Storing-bot,-user-and-chat-related-data#chat-migration>`_.
+            ``chat_data`` needs to be transferred. For details see our
+            :wiki:`wiki page <Storing-bot,-user-and-chat-related-data#chat-migration>`.
 
-        .. seealso:: `Storing Bot, User and Chat Related Data <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Storing-bot%2C-user-and-\
-            chat-related-data>`_,
+        .. seealso:: :wiki:`Storing Bot, User and Chat Related Data\
+            <Storing-bot%2C-user-and-chat-related-data>`
 
         .. versionchanged:: 20.0
             The chat data is now also present in error handlers if the error is caused by a job.
@@ -193,9 +199,8 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
         For each update from the same user it will be the same :obj:`ContextTypes.user_data`.
         Defaults to :obj:`dict`.
 
-        .. seealso:: `Storing Bot, User and Chat Related Data <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Storing-bot%2C-user-and\
-            -chat-related-data>`_,
+        .. seealso:: :wiki:`Storing Bot, User and Chat Related Data\
+            <Storing-bot%2C-user-and-chat-related-data>`
 
         .. versionchanged:: 20.0
             The user data is now also present in error handlers if the error is caused by a job.
@@ -227,11 +232,11 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
                 await self.application.persistence.refresh_bot_data(self.bot_data)
             if self.application.persistence.store_data.chat_data and self._chat_id is not None:
                 await self.application.persistence.refresh_chat_data(
-                    chat_id=self._chat_id, chat_data=self.chat_data
+                    chat_id=self._chat_id, chat_data=self.chat_data  # type: ignore[arg-type]
                 )
             if self.application.persistence.store_data.user_data and self._user_id is not None:
                 await self.application.persistence.refresh_user_data(
-                    user_id=self._user_id, user_data=self.user_data
+                    user_id=self._user_id, user_data=self.user_data  # type: ignore[arg-type]
                 )
 
     def drop_callback_data(self, callback_query: CallbackQuery) -> None:
@@ -244,8 +249,7 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
             Will *not* raise exceptions in case the data is not found in the cache.
             *Will* raise :exc:`KeyError` in case the callback query can not be found in the cache.
 
-        .. seealso:: `Arbitrary callback_data <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Arbitrary-callback_data>`_
+        .. seealso:: :wiki:`Arbitrary callback_data <Arbitrary-callback_data>`
 
         Args:
             callback_query (:class:`telegram.CallbackQuery`): The callback query.
@@ -270,8 +274,8 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
         update: object,
         error: Exception,
         application: "Application[BT, CCT, UD, CD, BD, Any]",
-        job: "Job" = None,
-        coroutine: Coroutine = None,
+        job: "Job[Any]" = None,
+        coroutine: Coroutine[Any, Any, Any] = None,
     ) -> "CCT":
         """
         Constructs an instance of :class:`telegram.ext.CallbackContext` to be passed to the error
@@ -346,7 +350,7 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
     @classmethod
     def from_job(
         cls: Type["CCT"],
-        job: "Job",
+        job: "Job[CCT]",
         application: "Application[Any, CCT, Any, Any, Any, Any]",
     ) -> "CCT":
         """
@@ -382,18 +386,17 @@ class CallbackContext(Generic[BT, UD, CD, BD]):
         return self._application.bot
 
     @property
-    def job_queue(self) -> Optional["JobQueue"]:
+    def job_queue(self) -> Optional["JobQueue[CCT]"]:
         """
         :class:`telegram.ext.JobQueue`: The :class:`JobQueue` used by the
-            :class:`telegram.ext.Application`.
+        :class:`telegram.ext.Application`.
 
-        .. seealso:: `Job Queue <https://github.com/python-telegram-bot/
-            python-telegram-bot/wiki/Extensions-%E2%80%93-JobQueue>`_
+        .. seealso:: :wiki:`Job Queue <Extensions-%E2%80%93-JobQueue>`
         """
         if self._application._job_queue is None:  # pylint: disable=protected-access
             warn(
                 "No `JobQueue` set up. To use `JobQueue`, you must install PTB via "
-                "`pip install python-telegram-bot[job_queue]`.",
+                "`pip install python-telegram-bot[job-queue]`.",
                 stacklevel=2,
             )
         return self._application._job_queue  # pylint: disable=protected-access

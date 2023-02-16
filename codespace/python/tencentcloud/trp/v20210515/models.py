@@ -220,7 +220,7 @@ class CodePack(AbstractModel):
         :param Amount: 码数
 注意：此字段可能返回 null，表示取不到有效值。
         :type Amount: int
-        :param CodeLength: 码长度
+        :param CodeLength: 防伪码长度
 注意：此字段可能返回 null，表示取不到有效值。
         :type CodeLength: int
         :param CodeType: 码类型
@@ -410,7 +410,7 @@ class CreateCodeBatchRequest(AbstractModel):
         :type ProductId: str
         :param BatchType: 批次类型 0:溯源 1:营销
         :type BatchType: int
-        :param BatchId: 批次ID，系统自动生成
+        :param BatchId: 批次ID，留空时系统自动生成
         :type BatchId: str
         :param Remark: 备注
         :type Remark: str
@@ -418,6 +418,8 @@ class CreateCodeBatchRequest(AbstractModel):
         :type MpTpl: str
         :param CloneId: 克隆批次ID，同时会复制溯源信息
         :type CloneId: str
+        :param BatchCode: 批次编号，业务字段不判断唯一性
+        :type BatchCode: str
         """
         self.CorpId = None
         self.MerchantId = None
@@ -427,6 +429,7 @@ class CreateCodeBatchRequest(AbstractModel):
         self.Remark = None
         self.MpTpl = None
         self.CloneId = None
+        self.BatchCode = None
 
 
     def _deserialize(self, params):
@@ -438,6 +441,7 @@ class CreateCodeBatchRequest(AbstractModel):
         self.Remark = params.get("Remark")
         self.MpTpl = params.get("MpTpl")
         self.CloneId = params.get("CloneId")
+        self.BatchCode = params.get("BatchCode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -493,6 +497,8 @@ class CreateCodePackRequest(AbstractModel):
         :type PackSpec: list of PackSpec
         :param BatchId: 批次ID，如果传了生码后会同时绑定批次，并激活码
         :type BatchId: str
+        :param SerialType: 是否有流水码 0:无 1:有
+        :type SerialType: int
         """
         self.MerchantId = None
         self.CodeLength = None
@@ -503,6 +509,7 @@ class CreateCodePackRequest(AbstractModel):
         self.PackLevel = None
         self.PackSpec = None
         self.BatchId = None
+        self.SerialType = None
 
 
     def _deserialize(self, params):
@@ -520,6 +527,7 @@ class CreateCodePackRequest(AbstractModel):
                 obj._deserialize(item)
                 self.PackSpec.append(obj)
         self.BatchId = params.get("BatchId")
+        self.SerialType = params.get("SerialType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -653,6 +661,8 @@ class CreateCustomPackRequest(AbstractModel):
         :type CodeParts: list of CodePart
         :param BatchId: 批次ID，如果传了生码后会同时绑定批次，并激活码
         :type BatchId: str
+        :param SerialType: 是否有流水码 0:无 1:有
+        :type SerialType: int
         """
         self.MerchantId = None
         self.Amount = None
@@ -663,6 +673,7 @@ class CreateCustomPackRequest(AbstractModel):
         self.CustomId = None
         self.CodeParts = None
         self.BatchId = None
+        self.SerialType = None
 
 
     def _deserialize(self, params):
@@ -685,6 +696,7 @@ class CreateCustomPackRequest(AbstractModel):
                 obj._deserialize(item)
                 self.CodeParts.append(obj)
         self.BatchId = params.get("BatchId")
+        self.SerialType = params.get("SerialType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1700,11 +1712,14 @@ class DescribeCodePacksRequest(AbstractModel):
         :type Keyword: str
         :param CorpId: 企业ID
         :type CorpId: int
+        :param SerialType: 是否有流水码 0:无 1:有
+        :type SerialType: int
         """
         self.PageSize = None
         self.PageNumber = None
         self.Keyword = None
         self.CorpId = None
+        self.SerialType = None
 
 
     def _deserialize(self, params):
@@ -1712,6 +1727,7 @@ class DescribeCodePacksRequest(AbstractModel):
         self.PageNumber = params.get("PageNumber")
         self.Keyword = params.get("Keyword")
         self.CorpId = params.get("CorpId")
+        self.SerialType = params.get("SerialType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2302,6 +2318,136 @@ class DescribeProductsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeScanLogsRequest(AbstractModel):
+    """DescribeScanLogs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Code: 码
+        :type Code: str
+        :param CorpId: 企业ID
+        :type CorpId: int
+        """
+        self.Code = None
+        self.CorpId = None
+
+
+    def _deserialize(self, params):
+        self.Code = params.get("Code")
+        self.CorpId = params.get("CorpId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeScanLogsResponse(AbstractModel):
+    """DescribeScanLogs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Products: 【弃用】
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Products: list of ScanLog
+        :param TotalCount: 条数
+        :type TotalCount: int
+        :param ScanLogs: 扫描记录
+        :type ScanLogs: list of ScanLog
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Products = None
+        self.TotalCount = None
+        self.ScanLogs = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Products") is not None:
+            self.Products = []
+            for item in params.get("Products"):
+                obj = ScanLog()
+                obj._deserialize(item)
+                self.Products.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        if params.get("ScanLogs") is not None:
+            self.ScanLogs = []
+            for item in params.get("ScanLogs"):
+                obj = ScanLog()
+                obj._deserialize(item)
+                self.ScanLogs.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeScanStatsRequest(AbstractModel):
+    """DescribeScanStats请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BatchId: 批次ID
+        :type BatchId: str
+        :param CorpId: 企业ID
+        :type CorpId: int
+        :param PageSize: 分页数量
+        :type PageSize: int
+        :param PageNumber: 当前分页
+        :type PageNumber: int
+        """
+        self.BatchId = None
+        self.CorpId = None
+        self.PageSize = None
+        self.PageNumber = None
+
+
+    def _deserialize(self, params):
+        self.BatchId = params.get("BatchId")
+        self.CorpId = params.get("CorpId")
+        self.PageSize = params.get("PageSize")
+        self.PageNumber = params.get("PageNumber")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeScanStatsResponse(AbstractModel):
+    """DescribeScanStats返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ScanStats: 统计记录
+        :type ScanStats: list of ScanStat
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ScanStats = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("ScanStats") is not None:
+            self.ScanStats = []
+            for item in params.get("ScanStats"):
+                obj = ScanStat()
+                obj._deserialize(item)
+                self.ScanStats.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeTmpTokenRequest(AbstractModel):
     """DescribeTmpToken请求参数结构体
 
@@ -2654,7 +2800,7 @@ class ModifyCodeBatchRequest(AbstractModel):
         :type CorpId: int
         :param Status: 状态 0: 未激活 1: 已激活 -1: 已冻结
         :type Status: int
-        :param MpTpl: 模版ID，或者活动ID
+        :param MpTpl: 模板ID，或者活动ID
         :type MpTpl: str
         :param MerchantId: 商户ID
         :type MerchantId: str
@@ -2662,6 +2808,8 @@ class ModifyCodeBatchRequest(AbstractModel):
         :type ProductId: str
         :param Remark: 备注
         :type Remark: str
+        :param BatchCode: 批次编码，业务字段不判断唯一性
+        :type BatchCode: str
         """
         self.BatchId = None
         self.CorpId = None
@@ -2670,6 +2818,7 @@ class ModifyCodeBatchRequest(AbstractModel):
         self.MerchantId = None
         self.ProductId = None
         self.Remark = None
+        self.BatchCode = None
 
 
     def _deserialize(self, params):
@@ -2680,6 +2829,7 @@ class ModifyCodeBatchRequest(AbstractModel):
         self.MerchantId = params.get("MerchantId")
         self.ProductId = params.get("ProductId")
         self.Remark = params.get("Remark")
+        self.BatchCode = params.get("BatchCode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3015,6 +3165,67 @@ class ModifyTraceCodeResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyTraceCodeUnlinkRequest(AbstractModel):
+    """ModifyTraceCodeUnlink请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BatchId: 批次ID
+        :type BatchId: str
+        :param Codes: 溯源码列表
+        :type Codes: list of str
+        :param CorpId: 企业ID
+        :type CorpId: int
+        """
+        self.BatchId = None
+        self.Codes = None
+        self.CorpId = None
+
+
+    def _deserialize(self, params):
+        self.BatchId = params.get("BatchId")
+        self.Codes = params.get("Codes")
+        self.CorpId = params.get("CorpId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyTraceCodeUnlinkResponse(AbstractModel):
+    """ModifyTraceCodeUnlink返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UnlinkCnt: 成功解绑溯源码的数量
+        :type UnlinkCnt: int
+        :param CodeCnt: 当前批次的码数量
+        :type CodeCnt: int
+        :param BatchId: 批次ID
+        :type BatchId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UnlinkCnt = None
+        self.CodeCnt = None
+        self.BatchId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.UnlinkCnt = params.get("UnlinkCnt")
+        self.CodeCnt = params.get("CodeCnt")
+        self.BatchId = params.get("BatchId")
         self.RequestId = params.get("RequestId")
 
 
@@ -3381,10 +3592,10 @@ class Quota(AbstractModel):
         :param Services: 开通服务
 注意：此字段可能返回 null，表示取不到有效值。
         :type Services: list of str
-        :param FactoryQuota: 工厂配额
+        :param FactoryQuota: 商户配额
 注意：此字段可能返回 null，表示取不到有效值。
         :type FactoryQuota: int
-        :param ItemQuota: 产品配额
+        :param ItemQuota: 商品配额
 注意：此字段可能返回 null，表示取不到有效值。
         :type ItemQuota: int
         :param TrackQuota: 溯源码配额
@@ -3402,7 +3613,7 @@ class Quota(AbstractModel):
         :param TrackType: 溯源类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type TrackType: int
-        :param Version: 开通版本 basic standard enterprise
+        :param Version: 开通版本 lite:轻量版, basic:基础版, standard:标准版
 注意：此字段可能返回 null，表示取不到有效值。
         :type Version: str
         """
@@ -3444,6 +3655,162 @@ class Quota(AbstractModel):
         
 
 
+class ScanLog(AbstractModel):
+    """扫码明细
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LogId: 行ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogId: int
+        :param Openid: 微信openid
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Openid: str
+        :param Nickname: 微信昵称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Nickname: str
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param Code: 码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Code: str
+        :param CorpId: 企业ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CorpId: int
+        :param MerchantId: 商户ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MerchantId: str
+        :param ProductId: 商品ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProductId: str
+        :param Ip: ip地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Ip: str
+        :param Country: 国家
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Country: str
+        :param Province: 省份
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Province: str
+        :param City: 城市
+注意：此字段可能返回 null，表示取不到有效值。
+        :type City: str
+        :param District: 县/区
+注意：此字段可能返回 null，表示取不到有效值。
+        :type District: str
+        :param Unionid: 微信 unionid
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Unionid: str
+        :param First: 首次扫码 0:否, 1:是
+注意：此字段可能返回 null，表示取不到有效值。
+        :type First: int
+        :param BatchId: 批次ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BatchId: str
+        """
+        self.LogId = None
+        self.Openid = None
+        self.Nickname = None
+        self.CreateTime = None
+        self.Code = None
+        self.CorpId = None
+        self.MerchantId = None
+        self.ProductId = None
+        self.Ip = None
+        self.Country = None
+        self.Province = None
+        self.City = None
+        self.District = None
+        self.Unionid = None
+        self.First = None
+        self.BatchId = None
+
+
+    def _deserialize(self, params):
+        self.LogId = params.get("LogId")
+        self.Openid = params.get("Openid")
+        self.Nickname = params.get("Nickname")
+        self.CreateTime = params.get("CreateTime")
+        self.Code = params.get("Code")
+        self.CorpId = params.get("CorpId")
+        self.MerchantId = params.get("MerchantId")
+        self.ProductId = params.get("ProductId")
+        self.Ip = params.get("Ip")
+        self.Country = params.get("Country")
+        self.Province = params.get("Province")
+        self.City = params.get("City")
+        self.District = params.get("District")
+        self.Unionid = params.get("Unionid")
+        self.First = params.get("First")
+        self.BatchId = params.get("BatchId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ScanStat(AbstractModel):
+    """扫码统计
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Code: 安心码
+        :type Code: str
+        :param CorpId: 企业ID
+        :type CorpId: int
+        :param MerchantId: 商户ID
+        :type MerchantId: str
+        :param ProductId: 产品ID
+        :type ProductId: str
+        :param BatchId: 批次ID
+        :type BatchId: str
+        :param Pv: 扫码次数
+        :type Pv: int
+        :param Uv: 扫码人数
+        :type Uv: int
+        :param CreateTime: 创建时间
+        :type CreateTime: str
+        :param UpdateTime: 更新时间
+        :type UpdateTime: str
+        """
+        self.Code = None
+        self.CorpId = None
+        self.MerchantId = None
+        self.ProductId = None
+        self.BatchId = None
+        self.Pv = None
+        self.Uv = None
+        self.CreateTime = None
+        self.UpdateTime = None
+
+
+    def _deserialize(self, params):
+        self.Code = params.get("Code")
+        self.CorpId = params.get("CorpId")
+        self.MerchantId = params.get("MerchantId")
+        self.ProductId = params.get("ProductId")
+        self.BatchId = params.get("BatchId")
+        self.Pv = params.get("Pv")
+        self.Uv = params.get("Uv")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TraceCode(AbstractModel):
     """溯源码
 
@@ -3473,6 +3840,10 @@ class TraceCode(AbstractModel):
         :type MerchantName: str
         :param ProductName: 产品名称
         :type ProductName: str
+        :param AgentId: 渠道商ID
+        :type AgentId: int
+        :param Level: 码层级 0: 最小级, 1: 一级, 2: 二级
+        :type Level: int
         """
         self.Code = None
         self.CorpId = None
@@ -3485,6 +3856,8 @@ class TraceCode(AbstractModel):
         self.UpdateTime = None
         self.MerchantName = None
         self.ProductName = None
+        self.AgentId = None
+        self.Level = None
 
 
     def _deserialize(self, params):
@@ -3499,6 +3872,8 @@ class TraceCode(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.MerchantName = params.get("MerchantName")
         self.ProductName = params.get("ProductName")
+        self.AgentId = params.get("AgentId")
+        self.Level = params.get("Level")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

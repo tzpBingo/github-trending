@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@ class ChatMemberUpdated(TelegramObject):
     .. versionadded:: 13.4
 
     Note:
-        In Python :keyword:`from` is a reserved word use :paramref:`from_user` instead.
+        In Python :keyword:`from` is a reserved word. Use :paramref:`from_user` instead.
 
     Examples:
         :any:`Chat Member Bot <examples.chatmemberbot>`
@@ -65,7 +65,7 @@ class ChatMemberUpdated(TelegramObject):
         old_chat_member (:class:`telegram.ChatMember`): Previous information about the chat member.
         new_chat_member (:class:`telegram.ChatMember`): New information about the chat member.
         invite_link (:class:`telegram.ChatInviteLink`): Optional. Chat invite link, which was used
-            by the user to join the chat.
+            by the user to join the chat. For joining by invite link events only.
 
     """
 
@@ -91,14 +91,14 @@ class ChatMemberUpdated(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.chat = chat
-        self.from_user = from_user
-        self.date = date
-        self.old_chat_member = old_chat_member
-        self.new_chat_member = new_chat_member
+        self.chat: Chat = chat
+        self.from_user: User = from_user
+        self.date: datetime.datetime = date
+        self.old_chat_member: ChatMember = old_chat_member
+        self.new_chat_member: ChatMember = new_chat_member
 
         # Optionals
-        self.invite_link = invite_link
+        self.invite_link: Optional[ChatInviteLink] = invite_link
 
         self._id_attrs = (
             self.chat,
@@ -107,6 +107,8 @@ class ChatMemberUpdated(TelegramObject):
             self.old_chat_member,
             self.new_chat_member,
         )
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["ChatMemberUpdated"]:

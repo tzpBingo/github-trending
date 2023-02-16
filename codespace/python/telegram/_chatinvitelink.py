@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -83,6 +83,7 @@ class ChatInviteLink(TelegramObject):
             :tg-const:`telegram.constants.ChatInviteLinkLimit.MIN_MEMBER_LIMIT`-
             :tg-const:`telegram.constants.ChatInviteLinkLimit.MAX_MEMBER_LIMIT`.
         name (:obj:`str`): Optional. Invite link name.
+            0-:tg-const:`telegram.constants.ChatInviteLinkLimit.NAME_LENGTH` characters.
 
             .. versionadded:: 13.8
         pending_join_request_count (:obj:`int`): Optional. Number of pending join requests
@@ -120,17 +121,17 @@ class ChatInviteLink(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.invite_link = invite_link
-        self.creator = creator
-        self.creates_join_request = creates_join_request
-        self.is_primary = is_primary
-        self.is_revoked = is_revoked
+        self.invite_link: str = invite_link
+        self.creator: User = creator
+        self.creates_join_request: bool = creates_join_request
+        self.is_primary: bool = is_primary
+        self.is_revoked: bool = is_revoked
 
         # Optionals
-        self.expire_date = expire_date
-        self.member_limit = member_limit
-        self.name = name
-        self.pending_join_request_count = (
+        self.expire_date: Optional[datetime.datetime] = expire_date
+        self.member_limit: Optional[int] = member_limit
+        self.name: Optional[str] = name
+        self.pending_join_request_count: Optional[int] = (
             int(pending_join_request_count) if pending_join_request_count is not None else None
         )
         self._id_attrs = (
@@ -140,6 +141,8 @@ class ChatInviteLink(TelegramObject):
             self.is_primary,
             self.is_revoked,
         )
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["ChatInviteLink"]:

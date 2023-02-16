@@ -293,6 +293,9 @@ INVALIDPARAMETERVALUE_NETWORKINTERFACENOTFOUND = 'InvalidParameterValue.NetworkI
 # 该操作仅对主网卡支持。
 INVALIDPARAMETERVALUE_ONLYSUPPORTEDFORMASTERNETWORKCARD = 'InvalidParameterValue.OnlySupportedForMasterNetworkCard'
 
+# 参数值格式不匹配。
+INVALIDPARAMETERVALUE_PARAMETERMISMATCH = 'InvalidParameterValue.ParameterMismatch'
+
 # 参数值不在指定范围。
 INVALIDPARAMETERVALUE_RANGE = 'InvalidParameterValue.Range'
 
@@ -491,6 +494,9 @@ LIMITEXCEEDED_TAGQUOTAEXCEEDED = 'LimitExceeded.TagQuotaExceeded'
 # 标签键的数目已达到上限。
 LIMITEXCEEDED_TAGTAGSEXCEEDED = 'LimitExceeded.TagTagsExceeded'
 
+# 流量包配额超过限制。
+LIMITEXCEEDED_TRAFFICPACKAGEQUOTA = 'LimitExceeded.TrafficPackageQuota'
+
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
 
@@ -644,6 +650,9 @@ UNSUPPORTEDOPERATION_DELDEFAULTROUTE = 'UnsupportedOperation.DelDefaultRoute'
 # 禁止删除已关联子网的路由表。
 UNSUPPORTEDOPERATION_DELROUTEWITHSUBNET = 'UnsupportedOperation.DelRouteWithSubnet'
 
+# VPN通道状态为更新中/销毁中/创建中，不支持此操作。
+UNSUPPORTEDOPERATION_DELETEVPNCONNINVALIDSTATE = 'UnsupportedOperation.DeleteVpnConnInvalidState'
+
 # 专线网关正在更新BGP Community属性。
 UNSUPPORTEDOPERATION_DIRECTCONNECTGATEWAYISUPDATINGCOMMUNITY = 'UnsupportedOperation.DirectConnectGatewayIsUpdatingCommunity'
 
@@ -749,6 +758,9 @@ UNSUPPORTEDOPERATION_NORMALSUBNETNOTSUPPORTLOCALGATEWAY = 'UnsupportedOperation.
 # 当前实例已被封禁，无法进行此操作。
 UNSUPPORTEDOPERATION_NOTLOCKEDINSTANCEOPERATION = 'UnsupportedOperation.NotLockedInstanceOperation'
 
+# 目的端的服务在IP申请中使用的实例ID和这里传入的不匹配。
+UNSUPPORTEDOPERATION_NOTMATCHTARGETSERVICE = 'UnsupportedOperation.NotMatchTargetService'
+
 # 当前云联网实例未处于申请中状态，无法进行操作。
 UNSUPPORTEDOPERATION_NOTPENDINGCCNINSTANCE = 'UnsupportedOperation.NotPendingCcnInstance'
 
@@ -763,6 +775,9 @@ UNSUPPORTEDOPERATION_NOTSUPPORTDELETEDEFAULTROUTETABLE = 'UnsupportedOperation.N
 
 # 该地址类型不支持释放操作。
 UNSUPPORTEDOPERATION_NOTSUPPORTEDADDRESSIPSCHARGETYPE = 'UnsupportedOperation.NotSupportedAddressIpsChargeType'
+
+# 此地域没有上线出口二资源，请到北京/广州/南京购买。
+UNSUPPORTEDOPERATION_NOTSUPPORTEDPURCHASECENTEREGRESSRESOURCE = 'UnsupportedOperation.NotSupportedPurchaseCenterEgressResource'
 
 # 当前云联网不支持更新路由发布。
 UNSUPPORTEDOPERATION_NOTSUPPORTEDUPDATECCNROUTEPUBLISH = 'UnsupportedOperation.NotSupportedUpdateCcnRoutePublish'
@@ -811,6 +826,27 @@ UNSUPPORTEDOPERATION_ROLENOTFOUND = 'UnsupportedOperation.RoleNotFound'
 
 # 路由表绑定了子网。
 UNSUPPORTEDOPERATION_ROUTETABLEHASSUBNETRULE = 'UnsupportedOperation.RouteTableHasSubnetRule'
+
+# 实例已关联快照策略。
+UNSUPPORTEDOPERATION_SNAPSHOTATTACHED = 'UnsupportedOperation.SnapshotAttached'
+
+# 快照备份策略不支持修改。
+UNSUPPORTEDOPERATION_SNAPSHOTBACKUPTYPEMODIFY = 'UnsupportedOperation.SnapshotBackupTypeModify'
+
+# 快照文件生成失败。
+UNSUPPORTEDOPERATION_SNAPSHOTFILEFAILED = 'UnsupportedOperation.SnapshotFileFailed'
+
+# 快照文件已过期或删除。
+UNSUPPORTEDOPERATION_SNAPSHOTFILENOEXIST = 'UnsupportedOperation.SnapshotFileNoExist'
+
+# 快照文件正在生成中，请稍后查看。
+UNSUPPORTEDOPERATION_SNAPSHOTFILEPROCESSING = 'UnsupportedOperation.SnapshotFileProcessing'
+
+# 一次仅支持关联一个地域的实例。
+UNSUPPORTEDOPERATION_SNAPSHOTINSTANCEREGIONDIFF = 'UnsupportedOperation.SnapshotInstanceRegionDiff'
+
+# 实例未关联快照策略。
+UNSUPPORTEDOPERATION_SNAPSHOTNOTATTACHED = 'UnsupportedOperation.SnapshotNotAttached'
 
 # SNAT子网 不支持分配IP。
 UNSUPPORTEDOPERATION_SNATSUBNET = 'UnsupportedOperation.SnatSubnet'
@@ -874,6 +910,9 @@ UNSUPPORTEDOPERATION_VERSIONMISMATCH = 'UnsupportedOperation.VersionMismatch'
 
 # 资源不属于同一个VPC。
 UNSUPPORTEDOPERATION_VPCMISMATCH = 'UnsupportedOperation.VpcMismatch'
+
+# VPC类型VPN网关必须携带VpcId。
+UNSUPPORTEDOPERATION_VPNGWVPCIDMUSTHAVE = 'UnsupportedOperation.VpnGwVpcIdMustHave'
 
 # 指定资源在不同的可用区。
 UNSUPPORTEDOPERATION_ZONEMISMATCH = 'UnsupportedOperation.ZoneMismatch'

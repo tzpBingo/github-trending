@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the classes that represent Telegram InlineQueryResultCachedSticker."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from telegram._inline.inlinekeyboardmarkup import InlineKeyboardMarkup
 from telegram._inline.inlinequeryresult import InlineQueryResult
@@ -34,6 +34,8 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
     Represents a link to a sticker stored on the Telegram servers. By default, this sticker will
     be sent by the user. Alternatively, you can use :attr:`input_message_content` to send a
     message with the specified content instead of the sticker.
+
+    .. seealso:: :wiki:`Working with Files and Media <Working-with-Files-and-Media>`
 
     Args:
         id (:obj:`str`): Unique identifier for this result,
@@ -71,8 +73,9 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
     ):
         # Required
         super().__init__(InlineQueryResultType.STICKER, id, api_kwargs=api_kwargs)
-        self.sticker_file_id = sticker_file_id
+        with self._unfrozen():
+            self.sticker_file_id: str = sticker_file_id
 
-        # Optionals
-        self.reply_markup = reply_markup
-        self.input_message_content = input_message_content
+            # Optionals
+            self.reply_markup: Optional[InlineKeyboardMarkup] = reply_markup
+            self.input_message_content: Optional[InputMessageContent] = input_message_content

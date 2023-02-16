@@ -2,7 +2,7 @@
 # pylint: disable=too-many-arguments
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,18 @@ class InlineQuery(TelegramObject):
     Objects of this class are comparable in terms of equality. Two objects of this class are
     considered equal, if their :attr:`id` is equal.
 
+    .. figure:: https://core.telegram.org/file/464001466/10e4a/r4FKyQ7gw5g.134366/f2\
+        606a53d683374703
+        :align: center
+
+        Inline queries on Telegram
+
+    .. seealso::
+        The :class:`telegram.InlineQueryResult` classes represent the media the user can choose
+        from (see above figure).
+
     Note:
-        In Python :keyword:`from` is a reserved word use :paramref:`from_user` instead.
+        In Python :keyword:`from` is a reserved word. Use :paramref:`from_user` instead.
 
     .. versionchanged:: 20.0
         The following are now keyword-only arguments in Bot methods:
@@ -72,11 +82,16 @@ class InlineQuery(TelegramObject):
         query (:obj:`str`): Text of the query (up to
             :tg-const:`telegram.InlineQuery.MAX_QUERY_LENGTH` characters).
         offset (:obj:`str`): Offset of the results to be returned, can be controlled by the bot.
-        location (:class:`telegram.Location`): Optional. Sender location, only for bots that
-            request user location.
         chat_type (:obj:`str`): Optional. Type of the chat, from which the inline query was sent.
+            Can be either :tg-const:`telegram.Chat.SENDER` for a private chat with the inline query
+            sender, :tg-const:`telegram.Chat.PRIVATE`, :tg-const:`telegram.Chat.GROUP`,
+            :tg-const:`telegram.Chat.SUPERGROUP` or :tg-const:`telegram.Chat.CHANNEL`. The chat
+            type should be always known for requests sent from official clients and most
+            third-party clients, unless the request was sent from a secret chat.
 
             .. versionadded:: 13.5
+        location (:class:`telegram.Location`): Optional. Sender location, only for bots that
+            request user location.
 
     """
 
@@ -95,16 +110,18 @@ class InlineQuery(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.id = id  # pylint: disable=invalid-name
-        self.from_user = from_user
-        self.query = query
-        self.offset = offset
+        self.id: str = id  # pylint: disable=invalid-name
+        self.from_user: User = from_user
+        self.query: str = query
+        self.offset: str = offset
 
         # Optional
-        self.location = location
-        self.chat_type = chat_type
+        self.location: Optional[Location] = location
+        self.chat_type: Optional[str] = chat_type
 
         self._id_attrs = (self.id,)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["InlineQuery"]:

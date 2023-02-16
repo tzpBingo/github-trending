@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -61,12 +61,14 @@ class OrderInfo(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.name = name
-        self.phone_number = phone_number
-        self.email = email
-        self.shipping_address = shipping_address
+        self.name: Optional[str] = name
+        self.phone_number: Optional[str] = phone_number
+        self.email: Optional[str] = email
+        self.shipping_address: Optional[str] = shipping_address
 
         self._id_attrs = (self.name, self.phone_number, self.email, self.shipping_address)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["OrderInfo"]:

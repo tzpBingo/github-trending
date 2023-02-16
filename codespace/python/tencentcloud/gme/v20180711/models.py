@@ -654,7 +654,7 @@ class CreateScanUserResponse(AbstractModel):
 
 
 class CustomizationConfigs(AbstractModel):
-    """语音消息转文本自学习模型配置
+    """语音消息转文本热句模型配置
 
     """
 
@@ -704,7 +704,7 @@ class DeleteCustomizationRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ModelId: 要删除的模型ID
+        :param ModelId: 删除的模型ID
         :type ModelId: str
         :param BizId: 应用 ID，登录控制台创建应用得到的AppID
         :type BizId: int
@@ -783,24 +783,24 @@ class DeleteRoomMemberRequest(AbstractModel):
         r"""
         :param RoomId: 要操作的房间id
         :type RoomId: str
-        :param Uids: 要剔除的用户列表
-        :type Uids: list of str
         :param DeleteType: 剔除类型 1-删除房间 2-剔除用户
         :type DeleteType: int
         :param BizId: 应用id
         :type BizId: int
+        :param Uids: 要剔除的用户列表
+        :type Uids: list of str
         """
         self.RoomId = None
-        self.Uids = None
         self.DeleteType = None
         self.BizId = None
+        self.Uids = None
 
 
     def _deserialize(self, params):
         self.RoomId = params.get("RoomId")
-        self.Uids = params.get("Uids")
         self.DeleteType = params.get("DeleteType")
         self.BizId = params.get("BizId")
+        self.Uids = params.get("Uids")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -891,7 +891,7 @@ class DescribeAgeDetectTaskRequest(AbstractModel):
         r"""
         :param BizId: 应用id
         :type BizId: int
-        :param TaskId: 创建年龄语音识别任务时返回的taskid
+        :param TaskId: [创建年龄语音识别任务](https://cloud.tencent.com/document/product/607/60620)时返回的taskid
         :type TaskId: str
         """
         self.BizId = None
@@ -1574,7 +1574,7 @@ class GetCustomizationListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CustomizationConfigs: 语音消息转文本自学习模型配置
+        :param CustomizationConfigs: 语音消息转文本热句模型配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type CustomizationConfigs: list of CustomizationConfigs
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1595,7 +1595,7 @@ class GetCustomizationListResponse(AbstractModel):
 
 
 class InOutTimeInfo(AbstractModel):
-    """用户进出房间信息
+    """房间内的事件
 
     """
 
@@ -1712,7 +1712,7 @@ class ModifyCustomizationRequest(AbstractModel):
         :type BizId: int
         :param TextUrl: 文本文件的下载地址，服务会从该地址下载文件，目前仅支持腾讯云cos
         :type TextUrl: str
-        :param ModelId: 要修改的模型ID
+        :param ModelId: 修改的模型ID
         :type ModelId: str
         """
         self.BizId = None
@@ -1742,7 +1742,7 @@ class ModifyCustomizationResponse(AbstractModel):
         r"""
         :param ErrorCode: 返回值。0为成功，非0为失败。
         :type ErrorCode: int
-        :param ModelId: 自学习模型ID
+        :param ModelId: 模型ID
         :type ModelId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1765,7 +1765,7 @@ class ModifyCustomizationStateRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ModelId: 自学习模型ID
+        :param ModelId: 模型ID
         :type ModelId: str
         :param ToState: 想要变换的模型状态，-1代表下线，1代表上线
         :type ToState: int
@@ -1797,7 +1797,7 @@ class ModifyCustomizationStateResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ModelId: 自学习模型ID
+        :param ModelId: 模型ID
         :type ModelId: str
         :param ErrorCode: 返回值。0为成功，非0为失败。
         :type ErrorCode: int
@@ -2014,16 +2014,21 @@ class RoomUser(AbstractModel):
         :param StrRoomId: 字符串房间id
 注意：此字段可能返回 null，表示取不到有效值。
         :type StrRoomId: str
+        :param StrUins: 房间里用户字符串uin列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StrUins: list of str
         """
         self.RoomId = None
         self.Uins = None
         self.StrRoomId = None
+        self.StrUins = None
 
 
     def _deserialize(self, params):
         self.RoomId = params.get("RoomId")
         self.Uins = params.get("Uins")
         self.StrRoomId = params.get("StrRoomId")
+        self.StrUins = params.get("StrUins")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2564,18 +2569,23 @@ class UserMicStatus(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Uid: 客户端用于标识用户的Openid。
-        :type Uid: int
         :param EnableMic: 开麦状态。1表示关闭麦克风，2表示打开麦克风。
         :type EnableMic: int
+        :param Uid: 客户端用于标识用户的Openid。（Uid、StrUid必须填一个，优先处理StrUid。）
+        :type Uid: int
+        :param StrUid: 客户端用于标识字符串型用户的Openid。（Uid、StrUid必须填一个，优先处理StrUid。）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StrUid: str
         """
-        self.Uid = None
         self.EnableMic = None
+        self.Uid = None
+        self.StrUid = None
 
 
     def _deserialize(self, params):
-        self.Uid = params.get("Uid")
         self.EnableMic = params.get("EnableMic")
+        self.Uid = params.get("Uid")
+        self.StrUid = params.get("StrUid")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

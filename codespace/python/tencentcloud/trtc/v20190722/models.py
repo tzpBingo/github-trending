@@ -1918,11 +1918,11 @@ class EncodeParams(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AudioSampleRate: 混流-输出流音频采样率。取值为[48000, 44100, 32000, 24000, 16000, 8000]，单位是Hz。
+        :param AudioSampleRate: 混流-输出流音频采样率。取值为[48000, 44100, 32000, 24000, 16000, 8000]，单位是Hz。混流任务发起过程中，为了保持CDN链接的稳定，不要修改音频参数（codec、采样率、码率、声道数）。
         :type AudioSampleRate: int
-        :param AudioBitrate: 混流-输出流音频码率。取值范围[8,500]，单位为kbps。
+        :param AudioBitrate: 混流-输出流音频码率。取值范围[8,500]，单位为kbps。混流任务发起过程中，为了保持CDN链接的稳定，不要修改音频参数（codec、采样率、码率、声道数）。
         :type AudioBitrate: int
-        :param AudioChannels: 混流-输出流音频声道数，取值范围[1,2]，1表示混流输出音频为单声道，2表示混流输出音频为双声道。
+        :param AudioChannels: 混流-输出流音频声道数，取值范围[1,2]，1表示混流输出音频为单声道，2表示混流输出音频为双声道。混流任务发起过程中，为了保持CDN链接的稳定，不要修改音频参数（codec、采样率、码率、声道数）。
         :type AudioChannels: int
         :param VideoWidth: 混流-输出流宽，音视频输出时必填。取值范围[0,1920]，单位为像素值。
         :type VideoWidth: int
@@ -1945,7 +1945,7 @@ class EncodeParams(AbstractModel):
         :type BackgroundColor: int
         :param BackgroundImageId: 混流-输出流背景图片，取值为实时音视频控制台上传的图片ID。
         :type BackgroundImageId: int
-        :param AudioCodec: 混流-输出流音频编码类型，取值范围[0,1, 2]，0为LC-AAC，1为HE-AAC，2为HE-AACv2。默认值为0。当音频编码设置为HE-AACv2时，只支持输出流音频声道数为双声道。HE-AAC和HE-AACv2支持的输出流音频采样率范围为[48000, 44100, 32000, 24000, 16000]
+        :param AudioCodec: 混流-输出流音频编码类型，取值范围[0,1, 2]，0为LC-AAC，1为HE-AAC，2为HE-AACv2。默认值为0。当音频编码设置为HE-AACv2时，只支持输出流音频声道数为双声道。HE-AAC和HE-AACv2支持的输出流音频采样率范围为[48000, 44100, 32000, 24000, 16000]。混流任务发起过程中，为了保持CDN链接的稳定，不要修改音频参数（codec、采样率、码率、声道数）。
         :type AudioCodec: int
         :param BackgroundImageUrl: 混流-输出流背景图片URL地址，支持png、jpg、jpeg、bmp格式，暂不支持透明通道。URL链接长度限制为512字节。BackgroundImageUrl和BackgroundImageId参数都填时，以BackgroundImageUrl为准。图片大小限制不超过2MB。
         :type BackgroundImageUrl: str
@@ -2090,6 +2090,8 @@ class LayoutParams(AbstractModel):
         :type PureAudioHoldPlaceMode: int
         :param WaterMarkParams: 水印参数。
         :type WaterMarkParams: :class:`tencentcloud.trtc.v20190722.models.WaterMarkParams`
+        :param RenderMode: 屏幕分享模板、悬浮模板、九宫格模板、画中画模版有效，画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底，不填采用后台的默认渲染方式（屏幕分享大画面为缩放，其他为裁剪）。
+        :type RenderMode: int
         """
         self.Template = None
         self.MainVideoUserId = None
@@ -2101,6 +2103,7 @@ class LayoutParams(AbstractModel):
         self.PlaceHolderMode = None
         self.PureAudioHoldPlaceMode = None
         self.WaterMarkParams = None
+        self.RenderMode = None
 
 
     def _deserialize(self, params):
@@ -2123,6 +2126,7 @@ class LayoutParams(AbstractModel):
         if params.get("WaterMarkParams") is not None:
             self.WaterMarkParams = WaterMarkParams()
             self.WaterMarkParams._deserialize(params.get("WaterMarkParams"))
+        self.RenderMode = params.get("RenderMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2460,7 +2464,7 @@ class McuPublishCdnParam(AbstractModel):
         r"""
         :param PublishCdnUrl: CDN转推URL。
         :type PublishCdnUrl: str
-        :param IsTencentCdn: 是否是腾讯云CDN，0为转推非腾讯云CDN，1为转推腾讯CDN，不携带该参数默认为1。注意：为避免误产生转推费用，该参数建议明确填写。转推非腾讯云CDN时会产生转推费用，详情参见接口文档说明。
+        :param IsTencentCdn: 是否是腾讯云CDN，0为转推非腾讯云CDN，1为转推腾讯CDN，不携带该参数默认为1。注意：1，为避免误产生转推费用，该参数建议明确填写，转推非腾讯云CDN时会产生转推费用，详情参见接口文档说明；2，国内站默认只支持转推腾讯云CDN，如您有转推第三方CDN需求，请联系腾讯云技术支持。
         :type IsTencentCdn: int
         """
         self.PublishCdnUrl = None
@@ -3273,7 +3277,7 @@ class RecordParams(AbstractModel):
 1：单流录制，分别录制房间的订阅UserId的音频和视频，将录制文件上传至云存储；
 2：混流录制，将房间内订阅UserId的音视频混录成一个音视频文件，将录制文件上传至云存储；
         :type RecordMode: int
-        :param MaxIdleTime: 房间内持续没有主播的状态超过MaxIdleTime的时长，自动停止录制，单位：秒。默认值为 30 秒，该值需大于等于 5秒，且小于等于 86400秒(24小时)。
+        :param MaxIdleTime: 房间内持续没有用户（主播）上行推流的状态超过MaxIdleTime的时长，自动停止录制，单位：秒。默认值为 30 秒，该值需大于等于 5秒，且小于等于 86400秒(24小时)。
         :type MaxIdleTime: int
         :param StreamType: 录制的媒体流类型：
 0：录制音频+视频流（默认）;

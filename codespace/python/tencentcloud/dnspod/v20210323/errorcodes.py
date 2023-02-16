@@ -152,6 +152,9 @@ INVALIDPARAMETER_BATCHRECORDMODIFYACTIONERROR = 'InvalidParameter.BatchRecordMod
 # 记录值无效。
 INVALIDPARAMETER_BATCHRECORDMODIFYACTIONINVALIDVALUE = 'InvalidParameter.BatchRecordModifyActionInvalidValue'
 
+# 批量删除记录任务失败，原因：内部错误。
+INVALIDPARAMETER_BATCHRECORDREMOVEACTIONERROR = 'InvalidParameter.BatchRecordRemoveActionError'
+
 # 批量替换记录任务失败，原因：内部错误。
 INVALIDPARAMETER_BATCHRECORDREPLACEACTIONERROR = 'InvalidParameter.BatchRecordReplaceActionError'
 
@@ -364,6 +367,9 @@ INVALIDPARAMETER_PERMISSIONDENIED = 'InvalidParameter.PermissionDenied'
 
 # 用户UIN无效。
 INVALIDPARAMETER_QCLOUDUININVALID = 'InvalidParameter.QcloudUinInvalid'
+
+# TXT 记录未设置或暂未生效，请稍后重试。
+INVALIDPARAMETER_QUHUITXTRECORDWAIT = 'InvalidParameter.QuhuiTxtRecordWait'
 
 # 已实名用户。
 INVALIDPARAMETER_REALNAMEUSER = 'InvalidParameter.RealNameUser'

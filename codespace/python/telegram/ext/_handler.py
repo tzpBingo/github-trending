@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, Optional, TypeVar, Union
 
 from telegram._utils.defaultvalue import DEFAULT_TRUE
-from telegram._utils.types import DVInput
+from telegram._utils.types import DVType
 from telegram.ext._utils.types import CCT, HandlerCallback
 
 if TYPE_CHECKING:
@@ -54,8 +54,7 @@ class BaseHandler(Generic[UT, CCT], ABC):
            also used for the mentioned method arguments. That way, a type checker can check whether
            this handler fits the definition of the :class:`~Application`.
 
-    .. seealso:: `Types of Handlers <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Types-of-Handlers>`_
+    .. seealso:: :wiki:`Types of Handlers <Types-of-Handlers>`
 
     .. versionchanged:: 20.0
 
@@ -75,8 +74,7 @@ class BaseHandler(Generic[UT, CCT], ABC):
             be awaited before processing the next handler in
             :meth:`telegram.ext.Application.process_update`. Defaults to :obj:`True`.
 
-            .. seealso:: `Concurrency <https://github.com/\
-                python-telegram-bot/python-telegram-bot/wiki/Concurrency>`_
+            .. seealso:: :wiki:`Concurrency`
 
     Attributes:
         callback (:term:`coroutine function`): The callback function for this handler.
@@ -92,10 +90,10 @@ class BaseHandler(Generic[UT, CCT], ABC):
     def __init__(
         self,
         callback: HandlerCallback[UT, CCT, RT],
-        block: DVInput[bool] = DEFAULT_TRUE,
+        block: DVType[bool] = DEFAULT_TRUE,
     ):
-        self.callback = callback
-        self.block = block
+        self.callback: HandlerCallback[UT, CCT, RT] = callback
+        self.block: DVType[bool] = block
 
     @abstractmethod
     def check_update(self, update: object) -> Optional[Union[bool, object]]:
@@ -120,7 +118,7 @@ class BaseHandler(Generic[UT, CCT], ABC):
     async def handle_update(
         self,
         update: UT,
-        application: "Application",
+        application: "Application[Any, CCT, Any, Any, Any, Any]",
         check_result: object,
         context: CCT,
     ) -> RT:
@@ -146,7 +144,7 @@ class BaseHandler(Generic[UT, CCT], ABC):
         self,
         context: CCT,
         update: UT,
-        application: "Application",
+        application: "Application[Any, CCT, Any, Any, Any, Any]",
         check_result: Any,
     ) -> None:
         """Prepares additional arguments for the context. Override if needed.

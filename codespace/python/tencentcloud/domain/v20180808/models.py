@@ -1240,6 +1240,8 @@ serverDeleteProhibited：注册局禁止删除
 clientTransferProhibited：注册商禁止转移
 clientUpdateProhibited：注册商禁止更新
 clientDeleteProhibited：注册商禁止删除
+serverRenewProhibited: 注册局禁止续费
+clientRenewProhobited: 注册商禁止续费
         :type DomainStatus: list of str
         :param BuyStatus: 域名购买状态。
 ok：正常
@@ -1413,6 +1415,7 @@ false 不是
         :param AutoRenew: 是否已设置自动续费 。
 0：未设置 
 1：已设置
+2：设置后，关闭
         :type AutoRenew: int
         :param CreationDate: 注册时间。
         :type CreationDate: str
@@ -1969,6 +1972,8 @@ class TemplateInfo(AbstractModel):
         :type IsValidTemplate: int
         :param InvalidReason: 不符合规范原因
         :type InvalidReason: str
+        :param IsBlack: 是包含黑名单手机或邮箱
+        :type IsBlack: bool
         """
         self.TemplateId = None
         self.AuditStatus = None
@@ -1981,6 +1986,7 @@ class TemplateInfo(AbstractModel):
         self.ContactInfo = None
         self.IsValidTemplate = None
         self.InvalidReason = None
+        self.IsBlack = None
 
 
     def _deserialize(self, params):
@@ -1999,6 +2005,7 @@ class TemplateInfo(AbstractModel):
             self.ContactInfo._deserialize(params.get("ContactInfo"))
         self.IsValidTemplate = params.get("IsValidTemplate")
         self.InvalidReason = params.get("InvalidReason")
+        self.IsBlack = params.get("IsBlack")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -193,7 +193,7 @@ class CreateAsyncRecognitionTaskRequest(AbstractModel):
 • 16k_en：16k 英语；
 • 16k_ca：16k 粤语；
         :type EngineType: str
-        :param Url: 语音流地址，支持rtmp、rtsp等流媒体协议，以及各类基于http协议的直播流(不支持hls)
+        :param Url: 语音流地址，支持rtmp、rtsp等流媒体协议，以及各类基于http协议的直播流(不支持hls, m3u8)
         :type Url: str
         :param CallbackUrl: 支持HTTP和HTTPS协议，用于接收识别结果，您需要自行搭建公网可调用的服务。回调格式&内容详见：[语音流异步识别回调说明](https://cloud.tencent.com/document/product/1093/52633)
         :type CallbackUrl: str
@@ -388,8 +388,13 @@ class CreateRecTaskRequest(AbstractModel):
         :type FilterModal: int
         :param EmotionalEnergy: 情绪能量值，取值为音量分贝值/10。取值范围：[1,10]。值越高情绪越强烈。0:不开启，1:开启
         :type EmotionalEnergy: int
-        :param ReinforceHotword: 热词增强功能。1:开启后（仅支持8k_zh,16k_zh），将开启同音替换功能，同音字、词在热词中配置。举例：热词配置“蜜制”并开启增强功能后，与“蜜制”同拼音（mizhi）的“秘制”、“蜜汁”的识别结果会被强制替换成“蜜制”。因此建议客户根据自己的实际情况开启该功能。
+        :param ReinforceHotword: 热词增强功能。1:开启后（仅支持8k_zh,16k_zh），将开启同音替换功能，同音字、词在热词中配置。举例：热词配置“蜜制”并开启增强功能后，与“蜜制”同拼音（mizhi）的“秘制”的识别结果会被强制替换成“蜜制”。因此建议客户根据自己的实际情况开启该功能。
         :type ReinforceHotword: int
+        :param SentenceMaxLength: 单标点最多字数，取值范围：[6，40]。默认为0，不开启该功能。该参数可用于字幕生成场景，控制单行字幕最大字数（设置ResTextFormat为3，解析返回的ResultDetail列表，通过结构中FinalSentence获取单个标点断句结果）。
+        :type SentenceMaxLength: int
+        :param EmotionRecognition: 情绪识别能力(目前支持16k_zh) 默认为0，不开启。 1：开启情绪识别但是不会在文本展示“情绪标签”， 2：开启情绪识别并且在文本展示“情绪标签”。（该功能需要设置ResTextFormat 大于0）
+注意：本功能为增值服务，购买对应套餐包后，将参数设置为1或2时方可按对应方式生效，并消耗套餐包对应资源。参数设置为0时无需购买套餐包，也不会消耗对应资源。
+        :type EmotionRecognition: int
         """
         self.EngineModelType = None
         self.ChannelNum = None
@@ -410,6 +415,8 @@ class CreateRecTaskRequest(AbstractModel):
         self.FilterModal = None
         self.EmotionalEnergy = None
         self.ReinforceHotword = None
+        self.SentenceMaxLength = None
+        self.EmotionRecognition = None
 
 
     def _deserialize(self, params):
@@ -432,6 +439,8 @@ class CreateRecTaskRequest(AbstractModel):
         self.FilterModal = params.get("FilterModal")
         self.EmotionalEnergy = params.get("EmotionalEnergy")
         self.ReinforceHotword = params.get("ReinforceHotword")
+        self.SentenceMaxLength = params.get("SentenceMaxLength")
+        self.EmotionRecognition = params.get("EmotionRecognition")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1137,6 +1146,9 @@ class SentenceDetail(AbstractModel):
         :param SilenceTime: 本句与上一句之间的静音时长
 注意：此字段可能返回 null，表示取不到有效值。
         :type SilenceTime: int
+        :param EmotionType: 情绪类型（可能为空）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EmotionType: list of str
         """
         self.FinalSentence = None
         self.SliceSentence = None
@@ -1148,6 +1160,7 @@ class SentenceDetail(AbstractModel):
         self.SpeakerId = None
         self.EmotionalEnergy = None
         self.SilenceTime = None
+        self.EmotionType = None
 
 
     def _deserialize(self, params):
@@ -1166,6 +1179,7 @@ class SentenceDetail(AbstractModel):
         self.SpeakerId = params.get("SpeakerId")
         self.EmotionalEnergy = params.get("EmotionalEnergy")
         self.SilenceTime = params.get("SilenceTime")
+        self.EmotionType = params.get("EmotionType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

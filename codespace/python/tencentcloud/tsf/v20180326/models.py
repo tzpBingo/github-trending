@@ -175,6 +175,8 @@ class AddInstancesRequest(AbstractModel):
         :type SgId: str
         :param InstanceImportMode: 云主机导入方式，虚拟机集群必填，容器集群不填写此字段，R：重装TSF系统镜像，M：手动安装agent
         :type InstanceImportMode: str
+        :param SecurityGroupIds: 安全组id
+        :type SecurityGroupIds: str
         """
         self.ClusterId = None
         self.InstanceIdList = None
@@ -184,6 +186,7 @@ class AddInstancesRequest(AbstractModel):
         self.KeyId = None
         self.SgId = None
         self.InstanceImportMode = None
+        self.SecurityGroupIds = None
 
 
     def _deserialize(self, params):
@@ -195,6 +198,7 @@ class AddInstancesRequest(AbstractModel):
         self.KeyId = params.get("KeyId")
         self.SgId = params.get("SgId")
         self.InstanceImportMode = params.get("InstanceImportMode")
+        self.SecurityGroupIds = params.get("SecurityGroupIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -381,6 +385,21 @@ class ApiDetailInfo(AbstractModel):
         :param Description: Api描述信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Description: str
+        :param ApiMatchType: API路径匹配类型。normal：普通API；wildcard：通配API。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApiMatchType: str
+        :param RpcExt: RPC 额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RpcExt: str
+        :param GatewayDeployGroupId: 部署组id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GatewayDeployGroupId: str
+        :param Md5: md5
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Md5: str
+        :param RpcType: RPC 类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RpcType: str
         """
         self.ApiId = None
         self.NamespaceId = None
@@ -403,6 +422,11 @@ class ApiDetailInfo(AbstractModel):
         self.Host = None
         self.ApiType = None
         self.Description = None
+        self.ApiMatchType = None
+        self.RpcExt = None
+        self.GatewayDeployGroupId = None
+        self.Md5 = None
+        self.RpcType = None
 
 
     def _deserialize(self, params):
@@ -427,6 +451,11 @@ class ApiDetailInfo(AbstractModel):
         self.Host = params.get("Host")
         self.ApiType = params.get("ApiType")
         self.Description = params.get("Description")
+        self.ApiMatchType = params.get("ApiMatchType")
+        self.RpcExt = params.get("RpcExt")
+        self.GatewayDeployGroupId = params.get("GatewayDeployGroupId")
+        self.Md5 = params.get("Md5")
+        self.RpcType = params.get("RpcType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1689,6 +1718,208 @@ class Cluster(AbstractModel):
         
 
 
+class ClusterV2(AbstractModel):
+    """集群详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        :param ClusterName: 集群名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterName: str
+        :param ClusterDesc: 集群描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterDesc: str
+        :param ClusterType: 集群类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterType: str
+        :param VpcId: 集群所属私有网络ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param ClusterStatus: 集群状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterStatus: str
+        :param ClusterCIDR: 集群CIDR
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterCIDR: str
+        :param ClusterTotalCpu: 集群总CPU，单位: 核
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterTotalCpu: float
+        :param ClusterTotalMem: 集群总内存，单位: G
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterTotalMem: float
+        :param ClusterUsedCpu: 集群已使用CPU，单位: 核
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterUsedCpu: float
+        :param ClusterUsedMem: 集群已使用内存，单位: G
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterUsedMem: float
+        :param InstanceCount: 集群机器实例数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceCount: int
+        :param RunInstanceCount: 集群运行中的机器实例数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RunInstanceCount: int
+        :param NormalInstanceCount: 集群正常状态的机器实例数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NormalInstanceCount: int
+        :param DeleteFlag: 删除标记：true：可以删除；false：不可删除
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeleteFlag: bool
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param UpdateTime: 更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        :param TsfRegionId: 集群所属TSF地域ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TsfRegionId: str
+        :param TsfRegionName: 集群所属TSF地域名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TsfRegionName: str
+        :param TsfZoneId: 集群所属TSF可用区ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TsfZoneId: str
+        :param TsfZoneName: 集群所属TSF可用区名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TsfZoneName: str
+        :param DeleteFlagReason: 集群不可删除的原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DeleteFlagReason: str
+        :param SubnetId: 集群所属私有网络子网ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        :param ClusterLimitCpu: 集群剩余 cpu limit
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterLimitCpu: str
+        :param ClusterLimitMem: 集群剩余 memory limit
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterLimitMem: str
+        :param RunServiceInstanceCount: 运行服务实例数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RunServiceInstanceCount: int
+        :param OperationInfo: 给前端的按钮控制信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OperationInfo: :class:`tencentcloud.tsf.v20180326.models.OperationInfo`
+        :param ClusterVersion: 容器集群版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterVersion: str
+        :param GroupCount: 部署组总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupCount: int
+        :param RunGroupCount: 运行中部署组数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RunGroupCount: int
+        :param StopGroupCount: 停止中部署组数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StopGroupCount: int
+        :param AbnormalGroupCount: 异常部署组数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AbnormalGroupCount: int
+        :param ClusterRemarkName: 集群备注名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterRemarkName: str
+        :param KuberneteApiServer: api地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KuberneteApiServer: str
+        :param KuberneteNativeType: K : kubeconfig, S : service account
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KuberneteNativeType: str
+        :param KuberneteNativeSecret: native secret
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KuberneteNativeSecret: str
+        """
+        self.ClusterId = None
+        self.ClusterName = None
+        self.ClusterDesc = None
+        self.ClusterType = None
+        self.VpcId = None
+        self.ClusterStatus = None
+        self.ClusterCIDR = None
+        self.ClusterTotalCpu = None
+        self.ClusterTotalMem = None
+        self.ClusterUsedCpu = None
+        self.ClusterUsedMem = None
+        self.InstanceCount = None
+        self.RunInstanceCount = None
+        self.NormalInstanceCount = None
+        self.DeleteFlag = None
+        self.CreateTime = None
+        self.UpdateTime = None
+        self.TsfRegionId = None
+        self.TsfRegionName = None
+        self.TsfZoneId = None
+        self.TsfZoneName = None
+        self.DeleteFlagReason = None
+        self.SubnetId = None
+        self.ClusterLimitCpu = None
+        self.ClusterLimitMem = None
+        self.RunServiceInstanceCount = None
+        self.OperationInfo = None
+        self.ClusterVersion = None
+        self.GroupCount = None
+        self.RunGroupCount = None
+        self.StopGroupCount = None
+        self.AbnormalGroupCount = None
+        self.ClusterRemarkName = None
+        self.KuberneteApiServer = None
+        self.KuberneteNativeType = None
+        self.KuberneteNativeSecret = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.ClusterName = params.get("ClusterName")
+        self.ClusterDesc = params.get("ClusterDesc")
+        self.ClusterType = params.get("ClusterType")
+        self.VpcId = params.get("VpcId")
+        self.ClusterStatus = params.get("ClusterStatus")
+        self.ClusterCIDR = params.get("ClusterCIDR")
+        self.ClusterTotalCpu = params.get("ClusterTotalCpu")
+        self.ClusterTotalMem = params.get("ClusterTotalMem")
+        self.ClusterUsedCpu = params.get("ClusterUsedCpu")
+        self.ClusterUsedMem = params.get("ClusterUsedMem")
+        self.InstanceCount = params.get("InstanceCount")
+        self.RunInstanceCount = params.get("RunInstanceCount")
+        self.NormalInstanceCount = params.get("NormalInstanceCount")
+        self.DeleteFlag = params.get("DeleteFlag")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        self.TsfRegionId = params.get("TsfRegionId")
+        self.TsfRegionName = params.get("TsfRegionName")
+        self.TsfZoneId = params.get("TsfZoneId")
+        self.TsfZoneName = params.get("TsfZoneName")
+        self.DeleteFlagReason = params.get("DeleteFlagReason")
+        self.SubnetId = params.get("SubnetId")
+        self.ClusterLimitCpu = params.get("ClusterLimitCpu")
+        self.ClusterLimitMem = params.get("ClusterLimitMem")
+        self.RunServiceInstanceCount = params.get("RunServiceInstanceCount")
+        if params.get("OperationInfo") is not None:
+            self.OperationInfo = OperationInfo()
+            self.OperationInfo._deserialize(params.get("OperationInfo"))
+        self.ClusterVersion = params.get("ClusterVersion")
+        self.GroupCount = params.get("GroupCount")
+        self.RunGroupCount = params.get("RunGroupCount")
+        self.StopGroupCount = params.get("StopGroupCount")
+        self.AbnormalGroupCount = params.get("AbnormalGroupCount")
+        self.ClusterRemarkName = params.get("ClusterRemarkName")
+        self.KuberneteApiServer = params.get("KuberneteApiServer")
+        self.KuberneteNativeType = params.get("KuberneteNativeType")
+        self.KuberneteNativeSecret = params.get("KuberneteNativeSecret")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Config(AbstractModel):
     """配置项
 
@@ -1950,6 +2181,61 @@ class ConfigReleaseLog(AbstractModel):
         self.LastConfigName = params.get("LastConfigName")
         self.LastConfigVersion = params.get("LastConfigVersion")
         self.RollbackFlag = params.get("RollbackFlag")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ConfigTemplate(AbstractModel):
+    """配置模板对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigTemplateId: 配置模板Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigTemplateId: str
+        :param ConfigTemplateName: 配置模板名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigTemplateName: str
+        :param ConfigTemplateDesc: 配置模板描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigTemplateDesc: str
+        :param ConfigTemplateType: 配置模板对应的微服务框架
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigTemplateType: str
+        :param ConfigTemplateValue: 配置模板数据
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigTemplateValue: str
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param UpdateTime: 更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        """
+        self.ConfigTemplateId = None
+        self.ConfigTemplateName = None
+        self.ConfigTemplateDesc = None
+        self.ConfigTemplateType = None
+        self.ConfigTemplateValue = None
+        self.CreateTime = None
+        self.UpdateTime = None
+
+
+    def _deserialize(self, params):
+        self.ConfigTemplateId = params.get("ConfigTemplateId")
+        self.ConfigTemplateName = params.get("ConfigTemplateName")
+        self.ConfigTemplateDesc = params.get("ConfigTemplateDesc")
+        self.ConfigTemplateType = params.get("ConfigTemplateType")
+        self.ConfigTemplateValue = params.get("ConfigTemplateValue")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2509,6 +2795,18 @@ class ContainerGroupDetail(AbstractModel):
         :param HealthCheckSettings: 部署组健康检查设置
 注意：此字段可能返回 null，表示取不到有效值。
         :type HealthCheckSettings: :class:`tencentcloud.tsf.v20180326.models.HealthCheckSettings`
+        :param AllowPlainYamlDeploy: 允许PlainYamlDeploy
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AllowPlainYamlDeploy: bool
+        :param IsNotEqualServiceConfig: 是否不等于ServiceConfig
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsNotEqualServiceConfig: bool
+        :param RepoName: 仓库名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RepoName: str
+        :param Alias: 别名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Alias: str
         """
         self.GroupId = None
         self.GroupName = None
@@ -2547,6 +2845,10 @@ class ContainerGroupDetail(AbstractModel):
         self.MaxSurge = None
         self.MaxUnavailable = None
         self.HealthCheckSettings = None
+        self.AllowPlainYamlDeploy = None
+        self.IsNotEqualServiceConfig = None
+        self.RepoName = None
+        self.Alias = None
 
 
     def _deserialize(self, params):
@@ -2599,6 +2901,10 @@ class ContainerGroupDetail(AbstractModel):
         if params.get("HealthCheckSettings") is not None:
             self.HealthCheckSettings = HealthCheckSettings()
             self.HealthCheckSettings._deserialize(params.get("HealthCheckSettings"))
+        self.AllowPlainYamlDeploy = params.get("AllowPlainYamlDeploy")
+        self.IsNotEqualServiceConfig = params.get("IsNotEqualServiceConfig")
+        self.RepoName = params.get("RepoName")
+        self.Alias = params.get("Alias")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3158,6 +3464,7 @@ class CreateClusterResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 集群ID
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3232,6 +3539,67 @@ class CreateConfigResponse(AbstractModel):
         r"""
         :param Result: true：创建成功；false：创建失败
 注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateConfigTemplateRequest(AbstractModel):
+    """CreateConfigTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigTemplateName: 配置模板名称
+        :type ConfigTemplateName: str
+        :param ConfigTemplateType: 配置模板对应的微服务框架
+        :type ConfigTemplateType: str
+        :param ConfigTemplateValue: 配置模板数据
+        :type ConfigTemplateValue: str
+        :param ConfigTemplateDesc: 配置模板描述
+        :type ConfigTemplateDesc: str
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
+        """
+        self.ConfigTemplateName = None
+        self.ConfigTemplateType = None
+        self.ConfigTemplateValue = None
+        self.ConfigTemplateDesc = None
+        self.ProgramIdList = None
+
+
+    def _deserialize(self, params):
+        self.ConfigTemplateName = params.get("ConfigTemplateName")
+        self.ConfigTemplateType = params.get("ConfigTemplateType")
+        self.ConfigTemplateValue = params.get("ConfigTemplateValue")
+        self.ConfigTemplateDesc = params.get("ConfigTemplateDesc")
+        self.ProgramIdList = params.get("ProgramIdList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateConfigTemplateResponse(AbstractModel):
+    """CreateConfigTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: true：创建成功；false：创建失败
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3778,6 +4146,59 @@ class CreateMicroserviceResponse(AbstractModel):
 true：操作成功。
 false：操作失败。
         :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateMicroserviceWithDetailRespRequest(AbstractModel):
+    """CreateMicroserviceWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NamespaceId: 命名空间ID
+        :type NamespaceId: str
+        :param MicroserviceName: 微服务名称
+        :type MicroserviceName: str
+        :param MicroserviceDesc: 微服务描述信息
+        :type MicroserviceDesc: str
+        """
+        self.NamespaceId = None
+        self.MicroserviceName = None
+        self.MicroserviceDesc = None
+
+
+    def _deserialize(self, params):
+        self.NamespaceId = params.get("NamespaceId")
+        self.MicroserviceName = params.get("MicroserviceName")
+        self.MicroserviceDesc = params.get("MicroserviceDesc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateMicroserviceWithDetailRespResponse(AbstractModel):
+    """CreateMicroserviceWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: id
+        :type Result: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4423,6 +4844,57 @@ false：操作失败。
         self.RequestId = params.get("RequestId")
 
 
+class DeleteClusterRequest(AbstractModel):
+    """DeleteCluster请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param Unbind: 是否只解绑，不删除容器集群，默认不传则删除容器集群。
+        :type Unbind: bool
+        """
+        self.ClusterId = None
+        self.Unbind = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.Unbind = params.get("Unbind")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteClusterResponse(AbstractModel):
+    """DeleteCluster返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 删除集群操作是否成功。
+true：操作成功。
+false：操作失败。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteConfigRequest(AbstractModel):
     """DeleteConfig请求参数结构体
 
@@ -4449,6 +4921,51 @@ class DeleteConfigRequest(AbstractModel):
 
 class DeleteConfigResponse(AbstractModel):
     """DeleteConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: true：删除成功；false：删除失败
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteConfigTemplateRequest(AbstractModel):
+    """DeleteConfigTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigTemplateId: 无
+        :type ConfigTemplateId: str
+        """
+        self.ConfigTemplateId = None
+
+
+    def _deserialize(self, params):
+        self.ConfigTemplateId = params.get("ConfigTemplateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteConfigTemplateResponse(AbstractModel):
+    """DeleteConfigTemplate返回参数结构体
 
     """
 
@@ -4502,6 +5019,52 @@ class DeleteContainerGroupResponse(AbstractModel):
         :param Result: 删除操作是否成功：
 true：成功
 false：失败
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteFileConfigRequest(AbstractModel):
+    """DeleteFileConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigId: 文件配置项ID
+        :type ConfigId: str
+        """
+        self.ConfigId = None
+
+
+    def _deserialize(self, params):
+        self.ConfigId = params.get("ConfigId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteFileConfigResponse(AbstractModel):
+    """DeleteFileConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 删除结果
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -5286,6 +5849,48 @@ class DeliveryConfigBindGroups(AbstractModel):
                 obj = DeliveryConfigBindGroup()
                 obj._deserialize(item)
                 self.Content.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeliveryKafkaInfo(AbstractModel):
+    """kafka投递的topic和path的信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Topic: 投递kafka的topic
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Topic: str
+        :param Path: 采集日志的path
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Path: list of str
+        :param LineRule: default，默认换行符分行
+time，按时间分行
+custom, 选了custom那么CustomRule就要填入具体的自定义值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LineRule: str
+        :param CustomRule: 自定义的分行值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CustomRule: str
+        """
+        self.Topic = None
+        self.Path = None
+        self.LineRule = None
+        self.CustomRule = None
+
+
+    def _deserialize(self, params):
+        self.Topic = params.get("Topic")
+        self.Path = params.get("Path")
+        self.LineRule = params.get("LineRule")
+        self.CustomRule = params.get("CustomRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6454,6 +7059,78 @@ class DescribeClusterInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeClustersRequest(AbstractModel):
+    """DescribeClusters请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SearchWord: 搜索词
+        :type SearchWord: str
+        :param OrderBy: 排序字段
+        :type OrderBy: str
+        :param OrderType: 排序方式
+        :type OrderType: int
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Limit: 分页个数
+        :type Limit: int
+        :param ClusterType: 集群类型
+        :type ClusterType: str
+        :param ClusterIdList: idList
+        :type ClusterIdList: list of str
+        """
+        self.SearchWord = None
+        self.OrderBy = None
+        self.OrderType = None
+        self.Offset = None
+        self.Limit = None
+        self.ClusterType = None
+        self.ClusterIdList = None
+
+
+    def _deserialize(self, params):
+        self.SearchWord = params.get("SearchWord")
+        self.OrderBy = params.get("OrderBy")
+        self.OrderType = params.get("OrderType")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        self.ClusterType = params.get("ClusterType")
+        self.ClusterIdList = params.get("ClusterIdList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeClustersResponse(AbstractModel):
+    """DescribeClusters返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: Cluster分页信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.TsfPageClusterV2`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = TsfPageClusterV2()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeConfigReleaseLogsRequest(AbstractModel):
     """DescribeConfigReleaseLogs请求参数结构体
 
@@ -6725,6 +7402,54 @@ class DescribeConfigSummaryResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeConfigTemplateRequest(AbstractModel):
+    """DescribeConfigTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigTemplateId: 无
+        :type ConfigTemplateId: str
+        """
+        self.ConfigTemplateId = None
+
+
+    def _deserialize(self, params):
+        self.ConfigTemplateId = params.get("ConfigTemplateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeConfigTemplateResponse(AbstractModel):
+    """DescribeConfigTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: Result
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.ConfigTemplate`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = ConfigTemplate()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeConfigsRequest(AbstractModel):
     """DescribeConfigs请求参数结构体
 
@@ -6965,7 +7690,7 @@ class DescribeContainerGroupsRequest(AbstractModel):
         r"""
         :param SearchWord: 搜索字段，模糊搜索groupName字段
         :type SearchWord: str
-        :param ApplicationId: 分组所属应用ID
+        :param ApplicationId: 分组所属应用ID。必填
         :type ApplicationId: str
         :param OrderBy: 排序字段，默认为 createTime字段，支持id， name， createTime
         :type OrderBy: str
@@ -7333,6 +8058,82 @@ class DescribeEnabledUnitRuleResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Result") is not None:
             self.Result = UnitRule()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeFileConfigReleasesRequest(AbstractModel):
+    """DescribeFileConfigReleases请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigId: 配置项ID
+        :type ConfigId: str
+        :param ConfigName: 配置项名称
+        :type ConfigName: str
+        :param GroupId: 部署组ID
+        :type GroupId: str
+        :param NamespaceId: 命名空间ID
+        :type NamespaceId: str
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param ApplicationId: 应用ID
+        :type ApplicationId: str
+        :param Offset: 偏移量
+        :type Offset: int
+        :param Limit: 每页条数
+        :type Limit: int
+        """
+        self.ConfigId = None
+        self.ConfigName = None
+        self.GroupId = None
+        self.NamespaceId = None
+        self.ClusterId = None
+        self.ApplicationId = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.ConfigId = params.get("ConfigId")
+        self.ConfigName = params.get("ConfigName")
+        self.GroupId = params.get("GroupId")
+        self.NamespaceId = params.get("NamespaceId")
+        self.ClusterId = params.get("ClusterId")
+        self.ApplicationId = params.get("ApplicationId")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeFileConfigReleasesResponse(AbstractModel):
+    """DescribeFileConfigReleases返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 配置项发布信息列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.TsfPageFileConfigRelease`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = TsfPageFileConfigRelease()
             self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
@@ -13021,6 +13822,9 @@ class ImageRepository(AbstractModel):
         :param ApplicationNameReal: ApplicationName值
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApplicationNameReal: str
+        :param Public: 是否公共,1:公有,0:私有
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Public: int
         """
         self.Reponame = None
         self.Repotype = None
@@ -13038,6 +13842,7 @@ class ImageRepository(AbstractModel):
         self.ApplicationId = None
         self.ApplicationName = None
         self.ApplicationNameReal = None
+        self.Public = None
 
 
     def _deserialize(self, params):
@@ -13061,6 +13866,7 @@ class ImageRepository(AbstractModel):
             self.ApplicationName = ScalableRule()
             self.ApplicationName._deserialize(params.get("ApplicationName"))
         self.ApplicationNameReal = params.get("ApplicationNameReal")
+        self.Public = params.get("Public")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13916,6 +14722,27 @@ class KafkaDeliveryConfig(AbstractModel):
         :param LineRule: 换行规则
 注意：此字段可能返回 null，表示取不到有效值。
         :type LineRule: str
+        :param EnableAuth: 是否需要认证
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnableAuth: bool
+        :param Username: 用户名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Username: str
+        :param Password: 密码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Password: str
+        :param KafkaInfos: 投递的topic和path
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KafkaInfos: list of DeliveryKafkaInfo
+        :param EnableGlobalLineRule: 是否应用单行规则
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnableGlobalLineRule: bool
+        :param CustomRule: 自定义分行规则
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CustomRule: str
+        :param KafkaAddress: KafkaAddress
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KafkaAddress: str
         """
         self.ConfigId = None
         self.ConfigName = None
@@ -13924,6 +14751,13 @@ class KafkaDeliveryConfig(AbstractModel):
         self.KafkaVPort = None
         self.Topic = None
         self.LineRule = None
+        self.EnableAuth = None
+        self.Username = None
+        self.Password = None
+        self.KafkaInfos = None
+        self.EnableGlobalLineRule = None
+        self.CustomRule = None
+        self.KafkaAddress = None
 
 
     def _deserialize(self, params):
@@ -13934,6 +14768,18 @@ class KafkaDeliveryConfig(AbstractModel):
         self.KafkaVPort = params.get("KafkaVPort")
         self.Topic = params.get("Topic")
         self.LineRule = params.get("LineRule")
+        self.EnableAuth = params.get("EnableAuth")
+        self.Username = params.get("Username")
+        self.Password = params.get("Password")
+        if params.get("KafkaInfos") is not None:
+            self.KafkaInfos = []
+            for item in params.get("KafkaInfos"):
+                obj = DeliveryKafkaInfo()
+                obj._deserialize(item)
+                self.KafkaInfos.append(obj)
+        self.EnableGlobalLineRule = params.get("EnableGlobalLineRule")
+        self.CustomRule = params.get("CustomRule")
+        self.KafkaAddress = params.get("KafkaAddress")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14643,6 +15489,132 @@ class Microservice(AbstractModel):
         
 
 
+class ModifyApplicationRequest(AbstractModel):
+    """ModifyApplication请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ApplicationId: 应用ID
+        :type ApplicationId: str
+        :param ApplicationName: 应用名称
+        :type ApplicationName: str
+        :param ApplicationDesc: 应用备注
+        :type ApplicationDesc: str
+        :param ApplicationRemarkName: 应用备注名
+        :type ApplicationRemarkName: str
+        :param ServiceConfigList: 服务配置信息列表
+        :type ServiceConfigList: list of ServiceConfig
+        """
+        self.ApplicationId = None
+        self.ApplicationName = None
+        self.ApplicationDesc = None
+        self.ApplicationRemarkName = None
+        self.ServiceConfigList = None
+
+
+    def _deserialize(self, params):
+        self.ApplicationId = params.get("ApplicationId")
+        self.ApplicationName = params.get("ApplicationName")
+        self.ApplicationDesc = params.get("ApplicationDesc")
+        self.ApplicationRemarkName = params.get("ApplicationRemarkName")
+        if params.get("ServiceConfigList") is not None:
+            self.ServiceConfigList = []
+            for item in params.get("ServiceConfigList"):
+                obj = ServiceConfig()
+                obj._deserialize(item)
+                self.ServiceConfigList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyApplicationResponse(AbstractModel):
+    """ModifyApplication返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: true/false
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyClusterRequest(AbstractModel):
+    """ModifyCluster请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param ClusterName: 集群名称
+        :type ClusterName: str
+        :param ClusterDesc: 集群描述信息
+        :type ClusterDesc: str
+        :param ClusterRemarkName: 备注名
+        :type ClusterRemarkName: str
+        """
+        self.ClusterId = None
+        self.ClusterName = None
+        self.ClusterDesc = None
+        self.ClusterRemarkName = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.ClusterName = params.get("ClusterName")
+        self.ClusterDesc = params.get("ClusterDesc")
+        self.ClusterRemarkName = params.get("ClusterRemarkName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyClusterResponse(AbstractModel):
+    """ModifyCluster返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 更新集群详情操作是否成功。
+true： 操作成功。
+false：操作失败。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyContainerGroupRequest(AbstractModel):
     """ModifyContainerGroup请求参数结构体
 
@@ -14756,6 +15728,66 @@ class ModifyContainerReplicasResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 结果true：成功；false：失败；
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyGroupRequest(AbstractModel):
+    """ModifyGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 部署组ID
+        :type GroupId: str
+        :param GroupName: 部署组名称
+        :type GroupName: str
+        :param GroupDesc: 部署组描述
+        :type GroupDesc: str
+        :param Alias: 部署组备注
+        :type Alias: str
+        """
+        self.GroupId = None
+        self.GroupName = None
+        self.GroupDesc = None
+        self.Alias = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.GroupName = params.get("GroupName")
+        self.GroupDesc = params.get("GroupDesc")
+        self.Alias = params.get("Alias")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyGroupResponse(AbstractModel):
+    """ModifyGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 更新部署组详情是否成功。
+true：操作成功。
+false：操作失败。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -14935,6 +15967,64 @@ class ModifyMicroserviceResponse(AbstractModel):
         :param Result: 修改微服务详情是否成功。
 true：操作成功。
 false：操作失败。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyNamespaceRequest(AbstractModel):
+    """ModifyNamespace请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param NamespaceId: 命名空间ID
+        :type NamespaceId: str
+        :param NamespaceName: 命名空间名称
+        :type NamespaceName: str
+        :param NamespaceDesc: 命名空间备注
+        :type NamespaceDesc: str
+        :param IsHaEnable: 是否开启高可用
+        :type IsHaEnable: str
+        """
+        self.NamespaceId = None
+        self.NamespaceName = None
+        self.NamespaceDesc = None
+        self.IsHaEnable = None
+
+
+    def _deserialize(self, params):
+        self.NamespaceId = params.get("NamespaceId")
+        self.NamespaceName = params.get("NamespaceName")
+        self.NamespaceDesc = params.get("NamespaceDesc")
+        self.IsHaEnable = params.get("IsHaEnable")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyNamespaceResponse(AbstractModel):
+    """ModifyNamespace返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: Result
+注意：此字段可能返回 null，表示取不到有效值。
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -17133,6 +18223,52 @@ class RevocationPublicConfigResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class RevokeFileConfigRequest(AbstractModel):
+    """RevokeFileConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigReleaseId: 配置项发布ID
+        :type ConfigReleaseId: str
+        """
+        self.ConfigReleaseId = None
+
+
+    def _deserialize(self, params):
+        self.ConfigReleaseId = params.get("ConfigReleaseId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RevokeFileConfigResponse(AbstractModel):
+    """RevokeFileConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 撤回结果
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class RollbackConfigRequest(AbstractModel):
     """RollbackConfig请求参数结构体
 
@@ -17210,6 +18346,12 @@ class ScalableRule(AbstractModel):
         :param Description: 备注
 注意：此字段可能返回 null，表示取不到有效值。
         :type Description: str
+        :param DisableMetricAS: 是否关闭指标伸缩, 默认0, 0:打开指标伸缩 1:关闭指标伸缩
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DisableMetricAS: int
+        :param EnableCronAS: 开启定时伸缩规则, 默认0, 0:关闭定时伸缩 1:开启定时伸缩
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnableCronAS: int
         """
         self.RuleId = None
         self.Name = None
@@ -17218,6 +18360,8 @@ class ScalableRule(AbstractModel):
         self.GroupCount = None
         self.Desc = None
         self.Description = None
+        self.DisableMetricAS = None
+        self.EnableCronAS = None
 
 
     def _deserialize(self, params):
@@ -17228,6 +18372,8 @@ class ScalableRule(AbstractModel):
         self.GroupCount = params.get("GroupCount")
         self.Desc = params.get("Desc")
         self.Description = params.get("Description")
+        self.DisableMetricAS = params.get("DisableMetricAS")
+        self.EnableCronAS = params.get("EnableCronAS")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19161,6 +20307,41 @@ class TsfPageCluster(AbstractModel):
         
 
 
+class TsfPageClusterV2(AbstractModel):
+    """Tsf分页集群对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 集群总数目
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param Content: 集群列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: list of ClusterV2
+        """
+        self.TotalCount = None
+        self.Content = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Content") is not None:
+            self.Content = []
+            for item in params.get("Content"):
+                obj = ClusterV2()
+                obj._deserialize(item)
+                self.Content.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TsfPageConfig(AbstractModel):
     """TsfPage<Config>
 
@@ -19349,6 +20530,41 @@ class TsfPageFileConfig(AbstractModel):
             self.Content = []
             for item in params.get("Content"):
                 obj = FileConfig()
+                obj._deserialize(item)
+                self.Content.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TsfPageFileConfigRelease(AbstractModel):
+    """文件配置项发布信息列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param Content: 列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: list of FileConfigRelease
+        """
+        self.TotalCount = None
+        self.Content = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Content") is not None:
+            self.Content = []
+            for item in params.get("Content"):
+                obj = FileConfigRelease()
                 obj._deserialize(item)
                 self.Content.append(obj)
         memeber_set = set(params.keys())
@@ -19848,16 +21064,31 @@ class UnitNamespace(AbstractModel):
         :param Id: 单元化命名空间ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type Id: str
+        :param GatewayInstanceId: 网关实体ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GatewayInstanceId: str
+        :param CreatedTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedTime: str
+        :param UpdatedTime: 更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedTime: str
         """
         self.NamespaceId = None
         self.NamespaceName = None
         self.Id = None
+        self.GatewayInstanceId = None
+        self.CreatedTime = None
+        self.UpdatedTime = None
 
 
     def _deserialize(self, params):
         self.NamespaceId = params.get("NamespaceId")
         self.NamespaceName = params.get("NamespaceName")
         self.Id = params.get("Id")
+        self.GatewayInstanceId = params.get("GatewayInstanceId")
+        self.CreatedTime = params.get("CreatedTime")
+        self.UpdatedTime = params.get("UpdatedTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -20257,6 +21488,67 @@ class UpdateApiTimeoutsResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 是否成功
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateConfigTemplateRequest(AbstractModel):
+    """UpdateConfigTemplate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigTemplateId: 配置模板id
+        :type ConfigTemplateId: str
+        :param ConfigTemplateName: 配置模板名称
+        :type ConfigTemplateName: str
+        :param ConfigTemplateType: 配置模板对应的微服务框架
+        :type ConfigTemplateType: str
+        :param ConfigTemplateValue: 配置模板数据
+        :type ConfigTemplateValue: str
+        :param ConfigTemplateDesc: 配置模板描述
+        :type ConfigTemplateDesc: str
+        """
+        self.ConfigTemplateId = None
+        self.ConfigTemplateName = None
+        self.ConfigTemplateType = None
+        self.ConfigTemplateValue = None
+        self.ConfigTemplateDesc = None
+
+
+    def _deserialize(self, params):
+        self.ConfigTemplateId = params.get("ConfigTemplateId")
+        self.ConfigTemplateName = params.get("ConfigTemplateName")
+        self.ConfigTemplateType = params.get("ConfigTemplateType")
+        self.ConfigTemplateValue = params.get("ConfigTemplateValue")
+        self.ConfigTemplateDesc = params.get("ConfigTemplateDesc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateConfigTemplateResponse(AbstractModel):
+    """UpdateConfigTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 结果true：成功；false：失败；
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -20795,6 +22087,9 @@ class VmGroupOther(AbstractModel):
         :param IsNotEqualServiceConfig: 服务配置信息是否匹配
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsNotEqualServiceConfig: bool
+        :param HealthCheckSettings: HealthCheckSettings
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HealthCheckSettings: :class:`tencentcloud.tsf.v20180326.models.HealthCheckSettings`
         """
         self.GroupId = None
         self.PackageId = None
@@ -20805,6 +22100,7 @@ class VmGroupOther(AbstractModel):
         self.OffInstanceCount = None
         self.GroupStatus = None
         self.IsNotEqualServiceConfig = None
+        self.HealthCheckSettings = None
 
 
     def _deserialize(self, params):
@@ -20817,6 +22113,9 @@ class VmGroupOther(AbstractModel):
         self.OffInstanceCount = params.get("OffInstanceCount")
         self.GroupStatus = params.get("GroupStatus")
         self.IsNotEqualServiceConfig = params.get("IsNotEqualServiceConfig")
+        if params.get("HealthCheckSettings") is not None:
+            self.HealthCheckSettings = HealthCheckSettings()
+            self.HealthCheckSettings._deserialize(params.get("HealthCheckSettings"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

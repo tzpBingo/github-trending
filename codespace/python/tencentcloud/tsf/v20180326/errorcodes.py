@@ -23,11 +23,17 @@ FAILEDOPERATION_APPLICATIONCREATEESATUHERROR = 'FailedOperation.ApplicationCreat
 # 应用查询失败。
 FAILEDOPERATION_APPLICATIONQUERYFAILED = 'FailedOperation.ApplicationQueryFailed'
 
+# TSF云API请求调用失败。
+FAILEDOPERATION_CLOUDAPIPROXYERROR = 'FailedOperation.CloudApiProxyError'
+
 # 创建集群，开通VPC网络权限失败。
 FAILEDOPERATION_CLUSTERCREATEVPCFAIL = 'FailedOperation.ClusterCreateVpcFail'
 
 # 查询集群失败。
 FAILEDOPERATION_CLUSTERQUERYFAILED = 'FailedOperation.ClusterQueryFailed'
+
+# 更新集群失败。
+FAILEDOPERATION_CLUSTERUPDATEFAILED = 'FailedOperation.ClusterUpdateFailed'
 
 # 应用查询失败。
 FAILEDOPERATION_CONFIGAPPLICATIONQUERYFAILED = 'FailedOperation.ConfigApplicationQueryFailed'
@@ -47,11 +53,32 @@ FAILEDOPERATION_CONFIGQUERYFAILED = 'FailedOperation.ConfigQueryFailed'
 # 配置项发布信息查询失败。
 FAILEDOPERATION_CONFIGRELEASEQUERYFAILED = 'FailedOperation.ConfigReleaseQueryFailed'
 
+# 配置模板创建失败。
+FAILEDOPERATION_CONFIGTEMPLATECREATEFAILED = 'FailedOperation.ConfigTemplateCreateFailed'
+
+# 配置模板删除失败。
+FAILEDOPERATION_CONFIGTEMPLATEDELETEFAILED = 'FailedOperation.ConfigTemplateDeleteFailed'
+
+# 配置模板导入失败。
+FAILEDOPERATION_CONFIGTEMPLATEIMPORTFAILED = 'FailedOperation.ConfigTemplateImportFailed'
+
+# 配置模板分页查询失败。
+FAILEDOPERATION_CONFIGTEMPLATESEARCHLISTFAILED = 'FailedOperation.ConfigTemplateSearchListFailed'
+
+# 配置模板更新失败。
+FAILEDOPERATION_CONFIGTEMPLATEUPDATEFAILED = 'FailedOperation.ConfigTemplateUpdateFailed'
+
 # 部署组处于运行状态，无法启动。
 FAILEDOPERATION_CONTAINERGROUPGROUPHASRUN = 'FailedOperation.ContainergroupGroupHasrun'
 
 # 部署组处于停止状态，无法执行此操作。
 FAILEDOPERATION_CONTAINERGROUPGROUPHASSTOP = 'FailedOperation.ContainergroupGroupHasstop'
+
+# 调用 kube-api-server 失败。
+FAILEDOPERATION_CONTAINERGROUPKUBERNETEAPIINVOKEERROR = 'FailedOperation.ContainergroupKuberneteApiInvokeError'
+
+# 连接 kube-api-sever 失败。
+FAILEDOPERATION_CONTAINERGROUPKUBERNETECONNECTERROR = 'FailedOperation.ContainergroupKuberneteConnectError'
 
 # 健康检查配置失败。
 FAILEDOPERATION_CVMCAEMASTERHEALTHCHECKCONFIGERROR = 'FailedOperation.CvmCaeMasterHealthCheckConfigError'
@@ -64,6 +91,9 @@ FAILEDOPERATION_GROUPEXISTS = 'FailedOperation.GroupExists'
 
 # 部署组查询失败。
 FAILEDOPERATION_GROUPQUERYFAILD = 'FailedOperation.GroupQueryFaild'
+
+# tcr仓库绑定失败。
+FAILEDOPERATION_IMAGEREPOTCRBINDERROR = 'FailedOperation.ImagerepoTcrBindError'
 
 # 机器实例删除失败。
 FAILEDOPERATION_INSTANCEDELETEFAILED = 'FailedOperation.InstanceDeleteFailed'
@@ -79,6 +109,12 @@ FAILEDOPERATION_INSTANCERESETTIMEOUT = 'FailedOperation.InstanceResetTimeout'
 
 # 机器实例更新失败。
 FAILEDOPERATION_INSTANCEUPDATEFAILED = 'FailedOperation.InstanceUpdateFailed'
+
+# 内部错误。
+FAILEDOPERATION_INTERNALERROR = 'FailedOperation.InternalError'
+
+# 非法参数。
+FAILEDOPERATION_INVALIDPARAMETER = 'FailedOperation.InvalidParameter'
 
 # 泳道从consul删除失败。
 FAILEDOPERATION_LANEINFODELETECONSULFAILED = 'FailedOperation.LaneInfoDeleteConsulFailed'
@@ -106,6 +142,21 @@ FAILEDOPERATION_NAMESPACEQUERYFAILED = 'FailedOperation.NamespaceQueryFailed'
 
 # 访问配置中心失败。
 FAILEDOPERATION_RATELIMITCONSULERROR = 'FailedOperation.RatelimitConsulError'
+
+# 调用 Mesh API Server 失败。
+FAILEDOPERATION_RATELIMITMESHAPISERVICEERROR = 'FailedOperation.RatelimitMeshApiServiceError'
+
+# 资源操作失败。
+FAILEDOPERATION_RESOURCEOPFAILED = 'FailedOperation.ResourceOpFailed'
+
+# 路由就近访问策略启停用调用MESHAPI失败。
+FAILEDOPERATION_ROUTEAFFINITYMESHFAILED = 'FailedOperation.RouteAffinityMeshFailed'
+
+# 服务路由规则启用生效失败。
+FAILEDOPERATION_ROUTEENABLECONSULFAILED = 'FailedOperation.RouteEnableConsulFailed'
+
+# 路由就近访问，查询命名空间失败。
+FAILEDOPERATION_ROUTENAMESPACEREQUESTERROR = 'FailedOperation.RouteNamespaceRequestError'
 
 # 服务数据库入库失败。
 FAILEDOPERATION_SERVICEINSERTFAILED = 'FailedOperation.ServiceInsertFailed'
@@ -140,17 +191,65 @@ FAILEDOPERATION_TASKUPDATEERROR = 'FailedOperation.TaskUpdateError'
 # TKE 集群创建失败，%s。
 FAILEDOPERATION_TKECLUSTERCREATEFAILED = 'FailedOperation.TkeClusterCreateFailed'
 
+# TKE 集群删除失败。
+FAILEDOPERATION_TKECLUSTERDELETEFAILED = 'FailedOperation.TkeClusterDeleteFailed'
+
 # TKE 集群查询失败。
 FAILEDOPERATION_TKECLUSTERQUERYFAILED = 'FailedOperation.TkeClusterQueryFailed'
+
+# TSF应用性能管理任务数据库查询失败。
+FAILEDOPERATION_TSFAPMAGENTTASKQUERYERROR = 'FailedOperation.TsfApmAgentTaskQueryError'
+
+# TSF应用性能管理任务数据库写入失败。
+FAILEDOPERATION_TSFAPMAGENTTASKWRITEERROR = 'FailedOperation.TsfApmAgentTaskWriteError'
+
+# TSF应用性能管理apm-agent无法与该实例建立连接。
+FAILEDOPERATION_TSFAPMAPMAGENTNOCONNECTION = 'FailedOperation.TsfApmApmAgentNoConnection'
+
+# TSF应用性能管理业务日志配置与应用关联数据库写入失败。
+FAILEDOPERATION_TSFAPMBUSILOGCFGAPPRELATIONWRITEERROR = 'FailedOperation.TsfApmBusiLogCfgAppRelationWriteError'
+
+# TSF应用性能管理业务日志配置数据库查询失败。
+FAILEDOPERATION_TSFAPMBUSILOGCFGQUERYERROR = 'FailedOperation.TsfApmBusiLogCfgQueryError'
 
 # TSF应用性能管理业务日志配置解析规则查询失败。
 FAILEDOPERATION_TSFAPMBUSILOGCFGSCHEMAQUERYERROR = 'FailedOperation.TsfApmBusiLogCfgSchemaQueryError'
 
+# TSF应用性能管理业务日志配置解析规则写入失败。
+FAILEDOPERATION_TSFAPMBUSILOGCFGSCHEMAWRITEERROR = 'FailedOperation.TsfApmBusiLogCfgSchemaWriteError'
+
 # TSF应用性能管理业务日志配置数据库写入失败。
 FAILEDOPERATION_TSFAPMBUSILOGCFGWRITEERROR = 'FailedOperation.TsfApmBusiLogCfgWriteError'
 
+# 调用master接口更新部署组失败。
+FAILEDOPERATION_TSFAPMCALLMASTERINTERFACEFAILED = 'FailedOperation.TsfApmCallMasterInterfaceFailed'
+
+# TSF应用性能管理调用tsf-ms模块失败。
+FAILEDOPERATION_TSFAPMCALLTSFMSFAILED = 'FailedOperation.TsfApmCallTsfMsFailed'
+
 # TSF应用性能管理CTSDB客户端调用失败。
 FAILEDOPERATION_TSFAPMCTSDBCLIENTREQUESTERROR = 'FailedOperation.TsfApmCtsdbClientRequestError'
+
+# TSF应用性能管理内部异常, 请稍后重试。
+FAILEDOPERATION_TSFAPMINTERNALERROR = 'FailedOperation.TsfApmInternalError'
+
+# TSF应用性能管理运行状态统计查询服务查询失败。
+FAILEDOPERATION_TSFAPMSTATSSEARCHSERVICEQUERYERROR = 'FailedOperation.TsfApmStatsSearchServiceQueryError'
+
+# 数据库插入规则失败。
+FAILEDOPERATION_TSFASDBINSTERFAIL = 'FailedOperation.TsfAsDbInsterFail'
+
+# 查询数据库失败。
+FAILEDOPERATION_TSFASDBQUERYFAIL = 'FailedOperation.TsfAsDbQueryFail'
+
+# 扩容规则每次扩容机器数目不能大于机器最大数目。
+FAILEDOPERATION_TSFASEXPANDCOUNTANDLIMITERROR = 'FailedOperation.TsfAsExpandCountAndLimitError'
+
+# 扩容规则指标不能小于缩容规则。
+FAILEDOPERATION_TSFASEXPANDINDICATORSLESSSHRINK = 'FailedOperation.TsfAsExpandIndicatorsLessShrink'
+
+# 扩容最大实例数不能小于缩容最小实例数。
+FAILEDOPERATION_TSFASEXPANDLIMITLESSSHRINKLIMIT = 'FailedOperation.TsfAsExpandLimitLessShrinkLimit'
 
 # ctsdb数据库请求失败。
 FAILEDOPERATION_TSFCMONITORCTSDBCLIENTREQUESTFAIL = 'FailedOperation.TsfCmonitorCtsdbClientRequestFail'
@@ -158,8 +257,14 @@ FAILEDOPERATION_TSFCMONITORCTSDBCLIENTREQUESTFAIL = 'FailedOperation.TsfCmonitor
 # TSF监控统计等待超时, 请稍后重试。
 FAILEDOPERATION_TSFMONITORWAITEDTIMEOUT = 'FailedOperation.TsfMonitorWaitedTimeout'
 
+# 调用ms server失败。
+FAILEDOPERATION_TSFMSSERVERERROR = 'FailedOperation.TsfMsServerError'
+
 # TSF权限模块异常，请联系系统管理员。。
 FAILEDOPERATION_TSFPRIVILEGEERROR = 'FailedOperation.TsfPrivilegeError'
+
+# 未授权。
+FAILEDOPERATION_UNAUTHORIZEDOPERATION = 'FailedOperation.UnauthorizedOperation'
 
 # 模块未处理异常。
 FAILEDOPERATION_UNHANDLEDEXCEPTION = 'FailedOperation.UnhandledException'
@@ -220,6 +325,9 @@ INTERNALERROR_CVMCAEMASTERINTERNALERROR = 'InternalError.CvmCaeMasterInternalErr
 
 # MASTER通道查询失败。
 INTERNALERROR_CVMCAEMASTERNONALIVE = 'InternalError.CvmCaeMasterNonAlive'
+
+# TSF暂时不能响应请求。。
+INTERNALERROR_DISPATCHCOMMONERROR = 'InternalError.DispatchCommonError'
 
 # 网关通用异常:%s。
 INTERNALERROR_GATEWAYCOMMONERROR = 'InternalError.GatewayCommonError'
@@ -296,8 +404,14 @@ INTERNALERROR_UNHANDLEDEXCEPTION = 'InternalError.UnhandledException'
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
+# 删除应用失败。
+INVALIDPARAMETER_APPLICATIONDELETEFAILED = 'InvalidParameter.ApplicationDeleteFailed'
+
 # [%s]模块接口[%s]请求不正确（400 BAD REQUEST）。。
 INVALIDPARAMETER_BADREQUEST = 'InvalidParameter.BadRequest'
+
+# 配置模板名称不符合规范。
+INVALIDPARAMETER_CONFIGTEMPLATENAMEINVALID = 'InvalidParameter.ConfigTemplateNameInvalid'
 
 # TSF MASTER 实例状态异常。
 INVALIDPARAMETER_CVMCAEMASTERUNKNOWNINSTANCESTATUS = 'InvalidParameter.CvmCaeMasterUnknownInstanceStatus'
@@ -416,6 +530,9 @@ INVALIDPARAMETER_UPPERDELETELIMIT = 'InvalidParameter.UpperDeleteLimit'
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
 
+# 应用描述不能大于200组字符。
+INVALIDPARAMETERVALUE_APPLICATIONDESCLENGTH = 'InvalidParameterValue.ApplicationDescLength'
+
 # 无效的微服务类型。
 INVALIDPARAMETERVALUE_APPLICATIONMICROTYPEINVALID = 'InvalidParameterValue.ApplicationMicroTypeInvalid'
 
@@ -475,6 +592,18 @@ INVALIDPARAMETERVALUE_CONFIGNOTEXISTSORPERMISSIONDENIED = 'InvalidParameterValue
 
 # 无法获取配置项发布信息。
 INVALIDPARAMETERVALUE_CONFIGRELEASENOTEXISTS = 'InvalidParameterValue.ConfigReleaseNotExists'
+
+# 配置模板描述过长。
+INVALIDPARAMETERVALUE_CONFIGTEMPLATEDESCTOOLONG = 'InvalidParameterValue.ConfigTemplateDescTooLong'
+
+# 配置模板名称不合规。
+INVALIDPARAMETERVALUE_CONFIGTEMPLATENAMEINVALID = 'InvalidParameterValue.ConfigTemplateNameInvalid'
+
+# 配置模板内容过长。
+INVALIDPARAMETERVALUE_CONFIGTEMPLATENAMETOOLONG = 'InvalidParameterValue.ConfigTemplateNameTooLong'
+
+# 配置模板类型不合规。
+INVALIDPARAMETERVALUE_CONFIGTEMPLATETYPEINVALID = 'InvalidParameterValue.ConfigTemplateTypeInvalid'
 
 # 配置格式不符合YAML要求。
 INVALIDPARAMETERVALUE_CONFIGVALUEFORMATINVALID = 'InvalidParameterValue.ConfigValueFormatInvalid'
@@ -593,6 +722,9 @@ INVALIDPARAMETERVALUE_FILECONFIGEXISTSPATH = 'InvalidParameterValue.FileConfigEx
 # 其他用户已发布此配置文件路径。
 INVALIDPARAMETERVALUE_FILECONFIGEXISTSPATHOTHER = 'InvalidParameterValue.FileConfigExistsPathOther'
 
+# 文件配置项文件名称不合规。
+INVALIDPARAMETERVALUE_FILECONFIGFILENAMEINVALID = 'InvalidParameterValue.FileConfigFileNameInvalid'
+
 # 文件配置项文件路径不合规。
 INVALIDPARAMETERVALUE_FILECONFIGFILEPATHINVALID = 'InvalidParameterValue.FileConfigFilePathInvalid'
 
@@ -604,6 +736,9 @@ INVALIDPARAMETERVALUE_FILECONFIGNOTEXISTSORPERMISSIONDENIED = 'InvalidParameterV
 
 # 同一部署组禁止配置文件重复(文件路径+文件名)。
 INVALIDPARAMETERVALUE_FILECONFIGPATHEXISTS = 'InvalidParameterValue.FileConfigPathExists'
+
+# 无法获取文件配置项发布信息。
+INVALIDPARAMETERVALUE_FILECONFIGRELEASENOTEXISTS = 'InvalidParameterValue.FileConfigReleaseNotExists'
 
 # 文件配置项版本描述不合规。
 INVALIDPARAMETERVALUE_FILECONFIGVERSIONDESCINVALID = 'InvalidParameterValue.FileConfigVersionDescInvalid'
@@ -749,6 +884,9 @@ INVALIDPARAMETERVALUE_NAMESPACENOTEXISTS = 'InvalidParameterValue.NamespaceNotEx
 # 配置项已经发布，不允许删除。
 INVALIDPARAMETERVALUE_RELEASEDCONFIGCANNOTBEDELETED = 'InvalidParameterValue.ReleasedConfigCanNotBeDeleted'
 
+# 文件配置项已经发布，不允许删除。
+INVALIDPARAMETERVALUE_RELEASEDFILECONFIGCANNOTBEDELETED = 'InvalidParameterValue.ReleasedFileConfigCanNotBeDeleted'
+
 # 无权限操作资源%s。
 INVALIDPARAMETERVALUE_RESOURCEPERMISSIONDENIED = 'InvalidParameterValue.ResourcePermissionDenied'
 
@@ -803,6 +941,15 @@ MISSINGPARAMETER_CONFIGNAMEREQUIRED = 'MissingParameter.ConfigNameRequired'
 # 配置项发布信息ID未填写。
 MISSINGPARAMETER_CONFIGRELEASEIDREQUIRED = 'MissingParameter.ConfigReleaseIdRequired'
 
+# 缺少配置模板id。
+MISSINGPARAMETER_CONFIGTEMPLATEIDREQUIRED = 'MissingParameter.ConfigTemplateIdRequired'
+
+# 配置模板名称未填写。
+MISSINGPARAMETER_CONFIGTEMPLATENAMEREQUIRED = 'MissingParameter.ConfigTemplateNameRequired'
+
+# 配置模板类型未填写。
+MISSINGPARAMETER_CONFIGTEMPLATETYPEREQUIRED = 'MissingParameter.ConfigTemplateTypeRequired'
+
 # 配置项类型未填写。
 MISSINGPARAMETER_CONFIGTYPEREQUIRED = 'MissingParameter.ConfigTypeRequired'
 
@@ -842,6 +989,9 @@ MISSINGPARAMETER_REQUIREDPARAMETERMISSING = 'MissingParameter.RequiredParameterM
 # 未填写服务Id。
 MISSINGPARAMETER_SERVICEIDREQUIRED = 'MissingParameter.ServiceIdRequired'
 
+# 未指定%s。。
+MISSINGPARAMETER_SYSTEMPARAMETERREQUIRED = 'MissingParameter.SystemParameterRequired'
+
 # 缺少必填参数。
 MISSINGPARAMETER_TASKPARAMETERMISSED = 'MissingParameter.TaskParameterMissed'
 
@@ -857,14 +1007,23 @@ RESOURCEINUSE_DEFAULTNAMEPSACECANNOTBEDELETED = 'ResourceInUse.DefaultNamepsaceC
 # 此分组下存在资源，无法执行删除操作。
 RESOURCEINUSE_GROUPCANNOTDELETE = 'ResourceInUse.GroupCannotDelete'
 
+# 集群下存在分组。
+RESOURCEINUSE_GROUPEXISTS = 'ResourceInUse.GroupExists'
+
 # 部署组在更新中 请稍后再执行该操作。
 RESOURCEINUSE_GROUPINOPERATION = 'ResourceInUse.GroupInOperation'
+
+# 实例已经存在。
+RESOURCEINUSE_INSTANCEEXISTS = 'ResourceInUse.InstanceExists'
 
 # 机器实例已经被使用。
 RESOURCEINUSE_INSTANCEHASBEENUSED = 'ResourceInUse.InstanceHasBeenUsed'
 
 # 此命名空间下存在资源，无法执行删除操作。
 RESOURCEINUSE_NAMESPACECANNOTDELETE = 'ResourceInUse.NamespaceCannotDelete'
+
+# 集群下存在非默认命名空间。
+RESOURCEINUSE_NONDEFAULTNAMESPACEEXISTS = 'ResourceInUse.NonDefaultNamespaceExists'
 
 # 资源对象已存在。
 RESOURCEINUSE_OBJECTEXIST = 'ResourceInUse.ObjectExist'

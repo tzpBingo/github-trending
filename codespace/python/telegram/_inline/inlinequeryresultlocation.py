@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the classes that represent Telegram InlineQueryResultLocation."""
 
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, Optional
 
 from telegram import constants
 from telegram._inline.inlinekeyboardmarkup import InlineKeyboardMarkup
@@ -75,13 +75,21 @@ class InlineQueryResultLocation(InlineQueryResult):
         longitude (:obj:`float`): Location longitude in degrees.
         title (:obj:`str`): Location title.
         horizontal_accuracy (:obj:`float`): Optional. The radius of uncertainty for the location,
-            measured in meters.
-        live_period (:obj:`int`): Optional. Period in seconds for which the location can be
-            updated, should be between 60 and 86400.
+            measured in meters; 0-
+            :tg-const:`telegram.InlineQueryResultLocation.HORIZONTAL_ACCURACY`.
+        live_period (:obj:`int`): Optional. Period in seconds for which the location will be
+            updated, should be between
+            :tg-const:`telegram.InlineQueryResultLocation.MIN_LIVE_PERIOD` and
+            :tg-const:`telegram.InlineQueryResultLocation.MAX_LIVE_PERIOD`.
         heading (:obj:`int`): Optional. For live locations, a direction in which the user is
-            moving, in degrees.
-        proximity_alert_radius (:obj:`int`): Optional. For live locations, a maximum distance for
-            proximity alerts about approaching another chat member, in meters.
+            moving, in degrees. Must be between
+            :tg-const:`telegram.InlineQueryResultLocation.MIN_HEADING` and
+            :tg-const:`telegram.InlineQueryResultLocation.MAX_HEADING` if specified.
+        proximity_alert_radius (:obj:`int`): Optional. For live locations, a maximum distance
+            for proximity alerts about approaching another chat member, in meters. Must be
+            between :tg-const:`telegram.InlineQueryResultLocation.MIN_PROXIMITY_ALERT_RADIUS`
+            and :tg-const:`telegram.InlineQueryResultLocation.MAX_PROXIMITY_ALERT_RADIUS`
+            if specified.
         reply_markup (:class:`telegram.InlineKeyboardMarkup`): Optional. Inline keyboard attached
             to the message.
         input_message_content (:class:`telegram.InputMessageContent`): Optional. Content of the
@@ -127,22 +135,23 @@ class InlineQueryResultLocation(InlineQueryResult):
     ):
         # Required
         super().__init__(constants.InlineQueryResultType.LOCATION, id, api_kwargs=api_kwargs)
-        self.latitude = latitude
-        self.longitude = longitude
-        self.title = title
+        with self._unfrozen():
+            self.latitude: float = latitude
+            self.longitude: float = longitude
+            self.title: str = title
 
-        # Optionals
-        self.live_period = live_period
-        self.reply_markup = reply_markup
-        self.input_message_content = input_message_content
-        self.thumb_url = thumb_url
-        self.thumb_width = thumb_width
-        self.thumb_height = thumb_height
-        self.horizontal_accuracy = horizontal_accuracy
-        self.heading = heading
-        self.proximity_alert_radius = (
-            int(proximity_alert_radius) if proximity_alert_radius else None
-        )
+            # Optionals
+            self.live_period: Optional[int] = live_period
+            self.reply_markup: Optional[InlineKeyboardMarkup] = reply_markup
+            self.input_message_content: Optional[InputMessageContent] = input_message_content
+            self.thumb_url: Optional[str] = thumb_url
+            self.thumb_width: Optional[int] = thumb_width
+            self.thumb_height: Optional[int] = thumb_height
+            self.horizontal_accuracy: Optional[float] = horizontal_accuracy
+            self.heading: Optional[int] = heading
+            self.proximity_alert_radius: Optional[int] = (
+                int(proximity_alert_radius) if proximity_alert_radius else None
+            )
 
     HORIZONTAL_ACCURACY: ClassVar[int] = constants.LocationLimit.HORIZONTAL_ACCURACY
     """:const:`telegram.constants.LocationLimit.HORIZONTAL_ACCURACY`

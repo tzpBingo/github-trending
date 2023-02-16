@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ class PreCheckoutQuery(TelegramObject):
     considered equal, if their :attr:`id` is equal.
 
     Note:
-        In Python :keyword:`from` is a reserved word use :paramref:`from_user` instead.
+        In Python :keyword:`from` is a reserved word. Use :paramref:`from_user` instead.
 
     Args:
         id (:obj:`str`): Unique query identifier.
@@ -58,7 +58,12 @@ class PreCheckoutQuery(TelegramObject):
         id (:obj:`str`): Unique query identifier.
         from_user (:class:`telegram.User`): User who sent the query.
         currency (:obj:`str`): Three-letter ISO 4217 currency code.
-        total_amount (:obj:`int`): Total price in the smallest units of the currency.
+        total_amount (:obj:`int`): Total price in the smallest units of the currency (integer, not
+            float/double). For example, for a price of US$ 1.45 ``amount`` is ``145``.
+            See the ``exp`` parameter in
+            `currencies.json <https://core.telegram.org/bots/payments/currencies.json>`_,
+            it shows the number of digits past the decimal point for each currency
+            (2 for the majority of currencies).
         invoice_payload (:obj:`str`): Bot specified invoice payload.
         shipping_option_id (:obj:`str`): Optional. Identifier of the shipping option chosen by the
             user.
@@ -90,15 +95,17 @@ class PreCheckoutQuery(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.id = id  # pylint: disable=invalid-name
-        self.from_user = from_user
-        self.currency = currency
-        self.total_amount = total_amount
-        self.invoice_payload = invoice_payload
-        self.shipping_option_id = shipping_option_id
-        self.order_info = order_info
+        self.id: str = id  # pylint: disable=invalid-name
+        self.from_user: User = from_user
+        self.currency: str = currency
+        self.total_amount: int = total_amount
+        self.invoice_payload: str = invoice_payload
+        self.shipping_option_id: Optional[str] = shipping_option_id
+        self.order_info: Optional[OrderInfo] = order_info
 
         self._id_attrs = (self.id,)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["PreCheckoutQuery"]:

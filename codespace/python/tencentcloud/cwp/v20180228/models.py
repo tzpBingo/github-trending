@@ -100,6 +100,9 @@ class AssetAppBaseInfo(AbstractModel):
         :param IsNew: 是否新增[0:否|1:是]
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsNew: int
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineName = None
@@ -119,6 +122,7 @@ class AssetAppBaseInfo(AbstractModel):
         self.FirstTime = None
         self.UpdateTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -145,6 +149,9 @@ class AssetAppBaseInfo(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.UpdateTime = params.get("UpdateTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -240,6 +247,9 @@ class AssetCoreModuleBaseInfo(AbstractModel):
         :type IsNew: int
         :param MachineWanIp: 服务器外网IP
         :type MachineWanIp: str
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Name = None
         self.Desc = None
@@ -258,6 +268,7 @@ class AssetCoreModuleBaseInfo(AbstractModel):
         self.FirstTime = None
         self.IsNew = None
         self.MachineWanIp = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -278,6 +289,9 @@ class AssetCoreModuleBaseInfo(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
         self.MachineWanIp = params.get("MachineWanIp")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -439,6 +453,9 @@ class AssetDatabaseBaseInfo(AbstractModel):
         :type IsNew: int
         :param MachineName: 主机名称
         :type MachineName: str
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineWanIp = None
@@ -466,6 +483,7 @@ class AssetDatabaseBaseInfo(AbstractModel):
         self.FirstTime = None
         self.IsNew = None
         self.MachineName = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -500,6 +518,9 @@ class AssetDatabaseBaseInfo(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
         self.MachineName = params.get("MachineName")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -690,6 +711,10 @@ class AssetEnvBaseInfo(AbstractModel):
         :type IsNew: int
         :param MachineWanIp: 服务器外网IP
         :type MachineWanIp: str
+        :param MachineExtraInfo:  附加信息
+
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Name = None
         self.Type = None
@@ -704,6 +729,7 @@ class AssetEnvBaseInfo(AbstractModel):
         self.FirstTime = None
         self.IsNew = None
         self.MachineWanIp = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -720,6 +746,9 @@ class AssetEnvBaseInfo(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
         self.MachineWanIp = params.get("MachineWanIp")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -813,6 +842,10 @@ class AssetInitServiceBaseInfo(AbstractModel):
         :type IsNew: int
         :param MachineWanIp: 服务器外网IP
         :type MachineWanIp: str
+        :param MachineExtraInfo:  附加信息
+
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Name = None
         self.Type = None
@@ -828,6 +861,7 @@ class AssetInitServiceBaseInfo(AbstractModel):
         self.FirstTime = None
         self.IsNew = None
         self.MachineWanIp = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -845,6 +879,9 @@ class AssetInitServiceBaseInfo(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
         self.MachineWanIp = params.get("MachineWanIp")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -894,6 +931,10 @@ class AssetJarBaseInfo(AbstractModel):
         :type IsNew: int
         :param MachineWanIp: 服务器外网IP
         :type MachineWanIp: str
+        :param MachineExtraInfo:  附加信息
+
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Name = None
         self.Type = None
@@ -911,6 +952,7 @@ class AssetJarBaseInfo(AbstractModel):
         self.FirstTime = None
         self.IsNew = None
         self.MachineWanIp = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -930,6 +972,9 @@ class AssetJarBaseInfo(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
         self.MachineWanIp = params.get("MachineWanIp")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1096,6 +1141,9 @@ class AssetMachineBaseInfo(AbstractModel):
         :type IsNew: int
         :param FirstTime: 首次采集时间
         :type FirstTime: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Quuid = None
         self.Uuid = None
@@ -1116,6 +1164,7 @@ class AssetMachineBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.IsNew = None
         self.FirstTime = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -1143,6 +1192,9 @@ class AssetMachineBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.IsNew = params.get("IsNew")
         self.FirstTime = params.get("FirstTime")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1187,7 +1239,7 @@ class AssetMachineDetail(AbstractModel):
         :type CpuSize: int
         :param CpuLoad: Cpu使用率百分比
         :type CpuLoad: str
-        :param ProtectLevel: 防护级别：0基础版，1专业版
+        :param ProtectLevel: 防护级别：0基础版，1专业版，2旗舰版，3普惠版
         :type ProtectLevel: int
         :param RiskStatus: 风险状态：UNKNOW-未知，RISK-风险，SAFT-安全
         :type RiskStatus: str
@@ -1232,6 +1284,9 @@ class AssetMachineDetail(AbstractModel):
         :param UpdateTime: 数据更新时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type UpdateTime: str
+        :param MachineExtraInfo: 主机二外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Quuid = None
         self.Uuid = None
@@ -1268,6 +1323,7 @@ class AssetMachineDetail(AbstractModel):
         self.OfflineTime = None
         self.InstanceId = None
         self.UpdateTime = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -1316,6 +1372,9 @@ class AssetMachineDetail(AbstractModel):
         self.OfflineTime = params.get("OfflineTime")
         self.InstanceId = params.get("InstanceId")
         self.UpdateTime = params.get("UpdateTime")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1405,6 +1464,9 @@ class AssetPlanTask(AbstractModel):
         :type IsNew: int
         :param MachineWanIp: 服务器外网IP
         :type MachineWanIp: str
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Status = None
         self.Cycle = None
@@ -1420,6 +1482,7 @@ class AssetPlanTask(AbstractModel):
         self.FirstTime = None
         self.IsNew = None
         self.MachineWanIp = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -1437,6 +1500,9 @@ class AssetPlanTask(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
         self.MachineWanIp = params.get("MachineWanIp")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1507,6 +1573,9 @@ class AssetPortBaseInfo(AbstractModel):
         :type FirstTime: str
         :param IsNew: 是否新增[0:否|1:是]
         :type IsNew: int
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineWanIp = None
@@ -1534,6 +1603,7 @@ class AssetPortBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.FirstTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -1568,6 +1638,9 @@ class AssetPortBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1642,6 +1715,11 @@ class AssetProcessBaseInfo(AbstractModel):
         :type FirstTime: str
         :param IsNew: 是否新增[0:否|1:是]
         :type IsNew: int
+        :param MachineExtraInfo: 
+ 附加信息
+
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineWanIp = None
@@ -1671,6 +1749,7 @@ class AssetProcessBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.FirstTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -1707,6 +1786,9 @@ class AssetProcessBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1845,6 +1927,10 @@ class AssetUserBaseInfo(AbstractModel):
         :type FirstTime: str
         :param IsNew: 是否新增[0:否|1:是]
         :type IsNew: int
+        :param MachineExtraInfo: 
+ 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineWanIp = None
@@ -1874,6 +1960,7 @@ class AssetUserBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.FirstTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -1905,6 +1992,9 @@ class AssetUserBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2138,6 +2228,9 @@ class AssetWebAppBaseInfo(AbstractModel):
         :type FirstTime: str
         :param IsNew: 是否新增[0:否|1:是]
         :type IsNew: int
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineWanIp = None
@@ -2159,6 +2252,7 @@ class AssetWebAppBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.FirstTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -2187,6 +2281,9 @@ class AssetWebAppBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2271,6 +2368,9 @@ class AssetWebFrameBaseInfo(AbstractModel):
         :type FirstTime: str
         :param IsNew: 是否新增[0:否|1:是]
         :type IsNew: int
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineWanIp = None
@@ -2287,6 +2387,7 @@ class AssetWebFrameBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.FirstTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -2310,6 +2411,9 @@ class AssetWebFrameBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2370,6 +2474,9 @@ class AssetWebLocationBaseInfo(AbstractModel):
         :param IsNew: 是否新增[0:否|1:是]
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsNew: int
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Uuid = None
         self.Quuid = None
@@ -2392,6 +2499,7 @@ class AssetWebLocationBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.FirstTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -2421,6 +2529,9 @@ class AssetWebLocationBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2540,6 +2651,9 @@ class AssetWebServiceBaseInfo(AbstractModel):
         :type FirstTime: str
         :param IsNew: 是否新增[0:否|1:是]
         :type IsNew: int
+        :param MachineExtraInfo:  附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineIp = None
         self.MachineWanIp = None
@@ -2561,6 +2675,7 @@ class AssetWebServiceBaseInfo(AbstractModel):
         self.UpdateTime = None
         self.FirstTime = None
         self.IsNew = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -2589,6 +2704,9 @@ class AssetWebServiceBaseInfo(AbstractModel):
         self.UpdateTime = params.get("UpdateTime")
         self.FirstTime = params.get("FirstTime")
         self.IsNew = params.get("IsNew")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2904,6 +3022,9 @@ class BaselineHostDetect(AbstractModel):
         :param Uuid: 主机安全UUID
 注意：此字段可能返回 null，表示取不到有效值。
         :type Uuid: str
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.HostId = None
         self.HostIp = None
@@ -2916,6 +3037,7 @@ class BaselineHostDetect(AbstractModel):
         self.FirstTime = None
         self.LastTime = None
         self.Uuid = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -2930,6 +3052,9 @@ class BaselineHostDetect(AbstractModel):
         self.FirstTime = params.get("FirstTime")
         self.LastTime = params.get("LastTime")
         self.Uuid = params.get("Uuid")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3101,6 +3226,9 @@ class BaselineItem(AbstractModel):
         :param Uuid: 主机安全uuid
 注意：此字段可能返回 null，表示取不到有效值。
         :type Uuid: str
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.ItemId = None
         self.ItemName = None
@@ -3119,6 +3247,7 @@ class BaselineItem(AbstractModel):
         self.LastTime = None
         self.CanBeFixed = None
         self.Uuid = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -3139,6 +3268,9 @@ class BaselineItem(AbstractModel):
         self.LastTime = params.get("LastTime")
         self.CanBeFixed = params.get("CanBeFixed")
         self.Uuid = params.get("Uuid")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3512,6 +3644,120 @@ class BashEvent(AbstractModel):
         
 
 
+class BashEventNew(AbstractModel):
+    """高危命令数据(新)
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 数据ID
+        :type Id: int
+        :param Uuid: 云镜ID
+        :type Uuid: str
+        :param Quuid: 主机ID
+        :type Quuid: str
+        :param HostIp: 主机内网IP
+        :type HostIp: str
+        :param User: 执行用户名
+        :type User: str
+        :param Platform: 平台类型
+        :type Platform: int
+        :param BashCmd: 执行命令
+        :type BashCmd: str
+        :param RuleId: 规则ID
+        :type RuleId: int
+        :param RuleName: 规则名称
+        :type RuleName: str
+        :param RuleLevel: 规则等级：1-高 2-中 3-低
+        :type RuleLevel: int
+        :param Status: 处理状态： 0 = 待处理 1= 已处理, 2 = 已加白， 3 = 已忽略
+        :type Status: int
+        :param CreateTime: 发生时间
+        :type CreateTime: str
+        :param MachineName: 主机名
+        :type MachineName: str
+        :param DetectBy: 0: bash日志 1: 实时监控(雷霆版)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DetectBy: int
+        :param Pid: 进程id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Pid: str
+        :param Exe: 进程名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Exe: str
+        :param ModifyTime: 处理时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ModifyTime: str
+        :param RuleCategory: 规则类别  0=系统规则，1=用户规则
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleCategory: int
+        :param RegexBashCmd: 自动生成的正则表达式
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegexBashCmd: str
+        :param MachineType: 0:普通 1:专业版 2:旗舰版
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineType: int
+        :param MachineExtraInfo: 机器额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
+        """
+        self.Id = None
+        self.Uuid = None
+        self.Quuid = None
+        self.HostIp = None
+        self.User = None
+        self.Platform = None
+        self.BashCmd = None
+        self.RuleId = None
+        self.RuleName = None
+        self.RuleLevel = None
+        self.Status = None
+        self.CreateTime = None
+        self.MachineName = None
+        self.DetectBy = None
+        self.Pid = None
+        self.Exe = None
+        self.ModifyTime = None
+        self.RuleCategory = None
+        self.RegexBashCmd = None
+        self.MachineType = None
+        self.MachineExtraInfo = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.Uuid = params.get("Uuid")
+        self.Quuid = params.get("Quuid")
+        self.HostIp = params.get("HostIp")
+        self.User = params.get("User")
+        self.Platform = params.get("Platform")
+        self.BashCmd = params.get("BashCmd")
+        self.RuleId = params.get("RuleId")
+        self.RuleName = params.get("RuleName")
+        self.RuleLevel = params.get("RuleLevel")
+        self.Status = params.get("Status")
+        self.CreateTime = params.get("CreateTime")
+        self.MachineName = params.get("MachineName")
+        self.DetectBy = params.get("DetectBy")
+        self.Pid = params.get("Pid")
+        self.Exe = params.get("Exe")
+        self.ModifyTime = params.get("ModifyTime")
+        self.RuleCategory = params.get("RuleCategory")
+        self.RegexBashCmd = params.get("RegexBashCmd")
+        self.MachineType = params.get("MachineType")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class BashRule(AbstractModel):
     """高危命令规则
 
@@ -3664,6 +3910,9 @@ class BruteAttackInfo(AbstractModel):
         :param DataStatus: 0：待处理，1：忽略，5：已处理，6：加入白名单
 注意：此字段可能返回 null，表示取不到有效值。
         :type DataStatus: int
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Id = None
         self.Uuid = None
@@ -3686,6 +3935,7 @@ class BruteAttackInfo(AbstractModel):
         self.ModifyTime = None
         self.InstanceId = None
         self.DataStatus = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -3710,6 +3960,9 @@ class BruteAttackInfo(AbstractModel):
         self.ModifyTime = params.get("ModifyTime")
         self.InstanceId = params.get("InstanceId")
         self.DataStatus = params.get("DataStatus")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4130,8 +4383,10 @@ class CreateLicenseOrderRequest(AbstractModel):
         :param AutoRenewFlag: 是否自动续费, 默认不自动续费.
 该参数仅包年包月生效
         :type AutoRenewFlag: bool
-        :param AutoProtectOpenConfig: 自动防护授权配置值, 不空则表示开启
+        :param AutoProtectOpenConfig: 该字段作废
         :type AutoProtectOpenConfig: str
+        :param ModifyConfig: 变配参数
+        :type ModifyConfig: :class:`tencentcloud.cwp.v20180228.models.OrderModifyObject`
         """
         self.Tags = None
         self.LicenseType = None
@@ -4141,6 +4396,7 @@ class CreateLicenseOrderRequest(AbstractModel):
         self.TimeSpan = None
         self.AutoRenewFlag = None
         self.AutoProtectOpenConfig = None
+        self.ModifyConfig = None
 
 
     def _deserialize(self, params):
@@ -4157,6 +4413,9 @@ class CreateLicenseOrderRequest(AbstractModel):
         self.TimeSpan = params.get("TimeSpan")
         self.AutoRenewFlag = params.get("AutoRenewFlag")
         self.AutoProtectOpenConfig = params.get("AutoProtectOpenConfig")
+        if params.get("ModifyConfig") is not None:
+            self.ModifyConfig = OrderModifyObject()
+            self.ModifyConfig._deserialize(params.get("ModifyConfig"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4433,6 +4692,9 @@ class DefendAttackLog(AbstractModel):
         :type DstPort: int
         :param HttpContent: 攻击内容
         :type HttpContent: str
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Id = None
         self.Uuid = None
@@ -4448,6 +4710,7 @@ class DefendAttackLog(AbstractModel):
         self.DstIp = None
         self.DstPort = None
         self.HttpContent = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -4465,6 +4728,9 @@ class DefendAttackLog(AbstractModel):
         self.DstIp = params.get("DstIp")
         self.DstPort = params.get("DstPort")
         self.HttpContent = params.get("HttpContent")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4483,12 +4749,16 @@ class DeleteAttackLogsRequest(AbstractModel):
         r"""
         :param Ids: 日志ID数组，最大100条。
         :type Ids: list of int non-negative
+        :param IsAll: 是否全部删除
+        :type IsAll: bool
         """
         self.Ids = None
+        self.IsAll = None
 
 
     def _deserialize(self, params):
         self.Ids = params.get("Ids")
+        self.IsAll = params.get("IsAll")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9287,6 +9557,91 @@ class DescribeBaselineTopResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeBashEventsNewRequest(AbstractModel):
+    """DescribeBashEventsNew请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Limit: 返回数量，默认为10，最大值为100。
+        :type Limit: int
+        :param Filters: 过滤条件。
+<li>HostName - String - 是否必填：否 - 主机名</li>
+<li>Hostip - String - 是否必填：否 - 主机内网IP</li>
+<li>HostIp - String - 是否必填：否 - 主机内网IP</li>
+<li>RuleCategory - Int - 是否必填：否 - 策略类型,全部或者单选(0:系统 1:用户)</li>
+<li>RuleName - String - 是否必填：否 - 策略名称</li>
+<li>RuleLevel - Int - 是否必填：否 - 威胁等级,可以多选</li>
+<li>Status - Int - 是否必填：否 - 处理状态,可多选(0:待处理 1:已处理 2:已加白  3:已忽略 4:已删除 5:已拦截)</li>
+<li>DetectBy - Int - 是否必填：否 - 数据来源,可多选(0:bash日志 1:实时监控)</li>
+<li>StartTime - String - 是否必填：否 - 开始时间</li>
+<li>EndTime - String - 是否必填：否 - 结束时间</li>
+        :type Filters: list of Filter
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Order: 排序方式：根据请求次数排序：asc-升序/desc-降序
+        :type Order: str
+        :param By: 排序字段：CreateTime-发生时间。ModifyTime-处理时间
+        :type By: str
+        """
+        self.Limit = None
+        self.Filters = None
+        self.Offset = None
+        self.Order = None
+        self.By = None
+
+
+    def _deserialize(self, params):
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Offset = params.get("Offset")
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBashEventsNewResponse(AbstractModel):
+    """DescribeBashEventsNew返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总条数
+        :type TotalCount: int
+        :param List: 高危命令事件列表
+        :type List: list of BashEventNew
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.List = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = BashEventNew()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeBashEventsRequest(AbstractModel):
     """DescribeBashEvents请求参数结构体
 
@@ -10947,6 +11302,10 @@ class DescribeLicenseGeneralResponse(AbstractModel):
         :type CwpVersionLicenseCnt: int
         :param AvailableLHLicenseCnt: 可用惠普版授权数
         :type AvailableLHLicenseCnt: int
+        :param AutoRepurchaseSwitch: 自动加购开关, true 开启, false 关闭
+        :type AutoRepurchaseSwitch: bool
+        :param AutoRepurchaseRenewSwitch: 自动加购订单是否自动续费 ,true 开启, false 关闭
+        :type AutoRepurchaseRenewSwitch: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -10965,6 +11324,8 @@ class DescribeLicenseGeneralResponse(AbstractModel):
         self.ProVersionLicenseCnt = None
         self.CwpVersionLicenseCnt = None
         self.AvailableLHLicenseCnt = None
+        self.AutoRepurchaseSwitch = None
+        self.AutoRepurchaseRenewSwitch = None
         self.RequestId = None
 
 
@@ -10984,6 +11345,8 @@ class DescribeLicenseGeneralResponse(AbstractModel):
         self.ProVersionLicenseCnt = params.get("ProVersionLicenseCnt")
         self.CwpVersionLicenseCnt = params.get("CwpVersionLicenseCnt")
         self.AvailableLHLicenseCnt = params.get("AvailableLHLicenseCnt")
+        self.AutoRepurchaseSwitch = params.get("AutoRepurchaseSwitch")
+        self.AutoRepurchaseRenewSwitch = params.get("AutoRepurchaseRenewSwitch")
         self.RequestId = params.get("RequestId")
 
 
@@ -13119,7 +13482,7 @@ class DescribeScanStateRequest(AbstractModel):
         :param ModuleType: 模块类型 当前提供 Malware 木马 , Vul 漏洞 , Baseline 基线
         :type ModuleType: str
         :param Filters: 过滤参数;
-<li>StrategyId 基线策略ID ,仅ModuleType 为 Baseline 时需要<li/>
+<li>StrategyId 基线策略ID ,仅ModuleType 为 Baseline 时需要</li>
         :type Filters: list of Filters
         """
         self.ModuleType = None
@@ -14280,7 +14643,7 @@ class DescribeTagsRequest(AbstractModel):
 <li>Version - String  是否必填：否 - 当前防护版本（ PRO_VERSION：专业版 | BASIC_VERSION：基础版）</li>
 <li>Risk - String 是否必填: 否 - 风险主机( yes ) </li>
 <li>Os -String 是否必填: 否 - 操作系统( DescribeMachineOsList 接口 值 )
-每个过滤条件只支持一个值，暂不支持多个值“或”关系查询
+每个过滤条件只支持一个值，暂不支持多个值“或”关系查询</li>
         :type Filters: list of Filters
         """
         self.MachineType = None
@@ -14461,12 +14824,15 @@ class DescribeVersionStatisticsResponse(AbstractModel):
         :type ProVersionNum: int
         :param UltimateVersionNum: 旗舰版数量
         :type UltimateVersionNum: int
+        :param GeneralVersionNum: 普惠版数量
+        :type GeneralVersionNum: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.BasicVersionNum = None
         self.ProVersionNum = None
         self.UltimateVersionNum = None
+        self.GeneralVersionNum = None
         self.RequestId = None
 
 
@@ -14474,6 +14840,7 @@ class DescribeVersionStatisticsResponse(AbstractModel):
         self.BasicVersionNum = params.get("BasicVersionNum")
         self.ProVersionNum = params.get("ProVersionNum")
         self.UltimateVersionNum = params.get("UltimateVersionNum")
+        self.GeneralVersionNum = params.get("GeneralVersionNum")
         self.RequestId = params.get("RequestId")
 
 
@@ -15531,6 +15898,12 @@ class EffectiveMachineInfo(AbstractModel):
         :param VulNum: 漏洞数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type VulNum: int
+        :param CloudTags: 云标签信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CloudTags: list of Tags
+        :param InstanceID: 机器instance ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceID: str
         """
         self.MachineName = None
         self.MachinePublicIp = None
@@ -15542,6 +15915,8 @@ class EffectiveMachineInfo(AbstractModel):
         self.MachineStatus = None
         self.LicenseOrder = None
         self.VulNum = None
+        self.CloudTags = None
+        self.InstanceID = None
 
 
     def _deserialize(self, params):
@@ -15562,6 +15937,13 @@ class EffectiveMachineInfo(AbstractModel):
             self.LicenseOrder = LicenseOrder()
             self.LicenseOrder._deserialize(params.get("LicenseOrder"))
         self.VulNum = params.get("VulNum")
+        if params.get("CloudTags") is not None:
+            self.CloudTags = []
+            for item in params.get("CloudTags"):
+                obj = Tags()
+                obj._deserialize(item)
+                self.CloudTags.append(obj)
+        self.InstanceID = params.get("InstanceID")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17410,6 +17792,9 @@ ABROAD - 海外IP；
 XTI - 威胁情报
 注意：此字段可能返回 null，表示取不到有效值。
         :type Desc: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Id = None
         self.Uuid = None
@@ -17431,6 +17816,7 @@ XTI - 威胁情报
         self.Location = None
         self.Quuid = None
         self.Desc = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -17454,6 +17840,9 @@ XTI - 威胁情报
         self.Location = params.get("Location")
         self.Quuid = params.get("Quuid")
         self.Desc = params.get("Desc")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17631,6 +18020,9 @@ class JavaMemShellInfo(AbstractModel):
         :type Status: int
         :param Quuid: 服务器quuid
         :type Quuid: str
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Id = None
         self.Alias = None
@@ -17641,6 +18033,7 @@ class JavaMemShellInfo(AbstractModel):
         self.RecentFoundTime = None
         self.Status = None
         self.Quuid = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -17653,6 +18046,9 @@ class JavaMemShellInfo(AbstractModel):
         self.RecentFoundTime = params.get("RecentFoundTime")
         self.Status = params.get("Status")
         self.Quuid = params.get("Quuid")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17687,6 +18083,9 @@ class LicenseBindDetail(AbstractModel):
         :type IsUnBind: bool
         :param IsSwitchBind: 是否允许换绑,false 不允许换绑
         :type IsSwitchBind: bool
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.MachineName = None
         self.MachineWanIp = None
@@ -17697,6 +18096,7 @@ class LicenseBindDetail(AbstractModel):
         self.AgentStatus = None
         self.IsUnBind = None
         self.IsSwitchBind = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -17709,6 +18109,9 @@ class LicenseBindDetail(AbstractModel):
         self.AgentStatus = params.get("AgentStatus")
         self.IsUnBind = params.get("IsUnBind")
         self.IsSwitchBind = params.get("IsSwitchBind")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18135,6 +18538,17 @@ class Machine(AbstractModel):
         :param IpList: 主机ip列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type IpList: str
+        :param VpcId: 所属网络
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param Remark: 备注信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Remark: str
         """
         self.MachineName = None
         self.MachineOs = None
@@ -18163,6 +18577,10 @@ class Machine(AbstractModel):
         self.CloudTags = None
         self.IsAddedOnTheFifteen = None
         self.IpList = None
+        self.VpcId = None
+        self.MachineExtraInfo = None
+        self.InstanceId = None
+        self.Remark = None
 
 
     def _deserialize(self, params):
@@ -18205,6 +18623,62 @@ class Machine(AbstractModel):
                 self.CloudTags.append(obj)
         self.IsAddedOnTheFifteen = params.get("IsAddedOnTheFifteen")
         self.IpList = params.get("IpList")
+        self.VpcId = params.get("VpcId")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
+        self.InstanceId = params.get("InstanceId")
+        self.Remark = params.get("Remark")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class MachineExtraInfo(AbstractModel):
+    """服务器基础信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param WanIP: 公网IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WanIP: str
+        :param PrivateIP: 内网IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrivateIP: str
+        :param NetworkType: 网络类型，1:vpc网络 2:基础网络 3:非腾讯云网络
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NetworkType: int
+        :param NetworkName: 网络名，vpc网络情况下会返回vpc_id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NetworkName: str
+        :param InstanceID: 实例ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceID: str
+        :param HostName: 主机名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostName: str
+        """
+        self.WanIP = None
+        self.PrivateIP = None
+        self.NetworkType = None
+        self.NetworkName = None
+        self.InstanceID = None
+        self.HostName = None
+
+
+    def _deserialize(self, params):
+        self.WanIP = params.get("WanIP")
+        self.PrivateIP = params.get("PrivateIP")
+        self.NetworkType = params.get("NetworkType")
+        self.NetworkName = params.get("NetworkName")
+        self.InstanceID = params.get("InstanceID")
+        self.HostName = params.get("HostName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18293,6 +18767,9 @@ class MalWareList(AbstractModel):
         :type Quuid: str
         :param MD5: 木马样本md5
         :type MD5: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.HostIp = None
         self.Uuid = None
@@ -18312,6 +18789,7 @@ class MalWareList(AbstractModel):
         self.FileExists = None
         self.Quuid = None
         self.MD5 = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -18333,6 +18811,9 @@ class MalWareList(AbstractModel):
         self.FileExists = params.get("FileExists")
         self.Quuid = params.get("Quuid")
         self.MD5 = params.get("MD5")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18458,6 +18939,9 @@ class MalwareInfo(AbstractModel):
         :param StrFileAccessTime: 最近访问时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type StrFileAccessTime: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.VirusName = None
         self.FileSize = None
@@ -18488,6 +18972,7 @@ class MalwareInfo(AbstractModel):
         self.Uuid = None
         self.ModifyTime = None
         self.StrFileAccessTime = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -18520,6 +19005,9 @@ class MalwareInfo(AbstractModel):
         self.Uuid = params.get("Uuid")
         self.ModifyTime = params.get("ModifyTime")
         self.StrFileAccessTime = params.get("StrFileAccessTime")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18576,12 +19064,20 @@ class ModifyAutoOpenProVersionConfigRequest(AbstractModel):
 <li>CLOSE：关闭</li>
 <li>OPEN：打开</li>
         :type Status: str
+        :param AutoRepurchaseSwitch: 自动加购/扩容授权开关,默认 1, 0关闭, 1开启
+        :type AutoRepurchaseSwitch: int
+        :param AutoRepurchaseRenewSwitch: 自动加购的订单是否自动续费,默认0 ,0关闭, 1开启
+        :type AutoRepurchaseRenewSwitch: int
         """
         self.Status = None
+        self.AutoRepurchaseSwitch = None
+        self.AutoRepurchaseRenewSwitch = None
 
 
     def _deserialize(self, params):
         self.Status = params.get("Status")
+        self.AutoRepurchaseSwitch = params.get("AutoRepurchaseSwitch")
+        self.AutoRepurchaseRenewSwitch = params.get("AutoRepurchaseRenewSwitch")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -18916,6 +19412,51 @@ class ModifyLicenseUnBindsResponse(AbstractModel):
                 obj = LicenseUnBindRsp()
                 obj._deserialize(item)
                 self.ErrMsg.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyMachineRemarkRequest(AbstractModel):
+    """ModifyMachineRemark请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Quuid: 主机Quuid
+        :type Quuid: str
+        :param Remark: 备注信息
+        :type Remark: str
+        """
+        self.Quuid = None
+        self.Remark = None
+
+
+    def _deserialize(self, params):
+        self.Quuid = params.get("Quuid")
+        self.Remark = params.get("Remark")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyMachineRemarkResponse(AbstractModel):
+    """ModifyMachineRemark返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -19327,6 +19868,38 @@ class OpenPortStatistics(AbstractModel):
         
 
 
+class OrderModifyObject(AbstractModel):
+    """订单变配参数对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResourceId: 资源ID
+        :type ResourceId: str
+        :param NewSubProductCode: 新产品标识,这里支持PRO_VERSION 专业版,FLAGSHIP 旗舰版
+        :type NewSubProductCode: str
+        :param InquireNum: 扩容/缩容数,变配子产品忽略该参数
+        :type InquireNum: int
+        """
+        self.ResourceId = None
+        self.NewSubProductCode = None
+        self.InquireNum = None
+
+
+    def _deserialize(self, params):
+        self.ResourceId = params.get("ResourceId")
+        self.NewSubProductCode = params.get("NewSubProductCode")
+        self.InquireNum = params.get("InquireNum")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class OsName(AbstractModel):
     """操作系统名称
 
@@ -19434,6 +20007,9 @@ class PrivilegeEscalationProcess(AbstractModel):
         :type CreateTime: str
         :param MachineName: 机器名
         :type MachineName: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Id = None
         self.Uuid = None
@@ -19453,6 +20029,7 @@ class PrivilegeEscalationProcess(AbstractModel):
         self.Status = None
         self.CreateTime = None
         self.MachineName = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -19474,6 +20051,9 @@ class PrivilegeEscalationProcess(AbstractModel):
         self.Status = params.get("Status")
         self.CreateTime = params.get("CreateTime")
         self.MachineName = params.get("MachineName")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19660,6 +20240,9 @@ class ProtectDirRelatedServer(AbstractModel):
         :type Progress: int
         :param ExceptionMessage: 异常信息
         :type ExceptionMessage: str
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Id = None
         self.HostName = None
@@ -19674,6 +20257,7 @@ class ProtectDirRelatedServer(AbstractModel):
         self.Exception = None
         self.Progress = None
         self.ExceptionMessage = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -19690,6 +20274,9 @@ class ProtectDirRelatedServer(AbstractModel):
         self.Exception = params.get("Exception")
         self.Progress = params.get("Progress")
         self.ExceptionMessage = params.get("ExceptionMessage")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19724,6 +20311,9 @@ class ProtectEventLists(AbstractModel):
         :type Id: int
         :param FileType: 文件类型 0-常规文件；1-目录；2-软链
         :type FileType: int
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.HostName = None
         self.HostIp = None
@@ -19734,6 +20324,7 @@ class ProtectEventLists(AbstractModel):
         self.RestoreTime = None
         self.Id = None
         self.FileType = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -19746,6 +20337,9 @@ class ProtectEventLists(AbstractModel):
         self.RestoreTime = params.get("RestoreTime")
         self.Id = params.get("Id")
         self.FileType = params.get("FileType")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -20140,6 +20734,9 @@ class ReverseShell(AbstractModel):
         :type ProcTree: str
         :param DetectBy: 检测方法
         :type DetectBy: int
+        :param MachineExtraInfo:  主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.Id = None
         self.Uuid = None
@@ -20161,6 +20758,7 @@ class ReverseShell(AbstractModel):
         self.MachineName = None
         self.ProcTree = None
         self.DetectBy = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -20184,6 +20782,9 @@ class ReverseShell(AbstractModel):
         self.MachineName = params.get("MachineName")
         self.ProcTree = params.get("ProcTree")
         self.DetectBy = params.get("DetectBy")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -20450,6 +21051,9 @@ class ScanTaskDetails(AbstractModel):
         :type FailType: int
         :param MachineWanIp: 外网ip
         :type MachineWanIp: str
+        :param MachineExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.HostIp = None
         self.HostName = None
@@ -20464,6 +21068,7 @@ class ScanTaskDetails(AbstractModel):
         self.Id = None
         self.FailType = None
         self.MachineWanIp = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -20480,6 +21085,9 @@ class ScanTaskDetails(AbstractModel):
         self.Id = params.get("Id")
         self.FailType = params.get("FailType")
         self.MachineWanIp = params.get("MachineWanIp")
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21868,6 +22476,12 @@ class VulEffectHostList(AbstractModel):
         :param PublicIpAddresses: 外网ip
 注意：此字段可能返回 null，表示取不到有效值。
         :type PublicIpAddresses: str
+        :param CloudTags: 云标签信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CloudTags: list of Tags
+        :param MachineExtraInfo: 主机额外信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
         """
         self.EventId = None
         self.Status = None
@@ -21885,6 +22499,8 @@ class VulEffectHostList(AbstractModel):
         self.FirstDiscoveryTime = None
         self.InstanceState = None
         self.PublicIpAddresses = None
+        self.CloudTags = None
+        self.MachineExtraInfo = None
 
 
     def _deserialize(self, params):
@@ -21904,6 +22520,15 @@ class VulEffectHostList(AbstractModel):
         self.FirstDiscoveryTime = params.get("FirstDiscoveryTime")
         self.InstanceState = params.get("InstanceState")
         self.PublicIpAddresses = params.get("PublicIpAddresses")
+        if params.get("CloudTags") is not None:
+            self.CloudTags = []
+            for item in params.get("CloudTags"):
+                obj = Tags()
+                obj._deserialize(item)
+                self.CloudTags.append(obj)
+        if params.get("MachineExtraInfo") is not None:
+            self.MachineExtraInfo = MachineExtraInfo()
+            self.MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -22202,6 +22827,12 @@ class WarningInfoObj(AbstractModel):
         :type ControlBit: int
         :param ControlBits: 漏洞等级控制位二进制，每一位对应页面漏洞等级的开启关闭：低中高（0:关闭；1：开启），例如：101 → 同时勾选低+高
         :type ControlBits: str
+        :param HostRange: 告警主机范围类型，0:全部主机，1:按所属项目选，2:按腾讯云标签选，3:按主机安全标签选，4:自选主机
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostRange: int
+        :param Count: 配置的告警范围主机个数，前端用此判断展示提示信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Count: int
         """
         self.Type = None
         self.DisablePhoneWarning = None
@@ -22210,6 +22841,8 @@ class WarningInfoObj(AbstractModel):
         self.TimeZone = None
         self.ControlBit = None
         self.ControlBits = None
+        self.HostRange = None
+        self.Count = None
 
 
     def _deserialize(self, params):
@@ -22220,6 +22853,8 @@ class WarningInfoObj(AbstractModel):
         self.TimeZone = params.get("TimeZone")
         self.ControlBit = params.get("ControlBit")
         self.ControlBits = params.get("ControlBits")
+        self.HostRange = params.get("HostRange")
+        self.Count = params.get("Count")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -22236,7 +22871,7 @@ class WarningObject(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Type: 事件告警类型；1：离线，2：木马，3：异常登录，4：爆破，5：漏洞（已拆分为9-12四种类型）6：高位命令，7：反弹sell，8：本地提权，9：系统组件漏洞，10：web应用漏洞，11：应急漏洞，12：安全基线
+        :param Type: 事件告警类型；1：离线，2：木马，3：异常登录，4：爆破，5：漏洞（已拆分为9-12四种类型）6：高位命令，7：反弹sell，8：本地提权，9：系统组件漏洞，10：web应用漏洞，11：应急漏洞，12：安全基线，14：恶意请求，15: 网络攻击，16：Windows系统漏洞，17：Linux软件漏洞
         :type Type: int
         :param DisablePhoneWarning: 1: 关闭告警 0: 开启告警
         :type DisablePhoneWarning: int
@@ -22246,12 +22881,16 @@ class WarningObject(AbstractModel):
         :type EndTime: str
         :param ControlBits: 漏洞等级控制位二进制，每一位对应页面漏洞等级的开启关闭：低中高（0:关闭；1：开启），例如：101 → 同时勾选低+高；01→(登录审计)疑似不告警，高危告警
         :type ControlBits: str
+        :param HostRange: 告警主机范围类型，0:全部主机，1:按所属项目选，2:按腾讯云标签选，3:按主机安全标签选，4:自选主机
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostRange: int
         """
         self.Type = None
         self.DisablePhoneWarning = None
         self.BeginTime = None
         self.EndTime = None
         self.ControlBits = None
+        self.HostRange = None
 
 
     def _deserialize(self, params):
@@ -22260,6 +22899,7 @@ class WarningObject(AbstractModel):
         self.BeginTime = params.get("BeginTime")
         self.EndTime = params.get("EndTime")
         self.ControlBits = params.get("ControlBits")
+        self.HostRange = params.get("HostRange")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

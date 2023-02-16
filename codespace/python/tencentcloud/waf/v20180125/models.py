@@ -379,14 +379,16 @@ class AddCustomRuleRequest(AbstractModel):
         :type Strategies: list of Strategy
         :param Domain: 需要添加策略的域名
         :type Domain: str
-        :param ActionType: 动作类型
+        :param ActionType: 动作类型，1代表阻断，2代表人机识别，3代表观察，4代表重定向
         :type ActionType: str
         :param Redirect: 如果动作是重定向，则表示重定向的地址；其他情况可以为空
         :type Redirect: str
-        :param Edition: "clb-waf"或者"sparta-waf"
+        :param Edition: WAF实例类型，sparta-waf表示SAAS型WAF，clb-waf表示负载均衡型WAF
         :type Edition: str
         :param Bypass: 放行的详情
         :type Bypass: str
+        :param EventId: 添加规则的来源，默认为空
+        :type EventId: str
         """
         self.Name = None
         self.SortId = None
@@ -397,6 +399,7 @@ class AddCustomRuleRequest(AbstractModel):
         self.Redirect = None
         self.Edition = None
         self.Bypass = None
+        self.EventId = None
 
 
     def _deserialize(self, params):
@@ -414,6 +417,7 @@ class AddCustomRuleRequest(AbstractModel):
         self.Redirect = params.get("Redirect")
         self.Edition = params.get("Edition")
         self.Bypass = params.get("Bypass")
+        self.EventId = params.get("EventId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -672,6 +676,42 @@ class AddSpartaProtectionResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class AttackLogInfo(AbstractModel):
+    """攻击日志详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Content: 攻击日志的详情内容
+        :type Content: str
+        :param FileName: CLS返回内容
+        :type FileName: str
+        :param Source: CLS返回内容
+        :type Source: str
+        :param TimeStamp: CLS返回内容
+        :type TimeStamp: str
+        """
+        self.Content = None
+        self.FileName = None
+        self.Source = None
+        self.TimeStamp = None
+
+
+    def _deserialize(self, params):
+        self.Content = params.get("Content")
+        self.FileName = params.get("FileName")
+        self.Source = params.get("Source")
+        self.TimeStamp = params.get("TimeStamp")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class AutoDenyDetail(AbstractModel):
@@ -1174,7 +1214,7 @@ class DeleteIpAccessControlRequest(AbstractModel):
         :type Domain: str
         :param Items: 删除的ip数组
         :type Items: list of str
-        :param DeleteAll: 删除对应的域名下的所有黑/白IP名额单
+        :param DeleteAll: 是否删除对应的域名下的所有黑/白IP名单，true表示全部删除，false表示只删除指定ip名单
         :type DeleteAll: bool
         :param SourceType: 是否为多域名黑白名单
         :type SourceType: str
@@ -1409,7 +1449,7 @@ class DescribeAccessIndexResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Status: 是否生效
+        :param Status: 是否生效，true表示生效，false表示未生效
         :type Status: bool
         :param Rule: 索引配置信息
 注意：此字段可能返回 null，表示取不到有效值。
@@ -1596,7 +1636,7 @@ class DescribeDomainWhiteRulesRequest(AbstractModel):
         :type Page: int
         :param Count: 每页展示的条数
         :type Count: int
-        :param Sort: 排序方式
+        :param Sort: 排序方式,desc表示降序，asc表示升序
         :type Sort: str
         :param RuleId: 规则ID
         :type RuleId: str
@@ -1859,19 +1899,19 @@ class DescribeIpAccessControlRequest(AbstractModel):
         :type Domain: str
         :param Count: 计数标识
         :type Count: int
-        :param ActionType: 动作
+        :param ActionType: 动作，40表示查询白名单，42表示查询黑名单
         :type ActionType: int
-        :param VtsMin: 有效时间最小时间戳
+        :param VtsMin: 最小有效时间的时间戳
         :type VtsMin: int
-        :param VtsMax: 有效时间最大时间戳
+        :param VtsMax: 最大有效时间的时间戳
         :type VtsMax: int
-        :param CtsMin: 创建时间最小时间戳
+        :param CtsMin: 最小创建时间的时间戳
         :type CtsMin: int
-        :param CtsMax: 创建时间最大时间戳
+        :param CtsMax: 最大创建时间的时间戳
         :type CtsMax: int
-        :param OffSet: 偏移
+        :param OffSet: 分页开始条数
         :type OffSet: int
-        :param Limit: 限制
+        :param Limit: 每页的条数
         :type Limit: int
         :param Source: 来源
         :type Source: str
@@ -2263,6 +2303,9 @@ class DomainInfo(AbstractModel):
         :type PostCLSStatus: int
         :param PostCKafkaStatus: 是否开启投递CKafka功能
         :type PostCKafkaStatus: int
+        :param AlbType: 应用型负载均衡类型: clb或者apisix，默认clb
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlbType: str
         """
         self.Domain = None
         self.DomainId = None
@@ -2288,6 +2331,7 @@ class DomainInfo(AbstractModel):
         self.Level = None
         self.PostCLSStatus = None
         self.PostCKafkaStatus = None
+        self.AlbType = None
 
 
     def _deserialize(self, params):
@@ -2325,6 +2369,7 @@ class DomainInfo(AbstractModel):
         self.Level = params.get("Level")
         self.PostCLSStatus = params.get("PostCLSStatus")
         self.PostCKafkaStatus = params.get("PostCKafkaStatus")
+        self.AlbType = params.get("AlbType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3059,6 +3104,75 @@ class LoadBalancerPackageNew(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param ListenerId: 监听id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ListenerId: str
+        :param ListenerName: 监听名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ListenerName: str
+        :param LoadBalancerId: 负载均衡id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LoadBalancerId: str
+        :param LoadBalancerName: 负载均衡名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LoadBalancerName: str
+        :param Protocol: 协议
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Protocol: str
+        :param Region: 地区
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param Vip: 接入IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Vip: str
+        :param Vport: 接入端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Vport: int
+        :param Zone: 地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Zone: str
+        :param NumericalVpcId: VPCID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NumericalVpcId: int
+        :param LoadBalancerType: CLB类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LoadBalancerType: str
+        """
+        self.ListenerId = None
+        self.ListenerName = None
+        self.LoadBalancerId = None
+        self.LoadBalancerName = None
+        self.Protocol = None
+        self.Region = None
+        self.Vip = None
+        self.Vport = None
+        self.Zone = None
+        self.NumericalVpcId = None
+        self.LoadBalancerType = None
+
+
+    def _deserialize(self, params):
+        self.ListenerId = params.get("ListenerId")
+        self.ListenerName = params.get("ListenerName")
+        self.LoadBalancerId = params.get("LoadBalancerId")
+        self.LoadBalancerName = params.get("LoadBalancerName")
+        self.Protocol = params.get("Protocol")
+        self.Region = params.get("Region")
+        self.Vip = params.get("Vip")
+        self.Vport = params.get("Vport")
+        self.Zone = params.get("Zone")
+        self.NumericalVpcId = params.get("NumericalVpcId")
+        self.LoadBalancerType = params.get("LoadBalancerType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class ModifyAccessPeriodRequest(AbstractModel):
     """ModifyAccessPeriod请求参数结构体
@@ -3090,6 +3204,51 @@ class ModifyAccessPeriodRequest(AbstractModel):
 
 class ModifyAccessPeriodResponse(AbstractModel):
     """ModifyAccessPeriod返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyAreaBanStatusRequest(AbstractModel):
+    """ModifyAreaBanStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 修要修改的域名
+        :type Domain: str
+        :param Status: 状态值，0表示关闭，1表示开启
+        :type Status: int
+        """
+        self.Domain = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyAreaBanStatusResponse(AbstractModel):
+    """ModifyAreaBanStatus返回参数结构体
 
     """
 
@@ -3234,11 +3393,11 @@ class ModifyWafAutoDenyRulesRequest(AbstractModel):
         r"""
         :param Domain: 域名
         :type Domain: str
-        :param AttackThreshold: 攻击次数阈值
+        :param AttackThreshold: 触发IP封禁的攻击次数阈值，范围为2~100次
         :type AttackThreshold: int
-        :param TimeThreshold: 攻击时间阈值
+        :param TimeThreshold: IP封禁统计时间，范围为1-60分钟
         :type TimeThreshold: int
-        :param DenyTimeThreshold: 自动封禁时间
+        :param DenyTimeThreshold: 触发IP封禁后的封禁时间，范围为5~360分钟
         :type DenyTimeThreshold: int
         :param DefenseStatus: 自动封禁状态
         :type DefenseStatus: int
@@ -3666,9 +3825,9 @@ class SearchAccessLogResponse(AbstractModel):
         r"""
         :param Context: 加载后续内容的Context
         :type Context: str
-        :param ListOver: 日志查询结果是否全部返回
+        :param ListOver: 日志查询结果是否全部返回，其中，“true”表示结果返回，“false”表示结果为返回
         :type ListOver: bool
-        :param Analysis: 返回的是否为分析结果
+        :param Analysis: 返回的是否为分析结果，其中，“true”表示返回分析结果，“false”表示未返回分析结果
         :type Analysis: bool
         :param ColNames: 如果Analysis为True，则返回分析结果的列名，否则为空
 注意：此字段可能返回 null，表示取不到有效值。
@@ -3714,6 +3873,96 @@ class SearchAccessLogResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class SearchAttackLogRequest(AbstractModel):
+    """SearchAttackLog请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 查询的域名，所有域名使用all
+        :type Domain: str
+        :param StartTime: 查询起始时间
+        :type StartTime: str
+        :param EndTime: 查询结束时间
+        :type EndTime: str
+        :param Context: 查询的游标。第一次请求使用空字符串即可，后续请求使用上一次请求返回的最后一条记录的context的值即可。
+        :type Context: str
+        :param QueryString: Lucene语法
+        :type QueryString: str
+        :param Count: 查询的数量，默认10条，最多100条
+        :type Count: int
+        :param Sort: 默认为desc，可以取值desc和asc
+        :type Sort: str
+        """
+        self.Domain = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Context = None
+        self.QueryString = None
+        self.Count = None
+        self.Sort = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Context = params.get("Context")
+        self.QueryString = params.get("QueryString")
+        self.Count = params.get("Count")
+        self.Sort = params.get("Sort")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SearchAttackLogResponse(AbstractModel):
+    """SearchAttackLog返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Count: 当前返回的攻击日志条数
+        :type Count: int
+        :param Context: 翻页游标，如果没有下一页了，这个参数为空""
+        :type Context: str
+        :param Data: 攻击日志数组条目内容
+        :type Data: list of AttackLogInfo
+        :param ListOver: CLS接口返回内容
+        :type ListOver: bool
+        :param SqlFlag: CLS接口返回内容，标志是否启动新版本索引
+        :type SqlFlag: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Count = None
+        self.Context = None
+        self.Data = None
+        self.ListOver = None
+        self.SqlFlag = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Count = params.get("Count")
+        self.Context = params.get("Context")
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = AttackLogInfo()
+                obj._deserialize(item)
+                self.Data.append(obj)
+        self.ListOver = params.get("ListOver")
+        self.SqlFlag = params.get("SqlFlag")
+        self.RequestId = params.get("RequestId")
+
+
 class Strategy(AbstractModel):
     """自定义规则的匹配条件结构体
 
@@ -3750,6 +3999,59 @@ class Strategy(AbstractModel):
         
 
 
+class SwitchDomainRulesRequest(AbstractModel):
+    """SwitchDomainRules请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Domain: 域名
+        :type Domain: str
+        :param Ids: 规则列表
+        :type Ids: list of int non-negative
+        :param Status: 开关状态
+        :type Status: int
+        :param Reason: 设置为观察模式原因
+        :type Reason: int
+        """
+        self.Domain = None
+        self.Ids = None
+        self.Status = None
+        self.Reason = None
+
+
+    def _deserialize(self, params):
+        self.Domain = params.get("Domain")
+        self.Ids = params.get("Ids")
+        self.Status = params.get("Status")
+        self.Reason = params.get("Reason")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SwitchDomainRulesResponse(AbstractModel):
+    """SwitchDomainRules返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class UpsertIpAccessControlRequest(AbstractModel):
     """UpsertIpAccessControl请求参数结构体
 
@@ -3761,7 +4063,7 @@ class UpsertIpAccessControlRequest(AbstractModel):
         :type Domain: str
         :param Items: ip 参数列表，json数组由ip，source，note，action，valid_ts组成。ip对应配置的ip地址，source固定为custom值，note为注释，action值42为黑名单，40为白名单，valid_ts为有效日期，值为秒级时间戳
         :type Items: list of str
-        :param Edition: clb-waf或者sparta-waf
+        :param Edition: WAF实例类型，sparta-waf表示SAAS型WAF，clb-waf表示负载均衡型WAF
         :type Edition: str
         :param SourceType: 是否为多域名黑白名单
         :type SourceType: str

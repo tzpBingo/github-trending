@@ -277,6 +277,76 @@ class ClientConnection(AbstractModel):
         
 
 
+class CreateAccountUserRequest(AbstractModel):
+    """CreateAccountUser请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例 ID。
+        :type InstanceId: str
+        :param UserName: 新账号名称。其格式要求如下：<ul><li>字符范围[1,32]。</li><li>可输入[A,Z]、[a,z]、[1,9]范围的字符以及下划线“_”与短划线“-”。</li></ul>
+        :type UserName: str
+        :param Password: 新账号密码。密码复杂度要求如下：<ul><li>字符长度范围[8,32]。</li><li>至少包含字母、数字和特殊字符（叹号“!”、at"@"、井号“#”、百分号“%”、插入符“^”、星号“*”、小括号“()”、下划线“_”）中的两种。</li></ul>
+        :type Password: str
+        :param MongoUserPassword: mongouser 账号对应的密码。mongouser 为系统默认账号，即为创建实例时，设置的密码。
+        :type MongoUserPassword: str
+        :param UserDesc: 账号备注信息。
+        :type UserDesc: str
+        :param AuthRole: 账号的读写权限信息。
+        :type AuthRole: list of Auth
+        """
+        self.InstanceId = None
+        self.UserName = None
+        self.Password = None
+        self.MongoUserPassword = None
+        self.UserDesc = None
+        self.AuthRole = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.UserName = params.get("UserName")
+        self.Password = params.get("Password")
+        self.MongoUserPassword = params.get("MongoUserPassword")
+        self.UserDesc = params.get("UserDesc")
+        if params.get("AuthRole") is not None:
+            self.AuthRole = []
+            for item in params.get("AuthRole"):
+                obj = Auth()
+                obj._deserialize(item)
+                self.AuthRole.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateAccountUserResponse(AbstractModel):
+    """CreateAccountUser返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 创建任务ID。
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateBackupDBInstanceRequest(AbstractModel):
     """CreateBackupDBInstance请求参数结构体
 
@@ -1872,7 +1942,7 @@ class InquirePriceCreateDBInstancesRequest(AbstractModel):
         :type Memory: int
         :param Volume: 实例硬盘大小。<ul><li>单位：GB。</li><li>取值范围：请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数MinStorage与MaxStorage分别对应其最小磁盘规格与最大磁盘规格。</br>
         :type Volume: int
-        :param MongoVersion: 实例版本信息。<ul><li>具体支持的版本，请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数MongoVersionCode为实例所支持的版本信息。</li><li>版本信息与版本号对应关系如下：<ul><li>MONGO_3_WT：MongoDB 3.2 WiredTiger存储引擎版本。</li><li>MONGO_3_ROCKS：MongoDB 3.2 RocksDB存储引擎版本。</li><li>MONGO_36_WT：MongoDB 3.6 WiredTiger存储引擎版本。</li><li>MONGO_40_WT：MongoDB 4.0 WiredTiger存储引擎版本。</li></ul>
+        :param MongoVersion: 实例版本信息。<ul><li>具体支持的版本，请通过接口<a href="https://cloud.tencent.com/document/product/240/38567">DescribeSpecInfo</a>查询，其返回的数据结构SpecItems中的参数MongoVersionCode为实例所支持的版本信息。</li><li>版本信息与版本号对应关系如下：<ul><li>MONGO_3_WT：MongoDB 3.2 WiredTiger存储引擎版本。</li><li>MONGO_3_ROCKS：MongoDB 3.2 RocksDB存储引擎版本。</li><li>MONGO_36_WT：MongoDB 3.6 WiredTiger存储引擎版本。</li><li>MONGO_40_WT：MongoDB 4.0 WiredTiger存储引擎版本。</li><li>MONGO_42_WT：MongoDB 4.2 WiredTiger存储引擎版本。</li><li>MONGO_44_WT：MongoDB 4.4 WiredTiger存储引擎版本。</li></ul>
         :type MongoVersion: str
         :param MachineCode: 机器类型。<ul><li>HIO：高IO型。</li><li>HIO10G：高IO万兆型。</li></ul>
         :type MachineCode: str
@@ -3336,11 +3406,11 @@ class SetAccountUserPrivilegeRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID
+        :param InstanceId: 实例ID。
         :type InstanceId: str
-        :param UserName: 账号名称
+        :param UserName: 账号名称。
         :type UserName: str
-        :param AuthRole: 权限信息
+        :param AuthRole: 权限信息。
         :type AuthRole: list of Auth
         """
         self.InstanceId = None

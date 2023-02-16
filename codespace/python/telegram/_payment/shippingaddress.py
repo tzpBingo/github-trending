@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -68,12 +68,12 @@ class ShippingAddress(TelegramObject):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
-        self.country_code = country_code
-        self.state = state
-        self.city = city
-        self.street_line1 = street_line1
-        self.street_line2 = street_line2
-        self.post_code = post_code
+        self.country_code: str = country_code
+        self.state: str = state
+        self.city: str = city
+        self.street_line1: str = street_line1
+        self.street_line2: str = street_line2
+        self.post_code: str = post_code
 
         self._id_attrs = (
             self.country_code,
@@ -83,3 +83,5 @@ class ShippingAddress(TelegramObject):
             self.street_line2,
             self.post_code,
         )
+
+        self._freeze()

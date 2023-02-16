@@ -614,9 +614,9 @@ class CertInfo(AbstractModel):
         :type CertId: str
         :param CertName: 上传证书的名称，如果没有 CertId，则此项必传。
         :type CertName: str
-        :param CertContent: 上传证书的公钥，如果没有 CertId，则此项必传。
+        :param CertContent: 上传证书的公钥；如果没有 CertId，则此项必传。
         :type CertContent: str
-        :param CertKey: 上传服务端证书的私钥，如果没有 CertId，则此项必传。
+        :param CertKey: 上传服务端证书的私钥；如果没有 CertId，则此项必传。
         :type CertKey: str
         """
         self.CertId = None
@@ -1011,7 +1011,7 @@ class CloneLoadBalancerRequest(AbstractModel):
         :type SnatIps: list of SnatIp
         :param ClusterIds: 公网独占集群ID或者CDCId。
         :type ClusterIds: list of str
-        :param SlaType: 性能保障规格。
+        :param SlaType: 性能容量型规格。
         :type SlaType: str
         :param ClusterTag: Stgw独占集群的标签。
         :type ClusterTag: str
@@ -1168,6 +1168,9 @@ class Cluster(AbstractModel):
         :param ClustersVersion: 集群版本
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClustersVersion: str
+        :param DisasterRecoveryType: 集群容灾类型，如SINGLE-ZONE，DISASTER-RECOVERY，MUTUAL-DISASTER-RECOVERY
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DisasterRecoveryType: str
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -1191,6 +1194,7 @@ class Cluster(AbstractModel):
         self.Isp = None
         self.ClustersZone = None
         self.ClustersVersion = None
+        self.DisasterRecoveryType = None
 
 
     def _deserialize(self, params):
@@ -1218,6 +1222,7 @@ class Cluster(AbstractModel):
             self.ClustersZone = ClustersZone()
             self.ClustersZone._deserialize(params.get("ClustersZone"))
         self.ClustersVersion = params.get("ClustersVersion")
+        self.DisasterRecoveryType = params.get("DisasterRecoveryType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1283,6 +1288,9 @@ class ClusterResource(AbstractModel):
         :param Isp: 集群的Isp属性，如："BGP","CMCC","CUCC","CTCC","INTERNAL"。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Isp: str
+        :param ClustersZone: 集群所在的可用区
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClustersZone: :class:`tencentcloud.clb.v20180317.models.ClustersZone`
         """
         self.ClusterId = None
         self.Vip = None
@@ -1290,6 +1298,7 @@ class ClusterResource(AbstractModel):
         self.Idle = None
         self.ClusterName = None
         self.Isp = None
+        self.ClustersZone = None
 
 
     def _deserialize(self, params):
@@ -1299,6 +1308,9 @@ class ClusterResource(AbstractModel):
         self.Idle = params.get("Idle")
         self.ClusterName = params.get("ClusterName")
         self.Isp = params.get("Isp")
+        if params.get("ClustersZone") is not None:
+            self.ClustersZone = ClustersZone()
+            self.ClustersZone._deserialize(params.get("ClustersZone"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1447,7 +1459,7 @@ class CreateListenerRequest(AbstractModel):
         :type LoadBalancerId: str
         :param Ports: 要将监听器创建到哪些端口，每个端口对应一个新的监听器。
         :type Ports: list of int
-        :param Protocol: 监听器协议： TCP | UDP | HTTP | HTTPS | TCP_SSL（TCP_SSL 正在内测中，如需使用请通过工单申请）。
+        :param Protocol: 监听器协议： TCP | UDP | HTTP | HTTPS | TCP_SSL | QUIC。
         :type Protocol: str
         :param ListenerNames: 要创建的监听器名称列表，名称与Ports数组按序一一对应，如不需立即命名，则无需提供此参数。
         :type ListenerNames: list of str
@@ -1474,6 +1486,10 @@ class CreateListenerRequest(AbstractModel):
         :type DeregisterTargetRst: bool
         :param MultiCertInfo: 证书信息，支持同时传入不同算法类型的多本服务端证书；此参数仅适用于未开启SNI特性的HTTPS监听器。此参数和Certificate不能同时传入。
         :type MultiCertInfo: :class:`tencentcloud.clb.v20180317.models.MultiCertInfo`
+        :param MaxConn: 监听器最大连接数，只有TCP/UDP/TCP_SSL/QUIC监听器支持，不传或者传-1表示监听器维度不限速。
+        :type MaxConn: int
+        :param MaxCps: 监听器最大新增连接数，只有TCP/UDP/TCP_SSL/QUIC监听器支持，不传或者传-1表示监听器维度不限速。
+        :type MaxCps: int
         """
         self.LoadBalancerId = None
         self.Ports = None
@@ -1490,6 +1506,8 @@ class CreateListenerRequest(AbstractModel):
         self.EndPort = None
         self.DeregisterTargetRst = None
         self.MultiCertInfo = None
+        self.MaxConn = None
+        self.MaxCps = None
 
 
     def _deserialize(self, params):
@@ -1514,6 +1532,8 @@ class CreateListenerRequest(AbstractModel):
         if params.get("MultiCertInfo") is not None:
             self.MultiCertInfo = MultiCertInfo()
             self.MultiCertInfo._deserialize(params.get("MultiCertInfo"))
+        self.MaxConn = params.get("MaxConn")
+        self.MaxCps = params.get("MaxCps")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1580,18 +1600,17 @@ OPEN：公网属性， INTERNAL：内网属性。
         :type VipIsp: str
         :param Tags: 购买负载均衡的同时，给负载均衡打上标签，最大支持20个标签键值对。
         :type Tags: list of TagInfo
-        :param Vip: 指定VIP申请负载均衡。指定此参数后：
-<ul><li>若创建共享型集群的公网负载均衡实例，则上述的VpcId选填，若实例是IPv6类型的，则SubnetId必填；若是IPv4、IPv6 NAT64类型，则SubnetId不填。</li>
-<li>若创建独占型集群的公网负载均衡实例，则上述的VpcId选填，若实例是IPv6类型的，则SubnetId必填；若是IPv4、IPv6 NAT64类型，则SubnetId不填。
-</li></ul>
+        :param Vip: 指定VIP申请负载均衡。此参数选填，不填写此参数时自动分配VIP。IPv4和IPv6类型支持此参数，IPv6 NAT64类型不支持。
+注意：当指定VIP创建内网实例、或公网IPv6 BGP实例时，若VIP不属于指定VPC子网的网段内时，会创建失败；若VIP已被占用，也会创建失败。
         :type Vip: str
         :param BandwidthPackageId: 带宽包ID，指定此参数时，网络计费方式（InternetAccessible.InternetChargeType）只支持按带宽包计费（BANDWIDTH_PACKAGE）。
         :type BandwidthPackageId: str
-        :param ExclusiveCluster: 独占集群信息。若创建独占集群负载均衡实例，则此参数必填。
+        :param ExclusiveCluster: 独占型实例信息。若创建独占型的内网负载均衡实例，则此参数必填。
         :type ExclusiveCluster: :class:`tencentcloud.clb.v20180317.models.ExclusiveCluster`
-        :param SlaType: 创建性能容量型 CLB 实例。
-<ul><li>若需要创建性能容量型 CLB 实例，则此参数必填，且取值为：SLA，表示创建按量计费模式下的默认性能保障规格的性能容量型实例。</li>
-<li>若需要创建共享型 CLB 实例，则无需填写此参数。</li></ul>
+        :param SlaType: 创建性能容量型实例。
+<ul><li>若需要创建性能容量型实例，则此参数必填，且取值为：SLA，表示创建按量计费模式下的默认规格的性能容量型实例。
+<ul><li>当您开通了普通规格的性能容量型时，SLA对应超强型1规格。普通规格的性能容量型正在内测中，请提交 [内测申请](https://cloud.tencent.com/apply/p/hf45esx99lf)。</li>
+<li>当您开通了超大型规格的性能容量型时，SLA对应超强型4规格。超大型规格的性能容量型正在内测中，请提交 [工单申请](https://console.cloud.tencent.com/workorder/category)。</li></ul></li><li>若需要创建共享型实例，则无需填写此参数。</li></ul>
         :type SlaType: str
         :param ClientToken: 用于保证请求幂等性的字符串。该字符串由客户生成，需保证不同请求之间唯一，最大值不超过64个ASCII字符。若不指定该参数，则无法保证请求的幂等性。
         :type ClientToken: str
@@ -2321,6 +2340,72 @@ class DeleteTargetGroupsRequest(AbstractModel):
 
 class DeleteTargetGroupsResponse(AbstractModel):
     """DeleteTargetGroups返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeregisterFunctionTargetsRequest(AbstractModel):
+    """DeregisterFunctionTargets请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LoadBalancerId: 负载均衡实例 ID。
+        :type LoadBalancerId: str
+        :param ListenerId: 负载均衡监听器 ID。
+        :type ListenerId: str
+        :param FunctionTargets: 待解绑的云函数列表。
+        :type FunctionTargets: list of FunctionTarget
+        :param LocationId: 目标转发规则的 ID，当将云函数从七层转发规则上解绑时，必须输入此参数或 Domain+Url 参数。
+        :type LocationId: str
+        :param Domain: 目标转发规则的域名，若已经输入 LocationId 参数，则本参数不生效。
+        :type Domain: str
+        :param Url: 目标转发规则的 URL，若已经输入 LocationId 参数，则本参数不生效。
+        :type Url: str
+        """
+        self.LoadBalancerId = None
+        self.ListenerId = None
+        self.FunctionTargets = None
+        self.LocationId = None
+        self.Domain = None
+        self.Url = None
+
+
+    def _deserialize(self, params):
+        self.LoadBalancerId = params.get("LoadBalancerId")
+        self.ListenerId = params.get("ListenerId")
+        if params.get("FunctionTargets") is not None:
+            self.FunctionTargets = []
+            for item in params.get("FunctionTargets"):
+                obj = FunctionTarget()
+                obj._deserialize(item)
+                self.FunctionTargets.append(obj)
+        self.LocationId = params.get("LocationId")
+        self.Domain = params.get("Domain")
+        self.Url = params.get("Url")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeregisterFunctionTargetsResponse(AbstractModel):
+    """DeregisterFunctionTargets返回参数结构体
 
     """
 
@@ -4472,6 +4557,74 @@ class Filter(AbstractModel):
         
 
 
+class FunctionInfo(AbstractModel):
+    """SCF云函数（Serverless Cloud Function）相关信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FunctionNamespace: 函数命名空间
+        :type FunctionNamespace: str
+        :param FunctionName: 函数名称
+        :type FunctionName: str
+        :param FunctionQualifier: 函数的版本名称或别名
+        :type FunctionQualifier: str
+        :param FunctionQualifierType: 标识 FunctionQualifier 参数的类型，可取值： VERSION（版本）、ALIAS（别名）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FunctionQualifierType: str
+        """
+        self.FunctionNamespace = None
+        self.FunctionName = None
+        self.FunctionQualifier = None
+        self.FunctionQualifierType = None
+
+
+    def _deserialize(self, params):
+        self.FunctionNamespace = params.get("FunctionNamespace")
+        self.FunctionName = params.get("FunctionName")
+        self.FunctionQualifier = params.get("FunctionQualifier")
+        self.FunctionQualifierType = params.get("FunctionQualifierType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class FunctionTarget(AbstractModel):
+    """SCF云函数（Serverless Cloud Function）作为后端服务
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Function: 云函数相关信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Function: :class:`tencentcloud.clb.v20180317.models.FunctionInfo`
+        :param Weight: 权重
+        :type Weight: int
+        """
+        self.Function = None
+        self.Weight = None
+
+
+    def _deserialize(self, params):
+        if params.get("Function") is not None:
+            self.Function = FunctionInfo()
+            self.Function._deserialize(params.get("Function"))
+        self.Weight = params.get("Weight")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class HealthCheck(AbstractModel):
     """健康检查信息。
     注意，自定义探测相关参数 目前只有少量区域灰度支持。
@@ -4868,6 +5021,12 @@ class Listener(AbstractModel):
         :param TargetGroupList: 绑定的目标组列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type TargetGroupList: list of BasicTargetGroupInfo
+        :param MaxConn: 监听器最大连接数，-1表示监听器维度不限速。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaxConn: int
+        :param MaxCps: 监听器最大新增连接数，-1表示监听器维度不限速。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaxCps: int
         """
         self.ListenerId = None
         self.Protocol = None
@@ -4889,6 +5048,8 @@ class Listener(AbstractModel):
         self.DeregisterTargetRst = None
         self.AttrFlags = None
         self.TargetGroupList = None
+        self.MaxConn = None
+        self.MaxCps = None
 
 
     def _deserialize(self, params):
@@ -4928,6 +5089,8 @@ class Listener(AbstractModel):
                 obj = BasicTargetGroupInfo()
                 obj._deserialize(item)
                 self.TargetGroupList.append(obj)
+        self.MaxConn = params.get("MaxConn")
+        self.MaxCps = params.get("MaxCps")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5225,7 +5388,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         :param SnatIps: 开启SnatPro负载均衡后，SnatIp列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SnatIps: list of SnatIp
-        :param SlaType: 性能保障规格
+        :param SlaType: 性能容量型规格
 注意：此字段可能返回 null，表示取不到有效值。
         :type SlaType: str
         :param IsBlock: vip是否被封堵
@@ -5255,7 +5418,7 @@ OPEN：公网属性， INTERNAL：内网属性。
         :param HealthLogTopicId: 负载均衡日志服务(CLS)的健康检查日志主题ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type HealthLogTopicId: str
-        :param ClusterIds: 集群ID.
+        :param ClusterIds: 集群ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterIds: list of str
         :param AttributeFlags: 负载均衡的属性
@@ -5465,7 +5628,7 @@ Public：公网属性， Private：内网属性。
         :param ExtraInfo: 暂做保留，一般用户无需关注。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExtraInfo: :class:`tencentcloud.clb.v20180317.models.ExtraInfo`
-        :param ConfigId: 负载均衡维度的个性化配置ID。
+        :param ConfigId: 负载均衡维度的个性化配置ID，多个配置用逗号隔开。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ConfigId: str
         :param Tags: 负载均衡实例的标签信息。
@@ -6012,6 +6175,72 @@ class ModifyDomainResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifyFunctionTargetsRequest(AbstractModel):
+    """ModifyFunctionTargets请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LoadBalancerId: 负载均衡实例ID。
+        :type LoadBalancerId: str
+        :param ListenerId: 负载均衡监听器ID。
+        :type ListenerId: str
+        :param FunctionTargets: 要修改的后端云函数服务列表。
+        :type FunctionTargets: list of FunctionTarget
+        :param LocationId: 转发规则的ID，当绑定机器到七层转发规则时，必须提供此参数或Domain+Url两者之一。
+        :type LocationId: str
+        :param Domain: 目标规则的域名，提供LocationId参数时本参数不生效。
+        :type Domain: str
+        :param Url: 目标规则的URL，提供LocationId参数时本参数不生效。
+        :type Url: str
+        """
+        self.LoadBalancerId = None
+        self.ListenerId = None
+        self.FunctionTargets = None
+        self.LocationId = None
+        self.Domain = None
+        self.Url = None
+
+
+    def _deserialize(self, params):
+        self.LoadBalancerId = params.get("LoadBalancerId")
+        self.ListenerId = params.get("ListenerId")
+        if params.get("FunctionTargets") is not None:
+            self.FunctionTargets = []
+            for item in params.get("FunctionTargets"):
+                obj = FunctionTarget()
+                obj._deserialize(item)
+                self.FunctionTargets.append(obj)
+        self.LocationId = params.get("LocationId")
+        self.Domain = params.get("Domain")
+        self.Url = params.get("Url")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyFunctionTargetsResponse(AbstractModel):
+    """ModifyFunctionTargets返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyListenerRequest(AbstractModel):
     """ModifyListener请求参数结构体
 
@@ -6046,6 +6275,10 @@ class ModifyListenerRequest(AbstractModel):
         :type SessionType: str
         :param MultiCertInfo: 证书信息，支持同时传入不同算法类型的多本服务端证书；此参数仅适用于未开启SNI特性的HTTPS监听器。此参数和Certificate不能同时传入。
         :type MultiCertInfo: :class:`tencentcloud.clb.v20180317.models.MultiCertInfo`
+        :param MaxConn: 监听器粒度并发连接数上限，当前仅性能容量型实例且仅TCP/UDP/TCP_SSL/QUIC监听器支持。取值范围：1-实例规格并发连接上限，其中-1表示关闭监听器粒度并发连接数限速。
+        :type MaxConn: int
+        :param MaxCps: 监听器粒度新建连接数上限，当前仅性能容量型实例且仅TCP/UDP/TCP_SSL/QUIC监听器支持。取值范围：1-实例规格新建连接上限，其中-1表示关闭监听器粒度新建连接数限速。
+        :type MaxCps: int
         """
         self.LoadBalancerId = None
         self.ListenerId = None
@@ -6060,6 +6293,8 @@ class ModifyListenerRequest(AbstractModel):
         self.DeregisterTargetRst = None
         self.SessionType = None
         self.MultiCertInfo = None
+        self.MaxConn = None
+        self.MaxCps = None
 
 
     def _deserialize(self, params):
@@ -6082,6 +6317,8 @@ class ModifyListenerRequest(AbstractModel):
         if params.get("MultiCertInfo") is not None:
             self.MultiCertInfo = MultiCertInfo()
             self.MultiCertInfo._deserialize(params.get("MultiCertInfo"))
+        self.MaxConn = params.get("MaxConn")
+        self.MaxCps = params.get("MaxCps")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6234,7 +6471,7 @@ class ModifyLoadBalancerSlaRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param LoadBalancerSla: 负载均衡实例信息
+        :param LoadBalancerSla: 负载均衡实例信息。
         :type LoadBalancerSla: list of SlaUpdateParam
         """
         self.LoadBalancerSla = None
@@ -6715,6 +6952,72 @@ class Quota(AbstractModel):
         
 
 
+class RegisterFunctionTargetsRequest(AbstractModel):
+    """RegisterFunctionTargets请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LoadBalancerId: 负载均衡实例 ID。
+        :type LoadBalancerId: str
+        :param ListenerId: 负载均衡监听器 ID。
+        :type ListenerId: str
+        :param FunctionTargets: 待绑定的云函数列表。
+        :type FunctionTargets: list of FunctionTarget
+        :param LocationId: 目标转发规则的 ID，当将云函数绑定到七层转发规则时，必须输入此参数或 Domain+Url 参数。
+        :type LocationId: str
+        :param Domain: 目标转发规则的域名，若已经输入 LocationId 参数，则本参数不生效。
+        :type Domain: str
+        :param Url: 目标转发规则的 URL，若已经输入 LocationId 参数，则本参数不生效。
+        :type Url: str
+        """
+        self.LoadBalancerId = None
+        self.ListenerId = None
+        self.FunctionTargets = None
+        self.LocationId = None
+        self.Domain = None
+        self.Url = None
+
+
+    def _deserialize(self, params):
+        self.LoadBalancerId = params.get("LoadBalancerId")
+        self.ListenerId = params.get("ListenerId")
+        if params.get("FunctionTargets") is not None:
+            self.FunctionTargets = []
+            for item in params.get("FunctionTargets"):
+                obj = FunctionTarget()
+                obj._deserialize(item)
+                self.FunctionTargets.append(obj)
+        self.LocationId = params.get("LocationId")
+        self.Domain = params.get("Domain")
+        self.Url = params.get("Url")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RegisterFunctionTargetsResponse(AbstractModel):
+    """RegisterFunctionTargets返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class RegisterTargetGroupInstancesRequest(AbstractModel):
     """RegisterTargetGroupInstances请求参数结构体
 
@@ -6939,14 +7242,52 @@ class Resource(AbstractModel):
         :type Type: list of str
         :param Isp: 运营商信息，如"CMCC", "CUCC", "CTCC", "BGP", "INTERNAL"。
         :type Isp: str
+        :param AvailabilitySet: 可用资源。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AvailabilitySet: list of ResourceAvailability
         """
         self.Type = None
         self.Isp = None
+        self.AvailabilitySet = None
 
 
     def _deserialize(self, params):
         self.Type = params.get("Type")
         self.Isp = params.get("Isp")
+        if params.get("AvailabilitySet") is not None:
+            self.AvailabilitySet = []
+            for item in params.get("AvailabilitySet"):
+                obj = ResourceAvailability()
+                obj._deserialize(item)
+                self.AvailabilitySet.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResourceAvailability(AbstractModel):
+    """资源可用性
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Type: 运营商内具体资源信息，如"CMCC", "CUCC", "CTCC", "BGP"。
+        :type Type: str
+        :param Availability: 资源可用性，"Available"：可用，"Unavailable"：不可用
+        :type Availability: str
+        """
+        self.Type = None
+        self.Availability = None
+
+
+    def _deserialize(self, params):
+        self.Type = params.get("Type")
+        self.Availability = params.get("Availability")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7376,11 +7717,15 @@ class RuleTargets(AbstractModel):
         :param Targets: 后端服务的信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Targets: list of Backend
+        :param FunctionTargets: 后端云函数的信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FunctionTargets: list of FunctionTarget
         """
         self.LocationId = None
         self.Domain = None
         self.Url = None
         self.Targets = None
+        self.FunctionTargets = None
 
 
     def _deserialize(self, params):
@@ -7393,6 +7738,12 @@ class RuleTargets(AbstractModel):
                 obj = Backend()
                 obj._deserialize(item)
                 self.Targets.append(obj)
+        if params.get("FunctionTargets") is not None:
+            self.FunctionTargets = []
+            for item in params.get("FunctionTargets"):
+                obj = FunctionTarget()
+                obj._deserialize(item)
+                self.FunctionTargets.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7660,7 +8011,7 @@ class SetSecurityGroupForLoadbalancersResponse(AbstractModel):
 
 
 class SlaUpdateParam(AbstractModel):
-    """性能容量型变配参数
+    """升级为性能容量型参数
 
     """
 
@@ -7668,7 +8019,9 @@ class SlaUpdateParam(AbstractModel):
         r"""
         :param LoadBalancerId: lb的字符串ID
         :type LoadBalancerId: str
-        :param SlaType: 变更为性能容量型，固定为SLA
+        :param SlaType: 升级为性能容量型，固定取值为SLA。SLA表示升级为默认规格的性能容量型实例。
+<ul><li>当您开通了普通规格的性能容量型时，SLA对应超强型1规格。普通规格的性能容量型正在内测中，请提交 [内测申请](https://cloud.tencent.com/apply/p/hf45esx99lf)。</li>
+<li>当您开通了超大型规格的性能容量型时，SLA对应超强型4规格。超大型规格的性能容量型正在内测中，请提交 [工单申请](https://console.cloud.tencent.com/workorder/category)。</li></ul>
         :type SlaType: str
         """
         self.LoadBalancerId = None
@@ -8002,13 +8355,16 @@ class TargetHealth(AbstractModel):
         :type HealthStatus: bool
         :param TargetId: Target的实例ID，如 ins-12345678
         :type TargetId: str
-        :param HealthStatusDetial: 当前健康状态的详细信息。如：Alive、Dead、Unknown。Alive状态为健康，Dead状态为异常，Unknown状态包括尚未开始探测、探测中、状态未知。
+        :param HealthStatusDetail: 当前健康状态的详细信息。如：Alive、Dead、Unknown。Alive状态为健康，Dead状态为异常，Unknown状态包括尚未开始探测、探测中、状态未知。
+        :type HealthStatusDetail: str
+        :param HealthStatusDetial: 当前健康状态的详细信息。如：Alive、Dead、Unknown。Alive状态为健康，Dead状态为异常，Unknown状态包括尚未开始探测、探测中、状态未知。(该参数对象即将下线，不推荐使用，请使用HealthStatusDetail获取健康详情)
         :type HealthStatusDetial: str
         """
         self.IP = None
         self.Port = None
         self.HealthStatus = None
         self.TargetId = None
+        self.HealthStatusDetail = None
         self.HealthStatusDetial = None
 
 
@@ -8017,6 +8373,7 @@ class TargetHealth(AbstractModel):
         self.Port = params.get("Port")
         self.HealthStatus = params.get("HealthStatus")
         self.TargetId = params.get("TargetId")
+        self.HealthStatusDetail = params.get("HealthStatusDetail")
         self.HealthStatusDetial = params.get("HealthStatusDetial")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -8126,6 +8483,10 @@ class ZoneResource(AbstractModel):
         :type ZoneRegion: str
         :param LocalZone: 可用区是否是LocalZone可用区，如：false
         :type LocalZone: bool
+        :param ZoneResourceType: 可用区资源的类型，SHARED表示共享资源，EXCLUSIVE表示独占资源。
+        :type ZoneResourceType: str
+        :param EdgeZone: 可用区是否是EdgeZone可用区，如：false
+        :type EdgeZone: bool
         """
         self.MasterZone = None
         self.ResourceSet = None
@@ -8133,6 +8494,8 @@ class ZoneResource(AbstractModel):
         self.IPVersion = None
         self.ZoneRegion = None
         self.LocalZone = None
+        self.ZoneResourceType = None
+        self.EdgeZone = None
 
 
     def _deserialize(self, params):
@@ -8147,6 +8510,8 @@ class ZoneResource(AbstractModel):
         self.IPVersion = params.get("IPVersion")
         self.ZoneRegion = params.get("ZoneRegion")
         self.LocalZone = params.get("LocalZone")
+        self.ZoneResourceType = params.get("ZoneResourceType")
+        self.EdgeZone = params.get("EdgeZone")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

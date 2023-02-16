@@ -584,9 +584,9 @@ class CreateBatchModelAccTasksRequest(AbstractModel):
         :type ModelOutputPath: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
         :param Tags: 标签
         :type Tags: list of Tag
-        :param OptimizationLevel: 优化级别(NO_LOSS/FP16)，默认FP16
+        :param OptimizationLevel: 优化级别(NO_LOSS/FP16/INT8)，默认FP16
         :type OptimizationLevel: str
-        :param GPUType: GPU卡类型(T4/V100)，默认T4
+        :param GPUType: GPU卡类型(T4/V100/A10)，默认T4
         :type GPUType: str
         :param HyperParameter: 专业参数设置
         :type HyperParameter: :class:`tencentcloud.tione.v20211111.models.HyperParameter`
@@ -696,6 +696,8 @@ class CreateBatchTaskRequest(AbstractModel):
         :type SubnetId: str
         :param Remark: 备注
         :type Remark: str
+        :param CallbackUrl: 任务执行结果回调URL，仅支持http和https。回调格式&内容详见: [TI-ONE 接口回调说明](https://cloud.tencent.com/document/product/851/84292)
+        :type CallbackUrl: str
         """
         self.BatchTaskName = None
         self.ChargeType = None
@@ -715,6 +717,7 @@ class CreateBatchTaskRequest(AbstractModel):
         self.VpcId = None
         self.SubnetId = None
         self.Remark = None
+        self.CallbackUrl = None
 
 
     def _deserialize(self, params):
@@ -763,6 +766,7 @@ class CreateBatchTaskRequest(AbstractModel):
         self.VpcId = params.get("VpcId")
         self.SubnetId = params.get("SubnetId")
         self.Remark = params.get("Remark")
+        self.CallbackUrl = params.get("CallbackUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -989,6 +993,8 @@ HYBRID_PAID:
         :type VolumeMount: :class:`tencentcloud.tione.v20211111.models.VolumeMount`
         :param ServiceLimit: 服务限速限流相关配置
         :type ServiceLimit: :class:`tencentcloud.tione.v20211111.models.ServiceLimit`
+        :param CallbackUrl: 回调地址，用于回调创建服务状态信息，回调格式&内容详情见：[TI-ONE 接口回调说明](https://cloud.tencent.com/document/product/851/84292)
+        :type CallbackUrl: str
         """
         self.ImageInfo = None
         self.ServiceGroupId = None
@@ -1016,6 +1022,7 @@ HYBRID_PAID:
         self.ScheduledAction = None
         self.VolumeMount = None
         self.ServiceLimit = None
+        self.CallbackUrl = None
 
 
     def _deserialize(self, params):
@@ -1076,6 +1083,7 @@ HYBRID_PAID:
         if params.get("ServiceLimit") is not None:
             self.ServiceLimit = ServiceLimit()
             self.ServiceLimit._deserialize(params.get("ServiceLimit"))
+        self.CallbackUrl = params.get("CallbackUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1231,6 +1239,8 @@ EXIST：导入现有版本
         :type MaxReservedModels: int
         :param ModelCleanPeriod: 模型清理周期(默认值为1分钟，上限为1440，下限为1分钟，步长为1)
         :type ModelCleanPeriod: int
+        :param IsQAT: 是否QAT模型
+        :type IsQAT: bool
         """
         self.ImportMethod = None
         self.TrainingModelCosPath = None
@@ -1257,6 +1267,7 @@ EXIST：导入现有版本
         self.AutoClean = None
         self.MaxReservedModels = None
         self.ModelCleanPeriod = None
+        self.IsQAT = None
 
 
     def _deserialize(self, params):
@@ -1296,6 +1307,7 @@ EXIST：导入现有版本
         self.AutoClean = params.get("AutoClean")
         self.MaxReservedModels = params.get("MaxReservedModels")
         self.ModelCleanPeriod = params.get("ModelCleanPeriod")
+        self.IsQAT = params.get("IsQAT")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1379,6 +1391,8 @@ class CreateTrainingTaskRequest(AbstractModel):
         :type Remark: str
         :param DataSource: 数据来源，eg：DATASET、COS、CFS、HDFS
         :type DataSource: str
+        :param CallbackUrl: 回调地址，用于创建/启动/停止训练任务的异步回调。回调格式&内容详见：[[TI-ONE接口回调说明]](https://cloud.tencent.com/document/product/851/84292)
+        :type CallbackUrl: str
         """
         self.Name = None
         self.ChargeType = None
@@ -1401,6 +1415,7 @@ class CreateTrainingTaskRequest(AbstractModel):
         self.TuningParameters = None
         self.Remark = None
         self.DataSource = None
+        self.CallbackUrl = None
 
 
     def _deserialize(self, params):
@@ -1450,6 +1465,7 @@ class CreateTrainingTaskRequest(AbstractModel):
         self.TuningParameters = params.get("TuningParameters")
         self.Remark = params.get("Remark")
         self.DataSource = params.get("DataSource")
+        self.CallbackUrl = params.get("CallbackUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1845,6 +1861,15 @@ class DatasetGroup(AbstractModel):
         :param DatasetScope: 数据集范围
 注意：此字段可能返回 null，表示取不到有效值。
         :type DatasetScope: str
+        :param OcrScene: 数据集OCR子场景
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OcrScene: str
+        :param AnnotationKeyStatus: 数据集字典修改状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AnnotationKeyStatus: str
+        :param ContentType: 文本数据集导入方式
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ContentType: str
         """
         self.DatasetId = None
         self.DatasetName = None
@@ -1869,6 +1894,9 @@ class DatasetGroup(AbstractModel):
         self.AnnotationType = None
         self.AnnotationFormat = None
         self.DatasetScope = None
+        self.OcrScene = None
+        self.AnnotationKeyStatus = None
+        self.ContentType = None
 
 
     def _deserialize(self, params):
@@ -1909,6 +1937,9 @@ class DatasetGroup(AbstractModel):
         self.AnnotationType = params.get("AnnotationType")
         self.AnnotationFormat = params.get("AnnotationFormat")
         self.DatasetScope = params.get("DatasetScope")
+        self.OcrScene = params.get("OcrScene")
+        self.AnnotationKeyStatus = params.get("AnnotationKeyStatus")
+        self.ContentType = params.get("ContentType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1991,6 +2022,12 @@ class DatasetInfo(AbstractModel):
         :param DatasetScope: 数据集范围
 注意：此字段可能返回 null，表示取不到有效值。
         :type DatasetScope: str
+        :param OcrScene: 数据集OCR子场景
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OcrScene: str
+        :param AnnotationKeyStatus: 数据集字典修改状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AnnotationKeyStatus: str
         """
         self.DatasetId = None
         self.DatasetName = None
@@ -2014,6 +2051,8 @@ class DatasetInfo(AbstractModel):
         self.AnnotationType = None
         self.AnnotationFormat = None
         self.DatasetScope = None
+        self.OcrScene = None
+        self.AnnotationKeyStatus = None
 
 
     def _deserialize(self, params):
@@ -2048,6 +2087,8 @@ class DatasetInfo(AbstractModel):
         self.AnnotationType = params.get("AnnotationType")
         self.AnnotationFormat = params.get("AnnotationFormat")
         self.DatasetScope = params.get("DatasetScope")
+        self.OcrScene = params.get("OcrScene")
+        self.AnnotationKeyStatus = params.get("AnnotationKeyStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4498,14 +4539,19 @@ class EngineVersion(AbstractModel):
         :param Image: 运行镜像
 注意：此字段可能返回 null，表示取不到有效值。
         :type Image: str
+        :param IsSupportIntEightQuantization: 是否支持int8量化
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsSupportIntEightQuantization: bool
         """
         self.Version = None
         self.Image = None
+        self.IsSupportIntEightQuantization = None
 
 
     def _deserialize(self, params):
         self.Version = params.get("Version")
         self.Image = params.get("Image")
+        self.IsSupportIntEightQuantization = params.get("IsSupportIntEightQuantization")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5454,6 +5500,9 @@ class ModelAccelerateTask(AbstractModel):
         :param ModelSignature: SAVED_MODEL保存时配置的签名
 注意：此字段可能返回 null，表示取不到有效值。
         :type ModelSignature: str
+        :param QATModel: 是否是QAT模型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QATModel: bool
         """
         self.ModelAccTaskId = None
         self.ModelAccTaskName = None
@@ -5482,6 +5531,7 @@ class ModelAccelerateTask(AbstractModel):
         self.Tags = None
         self.IsSaved = None
         self.ModelSignature = None
+        self.QATModel = None
 
 
     def _deserialize(self, params):
@@ -5528,6 +5578,7 @@ class ModelAccelerateTask(AbstractModel):
                 self.Tags.append(obj)
         self.IsSaved = params.get("IsSaved")
         self.ModelSignature = params.get("ModelSignature")
+        self.QATModel = params.get("QATModel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6323,7 +6374,7 @@ class RestartModelAccelerateTaskRequest(AbstractModel):
         :type ModelVersion: str
         :param ModelInputPath: 模型输入cos路径
         :type ModelInputPath: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
-        :param OptimizationLevel: 优化级别（NO_LOSS/FP16），默认FP16
+        :param OptimizationLevel: 优化级别（NO_LOSS/FP16/INT8），默认FP16
         :type OptimizationLevel: str
         :param ModelInputNum: input节点个数（废弃）
         :type ModelInputNum: int
@@ -6335,7 +6386,7 @@ class RestartModelAccelerateTaskRequest(AbstractModel):
         :type ModelFormat: str
         :param TensorInfos: 模型Tensor信息
         :type TensorInfos: list of str
-        :param GPUType: GPU类型（T4/V100），默认T4
+        :param GPUType: GPU类型（T4/V100/A10），默认T4
         :type GPUType: str
         :param HyperParameter: 模型专业参数
         :type HyperParameter: :class:`tencentcloud.tione.v20211111.models.HyperParameter`
@@ -7170,16 +7221,24 @@ class Spec(AbstractModel):
         :type SpecName: str
         :param SpecAlias: 计费项显示名称
         :type SpecAlias: str
+        :param Available: 是否售罄
+        :type Available: bool
+        :param AvailableRegion: 当前资源售罄时，可用的区域有哪些
+        :type AvailableRegion: list of str
         """
         self.SpecId = None
         self.SpecName = None
         self.SpecAlias = None
+        self.Available = None
+        self.AvailableRegion = None
 
 
     def _deserialize(self, params):
         self.SpecId = params.get("SpecId")
         self.SpecName = params.get("SpecName")
         self.SpecAlias = params.get("SpecAlias")
+        self.Available = params.get("Available")
+        self.AvailableRegion = params.get("AvailableRegion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7202,16 +7261,20 @@ class SpecPrice(AbstractModel):
         :type TotalCost: int
         :param RealTotalCost: 优惠后的价格，单位：分
         :type RealTotalCost: int
+        :param SpecCount: 计费项数量
+        :type SpecCount: int
         """
         self.SpecName = None
         self.TotalCost = None
         self.RealTotalCost = None
+        self.SpecCount = None
 
 
     def _deserialize(self, params):
         self.SpecName = params.get("SpecName")
         self.TotalCost = params.get("TotalCost")
         self.RealTotalCost = params.get("RealTotalCost")
+        self.SpecCount = params.get("SpecCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8168,6 +8231,9 @@ class TrainingTaskDetail(AbstractModel):
         :type Message: str
         :param Status: 任务状态，eg：STARTING启动中、RUNNING运行中、STOPPING停止中、STOPPED已停止、FAILED异常、SUCCEED已完成
         :type Status: str
+        :param CallbackUrl: 回调地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CallbackUrl: str
         """
         self.Id = None
         self.Name = None
@@ -8207,6 +8273,7 @@ class TrainingTaskDetail(AbstractModel):
         self.ResourceGroupName = None
         self.Message = None
         self.Status = None
+        self.CallbackUrl = None
 
 
     def _deserialize(self, params):
@@ -8273,6 +8340,7 @@ class TrainingTaskDetail(AbstractModel):
         self.ResourceGroupName = params.get("ResourceGroupName")
         self.Message = params.get("Message")
         self.Status = params.get("Status")
+        self.CallbackUrl = params.get("CallbackUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8347,6 +8415,9 @@ class TrainingTaskSetItem(AbstractModel):
         :param Tags: 标签配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tag
+        :param CallbackUrl: 回调地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CallbackUrl: str
         """
         self.Id = None
         self.Name = None
@@ -8371,6 +8442,7 @@ class TrainingTaskSetItem(AbstractModel):
         self.ImageInfo = None
         self.Message = None
         self.Tags = None
+        self.CallbackUrl = None
 
 
     def _deserialize(self, params):
@@ -8411,6 +8483,7 @@ class TrainingTaskSetItem(AbstractModel):
                 obj = Tag()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.CallbackUrl = params.get("CallbackUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

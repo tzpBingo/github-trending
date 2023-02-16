@@ -245,10 +245,10 @@ INVALIDPARAMETERVALUE_INVALIDINSTANCETYPECONFIGID = 'InvalidParameterValue.Inval
 # 计费类型不合法。
 INVALIDPARAMETERVALUE_INVALIDINTERNETCHARGETYPE = 'InvalidParameterValue.InvalidInternetChargeType'
 
-# 秘钥ID无效。
+# 密钥ID无效。
 INVALIDPARAMETERVALUE_INVALIDKEYPAIRID = 'InvalidParameterValue.InvalidKeyPairId'
 
-# 秘钥名称异常。
+# 密钥名称异常。
 INVALIDPARAMETERVALUE_INVALIDKEYPAIRNAME = 'InvalidParameterValue.InvalidKeyPairName'
 
 # 负载均衡数量不合法。
@@ -286,6 +286,9 @@ INVALIDPARAMETERVALUE_INVALIDSNAPSHOT = 'InvalidParameterValue.InvalidSnapshot'
 
 # InvalidParameterValue.InvalidSnapshotId
 INVALIDPARAMETERVALUE_INVALIDSNAPSHOTID = 'InvalidParameterValue.InvalidSnapshotId'
+
+# 该子网不存在该节点。
+INVALIDPARAMETERVALUE_INVALIDSUBNETINZONE = 'InvalidParameterValue.InvalidSubnetInZone'
 
 # 系统盘大小不合法。
 INVALIDPARAMETERVALUE_INVALIDSYSTEMDISKSIZE = 'InvalidParameterValue.InvalidSystemDiskSize'

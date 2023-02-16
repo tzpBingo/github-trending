@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the classes that represent Telegram InputVenueMessageContent."""
+from typing import Optional
 
 from telegram._inline.inputmessagecontent import InputMessageContent
 from telegram._utils.types import JSONDict
@@ -54,8 +55,12 @@ class InputVenueMessageContent(InputMessageContent):
         address (:obj:`str`): Address of the venue.
         foursquare_id (:obj:`str`): Optional. Foursquare identifier of the venue, if known.
         foursquare_type (:obj:`str`): Optional. Foursquare type of the venue, if known.
+            (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or
+            "food/icecream".)
         google_place_id (:obj:`str`): Optional. Google Places identifier of the venue.
-        google_place_type (:obj:`str`): Optional. Google Places type of the venue.
+        google_place_type (:obj:`str`): Optional. Google Places type of the venue. (See
+            `supported types <https://developers.google.com/maps/documentation/places/web-service\
+            /supported_types>`_.)
 
     """
 
@@ -84,20 +89,20 @@ class InputVenueMessageContent(InputMessageContent):
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
+        with self._unfrozen():
+            # Required
+            self.latitude: float = latitude
+            self.longitude: float = longitude
+            self.title: str = title
+            self.address: str = address
+            # Optionals
+            self.foursquare_id: Optional[str] = foursquare_id
+            self.foursquare_type: Optional[str] = foursquare_type
+            self.google_place_id: Optional[str] = google_place_id
+            self.google_place_type: Optional[str] = google_place_type
 
-        # Required
-        self.latitude = latitude
-        self.longitude = longitude
-        self.title = title
-        self.address = address
-        # Optionals
-        self.foursquare_id = foursquare_id
-        self.foursquare_type = foursquare_type
-        self.google_place_id = google_place_id
-        self.google_place_type = google_place_type
-
-        self._id_attrs = (
-            self.latitude,
-            self.longitude,
-            self.title,
-        )
+            self._id_attrs = (
+                self.latitude,
+                self.longitude,
+                self.title,
+            )

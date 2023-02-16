@@ -26,6 +26,29 @@ class ThpcClient(AbstractClient):
     _service = 'thpc'
 
 
+    def AddClusterStorageOption(self, request):
+        """本接口（AddClusterStorageOption）用于添加集群存储选项信息。
+
+        :param request: Request instance for AddClusterStorageOption.
+        :type request: :class:`tencentcloud.thpc.v20220401.models.AddClusterStorageOptionRequest`
+        :rtype: :class:`tencentcloud.thpc.v20220401.models.AddClusterStorageOptionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AddClusterStorageOption", params, headers=headers)
+            response = json.loads(body)
+            model = models.AddClusterStorageOptionResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def AddNodes(self, request):
         """本接口(AddNodes)用于添加一个或者多个计算节点或者登录节点到指定集群。
 
@@ -39,15 +62,9 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AddNodes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AddNodesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AddNodesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -68,15 +85,9 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("BindAutoScalingGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.BindAutoScalingGroupResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.BindAutoScalingGroupResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -97,15 +108,9 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateCluster", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateClusterResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateClusterResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -126,15 +131,32 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteCluster", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteClusterResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DeleteClusterResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteClusterStorageOption(self, request):
+        """本接口 (DeleteClusterStorageOption) 用于删除集群存储选项信息。
+
+        :param request: Request instance for DeleteClusterStorageOption.
+        :type request: :class:`tencentcloud.thpc.v20220401.models.DeleteClusterStorageOptionRequest`
+        :rtype: :class:`tencentcloud.thpc.v20220401.models.DeleteClusterStorageOptionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteClusterStorageOption", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteClusterStorageOptionResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -155,15 +177,32 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNodes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNodesResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DeleteNodesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeAutoScalingConfiguration(self, request):
+        """本接口(DescribeAutoScalingConfiguration)用于查询集群弹性伸缩配置信息。本接口仅适用于弹性伸缩类型为THPC_AS的集群。
+
+        :param request: Request instance for DescribeAutoScalingConfiguration.
+        :type request: :class:`tencentcloud.thpc.v20220401.models.DescribeAutoScalingConfigurationRequest`
+        :rtype: :class:`tencentcloud.thpc.v20220401.models.DescribeAutoScalingConfigurationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAutoScalingConfiguration", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAutoScalingConfigurationResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -184,15 +223,32 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeClusterActivities", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeClusterActivitiesResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DescribeClusterActivitiesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeClusterStorageOption(self, request):
+        """本接口 (DescribeClusterStorageOption) 用于查询集群存储选项信息。
+
+        :param request: Request instance for DescribeClusterStorageOption.
+        :type request: :class:`tencentcloud.thpc.v20220401.models.DescribeClusterStorageOptionRequest`
+        :rtype: :class:`tencentcloud.thpc.v20220401.models.DescribeClusterStorageOptionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClusterStorageOption", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeClusterStorageOptionResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -213,15 +269,9 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeClusters", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeClustersResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeClustersResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -242,15 +292,9 @@ class ThpcClient(AbstractClient):
             headers = request.headers
             body = self.call("SetAutoScalingConfiguration", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.SetAutoScalingConfigurationResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.SetAutoScalingConfigurationResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise

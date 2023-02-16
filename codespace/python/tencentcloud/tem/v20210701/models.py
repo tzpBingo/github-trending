@@ -567,12 +567,12 @@ class CreateEnvironmentRequest(AbstractModel):
         r"""
         :param EnvironmentName: 环境名称
         :type EnvironmentName: str
+        :param Description: 环境描述
+        :type Description: str
         :param Vpc: 私有网络名称
         :type Vpc: str
         :param SubnetIds: 子网列表
         :type SubnetIds: list of str
-        :param Description: 环境描述
-        :type Description: str
         :param K8sVersion: K8s version
         :type K8sVersion: str
         :param SourceChannel: 来源渠道
@@ -585,24 +585,36 @@ class CreateEnvironmentRequest(AbstractModel):
         :type EnvType: str
         :param CreateRegion: 创建环境的region
         :type CreateRegion: str
+        :param SetupVpc: 是否创建私有网络
+        :type SetupVpc: bool
+        :param SetupPrometheus: 是否创建 Prometheus 实例
+        :type SetupPrometheus: bool
+        :param PrometheusId: prometheus 实例 id
+        :type PrometheusId: str
+        :param ApmId: apm id
+        :type ApmId: str
         """
         self.EnvironmentName = None
+        self.Description = None
         self.Vpc = None
         self.SubnetIds = None
-        self.Description = None
         self.K8sVersion = None
         self.SourceChannel = None
         self.EnableTswTraceService = None
         self.Tags = None
         self.EnvType = None
         self.CreateRegion = None
+        self.SetupVpc = None
+        self.SetupPrometheus = None
+        self.PrometheusId = None
+        self.ApmId = None
 
 
     def _deserialize(self, params):
         self.EnvironmentName = params.get("EnvironmentName")
+        self.Description = params.get("Description")
         self.Vpc = params.get("Vpc")
         self.SubnetIds = params.get("SubnetIds")
-        self.Description = params.get("Description")
         self.K8sVersion = params.get("K8sVersion")
         self.SourceChannel = params.get("SourceChannel")
         self.EnableTswTraceService = params.get("EnableTswTraceService")
@@ -614,6 +626,10 @@ class CreateEnvironmentRequest(AbstractModel):
                 self.Tags.append(obj)
         self.EnvType = params.get("EnvType")
         self.CreateRegion = params.get("CreateRegion")
+        self.SetupVpc = params.get("SetupVpc")
+        self.SetupPrometheus = params.get("SetupPrometheus")
+        self.PrometheusId = params.get("PrometheusId")
+        self.ApmId = params.get("ApmId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2274,12 +2290,15 @@ class DescribeEnvironmentsRequest(AbstractModel):
         :type Filters: list of QueryFilter
         :param SortInfo: 排序字段
         :type SortInfo: :class:`tencentcloud.tem.v20210701.models.SortType`
+        :param EnvironmentId: 环境id
+        :type EnvironmentId: str
         """
         self.Limit = None
         self.Offset = None
         self.SourceChannel = None
         self.Filters = None
         self.SortInfo = None
+        self.EnvironmentId = None
 
 
     def _deserialize(self, params):
@@ -2295,6 +2314,7 @@ class DescribeEnvironmentsRequest(AbstractModel):
         if params.get("SortInfo") is not None:
             self.SortInfo = SortType()
             self.SortInfo._deserialize(params.get("SortInfo"))
+        self.EnvironmentId = params.get("EnvironmentId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3656,6 +3676,12 @@ class LogConfigExtractRule(AbstractModel):
         :param UnMatchedKey: 解析失败日志的键名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type UnMatchedKey: str
+        :param Backtracking: tracking
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Backtracking: str
+        :param Delimiter: 分隔符
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Delimiter: str
         """
         self.BeginningRegex = None
         self.Keys = None
@@ -3666,6 +3692,8 @@ class LogConfigExtractRule(AbstractModel):
         self.TimeFormat = None
         self.UnMatchUpload = None
         self.UnMatchedKey = None
+        self.Backtracking = None
+        self.Delimiter = None
 
 
     def _deserialize(self, params):
@@ -3678,6 +3706,8 @@ class LogConfigExtractRule(AbstractModel):
         self.TimeFormat = params.get("TimeFormat")
         self.UnMatchUpload = params.get("UnMatchUpload")
         self.UnMatchedKey = params.get("UnMatchedKey")
+        self.Backtracking = params.get("Backtracking")
+        self.Delimiter = params.get("Delimiter")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5234,6 +5264,9 @@ class ServiceVersionBrief(AbstractModel):
         :param CreateDate: 创建日期
 注意：此字段可能返回 null，表示取不到有效值。
         :type CreateDate: str
+        :param RegionId: 地域id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegionId: str
         """
         self.VersionName = None
         self.Status = None
@@ -5255,6 +5288,7 @@ class ServiceVersionBrief(AbstractModel):
         self.PodList = None
         self.WorkloadInfo = None
         self.CreateDate = None
+        self.RegionId = None
 
 
     def _deserialize(self, params):
@@ -5289,6 +5323,7 @@ class ServiceVersionBrief(AbstractModel):
             self.WorkloadInfo = WorkloadInfo()
             self.WorkloadInfo._deserialize(params.get("WorkloadInfo"))
         self.CreateDate = params.get("CreateDate")
+        self.RegionId = params.get("RegionId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5584,14 +5619,19 @@ class TemEnvironmentStartingStatus(AbstractModel):
         :param StartedApplicationNum: 已经启动的应用数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type StartedApplicationNum: int
+        :param StartFailedApplicationNum: 启动失败的应用数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartFailedApplicationNum: int
         """
         self.ApplicationNumNeedToStart = None
         self.StartedApplicationNum = None
+        self.StartFailedApplicationNum = None
 
 
     def _deserialize(self, params):
         self.ApplicationNumNeedToStart = params.get("ApplicationNumNeedToStart")
         self.StartedApplicationNum = params.get("StartedApplicationNum")
+        self.StartFailedApplicationNum = params.get("StartFailedApplicationNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5614,14 +5654,19 @@ class TemEnvironmentStoppingStatus(AbstractModel):
         :param StoppedApplicationNum: 已经停止的应用数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type StoppedApplicationNum: int
+        :param StopFailedApplicationNum: 停止失败的应用数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StopFailedApplicationNum: int
         """
         self.ApplicationNumNeedToStop = None
         self.StoppedApplicationNum = None
+        self.StopFailedApplicationNum = None
 
 
     def _deserialize(self, params):
         self.ApplicationNumNeedToStop = params.get("ApplicationNumNeedToStop")
         self.StoppedApplicationNum = params.get("StoppedApplicationNum")
+        self.StopFailedApplicationNum = params.get("StopFailedApplicationNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6132,6 +6177,12 @@ class TemServiceVersionInfo(AbstractModel):
         :param Tags: 标签
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tag
+        :param PreStopEncoded: 是否编码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PreStopEncoded: str
+        :param PostStartEncoded: 是否编码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PostStartEncoded: str
         """
         self.VersionId = None
         self.ApplicationId = None
@@ -6219,6 +6270,8 @@ class TemServiceVersionInfo(AbstractModel):
         self.PodList = None
         self.ConfEdited = None
         self.Tags = None
+        self.PreStopEncoded = None
+        self.PostStartEncoded = None
 
 
     def _deserialize(self, params):
@@ -6373,6 +6426,8 @@ class TemServiceVersionInfo(AbstractModel):
                 obj = Tag()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.PreStopEncoded = params.get("PreStopEncoded")
+        self.PostStartEncoded = params.get("PostStartEncoded")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

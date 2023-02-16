@@ -2,7 +2,7 @@
 # pylint: disable=redefined-builtin
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 """This module contains an object that represents a Telegram Chat."""
 from datetime import datetime
 from html import escape
-from typing import TYPE_CHECKING, ClassVar, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, ClassVar, Optional, Sequence, Tuple, Union
 
 from telegram import constants
 from telegram._chatlocation import ChatLocation
@@ -30,6 +30,7 @@ from telegram._forumtopic import ForumTopic
 from telegram._menubutton import MenuButton
 from telegram._telegramobject import TelegramObject
 from telegram._utils import enum
+from telegram._utils.argumentparsing import parse_sequence_arg
 from telegram._utils.defaultvalue import DEFAULT_NONE
 from telegram._utils.types import DVInput, FileInput, JSONDict, ODVInput, ReplyMarkup
 from telegram.helpers import escape_markdown
@@ -153,7 +154,7 @@ class Chat(TelegramObject):
             (has topics_ enabled).
 
             .. versionadded:: 20.0
-        active_usernames (List[:obj:`str`], optional):  If set, the list of all `active chat
+        active_usernames (Sequence[:obj:`str`], optional):  If set, the list of all `active chat
             usernames <https://telegram.org/blog/topics-in-groups-collectible-usernames\
             #collectible-usernames>`_; for private chats, supergroups and channels. Returned
             only in :meth:`telegram.Bot.get_chat`.
@@ -161,6 +162,16 @@ class Chat(TelegramObject):
             .. versionadded:: 20.0
         emoji_status_custom_emoji_id (:obj:`str`, optional): Custom emoji identifier of emoji
             status of the other party in a private chat. Returned only in
+            :meth:`telegram.Bot.get_chat`.
+
+            .. versionadded:: 20.0
+        has_aggressive_anti_spam_enabled (:obj:`bool`, optional): :obj:`True`, if aggressive
+            anti-spam checks are enabled in the supergroup. The field is only available to chat
+            administrators. Returned only in :meth:`telegram.Bot.get_chat`.
+
+            .. versionadded:: 20.0
+        has_hidden_members (:obj:`bool`, optional): :obj:`True`, if non-administrators can only
+            get the list of bots and administrators in the chat. Returned only in
             :meth:`telegram.Bot.get_chat`.
 
             .. versionadded:: 20.0
@@ -234,14 +245,26 @@ class Chat(TelegramObject):
             (has topics_ enabled).
 
             .. versionadded:: 20.0
-        active_usernames (List[:obj:`str`]): Optional. If set, the list of all `active chat
+        active_usernames (Tuple[:obj:`str`]): Optional. If set, the list of all `active chat
             usernames <https://telegram.org/blog/topics-in-groups-collectible-usernames\
             #collectible-usernames>`_; for private chats, supergroups and channels. Returned
             only in :meth:`telegram.Bot.get_chat`.
+            This list is empty if the chat has no active usernames or this chat instance was not
+            obtained via :meth:`~telegram.Bot.get_chat`.
 
             .. versionadded:: 20.0
         emoji_status_custom_emoji_id (:obj:`str`): Optional. Custom emoji identifier of emoji
             status of the other party in a private chat. Returned only in
+            :meth:`telegram.Bot.get_chat`.
+
+            .. versionadded:: 20.0
+        has_aggressive_anti_spam_enabled (:obj:`bool`): Optional. :obj:`True`, if aggressive
+            anti-spam checks are enabled in the supergroup. The field is only available to chat
+            administrators. Returned only in :meth:`telegram.Bot.get_chat`.
+
+            .. versionadded:: 20.0
+        has_hidden_members (:obj:`bool`): Optional. :obj:`True`, if non-administrators can only
+            get the list of bots and administrators in the chat. Returned only in
             :meth:`telegram.Bot.get_chat`.
 
             .. versionadded:: 20.0
@@ -276,6 +299,8 @@ class Chat(TelegramObject):
         "is_forum",
         "active_usernames",
         "emoji_status_custom_emoji_id",
+        "has_hidden_members",
+        "has_aggressive_anti_spam_enabled",
     )
 
     SENDER: ClassVar[str] = constants.ChatType.SENDER
@@ -318,49 +343,71 @@ class Chat(TelegramObject):
         join_by_request: bool = None,
         has_restricted_voice_and_video_messages: bool = None,
         is_forum: bool = None,
-        active_usernames: List[str] = None,
+        active_usernames: Sequence[str] = None,
         emoji_status_custom_emoji_id: str = None,
+        has_aggressive_anti_spam_enabled: bool = None,
+        has_hidden_members: bool = None,
         *,
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.id = id  # pylint: disable=invalid-name
-        self.type = enum.get_member(constants.ChatType, type, type)
+        self.id: int = id  # pylint: disable=invalid-name
+        self.type: str = enum.get_member(constants.ChatType, type, type)
         # Optionals
-        self.title = title
-        self.username = username
-        self.first_name = first_name
-        self.last_name = last_name
-        self.photo = photo
-        self.bio = bio
-        self.has_private_forwards = has_private_forwards
-        self.description = description
-        self.invite_link = invite_link
-        self.pinned_message = pinned_message
-        self.permissions = permissions
-        self.slow_mode_delay = slow_mode_delay
-        self.message_auto_delete_time = (
+        self.title: Optional[str] = title
+        self.username: Optional[str] = username
+        self.first_name: Optional[str] = first_name
+        self.last_name: Optional[str] = last_name
+        self.photo: Optional[ChatPhoto] = photo
+        self.bio: Optional[str] = bio
+        self.has_private_forwards: Optional[bool] = has_private_forwards
+        self.description: Optional[str] = description
+        self.invite_link: Optional[str] = invite_link
+        self.pinned_message: Optional[Message] = pinned_message
+        self.permissions: Optional[ChatPermissions] = permissions
+        self.slow_mode_delay: Optional[int] = slow_mode_delay
+        self.message_auto_delete_time: Optional[int] = (
             int(message_auto_delete_time) if message_auto_delete_time is not None else None
         )
-        self.has_protected_content = has_protected_content
-        self.sticker_set_name = sticker_set_name
-        self.can_set_sticker_set = can_set_sticker_set
-        self.linked_chat_id = linked_chat_id
-        self.location = location
-        self.join_to_send_messages = join_to_send_messages
-        self.join_by_request = join_by_request
-        self.has_restricted_voice_and_video_messages = has_restricted_voice_and_video_messages
-        self.is_forum = is_forum
-        self.active_usernames = active_usernames
-        self.emoji_status_custom_emoji_id = emoji_status_custom_emoji_id
+        self.has_protected_content: Optional[bool] = has_protected_content
+        self.sticker_set_name: Optional[str] = sticker_set_name
+        self.can_set_sticker_set: Optional[bool] = can_set_sticker_set
+        self.linked_chat_id: Optional[int] = linked_chat_id
+        self.location: Optional[ChatLocation] = location
+        self.join_to_send_messages: Optional[bool] = join_to_send_messages
+        self.join_by_request: Optional[bool] = join_by_request
+        self.has_restricted_voice_and_video_messages: Optional[
+            bool
+        ] = has_restricted_voice_and_video_messages
+        self.is_forum: Optional[bool] = is_forum
+        self.active_usernames: Tuple[str, ...] = parse_sequence_arg(active_usernames)
+        self.emoji_status_custom_emoji_id: Optional[str] = emoji_status_custom_emoji_id
+        self.has_aggressive_anti_spam_enabled: Optional[bool] = has_aggressive_anti_spam_enabled
+        self.has_hidden_members: Optional[bool] = has_hidden_members
 
         self._id_attrs = (self.id,)
+
+        self._freeze()
+
+    @property
+    def effective_name(self) -> Optional[str]:
+        """
+        :obj:`str`: Convenience property. Gives :attr:`title` if not :obj:`None`,
+        else :attr:`full_name` if not :obj:`None`.
+
+        .. versionadded:: 20.1
+        """
+        if self.title is not None:
+            return self.title
+        if self.full_name is not None:
+            return self.full_name
+        return None
 
     @property
     def full_name(self) -> Optional[str]:
         """
-        :obj:`str`: Convenience property. If :attr:`first_name` is not :obj:`None` gives,
+        :obj:`str`: Convenience property. If :attr:`first_name` is not :obj:`None`, gives
         :attr:`first_name` followed by (if available) :attr:`last_name`.
 
         Note:
@@ -546,7 +593,7 @@ class Chat(TelegramObject):
         connect_timeout: ODVInput[float] = DEFAULT_NONE,
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
         api_kwargs: JSONDict = None,
-    ) -> List["ChatMember"]:
+    ) -> Tuple["ChatMember", ...]:
         """Shortcut for::
 
              await bot.get_chat_administrators(update.effective_chat.id, *args, **kwargs)
@@ -555,7 +602,7 @@ class Chat(TelegramObject):
         :meth:`telegram.Bot.get_chat_administrators`.
 
         Returns:
-            List[:class:`telegram.ChatMember`]: A list of administrators in a chat. An Array of
+            Tuple[:class:`telegram.ChatMember`]: A tuple of administrators in a chat. An Array of
             :class:`telegram.ChatMember` objects that contains information about all
             chat administrators except other bots. If the chat is a group or a supergroup
             and no administrators were appointed, only the creator will be returned.
@@ -896,6 +943,7 @@ class Chat(TelegramObject):
         user_id: Union[str, int],
         permissions: ChatPermissions,
         until_date: Union[int, datetime] = None,
+        use_independent_chat_permissions: bool = None,
         *,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
         write_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -912,6 +960,9 @@ class Chat(TelegramObject):
 
         .. versionadded:: 13.2
 
+        .. versionadded:: 20.1
+            Added :paramref:`~telegram.Bot.restrict_chat_member.use_independent_chat_permissions`.
+
         Returns:
             :obj:`bool`: On success, :obj:`True` is returned.
 
@@ -921,6 +972,7 @@ class Chat(TelegramObject):
             user_id=user_id,
             permissions=permissions,
             until_date=until_date,
+            use_independent_chat_permissions=use_independent_chat_permissions,
             read_timeout=read_timeout,
             write_timeout=write_timeout,
             connect_timeout=connect_timeout,
@@ -931,6 +983,7 @@ class Chat(TelegramObject):
     async def set_permissions(
         self,
         permissions: ChatPermissions,
+        use_independent_chat_permissions: bool = None,
         *,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
         write_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -945,6 +998,9 @@ class Chat(TelegramObject):
         For the documentation of the arguments, please see
         :meth:`telegram.Bot.set_chat_permissions`.
 
+        .. versionadded:: 20.1
+            Added :paramref:`~telegram.Bot.set_chat_permissions.use_independent_chat_permissions`.
+
         Returns:
             :obj:`bool`: On success, :obj:`True` is returned.
 
@@ -952,6 +1008,7 @@ class Chat(TelegramObject):
         return await self.get_bot().set_chat_permissions(
             chat_id=self.id,
             permissions=permissions,
+            use_independent_chat_permissions=use_independent_chat_permissions,
             read_timeout=read_timeout,
             write_timeout=write_timeout,
             connect_timeout=connect_timeout,
@@ -1234,7 +1291,7 @@ class Chat(TelegramObject):
         reply_to_message_id: int = None,
         reply_markup: ReplyMarkup = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -1275,7 +1332,7 @@ class Chat(TelegramObject):
 
     async def send_media_group(
         self,
-        media: List[
+        media: Sequence[
             Union["InputMediaAudio", "InputMediaDocument", "InputMediaPhoto", "InputMediaVideo"]
         ],
         disable_notification: ODVInput[bool] = DEFAULT_NONE,
@@ -1291,8 +1348,8 @@ class Chat(TelegramObject):
         api_kwargs: JSONDict = None,
         caption: Optional[str] = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
-    ) -> List["Message"]:
+        caption_entities: Sequence["MessageEntity"] = None,
+    ) -> Tuple["Message", ...]:
         """Shortcut for::
 
              await bot.send_media_group(update.effective_chat.id, *args, **kwargs)
@@ -1300,7 +1357,8 @@ class Chat(TelegramObject):
         For the documentation of the arguments, please see :meth:`telegram.Bot.send_media_group`.
 
         Returns:
-            List[:class:`telegram.Message`]: On success, instance representing the message posted.
+            Tuple[:class:`telegram.Message`]: On success, a tuple of :class:`~telegram.Message`
+            instances that were sent is returned.
 
         """
         return await self.get_bot().send_media_group(
@@ -1324,6 +1382,7 @@ class Chat(TelegramObject):
     async def send_chat_action(
         self,
         action: str,
+        message_thread_id: int = None,
         *,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
         write_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -1344,6 +1403,7 @@ class Chat(TelegramObject):
         return await self.get_bot().send_chat_action(
             chat_id=self.id,
             action=action,
+            message_thread_id=message_thread_id,
             read_timeout=read_timeout,
             write_timeout=write_timeout,
             connect_timeout=connect_timeout,
@@ -1363,9 +1423,10 @@ class Chat(TelegramObject):
         reply_markup: ReplyMarkup = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
+        has_spoiler: bool = None,
         *,
         filename: str = None,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -1402,6 +1463,7 @@ class Chat(TelegramObject):
             connect_timeout=connect_timeout,
             pool_timeout=pool_timeout,
             api_kwargs=api_kwargs,
+            has_spoiler=has_spoiler,
         )
 
     async def send_contact(
@@ -1467,7 +1529,7 @@ class Chat(TelegramObject):
         parse_mode: ODVInput[str] = DEFAULT_NONE,
         thumb: FileInput = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -1523,7 +1585,7 @@ class Chat(TelegramObject):
         thumb: FileInput = None,
         disable_content_type_detection: bool = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -1657,7 +1719,7 @@ class Chat(TelegramObject):
         payload: str,
         provider_token: str,
         currency: str,
-        prices: List["LabeledPrice"],
+        prices: Sequence["LabeledPrice"],
         start_parameter: str = None,
         photo_url: str = None,
         photo_size: int = None,
@@ -1676,7 +1738,7 @@ class Chat(TelegramObject):
         send_email_to_provider: bool = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
         max_tip_amount: int = None,
-        suggested_tip_amounts: List[int] = None,
+        suggested_tip_amounts: Sequence[int] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -1809,9 +1871,10 @@ class Chat(TelegramObject):
         reply_to_message_id: int = None,
         reply_markup: ReplyMarkup = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
+        has_spoiler: bool = None,
         *,
         filename: str = None,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -1852,6 +1915,7 @@ class Chat(TelegramObject):
             filename=filename,
             protect_content=protect_content,
             message_thread_id=message_thread_id,
+            has_spoiler=has_spoiler,
         )
 
     async def send_sticker(
@@ -1968,9 +2032,10 @@ class Chat(TelegramObject):
         supports_streaming: bool = None,
         thumb: FileInput = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
+        has_spoiler: bool = None,
         *,
         filename: str = None,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -2012,6 +2077,7 @@ class Chat(TelegramObject):
             filename=filename,
             protect_content=protect_content,
             message_thread_id=message_thread_id,
+            has_spoiler=has_spoiler,
         )
 
     async def send_video_note(
@@ -2074,7 +2140,7 @@ class Chat(TelegramObject):
         reply_markup: ReplyMarkup = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        caption_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -2119,7 +2185,7 @@ class Chat(TelegramObject):
     async def send_poll(
         self,
         question: str,
-        options: List[str],
+        options: Sequence[str],
         is_anonymous: bool = None,
         type: str = None,
         allows_multiple_answers: bool = None,
@@ -2133,7 +2199,7 @@ class Chat(TelegramObject):
         open_period: int = None,
         close_date: Union[int, datetime] = None,
         allow_sending_without_reply: ODVInput[bool] = DEFAULT_NONE,
-        explanation_entities: Union[List["MessageEntity"], Tuple["MessageEntity", ...]] = None,
+        explanation_entities: Sequence["MessageEntity"] = None,
         protect_content: ODVInput[bool] = DEFAULT_NONE,
         message_thread_id: int = None,
         *,
@@ -2186,7 +2252,7 @@ class Chat(TelegramObject):
         message_id: int,
         caption: str = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
-        caption_entities: Union[Tuple["MessageEntity", ...], List["MessageEntity"]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         disable_notification: DVInput[bool] = DEFAULT_NONE,
         reply_to_message_id: int = None,
         allow_sending_without_reply: DVInput[bool] = DEFAULT_NONE,
@@ -2236,7 +2302,7 @@ class Chat(TelegramObject):
         message_id: int,
         caption: str = None,
         parse_mode: ODVInput[str] = DEFAULT_NONE,
-        caption_entities: Union[Tuple["MessageEntity", ...], List["MessageEntity"]] = None,
+        caption_entities: Sequence["MessageEntity"] = None,
         disable_notification: DVInput[bool] = DEFAULT_NONE,
         reply_to_message_id: int = None,
         allow_sending_without_reply: DVInput[bool] = DEFAULT_NONE,
@@ -2657,8 +2723,8 @@ class Chat(TelegramObject):
     async def edit_forum_topic(
         self,
         message_thread_id: int,
-        name: str,
-        icon_custom_emoji_id: str,
+        name: str = None,
+        icon_custom_emoji_id: str = None,
         *,
         read_timeout: ODVInput[float] = DEFAULT_NONE,
         write_timeout: ODVInput[float] = DEFAULT_NONE,
@@ -2819,6 +2885,164 @@ class Chat(TelegramObject):
             api_kwargs=api_kwargs,
         )
 
+    async def edit_general_forum_topic(
+        self,
+        name: str,
+        *,
+        read_timeout: ODVInput[float] = DEFAULT_NONE,
+        write_timeout: ODVInput[float] = DEFAULT_NONE,
+        connect_timeout: ODVInput[float] = DEFAULT_NONE,
+        pool_timeout: ODVInput[float] = DEFAULT_NONE,
+        api_kwargs: JSONDict = None,
+    ) -> bool:
+        """Shortcut for::
+
+             await bot.edit_general_forum_topic(
+                chat_id=update.effective_chat.id, *args, **kwargs
+             )
+
+        For the documentation of the arguments, please see
+        :meth:`telegram.Bot.edit_general_forum_topic`.
+
+        .. versionadded:: 20.0
+
+        Returns:
+            :obj:`bool`: On success, :obj:`True` is returned.
+        """
+        return await self.get_bot().edit_general_forum_topic(
+            chat_id=self.id,
+            name=name,
+            read_timeout=read_timeout,
+            write_timeout=write_timeout,
+            connect_timeout=connect_timeout,
+            pool_timeout=pool_timeout,
+            api_kwargs=api_kwargs,
+        )
+
+    async def close_general_forum_topic(
+        self,
+        *,
+        read_timeout: ODVInput[float] = DEFAULT_NONE,
+        write_timeout: ODVInput[float] = DEFAULT_NONE,
+        connect_timeout: ODVInput[float] = DEFAULT_NONE,
+        pool_timeout: ODVInput[float] = DEFAULT_NONE,
+        api_kwargs: JSONDict = None,
+    ) -> bool:
+        """Shortcut for::
+
+             await bot.close_general_forum_topic(chat_id=update.effective_chat.id, *args, **kwargs)
+
+        For the documentation of the arguments, please see
+        :meth:`telegram.Bot.close_general_forum_topic`.
+
+        .. versionadded:: 20.0
+
+        Returns:
+            :obj:`bool`: On success, :obj:`True` is returned.
+        """
+        return await self.get_bot().close_general_forum_topic(
+            chat_id=self.id,
+            read_timeout=read_timeout,
+            write_timeout=write_timeout,
+            connect_timeout=connect_timeout,
+            pool_timeout=pool_timeout,
+            api_kwargs=api_kwargs,
+        )
+
+    async def reopen_general_forum_topic(
+        self,
+        *,
+        read_timeout: ODVInput[float] = DEFAULT_NONE,
+        write_timeout: ODVInput[float] = DEFAULT_NONE,
+        connect_timeout: ODVInput[float] = DEFAULT_NONE,
+        pool_timeout: ODVInput[float] = DEFAULT_NONE,
+        api_kwargs: JSONDict = None,
+    ) -> bool:
+        """Shortcut for::
+
+             await bot.reopen_general_forum_topic(
+                chat_id=update.effective_chat.id, *args, **kwargs
+             )
+
+        For the documentation of the arguments, please see
+        :meth:`telegram.Bot.reopen_general_forum_topic`.
+
+        .. versionadded:: 20.0
+
+        Returns:
+            :obj:`bool`: On success, :obj:`True` is returned.
+        """
+        return await self.get_bot().reopen_general_forum_topic(
+            chat_id=self.id,
+            read_timeout=read_timeout,
+            write_timeout=write_timeout,
+            connect_timeout=connect_timeout,
+            pool_timeout=pool_timeout,
+            api_kwargs=api_kwargs,
+        )
+
+    async def hide_general_forum_topic(
+        self,
+        *,
+        read_timeout: ODVInput[float] = DEFAULT_NONE,
+        write_timeout: ODVInput[float] = DEFAULT_NONE,
+        connect_timeout: ODVInput[float] = DEFAULT_NONE,
+        pool_timeout: ODVInput[float] = DEFAULT_NONE,
+        api_kwargs: JSONDict = None,
+    ) -> bool:
+        """Shortcut for::
+
+             await bot.hide_general_forum_topic(chat_id=update.effective_chat.id, *args, **kwargs)
+
+        For the documentation of the arguments, please see
+        :meth:`telegram.Bot.hide_general_forum_topic`.
+
+        .. versionadded:: 20.0
+
+        Returns:
+            :obj:`bool`: On success, :obj:`True` is returned.
+        """
+        return await self.get_bot().hide_general_forum_topic(
+            chat_id=self.id,
+            read_timeout=read_timeout,
+            write_timeout=write_timeout,
+            connect_timeout=connect_timeout,
+            pool_timeout=pool_timeout,
+            api_kwargs=api_kwargs,
+        )
+
+    async def unhide_general_forum_topic(
+        self,
+        *,
+        read_timeout: ODVInput[float] = DEFAULT_NONE,
+        write_timeout: ODVInput[float] = DEFAULT_NONE,
+        connect_timeout: ODVInput[float] = DEFAULT_NONE,
+        pool_timeout: ODVInput[float] = DEFAULT_NONE,
+        api_kwargs: JSONDict = None,
+    ) -> bool:
+        """Shortcut for::
+
+             await bot.unhide_general_forum_topic (
+                chat_id=update.effective_chat.id, *args, **kwargs
+             )
+
+        For the documentation of the arguments, please see
+        :meth:`telegram.Bot.unhide_general_forum_topic`.
+
+        .. versionadded:: 20.0
+
+        Returns:
+            :obj:`bool`: On success, :obj:`True` is returned.
+        """
+        return await self.get_bot().unhide_general_forum_topic(
+            chat_id=self.id,
+            read_timeout=read_timeout,
+            write_timeout=write_timeout,
+            connect_timeout=connect_timeout,
+            pool_timeout=pool_timeout,
+            api_kwargs=api_kwargs,
+        )
+
     async def get_menu_button(
         self,
         *,
@@ -2833,7 +3057,7 @@ class Chat(TelegramObject):
              await bot.get_chat_menu_button(chat_id=update.effective_chat.id, *args, **kwargs)
 
         For the documentation of the arguments, please see
-        :meth:`telegram.Bot.set_chat_menu_button`.
+        :meth:`telegram.Bot.get_chat_menu_button`.
 
         Caution:
             Can only work, if the chat is a private chat.

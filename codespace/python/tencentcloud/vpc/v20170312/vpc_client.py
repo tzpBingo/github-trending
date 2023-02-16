@@ -39,15 +39,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AcceptAttachCcnInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AcceptAttachCcnInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AcceptAttachCcnInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -68,15 +62,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AddBandwidthPackageResources", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AddBandwidthPackageResourcesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AddBandwidthPackageResourcesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -99,15 +87,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AddIp6Rules", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AddIp6RulesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AddIp6RulesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -128,15 +110,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AddTemplateMember", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AddTemplateMemberResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AddTemplateMemberResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -157,15 +133,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AdjustPublicAddress", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AdjustPublicAddressResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AdjustPublicAddressResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -189,15 +159,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AllocateAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AllocateAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AllocateAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -218,15 +182,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AllocateIp6AddressesBandwidth", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AllocateIp6AddressesBandwidthResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AllocateIp6AddressesBandwidthResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -252,15 +210,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssignIpv6Addresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssignIpv6AddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssignIpv6AddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -271,7 +223,7 @@ class VpcClient(AbstractClient):
     def AssignIpv6CidrBlock(self, request):
         """本接口（AssignIpv6CidrBlock）用于分配IPv6网段。
         * 使用本接口前，您需要已有VPC实例，如果没有可通过接口<a href="https://cloud.tencent.com/document/api/215/15774" title="CreateVpc" target="_blank">CreateVpc</a>创建。
-        * 每个VPC只能申请一个IPv6网段
+        * 每个VPC只能申请一个IPv6网段。
 
         :param request: Request instance for AssignIpv6CidrBlock.
         :type request: :class:`tencentcloud.vpc.v20170312.models.AssignIpv6CidrBlockRequest`
@@ -283,15 +235,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssignIpv6CidrBlock", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssignIpv6CidrBlockResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssignIpv6CidrBlockResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -314,15 +260,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssignIpv6SubnetCidrBlock", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssignIpv6SubnetCidrBlockResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssignIpv6SubnetCidrBlockResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -348,15 +288,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssignPrivateIpAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssignPrivateIpAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssignPrivateIpAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -384,15 +318,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssociateAddress", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssociateAddressResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssociateAddressResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -415,15 +343,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssociateDhcpIpWithAddressIp", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssociateDhcpIpWithAddressIpResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssociateDhcpIpWithAddressIpResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -444,15 +366,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssociateDirectConnectGatewayNatGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssociateDirectConnectGatewayNatGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssociateDirectConnectGatewayNatGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -473,15 +389,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssociateNatGatewayAddress", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssociateNatGatewayAddressResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssociateNatGatewayAddressResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -490,7 +400,7 @@ class VpcClient(AbstractClient):
 
 
     def AssociateNetworkAclSubnets(self, request):
-        """本接口（AssociateNetworkAclSubnets）用于网络ACL关联vpc下的子网。
+        """本接口（AssociateNetworkAclSubnets）用于网络ACL关联VPC下的子网。
 
         :param request: Request instance for AssociateNetworkAclSubnets.
         :type request: :class:`tencentcloud.vpc.v20170312.models.AssociateNetworkAclSubnetsRequest`
@@ -502,15 +412,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssociateNetworkAclSubnets", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssociateNetworkAclSubnetsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssociateNetworkAclSubnetsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -531,15 +435,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AssociateNetworkInterfaceSecurityGroups", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AssociateNetworkInterfaceSecurityGroupsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AssociateNetworkInterfaceSecurityGroupsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -561,15 +459,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AttachCcnInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AttachCcnInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AttachCcnInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -594,15 +486,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AttachClassicLinkVpc", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AttachClassicLinkVpcResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AttachClassicLinkVpcResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -630,15 +516,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AttachNetworkInterface", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AttachNetworkInterfaceResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.AttachNetworkInterfaceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def AttachSnapshotInstances(self, request):
+        """本接口（AttachSnapshotInstances）用于快照策略关联实例。
+
+        :param request: Request instance for AttachSnapshotInstances.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.AttachSnapshotInstancesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.AttachSnapshotInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AttachSnapshotInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.AttachSnapshotInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -661,15 +564,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("AuditCrossBorderCompliance", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.AuditCrossBorderComplianceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.AuditCrossBorderComplianceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -678,7 +575,7 @@ class VpcClient(AbstractClient):
 
 
     def CheckAssistantCidr(self, request):
-        """本接口(CheckAssistantCidr)用于检查辅助CIDR是否与存量路由、对等连接（对端VPC的CIDR）等资源存在冲突。如果存在重叠，则返回重叠的资源。
+        """本接口（CheckAssistantCidr）用于检查辅助CIDR是否与存量路由、对等连接（对端VPC的CIDR）等资源存在冲突。如果存在重叠，则返回重叠的资源。
         * 检测辅助CIDR是否与当前VPC的主CIDR和辅助CIDR存在重叠。
         * 检测辅助CIDR是否与当前VPC的路由的目的端存在重叠。
         * 检测辅助CIDR是否与当前VPC的对等连接，对端VPC下的主CIDR或辅助CIDR存在重叠。
@@ -693,15 +590,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CheckAssistantCidr", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CheckAssistantCidrResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CheckAssistantCidrResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -722,15 +613,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CheckDefaultSubnet", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CheckDefaultSubnetResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CheckDefaultSubnetResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -739,7 +624,7 @@ class VpcClient(AbstractClient):
 
 
     def CheckNetDetectState(self, request):
-        """本接口(CheckNetDetectState)用于验证网络探测。
+        """本接口（CheckNetDetectState）用于验证网络探测。
 
         :param request: Request instance for CheckNetDetectState.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CheckNetDetectStateRequest`
@@ -751,15 +636,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CheckNetDetectState", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CheckNetDetectStateResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CheckNetDetectStateResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -780,15 +659,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CloneSecurityGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CloneSecurityGroupResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CloneSecurityGroupResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -809,15 +682,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateAddressTemplate", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateAddressTemplateResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateAddressTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -826,7 +693,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateAddressTemplateGroup(self, request):
-        """本接口（CreateAddressTemplateGroup）用于创建IP地址模板集合
+        """本接口（CreateAddressTemplateGroup）用于创建IP地址模板集合。
 
         :param request: Request instance for CreateAddressTemplateGroup.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateAddressTemplateGroupRequest`
@@ -838,15 +705,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateAddressTemplateGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateAddressTemplateGroupResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateAddressTemplateGroupResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -874,15 +735,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateAndAttachNetworkInterface", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateAndAttachNetworkInterfaceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateAndAttachNetworkInterfaceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -891,7 +746,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateAssistantCidr(self, request):
-        """本接口(CreateAssistantCidr)用于批量创建辅助CIDR。
+        """本接口（CreateAssistantCidr）用于批量创建辅助CIDR。
 
         :param request: Request instance for CreateAssistantCidr.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateAssistantCidrRequest`
@@ -903,15 +758,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateAssistantCidr", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateAssistantCidrResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateAssistantCidrResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -932,15 +781,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateBandwidthPackage", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateBandwidthPackageResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateBandwidthPackageResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -963,15 +806,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateCcn", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateCcnResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateCcnResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -992,15 +829,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateCustomerGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateCustomerGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateCustomerGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1024,15 +855,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateDefaultSecurityGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateDefaultSecurityGroupResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateDefaultSecurityGroupResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1061,15 +886,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateDefaultVpc", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateDefaultVpcResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateDefaultVpcResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1078,7 +897,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateDhcpIp(self, request):
-        """本接口（CreateDhcpIp）用于创建DhcpIp
+        """本接口（CreateDhcpIp）用于创建DhcpIp。
 
         :param request: Request instance for CreateDhcpIp.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateDhcpIpRequest`
@@ -1090,15 +909,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateDhcpIp", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateDhcpIpResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateDhcpIpResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1119,15 +932,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateDirectConnectGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateDirectConnectGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateDirectConnectGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1148,15 +955,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateDirectConnectGatewayCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateDirectConnectGatewayCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateDirectConnectGatewayCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1177,15 +978,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateFlowLog", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateFlowLogResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateFlowLogResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1206,15 +1001,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateHaVip", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateHaVipResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateHaVipResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1236,15 +1025,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateIp6Translators", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateIp6TranslatorsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateIp6TranslatorsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1253,7 +1036,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateLocalGateway(self, request):
-        """该接口用于创建用于CDC的本地网关。
+        """本接口（CreateLocalGateway）用于创建用于CDC的本地网关。
 
         :param request: Request instance for CreateLocalGateway.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateLocalGatewayRequest`
@@ -1265,15 +1048,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateLocalGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateLocalGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateLocalGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1295,15 +1072,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateNatGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateNatGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateNatGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1324,15 +1095,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateNatGatewayDestinationIpPortTranslationNatRule", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateNatGatewayDestinationIpPortTranslationNatRuleResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateNatGatewayDestinationIpPortTranslationNatRuleResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1353,15 +1118,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateNatGatewaySourceIpTranslationNatRule", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateNatGatewaySourceIpTranslationNatRuleResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateNatGatewaySourceIpTranslationNatRuleResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1382,15 +1141,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateNetDetect", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateNetDetectResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateNetDetectResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1412,15 +1165,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateNetworkAcl", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateNetworkAclResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateNetworkAclResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1441,15 +1188,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateNetworkAclQuintupleEntries", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateNetworkAclQuintupleEntriesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateNetworkAclQuintupleEntriesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1477,15 +1218,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateNetworkInterface", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateNetworkInterfaceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateNetworkInterfaceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1508,15 +1243,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateRouteTable", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateRouteTableResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateRouteTableResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1538,15 +1267,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1570,15 +1293,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateSecurityGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateSecurityGroupResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateSecurityGroupResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1613,15 +1330,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateSecurityGroupPolicies", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateSecurityGroupPoliciesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateSecurityGroupPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1655,15 +1366,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateSecurityGroupWithPolicies", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateSecurityGroupWithPoliciesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateSecurityGroupWithPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1672,7 +1377,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateServiceTemplate(self, request):
-        """本接口（CreateServiceTemplate）用于创建协议端口模板
+        """本接口（CreateServiceTemplate）用于创建协议端口模板。
 
         :param request: Request instance for CreateServiceTemplate.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateServiceTemplateRequest`
@@ -1684,15 +1389,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateServiceTemplate", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateServiceTemplateResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateServiceTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1701,7 +1400,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateServiceTemplateGroup(self, request):
-        """本接口（CreateServiceTemplateGroup）用于创建协议端口模板集合
+        """本接口（CreateServiceTemplateGroup）用于创建协议端口模板集合。
 
         :param request: Request instance for CreateServiceTemplateGroup.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateServiceTemplateGroupRequest`
@@ -1713,15 +1412,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateServiceTemplateGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateServiceTemplateGroupResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.CreateServiceTemplateGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateSnapshotPolicies(self, request):
+        """本接口（CreateSnapshotPolicies）用于创建快照策略。
+
+        :param request: Request instance for CreateSnapshotPolicies.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.CreateSnapshotPoliciesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.CreateSnapshotPoliciesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateSnapshotPolicies", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateSnapshotPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1730,7 +1446,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateSubnet(self, request):
-        """本接口(CreateSubnet)用于创建子网。
+        """本接口（CreateSubnet）用于创建子网。
         * 创建子网前必须创建好 VPC。
         * 子网创建成功后，子网网段不能修改。子网网段必须在VPC网段内，可以和VPC网段相同（VPC有且只有一个子网时），建议子网网段在VPC网段内，预留网段给其他子网使用。
         * 您可以创建的最小网段子网掩码为28（有16个IP地址），最大网段子网掩码为16（65,536个IP地址）。
@@ -1748,15 +1464,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateSubnet", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateSubnetResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateSubnetResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1765,7 +1475,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateSubnets(self, request):
-        """本接口(CreateSubnets)用于批量创建子网。
+        """本接口（CreateSubnets）用于批量创建子网。
         * 创建子网前必须创建好 VPC。
         * 子网创建成功后，子网网段不能修改。子网网段必须在VPC网段内，可以和VPC网段相同（VPC有且只有一个子网时），建议子网网段在VPC网段内，预留网段给其他子网使用。
         * 您可以创建的最小网段子网掩码为28（有16个IP地址），最大网段子网掩码为16（65,536个IP地址）。
@@ -1783,15 +1493,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateSubnets", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateSubnetsResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.CreateSubnetsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateTrafficPackages(self, request):
+        """本接口 (CreateTrafficPackages) 用于创建共享流量包。
+
+        :param request: Request instance for CreateTrafficPackages.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.CreateTrafficPackagesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.CreateTrafficPackagesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateTrafficPackages", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateTrafficPackagesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1800,7 +1527,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateVpc(self, request):
-        """本接口(CreateVpc)用于创建私有网络(VPC)。
+        """本接口（CreateVpc）用于创建私有网络（VPC）。
         * 用户可以创建的最小网段子网掩码为28（有16个IP地址），10.0.0.0/12，172.16.0.0/12最大网段子网掩码为12（1,048,576个IP地址），192.168.0.0/16最大网段子网掩码为16（65,536个IP地址）如果需要规划VPC网段请参见[网络规划](https://cloud.tencent.com/document/product/215/30313)。
         * 同一个地域能创建的VPC资源个数也是有限制的，详见 <a href="https://cloud.tencent.com/doc/product/215/537" title="VPC使用限制">VPC使用限制</a>，如果需要申请更多资源，请提交[工单申请](https://console.cloud.tencent.com/workorder/category)。
         * 创建VPC同时可以绑定标签, 应答里的标签列表代表添加成功的标签。
@@ -1815,15 +1542,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpc", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpcResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpcResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1832,7 +1553,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateVpcEndPoint(self, request):
-        """创建终端节点。
+        """本接口（CreateVpcEndPoint）用于创建终端节点。
 
         :param request: Request instance for CreateVpcEndPoint.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateVpcEndPointRequest`
@@ -1844,15 +1565,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpcEndPoint", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpcEndPointResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpcEndPointResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1861,7 +1576,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateVpcEndPointService(self, request):
-        """本接口(CreateVpcEndPointService)用于创建终端节点服务。
+        """本接口（CreateVpcEndPointService）用于创建终端节点服务。
 
         :param request: Request instance for CreateVpcEndPointService.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateVpcEndPointServiceRequest`
@@ -1873,15 +1588,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpcEndPointService", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpcEndPointServiceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpcEndPointServiceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1890,7 +1599,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateVpcEndPointServiceWhiteList(self, request):
-        """创建终端服务白名单。
+        """本接口（CreateVpcEndPointServiceWhiteList）创建终端服务白名单。
 
         :param request: Request instance for CreateVpcEndPointServiceWhiteList.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateVpcEndPointServiceWhiteListRequest`
@@ -1902,15 +1611,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpcEndPointServiceWhiteList", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpcEndPointServiceWhiteListResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpcEndPointServiceWhiteListResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1933,15 +1636,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpnConnection", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpnConnectionResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpnConnectionResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1962,15 +1659,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpnGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpnGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpnGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -1991,15 +1682,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpnGatewayRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpnGatewayRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpnGatewayRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2020,15 +1705,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpnGatewaySslClient", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpnGatewaySslClientResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpnGatewaySslClientResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2049,15 +1728,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("CreateVpnGatewaySslServer", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.CreateVpnGatewaySslServerResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.CreateVpnGatewaySslServerResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2066,7 +1739,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteAddressTemplate(self, request):
-        """本接口（DeleteAddressTemplate）用于删除IP地址模板
+        """本接口（DeleteAddressTemplate）用于删除IP地址模板。
 
         :param request: Request instance for DeleteAddressTemplate.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteAddressTemplateRequest`
@@ -2078,15 +1751,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteAddressTemplate", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteAddressTemplateResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteAddressTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2095,7 +1762,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteAddressTemplateGroup(self, request):
-        """本接口（DeleteAddressTemplateGroup）用于删除IP地址模板集合
+        """本接口（DeleteAddressTemplateGroup）用于删除IP地址模板集合。
 
         :param request: Request instance for DeleteAddressTemplateGroup.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteAddressTemplateGroupRequest`
@@ -2107,15 +1774,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteAddressTemplateGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteAddressTemplateGroupResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteAddressTemplateGroupResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2124,7 +1785,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteAssistantCidr(self, request):
-        """本接口(DeleteAssistantCidr)用于删除辅助CIDR。
+        """本接口（DeleteAssistantCidr）用于删除辅助CIDR。
 
         :param request: Request instance for DeleteAssistantCidr.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteAssistantCidrRequest`
@@ -2136,15 +1797,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteAssistantCidr", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteAssistantCidrResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteAssistantCidrResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2165,15 +1820,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteBandwidthPackage", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteBandwidthPackageResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteBandwidthPackageResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2196,15 +1845,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteCcn", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteCcnResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteCcnResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2225,15 +1868,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteCustomerGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteCustomerGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteCustomerGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2256,15 +1893,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteDhcpIp", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteDhcpIpResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteDhcpIpResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2288,15 +1919,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteDirectConnectGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteDirectConnectGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteDirectConnectGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2317,15 +1942,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteDirectConnectGatewayCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteDirectConnectGatewayCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteDirectConnectGatewayCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2346,15 +1965,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteFlowLog", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteFlowLogResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteFlowLogResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2376,15 +1989,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteHaVip", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteHaVipResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteHaVipResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2406,15 +2013,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteIp6Translators", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteIp6TranslatorsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteIp6TranslatorsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2423,7 +2024,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteLocalGateway(self, request):
-        """该接口用于删除CDC的本地网关。
+        """本接口（DeleteLocalGateway）用于删除CDC的本地网关。
 
         :param request: Request instance for DeleteLocalGateway.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteLocalGatewayRequest`
@@ -2435,15 +2036,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteLocalGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteLocalGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteLocalGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2465,15 +2060,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNatGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNatGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteNatGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2494,15 +2083,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNatGatewayDestinationIpPortTranslationNatRule", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNatGatewayDestinationIpPortTranslationNatRuleResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteNatGatewayDestinationIpPortTranslationNatRuleResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2523,15 +2106,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNatGatewaySourceIpTranslationNatRule", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNatGatewaySourceIpTranslationNatRuleResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteNatGatewaySourceIpTranslationNatRuleResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2552,15 +2129,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNetDetect", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNetDetectResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteNetDetectResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2581,15 +2152,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNetworkAcl", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNetworkAclResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteNetworkAclResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2610,15 +2175,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNetworkAclQuintupleEntries", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNetworkAclQuintupleEntriesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteNetworkAclQuintupleEntriesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2643,15 +2202,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteNetworkInterface", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteNetworkInterfaceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteNetworkInterfaceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2672,15 +2225,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteRouteTable", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteRouteTableResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteRouteTableResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2701,15 +2248,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2733,15 +2274,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteSecurityGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteSecurityGroupResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteSecurityGroupResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2763,15 +2298,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteSecurityGroupPolicies", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteSecurityGroupPoliciesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteSecurityGroupPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2780,7 +2309,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteServiceTemplate(self, request):
-        """本接口（DeleteServiceTemplate）用于删除协议端口模板
+        """本接口（DeleteServiceTemplate）用于删除协议端口模板。
 
         :param request: Request instance for DeleteServiceTemplate.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteServiceTemplateRequest`
@@ -2792,15 +2321,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteServiceTemplate", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteServiceTemplateResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteServiceTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2809,7 +2332,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteServiceTemplateGroup(self, request):
-        """本接口（DeleteServiceTemplateGroup）用于删除协议端口模板集合
+        """本接口（DeleteServiceTemplateGroup）用于删除协议端口模板集合。
 
         :param request: Request instance for DeleteServiceTemplateGroup.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteServiceTemplateGroupRequest`
@@ -2821,15 +2344,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteServiceTemplateGroup", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteServiceTemplateGroupResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DeleteServiceTemplateGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteSnapshotPolicies(self, request):
+        """本接口（DeleteSnapshotPolicies）用于删除快照策略。
+
+        :param request: Request instance for DeleteSnapshotPolicies.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteSnapshotPoliciesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DeleteSnapshotPoliciesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteSnapshotPolicies", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteSnapshotPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2838,8 +2378,8 @@ class VpcClient(AbstractClient):
 
 
     def DeleteSubnet(self, request):
-        """本接口（DeleteSubnet）用于用于删除子网(Subnet)。
-        * 删除子网前，请清理该子网下所有资源，包括云服务器、负载均衡、云数据、noSql、弹性网卡等资源。
+        """本接口（DeleteSubnet）用于用于删除子网（Subnet）。
+        * 删除子网前，请清理该子网下所有资源，包括云服务器、负载均衡、云数据、NoSQL、弹性网卡等资源。
 
         :param request: Request instance for DeleteSubnet.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteSubnetRequest`
@@ -2851,15 +2391,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteSubnet", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteSubnetResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteSubnetResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2880,15 +2414,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteTemplateMember", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteTemplateMemberResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteTemplateMemberResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2911,15 +2439,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpc", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpcResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpcResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2928,7 +2450,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteVpcEndPoint(self, request):
-        """删除终端节点。
+        """本接口（DeleteVpcEndPoint）用于删除终端节点。
 
         :param request: Request instance for DeleteVpcEndPoint.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteVpcEndPointRequest`
@@ -2940,15 +2462,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpcEndPoint", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpcEndPointResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpcEndPointResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2957,8 +2473,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteVpcEndPointService(self, request):
-        """删除终端节点服务。
-
+        """本接口（DeleteVpcEndPointService）用于删除终端节点服务。
 
         :param request: Request instance for DeleteVpcEndPointService.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteVpcEndPointServiceRequest`
@@ -2970,15 +2485,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpcEndPointService", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpcEndPointServiceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpcEndPointServiceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -2987,7 +2496,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteVpcEndPointServiceWhiteList(self, request):
-        """删除终端节点服务白名单。
+        """本接口（DeleteVpcEndPointServiceWhiteList）用于删除终端节点服务白名单。
 
         :param request: Request instance for DeleteVpcEndPointServiceWhiteList.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteVpcEndPointServiceWhiteListRequest`
@@ -2999,15 +2508,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpcEndPointServiceWhiteList", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpcEndPointServiceWhiteListResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpcEndPointServiceWhiteListResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3028,15 +2531,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpnConnection", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpnConnectionResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpnConnectionResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3057,15 +2554,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpnGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpnGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpnGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3086,15 +2577,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpnGatewayRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpnGatewayRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpnGatewayRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3115,15 +2600,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpnGatewaySslClient", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpnGatewaySslClientResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpnGatewaySslClientResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3144,15 +2623,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DeleteVpnGatewaySslServer", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DeleteVpnGatewaySslServerResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DeleteVpnGatewaySslServerResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3173,15 +2646,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAccountAttributes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAccountAttributesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAccountAttributesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3202,15 +2669,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAddressQuota", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAddressQuotaResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAddressQuotaResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3219,7 +2680,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeAddressTemplateGroups(self, request):
-        """本接口（DescribeAddressTemplateGroups）用于查询IP地址模板集合
+        """本接口（DescribeAddressTemplateGroups）用于查询IP地址模板集合。
 
         :param request: Request instance for DescribeAddressTemplateGroups.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeAddressTemplateGroupsRequest`
@@ -3231,15 +2692,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAddressTemplateGroups", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAddressTemplateGroupsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAddressTemplateGroupsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3248,7 +2703,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeAddressTemplates(self, request):
-        """本接口（DescribeAddressTemplates）用于查询IP地址模板
+        """本接口（DescribeAddressTemplates）用于查询IP地址模板。
 
         :param request: Request instance for DescribeAddressTemplates.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeAddressTemplatesRequest`
@@ -3260,15 +2715,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAddressTemplates", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAddressTemplatesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAddressTemplatesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3290,15 +2739,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3319,15 +2762,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeAssistantCidr", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeAssistantCidrResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeAssistantCidrResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3348,15 +2785,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeBandwidthPackageBillUsage", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeBandwidthPackageBillUsageResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeBandwidthPackageBillUsageResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3377,15 +2808,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeBandwidthPackageQuota", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeBandwidthPackageQuotaResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeBandwidthPackageQuotaResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3406,15 +2831,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeBandwidthPackageResources", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeBandwidthPackageResourcesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeBandwidthPackageResourcesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3435,15 +2854,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeBandwidthPackages", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeBandwidthPackagesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeBandwidthPackagesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3464,15 +2877,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCcnAttachedInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCcnAttachedInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCcnAttachedInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3481,7 +2888,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeCcnRegionBandwidthLimits(self, request):
-        """本接口（DescribeCcnRegionBandwidthLimits）用于查询云联网各地域出带宽上限，该接口只返回已关联网络实例包含的地域
+        """本接口（DescribeCcnRegionBandwidthLimits）用于查询云联网各地域出带宽上限，该接口只返回已关联网络实例包含的地域。
 
         :param request: Request instance for DescribeCcnRegionBandwidthLimits.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeCcnRegionBandwidthLimitsRequest`
@@ -3493,15 +2900,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCcnRegionBandwidthLimits", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCcnRegionBandwidthLimitsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCcnRegionBandwidthLimitsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3510,7 +2911,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeCcnRoutes(self, request):
-        """本接口（DescribeCcnRoutes）用于查询已加入云联网（CCN）的路由
+        """本接口（DescribeCcnRoutes）用于查询已加入云联网（CCN）的路由。
 
         :param request: Request instance for DescribeCcnRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeCcnRoutesRequest`
@@ -3522,15 +2923,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3551,15 +2946,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCcns", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCcnsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCcnsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3568,7 +2957,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeClassicLinkInstances(self, request):
-        """本接口(DescribeClassicLinkInstances)用于查询私有网络和基础网络设备互通列表。
+        """本接口（DescribeClassicLinkInstances）用于查询私有网络和基础网络设备互通列表。
 
         :param request: Request instance for DescribeClassicLinkInstances.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeClassicLinkInstancesRequest`
@@ -3580,15 +2969,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeClassicLinkInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeClassicLinkInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeClassicLinkInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3611,15 +2994,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCrossBorderCcnRegionBandwidthLimits", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCrossBorderCcnRegionBandwidthLimitsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCrossBorderCcnRegionBandwidthLimitsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3641,15 +3018,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCrossBorderCompliance", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCrossBorderComplianceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCrossBorderComplianceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3658,7 +3029,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeCrossBorderFlowMonitor(self, request):
-        """查询跨境带宽监控数据，该接口特提供给联通使用
+        """本接口（DescribeCrossBorderFlowMonitor）用于查询跨境带宽监控数据，该接口目前只提供给服务商联通使用。
 
         :param request: Request instance for DescribeCrossBorderFlowMonitor.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeCrossBorderFlowMonitorRequest`
@@ -3670,15 +3041,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCrossBorderFlowMonitor", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCrossBorderFlowMonitorResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCrossBorderFlowMonitorResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3699,15 +3064,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCustomerGatewayVendors", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCustomerGatewayVendorsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCustomerGatewayVendorsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3728,15 +3087,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeCustomerGateways", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeCustomerGatewaysResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeCustomerGatewaysResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3757,15 +3110,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeDhcpIps", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeDhcpIpsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeDhcpIpsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3786,15 +3133,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeDirectConnectGatewayCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeDirectConnectGatewayCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeDirectConnectGatewayCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3815,15 +3156,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeDirectConnectGateways", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeDirectConnectGatewaysResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeDirectConnectGatewaysResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3844,15 +3179,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeFlowLog", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeFlowLogResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeFlowLogResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3873,15 +3202,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeFlowLogs", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeFlowLogsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeFlowLogsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3904,15 +3227,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeGatewayFlowMonitorDetail", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeGatewayFlowMonitorDetailResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeGatewayFlowMonitorDetailResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3933,15 +3250,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeGatewayFlowQos", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeGatewayFlowQosResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeGatewayFlowQosResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3962,15 +3273,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeHaVips", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeHaVipsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeHaVipsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -3991,15 +3296,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeIp6Addresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeIp6AddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeIp6AddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4020,15 +3319,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeIp6TranslatorQuota", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeIp6TranslatorQuotaResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeIp6TranslatorQuotaResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4050,15 +3343,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeIp6Translators", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeIp6TranslatorsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeIp6TranslatorsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4079,15 +3366,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeIpGeolocationDatabaseUrl", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeIpGeolocationDatabaseUrlResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeIpGeolocationDatabaseUrlResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4109,15 +3390,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeIpGeolocationInfos", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeIpGeolocationInfosResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeIpGeolocationInfosResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4126,7 +3401,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeLocalGateway(self, request):
-        """该接口用于查询CDC的本地网关。
+        """本接口（DescribeLocalGateway）用于查询CDC的本地网关。
 
         :param request: Request instance for DescribeLocalGateway.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeLocalGatewayRequest`
@@ -4138,15 +3413,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeLocalGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeLocalGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeLocalGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4167,15 +3436,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNatGatewayDestinationIpPortTranslationNatRules", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNatGatewayDestinationIpPortTranslationNatRulesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNatGatewayDestinationIpPortTranslationNatRulesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4196,15 +3459,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNatGatewayDirectConnectGatewayRoute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNatGatewayDirectConnectGatewayRouteResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNatGatewayDirectConnectGatewayRouteResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4225,15 +3482,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNatGatewaySourceIpTranslationNatRules", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNatGatewaySourceIpTranslationNatRulesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNatGatewaySourceIpTranslationNatRulesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4254,15 +3505,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNatGateways", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNatGatewaysResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNatGatewaysResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4283,15 +3528,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNetDetectStates", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNetDetectStatesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNetDetectStatesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4312,15 +3551,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNetDetects", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNetDetectsResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DescribeNetDetectsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeNetworkAccountType(self, request):
+        """判断用户在网络侧的用户类型，如标准（带宽上移），传统（非上移）。
+
+        :param request: Request instance for DescribeNetworkAccountType.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeNetworkAccountTypeRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DescribeNetworkAccountTypeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNetworkAccountType", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNetworkAccountTypeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4341,15 +3597,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNetworkAclQuintupleEntries", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNetworkAclQuintupleEntriesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNetworkAclQuintupleEntriesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4370,15 +3620,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNetworkAcls", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNetworkAclsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNetworkAclsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4387,7 +3631,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeNetworkInterfaceLimit(self, request):
-        """本接口（DescribeNetworkInterfaceLimit）根据CVM实例ID或弹性网卡ID查询弹性网卡配额，返回该CVM实例或弹性网卡能绑定的弹性网卡配额，以及弹性网卡可以分配的IP配额
+        """本接口（DescribeNetworkInterfaceLimit）根据CVM实例ID或弹性网卡ID查询弹性网卡配额，返回该CVM实例或弹性网卡能绑定的弹性网卡配额，以及弹性网卡可以分配的IP配额。
 
         :param request: Request instance for DescribeNetworkInterfaceLimit.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeNetworkInterfaceLimitRequest`
@@ -4399,15 +3643,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNetworkInterfaceLimit", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNetworkInterfaceLimitResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNetworkInterfaceLimitResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4428,15 +3666,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeNetworkInterfaces", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeNetworkInterfacesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeNetworkInterfacesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4445,7 +3677,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeProductQuota(self, request):
-        """本接口用于查询网络产品的配额信息
+        """本接口（DescribeProductQuota）用于查询网络产品的配额信息。
 
         :param request: Request instance for DescribeProductQuota.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeProductQuotaRequest`
@@ -4457,15 +3689,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeProductQuota", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeProductQuotaResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeProductQuotaResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4474,7 +3700,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeRouteConflicts(self, request):
-        """本接口（DescribeRouteConflicts）用于查询自定义路由策略与云联网路由策略冲突列表
+        """本接口（DescribeRouteConflicts）用于查询自定义路由策略与云联网路由策略冲突列表。
 
         :param request: Request instance for DescribeRouteConflicts.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeRouteConflictsRequest`
@@ -4486,15 +3712,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeRouteConflicts", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeRouteConflictsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeRouteConflictsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4515,15 +3735,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeRouteTables", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeRouteTablesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeRouteTablesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4544,15 +3758,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeSecurityGroupAssociationStatistics", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeSecurityGroupAssociationStatisticsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeSecurityGroupAssociationStatisticsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4573,15 +3781,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeSecurityGroupLimits", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeSecurityGroupLimitsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeSecurityGroupLimitsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4602,15 +3804,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeSecurityGroupPolicies", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeSecurityGroupPoliciesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeSecurityGroupPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4631,15 +3827,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeSecurityGroupReferences", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeSecurityGroupReferencesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeSecurityGroupReferencesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4660,15 +3850,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeSecurityGroups", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeSecurityGroupsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeSecurityGroupsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4677,7 +3861,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeServiceTemplateGroups(self, request):
-        """本接口（DescribeServiceTemplateGroups）用于查询协议端口模板集合
+        """本接口（DescribeServiceTemplateGroups）用于查询协议端口模板集合。
 
         :param request: Request instance for DescribeServiceTemplateGroups.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeServiceTemplateGroupsRequest`
@@ -4689,15 +3873,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeServiceTemplateGroups", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeServiceTemplateGroupsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeServiceTemplateGroupsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4706,7 +3884,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeServiceTemplates(self, request):
-        """本接口（DescribeServiceTemplates）用于查询协议端口模板
+        """本接口（DescribeServiceTemplates）用于查询协议端口模板。
 
         :param request: Request instance for DescribeServiceTemplates.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeServiceTemplatesRequest`
@@ -4718,15 +3896,101 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeServiceTemplates", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeServiceTemplatesResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DescribeServiceTemplatesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSgSnapshotFileContent(self, request):
+        """本接口（DescribeSgSnapshotFileContent）用于查询安全组快照文件内容。
+
+        :param request: Request instance for DescribeSgSnapshotFileContent.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeSgSnapshotFileContentRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DescribeSgSnapshotFileContentResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSgSnapshotFileContent", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSgSnapshotFileContentResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSnapshotAttachedInstances(self, request):
+        """本接口（DescribeSnapshotAttachedInstances）用于查询快照策略关联实例列表。
+
+        :param request: Request instance for DescribeSnapshotAttachedInstances.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeSnapshotAttachedInstancesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DescribeSnapshotAttachedInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSnapshotAttachedInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSnapshotAttachedInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSnapshotFiles(self, request):
+        """本接口（DescribeSnapshotFiles）用于查询快照文件。
+
+        :param request: Request instance for DescribeSnapshotFiles.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeSnapshotFilesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DescribeSnapshotFilesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSnapshotFiles", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSnapshotFilesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSnapshotPolicies(self, request):
+        """本接口（DescribeSnapshotPolicies）用于查询快照策略。
+
+        :param request: Request instance for DescribeSnapshotPolicies.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeSnapshotPoliciesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DescribeSnapshotPoliciesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSnapshotPolicies", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSnapshotPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4747,15 +4011,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeSubnets", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeSubnetsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeSubnetsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4776,15 +4034,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeTaskResult", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeTaskResultResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeTaskResultResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4805,15 +4057,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeTemplateLimits", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeTemplateLimitsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeTemplateLimitsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4836,15 +4082,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeTenantCcns", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeTenantCcnsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeTenantCcnsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4865,15 +4105,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeTrafficPackages", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeTrafficPackagesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeTrafficPackagesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4894,15 +4128,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcEndPoint", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcEndPointResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcEndPointResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4923,15 +4151,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcEndPointService", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcEndPointServiceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcEndPointServiceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4940,7 +4162,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpcEndPointServiceWhiteList(self, request):
-        """查询终端节点服务的服务白名单列表。
+        """本接口（DescribeVpcEndPointServiceWhiteList）用于查询终端节点服务的服务白名单列表。
 
         :param request: Request instance for DescribeVpcEndPointServiceWhiteList.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpcEndPointServiceWhiteListRequest`
@@ -4952,15 +4174,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcEndPointServiceWhiteList", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcEndPointServiceWhiteListResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcEndPointServiceWhiteListResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -4981,15 +4197,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5011,15 +4221,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcIpv6Addresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcIpv6AddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcIpv6AddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5028,36 +4232,38 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpcLimits(self, request):
-        """获取私有网络配额，部分私有网络的配额有地域属性。
+        """本接口（DescribeVpcLimits）用于获取私有网络配额，部分私有网络的配额有地域属性。
         LimitTypes取值范围：
-        * appid-max-vpcs （每个开发商每个地域可创建的VPC数）
-        * vpc-max-subnets（每个VPC可创建的子网数）
-        * vpc-max-route-tables（每个VPC可创建的路由表数）
-        * route-table-max-policies（每个路由表可添加的策略数）
-        * vpc-max-vpn-gateways（每个VPC可创建的VPN网关数）
-        * appid-max-custom-gateways（每个开发商可创建的对端网关数）
-        * appid-max-vpn-connections（每个开发商可创建的VPN通道数）
-        * custom-gateway-max-vpn-connections（每个对端网关可创建的VPN通道数）
-        * vpn-gateway-max-custom-gateways（每个VPNGW可以创建的通道数）
-        * vpc-max-network-acls（每个VPC可创建的网络ACL数）
-        * network-acl-max-inbound-policies（每个网络ACL可添加的入站规则数）
-        * network-acl-max-outbound-policies（每个网络ACL可添加的出站规则数）
-        * vpc-max-vpcpeers（每个VPC可创建的对等连接数）
-        * vpc-max-available-vpcpeers（每个VPC可创建的有效对等连接数）
-        * vpc-max-basic-network-interconnections（每个VPC可创建的基础网络云主机与VPC互通数）
-        * direct-connection-max-snats（每个专线网关可创建的SNAT数）
-        * direct-connection-max-dnats（每个专线网关可创建的DNAT数）
-        * direct-connection-max-snapts（每个专线网关可创建的SNAPT数）
-        * direct-connection-max-dnapts（每个专线网关可创建的DNAPT数）
-        * vpc-max-nat-gateways（每个VPC可创建的NAT网关数）
-        * nat-gateway-max-eips（每个NAT可以购买的外网IP数量）
-        * vpc-max-enis（每个VPC可创建弹性网卡数）
-        * vpc-max-havips（每个VPC可创建HAVIP数）
-        * eni-max-private-ips（每个ENI可以绑定的内网IP数（ENI未绑定子机））
-        * nat-gateway-max-dnapts（每个NAT网关可创建的DNAPT数）
-        * vpc-max-ipv6s（每个VPC可分配的IPv6地址数）
-        * eni-max-ipv6s（每个ENI可分配的IPv6地址数）
-        * vpc-max-assistant_cidrs（每个VPC可分配的辅助CIDR数）
+        * appid-max-vpcs （每个开发商每个地域可创建的VPC数）。
+        * vpc-max-subnets（每个VPC可创建的子网数）。
+        * vpc-max-route-tables（每个VPC可创建的路由表数）。
+        * route-table-max-policies（每个路由表可添加的策略数）。
+        * vpc-max-vpn-gateways（每个VPC可创建的VPN网关数）。
+        * appid-max-custom-gateways（每个开发商可创建的对端网关数）。
+        * appid-max-vpn-connections（每个开发商可创建的VPN通道数）。
+        * custom-gateway-max-vpn-connections（每个对端网关可创建的VPN通道数）。
+        * vpn-gateway-max-custom-gateways（每个VPNGW可以创建的通道数）。
+        * vpc-max-network-acls（每个VPC可创建的网络ACL数）。
+        * network-acl-max-inbound-policies（每个网络ACL可添加的入站规则数）。
+        * network-acl-max-outbound-policies（每个网络ACL可添加的出站规则数）。
+        * vpc-max-vpcpeers（每个VPC可创建的对等连接数）。
+        * vpc-max-available-vpcpeers（每个VPC可创建的有效对等连接数）。
+        * vpc-max-basic-network-interconnections（每个VPC可创建的基础网络云主机与VPC互通数）。
+        * direct-connection-max-snats（每个专线网关可创建的SNAT数）。
+        * direct-connection-max-dnats（每个专线网关可创建的DNAT数）。
+        * direct-connection-max-snapts（每个专线网关可创建的SNAPT数）。
+        * direct-connection-max-dnapts（每个专线网关可创建的DNAPT数）。
+        * vpc-max-nat-gateways（每个VPC可创建的NAT网关数）。
+        * nat-gateway-max-eips（每个NAT可以购买的外网IP数量）。
+        * vpc-max-enis（每个VPC可创建弹性网卡数）。
+        * vpc-max-havips（每个VPC可创建HAVIP数）。
+        * eni-max-private-ips（每个ENI可以绑定的内网IP数（ENI未绑定子机））。
+        * nat-gateway-max-dnapts（每个NAT网关可创建的DNAPT数）。
+        * vpc-max-ipv6s（每个VPC可分配的IPv6地址数）。
+        * eni-max-ipv6s（每个ENI可分配的IPv6地址数）。
+        * vpc-max-assistant_cidrs（每个VPC可分配的辅助CIDR数）。
+        * appid-max-end-point-services （每个开发商每个地域可创建的终端节点服务个数）。
+        * appid-max-end-point-service-white-lists （每个开发商每个地域可创建的终端节点服务白名单个数）。
 
         :param request: Request instance for DescribeVpcLimits.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpcLimitsRequest`
@@ -5069,15 +4275,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcLimits", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcLimitsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcLimitsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5099,15 +4299,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcPrivateIpAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcPrivateIpAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcPrivateIpAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5128,15 +4322,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcResourceDashboard", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcResourceDashboardResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcResourceDashboardResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5157,15 +4345,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcTaskResult", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcTaskResultResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcTaskResultResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5186,15 +4368,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpcs", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpcsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpcsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5215,15 +4391,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpnConnections", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpnConnectionsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpnConnectionsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5244,15 +4414,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpnGatewayCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpnGatewayCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpnGatewayCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5273,15 +4437,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpnGatewayRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpnGatewayRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpnGatewayRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5302,15 +4460,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpnGatewaySslClients", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpnGatewaySslClientsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpnGatewaySslClientsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5331,15 +4483,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpnGatewaySslServers", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpnGatewaySslServersResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpnGatewaySslServersResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5360,15 +4506,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DescribeVpnGateways", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DescribeVpnGatewaysResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DescribeVpnGatewaysResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5390,15 +4530,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DetachCcnInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DetachCcnInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DetachCcnInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5421,15 +4555,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DetachClassicLinkVpc", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DetachClassicLinkVpcResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DetachClassicLinkVpcResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5451,15 +4579,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DetachNetworkInterface", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DetachNetworkInterfaceResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DetachNetworkInterfaceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DetachSnapshotInstances(self, request):
+        """本接口（DetachSnapshotInstances）用于快照策略解关联实例。
+
+        :param request: Request instance for DetachSnapshotInstances.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DetachSnapshotInstancesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DetachSnapshotInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DetachSnapshotInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.DetachSnapshotInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5468,7 +4613,7 @@ class VpcClient(AbstractClient):
 
 
     def DisableCcnRoutes(self, request):
-        """本接口（DisableCcnRoutes）用于禁用已经启用的云联网（CCN）路由
+        """本接口（DisableCcnRoutes）用于禁用已经启用的云联网（CCN）路由。
 
         :param request: Request instance for DisableCcnRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DisableCcnRoutesRequest`
@@ -5480,15 +4625,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisableCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisableCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisableCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5509,15 +4648,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisableFlowLogs", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisableFlowLogsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisableFlowLogsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5538,15 +4671,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisableGatewayFlowMonitor", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisableGatewayFlowMonitorResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisableGatewayFlowMonitorResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5567,15 +4694,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisableRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisableRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.DisableRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DisableSnapshotPolicies(self, request):
+        """本接口（DisableSnapshotPolicies）用于停用快照策略。
+
+        :param request: Request instance for DisableSnapshotPolicies.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DisableSnapshotPoliciesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DisableSnapshotPoliciesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DisableSnapshotPolicies", params, headers=headers)
+            response = json.loads(body)
+            model = models.DisableSnapshotPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5596,15 +4740,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisableVpnGatewaySslClientCert", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisableVpnGatewaySslClientCertResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisableVpnGatewaySslClientCertResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5629,15 +4767,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisassociateAddress", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisassociateAddressResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisassociateAddressResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5660,15 +4792,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisassociateDhcpIpWithAddressIp", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisassociateDhcpIpWithAddressIpResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisassociateDhcpIpWithAddressIpResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5689,15 +4815,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisassociateDirectConnectGatewayNatGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisassociateDirectConnectGatewayNatGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisassociateDirectConnectGatewayNatGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5718,15 +4838,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisassociateNatGatewayAddress", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisassociateNatGatewayAddressResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisassociateNatGatewayAddressResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5735,7 +4849,7 @@ class VpcClient(AbstractClient):
 
 
     def DisassociateNetworkAclSubnets(self, request):
-        """本接口（DisassociateNetworkAclSubnets）用于网络ACL解关联vpc下的子网。
+        """本接口（DisassociateNetworkAclSubnets）用于网络ACL解关联VPC下的子网。
 
         :param request: Request instance for DisassociateNetworkAclSubnets.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DisassociateNetworkAclSubnetsRequest`
@@ -5747,15 +4861,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisassociateNetworkAclSubnets", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisassociateNetworkAclSubnetsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisassociateNetworkAclSubnetsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5776,15 +4884,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisassociateNetworkInterfaceSecurityGroups", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisassociateNetworkInterfaceSecurityGroupsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisassociateNetworkInterfaceSecurityGroupsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5793,7 +4895,7 @@ class VpcClient(AbstractClient):
 
 
     def DisassociateVpcEndPointSecurityGroups(self, request):
-        """终端节点解绑安全组。
+        """本接口（DisassociateVpcEndPointSecurityGroups）用于终端节点解绑安全组。
 
         :param request: Request instance for DisassociateVpcEndPointSecurityGroups.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DisassociateVpcEndPointSecurityGroupsRequest`
@@ -5805,15 +4907,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DisassociateVpcEndPointSecurityGroups", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DisassociateVpcEndPointSecurityGroupsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DisassociateVpcEndPointSecurityGroupsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5834,15 +4930,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DownloadCustomerGatewayConfiguration", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DownloadCustomerGatewayConfigurationResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DownloadCustomerGatewayConfigurationResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5863,15 +4953,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("DownloadVpnGatewaySslClientCert", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.DownloadVpnGatewaySslClientCertResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.DownloadVpnGatewaySslClientCertResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5893,15 +4977,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("EnableCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EnableCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.EnableCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5922,15 +5000,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("EnableFlowLogs", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EnableFlowLogsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.EnableFlowLogsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5951,15 +5023,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("EnableGatewayFlowMonitor", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EnableGatewayFlowMonitorResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.EnableGatewayFlowMonitorResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5981,15 +5047,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("EnableRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EnableRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.EnableRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def EnableSnapshotPolicies(self, request):
+        """本接口（EnableSnapshotPolicies）用于启用快照策略。
+
+        :param request: Request instance for EnableSnapshotPolicies.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.EnableSnapshotPoliciesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.EnableSnapshotPoliciesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("EnableSnapshotPolicies", params, headers=headers)
+            response = json.loads(body)
+            model = models.EnableSnapshotPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -5998,7 +5081,7 @@ class VpcClient(AbstractClient):
 
 
     def EnableVpcEndPointConnect(self, request):
-        """是否接受终端节点连接请求。
+        """本接口（EnableVpcEndPointConnect）用于是否接受终端节点连接请求。
 
         :param request: Request instance for EnableVpcEndPointConnect.
         :type request: :class:`tencentcloud.vpc.v20170312.models.EnableVpcEndPointConnectRequest`
@@ -6010,15 +5093,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("EnableVpcEndPointConnect", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EnableVpcEndPointConnectResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.EnableVpcEndPointConnectResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6039,15 +5116,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("EnableVpnGatewaySslClientCert", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.EnableVpnGatewaySslClientCertResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.EnableVpnGatewaySslClientCertResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6068,15 +5139,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("GetCcnRegionBandwidthLimits", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.GetCcnRegionBandwidthLimitsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.GetCcnRegionBandwidthLimitsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6098,15 +5163,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("HaVipAssociateAddressIp", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.HaVipAssociateAddressIpResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.HaVipAssociateAddressIpResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6128,15 +5187,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("HaVipDisassociateAddressIp", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.HaVipDisassociateAddressIpResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.HaVipDisassociateAddressIpResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6157,15 +5210,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("InquirePriceCreateDirectConnectGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.InquirePriceCreateDirectConnectGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.InquirePriceCreateDirectConnectGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6186,15 +5233,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("InquiryPriceCreateVpnGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.InquiryPriceCreateVpnGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.InquiryPriceCreateVpnGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6215,15 +5256,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("InquiryPriceRenewVpnGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.InquiryPriceRenewVpnGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.InquiryPriceRenewVpnGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6244,15 +5279,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("InquiryPriceResetVpnGatewayInternetMaxBandwidth", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.InquiryPriceResetVpnGatewayInternetMaxBandwidthResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.InquiryPriceResetVpnGatewayInternetMaxBandwidthResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6275,15 +5304,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("LockCcnBandwidths", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.LockCcnBandwidthsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.LockCcnBandwidthsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6309,15 +5332,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("LockCcns", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.LockCcnsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.LockCcnsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6339,15 +5356,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("MigrateNetworkInterface", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.MigrateNetworkInterfaceResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.MigrateNetworkInterfaceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6372,15 +5383,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("MigratePrivateIpAddress", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.MigratePrivateIpAddressResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.MigratePrivateIpAddressResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6401,15 +5406,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyAddressAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyAddressAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyAddressAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6432,15 +5431,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyAddressInternetChargeType", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyAddressInternetChargeTypeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyAddressInternetChargeTypeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6449,7 +5442,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyAddressTemplateAttribute(self, request):
-        """本接口（ModifyAddressTemplateAttribute）用于修改IP地址模板
+        """本接口（ModifyAddressTemplateAttribute）用于修改IP地址模板。
 
         :param request: Request instance for ModifyAddressTemplateAttribute.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyAddressTemplateAttributeRequest`
@@ -6461,15 +5454,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyAddressTemplateAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyAddressTemplateAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyAddressTemplateAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6478,7 +5465,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyAddressTemplateGroupAttribute(self, request):
-        """本接口（ModifyAddressTemplateGroupAttribute）用于修改IP地址模板集合
+        """本接口（ModifyAddressTemplateGroupAttribute）用于修改IP地址模板集合。
 
         :param request: Request instance for ModifyAddressTemplateGroupAttribute.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyAddressTemplateGroupAttributeRequest`
@@ -6490,15 +5477,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyAddressTemplateGroupAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyAddressTemplateGroupAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyAddressTemplateGroupAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6519,15 +5500,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyAddressesBandwidth", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyAddressesBandwidthResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyAddressesBandwidthResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6536,7 +5511,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyAssistantCidr(self, request):
-        """本接口(ModifyAssistantCidr)用于批量修改辅助CIDR，支持新增和删除。
+        """本接口（ModifyAssistantCidr）用于批量修改辅助CIDR，支持新增和删除。
 
         :param request: Request instance for ModifyAssistantCidr.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyAssistantCidrRequest`
@@ -6548,15 +5523,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyAssistantCidr", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyAssistantCidrResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyAssistantCidrResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6577,15 +5546,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyBandwidthPackageAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyBandwidthPackageAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyBandwidthPackageAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6606,15 +5569,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyCcnAttachedInstancesAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyCcnAttachedInstancesAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyCcnAttachedInstancesAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6635,15 +5592,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyCcnAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyCcnAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyCcnAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6664,15 +5615,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyCcnRegionBandwidthLimitsType", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyCcnRegionBandwidthLimitsTypeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyCcnRegionBandwidthLimitsTypeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6693,15 +5638,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyCustomerGatewayAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyCustomerGatewayAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyCustomerGatewayAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6722,15 +5661,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyDhcpIpAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyDhcpIpAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyDhcpIpAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6751,15 +5684,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyDirectConnectGatewayAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyDirectConnectGatewayAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyDirectConnectGatewayAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6780,15 +5707,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyFlowLogAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyFlowLogAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyFlowLogAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6809,15 +5730,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyGatewayFlowQos", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyGatewayFlowQosResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyGatewayFlowQosResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6826,7 +5741,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyHaVipAttribute(self, request):
-        """本接口（ModifyHaVipAttribute）用于修改高可用虚拟IP（HAVIP）属性
+        """本接口（ModifyHaVipAttribute）用于修改高可用虚拟IP（HAVIP）属性。
 
         :param request: Request instance for ModifyHaVipAttribute.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyHaVipAttributeRequest`
@@ -6838,15 +5753,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyHaVipAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyHaVipAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyHaVipAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6867,15 +5776,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyIp6AddressesBandwidth", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyIp6AddressesBandwidthResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyIp6AddressesBandwidthResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6896,15 +5799,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyIp6Rule", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyIp6RuleResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyIp6RuleResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6925,15 +5822,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyIp6Translator", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyIp6TranslatorResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyIp6TranslatorResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6954,15 +5845,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyIpv6AddressesAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyIpv6AddressesAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyIpv6AddressesAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -6971,7 +5856,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyLocalGateway(self, request):
-        """该接口用于修改CDC的本地网关。
+        """本接口（ModifyLocalGateway）用于修改CDC的本地网关。
 
         :param request: Request instance for ModifyLocalGateway.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyLocalGatewayRequest`
@@ -6983,15 +5868,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyLocalGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyLocalGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyLocalGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7012,15 +5891,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNatGatewayAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNatGatewayAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNatGatewayAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7041,15 +5914,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNatGatewayDestinationIpPortTranslationNatRule", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNatGatewayDestinationIpPortTranslationNatRuleResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNatGatewayDestinationIpPortTranslationNatRuleResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7070,15 +5937,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNatGatewaySourceIpTranslationNatRule", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNatGatewaySourceIpTranslationNatRuleResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNatGatewaySourceIpTranslationNatRuleResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7099,15 +5960,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNetDetect", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNetDetectResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNetDetectResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7128,15 +5983,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNetworkAclAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNetworkAclAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNetworkAclAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7159,15 +6008,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNetworkAclEntries", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNetworkAclEntriesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNetworkAclEntriesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7188,15 +6031,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNetworkAclQuintupleEntries", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNetworkAclQuintupleEntriesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNetworkAclQuintupleEntriesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7217,15 +6054,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNetworkInterfaceAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNetworkInterfaceAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNetworkInterfaceAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7234,7 +6065,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyNetworkInterfaceQos(self, request):
-        """修改弹性网卡服务质量。
+        """本接口（ModifyNetworkInterfaceQos）用于修改弹性网卡服务质量。
 
         :param request: Request instance for ModifyNetworkInterfaceQos.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyNetworkInterfaceQosRequest`
@@ -7246,15 +6077,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyNetworkInterfaceQos", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyNetworkInterfaceQosResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyNetworkInterfaceQosResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7275,15 +6100,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyPrivateIpAddressesAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyPrivateIpAddressesAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyPrivateIpAddressesAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7304,15 +6123,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyRouteTableAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyRouteTableAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyRouteTableAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7333,15 +6146,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifySecurityGroupAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifySecurityGroupAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifySecurityGroupAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7377,15 +6184,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifySecurityGroupPolicies", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifySecurityGroupPoliciesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifySecurityGroupPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7394,7 +6195,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyServiceTemplateAttribute(self, request):
-        """本接口（ModifyServiceTemplateAttribute）用于修改协议端口模板
+        """本接口（ModifyServiceTemplateAttribute）用于修改协议端口模板。
 
         :param request: Request instance for ModifyServiceTemplateAttribute.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyServiceTemplateAttributeRequest`
@@ -7406,15 +6207,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyServiceTemplateAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyServiceTemplateAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyServiceTemplateAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7435,15 +6230,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyServiceTemplateGroupAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyServiceTemplateGroupAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.ModifyServiceTemplateGroupAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifySnapshotPolicies(self, request):
+        """本接口（ModifySnapshotPolicies）用于修改快照策略。
+
+        :param request: Request instance for ModifySnapshotPolicies.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.ModifySnapshotPoliciesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.ModifySnapshotPoliciesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifySnapshotPolicies", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifySnapshotPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7464,15 +6276,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifySubnetAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifySubnetAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifySubnetAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7493,15 +6299,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyTemplateMember", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyTemplateMemberResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyTemplateMemberResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7522,15 +6322,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpcAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpcAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpcAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7539,7 +6333,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyVpcEndPointAttribute(self, request):
-        """修改终端节点属性。
+        """本接口（ModifyVpcEndPointAttribute）用于修改终端节点属性。
 
         :param request: Request instance for ModifyVpcEndPointAttribute.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyVpcEndPointAttributeRequest`
@@ -7551,15 +6345,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpcEndPointAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpcEndPointAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpcEndPointAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7581,15 +6369,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpcEndPointServiceAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpcEndPointServiceAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpcEndPointServiceAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7598,7 +6380,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyVpcEndPointServiceWhiteList(self, request):
-        """修改终端节点服务白名单属性。
+        """本接口（ModifyVpcEndPointServiceWhiteList）用于修改终端节点服务白名单属性。
 
         :param request: Request instance for ModifyVpcEndPointServiceWhiteList.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyVpcEndPointServiceWhiteListRequest`
@@ -7610,15 +6392,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpcEndPointServiceWhiteList", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpcEndPointServiceWhiteListResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpcEndPointServiceWhiteListResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7639,15 +6415,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpnConnectionAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpnConnectionAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpnConnectionAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7668,15 +6438,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpnGatewayAttribute", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpnGatewayAttributeResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpnGatewayAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7697,15 +6461,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpnGatewayCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpnGatewayCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpnGatewayCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7726,15 +6484,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ModifyVpnGatewayRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ModifyVpnGatewayRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ModifyVpnGatewayRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7755,15 +6507,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("NotifyRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.NotifyRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.NotifyRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7784,15 +6530,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("RefreshDirectConnectGatewayRouteToNatGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.RefreshDirectConnectGatewayRouteToNatGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.RefreshDirectConnectGatewayRouteToNatGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7813,15 +6553,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("RejectAttachCcnInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.RejectAttachCcnInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.RejectAttachCcnInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7844,15 +6578,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ReleaseAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ReleaseAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ReleaseAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7873,15 +6601,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ReleaseIp6AddressesBandwidth", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ReleaseIp6AddressesBandwidthResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ReleaseIp6AddressesBandwidthResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7902,15 +6624,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("RemoveBandwidthPackageResources", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.RemoveBandwidthPackageResourcesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.RemoveBandwidthPackageResourcesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7932,15 +6648,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("RemoveIp6Rules", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.RemoveIp6RulesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.RemoveIp6RulesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7961,15 +6671,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("RenewAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.RenewAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.RenewAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -7990,15 +6694,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("RenewVpnGateway", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.RenewVpnGatewayResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.RenewVpnGatewayResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8019,15 +6717,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ReplaceDirectConnectGatewayCcnRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ReplaceDirectConnectGatewayCcnRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ReplaceDirectConnectGatewayCcnRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8036,7 +6728,7 @@ class VpcClient(AbstractClient):
 
 
     def ReplaceRouteTableAssociation(self, request):
-        """本接口（ReplaceRouteTableAssociation)用于修改子网（Subnet）关联的路由表（RouteTable）。
+        """本接口（ReplaceRouteTableAssociation）用于修改子网（Subnet）关联的路由表（RouteTable）。
         * 一个子网只能关联一个路由表。
 
         :param request: Request instance for ReplaceRouteTableAssociation.
@@ -8049,15 +6741,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ReplaceRouteTableAssociation", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ReplaceRouteTableAssociationResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ReplaceRouteTableAssociationResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8078,15 +6764,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ReplaceRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ReplaceRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ReplaceRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8108,15 +6788,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ReplaceSecurityGroupPolicy", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ReplaceSecurityGroupPolicyResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ReplaceSecurityGroupPolicyResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8137,15 +6811,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ResetAttachCcnInstances", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ResetAttachCcnInstancesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ResetAttachCcnInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8166,15 +6834,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ResetNatGatewayConnection", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ResetNatGatewayConnectionResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ResetNatGatewayConnectionResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8196,15 +6858,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ResetRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ResetRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ResetRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8225,15 +6881,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ResetVpnConnection", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ResetVpnConnectionResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ResetVpnConnectionResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8254,15 +6904,32 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ResetVpnGatewayInternetMaxBandwidth", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ResetVpnGatewayInternetMaxBandwidthResponse()
-                model._deserialize(response["Response"])
-                return model
+            model = models.ResetVpnGatewayInternetMaxBandwidthResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
             else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ResumeSnapshotInstance(self, request):
+        """本接口（ResumeSnapshotInstance）用于根据备份内容恢复安全组策略。
+
+        :param request: Request instance for ResumeSnapshotInstance.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.ResumeSnapshotInstanceRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.ResumeSnapshotInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ResumeSnapshotInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.ResumeSnapshotInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8272,7 +6939,7 @@ class VpcClient(AbstractClient):
 
     def ReturnNormalAddresses(self, request):
         """本接口（ReturnNormalAddresses）用于解绑并释放普通公网IP。
-        为完善公网IP的访问管理功能，此接口于2022年12月15日升级优化鉴权功能，升级后子用户调用此接口需向主账号申请CAM策略授权，否则可能调用失败。您可以提前为子账号配置操作授权，详情见 授权指南(https://cloud.tencent.com/document/product/598/34545)。
+        为完善公网IP的访问管理功能，此接口于2022年12月15日升级优化鉴权功能，升级后子用户调用此接口需向主账号申请CAM策略授权，否则可能调用失败。您可以提前为子账号配置操作授权，详情见[授权指南](https://cloud.tencent.com/document/product/598/34545)。
 
         :param request: Request instance for ReturnNormalAddresses.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ReturnNormalAddressesRequest`
@@ -8284,15 +6951,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("ReturnNormalAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.ReturnNormalAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.ReturnNormalAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8313,15 +6974,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("SetCcnRegionBandwidthLimits", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.SetCcnRegionBandwidthLimitsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.SetCcnRegionBandwidthLimitsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8342,15 +6997,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("SetVpnGatewaysRenewFlag", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.SetVpnGatewaysRenewFlagResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.SetVpnGatewaysRenewFlagResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8372,15 +7021,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("TransformAddress", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.TransformAddressResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.TransformAddressResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8402,15 +7045,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("UnassignIpv6Addresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UnassignIpv6AddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UnassignIpv6AddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8432,15 +7069,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("UnassignIpv6CidrBlock", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UnassignIpv6CidrBlockResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UnassignIpv6CidrBlockResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8462,15 +7093,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("UnassignIpv6SubnetCidrBlock", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UnassignIpv6SubnetCidrBlockResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UnassignIpv6SubnetCidrBlockResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8494,15 +7119,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("UnassignPrivateIpAddresses", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UnassignPrivateIpAddressesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UnassignPrivateIpAddressesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8525,15 +7144,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("UnlockCcnBandwidths", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UnlockCcnBandwidthsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UnlockCcnBandwidthsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8559,15 +7172,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("UnlockCcns", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.UnlockCcnsResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.UnlockCcnsResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise
@@ -8576,7 +7183,7 @@ class VpcClient(AbstractClient):
 
 
     def WithdrawNotifyRoutes(self, request):
-        """路由表列表页操作增加“从云联网撤销”，用于撤销已发布到云联网的路由。
+        """本接口（WithdrawNotifyRoutes）用于撤销已发布到云联网的路由。路由表列表页操作增加“从云联网撤销”。
 
         :param request: Request instance for WithdrawNotifyRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.WithdrawNotifyRoutesRequest`
@@ -8588,15 +7195,9 @@ class VpcClient(AbstractClient):
             headers = request.headers
             body = self.call("WithdrawNotifyRoutes", params, headers=headers)
             response = json.loads(body)
-            if "Error" not in response["Response"]:
-                model = models.WithdrawNotifyRoutesResponse()
-                model._deserialize(response["Response"])
-                return model
-            else:
-                code = response["Response"]["Error"]["Code"]
-                message = response["Response"]["Error"]["Message"]
-                reqid = response["Response"]["RequestId"]
-                raise TencentCloudSDKException(code, message, reqid)
+            model = models.WithdrawNotifyRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
         except Exception as e:
             if isinstance(e, TencentCloudSDKException):
                 raise

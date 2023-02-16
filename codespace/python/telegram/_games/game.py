@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,14 +17,14 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram Game."""
-
 import sys
-from typing import TYPE_CHECKING, Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional, Sequence, Tuple
 
 from telegram._files.animation import Animation
 from telegram._files.photosize import PhotoSize
 from telegram._messageentity import MessageEntity
 from telegram._telegramobject import TelegramObject
+from telegram._utils.argumentparsing import parse_sequence_arg
 from telegram._utils.types import JSONDict
 
 if TYPE_CHECKING:
@@ -42,30 +42,47 @@ class Game(TelegramObject):
     Args:
         title (:obj:`str`): Title of the game.
         description (:obj:`str`): Description of the game.
-        photo (List[:class:`telegram.PhotoSize`]): Photo that will be displayed in the game message
-            in chats.
+        photo (Sequence[:class:`telegram.PhotoSize`]): Photo that will be displayed in the game
+            message in chats.
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
+
         text (:obj:`str`, optional): Brief description of the game or high scores included in the
             game message. Can be automatically edited to include current high scores for the game
             when the bot calls :meth:`telegram.Bot.set_game_score`, or manually edited
             using :meth:`telegram.Bot.edit_message_text`.
             0-:tg-const:`telegram.constants.MessageLimit.MAX_TEXT_LENGTH` characters.
-        text_entities (List[:class:`telegram.MessageEntity`], optional): Special entities that
+        text_entities (Sequence[:class:`telegram.MessageEntity`], optional): Special entities that
             appear in text, such as usernames, URLs, bot commands, etc.
+
+            .. versionchanged:: 20.0
+                |sequenceclassargs|
+
         animation (:class:`telegram.Animation`, optional): Animation that will be displayed in the
             game message in chats. Upload via `BotFather <https://t.me/BotFather>`_.
 
     Attributes:
         title (:obj:`str`): Title of the game.
         description (:obj:`str`): Description of the game.
-        photo (List[:class:`telegram.PhotoSize`]): Photo that will be displayed in the game message
-            in chats.
+        photo (Tuple[:class:`telegram.PhotoSize`]): Photo that will be displayed in the game
+            message in chats.
+
+            .. versionchanged:: 20.0
+                |tupleclassattrs|
+
         text (:obj:`str`): Optional. Brief description of the game or high scores included in the
             game message. Can be automatically edited to include current high scores for the game
             when the bot calls :meth:`telegram.Bot.set_game_score`, or manually edited
             using :meth:`telegram.Bot.edit_message_text`.
-        text_entities (List[:class:`telegram.MessageEntity`]): Special entities that
+            0-:tg-const:`telegram.constants.MessageLimit.MAX_TEXT_LENGTH` characters.
+        text_entities (Tuple[:class:`telegram.MessageEntity`]): Optional. Special entities that
             appear in text, such as usernames, URLs, bot commands, etc.
-            This list is empty if the message does not contain text entities.
+            This tuple is empty if the message does not contain text entities.
+
+            .. versionchanged:: 20.0
+                |tupleclassattrs|
+
         animation (:class:`telegram.Animation`): Optional. Animation that will be displayed in the
             game message in chats. Upload via `BotFather <https://t.me/BotFather>`_.
 
@@ -84,24 +101,26 @@ class Game(TelegramObject):
         self,
         title: str,
         description: str,
-        photo: List[PhotoSize],
+        photo: Sequence[PhotoSize],
         text: str = None,
-        text_entities: List[MessageEntity] = None,
+        text_entities: Sequence[MessageEntity] = None,
         animation: Animation = None,
         *,
         api_kwargs: JSONDict = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
-        self.title = title
-        self.description = description
-        self.photo = photo
+        self.title: str = title
+        self.description: str = description
+        self.photo: Tuple[PhotoSize, ...] = parse_sequence_arg(photo)
         # Optionals
-        self.text = text
-        self.text_entities = text_entities or []
-        self.animation = animation
+        self.text: Optional[str] = text
+        self.text_entities: Tuple[MessageEntity, ...] = parse_sequence_arg(text_entities)
+        self.animation: Optional[Animation] = animation
 
         self._id_attrs = (self.title, self.description, self.photo)
+
+        self._freeze()
 
     @classmethod
     def de_json(cls, data: Optional[JSONDict], bot: "Bot") -> Optional["Game"]:
@@ -178,6 +197,3 @@ class Game(TelegramObject):
             for entity in self.text_entities
             if entity.type in types
         }
-
-    def __hash__(self) -> int:
-        return hash((self.title, self.description, tuple(p for p in self.photo)))

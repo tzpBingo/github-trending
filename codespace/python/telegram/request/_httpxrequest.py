@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -82,6 +82,11 @@ class HTTPXRequest(BaseRequest):
                 With a finite pool timeout, you must expect :exc:`telegram.error.TimedOut`
                 exceptions to be thrown when more requests are made simultaneously than there are
                 connections in the connection pool!
+        http_version (:obj:`str`, optional): If ``"1.1"``, HTTP/1.1 will be used instead of HTTP/2.
+            Defaults to ``"2"``.
+
+            .. versionadded:: 20.1
+
     """
 
     __slots__ = ("_client", "_client_kwargs")
@@ -94,6 +99,7 @@ class HTTPXRequest(BaseRequest):
         write_timeout: Optional[float] = 5.0,
         connect_timeout: Optional[float] = 5.0,
         pool_timeout: Optional[float] = 1.0,
+        http_version: str = "2",
     ):
         timeout = httpx.Timeout(
             connect=connect_timeout,
@@ -105,10 +111,20 @@ class HTTPXRequest(BaseRequest):
             max_connections=connection_pool_size,
             max_keepalive_connections=connection_pool_size,
         )
-        self._client_kwargs = dict(
+
+        if http_version not in ("1.1", "2"):
+            raise ValueError("`http_version` must be either '1.1' or '2'.")
+
+        http1 = http_version == "1.1"
+
+        # See https://github.com/python-telegram-bot/python-telegram-bot/pull/3542
+        # for why we need to use `dict()` here.
+        self._client_kwargs = dict(  # pylint: disable=use-dict-literal
             timeout=timeout,
             proxies=proxy_url,
             limits=limits,
+            http1=http1,
+            http2=not http1,
         )
 
         try:
@@ -201,6 +217,9 @@ class HTTPXRequest(BaseRequest):
         except httpx.HTTPError as err:
             # HTTPError must come last as its the base httpx exception class
             # TODO p4: do something smart here; for now just raise NetworkError
-            raise NetworkError(f"httpx HTTPError: {err}") from err
+
+            # We include the class name for easier debugging. Especially useful if the error
+            # message of `err` is empty.
+            raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
 
         return res.status_code, res.content

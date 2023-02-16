@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # A library that provides a Python interface to the Telegram Bot API
-# Copyright (C) 2015-2022
+# Copyright (C) 2015-2023
 # Leandro Toledo de Souza <devs@python-telegram-bot.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,10 +20,19 @@
 import asyncio
 import logging
 import ssl
-from contextlib import AbstractAsyncContextManager
 from pathlib import Path
 from types import TracebackType
-from typing import TYPE_CHECKING, Callable, Coroutine, List, Optional, Type, TypeVar, Union
+from typing import (
+    TYPE_CHECKING,
+    AsyncContextManager,
+    Callable,
+    Coroutine,
+    List,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+)
 
 from telegram._utils.defaultvalue import DEFAULT_NONE
 from telegram._utils.types import ODVInput
@@ -43,7 +52,7 @@ if TYPE_CHECKING:
 _UpdaterType = TypeVar("_UpdaterType", bound="Updater")  # pylint: disable=invalid-name
 
 
-class Updater(AbstractAsyncContextManager):
+class Updater(AsyncContextManager["Updater"]):
     """This class fetches updates for the bot either via long polling or by starting a webhook
     server. Received updates are enqueued into the :attr:`update_queue` and may be fetched from
     there to handle them appropriately.
@@ -65,10 +74,8 @@ class Updater(AbstractAsyncContextManager):
         finally:
             await updater.shutdown()
 
-    .. seealso:: `Architecture Overview <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Architecture>`_,
-        `Builder Pattern <https://github.com/\
-        python-telegram-bot/python-telegram-bot/wiki/Builder-Pattern>`_
+    .. seealso:: :wiki:`Architecture Overview <Architecture>`,
+        :wiki:`Builder Pattern <Builder-Pattern>`
 
     .. versionchanged:: 20.0
 
@@ -102,10 +109,10 @@ class Updater(AbstractAsyncContextManager):
     def __init__(
         self,
         bot: "Bot",
-        update_queue: asyncio.Queue,
+        update_queue: "asyncio.Queue[object]",
     ):
-        self.bot = bot
-        self.update_queue = update_queue
+        self.bot: Bot = bot
+        self.update_queue: "asyncio.Queue[object]" = update_queue
 
         self._last_update_id = 0
         self._running = False
@@ -186,7 +193,7 @@ class Updater(AbstractAsyncContextManager):
         allowed_updates: List[str] = None,
         drop_pending_updates: bool = None,
         error_callback: Callable[[TelegramError], None] = None,
-    ) -> asyncio.Queue:
+    ) -> "asyncio.Queue[object]":
         """Starts polling updates from Telegram.
 
         .. versionchanged:: 20.0
@@ -294,7 +301,6 @@ class Updater(AbstractAsyncContextManager):
         ready: asyncio.Event,
         error_callback: Optional[Callable[[TelegramError], None]],
     ) -> None:
-
         self._logger.debug("Updater started (polling)")
 
         # the bootstrapping phase does two things:
@@ -381,7 +387,7 @@ class Updater(AbstractAsyncContextManager):
         ip_address: str = None,
         max_connections: int = 40,
         secret_token: str = None,
-    ) -> asyncio.Queue:
+    ) -> "asyncio.Queue[object]":
         """
         Starts a small http server to listen for updates via webhook. If :paramref:`cert`
         and :paramref:`key` are not provided, the webhook will be started directly on
@@ -397,17 +403,15 @@ class Updater(AbstractAsyncContextManager):
 
                pip install python-telegram-bot[webhooks]
 
-        .. seealso:: `Webhooks <https://github.com/\
-            python-telegram-bot/python-telegram-bot/wiki/Webhooks>`_
+        .. seealso:: :wiki:`Webhooks`
 
         .. versionchanged:: 13.4
             :meth:`start_webhook` now *always* calls :meth:`telegram.Bot.set_webhook`, so pass
             ``webhook_url`` instead of calling ``updater.bot.set_webhook(webhook_url)`` manually.
         .. versionchanged:: 20.0
+
             * Removed the ``clean`` argument in favor of :paramref:`drop_pending_updates` and
               removed the deprecated argument ``force_event_loop``.
-            * To use this method, PTB must be installed via
-              ``pip install python-telegram-bot[webhooks]``.
 
         Args:
             listen (:obj:`str`, optional): IP-Address to listen on. Defaults to
