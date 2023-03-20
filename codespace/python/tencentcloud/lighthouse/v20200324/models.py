@@ -27,7 +27,7 @@ class ApplyDiskBackupRequest(AbstractModel):
         r"""
         :param DiskId: 云硬盘ID，可通过[DescribeDisks](https://cloud.tencent.com/document/api/1207/66093)接口查询。
         :type DiskId: str
-        :param DiskBackupId: 云硬盘备份点ID，可通过 DescribeDiskBackups 接口查询。
+        :param DiskBackupId: 云硬盘备份点ID，可通过[DescribeDiskBackups](https://cloud.tencent.com/document/api/1207/84379)接口查询。
         :type DiskBackupId: str
         """
         self.DiskId = None
@@ -289,6 +289,7 @@ class Blueprint(AbstractModel):
         :param DisplayVersion: 镜像对外展示版本。
         :type DisplayVersion: str
         :param Description: 镜像描述信息。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Description: str
         :param OsName: 操作系统名称。
         :type OsName: str
@@ -324,6 +325,9 @@ class Blueprint(AbstractModel):
         :param SceneIdSet: 镜像关联使用场景Id列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SceneIdSet: list of str
+        :param DockerVersion: Docker版本号。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DockerVersion: str
         """
         self.BlueprintId = None
         self.DisplayTitle = None
@@ -344,6 +348,7 @@ class Blueprint(AbstractModel):
         self.CommunityUrl = None
         self.GuideUrl = None
         self.SceneIdSet = None
+        self.DockerVersion = None
 
 
     def _deserialize(self, params):
@@ -366,6 +371,7 @@ class Blueprint(AbstractModel):
         self.CommunityUrl = params.get("CommunityUrl")
         self.GuideUrl = params.get("GuideUrl")
         self.SceneIdSet = params.get("SceneIdSet")
+        self.DockerVersion = params.get("DockerVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -426,7 +432,7 @@ class BlueprintPrice(AbstractModel):
         :param OriginalPrice: 镜像总价，原价。单位元。
         :type OriginalPrice: float
         :param Discount: 折扣。
-        :type Discount: int
+        :type Discount: float
         :param DiscountPrice: 镜像折扣后总价。单位元。
         :type DiscountPrice: float
         """
@@ -1060,7 +1066,7 @@ class DeleteDiskBackupsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DiskBackupIds: 云硬盘备份点ID列表，可通过 DescribeDiskBackups接口查询。
+        :param DiskBackupIds: 云硬盘备份点ID列表，可通过 [DescribeDiskBackups](https://cloud.tencent.com/document/api/1207/84379)接口查询。
         :type DiskBackupIds: list of str
         """
         self.DiskBackupIds = None
@@ -1718,7 +1724,7 @@ class DescribeDiskBackupsRequest(AbstractModel):
 <li>disk-backup-state</li>按照【云硬盘备份点状态】进行过滤。
 类型：String
 必选：否
-取值：参考数据结构DiskBackup下的DiskBackupState取值。
+取值：参考数据结构[DiskBackup](https://cloud.tencent.com/document/product/1207/47576#DiskBackup)下的DiskBackupState取值。
 <li>disk-usage</li>按照【云硬盘类型】进行过滤。
 类型：String
 必选：否
@@ -3428,7 +3434,7 @@ class DiscountDetail(AbstractModel):
         :param RealTotalCost: 折后总价。
         :type RealTotalCost: float
         :param Discount: 折扣。
-        :type Discount: int
+        :type Discount: float
         :param PolicyDetail: 具体折扣详情。
         :type PolicyDetail: :class:`tencentcloud.lighthouse.v20200324.models.PolicyDetail`
         """
@@ -3507,6 +3513,7 @@ class Disk(AbstractModel):
         :type LatestOperationRequestId: str
         :param CreatedTime: 创建时间。按照 ISO8601 标准表示，并且使用 UTC 时间。 
 格式为： YYYY-MM-DDThh:mm:ssZ。
+注意：此字段可能返回 null，表示取不到有效值。
         :type CreatedTime: str
         :param ExpiredTime: 到期时间。按照 ISO8601 标准表示，并且使用 UTC 时间。 
 格式为： YYYY-MM-DDThh:mm:ssZ。
@@ -4318,25 +4325,25 @@ class InquirePriceCreateInstancesRequest(AbstractModel):
         r"""
         :param BundleId: 实例的套餐 ID。
         :type BundleId: str
+        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。
+        :type InstanceChargePrepaid: :class:`tencentcloud.lighthouse.v20200324.models.InstanceChargePrepaid`
         :param InstanceCount: 创建数量，默认为 1。
         :type InstanceCount: int
-        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。若指定实例的付费模式为预付费则该参数必传。
-        :type InstanceChargePrepaid: :class:`tencentcloud.lighthouse.v20200324.models.InstanceChargePrepaid`
         :param BlueprintId: 应用镜像 ID，使用收费应用镜像时必填。可通过[DescribeBlueprints](https://cloud.tencent.com/document/product/1207/47689)接口返回值中的BlueprintId获取。
         :type BlueprintId: str
         """
         self.BundleId = None
-        self.InstanceCount = None
         self.InstanceChargePrepaid = None
+        self.InstanceCount = None
         self.BlueprintId = None
 
 
     def _deserialize(self, params):
         self.BundleId = params.get("BundleId")
-        self.InstanceCount = params.get("InstanceCount")
         if params.get("InstanceChargePrepaid") is not None:
             self.InstanceChargePrepaid = InstanceChargePrepaid()
             self.InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        self.InstanceCount = params.get("InstanceCount")
         self.BlueprintId = params.get("BlueprintId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -4432,7 +4439,7 @@ class InquirePriceRenewInstancesRequest(AbstractModel):
         r"""
         :param InstanceIds: 待续费的实例ID。可通过[DescribeInstances](https://cloud.tencent.com/document/api/1207/47573 )接口返回值中的InstanceId获取。每次请求批量实例的上限为50。
         :type InstanceIds: list of str
-        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。若指定实例的付费模式为预付费则该参数必传。
+        :param InstanceChargePrepaid: 预付费模式，即包年包月相关参数设置。通过该参数可以指定包年包月实例的购买时长、是否设置自动续费等属性。
         :type InstanceChargePrepaid: :class:`tencentcloud.lighthouse.v20200324.models.InstanceChargePrepaid`
         :param RenewDataDisk: 是否续费数据盘。默认值: false, 即不续费。
         :type RenewDataDisk: bool
@@ -4741,7 +4748,7 @@ class InstancePrice(AbstractModel):
         :param OriginalPrice: 原价。
         :type OriginalPrice: float
         :param Discount: 折扣。
-        :type Discount: int
+        :type Discount: float
         :param DiscountPrice: 折后价。
         :type DiscountPrice: float
         :param Currency: 价格货币单位。取值范围CNY:人民币。USD:美元。
@@ -6150,6 +6157,7 @@ class Snapshot(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type LatestOperationRequestId: str
         :param CreatedTime: 快照的创建时间。
+注意：此字段可能返回 null，表示取不到有效值。
         :type CreatedTime: str
         """
         self.SnapshotId = None

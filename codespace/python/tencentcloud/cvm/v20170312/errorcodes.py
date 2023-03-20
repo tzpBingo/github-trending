@@ -371,6 +371,9 @@ INVALIDPARAMETERVALUE_INSUFFICIENTPRICE = 'InvalidParameterValue.InsufficientPri
 # 无效的appid。
 INVALIDPARAMETERVALUE_INVALIDAPPIDFORMAT = 'InvalidParameterValue.InvalidAppIdFormat'
 
+# 不支持指定的启动模式。
+INVALIDPARAMETERVALUE_INVALIDBOOTMODE = 'InvalidParameterValue.InvalidBootMode'
+
 # 请检查存储桶的写入权限是否已放通。
 INVALIDPARAMETERVALUE_INVALIDBUCKETPERMISSIONFOREXPORT = 'InvalidParameterValue.InvalidBucketPermissionForExport'
 
@@ -478,6 +481,12 @@ INVALIDPARAMETERVALUE_NOTEMPTY = 'InvalidParameterValue.NotEmpty'
 
 # 不支持的操作。
 INVALIDPARAMETERVALUE_NOTSUPPORTED = 'InvalidParameterValue.NotSupported'
+
+# 该机型不支持预热
+INVALIDPARAMETERVALUE_PREHEATNOTSUPPORTEDINSTANCETYPE = 'InvalidParameterValue.PreheatNotSupportedInstanceType'
+
+# 该可用区目前不支持预热功能
+INVALIDPARAMETERVALUE_PREHEATNOTSUPPORTEDZONE = 'InvalidParameterValue.PreheatNotSupportedZone'
 
 #  无效参数值。参数值取值范围不合法。
 INVALIDPARAMETERVALUE_RANGE = 'InvalidParameterValue.Range'
@@ -601,6 +610,9 @@ LIMITEXCEEDED_LAUNCHTEMPLATEQUOTA = 'LimitExceeded.LaunchTemplateQuota'
 
 # 实例启动模板版本数量超限。
 LIMITEXCEEDED_LAUNCHTEMPLATEVERSIONQUOTA = 'LimitExceeded.LaunchTemplateVersionQuota'
+
+# 您在该可用区的预热额度已达上限，建议取消不再使用的快照预热
+LIMITEXCEEDED_PREHEATIMAGESNAPSHOTOUTOFQUOTA = 'LimitExceeded.PreheatImageSnapshotOutOfQuota'
 
 # 预付费实例已购买数量已达到最大配额，请提升配额后重试。
 LIMITEXCEEDED_PREPAYQUOTA = 'LimitExceeded.PrepayQuota'
@@ -751,6 +763,9 @@ UNSUPPORTEDOPERATION_ENCRYPTEDIMAGESNOTSUPPORTED = 'UnsupportedOperation.Encrypt
 
 # 异构机型不支持跨机型调整。
 UNSUPPORTEDOPERATION_HETEROGENEOUSCHANGEINSTANCEFAMILY = 'UnsupportedOperation.HeterogeneousChangeInstanceFamily'
+
+# 不支持未开启休眠功能的实例。
+UNSUPPORTEDOPERATION_HIBERNATIONFORNORMALINSTANCE = 'UnsupportedOperation.HibernationForNormalInstance'
 
 # IPv6实例不支持VPC迁移
 UNSUPPORTEDOPERATION_IPV6NOTSUPPORTVPCMIGRATE = 'UnsupportedOperation.IPv6NotSupportVpcMigrate'
@@ -904,6 +919,9 @@ UNSUPPORTEDOPERATION_ONLYFORPREPAIDACCOUNT = 'UnsupportedOperation.OnlyForPrepai
 
 # 无效的原机型。
 UNSUPPORTEDOPERATION_ORIGINALINSTANCETYPEINVALID = 'UnsupportedOperation.OriginalInstanceTypeInvalid'
+
+# 你的账户不支持镜像预热
+UNSUPPORTEDOPERATION_PREHEATIMAGE = 'UnsupportedOperation.PreheatImage'
 
 # 公共镜像或市场镜像不支持导出。
 UNSUPPORTEDOPERATION_PUBLICIMAGEEXPORTUNSUPPORTED = 'UnsupportedOperation.PublicImageExportUnsupported'

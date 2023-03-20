@@ -137,6 +137,9 @@ INVALIDPARAMETER_ERRINVALIDACTIONPARAMBADVALUETYPE = 'InvalidParameter.ErrInvali
 # 非法操作-非法参数-参数名重复。
 INVALIDPARAMETER_ERRINVALIDACTIONPARAMDUPLICATENAME = 'InvalidParameter.ErrInvalidActionParamDuplicateName'
 
+# 非法操作-非法参数-无效参数值类型。
+INVALIDPARAMETER_ERRINVALIDACTIONPARAMNAME = 'InvalidParameter.ErrInvalidActionParamName'
+
 # 非法操作-非法参数-参数值数量超出限制。
 INVALIDPARAMETER_ERRINVALIDACTIONPARAMTOOMANYVALUES = 'InvalidParameter.ErrInvalidActionParamTooManyValues'
 
@@ -145,6 +148,9 @@ INVALIDPARAMETER_ERRINVALIDACTIONTYPE = 'InvalidParameter.ErrInvalidActionType'
 
 # 非法条件-非法忽略大小写。
 INVALIDPARAMETER_ERRINVALIDCONDITIONIGNORECASE = 'InvalidParameter.ErrInvalidConditionIgnoreCase'
+
+# 非法条件-非法参数名称-无效的参数名称。
+INVALIDPARAMETER_ERRINVALIDCONDITIONNAMEBADNAME = 'InvalidParameter.ErrInvalidConditionNameBadName'
 
 # 非法条件-非法参数名称-匹配类型不支持参数名称。
 INVALIDPARAMETER_ERRINVALIDCONDITIONNAMETARGETNOTSUPPORTNAME = 'InvalidParameter.ErrInvalidConditionNameTargetNotSupportName'
@@ -188,6 +194,9 @@ INVALIDPARAMETER_INVALIDACCELERATETYPE = 'InvalidParameter.InvalidAccelerateType
 # 无效的token鉴权。
 INVALIDPARAMETER_INVALIDAUTHENTICATION = 'InvalidParameter.InvalidAuthentication'
 
+# 无效的token鉴权密钥。
+INVALIDPARAMETER_INVALIDAUTHENTICATIONTYPESECRETKEY = 'InvalidParameter.InvalidAuthenticationTypeSecretKey'
+
 # 无效的token鉴权参数。
 INVALIDPARAMETER_INVALIDAUTHENTICATIONTYPESIGNPARAM = 'InvalidParameter.InvalidAuthenticationTypeSignParam'
 
@@ -227,6 +236,9 @@ INVALIDPARAMETER_INVALIDDYNAMICROUTINEBILLING = 'InvalidParameter.InvalidDynamic
 # 无效的自定义错误页面。
 INVALIDPARAMETER_INVALIDERRORPAGEREDIRECTURL = 'InvalidParameter.InvalidErrorPageRedirectUrl'
 
+# 无效的HTTPS。
+INVALIDPARAMETER_INVALIDHTTPS = 'InvalidParameter.InvalidHttps'
+
 # 无效的HTTPS HSTS。
 INVALIDPARAMETER_INVALIDHTTPSHSTSMAXAGE = 'InvalidParameter.InvalidHttpsHstsMaxAge'
 
@@ -248,11 +260,17 @@ INVALIDPARAMETER_INVALIDPOSTMAXSIZEBILLING = 'InvalidParameter.InvalidPostMaxSiz
 # 无效的最大上传大小。
 INVALIDPARAMETER_INVALIDPOSTSIZEVALUE = 'InvalidParameter.InvalidPostSizeValue'
 
+# 套餐包不支持Quic配置。
+INVALIDPARAMETER_INVALIDQUICBILLING = 'InvalidParameter.InvalidQuicBilling'
+
 # 无效的请求头header。
 INVALIDPARAMETER_INVALIDREQUESTHEADERNAME = 'InvalidParameter.InvalidRequestHeaderName'
 
 # x-forwarded-for 请求头配置无效
 INVALIDPARAMETER_INVALIDREQUESTHEADERNAMEXFF = 'InvalidParameter.InvalidRequestHeaderNameXff'
+
+# 无效的请求头header。
+INVALIDPARAMETER_INVALIDREQUESTHEADERVALUE = 'InvalidParameter.InvalidRequestHeaderValue'
 
 # 无套餐包。
 INVALIDPARAMETER_INVALIDRESOURCEIDBILLING = 'InvalidParameter.InvalidResourceIdBilling'
@@ -311,6 +329,9 @@ INVALIDPARAMETER_PARAMETERERROR = 'InvalidParameter.ParameterError'
 # 套餐不存在。
 INVALIDPARAMETER_PLANNOTFOUND = 'InvalidParameter.PlanNotFound'
 
+# 最大上传大小超出限制
+INVALIDPARAMETER_POSTMAXSIZELIMITEXCEEDED = 'InvalidParameter.PostMaxSizeLimitExceeded'
+
 # 参数错误
 INVALIDPARAMETER_SECURITY = 'InvalidParameter.Security'
 
@@ -341,14 +362,23 @@ INVALIDPARAMETERVALUE = 'InvalidParameterValue'
 # DNS 记录与 DNSSEC 功能冲突。
 INVALIDPARAMETERVALUE_CONFLICTWITHDNSSEC = 'InvalidParameterValue.ConflictWithDNSSEC'
 
+# 主机记录与记录值不能取值相同。
+INVALIDPARAMETERVALUE_CONTENTSAMEASNAME = 'InvalidParameterValue.ContentSameAsName'
+
 # 入参中的域名与站点参数不匹配，请更正后重试。
 INVALIDPARAMETERVALUE_DOMAINNOTMATCHZONE = 'InvalidParameterValue.DomainNotMatchZone'
+
+# DNS 记录内容错误。
+INVALIDPARAMETERVALUE_INVALIDDNSCONTENT = 'InvalidParameterValue.InvalidDNSContent'
 
 # DNS 记录名称错误。
 INVALIDPARAMETERVALUE_INVALIDDNSNAME = 'InvalidParameterValue.InvalidDNSName'
 
 # 加速域名状态不符合要求。
 INVALIDPARAMETERVALUE_INVALIDDOMAINSTATUS = 'InvalidParameterValue.InvalidDomainStatus'
+
+# 该同名站点标识已被占用，请重新输入。
+INVALIDPARAMETERVALUE_ZONESAMEASNAME = 'InvalidParameterValue.ZoneSameAsName'
 
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'
@@ -358,6 +388,9 @@ LIMITEXCEEDED_BATCHQUOTA = 'LimitExceeded.BatchQuota'
 
 # 当天提交的资源数超过上限。
 LIMITEXCEEDED_DAILYQUOTA = 'LimitExceeded.DailyQuota'
+
+# 查询时间范围超出限制。
+LIMITEXCEEDED_QUERYTIMELIMITEXCEEDED = 'LimitExceeded.QueryTimeLimitExceeded'
 
 # 单位时间内接口请求频率达到限制。
 LIMITEXCEEDED_RATELIMITEXCEEDED = 'LimitExceeded.RateLimitExceeded'
@@ -385,6 +418,9 @@ OPERATIONDENIED_MULTIPLECNAMEZONE = 'OperationDenied.MultipleCnameZone'
 
 # NS接入模式不支持域名流量调度功能。
 OPERATIONDENIED_NSNOTALLOWTRAFFICSTRATEGY = 'OperationDenied.NSNotAllowTrafficStrategy'
+
+# DNS 记录不允许添加。
+OPERATIONDENIED_RECORDISFORBIDDEN = 'OperationDenied.RecordIsForbidden'
 
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
@@ -460,6 +496,9 @@ RESOURCEUNAVAILABLE_PROXYZONENOTFOUND = 'ResourceUnavailable.ProxyZoneNotFound'
 
 # 站点不存在或不属于该账号。
 RESOURCEUNAVAILABLE_ZONENOTFOUND = 'ResourceUnavailable.ZoneNotFound'
+
+# 资源售卖火爆，已售罄，正在加紧补货中，当前无法新增域名，请您耐心等待。
+RESOURCESSOLDOUT_L7LACKOFRESOURCES = 'ResourcesSoldOut.L7LackOfResources'
 
 # 未授权操作。
 UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'

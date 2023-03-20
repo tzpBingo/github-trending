@@ -572,6 +572,8 @@ class BGPInstance(AbstractModel):
         :type Line: int
         :param ElasticServiceBandwidth: 弹性业务带宽开关
         :type ElasticServiceBandwidth: int
+        :param GiftServiceBandWidth: 赠送的业务带宽
+        :type GiftServiceBandWidth: int
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -591,6 +593,7 @@ class BGPInstance(AbstractModel):
         self.VitalityVersion = None
         self.Line = None
         self.ElasticServiceBandwidth = None
+        self.GiftServiceBandWidth = None
 
 
     def _deserialize(self, params):
@@ -632,6 +635,7 @@ class BGPInstance(AbstractModel):
         self.VitalityVersion = params.get("VitalityVersion")
         self.Line = params.get("Line")
         self.ElasticServiceBandwidth = params.get("ElasticServiceBandwidth")
+        self.GiftServiceBandWidth = params.get("GiftServiceBandWidth")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -677,6 +681,9 @@ class BGPInstanceSpecification(AbstractModel):
         :param ElasticLimit: 高防包企业版弹性阈值，0表示未开启；大于0为弹性防护阈值
 注意：此字段可能返回 null，表示取不到有效值。
         :type ElasticLimit: int
+        :param DownGradeProtect: 降配后的防护能力，单位Gbps
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DownGradeProtect: int
         """
         self.ProtectBandwidth = None
         self.ProtectCountLimit = None
@@ -688,6 +695,7 @@ class BGPInstanceSpecification(AbstractModel):
         self.ChannelEditionFlag = None
         self.EnterpriseFlag = None
         self.ElasticLimit = None
+        self.DownGradeProtect = None
 
 
     def _deserialize(self, params):
@@ -701,6 +709,7 @@ class BGPInstanceSpecification(AbstractModel):
         self.ChannelEditionFlag = params.get("ChannelEditionFlag")
         self.EnterpriseFlag = params.get("EnterpriseFlag")
         self.ElasticLimit = params.get("ElasticLimit")
+        self.DownGradeProtect = params.get("DownGradeProtect")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

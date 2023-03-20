@@ -123,8 +123,7 @@ class EssClient(AbstractClient):
 
     def CreateDocument(self, request):
         """创建签署流程电子文档
-        适用场景：见创建签署流程接口。
-
+        适用场景：见创建签署流程接口。x0b
         注：该接口需要给对应的流程指定一个模板id，并且填充该模板中需要补充的信息。是“发起流程”接口的前置接口。
 
         :param request: Request instance for CreateDocument.
@@ -252,7 +251,7 @@ class EssClient(AbstractClient):
     def CreateFlowReminds(self, request):
         """指定需要批量催办的签署流程Id，批量催办合同，最多100个; 接口失败后返回错误信息
         注意:
-        该接口不可直接调用，需要联系运营开通后方可调用。
+        该接口不可直接调用，请联系客户经理申请使用
 
         :param request: Request instance for CreateFlowReminds.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowRemindsRequest`
@@ -301,7 +300,7 @@ class EssClient(AbstractClient):
 
 
     def CreateFlowSignUrl(self, request):
-        """创建签署链接，需要联系运营人员开白后才可使用
+        """创建签署链接，请联系客户经理申请使用
 
         :param request: Request instance for CreateFlowSignUrl.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowSignUrlRequest`
@@ -396,6 +395,29 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateReleaseFlow(self, request):
+        """发起解除协议，主要应用场景为：基于一份已经签署的合同(签署流程)，进行解除操作。
+
+        :param request: Request instance for CreateReleaseFlow.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateReleaseFlowRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateReleaseFlowResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateReleaseFlow", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateReleaseFlowResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateSchemeUrl(self, request):
         """获取小程序跳转链接
 
@@ -443,6 +465,29 @@ class EssClient(AbstractClient):
             body = self.call("CreateSealPolicy", params, headers=headers)
             response = json.loads(body)
             model = models.CreateSealPolicyResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateUserAutoSignEnableUrl(self, request):
+        """企业方可以通过此接口获取个人用户开启自动签的跳转链接
+
+        :param request: Request instance for CreateUserAutoSignEnableUrl.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateUserAutoSignEnableUrlRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateUserAutoSignEnableUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateUserAutoSignEnableUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateUserAutoSignEnableUrlResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -733,6 +778,52 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeUserAutoSignStatus(self, request):
+        """企业方可以通过此接口查询个人用户自动签开启状态
+
+        :param request: Request instance for DescribeUserAutoSignStatus.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DescribeUserAutoSignStatusRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DescribeUserAutoSignStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUserAutoSignStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeUserAutoSignStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DisableUserAutoSign(self, request):
+        """企业方可以通过此接口关闭个人的自动签功能
+
+        :param request: Request instance for DisableUserAutoSign.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DisableUserAutoSignRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DisableUserAutoSignResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DisableUserAutoSign", params, headers=headers)
+            response = json.loads(body)
+            model = models.DisableUserAutoSignResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def GetTaskResultApi(self, request):
         """查询转换任务状态
 
@@ -747,6 +838,31 @@ class EssClient(AbstractClient):
             body = self.call("GetTaskResultApi", params, headers=headers)
             response = json.loads(body)
             model = models.GetTaskResultApiResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyApplicationCallbackInfo(self, request):
+        """新增/删除应用callbackinfo
+        callbackinfo包含： 回调地址和签名key
+        操作：新增/删除
+
+        :param request: Request instance for ModifyApplicationCallbackInfo.
+        :type request: :class:`tencentcloud.ess.v20201111.models.ModifyApplicationCallbackInfoRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.ModifyApplicationCallbackInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyApplicationCallbackInfo", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyApplicationCallbackInfoResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -784,6 +900,7 @@ class EssClient(AbstractClient):
     def UploadFiles(self, request):
         """此接口（UploadFiles）用于文件上传。
         适用场景：用于生成pdf资源编号（FileIds）来配合“用PDF创建流程”接口使用，使用场景可详见“用PDF创建流程”接口说明。
+        其中上传的文件，图片类型(png/jpg/jpeg)大小限制为5M，其他大小限制为60M。
         调用时需要设置Domain/接口请求域名为 file.ess.tencent.cn，并设置参数Version/版本号为2020-12-22
 
         :param request: Request instance for UploadFiles.

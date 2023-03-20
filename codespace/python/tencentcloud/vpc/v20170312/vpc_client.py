@@ -874,7 +874,7 @@ class VpcClient(AbstractClient):
         * 支持基础网络、VPC，返回VpcId为0
         * 只支持VPC，返回默认VPC信息
 
-        您也可以通过 Force 参数，强制返回默认VPC
+        您也可以通过 Force 参数，强制返回默认VPC。
 
         :param request: Request instance for CreateDefaultVpc.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateDefaultVpcRequest`
@@ -989,7 +989,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateHaVip(self, request):
-        """本接口（CreateHaVip）用于创建高可用虚拟IP（HAVIP）
+        """本接口（CreateHaVip）用于创建高可用虚拟IP（HAVIP）。
 
         :param request: Request instance for CreateHaVip.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateHaVipRequest`
@@ -1129,7 +1129,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateNetDetect(self, request):
-        """本接口(CreateNetDetect)用于创建网络探测。
+        """本接口（CreateNetDetect）用于创建网络探测。
 
         :param request: Request instance for CreateNetDetect.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateNetDetectRequest`
@@ -2117,7 +2117,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteNetDetect(self, request):
-        """本接口(DeleteNetDetect)用于删除网络探测实例。
+        """本接口（DeleteNetDetect）用于删除网络探测实例。
 
         :param request: Request instance for DeleteNetDetect.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteNetDetectRequest`
@@ -2213,7 +2213,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteRouteTable(self, request):
-        """删除路由表
+        """本接口（DeleteRouteTable）用于删除路由表。
 
         :param request: Request instance for DeleteRouteTable.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteRouteTableRequest`
@@ -3190,7 +3190,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeFlowLogs(self, request):
-        """本接口（DescribeFlowLogs）用于查询获取流日志集合
+        """本接口（DescribeFlowLogs）用于查询获取流日志集合。
 
         :param request: Request instance for DescribeFlowLogs.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeFlowLogsRequest`
@@ -3355,6 +3355,7 @@ class VpcClient(AbstractClient):
 
     def DescribeIpGeolocationDatabaseUrl(self, request):
         """本接口（DescribeIpGeolocationDatabaseUrl）用于获取IP地理位置库下载链接。
+        <font color="#FF0000">本接口即将下线，仅供存量用户使用，暂停新增用户。</font>
 
         :param request: Request instance for DescribeIpGeolocationDatabaseUrl.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeIpGeolocationDatabaseUrlRequest`
@@ -3378,7 +3379,7 @@ class VpcClient(AbstractClient):
 
     def DescribeIpGeolocationInfos(self, request):
         """本接口（DescribeIpGeolocationInfos）用于查询IP地址信息，包括地理位置信息和网络信息。
-        本接口仅供存量客户使用，如有疑问，请提交[工单申请](https://console.cloud.tencent.com/workorder/category?level1_id=6&level2_id=660&source=0&data_title=%E5%BC%B9%E6%80%A7%E5%85%AC%E7%BD%91%20EIP&level3_id=662&queue=96&scene_code=16400&step=2)。
+        <font color="#FF0000">本接口即将下线，仅供存量客户使用，暂停新增用户。</font>
 
         :param request: Request instance for DescribeIpGeolocationInfos.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeIpGeolocationInfosRequest`
@@ -4116,7 +4117,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpcEndPoint(self, request):
-        """查询终端节点列表。
+        """本接口（DescribeVpcEndPoint）用于查询终端节点列表。
 
         :param request: Request instance for DescribeVpcEndPoint.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpcEndPointRequest`
@@ -6765,6 +6766,30 @@ class VpcClient(AbstractClient):
             body = self.call("ReplaceRoutes", params, headers=headers)
             response = json.loads(body)
             model = models.ReplaceRoutesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ReplaceSecurityGroupPolicies(self, request):
+        """本接口（ReplaceSecurityGroupPolicies）用于批量修改安全组规则（SecurityGroupPolicy）。
+        单个请求中只能替换单个方向的一条或多条规则, 必须要指定索引（PolicyIndex）。
+
+        :param request: Request instance for ReplaceSecurityGroupPolicies.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.ReplaceSecurityGroupPoliciesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.ReplaceSecurityGroupPoliciesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ReplaceSecurityGroupPolicies", params, headers=headers)
+            response = json.loads(body)
+            model = models.ReplaceSecurityGroupPoliciesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

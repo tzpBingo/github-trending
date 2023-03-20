@@ -197,7 +197,7 @@ class CreateBPFakeAPPListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FakeAPPs: 批量模版
+        :param FakeAPPs: 批量模板
         :type FakeAPPs: str
         """
         self.FakeAPPs = None
@@ -360,7 +360,7 @@ class CreateBPFakeURLsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FakeURLs: 批量模版
+        :param FakeURLs: 批量模板
         :type FakeURLs: str
         """
         self.FakeURLs = None
@@ -840,6 +840,9 @@ class FakeURLData(AbstractModel):
         :param FakeURL: 仿冒网址
 注意：此字段可能返回 null，表示取不到有效值。
         :type FakeURL: str
+        :param FakeDomain: 仿冒域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FakeDomain: str
         :param Heat: 热度
 注意：此字段可能返回 null，表示取不到有效值。
         :type Heat: int
@@ -885,11 +888,15 @@ class FakeURLData(AbstractModel):
         :param CertificationStatus: 资质证明状态：0-不可用 1-可用
 注意：此字段可能返回 null，表示取不到有效值。
         :type CertificationStatus: int
+        :param Snapshot: 网址截图
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Snapshot: str
         """
         self.FakeURLId = None
         self.BrandName = None
         self.Origin = None
         self.FakeURL = None
+        self.FakeDomain = None
         self.Heat = None
         self.BlockStatus = None
         self.BlockNote = None
@@ -905,6 +912,7 @@ class FakeURLData(AbstractModel):
         self.WebExpireTime = None
         self.InsertTime = None
         self.CertificationStatus = None
+        self.Snapshot = None
 
 
     def _deserialize(self, params):
@@ -912,6 +920,7 @@ class FakeURLData(AbstractModel):
         self.BrandName = params.get("BrandName")
         self.Origin = params.get("Origin")
         self.FakeURL = params.get("FakeURL")
+        self.FakeDomain = params.get("FakeDomain")
         self.Heat = params.get("Heat")
         self.BlockStatus = params.get("BlockStatus")
         self.BlockNote = params.get("BlockNote")
@@ -927,6 +936,7 @@ class FakeURLData(AbstractModel):
         self.WebExpireTime = params.get("WebExpireTime")
         self.InsertTime = params.get("InsertTime")
         self.CertificationStatus = params.get("CertificationStatus")
+        self.Snapshot = params.get("Snapshot")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -3269,6 +3269,29 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def RebuildMedia(self, request):
+        """发起音画质重生
+
+        :param request: Request instance for RebuildMedia.
+        :type request: :class:`tencentcloud.vod.v20180717.models.RebuildMediaRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.RebuildMediaResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RebuildMedia", params, headers=headers)
+            response = json.loads(body)
+            model = models.RebuildMediaResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def RefreshUrlCache(self, request):
         """1. 刷新指定的 URL 列表。
         2. URL 的域名必须已在云点播中注册。
@@ -3425,6 +3448,7 @@ class VodClient(AbstractClient):
         - 指定标签集合 Tags（见输入参数），返回满足集合中任意标签的媒体。例如：媒体标签有二次元、宫斗、鬼畜，如果 Tags 指定了二次元、鬼畜2个标签，那么只要符合这2个标签中任意一个的媒体都会被检索出来。
         - 指定文件类型集合 Categories（见输入参数），返回满足集合中任意类型的媒体。例如：文件类型有 Video（视频）、 Audio （音频）、 Image （图片）。如果Categories指定了 Video 和 Audio 2个文件类型，那么符合这些类型的媒体都会被检索出来。
         - 指定来源集合 SourceTypes（见输入参数），返回满足集合中任意来源的媒体。例如：媒体来源有 Record (直播录制)、Upload （上传）等。如果 SourceTypes 指定了 Record 和 Upload ，那么符合这些来源的媒体都会被检索出来。
+        - 指定文件封装格式集合 MediaTypes（见输入参数），返回满足集合中任意封装格式的媒体。例如：封装格式有 MP4、AVI、MP3 等。如果 MediaTypes 指定了 MP4 和 MP3，那么符合这些封装格式的媒体都会被检索出来。
         - 指定直播推流码集合 StreamIds（见输入参数）筛选直播录制的媒体。
         - 指定媒体的创建时间范围筛选媒体。
         - 指定 TRTC 应用 ID 集合筛选媒体。

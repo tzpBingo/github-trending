@@ -18,6 +18,55 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class AddGroupMemberRequest(AbstractModel):
+    """AddGroupMember请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 群组ID
+        :type GroupId: str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param MemberIds: 成员列表，最大值200
+        :type MemberIds: list of str
+        """
+        self.GroupId = None
+        self.SdkAppId = None
+        self.MemberIds = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.SdkAppId = params.get("SdkAppId")
+        self.MemberIds = params.get("MemberIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AddGroupMemberResponse(AbstractModel):
+    """AddGroupMember返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class AppConfig(AbstractModel):
     """应用配置信息
 
@@ -89,6 +138,113 @@ class BackgroundPictureConfig(AbstractModel):
         
 
 
+class BatchAddGroupMemberRequest(AbstractModel):
+    """BatchAddGroupMember请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupIds: 待添加群组ID列表，最大值100
+        :type GroupIds: list of str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param MemberIds: 待添加成员列表，最大值200
+        :type MemberIds: list of str
+        """
+        self.GroupIds = None
+        self.SdkAppId = None
+        self.MemberIds = None
+
+
+    def _deserialize(self, params):
+        self.GroupIds = params.get("GroupIds")
+        self.SdkAppId = params.get("SdkAppId")
+        self.MemberIds = params.get("MemberIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchAddGroupMemberResponse(AbstractModel):
+    """BatchAddGroupMember返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class BatchCreateGroupWithMembersRequest(AbstractModel):
+    """BatchCreateGroupWithMembers请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param GroupBaseInfos: 批量创建群组基础信息，最大长度限制256
+        :type GroupBaseInfos: list of GroupBaseInfo
+        :param MemberIds: 群组绑定的成员列表，一次性最多200个
+        :type MemberIds: list of str
+        """
+        self.SdkAppId = None
+        self.GroupBaseInfos = None
+        self.MemberIds = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        if params.get("GroupBaseInfos") is not None:
+            self.GroupBaseInfos = []
+            for item in params.get("GroupBaseInfos"):
+                obj = GroupBaseInfo()
+                obj._deserialize(item)
+                self.GroupBaseInfos.append(obj)
+        self.MemberIds = params.get("MemberIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchCreateGroupWithMembersResponse(AbstractModel):
+    """BatchCreateGroupWithMembers返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupIds: 新创建群组ID列表，与输入创建参数顺序一致
+        :type GroupIds: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupIds = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.GroupIds = params.get("GroupIds")
+        self.RequestId = params.get("RequestId")
+
+
 class BatchCreateRoomRequest(AbstractModel):
     """BatchCreateRoom请求参数结构体
 
@@ -140,6 +296,55 @@ class BatchCreateRoomResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RoomIds = params.get("RoomIds")
+        self.RequestId = params.get("RequestId")
+
+
+class BatchDeleteGroupMemberRequest(AbstractModel):
+    """BatchDeleteGroupMember请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupIds: 待添加群组ID列表，最大值100
+        :type GroupIds: list of str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param MemberIds: 待添加成员列表，最大值256
+        :type MemberIds: list of str
+        """
+        self.GroupIds = None
+        self.SdkAppId = None
+        self.MemberIds = None
+
+
+    def _deserialize(self, params):
+        self.GroupIds = params.get("GroupIds")
+        self.SdkAppId = params.get("SdkAppId")
+        self.MemberIds = params.get("MemberIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchDeleteGroupMemberResponse(AbstractModel):
+    """BatchDeleteGroupMember返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -456,6 +661,120 @@ class CreateDocumentResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateGroupWithMembersRequest(AbstractModel):
+    """CreateGroupWithMembers请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupName: 待创建群组名称
+        :type GroupName: str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param TeacherId: 默认绑定主讲老师ID
+        :type TeacherId: str
+        :param MemberIds: 群组成员列表,一次性最多200个
+        :type MemberIds: list of str
+        """
+        self.GroupName = None
+        self.SdkAppId = None
+        self.TeacherId = None
+        self.MemberIds = None
+
+
+    def _deserialize(self, params):
+        self.GroupName = params.get("GroupName")
+        self.SdkAppId = params.get("SdkAppId")
+        self.TeacherId = params.get("TeacherId")
+        self.MemberIds = params.get("MemberIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateGroupWithMembersResponse(AbstractModel):
+    """CreateGroupWithMembers返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 创建成功群组ID
+        :type GroupId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateGroupWithSubGroupRequest(AbstractModel):
+    """CreateGroupWithSubGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupName: 待创建的新群组名
+        :type GroupName: str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param SubGroupIds: 子群组ID列表，子群组ID不能重复，最多40个
+        :type SubGroupIds: list of str
+        :param TeacherId: 群组默认主讲老师ID
+        :type TeacherId: str
+        """
+        self.GroupName = None
+        self.SdkAppId = None
+        self.SubGroupIds = None
+        self.TeacherId = None
+
+
+    def _deserialize(self, params):
+        self.GroupName = params.get("GroupName")
+        self.SdkAppId = params.get("SdkAppId")
+        self.SubGroupIds = params.get("SubGroupIds")
+        self.TeacherId = params.get("TeacherId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateGroupWithSubGroupResponse(AbstractModel):
+    """CreateGroupWithSubGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 新创建群组ID
+        :type GroupId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateRoomRequest(AbstractModel):
     """CreateRoom请求参数结构体
 
@@ -481,7 +800,6 @@ class CreateRoomRequest(AbstractModel):
         :param SubType: 房间子类型，可以有以下取值：
 videodoc 文档+视频
 video 纯视频
-coteaching 双师
         :type SubType: str
         :param TeacherId: 老师ID。通过[注册用户]接口获取的UserId。指定后该用户在房间内拥有老师权限。
         :type TeacherId: str
@@ -502,6 +820,8 @@ coteaching 双师
         :type Assistants: list of str
         :param RecordLayout: 录制布局。
         :type RecordLayout: int
+        :param GroupId: 房间绑定的群组ID,非空时限制组成员进入
+        :type GroupId: str
         """
         self.Name = None
         self.StartTime = None
@@ -516,6 +836,7 @@ coteaching 双师
         self.DisableRecord = None
         self.Assistants = None
         self.RecordLayout = None
+        self.GroupId = None
 
 
     def _deserialize(self, params):
@@ -532,6 +853,7 @@ coteaching 双师
         self.DisableRecord = params.get("DisableRecord")
         self.Assistants = params.get("Assistants")
         self.RecordLayout = params.get("RecordLayout")
+        self.GroupId = params.get("GroupId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -567,9 +889,76 @@ class CreateSupervisorRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用ID。
+        :type SdkAppId: int
+        :param Users: 用户ID列表。
+        :type Users: list of str
+        """
+        self.SdkAppId = None
+        self.Users = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.Users = params.get("Users")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class CreateSupervisorResponse(AbstractModel):
     """CreateSupervisor返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteAppCustomContentRequest(AbstractModel):
+    """DeleteAppCustomContent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用ID。
+        :type SdkAppId: int
+        :param Scenes: 指定需要删除的已设置的scene场景自定义元素，如果为空则删除应用下已设置的所有自定义元素。
+        :type Scenes: list of str
+        """
+        self.SdkAppId = None
+        self.Scenes = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.Scenes = params.get("Scenes")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteAppCustomContentResponse(AbstractModel):
+    """DeleteAppCustomContent返回参数结构体
 
     """
 
@@ -611,6 +1000,100 @@ class DeleteDocumentRequest(AbstractModel):
 
 class DeleteDocumentResponse(AbstractModel):
     """DeleteDocument返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteGroupMemberRequest(AbstractModel):
+    """DeleteGroupMember请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 群组ID，联合群组无法删除群组成员
+        :type GroupId: str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param MemberIds: 成员列表，最大值200
+        :type MemberIds: list of str
+        """
+        self.GroupId = None
+        self.SdkAppId = None
+        self.MemberIds = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.SdkAppId = params.get("SdkAppId")
+        self.MemberIds = params.get("MemberIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteGroupMemberResponse(AbstractModel):
+    """DeleteGroupMember返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteGroupRequest(AbstractModel):
+    """DeleteGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupIds: 待删除群组ID列表
+        :type GroupIds: list of str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        """
+        self.GroupIds = None
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.GroupIds = params.get("GroupIds")
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteGroupResponse(AbstractModel):
+    """DeleteGroup返回参数结构体
 
     """
 
@@ -1017,6 +1500,208 @@ class DescribeDocumentsByRoomResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeGroupListRequest(AbstractModel):
+    """DescribeGroupList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param Page: 分页查询当前页数，默认从1开始递增。
+        :type Page: int
+        :param Limit: 每页数据量，默认20，最大1000。
+        :type Limit: int
+        :param TeacherId: 主讲人ID筛选群组，与MemberId有且只有一个,都传时以此字段获取
+        :type TeacherId: str
+        :param MemberId: 成员ID刷选群组，与TeacherId有且只有一个
+        :type MemberId: str
+        """
+        self.SdkAppId = None
+        self.Page = None
+        self.Limit = None
+        self.TeacherId = None
+        self.MemberId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.Page = params.get("Page")
+        self.Limit = params.get("Limit")
+        self.TeacherId = params.get("TeacherId")
+        self.MemberId = params.get("MemberId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeGroupListResponse(AbstractModel):
+    """DescribeGroupList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 记录总数。当前匹配群组总数。
+        :type Total: int
+        :param GroupInfos: 群组信息列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupInfos: list of GroupInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.GroupInfos = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        if params.get("GroupInfos") is not None:
+            self.GroupInfos = []
+            for item in params.get("GroupInfos"):
+                obj = GroupInfo()
+                obj._deserialize(item)
+                self.GroupInfos.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeGroupMemberListRequest(AbstractModel):
+    """DescribeGroupMemberList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 群组ID
+        :type GroupId: str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param Page: 分页值，默认1
+        :type Page: int
+        :param Limit: 每页数据量，默认20，最大1000
+        :type Limit: int
+        """
+        self.GroupId = None
+        self.SdkAppId = None
+        self.Page = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.SdkAppId = params.get("SdkAppId")
+        self.Page = params.get("Page")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeGroupMemberListResponse(AbstractModel):
+    """DescribeGroupMemberList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 符合查询条件总条数
+        :type Total: int
+        :param MemberIds: 查询成员列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MemberIds: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.MemberIds = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        self.MemberIds = params.get("MemberIds")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeGroupRequest(AbstractModel):
+    """DescribeGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 群组ID
+        :type GroupId: str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        """
+        self.GroupId = None
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeGroupResponse(AbstractModel):
+    """DescribeGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 群组ID
+        :type GroupId: str
+        :param GroupName: 群组名称
+        :type GroupName: str
+        :param TeacherId: 群主主讲人ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TeacherId: str
+        :param GroupType: 群组类型
+0-基础群组
+1-组合群组，若为1时会返回子群组ID
+        :type GroupType: int
+        :param SubGroupIds: 子群组ID列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubGroupIds: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupId = None
+        self.GroupName = None
+        self.TeacherId = None
+        self.GroupType = None
+        self.SubGroupIds = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.GroupName = params.get("GroupName")
+        self.TeacherId = params.get("TeacherId")
+        self.GroupType = params.get("GroupType")
+        self.SubGroupIds = params.get("SubGroupIds")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeRoomRequest(AbstractModel):
     """DescribeRoom请求参数结构体
 
@@ -1076,7 +1761,6 @@ class DescribeRoomResponse(AbstractModel):
         :param SubType: 房间子类型，可以有以下取值：
 videodoc 文档+视频
 video 纯视频
-coteaching 双师
         :type SubType: str
         :param DisableRecord: 上课后是否禁止自动录制。可以有以下取值：
 0 不禁止录制（自动开启录制，默认值）
@@ -1086,12 +1770,15 @@ coteaching 双师
         :param Assistants: 助教UserId列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Assistants: list of str
-        :param RecordUrl: 录制地址。仅在房间结束后存在。
+        :param RecordUrl: 录制地址（协议为https)。仅在房间结束后存在。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RecordUrl: str
-        :param Status: 课堂状态。0为未开始，1为正在上课，2为已结束，3为已过期。
+        :param Status: 课堂状态。0为未开始，1为已开始，2为已结束，3为已过期。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Status: int
+        :param GroupId: 房间绑定的群组ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -1109,6 +1796,7 @@ coteaching 双师
         self.Assistants = None
         self.RecordUrl = None
         self.Status = None
+        self.GroupId = None
         self.RequestId = None
 
 
@@ -1127,6 +1815,7 @@ coteaching 双师
         self.Assistants = params.get("Assistants")
         self.RecordUrl = params.get("RecordUrl")
         self.Status = params.get("Status")
+        self.GroupId = params.get("GroupId")
         self.RequestId = params.get("RequestId")
 
 
@@ -1183,6 +1872,10 @@ class DescribeRoomStatisticsResponse(AbstractModel):
         :param RealEndTime: 秒级unix时间戳，实际房间结束时间。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RealEndTime: int
+        :param MessageCount: 房间消息总数。
+        :type MessageCount: int
+        :param MicCount: 房间连麦总数。
+        :type MicCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -1192,6 +1885,8 @@ class DescribeRoomStatisticsResponse(AbstractModel):
         self.MemberRecords = None
         self.RealStartTime = None
         self.RealEndTime = None
+        self.MessageCount = None
+        self.MicCount = None
         self.RequestId = None
 
 
@@ -1207,6 +1902,8 @@ class DescribeRoomStatisticsResponse(AbstractModel):
                 self.MemberRecords.append(obj)
         self.RealStartTime = params.get("RealStartTime")
         self.RealEndTime = params.get("RealEndTime")
+        self.MessageCount = params.get("MessageCount")
+        self.MicCount = params.get("MicCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -1420,6 +2117,210 @@ class DocumentInfo(AbstractModel):
         
 
 
+class EventDataInfo(AbstractModel):
+    """房间事件对应的信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoomId: 事件发生的房间号。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoomId: int
+        :param UserId: 事件发生的用户。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserId: str
+        """
+        self.RoomId = None
+        self.UserId = None
+
+
+    def _deserialize(self, params):
+        self.RoomId = params.get("RoomId")
+        self.UserId = params.get("UserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EventInfo(AbstractModel):
+    """房间事件信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Timestamp: 事件发生的秒级unix时间戳。
+        :type Timestamp: int
+        :param EventType: 事件类型,有以下值:
+RoomStart:房间开始 RoomEnd:房间结束 MemberJoin:成员加入 MemberQuit:成员退出 RecordFinish:录制结束
+        :type EventType: str
+        :param EventData: 事件详细内容，包含房间号,成员类型事件包含用户Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EventData: :class:`tencentcloud.lcic.v20220817.models.EventDataInfo`
+        """
+        self.Timestamp = None
+        self.EventType = None
+        self.EventData = None
+
+
+    def _deserialize(self, params):
+        self.Timestamp = params.get("Timestamp")
+        self.EventType = params.get("EventType")
+        if params.get("EventData") is not None:
+            self.EventData = EventDataInfo()
+            self.EventData._deserialize(params.get("EventData"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetRoomEventRequest(AbstractModel):
+    """GetRoomEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoomId: 房间Id。
+        :type RoomId: int
+        :param SdkAppId: 应用Id。
+        :type SdkAppId: int
+        :param Page: 起始页，1开始。keyword为空时有效。
+        :type Page: int
+        :param Limit: 每页个数。keyword为空时有效。一次性最多200条。
+        :type Limit: int
+        :param Keyword: 搜索事件类型。有以下事件类型:
+RoomStart:房间开始
+RoomEnd:房间结束
+MemberJoin:成员加入
+MemberQuit:成员退出
+RecordFinish:录制结束
+        :type Keyword: str
+        """
+        self.RoomId = None
+        self.SdkAppId = None
+        self.Page = None
+        self.Limit = None
+        self.Keyword = None
+
+
+    def _deserialize(self, params):
+        self.RoomId = params.get("RoomId")
+        self.SdkAppId = params.get("SdkAppId")
+        self.Page = params.get("Page")
+        self.Limit = params.get("Limit")
+        self.Keyword = params.get("Keyword")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetRoomEventResponse(AbstractModel):
+    """GetRoomEvent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 该房间的事件总数，keyword搜索不影响该值。
+        :type Total: int
+        :param Events: 详细事件内容。包含相应的类型、发生的时间戳。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Events: list of EventInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.Events = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        if params.get("Events") is not None:
+            self.Events = []
+            for item in params.get("Events"):
+                obj = EventInfo()
+                obj._deserialize(item)
+                self.Events.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class GetRoomMessageRequest(AbstractModel):
+    """GetRoomMessage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 低代码互动课堂的SdkAppId。
+        :type SdkAppId: int
+        :param RoomId: 房间Id。	
+        :type RoomId: int
+        :param Seq: 消息序列。获取该序列以前前的消息(不包含该seq消息)
+        :type Seq: int
+        :param Limit: 消息拉取的条数。最大数量不能超过套餐包限制。
+        :type Limit: int
+        """
+        self.SdkAppId = None
+        self.RoomId = None
+        self.Seq = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.RoomId = params.get("RoomId")
+        self.Seq = params.get("Seq")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetRoomMessageResponse(AbstractModel):
+    """GetRoomMessage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Messages: 消息列表
+        :type Messages: list of MessageList
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Messages = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Messages") is not None:
+            self.Messages = []
+            for item in params.get("Messages"):
+                obj = MessageList()
+                obj._deserialize(item)
+                self.Messages.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class GetWatermarkRequest(AbstractModel):
     """GetWatermark请求参数结构体
 
@@ -1488,6 +2389,83 @@ class GetWatermarkResponse(AbstractModel):
             self.Text = TextMarkConfig()
             self.Text._deserialize(params.get("Text"))
         self.RequestId = params.get("RequestId")
+
+
+class GroupBaseInfo(AbstractModel):
+    """批量创建群组基础信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupName: 待创建群组名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupName: str
+        :param TeacherId: 群组主讲人ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TeacherId: str
+        """
+        self.GroupName = None
+        self.TeacherId = None
+
+
+    def _deserialize(self, params):
+        self.GroupName = params.get("GroupName")
+        self.TeacherId = params.get("TeacherId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GroupInfo(AbstractModel):
+    """获取群组列表返回的群组信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 群组ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupId: str
+        :param GroupName: 群组名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupName: str
+        :param TeacherId: 群组主讲人ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TeacherId: str
+        :param GroupType: 群组类型 
+0-基础群组 
+1-组合群组，若为1时会返回子群组ID列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupType: int
+        :param SubGroupIds: 子群组ID列表，如有。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubGroupIds: str
+        """
+        self.GroupId = None
+        self.GroupName = None
+        self.TeacherId = None
+        self.GroupType = None
+        self.SubGroupIds = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.GroupName = params.get("GroupName")
+        self.TeacherId = params.get("TeacherId")
+        self.GroupType = params.get("GroupType")
+        self.SubGroupIds = params.get("SubGroupIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class LoginOriginIdRequest(AbstractModel):
@@ -1627,6 +2605,11 @@ class MemberRecord(AbstractModel):
         :type Location: str
         :param Device: 用户设备平台信息。0:unknown  1:windows  2:mac  3:android  4:ios  5:web   6:h5   7:miniprogram （小程序）
         :type Device: int
+        :param PerMemberMicCount: 每个成员上麦次数。
+        :type PerMemberMicCount: int
+        :param PerMemberMessageCount: 每个成员发送消息数量。
+
+        :type PerMemberMessageCount: int
         """
         self.UserId = None
         self.UserName = None
@@ -1642,6 +2625,8 @@ class MemberRecord(AbstractModel):
         self.IPAddress = None
         self.Location = None
         self.Device = None
+        self.PerMemberMicCount = None
+        self.PerMemberMessageCount = None
 
 
     def _deserialize(self, params):
@@ -1659,6 +2644,88 @@ class MemberRecord(AbstractModel):
         self.IPAddress = params.get("IPAddress")
         self.Location = params.get("Location")
         self.Device = params.get("Device")
+        self.PerMemberMicCount = params.get("PerMemberMicCount")
+        self.PerMemberMessageCount = params.get("PerMemberMessageCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class MessageItem(AbstractModel):
+    """单条消息体内容
+
+    """
+
+    def __init__(self):
+        r"""
+        :param MessageType: 消息类型。0表示文本消息，1表示图片消息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MessageType: int
+        :param TextMessage: 文本消息内容。message type为0时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TextMessage: str
+        :param ImageMessage: 图片消息URL。 message type为1时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImageMessage: str
+        """
+        self.MessageType = None
+        self.TextMessage = None
+        self.ImageMessage = None
+
+
+    def _deserialize(self, params):
+        self.MessageType = params.get("MessageType")
+        self.TextMessage = params.get("TextMessage")
+        self.ImageMessage = params.get("ImageMessage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class MessageList(AbstractModel):
+    """历史消息列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Timestamp: 消息时间戳
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Timestamp: int
+        :param FromAccount: 消息发送者
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FromAccount: str
+        :param Seq: 消息序列号，当前课堂内唯一且单调递增
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Seq: int
+        :param MessageBody: 历史消息列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MessageBody: list of MessageItem
+        """
+        self.Timestamp = None
+        self.FromAccount = None
+        self.Seq = None
+        self.MessageBody = None
+
+
+    def _deserialize(self, params):
+        self.Timestamp = params.get("Timestamp")
+        self.FromAccount = params.get("FromAccount")
+        self.Seq = params.get("Seq")
+        if params.get("MessageBody") is not None:
+            self.MessageBody = []
+            for item in params.get("MessageBody"):
+                obj = MessageItem()
+                obj._deserialize(item)
+                self.MessageBody.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1702,6 +2769,59 @@ class ModifyAppRequest(AbstractModel):
 
 class ModifyAppResponse(AbstractModel):
     """ModifyApp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyGroupRequest(AbstractModel):
+    """ModifyGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 需要修改的群组ID
+        :type GroupId: str
+        :param SdkAppId: 低代码平台应用ID
+        :type SdkAppId: int
+        :param TeacherId: 默认绑定主讲老师ID
+        :type TeacherId: str
+        :param GroupName: 待修改的群组名称
+        :type GroupName: str
+        """
+        self.GroupId = None
+        self.SdkAppId = None
+        self.TeacherId = None
+        self.GroupName = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.SdkAppId = params.get("SdkAppId")
+        self.TeacherId = params.get("TeacherId")
+        self.GroupName = params.get("GroupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyGroupResponse(AbstractModel):
+    """ModifyGroup返回参数结构体
 
     """
 
@@ -1768,6 +2888,8 @@ coteaching 双师
         :type DisableRecord: int
         :param Assistants: 助教Id列表。直播开始后不允许修改。
         :type Assistants: list of str
+        :param GroupId: 房间绑定的群组ID
+        :type GroupId: str
         """
         self.RoomId = None
         self.SdkAppId = None
@@ -1782,6 +2904,7 @@ coteaching 双师
         self.SubType = None
         self.DisableRecord = None
         self.Assistants = None
+        self.GroupId = None
 
 
     def _deserialize(self, params):
@@ -1798,6 +2921,7 @@ coteaching 双师
         self.SubType = params.get("SubType")
         self.DisableRecord = params.get("DisableRecord")
         self.Assistants = params.get("Assistants")
+        self.GroupId = params.get("GroupId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1956,7 +3080,7 @@ class RoomInfo(AbstractModel):
         :param MaxMicNumber: 最大连麦人数（不包括老师）。取值范围[0, 16]
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxMicNumber: int
-        :param SubType: 房间子类型，可以有以下取值： videodoc 文档+视频 video 纯视频 coteaching 双师
+        :param SubType: 房间子类型，可以有以下取值： videodoc 文档+视频 video 纯视频
 注意：此字段可能返回 null，表示取不到有效值。
         :type SubType: str
         :param TeacherId: 老师ID。通过[注册用户]接口获取的UserId。
@@ -1986,6 +3110,9 @@ class RoomInfo(AbstractModel):
         :param RecordLayout: 录制布局。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RecordLayout: int
+        :param GroupId: 房间绑定的群组ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupId: str
         """
         self.Name = None
         self.StartTime = None
@@ -2002,6 +3129,7 @@ class RoomInfo(AbstractModel):
         self.RTCAudienceNumber = None
         self.AudienceType = None
         self.RecordLayout = None
+        self.GroupId = None
 
 
     def _deserialize(self, params):
@@ -2020,6 +3148,7 @@ class RoomInfo(AbstractModel):
         self.RTCAudienceNumber = params.get("RTCAudienceNumber")
         self.AudienceType = params.get("AudienceType")
         self.RecordLayout = params.get("RecordLayout")
+        self.GroupId = params.get("GroupId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

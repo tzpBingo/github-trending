@@ -408,7 +408,7 @@ class LiveClient(AbstractClient):
 
 
     def CreateLiveTimeShiftTemplate(self, request):
-        """创建直播垫片模板。
+        """创建直播时移模板。
 
         :param request: Request instance for CreateLiveTimeShiftTemplate.
         :type request: :class:`tencentcloud.live.v20180801.models.CreateLiveTimeShiftTemplateRequest`
@@ -431,7 +431,7 @@ class LiveClient(AbstractClient):
 
 
     def CreateLiveTranscodeRule(self, request):
-        """创建转码规则，需要先调用[CreateLiveTranscodeTemplate](/document/product/267/32646)接口创建转码模板，将返回的模板id绑定到流使用。
+        """创建转码规则，数量上限：50，需要先调用[CreateLiveTranscodeTemplate](/document/product/267/32646)接口创建转码模板，将返回的模板id绑定到流使用。
         <br>转码相关文档：[直播转封装及转码](/document/product/267/32736)。
 
         :param request: Request instance for CreateLiveTranscodeRule.
@@ -2870,7 +2870,7 @@ class LiveClient(AbstractClient):
 
 
     def ModifyLiveTimeShiftTemplate(self, request):
-        """修改直播垫片模板。
+        """修改直播时移模板。
 
         :param request: Request instance for ModifyLiveTimeShiftTemplate.
         :type request: :class:`tencentcloud.live.v20180801.models.ModifyLiveTimeShiftTemplateRequest`

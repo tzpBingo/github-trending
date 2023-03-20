@@ -1452,6 +1452,29 @@ class CynosdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyVipVport(self, request):
+        """修改实例组ip，端口
+
+        :param request: Request instance for ModifyVipVport.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.ModifyVipVportRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.ModifyVipVportResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyVipVport", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyVipVportResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def OfflineCluster(self, request):
         """下线集群
 
@@ -1742,6 +1765,29 @@ class CynosdbClient(AbstractClient):
             body = self.call("SetRenewFlag", params, headers=headers)
             response = json.loads(body)
             model = models.SetRenewFlagResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def SwitchClusterVpc(self, request):
+        """更换集群vpc
+
+        :param request: Request instance for SwitchClusterVpc.
+        :type request: :class:`tencentcloud.cynosdb.v20190107.models.SwitchClusterVpcRequest`
+        :rtype: :class:`tencentcloud.cynosdb.v20190107.models.SwitchClusterVpcResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("SwitchClusterVpc", params, headers=headers)
+            response = json.loads(body)
+            model = models.SwitchClusterVpcResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

@@ -96,7 +96,9 @@ class TdmqClient(AbstractClient):
 
 
     def CreateAMQPCluster(self, request):
-        """创建AMQP集群
+        """产品下线了，对应的接口也要下线。
+
+        创建AMQP集群
 
         :param request: Request instance for CreateAMQPCluster.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateAMQPClusterRequest`
@@ -119,7 +121,9 @@ class TdmqClient(AbstractClient):
 
 
     def CreateAMQPExchange(self, request):
-        """创建AMQP Exchange
+        """产品下线了，对应的接口也要下线。
+
+        创建AMQP Exchange
 
         :param request: Request instance for CreateAMQPExchange.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateAMQPExchangeRequest`
@@ -142,7 +146,9 @@ class TdmqClient(AbstractClient):
 
 
     def CreateAMQPQueue(self, request):
-        """创建AMQP队列
+        """产品下线了，对应的接口也要下线。
+
+        创建AMQP队列
 
         :param request: Request instance for CreateAMQPQueue.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateAMQPQueueRequest`
@@ -165,7 +171,9 @@ class TdmqClient(AbstractClient):
 
 
     def CreateAMQPRouteRelation(self, request):
-        """创建AMQP路由关系
+        """产品下线了，对应的接口也要下线。
+
+        创建AMQP路由关系
 
         :param request: Request instance for CreateAMQPRouteRelation.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateAMQPRouteRelationRequest`
@@ -188,7 +196,9 @@ class TdmqClient(AbstractClient):
 
 
     def CreateAMQPVHost(self, request):
-        """创建Amqp Vhost
+        """产品下线了，对应的接口也要下线。
+
+        创建Amqp Vhost
 
         :param request: Request instance for CreateAMQPVHost.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateAMQPVHostRequest`
@@ -339,6 +349,29 @@ class TdmqClient(AbstractClient):
             body = self.call("CreateEnvironmentRole", params, headers=headers)
             response = json.loads(body)
             model = models.CreateEnvironmentRoleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateRabbitMQVipInstance(self, request):
+        """创建RabbitMQ专享版实例
+
+        :param request: Request instance for CreateRabbitMQVipInstance.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateRabbitMQVipInstanceRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.CreateRabbitMQVipInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateRabbitMQVipInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateRabbitMQVipInstanceResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -510,7 +543,9 @@ class TdmqClient(AbstractClient):
 
 
     def DeleteAMQPCluster(self, request):
-        """删除AMQP集群
+        """产品下线了，对应的接口也要下线。
+
+        删除AMQP集群
 
         :param request: Request instance for DeleteAMQPCluster.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DeleteAMQPClusterRequest`
@@ -533,7 +568,9 @@ class TdmqClient(AbstractClient):
 
 
     def DeleteAMQPExchange(self, request):
-        """删除Amqp交换机
+        """产品下线了，对应的接口也要下线。
+
+        删除Amqp交换机
 
         :param request: Request instance for DeleteAMQPExchange.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DeleteAMQPExchangeRequest`
@@ -556,7 +593,9 @@ class TdmqClient(AbstractClient):
 
 
     def DeleteAMQPQueue(self, request):
-        """删除Amqp队列
+        """产品下线了，对应的接口也要下线。
+
+        删除Amqp队列
 
         :param request: Request instance for DeleteAMQPQueue.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DeleteAMQPQueueRequest`
@@ -579,7 +618,9 @@ class TdmqClient(AbstractClient):
 
 
     def DeleteAMQPRouteRelation(self, request):
-        """删除Amqp路由关系
+        """产品下线了，对应的接口也要下线。
+
+        删除Amqp路由关系
 
         :param request: Request instance for DeleteAMQPRouteRelation.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DeleteAMQPRouteRelationRequest`
@@ -602,7 +643,9 @@ class TdmqClient(AbstractClient):
 
 
     def DeleteAMQPVHost(self, request):
-        """删除Vhost
+        """产品下线了，对应的接口也要下线。
+
+        删除Vhost
 
         :param request: Request instance for DeleteAMQPVHost.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DeleteAMQPVHostRequest`
@@ -924,7 +967,9 @@ class TdmqClient(AbstractClient):
 
 
     def DescribeAMQPCluster(self, request):
-        """获取单个Amqp集群信息
+        """产品下线了，对应的接口也要下线。
+
+        获取单个Amqp集群信息
 
         :param request: Request instance for DescribeAMQPCluster.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeAMQPClusterRequest`
@@ -970,7 +1015,9 @@ class TdmqClient(AbstractClient):
 
 
     def DescribeAMQPCreateQuota(self, request):
-        """获取用户的配额，如Queue容量，Exchange容量，Vhost容量，单Vhost Tps数,剩余可创建集群数
+        """产品下线了，对应的接口也要下线。
+
+        获取用户的配额，如Queue容量，Exchange容量，Vhost容量，单Vhost Tps数,剩余可创建集群数
 
         :param request: Request instance for DescribeAMQPCreateQuota.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeAMQPCreateQuotaRequest`
@@ -993,7 +1040,9 @@ class TdmqClient(AbstractClient):
 
 
     def DescribeAMQPExchanges(self, request):
-        """获取AMQP Exchange列表
+        """产品下线了，对应的接口也要下线。
+
+        获取AMQP Exchange列表
 
         :param request: Request instance for DescribeAMQPExchanges.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeAMQPExchangesRequest`
@@ -1016,7 +1065,9 @@ class TdmqClient(AbstractClient):
 
 
     def DescribeAMQPQueues(self, request):
-        """获取Amqp队列列表
+        """产品下线了，对应的接口也要下线。
+
+        获取Amqp队列列表
 
         :param request: Request instance for DescribeAMQPQueues.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeAMQPQueuesRequest`
@@ -1039,7 +1090,9 @@ class TdmqClient(AbstractClient):
 
 
     def DescribeAMQPRouteRelations(self, request):
-        """获取Amqp路由关系列表
+        """产品下线了，对应的接口也要下线。
+
+        获取Amqp路由关系列表
 
         :param request: Request instance for DescribeAMQPRouteRelations.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeAMQPRouteRelationsRequest`
@@ -1062,7 +1115,9 @@ class TdmqClient(AbstractClient):
 
 
     def DescribeAMQPVHosts(self, request):
-        """获取Amqp Vhost 列表
+        """产品下线了，对应的接口也要下线。
+
+        获取Amqp Vhost 列表
 
         :param request: Request instance for DescribeAMQPVHosts.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeAMQPVHostsRequest`
@@ -1521,6 +1576,29 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeRabbitMQVipInstance(self, request):
+        """获取单个RabbitMQ专享实例信息
+
+        :param request: Request instance for DescribeRabbitMQVipInstance.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeRabbitMQVipInstanceRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeRabbitMQVipInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRabbitMQVipInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRabbitMQVipInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeRabbitMQVipInstances(self, request):
         """查询用户已购的RabbitMQ专享实例列表
 
@@ -1659,6 +1737,29 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeRocketMQVipInstanceDetail(self, request):
+        """获取单个RocketMQ专享集群信息
+
+        :param request: Request instance for DescribeRocketMQVipInstanceDetail.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQVipInstanceDetailRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQVipInstanceDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRocketMQVipInstanceDetail", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRocketMQVipInstanceDetailResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeRocketMQVipInstances(self, request):
         """查询用户已购的RocketMQ专享实例列表
 
@@ -1775,7 +1876,9 @@ class TdmqClient(AbstractClient):
 
 
     def ModifyAMQPExchange(self, request):
-        """更新Amqp交换机
+        """产品下线了，对应的接口也要下线。
+
+        更新Amqp交换机
 
         :param request: Request instance for ModifyAMQPExchange.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.ModifyAMQPExchangeRequest`
@@ -1798,7 +1901,9 @@ class TdmqClient(AbstractClient):
 
 
     def ModifyAMQPQueue(self, request):
-        """更新Amqp队列
+        """产品下线了，对应的接口也要下线。
+
+        更新Amqp队列
 
         :param request: Request instance for ModifyAMQPQueue.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.ModifyAMQPQueueRequest`
@@ -1821,7 +1926,9 @@ class TdmqClient(AbstractClient):
 
 
     def ModifyAMQPVHost(self, request):
-        """更新Vhost
+        """产品下线了，对应的接口也要下线。
+
+        更新Vhost
 
         :param request: Request instance for ModifyAMQPVHost.
         :type request: :class:`tencentcloud.tdmq.v20200217.models.ModifyAMQPVHostRequest`
@@ -1972,6 +2079,29 @@ class TdmqClient(AbstractClient):
             body = self.call("ModifyEnvironmentRole", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyEnvironmentRoleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyRabbitMQVipInstance(self, request):
+        """修改RabbitMQ专享版实例
+
+        :param request: Request instance for ModifyRabbitMQVipInstance.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.ModifyRabbitMQVipInstanceRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.ModifyRabbitMQVipInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyRabbitMQVipInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyRabbitMQVipInstanceResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

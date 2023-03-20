@@ -1338,7 +1338,7 @@ class DBInstance(AbstractModel):
         :type DBInstanceId: str
         :param DBInstanceName: 实例名称
         :type DBInstanceName: str
-        :param DBInstanceStatus: 实例状态，分别为：applying（申请中）、init(待初始化)、initing(初始化中)、running(运行中)、limited run（受限运行）、isolated（已隔离）、recycling（回收中）、recycled（已回收）、job running（任务执行中）、offline（下线）、migrating（迁移中）、expanding（扩容中）、waitSwitch（等待切换）、switching（切换中）、readonly（只读）、restarting（重启中）、network changing（网络变更中）
+        :param DBInstanceStatus: 实例状态，分别为：applying（申请中）、init(待初始化)、initing(初始化中)、running(运行中)、limited run（受限运行）、isolated（已隔离）、recycling（回收中）、recycled（已回收）、job running（任务执行中）、offline（下线）、migrating（迁移中）、expanding（扩容中）、waitSwitch（等待切换）、switching（切换中）、readonly（只读）、restarting（重启中）、network changing（网络变更中）、upgrading（内核版本升级中）
         :type DBInstanceStatus: str
         :param DBInstanceMemory: 实例分配的内存大小，单位：GB
         :type DBInstanceMemory: int
@@ -6545,7 +6545,11 @@ class ZoneInfo(AbstractModel):
         :type ZoneName: str
         :param ZoneId: 该可用区对应的数字编号
         :type ZoneId: int
-        :param ZoneState: 可用状态，UNAVAILABLE表示不可用，AVAILABLE表示可用，SELLOUT表示售罄
+        :param ZoneState: 可用状态包含，
+UNAVAILABLE：不可用。
+AVAILABLE：可用。
+SELLOUT：售罄。
+SUPPORTMODIFYONLY：支持变配。
         :type ZoneState: str
         :param ZoneSupportIpv6: 该可用区是否支持Ipv6
         :type ZoneSupportIpv6: int

@@ -30,7 +30,7 @@ class LighthouseClient(AbstractClient):
         """本接口（ApplyDiskBackup）用于回滚指定云硬盘的备份点。
         * 仅支持回滚到原云硬盘。
         * 用于回滚的云硬盘备份点必须处于 NORMAL 状态。
-          云硬盘备份点状态可以通过 DescribeDiskBackups 接口查询。
+          云硬盘备份点状态可以通过  [DescribeDiskBackups](https://cloud.tencent.com/document/api/1207/84379) 接口查询。
         * 回滚云硬盘备份点时，云硬盘的状态必须为 UNATTACHED或ATTACHED。
           云硬盘状态可通过 [DescribeDisks](https://cloud.tencent.com/document/api/1207/66093) 接口查询。
         * 如果云硬盘处于 ATTACHED状态，相关RUNNING 状态的实例会强制关机，然后回滚云硬盘备份点。
@@ -329,7 +329,7 @@ class LighthouseClient(AbstractClient):
 
     def DeleteDiskBackups(self, request):
         """本接口（DeleteDiskBackups）用于删除云硬盘备份点。
-        云硬盘备份点必须处于 NORMAL 状态，云硬盘备份点状态可以通过 DescribeDiskBackups接口查询，见输出参数中 DiskBackupState 字段解释。
+        云硬盘备份点必须处于 NORMAL 状态，云硬盘备份点状态可以通过 [DescribeDiskBackups](https://cloud.tencent.com/document/api/1207/84379)接口查询，见输出参数中 DiskBackupState 字段解释。
 
         :param request: Request instance for DeleteDiskBackups.
         :type request: :class:`tencentcloud.lighthouse.v20200324.models.DeleteDiskBackupsRequest`
@@ -1562,7 +1562,6 @@ class LighthouseClient(AbstractClient):
         """本接口（ModifyInstancesAttribute）用于修改实例的属性。
         * “实例名称”仅为方便用户自己管理之用。
         * 支持批量操作。每次请求批量实例的上限为 100。
-        * 本接口为异步接口，请求发送成功后会返回一个 RequestId，此时操作并未立即完成。实例操作结果可以通过调用 DescribeInstances 接口查询，如果实例的最新操作状态（LatestOperationState）为“SUCCESS”，则代表操作成功。
 
         :param request: Request instance for ModifyInstancesAttribute.
         :type request: :class:`tencentcloud.lighthouse.v20200324.models.ModifyInstancesAttributeRequest`
@@ -1639,7 +1638,6 @@ class LighthouseClient(AbstractClient):
 
         * 实例被标识为自动续费后，每次在实例到期时，会自动续费一个月。
         * 支持批量操作。每次请求批量实例的上限为100。
-        * 实例操作结果可以通过调用 DescribeInstances 接口查询，如果实例的最新操作状态(LatestOperationState)为“SUCCESS”，则代表操作成功。
 
         :param request: Request instance for ModifyInstancesRenewFlag.
         :type request: :class:`tencentcloud.lighthouse.v20200324.models.ModifyInstancesRenewFlagRequest`

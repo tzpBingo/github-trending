@@ -2201,8 +2201,10 @@ class KTVRobotInfo(AbstractModel):
 <li>RepeatSingle：单曲循环</li>
 <li>Shuffle：随机播放</li>
         :type SetPlayModeInput: :class:`tencentcloud.ame.v20190916.models.SetPlayModeCommandInput`
-        :param SetVolumeInput: 音量，范围 0~100，默认为 50。
+        :param SetVolumeInput: <del>音量，范围 0~100，默认为 50。</del>（已废弃，请采用 SetRealVolumeInput ）
         :type SetVolumeInput: :class:`tencentcloud.ame.v20190916.models.SetVolumeCommandInput`
+        :param SetRealVolumeInput: 真实音量，范围 0~100，默认为 50。
+        :type SetRealVolumeInput: :class:`tencentcloud.ame.v20190916.models.SetRealVolumeCommandInput`
         """
         self.RobotId = None
         self.Status = None
@@ -2214,6 +2216,7 @@ class KTVRobotInfo(AbstractModel):
         self.RTCSystem = None
         self.SetPlayModeInput = None
         self.SetVolumeInput = None
+        self.SetRealVolumeInput = None
 
 
     def _deserialize(self, params):
@@ -2235,6 +2238,9 @@ class KTVRobotInfo(AbstractModel):
         if params.get("SetVolumeInput") is not None:
             self.SetVolumeInput = SetVolumeCommandInput()
             self.SetVolumeInput._deserialize(params.get("SetVolumeInput"))
+        if params.get("SetRealVolumeInput") is not None:
+            self.SetRealVolumeInput = SetRealVolumeCommandInput()
+            self.SetRealVolumeInput._deserialize(params.get("SetRealVolumeInput"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3189,13 +3195,17 @@ class SetPlaylistCommandInput(AbstractModel):
         :type Index: int
         :param ChangedIndex: 当 Type 取 Move 时，必填，表示移动歌曲的目标位置。
         :type ChangedIndex: int
-        :param MusicIds: 歌曲 ID 列表，当 Type 取 Add 时，必填。
+        :param MusicIds: 歌曲 ID 列表，当 Type 取 Add 时，与MusicURLs必填其中一项。
         :type MusicIds: list of str
+        :param MusicURLs: 歌曲 URL 列表，当 Type 取 Add 时，与MusicIds必填其中一项。
+注：URL必须以.mp3结尾且必须是mp3编码文件。
+        :type MusicURLs: list of str
         """
         self.Type = None
         self.Index = None
         self.ChangedIndex = None
         self.MusicIds = None
+        self.MusicURLs = None
 
 
     def _deserialize(self, params):
@@ -3203,6 +3213,31 @@ class SetPlaylistCommandInput(AbstractModel):
         self.Index = params.get("Index")
         self.ChangedIndex = params.get("ChangedIndex")
         self.MusicIds = params.get("MusicIds")
+        self.MusicURLs = params.get("MusicURLs")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetRealVolumeCommandInput(AbstractModel):
+    """设置真实音量。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RealVolume: 真实音量大小，取值范围为 0~100，默认值为 50。
+        :type RealVolume: int
+        """
+        self.RealVolume = None
+
+
+    def _deserialize(self, params):
+        self.RealVolume = params.get("RealVolume")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3333,7 +3368,8 @@ class SyncKTVRobotCommandRequest(AbstractModel):
 <li>SetAudioParam：音频参数变更</li>
 <li>SendMessage：发送自定义消息</li>
 <li>SetDestroyMode：设置销毁模式</li>
-<li>SetVolume：设置音量</li>
+<li><del>SetVolume：设置音量</del>（已废弃，请采用 SetRealVolume）</li>
+<li>SetRealVolume：设置真实音量</li>
         :type Command: str
         :param PlayCommandInput: 播放参数。
         :type PlayCommandInput: :class:`tencentcloud.ame.v20190916.models.PlayCommandInput`
@@ -3349,8 +3385,11 @@ class SyncKTVRobotCommandRequest(AbstractModel):
         :type SetPlayModeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetPlayModeCommandInput`
         :param SetDestroyModeCommandInput: 销毁模式，当Command取SetDestroyMode时，必填。
         :type SetDestroyModeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetDestroyModeCommandInput`
-        :param SetVolumeCommandInput: 音量，当Command取SetVolume时，必填。
+        :param SetVolumeCommandInput: <del>音量，当Command取SetVolume时，必填。</del>
+（已废弃，请采用 SetRealVolumeCommandInput ）
         :type SetVolumeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetVolumeCommandInput`
+        :param SetRealVolumeCommandInput: 真实音量，当Command取SetRealVolume时，必填。
+        :type SetRealVolumeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetRealVolumeCommandInput`
         """
         self.RobotId = None
         self.Command = None
@@ -3362,6 +3401,7 @@ class SyncKTVRobotCommandRequest(AbstractModel):
         self.SetPlayModeCommandInput = None
         self.SetDestroyModeCommandInput = None
         self.SetVolumeCommandInput = None
+        self.SetRealVolumeCommandInput = None
 
 
     def _deserialize(self, params):
@@ -3391,6 +3431,9 @@ class SyncKTVRobotCommandRequest(AbstractModel):
         if params.get("SetVolumeCommandInput") is not None:
             self.SetVolumeCommandInput = SetVolumeCommandInput()
             self.SetVolumeCommandInput._deserialize(params.get("SetVolumeCommandInput"))
+        if params.get("SetRealVolumeCommandInput") is not None:
+            self.SetRealVolumeCommandInput = SetRealVolumeCommandInput()
+            self.SetRealVolumeCommandInput._deserialize(params.get("SetRealVolumeCommandInput"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3435,7 +3478,8 @@ class SyncRobotCommand(AbstractModel):
 <li>SetAudioParam：音频参数变更</li>
 <li>SendMessage：发送自定义消息</li>
 <li>SetDestroyMode：设置销毁模式</li>
-<li>SetVolume：设置音量</li>
+<li><del>SetVolume：设置音量</del>（已废弃，请采用 SetRealVolume）</li>
+<li>SetRealVolume：设置真实音量</li>
         :type Command: str
         :param PlayCommandInput: 播放参数。
         :type PlayCommandInput: :class:`tencentcloud.ame.v20190916.models.PlayCommandInput`
@@ -3451,8 +3495,11 @@ class SyncRobotCommand(AbstractModel):
         :type SetPlayModeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetPlayModeCommandInput`
         :param SetDestroyModeCommandInput: 销毁模式，当Command取SetDestroyMode时，必填。
         :type SetDestroyModeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetDestroyModeCommandInput`
-        :param SetVolumeCommandInput: 音量，当Command取SetVolume时，必填。
+        :param SetVolumeCommandInput: <del>音量，当Command取SetVolume时，必填。</del>
+（已废弃，请采用 SetRealVolumeCommandInput）
         :type SetVolumeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetVolumeCommandInput`
+        :param SetRealVolumeCommandInput: 真实音量，当Command取SetRealVolume时，必填。
+        :type SetRealVolumeCommandInput: :class:`tencentcloud.ame.v20190916.models.SetRealVolumeCommandInput`
         """
         self.Command = None
         self.PlayCommandInput = None
@@ -3463,6 +3510,7 @@ class SyncRobotCommand(AbstractModel):
         self.SetPlayModeCommandInput = None
         self.SetDestroyModeCommandInput = None
         self.SetVolumeCommandInput = None
+        self.SetRealVolumeCommandInput = None
 
 
     def _deserialize(self, params):
@@ -3491,6 +3539,9 @@ class SyncRobotCommand(AbstractModel):
         if params.get("SetVolumeCommandInput") is not None:
             self.SetVolumeCommandInput = SetVolumeCommandInput()
             self.SetVolumeCommandInput._deserialize(params.get("SetVolumeCommandInput"))
+        if params.get("SetRealVolumeCommandInput") is not None:
+            self.SetRealVolumeCommandInput = SetRealVolumeCommandInput()
+            self.SetRealVolumeCommandInput._deserialize(params.get("SetRealVolumeCommandInput"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3515,11 +3566,20 @@ class TRTCJoinRoomInput(AbstractModel):
         :type SdkAppId: str
         :param UserId: 用户唯一标识。
         :type UserId: str
+        :param PrivateMapKey: 进房钥匙，若需要权限控制请携带该参数。
+ [privateMapKey 权限设置](/document/product/647/32240) 
+        :type PrivateMapKey: str
+        :param Role: 用户角色，目前支持两种角色：
+<li>anchor：主播</li>
+<li>audience：观众</li>
+        :type Role: str
         """
         self.Sign = None
         self.RoomId = None
         self.SdkAppId = None
         self.UserId = None
+        self.PrivateMapKey = None
+        self.Role = None
 
 
     def _deserialize(self, params):
@@ -3527,6 +3587,8 @@ class TRTCJoinRoomInput(AbstractModel):
         self.RoomId = params.get("RoomId")
         self.SdkAppId = params.get("SdkAppId")
         self.UserId = params.get("UserId")
+        self.PrivateMapKey = params.get("PrivateMapKey")
+        self.Role = params.get("Role")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

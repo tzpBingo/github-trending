@@ -2118,7 +2118,7 @@ class CreateInstancePreRequest(AbstractModel):
         :param Period: 预付费购买时长，例如 "1m",就是一个月
         :type Period: str
         :param InstanceType: 实例规格说明 专业版实例[所有规格]填写1.
-标准版实例 ([入门型]填写1，[标准型]填写2，[进阶型]填写3，[容量型]填写4，[高阶型1]填写5，[高阶性2]填写6,[高阶型3]填写7,[高阶型4]填写8，[独占型]填写9。
+标准版实例 ([入门型(general)]填写1，[标准型(standard)]填写2，[进阶型(advanced)]填写3，[容量型(capacity)]填写4，[高阶型1(specialized-1)]填写5，[高阶性2(specialized-2)]填写6,[高阶型3(specialized-3)]填写7,[高阶型4(specialized-4)]填写8，[独占型(exclusive)]填写9。
         :type InstanceType: int
         :param VpcId: vpcId，不填默认基础网络
         :type VpcId: str
@@ -3059,6 +3059,54 @@ class DatahubTaskInfo(AbstractModel):
         self.TaskCurrentStep = params.get("TaskCurrentStep")
         self.DatahubId = params.get("DatahubId")
         self.StepList = params.get("StepList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DatahubTopicDTO(AbstractModel):
+    """Datahub主题
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        :param TopicName: Topic名称
+        :type TopicName: str
+        :param TopicId: Topic Id
+        :type TopicId: str
+        :param PartitionNum: 分区数
+        :type PartitionNum: int
+        :param RetentionMs: 过期时间
+        :type RetentionMs: int
+        :param Note: 备注
+        :type Note: str
+        :param Status: 状态，1使用中，2删除中
+        :type Status: int
+        """
+        self.Name = None
+        self.TopicName = None
+        self.TopicId = None
+        self.PartitionNum = None
+        self.RetentionMs = None
+        self.Note = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.TopicName = params.get("TopicName")
+        self.TopicId = params.get("TopicId")
+        self.PartitionNum = params.get("PartitionNum")
+        self.RetentionMs = params.get("RetentionMs")
+        self.Note = params.get("Note")
+        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4717,6 +4765,205 @@ class DescribeDatahubTasksResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeDatahubTopicRequest(AbstractModel):
+    """DescribeDatahubTopic请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        """
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDatahubTopicResp(AbstractModel):
+    """Datahub Topic详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        :param TopicName: Topic名称
+        :type TopicName: str
+        :param TopicId: Topic Id
+        :type TopicId: str
+        :param PartitionNum: 分区数
+        :type PartitionNum: int
+        :param RetentionMs: 过期时间
+        :type RetentionMs: int
+        :param Note: 备注
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Note: str
+        :param UserName: 用户名
+        :type UserName: str
+        :param Password: 密码
+        :type Password: str
+        :param Status: 状态，1使用中，2删除中
+        :type Status: int
+        :param Address: 服务路由地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Address: str
+        """
+        self.Name = None
+        self.TopicName = None
+        self.TopicId = None
+        self.PartitionNum = None
+        self.RetentionMs = None
+        self.Note = None
+        self.UserName = None
+        self.Password = None
+        self.Status = None
+        self.Address = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.TopicName = params.get("TopicName")
+        self.TopicId = params.get("TopicId")
+        self.PartitionNum = params.get("PartitionNum")
+        self.RetentionMs = params.get("RetentionMs")
+        self.Note = params.get("Note")
+        self.UserName = params.get("UserName")
+        self.Password = params.get("Password")
+        self.Status = params.get("Status")
+        self.Address = params.get("Address")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDatahubTopicResponse(AbstractModel):
+    """DescribeDatahubTopic返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回的结果对象
+        :type Result: :class:`tencentcloud.ckafka.v20190819.models.DescribeDatahubTopicResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = DescribeDatahubTopicResp()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeDatahubTopicsRequest(AbstractModel):
+    """DescribeDatahubTopics请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SearchWord: 查询值
+        :type SearchWord: str
+        :param Offset: 本次查询的偏移位置，默认为0
+        :type Offset: int
+        :param Limit: 本次返回结果的最大个数，默认为50，最大值为50
+        :type Limit: int
+        """
+        self.SearchWord = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SearchWord = params.get("SearchWord")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDatahubTopicsResp(AbstractModel):
+    """Datahub主题列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总数
+        :type TotalCount: int
+        :param TopicList: Topic列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicList: list of DatahubTopicDTO
+        """
+        self.TotalCount = None
+        self.TopicList = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("TopicList") is not None:
+            self.TopicList = []
+            for item in params.get("TopicList"):
+                obj = DatahubTopicDTO()
+                obj._deserialize(item)
+                self.TopicList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDatahubTopicsResponse(AbstractModel):
+    """DescribeDatahubTopics返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 主题列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.ckafka.v20190819.models.DescribeDatahubTopicsResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = DescribeDatahubTopicsResp()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeGroup(AbstractModel):
     """DescribeGroup返回实体
 
@@ -4998,6 +5245,8 @@ class DescribeInstancesDetailRequest(AbstractModel):
         :type InstanceIds: str
         :param InstanceIdList: 按照实例ID过滤
         :type InstanceIdList: list of str
+        :param TagList: 根据标签列表过滤实例（取交集）
+        :type TagList: list of Tag
         """
         self.InstanceId = None
         self.SearchWord = None
@@ -5008,6 +5257,7 @@ class DescribeInstancesDetailRequest(AbstractModel):
         self.Filters = None
         self.InstanceIds = None
         self.InstanceIdList = None
+        self.TagList = None
 
 
     def _deserialize(self, params):
@@ -5025,6 +5275,12 @@ class DescribeInstancesDetailRequest(AbstractModel):
                 self.Filters.append(obj)
         self.InstanceIds = params.get("InstanceIds")
         self.InstanceIdList = params.get("InstanceIdList")
+        if params.get("TagList") is not None:
+            self.TagList = []
+            for item in params.get("TagList"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.TagList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8218,6 +8474,12 @@ class KafkaParam(AbstractModel):
         
 
 
+class LowercaseParam(AbstractModel):
+    """小写字符解析
+
+    """
+
+
 class MapParam(AbstractModel):
     """Map参数
 
@@ -10761,6 +11023,9 @@ class TopicAttributesResponse(AbstractModel):
         :param QuotaConfig: topic 限流策略
 注意：此字段可能返回 null，表示取不到有效值。
         :type QuotaConfig: :class:`tencentcloud.ckafka.v20190819.models.InstanceQuotaConfigResp`
+        :param ReplicaNum: 副本数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReplicaNum: int
         """
         self.TopicId = None
         self.CreateTime = None
@@ -10773,6 +11038,7 @@ class TopicAttributesResponse(AbstractModel):
         self.EnableAclRule = None
         self.AclRuleList = None
         self.QuotaConfig = None
+        self.ReplicaNum = None
 
 
     def _deserialize(self, params):
@@ -10801,6 +11067,7 @@ class TopicAttributesResponse(AbstractModel):
         if params.get("QuotaConfig") is not None:
             self.QuotaConfig = InstanceQuotaConfigResp()
             self.QuotaConfig._deserialize(params.get("QuotaConfig"))
+        self.ReplicaNum = params.get("ReplicaNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10850,6 +11117,9 @@ class TopicDetail(AbstractModel):
         :param Status: 0:正常，1：已删除，2：删除中
 注意：此字段可能返回 null，表示取不到有效值。
         :type Status: int
+        :param Tags: 标签列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         """
         self.TopicName = None
         self.TopicId = None
@@ -10865,6 +11135,7 @@ class TopicDetail(AbstractModel):
         self.Config = None
         self.RetentionTimeConfig = None
         self.Status = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -10886,6 +11157,12 @@ class TopicDetail(AbstractModel):
             self.RetentionTimeConfig = TopicRetentionTimeConfigRsp()
             self.RetentionTimeConfig._deserialize(params.get("RetentionTimeConfig"))
         self.Status = params.get("Status")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11520,6 +11797,9 @@ class ValueParam(AbstractModel):
         :param UrlDecode: Url解析
 注意：此字段可能返回 null，表示取不到有效值。
         :type UrlDecode: :class:`tencentcloud.ckafka.v20190819.models.UrlDecodeParam`
+        :param Lowercase: 小写字符解析
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Lowercase: :class:`tencentcloud.ckafka.v20190819.models.LowercaseParam`
         """
         self.Type = None
         self.Replace = None
@@ -11531,6 +11811,7 @@ class ValueParam(AbstractModel):
         self.Result = None
         self.JsonPathReplace = None
         self.UrlDecode = None
+        self.Lowercase = None
 
 
     def _deserialize(self, params):
@@ -11560,6 +11841,9 @@ class ValueParam(AbstractModel):
         if params.get("UrlDecode") is not None:
             self.UrlDecode = UrlDecodeParam()
             self.UrlDecode._deserialize(params.get("UrlDecode"))
+        if params.get("Lowercase") is not None:
+            self.Lowercase = LowercaseParam()
+            self.Lowercase._deserialize(params.get("Lowercase"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

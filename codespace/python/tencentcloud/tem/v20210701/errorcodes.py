@@ -38,6 +38,9 @@ FAILEDOPERATION_DESCRIBESERVICEERROR = 'FailedOperation.DescribeServiceError'
 # 查询service列表失败。
 FAILEDOPERATION_DESCRIBESERVICELISTERROR = 'FailedOperation.DescribeServiceListError'
 
+# 更新 ingress 失败。
+FAILEDOPERATION_UPDATEINGRESSERROR = 'FailedOperation.UpdateIngressError'
+
 # 请求响应超时。
 INTERNALERROR_ACTIONREADTIMEOUT = 'InternalError.ActionReadTimeout'
 
@@ -322,6 +325,9 @@ MISSINGPARAMETER_DEPLOYVERSIONNULL = 'MissingParameter.DeployVersionNull'
 
 # 环境名称不能为空。
 MISSINGPARAMETER_ENVIRONMENTNAMENULL = 'MissingParameter.EnvironmentNameNull'
+
+# 镜像仓库不能为空。
+MISSINGPARAMETER_IMGREPONULL = 'MissingParameter.ImgRepoNull'
 
 # logset 和 topic 不能为空。
 MISSINGPARAMETER_LOGSETORTOPICNULL = 'MissingParameter.LogsetOrTopicNull'

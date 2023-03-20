@@ -86,6 +86,9 @@ INVALIDNETWORKINTERFACEID_NOTFOUND = 'InvalidNetworkInterfaceId.NotFound'
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
+# ACL ID与ACL类型不匹配。
+INVALIDPARAMETER_ACLTYPEMISMATCH = 'InvalidParameter.AclTypeMismatch'
+
 # 参数不支持同时指定。
 INVALIDPARAMETER_COEXIST = 'InvalidParameter.Coexist'
 
@@ -254,6 +257,18 @@ INVALIDPARAMETERVALUE_LIMITEXCEEDED = 'InvalidParameterValue.LimitExceeded'
 # 入参格式不合法。
 INVALIDPARAMETERVALUE_MALFORMED = 'InvalidParameterValue.Malformed'
 
+# 指定审批单号和资源不匹配。
+INVALIDPARAMETERVALUE_MEMBERAPPROVALAPPLICATIONIDMISMATCH = 'InvalidParameterValue.MemberApprovalApplicationIdMismatch'
+
+# 流程服务审批单未审批。
+INVALIDPARAMETERVALUE_MEMBERAPPROVALAPPLICATIONNOTAPPROVED = 'InvalidParameterValue.MemberApprovalApplicationNotApproved'
+
+# 流程服务审批单被拒绝。
+INVALIDPARAMETERVALUE_MEMBERAPPROVALAPPLICATIONREJECTED = 'InvalidParameterValue.MemberApprovalApplicationRejected'
+
+# 该请求需要走BPAAS流程服务审批，当前发起审批中。
+INVALIDPARAMETERVALUE_MEMBERAPPROVALAPPLICATIONSTARTED = 'InvalidParameterValue.MemberApprovalApplicationStarted'
+
 # 缺少绑定的实例。
 INVALIDPARAMETERVALUE_MISSINGASSOCIATEENTITY = 'InvalidParameterValue.MissingAssociateEntity'
 
@@ -268,6 +283,9 @@ INVALIDPARAMETERVALUE_NATGATEWAYDNATRULENOTEXISTS = 'InvalidParameterValue.NatGa
 
 # DNAT转换规则的内网IP需为虚拟机上网卡所用的IP。
 INVALIDPARAMETERVALUE_NATGATEWAYDNATRULEPIPNEEDVM = 'InvalidParameterValue.NatGatewayDnatRulePipNeedVm'
+
+# 新增NAT网关的DNAT转换规则已重复。
+INVALIDPARAMETERVALUE_NATGATEWAYDNATRULEREPEATED = 'InvalidParameterValue.NatGatewayDnatRuleRepeated'
 
 # NAT网关的SNAT转换规则不存在。
 INVALIDPARAMETERVALUE_NATGATEWAYSNATRULENOTEXISTS = 'InvalidParameterValue.NatGatewaySnatRuleNotExists'
@@ -319,6 +337,9 @@ INVALIDPARAMETERVALUE_RESOURCENOTFOUND = 'InvalidParameterValue.ResourceNotFound
 
 # 该资源不支持此操作。
 INVALIDPARAMETERVALUE_RESOURCENOTSUPPORT = 'InvalidParameterValue.ResourceNotSupport'
+
+# SSL-VPN-SERVER 云端网段和SSL-VPN-SERVER 客户端网段重叠。
+INVALIDPARAMETERVALUE_SSLCCNVPNSERVERCIDRCONFLICT = 'InvalidParameterValue.SslCcnVpnServerCidrConflict'
 
 # 子网CIDR冲突。
 INVALIDPARAMETERVALUE_SUBNETCONFLICT = 'InvalidParameterValue.SubnetConflict'
@@ -560,6 +581,9 @@ UNKNOWNPARAMETER_WITHGUESS = 'UnknownParameter.WithGuess'
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
+# 不支持的账户。
+UNSUPPORTEDOPERATION_ACCOUNTNOTSUPPORTED = 'UnsupportedOperation.AccountNotSupported'
+
 # 接口不存在。
 UNSUPPORTEDOPERATION_ACTIONNOTFOUND = 'UnsupportedOperation.ActionNotFound'
 
@@ -583,6 +607,9 @@ UNSUPPORTEDOPERATION_APPIDMISMATCH = 'UnsupportedOperation.AppIdMismatch'
 
 # APPId不存在。
 UNSUPPORTEDOPERATION_APPIDNOTFOUND = 'UnsupportedOperation.AppIdNotFound'
+
+# CCN关联的其他vpc已经存在nat的路由
+UNSUPPORTEDOPERATION_ASSOCIATEDVPCOFCCNHADNATROUTE = 'UnsupportedOperation.AssociatedVpcOfCcnHadNatRoute'
 
 # 绑定关系已存在。
 UNSUPPORTEDOPERATION_ATTACHMENTALREADYEXISTS = 'UnsupportedOperation.AttachmentAlreadyExists'
@@ -626,6 +653,9 @@ UNSUPPORTEDOPERATION_CDCSUBNETNOTSUPPORTUNLOCALGATEWAY = 'UnsupportedOperation.C
 # 实例已经和VPC绑定。
 UNSUPPORTEDOPERATION_CLASSICINSTANCEIDALREADYEXISTS = 'UnsupportedOperation.ClassicInstanceIdAlreadyExists'
 
+# 负载均衡的安全组规则已达到上限。
+UNSUPPORTEDOPERATION_CLBPOLICYEXCEEDLIMIT = 'UnsupportedOperation.ClbPolicyExceedLimit'
+
 # 公网Clb不支持该规则。
 UNSUPPORTEDOPERATION_CLBPOLICYLIMIT = 'UnsupportedOperation.ClbPolicyLimit'
 
@@ -658,6 +688,9 @@ UNSUPPORTEDOPERATION_DIRECTCONNECTGATEWAYISUPDATINGCOMMUNITY = 'UnsupportedOpera
 
 # 指定的路由策略已发布至云联网，请先撤销。
 UNSUPPORTEDOPERATION_DISABLEDNOTIFYCCN = 'UnsupportedOperation.DisabledNotifyCcn'
+
+# 创建DPDK NAT流日志时，采集类型只支持全部。
+UNSUPPORTEDOPERATION_DPDKNATFLOWLOGONLYSUPPORTALLTRAFFICTYPE = 'UnsupportedOperation.DpdkNatFlowLogOnlySupportAllTrafficType'
 
 # 安全组规则重复。
 UNSUPPORTEDOPERATION_DUPLICATEPOLICY = 'UnsupportedOperation.DuplicatePolicy'
@@ -730,6 +763,9 @@ UNSUPPORTEDOPERATION_ISPNOTSUPPORTED = 'UnsupportedOperation.IspNotSupported'
 
 # 指定的CDC已存在本地网关。
 UNSUPPORTEDOPERATION_LOCALGATEWAYALREADYEXISTS = 'UnsupportedOperation.LocalGatewayAlreadyExists'
+
+# 资源被锁定。
+UNSUPPORTEDOPERATION_LOCKEDRESOURCES = 'UnsupportedOperation.LockedResources'
 
 # 账户不支持修改公网IP的该属性。
 UNSUPPORTEDOPERATION_MODIFYADDRESSATTRIBUTE = 'UnsupportedOperation.ModifyAddressAttribute'
@@ -910,6 +946,9 @@ UNSUPPORTEDOPERATION_VERSIONMISMATCH = 'UnsupportedOperation.VersionMismatch'
 
 # 资源不属于同一个VPC。
 UNSUPPORTEDOPERATION_VPCMISMATCH = 'UnsupportedOperation.VpcMismatch'
+
+# 当前通道为非可用状态，不支持该操作。
+UNSUPPORTEDOPERATION_VPNCONNINVALIDSTATE = 'UnsupportedOperation.VpnConnInvalidState'
 
 # VPC类型VPN网关必须携带VpcId。
 UNSUPPORTEDOPERATION_VPNGWVPCIDMUSTHAVE = 'UnsupportedOperation.VpnGwVpcIdMustHave'

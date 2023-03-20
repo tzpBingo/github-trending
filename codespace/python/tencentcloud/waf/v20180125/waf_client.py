@@ -326,6 +326,29 @@ class WafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeAttackOverview(self, request):
+        """攻击总览
+
+        :param request: Request instance for DescribeAttackOverview.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribeAttackOverviewRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribeAttackOverviewResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAttackOverview", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAttackOverviewResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeAutoDenyIP(self, request):
         """描述WAF自动封禁IP详情,对齐自动封堵状态
 
@@ -340,6 +363,29 @@ class WafClient(AbstractClient):
             body = self.call("DescribeAutoDenyIP", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeAutoDenyIPResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeCustomWhiteRule(self, request):
+        """获取防护配置中的精准白名单策略列表
+
+        :param request: Request instance for DescribeCustomWhiteRule.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribeCustomWhiteRuleRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribeCustomWhiteRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCustomWhiteRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCustomWhiteRuleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -501,6 +547,52 @@ class WafClient(AbstractClient):
             body = self.call("DescribeIpHitItems", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeIpHitItemsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribePolicyStatus(self, request):
+        """获取防护状态以及生效的实例id
+
+        :param request: Request instance for DescribePolicyStatus.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribePolicyStatusRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribePolicyStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribePolicyStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribePolicyStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeRuleLimit(self, request):
+        """获取各个模块具体的规格限制
+
+        :param request: Request instance for DescribeRuleLimit.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribeRuleLimitRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribeRuleLimitResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRuleLimit", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRuleLimitResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

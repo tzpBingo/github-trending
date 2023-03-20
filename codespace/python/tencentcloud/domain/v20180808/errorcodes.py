@@ -44,8 +44,14 @@ FAILEDOPERATION_DOMAINPRICELISTFAILED = 'FailedOperation.DomainPriceListFailed'
 # 当前账号下已有相同的手机/邮箱，无需重复添加。
 FAILEDOPERATION_DUPLICATEPHONEEMAIL = 'FailedOperation.DuplicatePhoneEmail'
 
+# 获取域名价格失败。
+FAILEDOPERATION_GETDOMAINPRICEFAILED = 'FailedOperation.GetDomainPriceFailed'
+
 # 域名过户失败。
 FAILEDOPERATION_MODIFYDOMAINOWNERFAILED = 'FailedOperation.ModifyDomainOwnerFailed'
+
+# 禁止的手机或邮箱。
+FAILEDOPERATION_PROHIBITPHONEEMAIL = 'FailedOperation.ProhibitPhoneEmail'
 
 # 域名注册操作失败，请稍后重试。
 FAILEDOPERATION_REGISTERDOMAIN = 'FailedOperation.RegisterDomain'

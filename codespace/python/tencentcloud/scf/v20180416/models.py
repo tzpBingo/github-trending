@@ -2242,11 +2242,7 @@ class GetLayerVersionResponse(AbstractModel):
         :type LayerVersion: int
         :param LayerName: 层名称
         :type LayerName: str
-        :param Status: 层的具体版本当前状态，可能取值：
-Active 正常
-Publishing  发布中
-PublishFailed  发布失败
-Deleted 已删除
+        :param Status: 层的具体版本当前状态，状态值[参考此处](https://cloud.tencent.com/document/product/583/47175#.E5.B1.82.EF.BC.88layer.EF.BC.89.E7.8A.B6.E6.80.81)
         :type Status: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -4507,6 +4503,9 @@ class TriggerCount(AbstractModel):
         :type Cm: int
         :param Vod: Vod触发器数量
         :type Vod: int
+        :param Eb: Eb触发器数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Eb: int
         """
         self.Cos = None
         self.Timer = None
@@ -4519,6 +4518,7 @@ class TriggerCount(AbstractModel):
         self.Mps = None
         self.Cm = None
         self.Vod = None
+        self.Eb = None
 
 
     def _deserialize(self, params):
@@ -4533,6 +4533,7 @@ class TriggerCount(AbstractModel):
         self.Mps = params.get("Mps")
         self.Cm = params.get("Cm")
         self.Vod = params.get("Vod")
+        self.Eb = params.get("Eb")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

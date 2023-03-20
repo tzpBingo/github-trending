@@ -102,6 +102,7 @@ class OcrClient(AbstractClient):
     def BankSlipOCR(self, request):
         """本接口支持银行回单全字段的识别，包括付款开户行、收款开户行、付款账号、收款账号、回单类型、回单编号、币种、流水号、凭证号码、交易机构、交易金额、手续费、日期等字段信息。
 
+        默认接口请求频率限制：10次/秒。
 
         :param request: Request instance for BankSlipOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.BankSlipOCRRequest`
@@ -150,6 +151,8 @@ class OcrClient(AbstractClient):
 
     def BusInvoiceOCR(self, request):
         """本接口支持识别公路汽车客票的发票代码、发票号码、日期、姓名、票价等字段。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for BusInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.BusInvoiceOCRRequest`
@@ -240,6 +243,31 @@ class OcrClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateAIFormTask(self, request):
+        """本接口可创建智能表单录入任务，支持多个识别图片和PDF的URL上传，返回含有识别内容的操作页面URL。
+
+        智能表单录入产品提供高准确率的表单识别技术和人工核对工具，支持自定义字段，将识别结果自动填入到自定义条目中，并提供人工操作工具，完成整个表单识别过程。适用性强，可对票据、合同、货单等文件的识别，适用于金融、货代、保险、档案等领域。本产品免费公测中，您可以点击demo（超连接：https://ocr.smartform.cloud.tencent.com/）试用，如需购买请与商务团队联系。
+
+        :param request: Request instance for CreateAIFormTask.
+        :type request: :class:`tencentcloud.ocr.v20181119.models.CreateAIFormTaskRequest`
+        :rtype: :class:`tencentcloud.ocr.v20181119.models.CreateAIFormTaskResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateAIFormTask", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateAIFormTaskResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DriverLicenseOCR(self, request):
         """本接口支持驾驶证主页和副页所有字段的自动定位与识别，重点字段的识别准确度达到99%以上。
 
@@ -275,6 +303,8 @@ class OcrClient(AbstractClient):
 
     def DutyPaidProofOCR(self, request):
         """本接口支持对完税证明的税号、纳税人识别号、纳税人名称、金额合计大写、金额合计小写、填发日期、税务机关、填票人等关键字段的识别。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for DutyPaidProofOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.DutyPaidProofOCRRequest`
@@ -440,6 +470,8 @@ class OcrClient(AbstractClient):
 
     def FlightInvoiceOCR(self, request):
         """本接口支持机票行程单关键字段的识别，包括旅客姓名、有效身份证件号码、电子客票号码、验证码、填开单位、其他税费、燃油附加费、民航发展基金、保险费、销售单位代号、始发地、目的地、航班号、时间、日期、座位等级、承运人、发票消费类型、票价、合计金额、填开日期、国内国际标签、印刷序号、客票级别/类别、客票生效日期、有效期截止日期、免费行李等字段，支持航班信息多行明细输出。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for FlightInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.FlightInvoiceOCRRequest`
@@ -789,6 +821,29 @@ class OcrClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def GetTaskState(self, request):
+        """支持查询智能表单录入任务的状态。本产品免费公测中，您可以点击demo（超连接：https://ocr.smartform.cloud.tencent.com/）试用，如需购买请与商务团队联系。
+
+        :param request: Request instance for GetTaskState.
+        :type request: :class:`tencentcloud.ocr.v20181119.models.GetTaskStateRequest`
+        :rtype: :class:`tencentcloud.ocr.v20181119.models.GetTaskStateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("GetTaskState", params, headers=headers)
+            response = json.loads(body)
+            model = models.GetTaskStateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def HKIDCardOCR(self, request):
         """本接口支持中国香港身份证人像面中关键字段的识别，包括中文姓名、英文姓名、姓名电码、出生日期、性别、证件符号、首次签发日期、最近领用日期、身份证号、是否是永久性居民身份证；具备防伪识别、人像照片裁剪等扩展功能。
 
@@ -978,6 +1033,8 @@ class OcrClient(AbstractClient):
 
     def InvoiceGeneralOCR(self, request):
         """本接口支持对通用机打发票的发票代码、发票号码、日期、购买方识别号、销售方识别号、校验码、小写金额等关键字段的识别。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for InvoiceGeneralOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.InvoiceGeneralOCRRequest`
@@ -1288,6 +1345,8 @@ class OcrClient(AbstractClient):
     def QuotaInvoiceOCR(self, request):
         """本接口支持定额发票的发票号码、发票代码、金额(大小写)、发票消费类型、地区及是否有公司印章等关键字段的识别。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for QuotaInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.QuotaInvoiceOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.QuotaInvoiceOCRResponse`
@@ -1382,6 +1441,8 @@ class OcrClient(AbstractClient):
     def RecognizeMedicalInvoiceOCR(self, request):
         """医疗发票识别目前支持全国统一门诊发票、全国统一住院发票、以及部分地方的门诊和住院发票的识别。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for RecognizeMedicalInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeMedicalInvoiceOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.RecognizeMedicalInvoiceOCRResponse`
@@ -1462,6 +1523,29 @@ class OcrClient(AbstractClient):
             body = self.call("RecognizePhilippinesVoteIDOCR", params, headers=headers)
             response = json.loads(body)
             model = models.RecognizePhilippinesVoteIDOCRResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RecognizeTableAccurateOCR(self, request):
+        """本接口支持中英文图片/PDF内常规表格、无线表格、多表格的检测和识别，返回每个单元格的文字内容，支持旋转的表格图片识别，且支持将识别结果保存为 Excel 格式。识别效果比表格识别V2更好，覆盖场景更加广泛，对表格难例场景，如无线表格、嵌套表格（有线表格中包含无线表格）的识别效果均优于表格识别V2。
+
+        :param request: Request instance for RecognizeTableAccurateOCR.
+        :type request: :class:`tencentcloud.ocr.v20181119.models.RecognizeTableAccurateOCRRequest`
+        :rtype: :class:`tencentcloud.ocr.v20181119.models.RecognizeTableAccurateOCRResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RecognizeTableAccurateOCR", params, headers=headers)
+            response = json.loads(body)
+            model = models.RecognizeTableAccurateOCRResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1641,6 +1725,8 @@ class OcrClient(AbstractClient):
     def ShipInvoiceOCR(self, request):
         """本接口支持识别轮船票的发票代码、发票号码、日期、姓名、票价、始发地、目的地、姓名、时间、发票消费类型、省、市、币种字段。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for ShipInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.ShipInvoiceOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.ShipInvoiceOCRResponse`
@@ -1715,6 +1801,8 @@ class OcrClient(AbstractClient):
     def TaxiInvoiceOCR(self, request):
         """本接口支持出租车发票关键字段的识别，包括发票号码、发票代码、金额、日期、上下车时间、里程、车牌号、发票类型及所属地区等字段。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for TaxiInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.TaxiInvoiceOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.TaxiInvoiceOCRResponse`
@@ -1761,6 +1849,8 @@ class OcrClient(AbstractClient):
     def TollInvoiceOCR(self, request):
         """本接口支持对过路过桥费发票的发票代码、发票号码、日期、小写金额等关键字段的识别。
 
+        默认接口请求频率限制：5次/秒。
+
         :param request: Request instance for TollInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.TollInvoiceOCRRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.TollInvoiceOCRResponse`
@@ -1783,6 +1873,8 @@ class OcrClient(AbstractClient):
 
     def TrainTicketOCR(self, request):
         """本接口支持火车票全字段的识别，包括编号、票价、姓名、座位号、出发时间、出发站、到达站、车次、席别、发票类型及序列号等。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for TrainTicketOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.TrainTicketOCRRequest`
@@ -1832,6 +1924,8 @@ class OcrClient(AbstractClient):
     def VatInvoiceVerify(self, request):
         """本接口支持增值税发票的准确性核验，您可以通过输入增值税发票的关键字段提供所需的验证信息，接口返回真实的票面相关信息，包括发票代码、发票号码、开票日期、金额、消费类型、购方名称、购方税号、销方名称、销方税号等多个常用字段。支持多种发票类型核验，包括增值税专用发票、增值税普通发票（含电子普通发票、卷式发票、通行费发票）、全电发票、机动车销售统一发票、货物运输业增值税专用发票、二手车销售统一发票。
 
+        默认接口请求频率限制：20次/秒。
+
         :param request: Request instance for VatInvoiceVerify.
         :type request: :class:`tencentcloud.ocr.v20181119.models.VatInvoiceVerifyRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.VatInvoiceVerifyResponse`
@@ -1855,6 +1949,8 @@ class OcrClient(AbstractClient):
     def VatInvoiceVerifyNew(self, request):
         """本接口支持增值税发票的准确性核验，您可以通过输入增值税发票的关键字段提供所需的验证信息，接口返回真实的票面相关信息，包括发票代码、发票号码、开票日期、金额、消费类型、购方名称、购方税号、销方名称、销方税号等多个常用字段。支持多种发票类型核验，包括增值税专用发票、增值税普通发票（含电子普通发票、卷式发票、通行费发票）、全电发票、机动车销售统一发票、货物运输业增值税专用发票、二手车销售统一发票、通用机打电子发票（广东和浙江）。
 
+        默认接口请求频率限制：20次/秒。
+
         :param request: Request instance for VatInvoiceVerifyNew.
         :type request: :class:`tencentcloud.ocr.v20181119.models.VatInvoiceVerifyNewRequest`
         :rtype: :class:`tencentcloud.ocr.v20181119.models.VatInvoiceVerifyNewResponse`
@@ -1877,6 +1973,8 @@ class OcrClient(AbstractClient):
 
     def VatRollInvoiceOCR(self, request):
         """本接口支持对增值税发票（卷票）的发票代码、发票号码、日期、校验码、合计金额（小写）等关键字段的识别。
+
+        默认接口请求频率限制：5次/秒。
 
         :param request: Request instance for VatRollInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.VatRollInvoiceOCRRequest`

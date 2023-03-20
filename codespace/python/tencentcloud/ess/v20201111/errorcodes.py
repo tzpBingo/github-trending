@@ -77,6 +77,12 @@ INTERNALERROR_API = 'InternalError.Api'
 # 缓存错误。
 INTERNALERROR_CACHE = 'InternalError.Cache'
 
+# 调用OpenCloud云api内部错误。
+INTERNALERROR_CALLOPENCLOUDAPIERROR = 'InternalError.CallOpenCloudApiError'
+
+# 回调错误。
+INTERNALERROR_CALLBACK = 'InternalError.Callback'
+
 # 数据库异常。
 INTERNALERROR_DB = 'InternalError.Db'
 
@@ -274,6 +280,9 @@ INVALIDPARAMETER_RESOURCETYPE = 'InvalidParameter.ResourceType'
 
 # 不合法的印章id，请检查印章id是够正确，并在修改后重试。
 INVALIDPARAMETER_SEALID = 'InvalidParameter.SealId'
+
+# 参数包含有敏感词
+INVALIDPARAMETER_SENSITIVE = 'InvalidParameter.Sensitive'
 
 # 签署控件参数不合法，请检查后重试。
 INVALIDPARAMETER_SIGNCOMPONENTS = 'InvalidParameter.SignComponents'

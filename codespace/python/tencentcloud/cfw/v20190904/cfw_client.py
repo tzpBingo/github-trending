@@ -72,6 +72,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def AddNatAcRule(self, request):
+        """添加nat访问控制规则
+
+        :param request: Request instance for AddNatAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.AddNatAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.AddNatAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AddNatAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.AddNatAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateAcRules(self, request):
         """创建访问控制规则
 
@@ -417,6 +440,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeBlockIgnoreList(self, request):
+        """查询入侵防御放通封禁列表
+
+        :param request: Request instance for DescribeBlockIgnoreList.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeBlockIgnoreListRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeBlockIgnoreListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBlockIgnoreList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBlockIgnoreListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeBlockStaticList(self, request):
         """DescribeBlockStaticList 告警中心柱形图
 
@@ -546,6 +592,29 @@ class CfwClient(AbstractClient):
             body = self.call("DescribeIPStatusList", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeIPStatusListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeNatAcRule(self, request):
+        """查询NAT访问控制列表
+
+        :param request: Request instance for DescribeNatAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeNatAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeNatAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNatAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNatAcRuleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1087,6 +1156,75 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyEnterpriseSecurityDispatchStatus(self, request):
+        """修改企业安全组下发状态
+
+        :param request: Request instance for ModifyEnterpriseSecurityDispatchStatus.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyEnterpriseSecurityDispatchStatusRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyEnterpriseSecurityDispatchStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyEnterpriseSecurityDispatchStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyEnterpriseSecurityDispatchStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyEnterpriseSecurityGroupRule(self, request):
+        """编辑新企业安全组规则
+
+        :param request: Request instance for ModifyEnterpriseSecurityGroupRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyEnterpriseSecurityGroupRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyEnterpriseSecurityGroupRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyEnterpriseSecurityGroupRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyEnterpriseSecurityGroupRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyNatAcRule(self, request):
+        """修改NAT访问控制规则
+
+        :param request: Request instance for ModifyNatAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyNatAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyNatAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyNatAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyNatAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyNatFwReSelect(self, request):
         """防火墙实例重新选择vpc或nat
 
@@ -1147,6 +1285,29 @@ class CfwClient(AbstractClient):
             body = self.call("ModifyNatFwVpcDnsSwitch", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyNatFwVpcDnsSwitchResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyNatSequenceRules(self, request):
+        """NAT防火墙规则快速排序
+
+        :param request: Request instance for ModifyNatSequenceRules.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyNatSequenceRulesRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyNatSequenceRulesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyNatSequenceRules", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyNatSequenceRulesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1318,6 +1479,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyStorageSetting(self, request):
+        """日志存储设置，可以修改存储时间和清空日志
+
+        :param request: Request instance for ModifyStorageSetting.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyStorageSettingRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyStorageSettingResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyStorageSetting", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyStorageSettingResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyTableStatus(self, request):
         """修改规则表状态
 
@@ -1378,6 +1562,29 @@ class CfwClient(AbstractClient):
             body = self.call("RemoveEnterpriseSecurityGroupRule", params, headers=headers)
             response = json.loads(body)
             model = models.RemoveEnterpriseSecurityGroupRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RemoveNatAcRule(self, request):
+        """删除NAT访问控制规则
+
+        :param request: Request instance for RemoveNatAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.RemoveNatAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.RemoveNatAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RemoveNatAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.RemoveNatAcRuleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

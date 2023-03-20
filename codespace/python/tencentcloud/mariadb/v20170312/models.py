@@ -553,7 +553,7 @@ class CreateDBInstanceRequest(AbstractModel):
         :type SubnetId: str
         :param ProjectId: 项目 ID，可以通过查看项目列表获取，不传则关联到默认项目
         :type ProjectId: int
-        :param DbVersionId: 数据库引擎版本，当前可选：8.0.18，10.1.9，5.7.17。如果不传的话，默认为 Percona 5.7.17。
+        :param DbVersionId: 数据库引擎版本，当前可选：8.0，5.7，10.1，10.0。
         :type DbVersionId: str
         :param InstanceName: 实例名称， 可以通过该字段自主的设置实例的名字
         :type InstanceName: str
@@ -839,8 +839,7 @@ class CreateHourDBInstanceRequest(AbstractModel):
         :type VpcId: str
         :param SubnetId: 统一子网ID，VpcId有值时需填写
         :type SubnetId: str
-        :param DbVersionId: 数据库引擎版本，当前可选：10.0.10，10.1.9，5.7.17。
-如果不填的话，默认为10.1.9，表示Mariadb 10.1.9。
+        :param DbVersionId: 数据库引擎版本，当前可选：8.0，5.7，10.1，10.0。
         :type DbVersionId: str
         :param InstanceName: 自定义实例名称
         :type InstanceName: str
@@ -1917,6 +1916,88 @@ class DescribeAccountsResponse(AbstractModel):
                 obj = DBAccount()
                 obj._deserialize(item)
                 self.Users.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBackupFilesRequest(AbstractModel):
+    """DescribeBackupFiles请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 按实例ID查询
+        :type InstanceId: str
+        :param BackupType: 备份类型，Data:数据备份，Binlog:Binlog备份，Errlog:错误日志，Slowlog:慢日志
+        :type BackupType: str
+        :param StartTime: 按开始时间查询
+        :type StartTime: str
+        :param EndTime: 按结束时间查询
+        :type EndTime: str
+        :param Limit: 分页参数
+        :type Limit: int
+        :param Offset: 分页参数
+        :type Offset: int
+        :param OrderBy: 排序参数，可选值：Time,Size
+        :type OrderBy: str
+        :param OrderType: 排序参数, 可选值：DESC,ASC
+        :type OrderType: str
+        """
+        self.InstanceId = None
+        self.BackupType = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Limit = None
+        self.Offset = None
+        self.OrderBy = None
+        self.OrderType = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.BackupType = params.get("BackupType")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.OrderBy = params.get("OrderBy")
+        self.OrderType = params.get("OrderType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBackupFilesResponse(AbstractModel):
+    """DescribeBackupFiles返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Files: 备份文件列表
+        :type Files: list of InstanceBackupFileItem
+        :param TotalCount: 总条目数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Files = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Files") is not None:
+            self.Files = []
+            for item in params.get("Files"):
+                obj = InstanceBackupFileItem()
+                obj._deserialize(item)
+                self.Files.append(obj)
+        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -3665,6 +3746,71 @@ class InitDBInstancesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class InstanceBackupFileItem(AbstractModel):
+    """实例备份文件信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param InstanceName: 实例名称
+        :type InstanceName: str
+        :param InstanceStatus: 实例状态
+        :type InstanceStatus: int
+        :param ShardId: 分片ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ShardId: str
+        :param FilePath: 文件路径
+        :type FilePath: str
+        :param FileName: 文件名
+        :type FileName: str
+        :param FileSize: 文件大小
+        :type FileSize: int
+        :param BackupType: 备份类型，Data:数据备份，Binlog:Binlog备份，Errlog:错误日志，Slowlog:慢日志
+        :type BackupType: str
+        :param ManualBackup: 手动备份，0:否，1:是
+        :type ManualBackup: int
+        :param StartTime: 备份开始时间
+        :type StartTime: str
+        :param EndTime: 备份结束时间
+        :type EndTime: str
+        """
+        self.InstanceId = None
+        self.InstanceName = None
+        self.InstanceStatus = None
+        self.ShardId = None
+        self.FilePath = None
+        self.FileName = None
+        self.FileSize = None
+        self.BackupType = None
+        self.ManualBackup = None
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.InstanceName = params.get("InstanceName")
+        self.InstanceStatus = params.get("InstanceStatus")
+        self.ShardId = params.get("ShardId")
+        self.FilePath = params.get("FilePath")
+        self.FileName = params.get("FileName")
+        self.FileSize = params.get("FileSize")
+        self.BackupType = params.get("BackupType")
+        self.ManualBackup = params.get("ManualBackup")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class InstanceSpec(AbstractModel):
     """按机型归类的实例可售卖规格信息
 
@@ -4144,6 +4290,51 @@ class ModifyBackupTimeResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Status = params.get("Status")
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyDBEncryptAttributesRequest(AbstractModel):
+    """ModifyDBEncryptAttributes请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例Id，形如：tdsql-ow728lmc。
+        :type InstanceId: str
+        :param EncryptEnabled: 是否启用数据加密，开启后暂不支持关闭。本接口的可选值为：1-开启数据加密。
+        :type EncryptEnabled: int
+        """
+        self.InstanceId = None
+        self.EncryptEnabled = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.EncryptEnabled = params.get("EncryptEnabled")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyDBEncryptAttributesResponse(AbstractModel):
+    """ModifyDBEncryptAttributes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 

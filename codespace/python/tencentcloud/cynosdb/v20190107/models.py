@@ -241,11 +241,11 @@ class AddInstancesRequest(AbstractModel):
         :type Memory: int
         :param ReadOnlyCount: 新增只读实例数，取值范围为[0,4]
         :type ReadOnlyCount: int
-        :param InstanceGrpId: 实例组ID，在已有RO组中新增实例时使用，不传则新增RO组。当前版本不建议传输该值。
+        :param InstanceGrpId: 实例组ID，在已有RO组中新增实例时使用，不传则新增RO组。当前版本不建议传输该值。当前版本已废弃。
         :type InstanceGrpId: str
-        :param VpcId: 所属VPC网络ID，该参数已废弃
+        :param VpcId: 所属VPC网络ID。
         :type VpcId: str
-        :param SubnetId: 所属子网ID，如果设置了VpcId，则SubnetId必填。该参数已废弃。
+        :param SubnetId: 所属子网ID，如果设置了VpcId，则SubnetId必填。
         :type SubnetId: str
         :param Port: 新增RO组时使用的Port，取值范围为[0,65535)
         :type Port: int
@@ -264,6 +264,8 @@ class AddInstancesRequest(AbstractModel):
         :type ParamTemplateId: int
         :param InstanceParams: 参数列表，ParamTemplateId 传入时InstanceParams才有效
         :type InstanceParams: list of ModifyParamItem
+        :param SecurityGroupIds: 安全组ID，新建只读实例时可以指定安全组。
+        :type SecurityGroupIds: list of str
         """
         self.ClusterId = None
         self.Cpu = None
@@ -280,6 +282,7 @@ class AddInstancesRequest(AbstractModel):
         self.DealMode = None
         self.ParamTemplateId = None
         self.InstanceParams = None
+        self.SecurityGroupIds = None
 
 
     def _deserialize(self, params):
@@ -303,6 +306,7 @@ class AddInstancesRequest(AbstractModel):
                 obj = ModifyParamItem()
                 obj._deserialize(item)
                 self.InstanceParams.append(obj)
+        self.SecurityGroupIds = params.get("SecurityGroupIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2108,6 +2112,15 @@ pause
         :param ResourceTags: 资源标签
 注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceTags: list of Tag
+        :param MasterZone: 主可用区
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MasterZone: str
+        :param SlaveZones: 备可用区
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SlaveZones: list of str
+        :param InstanceNetInfo: 实例网络信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceNetInfo: list of InstanceNetInfo
         """
         self.Uin = None
         self.AppId = None
@@ -2156,6 +2169,9 @@ pause
         self.Tasks = None
         self.IsFreeze = None
         self.ResourceTags = None
+        self.MasterZone = None
+        self.SlaveZones = None
+        self.InstanceNetInfo = None
 
 
     def _deserialize(self, params):
@@ -2216,6 +2232,14 @@ pause
                 obj = Tag()
                 obj._deserialize(item)
                 self.ResourceTags.append(obj)
+        self.MasterZone = params.get("MasterZone")
+        self.SlaveZones = params.get("SlaveZones")
+        if params.get("InstanceNetInfo") is not None:
+            self.InstanceNetInfo = []
+            for item in params.get("InstanceNetInfo"):
+                obj = InstanceNetInfo()
+                obj._deserialize(item)
+                self.InstanceNetInfo.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5134,6 +5158,81 @@ class InstanceInitInfo(AbstractModel):
         
 
 
+class InstanceNetInfo(AbstractModel):
+    """实例网络信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceGroupType: 网络类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceGroupType: str
+        :param InstanceGroupId: 接入组ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceGroupId: str
+        :param VpcId: 私有网络ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param SubnetId: 子网ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        :param NetType: 网络类型, 0-基础网络, 1-vpc网络, 2-黑石网络
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NetType: int
+        :param Vip: 私有网络IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Vip: str
+        :param Vport: 私有网络端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Vport: int
+        :param WanDomain: 外网域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WanDomain: str
+        :param WanIP: 外网Ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WanIP: str
+        :param WanPort: 外网端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WanPort: int
+        :param WanStatus: 外网开启状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WanStatus: str
+        """
+        self.InstanceGroupType = None
+        self.InstanceGroupId = None
+        self.VpcId = None
+        self.SubnetId = None
+        self.NetType = None
+        self.Vip = None
+        self.Vport = None
+        self.WanDomain = None
+        self.WanIP = None
+        self.WanPort = None
+        self.WanStatus = None
+
+
+    def _deserialize(self, params):
+        self.InstanceGroupType = params.get("InstanceGroupType")
+        self.InstanceGroupId = params.get("InstanceGroupId")
+        self.VpcId = params.get("VpcId")
+        self.SubnetId = params.get("SubnetId")
+        self.NetType = params.get("NetType")
+        self.Vip = params.get("Vip")
+        self.Vport = params.get("Vport")
+        self.WanDomain = params.get("WanDomain")
+        self.WanIP = params.get("WanIP")
+        self.WanPort = params.get("WanPort")
+        self.WanStatus = params.get("WanStatus")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class InstanceSpec(AbstractModel):
     """实例可售卖规格详细信息，创建实例时Cpu/Memory确定实例规格，存储可选大小为[MinStorageSize,MaxStorageSize]
 
@@ -5509,30 +5608,30 @@ class ModifyBackupConfigRequest(AbstractModel):
         r"""
         :param ClusterId: 集群ID
         :type ClusterId: str
+        :param ReserveDuration: 表示保留备份时长, 单位秒，超过该时间将被清理, 七天表示为3600*24*7=604800，最大为158112000
+        :type ReserveDuration: int
         :param BackupTimeBeg: 表示全备开始时间，[0-24*3600]， 如0:00, 1:00, 2:00 分别为 0，3600， 7200
         :type BackupTimeBeg: int
         :param BackupTimeEnd: 表示全备结束时间，[0-24*3600]， 如0:00, 1:00, 2:00 分别为 0，3600， 7200
         :type BackupTimeEnd: int
-        :param ReserveDuration: 表示保留备份时长, 单位秒，超过该时间将被清理, 七天表示为3600*24*7=604800，最大为158112000
-        :type ReserveDuration: int
         :param BackupFreq: 该参数目前不支持修改，无需填写。备份频率，长度为7的数组，分别对应周一到周日的备份方式，full-全量备份，increment-增量备份
         :type BackupFreq: list of str
         :param BackupType: 该参数目前不支持修改，无需填写。备份方式，logic-逻辑备份，snapshot-快照备份
         :type BackupType: str
         """
         self.ClusterId = None
+        self.ReserveDuration = None
         self.BackupTimeBeg = None
         self.BackupTimeEnd = None
-        self.ReserveDuration = None
         self.BackupFreq = None
         self.BackupType = None
 
 
     def _deserialize(self, params):
         self.ClusterId = params.get("ClusterId")
+        self.ReserveDuration = params.get("ReserveDuration")
         self.BackupTimeBeg = params.get("BackupTimeBeg")
         self.BackupTimeEnd = params.get("BackupTimeEnd")
-        self.ReserveDuration = params.get("ReserveDuration")
         self.BackupFreq = params.get("BackupFreq")
         self.BackupType = params.get("BackupType")
         memeber_set = set(params.keys())
@@ -6012,6 +6111,72 @@ class ModifyParamItem(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class ModifyVipVportRequest(AbstractModel):
+    """ModifyVipVport请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群id
+        :type ClusterId: str
+        :param InstanceGrpId: 实例组id
+        :type InstanceGrpId: str
+        :param Vip: 需要修改的目的ip
+        :type Vip: str
+        :param Vport: 需要修改的目的端口
+        :type Vport: int
+        :param DbType: 数据库类型，取值范围: 
+<li> MYSQL </li>
+        :type DbType: str
+        :param OldIpReserveHours: 旧ip回收前的保留时间，单位小时，0表示立即回收
+        :type OldIpReserveHours: int
+        """
+        self.ClusterId = None
+        self.InstanceGrpId = None
+        self.Vip = None
+        self.Vport = None
+        self.DbType = None
+        self.OldIpReserveHours = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.InstanceGrpId = params.get("InstanceGrpId")
+        self.Vip = params.get("Vip")
+        self.Vport = params.get("Vport")
+        self.DbType = params.get("DbType")
+        self.OldIpReserveHours = params.get("OldIpReserveHours")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyVipVportResponse(AbstractModel):
+    """ModifyVipVport返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 异步任务id
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
 
 
 class Module(AbstractModel):
@@ -7584,6 +7749,63 @@ class SlowQueriesItem(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class SwitchClusterVpcRequest(AbstractModel):
+    """SwitchClusterVpc请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param UniqVpcId: 字符串vpc id
+        :type UniqVpcId: str
+        :param UniqSubnetId: 字符串子网id
+        :type UniqSubnetId: str
+        :param OldIpReserveHours: 旧地址回收时间
+        :type OldIpReserveHours: int
+        """
+        self.ClusterId = None
+        self.UniqVpcId = None
+        self.UniqSubnetId = None
+        self.OldIpReserveHours = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.UniqVpcId = params.get("UniqVpcId")
+        self.UniqSubnetId = params.get("UniqSubnetId")
+        self.OldIpReserveHours = params.get("OldIpReserveHours")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SwitchClusterVpcResponse(AbstractModel):
+    """SwitchClusterVpc返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 异步任务id。
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
 
 
 class SwitchClusterZoneRequest(AbstractModel):

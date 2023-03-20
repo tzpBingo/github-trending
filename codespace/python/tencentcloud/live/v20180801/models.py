@@ -2038,7 +2038,7 @@ class CreateLiveTranscodeRuleRequest(AbstractModel):
         r"""
         :param DomainName: 播放域名。
         :type DomainName: str
-        :param AppName: 推流路径，与推流和播放地址中的AppName保持一致。如果只绑定域名，则此处填空。
+        :param AppName: 推流路径，与推流和播放地址中的AppName保持一致。如果只绑定域名，则此处填""。
         :type AppName: str
         :param StreamName: 流名称。如果只绑定域名或路径，则此处填空。
         :type StreamName: str
@@ -6226,23 +6226,29 @@ class DescribeLogDownloadListRequest(AbstractModel):
         r"""
         :param StartTime: 开始时间，北京时间。
 格式：yyyy-mm-dd HH:MM:SS。
+注：此字段为北京时间（UTC+8时区）。
         :type StartTime: str
         :param EndTime: 结束时间，北京时间。
 格式：yyyy-mm-dd HH:MM:SS。
 注意：结束时间 - 开始时间 <=7天。
+注：此字段为北京时间（UTC+8时区）。
         :type EndTime: str
         :param PlayDomains: 域名列表。
         :type PlayDomains: list of str
+        :param IsFastLive: 快直播还是标准直播，0：标准直播，1：快直播。默认为0。
+        :type IsFastLive: int
         """
         self.StartTime = None
         self.EndTime = None
         self.PlayDomains = None
+        self.IsFastLive = None
 
 
     def _deserialize(self, params):
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
         self.PlayDomains = params.get("PlayDomains")
+        self.IsFastLive = params.get("IsFastLive")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11348,6 +11354,7 @@ UTC 格式时间，例如：2019-01-07T15:00:00Z。
         :param Duration: 推流持续时长，单位：秒。
         :type Duration: int
         :param ClientIp: 主播 IP。
+当客户端为内网推流时，展示为: - 。
         :type ClientIp: str
         :param Resolution: 分辨率。
         :type Resolution: str
