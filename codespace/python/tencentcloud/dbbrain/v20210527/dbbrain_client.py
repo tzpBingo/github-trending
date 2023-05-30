@@ -72,6 +72,29 @@ class DbbrainClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateAuditLogFile(self, request):
+        """用于创建云数据库实例的审计日志文件，最多下载600w审计日志。
+
+        :param request: Request instance for CreateAuditLogFile.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.CreateAuditLogFileRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.CreateAuditLogFileResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateAuditLogFile", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateAuditLogFileResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateDBDiagReportTask(self, request):
         """创建健康报告，并可以选择是否发送邮件。
 
@@ -256,6 +279,52 @@ class DbbrainClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteAuditLogFile(self, request):
+        """用于删除云数据库实例的审计日志文件。
+
+        :param request: Request instance for DeleteAuditLogFile.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DeleteAuditLogFileRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DeleteAuditLogFileResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteAuditLogFile", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteAuditLogFileResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteDBDiagReportTasks(self, request):
+        """根据任务id删除健康报告生成任务
+
+        :param request: Request instance for DeleteDBDiagReportTasks.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DeleteDBDiagReportTasksRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DeleteDBDiagReportTasksResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteDBDiagReportTasks", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteDBDiagReportTasksResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteSecurityAuditLogExportTasks(self, request):
         """删除安全审计日志导出任务。
 
@@ -339,6 +408,29 @@ class DbbrainClient(AbstractClient):
             body = self.call("DescribeAllUserGroup", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeAllUserGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeAuditLogFiles(self, request):
+        """用于创建云数据库实例的审计日志文件
+
+        :param request: Request instance for DescribeAuditLogFiles.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeAuditLogFilesRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeAuditLogFilesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAuditLogFiles", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAuditLogFilesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -776,6 +868,29 @@ class DbbrainClient(AbstractClient):
             body = self.call("DescribeSlowLogUserHostStats", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeSlowLogUserHostStatsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeSlowLogs(self, request):
+        """获取指定时间内某个sql模板的慢日志明细
+
+        :param request: Request instance for DescribeSlowLogs.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSlowLogsRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeSlowLogsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSlowLogs", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSlowLogsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

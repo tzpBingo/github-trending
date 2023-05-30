@@ -71,6 +71,112 @@ class AddUserContactResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class AuditLogFile(AbstractModel):
+    """审计日志文件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AsyncRequestId: 审计日志文件生成异步任务ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AsyncRequestId: int
+        :param FileName: 审计日志文件名称。
+        :type FileName: str
+        :param CreateTime: 审计日志文件创建时间。格式为 : "2019-03-20 17:09:13"。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param Status: 文件状态值。可能返回的值为：
+"creating" - 生成中;
+"failed" - 创建失败;
+"success" - 已生成;
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param FileSize: 文件大小，单位为 KB。
+        :type FileSize: float
+        :param DownloadUrl: 审计日志下载地址。
+        :type DownloadUrl: str
+        :param ErrMsg: 错误信息。
+        :type ErrMsg: str
+        :param Progress: 文件生成进度。
+        :type Progress: float
+        :param FinishTime: 文件生成成功时间。
+        :type FinishTime: str
+        """
+        self.AsyncRequestId = None
+        self.FileName = None
+        self.CreateTime = None
+        self.Status = None
+        self.FileSize = None
+        self.DownloadUrl = None
+        self.ErrMsg = None
+        self.Progress = None
+        self.FinishTime = None
+
+
+    def _deserialize(self, params):
+        self.AsyncRequestId = params.get("AsyncRequestId")
+        self.FileName = params.get("FileName")
+        self.CreateTime = params.get("CreateTime")
+        self.Status = params.get("Status")
+        self.FileSize = params.get("FileSize")
+        self.DownloadUrl = params.get("DownloadUrl")
+        self.ErrMsg = params.get("ErrMsg")
+        self.Progress = params.get("Progress")
+        self.FinishTime = params.get("FinishTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AuditLogFilter(AbstractModel):
+    """过滤条件。可按设置的过滤条件过滤日志。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Host: 客户端地址。
+        :type Host: list of str
+        :param DBName: 数据库名称。
+        :type DBName: list of str
+        :param User: 用户名。
+        :type User: list of str
+        :param SentRows: 返回行数。表示筛选返回行数大于该值的审计日志。
+        :type SentRows: int
+        :param AffectRows: 影响行数。表示筛选影响行数大于该值的审计日志。
+        :type AffectRows: int
+        :param ExecTime: 执行时间。单位为：µs。表示筛选执行时间大于该值的审计日志。
+        :type ExecTime: int
+        """
+        self.Host = None
+        self.DBName = None
+        self.User = None
+        self.SentRows = None
+        self.AffectRows = None
+        self.ExecTime = None
+
+
+    def _deserialize(self, params):
+        self.Host = params.get("Host")
+        self.DBName = params.get("DBName")
+        self.User = params.get("User")
+        self.SentRows = params.get("SentRows")
+        self.AffectRows = params.get("AffectRows")
+        self.ExecTime = params.get("ExecTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CancelKillTaskRequest(AbstractModel):
     """CancelKillTask请求参数结构体
 
@@ -150,6 +256,73 @@ class ContactItem(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class CreateAuditLogFileRequest(AbstractModel):
+    """CreateAuditLogFile请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Product: 服务产品类型，支持值包括： "dcdb" - 云数据库 Tdsql， "mariadb" - 云数据库 MariaDB for MariaDB。
+        :type Product: str
+        :param NodeRequestType: 与Product保持一致。如："dcdb" ,"mariadb"
+        :type NodeRequestType: str
+        :param InstanceId: 实例 ID 。
+        :type InstanceId: str
+        :param StartTime: 开始时间，如“2019-09-10 12:13:14”。	
+        :type StartTime: str
+        :param EndTime: 截止时间，如“2019-09-11 10:13:14”。
+        :type EndTime: str
+        :param Filter: 过滤条件。可按设置的过滤条件过滤日志。
+        :type Filter: :class:`tencentcloud.dbbrain.v20210527.models.AuditLogFilter`
+        """
+        self.Product = None
+        self.NodeRequestType = None
+        self.InstanceId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Filter = None
+
+
+    def _deserialize(self, params):
+        self.Product = params.get("Product")
+        self.NodeRequestType = params.get("NodeRequestType")
+        self.InstanceId = params.get("InstanceId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        if params.get("Filter") is not None:
+            self.Filter = AuditLogFilter()
+            self.Filter._deserialize(params.get("Filter"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateAuditLogFileResponse(AbstractModel):
+    """CreateAuditLogFile返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AsyncRequestId: 审计日志文件下载的任务ID
+        :type AsyncRequestId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.AsyncRequestId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.AsyncRequestId = params.get("AsyncRequestId")
+        self.RequestId = params.get("RequestId")
 
 
 class CreateDBDiagReportTaskRequest(AbstractModel):
@@ -657,6 +830,112 @@ class CreateSqlFilterResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteAuditLogFileRequest(AbstractModel):
+    """DeleteAuditLogFile请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Product: 服务产品类型，支持值包括： "dcdb" - 云数据库 Tdsql， "mariadb" - 云数据库 MariaDB for MariaDB。
+        :type Product: str
+        :param NodeRequestType: 与Product保持一致。如："dcdb" ,"mariadb"	
+        :type NodeRequestType: str
+        :param InstanceId: 实例 ID 。
+        :type InstanceId: str
+        :param AsyncRequestId: 审计日志文件生成异步任务ID。
+        :type AsyncRequestId: int
+        """
+        self.Product = None
+        self.NodeRequestType = None
+        self.InstanceId = None
+        self.AsyncRequestId = None
+
+
+    def _deserialize(self, params):
+        self.Product = params.get("Product")
+        self.NodeRequestType = params.get("NodeRequestType")
+        self.InstanceId = params.get("InstanceId")
+        self.AsyncRequestId = params.get("AsyncRequestId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteAuditLogFileResponse(AbstractModel):
+    """DeleteAuditLogFile返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteDBDiagReportTasksRequest(AbstractModel):
+    """DeleteDBDiagReportTasks请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AsyncRequestIds: 需要删除的任务id列表
+        :type AsyncRequestIds: list of int
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param Product: 服务产品类型，支持值："mysql" - 云数据库 MySQL；"cynosdb" - 云数据库 TDSQL-C for MySQL，默认为"mysql"。
+        :type Product: str
+        """
+        self.AsyncRequestIds = None
+        self.InstanceId = None
+        self.Product = None
+
+
+    def _deserialize(self, params):
+        self.AsyncRequestIds = params.get("AsyncRequestIds")
+        self.InstanceId = params.get("InstanceId")
+        self.Product = params.get("Product")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteDBDiagReportTasksResponse(AbstractModel):
+    """DeleteDBDiagReportTasks返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: 任务删除状态, 0-删除成功
+        :type Status: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Status = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteSecurityAuditLogExportTasksRequest(AbstractModel):
     """DeleteSecurityAuditLogExportTasks请求参数结构体
 
@@ -719,16 +998,20 @@ class DeleteSqlFiltersRequest(AbstractModel):
         :type SessionToken: str
         :param FilterIds: 限流任务ID列表。
         :type FilterIds: list of int
+        :param Product: 服务产品类型，支持值："mysql" - 云数据库 MySQL；"cynosdb" - 云数据库 TDSQL-C for MySQL，默认为"mysql"。
+        :type Product: str
         """
         self.InstanceId = None
         self.SessionToken = None
         self.FilterIds = None
+        self.Product = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.SessionToken = params.get("SessionToken")
         self.FilterIds = params.get("FilterIds")
+        self.Product = params.get("Product")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -870,6 +1153,78 @@ class DescribeAllUserGroupResponse(AbstractModel):
                 obj = GroupItem()
                 obj._deserialize(item)
                 self.Groups.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAuditLogFilesRequest(AbstractModel):
+    """DescribeAuditLogFiles请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Product: 服务产品类型，支持值包括： "dcdb" - 云数据库 Tdsql， "mariadb" - 云数据库 MariaDB for MariaDB。
+        :type Product: str
+        :param NodeRequestType: 与Product保持一致。如："dcdb" ,"mariadb"
+        :type NodeRequestType: str
+        :param InstanceId: 实例 ID 。
+        :type InstanceId: str
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 查询数目，默认为20，最大为100。
+        :type Limit: int
+        """
+        self.Product = None
+        self.NodeRequestType = None
+        self.InstanceId = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.Product = params.get("Product")
+        self.NodeRequestType = params.get("NodeRequestType")
+        self.InstanceId = params.get("InstanceId")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAuditLogFilesResponse(AbstractModel):
+    """DescribeAuditLogFiles返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 符合条件的审计日志文件个数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param Items: 审计日志文件详情。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Items: list of AuditLogFile
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Items = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Items") is not None:
+            self.Items = []
+            for item in params.get("Items"):
+                obj = AuditLogFile()
+                obj._deserialize(item)
+                self.Items.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -2264,6 +2619,104 @@ class DescribeSlowLogUserHostStatsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeSlowLogsRequest(AbstractModel):
+    """DescribeSlowLogs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Product: 服务产品类型，支持值包括： "mysql" - 云数据库 MySQL， "cynosdb" - 云数据库 CynosDB for MySQL，默认为"mysql"。
+        :type Product: str
+        :param InstanceId: 实例id。
+        :type InstanceId: str
+        :param Md5: sql模板的md5值
+        :type Md5: str
+        :param StartTime: 开始时间，如“2019-09-10 12:13:14”。
+        :type StartTime: str
+        :param EndTime: 截止时间，如“2019-09-11 10:13:14”，截止时间与开始时间的间隔小于7天。
+        :type EndTime: str
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 查询数目，默认为20，最大为100。
+        :type Limit: int
+        :param DB: 数据库列表
+        :type DB: list of str
+        :param Key: 关键字
+        :type Key: list of str
+        :param User: 用户
+        :type User: list of str
+        :param Ip: IP
+        :type Ip: list of str
+        :param Time: 耗时区间,耗时区间的左右边界分别对应数组的第0个元素和第一个元素
+        :type Time: list of int
+        """
+        self.Product = None
+        self.InstanceId = None
+        self.Md5 = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Offset = None
+        self.Limit = None
+        self.DB = None
+        self.Key = None
+        self.User = None
+        self.Ip = None
+        self.Time = None
+
+
+    def _deserialize(self, params):
+        self.Product = params.get("Product")
+        self.InstanceId = params.get("InstanceId")
+        self.Md5 = params.get("Md5")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        self.DB = params.get("DB")
+        self.Key = params.get("Key")
+        self.User = params.get("User")
+        self.Ip = params.get("Ip")
+        self.Time = params.get("Time")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSlowLogsResponse(AbstractModel):
+    """DescribeSlowLogs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 符合条件的记录总数。
+        :type TotalCount: int
+        :param Rows: 慢日志明细
+        :type Rows: list of SlowLogInfoItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Rows = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Rows") is not None:
+            self.Rows = []
+            for item in params.get("Rows"):
+                obj = SlowLogInfoItem()
+                obj._deserialize(item)
+                self.Rows.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeSqlFiltersRequest(AbstractModel):
     """DescribeSqlFilters请求参数结构体
 
@@ -2281,12 +2734,15 @@ class DescribeSqlFiltersRequest(AbstractModel):
         :type Offset: int
         :param Limit: 返回数量，默认为20，最大值为100。
         :type Limit: int
+        :param Product: 服务产品类型，支持值："mysql" - 云数据库 MySQL；"cynosdb" - 云数据库 TDSQL-C for MySQL，默认为"mysql"。
+        :type Product: str
         """
         self.InstanceId = None
         self.FilterIds = None
         self.Statuses = None
         self.Offset = None
         self.Limit = None
+        self.Product = None
 
 
     def _deserialize(self, params):
@@ -2295,6 +2751,7 @@ class DescribeSqlFiltersRequest(AbstractModel):
         self.Statuses = params.get("Statuses")
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
+        self.Product = params.get("Product")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3103,14 +3560,19 @@ class InstanceConfs(AbstractModel):
         :type DailyInspection: str
         :param OverviewDisplay: 实例概览开关，Yes/No。
         :type OverviewDisplay: str
+        :param KeyDelimiters: redis大key分析的自定义分割符，仅redis使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KeyDelimiters: list of str
         """
         self.DailyInspection = None
         self.OverviewDisplay = None
+        self.KeyDelimiters = None
 
 
     def _deserialize(self, params):
         self.DailyInspection = params.get("DailyInspection")
         self.OverviewDisplay = params.get("OverviewDisplay")
+        self.KeyDelimiters = params.get("KeyDelimiters")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3183,6 +3645,14 @@ class InstanceInfo(AbstractModel):
         :type AuditPolicyStatus: str
         :param AuditRunningStatus: 实例审计日志运行状态：normal： 运行中； paused： 欠费暂停。
         :type AuditRunningStatus: str
+        :param InternalVip: 内网vip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InternalVip: str
+        :param InternalVport: 内网port
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InternalVport: int
+        :param CreateTime: 创建时间
+        :type CreateTime: str
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -3212,6 +3682,9 @@ class InstanceInfo(AbstractModel):
         self.SecAuditStatus = None
         self.AuditPolicyStatus = None
         self.AuditRunningStatus = None
+        self.InternalVip = None
+        self.InternalVport = None
+        self.CreateTime = None
 
 
     def _deserialize(self, params):
@@ -3245,6 +3718,9 @@ class InstanceInfo(AbstractModel):
         self.SecAuditStatus = params.get("SecAuditStatus")
         self.AuditPolicyStatus = params.get("AuditPolicyStatus")
         self.AuditRunningStatus = params.get("AuditRunningStatus")
+        self.InternalVip = params.get("InternalVip")
+        self.InternalVport = params.get("InternalVport")
+        self.CreateTime = params.get("CreateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3308,12 +3784,15 @@ class KillMySqlThreadsRequest(AbstractModel):
         :type SqlExecId: str
         :param Product: 服务产品类型，支持值包括： "mysql" - 云数据库 MySQL， "cynosdb" - 云数据库 CynosDB  for MySQL，默认为"mysql"。
         :type Product: str
+        :param RecordHistory: 默认是ture, 记录下kill的记录，为了加快kill，可设置为false。
+        :type RecordHistory: bool
         """
         self.InstanceId = None
         self.Stage = None
         self.Threads = None
         self.SqlExecId = None
         self.Product = None
+        self.RecordHistory = None
 
 
     def _deserialize(self, params):
@@ -3322,6 +3801,7 @@ class KillMySqlThreadsRequest(AbstractModel):
         self.Threads = params.get("Threads")
         self.SqlExecId = params.get("SqlExecId")
         self.Product = params.get("Product")
+        self.RecordHistory = params.get("RecordHistory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4226,6 +4706,67 @@ class SlowLogHost(AbstractModel):
         self.UserHost = params.get("UserHost")
         self.Ratio = params.get("Ratio")
         self.Count = params.get("Count")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SlowLogInfoItem(AbstractModel):
+    """慢日志详细信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Timestamp: 慢日志开始时间
+        :type Timestamp: str
+        :param SqlText: sql语句
+        :type SqlText: str
+        :param Database: 数据库
+        :type Database: str
+        :param UserName: User来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserName: str
+        :param UserHost: IP来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserHost: str
+        :param QueryTime: 执行时间,单位秒
+        :type QueryTime: int
+        :param LockTime: 锁时间,单位秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LockTime: int
+        :param RowsExamined: 扫描行数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RowsExamined: int
+        :param RowsSent: 返回行数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RowsSent: int
+        """
+        self.Timestamp = None
+        self.SqlText = None
+        self.Database = None
+        self.UserName = None
+        self.UserHost = None
+        self.QueryTime = None
+        self.LockTime = None
+        self.RowsExamined = None
+        self.RowsSent = None
+
+
+    def _deserialize(self, params):
+        self.Timestamp = params.get("Timestamp")
+        self.SqlText = params.get("SqlText")
+        self.Database = params.get("Database")
+        self.UserName = params.get("UserName")
+        self.UserHost = params.get("UserHost")
+        self.QueryTime = params.get("QueryTime")
+        self.LockTime = params.get("LockTime")
+        self.RowsExamined = params.get("RowsExamined")
+        self.RowsSent = params.get("RowsSent")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

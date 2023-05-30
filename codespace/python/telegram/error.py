@@ -35,7 +35,7 @@ __all__ = (
     "TimedOut",
 )
 
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 
 def _lstrip_str(in_s: str, lstr: str) -> str:
@@ -48,16 +48,18 @@ def _lstrip_str(in_s: str, lstr: str) -> str:
         :obj:`str`: The stripped string.
 
     """
-    if in_s.startswith(lstr):
-        res = in_s[len(lstr) :]
-    else:
-        res = in_s
-    return res
+    return in_s[len(lstr) :] if in_s.startswith(lstr) else in_s
 
 
 class TelegramError(Exception):
     """
     Base class for Telegram errors.
+
+    Tip:
+        Objects of this type can be serialized via Python's :mod:`pickle` module and pickled
+        objects from one version of PTB are usually loadable in future versions. However, we can
+        not guarantee that this compatibility will always be provided. At least a manual one-time
+        conversion of the data may be needed on major updates of the library.
 
     .. seealso:: :wiki:`Exceptions, Warnings and Logging <Exceptions%2C-Warnings-and-Logging>`
     """
@@ -109,7 +111,7 @@ class InvalidToken(TelegramError):
 
     __slots__ = ()
 
-    def __init__(self, message: str = None) -> None:
+    def __init__(self, message: Optional[str] = None) -> None:
         super().__init__("Invalid token" if message is None else message)
 
 
@@ -140,7 +142,7 @@ class TimedOut(NetworkError):
 
     __slots__ = ()
 
-    def __init__(self, message: str = None) -> None:
+    def __init__(self, message: Optional[str] = None) -> None:
         super().__init__(message or "Timed out")
 
 

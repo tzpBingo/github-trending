@@ -188,10 +188,14 @@ class CreateAsyncRecognitionTaskRequest(AbstractModel):
     def __init__(self):
         r"""
         :param EngineType: 引擎模型类型。
-• 16k_zh：16k 中文普通话通用；
-• 16k_zh_video：16k 音视频领域；
-• 16k_en：16k 英语；
-• 16k_ca：16k 粤语；
+• 16k_zh：中文普通话通用；
+• 16k_en：英语；
+• 16k_ca：粤语；
+• 16k_id：印度尼西亚语；
+• 16k_fil：菲律宾语；
+• 16k_th：泰语；
+• 16k_pt：葡萄牙语；
+• 16k_tr：土耳其语；
         :type EngineType: str
         :param Url: 语音流地址，支持rtmp、rtsp等流媒体协议，以及各类基于http协议的直播流(不支持hls, m3u8)
         :type Url: str
@@ -337,21 +341,24 @@ class CreateRecTaskRequest(AbstractModel):
         r"""
         :param EngineModelType: 引擎模型类型。注意：非电话场景请务必使用16k的引擎。
 电话场景：
-• 8k_en：电话 8k 英语；
-• 8k_zh：电话 8k 中文普通话通用；
+• 8k_zh：中文电话通用；
+• 8k_en：英文电话通用；
+
 非电话场景：
-• 16k_zh：16k 中文普通话通用；
-• 16k_zh_video：16k 音视频领域；
-• 16k_en：16k 英语；
-• 16k_ca：16k 粤语；
-• 16k_ja：16k 日语；
-• 16k_vi：16k 越南语；
-• 16k_ms：16k 马来语；
-• 16k_zh_edu 中文教育；
-• 16k_en_edu 英文教育；
-• 16k_zh_medical  医疗；
-• 16k_th 泰语；
-• 16k_zh-PY 中英粤;
+• 16k_zh：中文通用；
+• 16k_zh-PY：中英粤;
+• 16k_zh_medical：中文医疗；
+• 16k_en：英语；
+• 16k_ca：粤语；
+• 16k_ja：日语；
+• 16k_ko：韩语；
+• 16k_vi：越南语；
+• 16k_ms：马来语；
+• 16k_id：印度尼西亚语；
+• 16k_fil：菲律宾语；
+• 16k_th：泰语；
+• 16k_pt：葡萄牙语；
+• 16k_tr：土耳其语；
 • 16k_zh_dialect：多方言，支持23种方言（上海话、四川话、武汉话、贵阳话、昆明话、西安话、郑州话、太原话、兰州话、银川话、西宁话、南京话、合肥话、南昌话、长沙话、苏州话、杭州话、济南话、天津话、石家庄话、黑龙江话、吉林话、辽宁话）；
         :type EngineModelType: str
         :param ChannelNum: 识别声道数。1：单声道（非电话场景，直接选择单声道即可，忽略音频声道数）；2：双声道（仅支持8k_zh电话场景，双声道应分别对应通话双方）。注意：双声道的电话音频已物理分离说话人，无需再开启说话人分离功能。
@@ -364,7 +371,7 @@ class CreateRecTaskRequest(AbstractModel):
 注意：8k电话场景建议使用双声道来区分通话双方，设置ChannelNum=2即可，不用开启说话人分离。
         :type SpeakerDiarization: int
         :param SpeakerNumber: 说话人分离人数（需配合开启说话人分离使用），取值范围：0-10，0代表自动分离（目前仅支持≤6个人），1-10代表指定说话人数分离。默认值为 0。
-注：话者分离目前是beta版本，请根据您的需要谨慎使用
+注：此功能结果仅供参考，请根据您的需要谨慎使用。
         :type SpeakerNumber: int
         :param CallbackUrl: 回调 URL，用户自行搭建的用于接收识别结果的服务URL。如果用户使用轮询方式获取识别结果，则无需提交该参数。回调格式&内容详见：[录音识别回调说明](https://cloud.tencent.com/document/product/1093/52632)
         :type CallbackUrl: str
@@ -928,6 +935,53 @@ class GetCustomizationListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class GetModelInfoRequest(AbstractModel):
+    """GetModelInfo请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ModelId: 模型id
+        :type ModelId: str
+        """
+        self.ModelId = None
+
+
+    def _deserialize(self, params):
+        self.ModelId = params.get("ModelId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class GetModelInfoResponse(AbstractModel):
+    """GetModelInfo返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 模型信息
+        :type Data: :class:`tencentcloud.asr.v20190614.models.Model`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = Model()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
 class HotWord(AbstractModel):
     """热词的词和权重
 
@@ -973,7 +1027,13 @@ class Model(AbstractModel):
         :type ModelType: str
         :param ServiceType: 服务类型
         :type ServiceType: str
-        :param ModelState: 模型状态，-1下线状态，1上线状态, 0训练中, -2 训练失败
+        :param ModelState: 模型状态：
+-2：模型训练失败；
+-1：已下线；
+0：训练中；
+1：已上线；
+3：上线中；
+4：下线中；
         :type ModelState: int
         :param AtUpdated: 最后更新时间
         :type AtUpdated: str
@@ -1198,33 +1258,40 @@ class SentenceRecognitionRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProjectId: 腾讯云项目 ID，废弃参数，填写0即可。
-        :type ProjectId: int
-        :param SubServiceType: 子服务类型。2： 一句话识别。
-        :type SubServiceType: int
         :param EngSerViceType: 引擎模型类型。
 电话场景：
-• 8k_en：电话 8k 英语；
-• 8k_zh：电话 8k 中文普通话通用；
+• 8k_zh：中文电话通用；
+• 8k_en：英文电话通用；
+
 非电话场景：
-• 16k_zh：16k 中文普通话通用；
-• 16k_en：16k 英语；
-• 16k_ca：16k 粤语；
-• 16k_ja：16k 日语；
-• 16k_vi：16k 越南语；
-• 16k_ms：16k 马来语；
-• 16k_zh_medical：16k 医疗；
-• 16k_zh-PY 中英粤;
+• 16k_zh：中文通用；
+• 16k_zh-PY：中英粤;
+• 16k_zh_medical：中文医疗；
+• 16k_en：英语；
+• 16k_yue：粤语；
+• 16k_ja：日语；
+• 16k_ko：韩语；
+• 16k_vi：越南语；
+• 16k_ms：马来语；
+• 16k_id：印度尼西亚语；
+• 16k_fil：菲律宾语；
+• 16k_th：泰语；
+• 16k_pt：葡萄牙语；
+• 16k_tr：土耳其语；
 • 16k_zh_dialect：多方言，支持23种方言（上海话、四川话、武汉话、贵阳话、昆明话、西安话、郑州话、太原话、兰州话、银川话、西宁话、南京话、合肥话、南昌话、长沙话、苏州话、杭州话、济南话、天津话、石家庄话、黑龙江话、吉林话、辽宁话）；
         :type EngSerViceType: str
         :param SourceType: 语音数据来源。0：语音 URL；1：语音数据（post body）。
         :type SourceType: int
-        :param VoiceFormat: 识别音频的音频格式，支持wav、pcm、ogg-opus、speex、silk、mp3、m4a、aac。
+        :param VoiceFormat: 识别音频的音频格式，支持wav、pcm、ogg-opus、speex、silk、mp3、m4a、aac、amr。
         :type VoiceFormat: str
-        :param UsrAudioKey: 废弃参数，填写任意字符串即可。
-        :type UsrAudioKey: str
+        :param ProjectId: 腾讯云项目 ID，废弃参数，填写0即可。
+        :type ProjectId: int
+        :param SubServiceType: 子服务类型。2： 一句话识别。
+        :type SubServiceType: int
         :param Url: 语音的URL地址，需要公网环境浏览器可下载。当 SourceType 值为 0时须填写该字段，为 1 时不填。音频时长不能超过60s，音频文件大小不能超过3MB。
         :type Url: str
+        :param UsrAudioKey: 废弃参数，填写任意字符串即可。
+        :type UsrAudioKey: str
         :param Data: 语音数据，当SourceType 值为1（本地语音数据上传）时必须填写，当SourceType 值为0（语音 URL上传）可不写。要使用base64编码(采用python语言时注意读取文件应该为string而不是byte，以byte格式读取后要decode()。编码后的数据不可带有回车换行符)。音频时长不能超过60s，音频文件大小不能超过3MB（Base64后）。
         :type Data: str
         :param DataLen: 数据长度，单位为字节。当 SourceType 值为1（本地语音数据上传）时必须填写，当 SourceType 值为0（语音 URL上传）可不写（此数据长度为数据未进行base64编码时的数据长度）。
@@ -1245,14 +1312,17 @@ class SentenceRecognitionRequest(AbstractModel):
         :type CustomizationId: str
         :param ReinforceHotword: 热词增强功能。1:开启后（仅支持8k_zh,16k_zh），将开启同音替换功能，同音字、词在热词中配置。举例：热词配置“蜜制”并开启增强功能后，与“蜜制”同拼音（mizhi）的“秘制”、“蜜汁”的识别结果会被强制替换成“蜜制”。因此建议客户根据自己的实际情况开启该功能。
         :type ReinforceHotword: int
+        :param HotwordList: 临时热词：用于提升识别准确率，临时热词规则：“热词|权重”，热词不超过30个字符（最多10个汉字），权重1-10，最多传入128个热词。举例："腾讯云|10,语音识别|5,ASR|10"。
+“临时热词”和“热词id”的区别：热词id需要先在控制台或通过接口创建热词表，得到热词表id后才可以使用热词功能，本字段可以在每次请求时直接传入热词使用，但每次请求后云端不会保留相关的热词数据，需要客户自行维护相关数据
+        :type HotwordList: str
         """
-        self.ProjectId = None
-        self.SubServiceType = None
         self.EngSerViceType = None
         self.SourceType = None
         self.VoiceFormat = None
-        self.UsrAudioKey = None
+        self.ProjectId = None
+        self.SubServiceType = None
         self.Url = None
+        self.UsrAudioKey = None
         self.Data = None
         self.DataLen = None
         self.WordInfo = None
@@ -1263,16 +1333,17 @@ class SentenceRecognitionRequest(AbstractModel):
         self.HotwordId = None
         self.CustomizationId = None
         self.ReinforceHotword = None
+        self.HotwordList = None
 
 
     def _deserialize(self, params):
-        self.ProjectId = params.get("ProjectId")
-        self.SubServiceType = params.get("SubServiceType")
         self.EngSerViceType = params.get("EngSerViceType")
         self.SourceType = params.get("SourceType")
         self.VoiceFormat = params.get("VoiceFormat")
-        self.UsrAudioKey = params.get("UsrAudioKey")
+        self.ProjectId = params.get("ProjectId")
+        self.SubServiceType = params.get("SubServiceType")
         self.Url = params.get("Url")
+        self.UsrAudioKey = params.get("UsrAudioKey")
         self.Data = params.get("Data")
         self.DataLen = params.get("DataLen")
         self.WordInfo = params.get("WordInfo")
@@ -1283,6 +1354,7 @@ class SentenceRecognitionRequest(AbstractModel):
         self.HotwordId = params.get("HotwordId")
         self.CustomizationId = params.get("CustomizationId")
         self.ReinforceHotword = params.get("ReinforceHotword")
+        self.HotwordList = params.get("HotwordList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1479,7 +1551,7 @@ class TaskStatus(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 任务标识。
+        :param TaskId: 任务标识。注意：TaskId数据类型为uint64。
         :type TaskId: int
         :param Status: 任务状态码，0：任务等待，1：任务执行中，2：任务成功，3：任务失败。
         :type Status: int

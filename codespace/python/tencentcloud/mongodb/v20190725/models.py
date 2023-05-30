@@ -284,7 +284,7 @@ class CreateAccountUserRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例 ID。
+        :param InstanceId: 实例 ID。例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
         :type InstanceId: str
         :param UserName: 新账号名称。其格式要求如下：<ul><li>字符范围[1,32]。</li><li>可输入[A,Z]、[a,z]、[1,9]范围的字符以及下划线“_”与短划线“-”。</li></ul>
         :type UserName: str
@@ -354,11 +354,13 @@ class CreateBackupDBInstanceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例id
+        :param InstanceId: 实例 ID。例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
         :type InstanceId: str
-        :param BackupMethod: 0-逻辑备份，1-物理备份
+        :param BackupMethod: 设置备份方式。
+- 0：逻辑备份。
+- 1：物理备份。
         :type BackupMethod: int
-        :param BackupRemark: 备份备注
+        :param BackupRemark: 备份备注信息。
         :type BackupRemark: str
         """
         self.InstanceId = None
@@ -386,7 +388,7 @@ class CreateBackupDBInstanceResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param AsyncRequestId: 查询备份流程的状态
+        :param AsyncRequestId: 查询备份流程的状态。
         :type AsyncRequestId: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -502,13 +504,11 @@ class CreateDBInstanceHourRequest(AbstractModel):
 - REPLSET：副本集。
 - SHARD：分片集群。
         :type ClusterType: str
-        :param VpcId: 私有网络ID，如果不设置该参数，则默认选择基础网络。
+        :param VpcId: 私有网络ID。如果不设置该参数，则默认选择基础网络。
         :type VpcId: str
         :param SubnetId: 私有网络下的子网 ID，如果配置参数 VpcId，则 SubnetId必须配置。
         :type SubnetId: str
-        :param Password: 实例密码。
-- 不设置该参数，则默认密码格式为：实例ID+@+主账户uin。例如：实例 ID 为cmgo-higv73ed，UIN 为100000001，则默认密码为：cmgo-higv73ed@100000001。 
-- 自定义密码长度为8-32个字符，至少包含字母、数字和字符（!@#%^*()_）中的两种。
+        :param Password: 实例密码。自定义密码长度为8-32个字符，至少包含字母、数字和字符（!@#%^*()_）中的两种。
         :type Password: str
         :param ProjectId: 项目ID。若不设置该参数，则为默认项目。
         :type ProjectId: int
@@ -938,6 +938,60 @@ class DBInstancePrice(AbstractModel):
         
 
 
+class DeleteAccountUserRequest(AbstractModel):
+    """DeleteAccountUser请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 指定待删除账号的实例 ID。例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
+
+        :type InstanceId: str
+        :param UserName: 配置待删除的账号名。
+        :type UserName: str
+        :param MongoUserPassword: 配置 mongouser 对应的密码。mongouser为系统默认账号，输入其对应的密码。
+        :type MongoUserPassword: str
+        """
+        self.InstanceId = None
+        self.UserName = None
+        self.MongoUserPassword = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.UserName = params.get("UserName")
+        self.MongoUserPassword = params.get("MongoUserPassword")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteAccountUserResponse(AbstractModel):
+    """DeleteAccountUser返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 账户删除任务ID。
+        :type FlowId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FlowId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeAccountUsersRequest(AbstractModel):
     """DescribeAccountUsers请求参数结构体
 
@@ -945,7 +999,7 @@ class DescribeAccountUsersRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID。
+        :param InstanceId: 指定待获取账号的实例ID。例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
         :type InstanceId: str
         """
         self.InstanceId = None
@@ -1126,11 +1180,12 @@ class DescribeClientConnectionsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID，格式如：cmgo-p8vnipr5。与云数据库控制台页面中显示的实例ID相同
+        :param InstanceId: 指定待查询的实例ID，例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
+
         :type InstanceId: str
-        :param Limit: 单次请求返回的数量，最小值为1，最大值为1000，默认值为1000。
+        :param Limit: 单次请求返回的数量。最小值为1，最大值为1000，默认值为1000。
         :type Limit: int
-        :param Offset: 偏移量，默认值为0。
+        :param Offset: 偏移量，默认值为0。Offset=Limit*(页码-1)。
         :type Offset: int
         """
         self.InstanceId = None
@@ -1158,7 +1213,7 @@ class DescribeClientConnectionsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Clients: 客户端连接信息，包括客户端IP和对应IP的连接数量。
+        :param Clients: 客户端连接信息，包括客户端 IP 和对应 IP 的连接数量。
         :type Clients: list of ClientConnection
         :param TotalCount: 满足条件的记录总条数，可用于分页查询。
         :type TotalCount: int
@@ -1493,34 +1548,40 @@ class DescribeDBInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceIds: 实例ID列表，格式如：cmgo-p8vnipr5。与云数据库控制台页面中显示的实例ID相同
+        :param InstanceIds: 实例 ID 列表。例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
         :type InstanceIds: list of str
-        :param InstanceType: 实例类型，取值范围：0-所有实例,1-正式实例，2-临时实例, 3-只读实例，-1-正式实例+只读+灾备实例
+        :param InstanceType: 实例类型。取值范围如下：<ul><li>0：所有实例。</li><li>1：正式实例。</li><li>2：临时实例。</li><li>3：只读实例。</li><li>-1：正式实例、只读、灾备实例。</li></ul>
         :type InstanceType: int
-        :param ClusterType: 集群类型，取值范围：0-副本集实例，1-分片实例，-1-所有实例
+        :param ClusterType: 集群类型，取值范围如下：<ul><li>0：副本集实例。</li><li>1：分片实例。</li><li>-1：所有实例。</li></ul>
         :type ClusterType: int
-        :param Status: 实例状态，取值范围：0-待初始化，1-流程执行中，2-实例有效，-2-已隔离（包年包月实例），-3-已隔离（按量计费实例）
+        :param Status: 实例状态，取值范围如下所示：<ul><li>0：待初始化。</li><li>1：流程执行中。</li><li>2：实例有效。</li><li>-2：已隔离（包年包月实例）。</li><li>-3：已隔离（按量计费实例）。</li></ul>
         :type Status: list of int
-        :param VpcId: 私有网络的ID，基础网络则不传该参数
+        :param VpcId: 私有网络的 ID。
+- 基础网络则无需配置该参数。
+- 请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表中，单击私有网络名称，在**私有网络**页面获取其 ID。
         :type VpcId: str
-        :param SubnetId: 私有网络的子网ID，基础网络则不传该参数。入参设置该参数的同时，必须设置相应的VpcId
+        :param SubnetId: 私有网络的子网ID。
+- 基础网络则无需配置该参数。
+- 请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表中，单击私有网络名称，在**私有网络**页面获取其子网 ID。
         :type SubnetId: str
-        :param PayMode: 付费类型，取值范围：0-按量计费，1-包年包月，-1-按量计费+包年包月
+        :param PayMode: 付费类型，取值范围如下：<ul><li>0：查询按量计费实例。</li><li>1：查询包年包月实例。</li><li>-1：查询按量计费与包年包月实例。</li></ul>
         :type PayMode: int
-        :param Limit: 单次请求返回的数量，最小值为1，最大值为100，默认值为20
+        :param Limit: 单次请求返回的数量。默认值为20，取值范围为[1,100]。
         :type Limit: int
-        :param Offset: 偏移量，默认值为0
+        :param Offset: 偏移量，默认值为0。
         :type Offset: int
-        :param OrderBy: 返回结果集排序的字段，目前支持："ProjectId", "InstanceName", "CreateTime"，默认为升序排序
+        :param OrderBy: 配置返回结果排序依据的字段。目前支持依据"ProjectId"、"InstanceName"、"CreateTime"排序。
         :type OrderBy: str
-        :param OrderByType: 返回结果集排序方式，目前支持："ASC"或者"DESC"
+        :param OrderByType: 配置返回结果的排序方式。
+- ASC：升序。
+- DESC：降序。
         :type OrderByType: str
-        :param ProjectIds: 项目 ID
+        :param ProjectIds: 项目 ID。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)，在右上角的账户信息下拉菜单中，选择项目管理查询项目。
         :type ProjectIds: list of int non-negative
-        :param SearchKey: 搜索关键词，支持实例ID、实例名称、完整IP
+        :param SearchKey: 配置查询搜索的关键词。支持配置为实例ID、实例名称或者内网 IP 地址。
         :type SearchKey: str
-        :param Tags: Tag信息
-        :type Tags: :class:`tencentcloud.mongodb.v20190725.models.TagInfo`
+        :param Tags: 标签信息，包含标签键与标签值。
+        :type Tags: list of TagInfo
         """
         self.InstanceIds = None
         self.InstanceType = None
@@ -1553,8 +1614,11 @@ class DescribeDBInstancesRequest(AbstractModel):
         self.ProjectIds = params.get("ProjectIds")
         self.SearchKey = params.get("SearchKey")
         if params.get("Tags") is not None:
-            self.Tags = TagInfo()
-            self.Tags._deserialize(params.get("Tags"))
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = TagInfo()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1571,9 +1635,9 @@ class DescribeDBInstancesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TotalCount: 符合查询条件的实例总数
+        :param TotalCount: 符合查询条件的实例总数。
         :type TotalCount: int
-        :param InstanceDetails: 实例详细信息列表
+        :param InstanceDetails: 实例详细信息列表。
         :type InstanceDetails: list of InstanceDetail
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1601,7 +1665,7 @@ class DescribeInstanceParamsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID
+        :param InstanceId: 指定待查询参数列表的实例ID。例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
         :type InstanceId: str
         """
         self.InstanceId = None
@@ -1625,13 +1689,13 @@ class DescribeInstanceParamsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceEnumParam: 值为枚举类型参数集合
+        :param InstanceEnumParam: 参数值为枚举类型参数集合。
         :type InstanceEnumParam: list of InstanceEnumParam
-        :param InstanceIntegerParam: 值为integer类型参数集合
+        :param InstanceIntegerParam: 参数值为 Integer 类型参数集合。
         :type InstanceIntegerParam: list of InstanceIntegerParam
-        :param InstanceTextParam: 值为text类型的参数集合
+        :param InstanceTextParam: 参数值为 Text 类型的参数集合。
         :type InstanceTextParam: list of InstanceTextParam
-        :param InstanceMultiParam: 值为混合类型的参数集合
+        :param InstanceMultiParam: 参数值为混合类型的参数集合。
         :type InstanceMultiParam: list of InstanceMultiParam
         :param TotalCount: 当前实例支持修改的参数个数统计 如0
         :type TotalCount: int
@@ -1682,7 +1746,7 @@ class DescribeSecurityGroupRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID，格式如：cmgo-p8vnipr5。
+        :param InstanceId: 实例 ID。例如：cmgo-p8vn****。
         :type InstanceId: str
         """
         self.InstanceId = None
@@ -1706,7 +1770,7 @@ class DescribeSecurityGroupResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Groups: 实例绑定的安全组
+        :param Groups: 实例绑定的安全组信息。
         :type Groups: list of SecurityGroup
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -1822,7 +1886,7 @@ class DescribeSlowLogsRequest(AbstractModel):
         :type Offset: int
         :param Limit: 分页大小，最小值为1，最大值为100，默认值为20。
         :type Limit: int
-        :param Format: 慢日志返回格式，可设置为json，不传默认返回原生慢日志格式。
+        :param Format: 慢日志返回格式。默认返回原生慢日志格式，4.4及以上版本可设置为json。
         :type Format: str
         """
         self.InstanceId = None
@@ -2086,15 +2150,15 @@ class InquirePriceModifyDBInstanceSpecRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID，格式如：cmgo-p8vnipr5。与云数据库控制台页面中显示的实例ID相同。
+        :param InstanceId: 实例 ID，格式如：cmgo-p8vn****。与云数据库控制台页面中显示的实例ID相同。
         :type InstanceId: str
         :param Memory: 变更配置后实例内存大小，单位：GB。
         :type Memory: int
         :param Volume: 变更配置后实例磁盘大小，单位：GB。
         :type Volume: int
-        :param NodeNum: 实例变更后的节点数，取值范围具体参照查询云数据库的售卖规格返回参数。默认为不变更节点数
+        :param NodeNum: 实例节点数。默认为不变更节点数，暂不支持变更。
         :type NodeNum: int
-        :param ReplicateSetNum: 实例变更后的分片数，取值范围具体参照查询云数据库的售卖规格返回参数。只能增加不能减少，默认为不变更分片数
+        :param ReplicateSetNum: 实例分片数。默认为不变更分片数，暂不支持变更。
         :type ReplicateSetNum: int
         """
         self.InstanceId = None
@@ -2476,21 +2540,25 @@ class InstanceEnumParam(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CurrentValue: 参数当前值
+        :param CurrentValue: 参数当前值。
         :type CurrentValue: str
-        :param DefaultValue: 默认值
+        :param DefaultValue: 参数默认值。
         :type DefaultValue: str
-        :param EnumValue: 枚举值，所有支持的值
+        :param EnumValue: 枚举值，所有支持的值。
         :type EnumValue: list of str
-        :param NeedRestart: 是否需要重启生效 1:需要重启后生效；0：无需重启，设置成功即可生效；
+        :param NeedRestart: 参数修改之后是否需要重启生效。
+- 1：需要重启后生效。
+- 0：无需重启，设置成功即可生效。
         :type NeedRestart: str
-        :param ParamName: 参数名称
+        :param ParamName: 参数名称。
         :type ParamName: str
-        :param Tips: 中英文说明
+        :param Tips: 参数说明。
         :type Tips: list of str
-        :param ValueType: 参数值类型说明
+        :param ValueType: 参数值类型说明。
         :type ValueType: str
-        :param Status: 是否为运行中参数值 1:运行中参数值；0：非运行中参数值；
+        :param Status: 是否为运行中参数值。
+- 1：运行中参数值。
+- 0：非运行中参数值。
         :type Status: int
         """
         self.CurrentValue = None
@@ -2522,31 +2590,35 @@ class InstanceEnumParam(AbstractModel):
 
 
 class InstanceIntegerParam(AbstractModel):
-    """实例可修改参数integer类型集合。
+    """实例可修改参数 Integer 类型集合。
 
     """
 
     def __init__(self):
         r"""
-        :param CurrentValue: 当前值
+        :param CurrentValue: 参数当前值。
         :type CurrentValue: str
-        :param DefaultValue: 默认值
+        :param DefaultValue: 参数默认值。
         :type DefaultValue: str
-        :param Max: 最大值
+        :param Max: 参数最大值。
         :type Max: str
-        :param Min: 最小值
+        :param Min: 最小值。
         :type Min: str
-        :param NeedRestart: 是否需要重启生效 1:需要重启后生效；0：无需重启，设置成功即可生效；
+        :param NeedRestart: 参数修改之后是否需要重启生效。
+- 1:需要重启后生效。
+- 0：无需重启，设置成功即可生效。
         :type NeedRestart: str
-        :param ParamName: 参数名称
+        :param ParamName: 参数名称。
         :type ParamName: str
-        :param Tips: 参数说明
+        :param Tips: 参数说明。
         :type Tips: list of str
-        :param ValueType: 参数类型
+        :param ValueType: 参数类型。
         :type ValueType: str
-        :param Status: 是否为运行中参数值 1:运行中参数值；0：非运行中参数值；
+        :param Status: 是否为运行中参数值。
+- 1：运行中参数值。
+- 0：非运行中参数值。
         :type Status: int
-        :param Unit: 冗余字段，可忽略
+        :param Unit: 冗余字段，可忽略。
         :type Unit: str
         """
         self.CurrentValue = None
@@ -2588,21 +2660,25 @@ class InstanceMultiParam(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CurrentValue: 当前值
+        :param CurrentValue: 参数当前值。
         :type CurrentValue: str
-        :param DefaultValue: 默认值
+        :param DefaultValue: 参数默认值。
         :type DefaultValue: str
-        :param EnumValue: 指导值范围
+        :param EnumValue: 参考值范围。
         :type EnumValue: list of str
-        :param NeedRestart: 是否需要重启生效 1:需要重启后生效；0：无需重启，设置成功即可生效；
+        :param NeedRestart: 参数修改后是否需要重启才会生效。
+- 1：需要重启后生效。
+- 0：无需重启，设置成功即可生效。
         :type NeedRestart: str
-        :param ParamName: 参数名称
+        :param ParamName: 参数名称。
         :type ParamName: str
-        :param Status: 是否为运行中参数值 1:运行中参数值；0：非运行中参数值；
+        :param Status: 是否为运行中参数值。
+- 1：运行中参数值。
+- 0：非运行中参数值。
         :type Status: int
-        :param Tips: 参数说明
+        :param Tips: 参数说明。
         :type Tips: list of str
-        :param ValueType: 当前值的类型描述，默认为multi
+        :param ValueType: 当前值的类型描述，默认为multi。
         :type ValueType: str
         """
         self.CurrentValue = None
@@ -2634,27 +2710,29 @@ class InstanceMultiParam(AbstractModel):
 
 
 class InstanceTextParam(AbstractModel):
-    """实例可修改参数text类型集合。
+    """实例可修改参数为 Text 类型的参数集合。
 
     """
 
     def __init__(self):
         r"""
-        :param CurrentValue: 当前值
+        :param CurrentValue: 参数当前值。
         :type CurrentValue: str
-        :param DefaultValue: 默认值
+        :param DefaultValue: 参数默认值。
         :type DefaultValue: str
-        :param NeedRestart: 是否需要重启
+        :param NeedRestart: 修改参数值之后是否需要重启。
         :type NeedRestart: str
-        :param ParamName: 参数名称
+        :param ParamName: 参数名称。
         :type ParamName: str
-        :param TextValue: text类型值
+        :param TextValue: Text 类型参数对应的值。
         :type TextValue: str
-        :param Tips: 参数说明
+        :param Tips: 参数说明。
         :type Tips: list of str
-        :param ValueType: 值类型说明
+        :param ValueType: 参数值类型说明。
         :type ValueType: str
-        :param Status: 是否为运行中参数值 1:运行中参数值；0：非运行中参数值；
+        :param Status: 是否为运行中的参数值。
+- 1：运行中参数值。
+- 0：非运行中参数值。
         :type Status: str
         """
         self.CurrentValue = None
@@ -2849,9 +2927,9 @@ class ModifyDBInstanceSecurityGroupRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID
+        :param InstanceId: 实例 ID。例如：cmgo-7pje****。
         :type InstanceId: str
-        :param SecurityGroupIds: 目标安全组id
+        :param SecurityGroupIds: 目标安全组 ID。请通过接口[DescribeSecurityGroup](https://cloud.tencent.com/document/product/240/55675)查看具体的安全组 ID。
         :type SecurityGroupIds: list of str
         """
         self.InstanceId = None
@@ -3487,11 +3565,11 @@ class SetAccountUserPrivilegeRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceId: 实例ID。
+        :param InstanceId: 指定待设置账号的实例ID。例如：cmgo-p8vn****。请登录 [MongoDB 控制台](https://console.cloud.tencent.com/mongodb)在实例列表复制实例 ID。
         :type InstanceId: str
-        :param UserName: 账号名称。
+        :param UserName: 设置账号名称。
         :type UserName: str
-        :param AuthRole: 权限信息。
+        :param AuthRole: 设置权限信息。
         :type AuthRole: list of Auth
         """
         self.InstanceId = None
@@ -3524,7 +3602,7 @@ class SetAccountUserPrivilegeResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FlowId: 设置任务ID,用于查询是否设置完成
+        :param FlowId: 任务ID。
         :type FlowId: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str

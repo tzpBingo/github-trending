@@ -674,7 +674,7 @@ class CreateClusterRequest(AbstractModel):
         :type ComputeNodeCount: int
         :param SchedulerType: 调度器类型。默认取值：SLURM。<br><li>SGE：SGE调度器。<br><li>SLURM：SLURM调度器。
         :type SchedulerType: str
-        :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前仅支持公有镜像。
+        :param ImageId: 指定有效的[镜像](https://cloud.tencent.com/document/product/213/4940)ID，格式形如`img-xxx`。目前支持部分公有镜像和自定义镜像。
         :type ImageId: str
         :param VirtualPrivateCloud: 私有网络相关信息配置。
         :type VirtualPrivateCloud: :class:`tencentcloud.thpc.v20220401.models.VirtualPrivateCloud`
@@ -1504,10 +1504,8 @@ class Filter(AbstractModel):
     def __init__(self):
         r"""
         :param Name: 需要过滤的字段。
-注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param Values: 字段的过滤值。
-注意：此字段可能返回 null，表示取不到有效值。
         :type Values: list of str
         """
         self.Name = None
@@ -2200,9 +2198,9 @@ class StorageOption(AbstractModel):
 
     def __init__(self):
         r"""
-        :param CFSOptions: 集群挂载CFS文件系统选项
+        :param CFSOptions: 集群挂载CFS文件系统选项。
         :type CFSOptions: list of CFSOption
-        :param GooseFSOptions: 集群挂在GooseFS文件系统选项
+        :param GooseFSOptions: 集群挂载GooseFS文件系统选项。
         :type GooseFSOptions: list of GooseFSOption
         """
         self.CFSOptions = None

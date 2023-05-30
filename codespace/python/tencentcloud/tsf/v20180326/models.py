@@ -3291,6 +3291,62 @@ class CreateApiRateLimitRuleResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateApiRateLimitRuleWithDetailRespRequest(AbstractModel):
+    """CreateApiRateLimitRuleWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ApiId: Api Id
+        :type ApiId: str
+        :param MaxQps: qps值
+        :type MaxQps: int
+        :param UsableStatus: 开启/禁用，enabled/disabled, 不传默认开启
+        :type UsableStatus: str
+        """
+        self.ApiId = None
+        self.MaxQps = None
+        self.UsableStatus = None
+
+
+    def _deserialize(self, params):
+        self.ApiId = params.get("ApiId")
+        self.MaxQps = params.get("MaxQps")
+        self.UsableStatus = params.get("UsableStatus")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateApiRateLimitRuleWithDetailRespResponse(AbstractModel):
+    """CreateApiRateLimitRuleWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 创建的规则 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.ApiRateLimitRule`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = ApiRateLimitRule()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class CreateApplicationRequest(AbstractModel):
     """CreateApplication请求参数结构体
 
@@ -3623,6 +3679,146 @@ class CreateConfigTemplateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateConfigTemplateWithDetailRespRequest(AbstractModel):
+    """CreateConfigTemplateWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigTemplateName: 配置模板名称
+        :type ConfigTemplateName: str
+        :param ConfigTemplateType: 配置模板对应的微服务框架
+        :type ConfigTemplateType: str
+        :param ConfigTemplateValue: 配置模板数据
+        :type ConfigTemplateValue: str
+        :param ConfigTemplateDesc: 配置模板描述
+        :type ConfigTemplateDesc: str
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
+        """
+        self.ConfigTemplateName = None
+        self.ConfigTemplateType = None
+        self.ConfigTemplateValue = None
+        self.ConfigTemplateDesc = None
+        self.ProgramIdList = None
+
+
+    def _deserialize(self, params):
+        self.ConfigTemplateName = params.get("ConfigTemplateName")
+        self.ConfigTemplateType = params.get("ConfigTemplateType")
+        self.ConfigTemplateValue = params.get("ConfigTemplateValue")
+        self.ConfigTemplateDesc = params.get("ConfigTemplateDesc")
+        self.ProgramIdList = params.get("ProgramIdList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateConfigTemplateWithDetailRespResponse(AbstractModel):
+    """CreateConfigTemplateWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 创建成功，返回 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.ConfigTemplate`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = ConfigTemplate()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreateConfigWithDetailRespRequest(AbstractModel):
+    """CreateConfigWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigName: 配置项名称
+        :type ConfigName: str
+        :param ConfigVersion: 配置项版本
+        :type ConfigVersion: str
+        :param ConfigValue: 配置项值
+        :type ConfigValue: str
+        :param ApplicationId: 应用ID
+        :type ApplicationId: str
+        :param ConfigVersionDesc: 配置项版本描述
+        :type ConfigVersionDesc: str
+        :param ConfigType: 配置项值类型
+        :type ConfigType: str
+        :param EncodeWithBase64: Base64编码的配置项
+        :type EncodeWithBase64: bool
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
+        """
+        self.ConfigName = None
+        self.ConfigVersion = None
+        self.ConfigValue = None
+        self.ApplicationId = None
+        self.ConfigVersionDesc = None
+        self.ConfigType = None
+        self.EncodeWithBase64 = None
+        self.ProgramIdList = None
+
+
+    def _deserialize(self, params):
+        self.ConfigName = params.get("ConfigName")
+        self.ConfigVersion = params.get("ConfigVersion")
+        self.ConfigValue = params.get("ConfigValue")
+        self.ApplicationId = params.get("ApplicationId")
+        self.ConfigVersionDesc = params.get("ConfigVersionDesc")
+        self.ConfigType = params.get("ConfigType")
+        self.EncodeWithBase64 = params.get("EncodeWithBase64")
+        self.ProgramIdList = params.get("ProgramIdList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateConfigWithDetailRespResponse(AbstractModel):
+    """CreateConfigWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 配置项
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.Config`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = Config()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class CreateContainGroupRequest(AbstractModel):
     """CreateContainGroup请求参数结构体
 
@@ -3848,6 +4044,94 @@ class CreateFileConfigResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateFileConfigWithDetailRespRequest(AbstractModel):
+    """CreateFileConfigWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigName: 配置项名称
+        :type ConfigName: str
+        :param ConfigVersion: 配置项版本
+        :type ConfigVersion: str
+        :param ConfigFileName: 配置项文件名
+        :type ConfigFileName: str
+        :param ConfigFileValue: 配置项文件内容（原始内容编码需要 utf-8 格式，如果 ConfigFileCode 为 gbk，后台会进行转换）
+        :type ConfigFileValue: str
+        :param ApplicationId: 配置项关联应用ID
+        :type ApplicationId: str
+        :param ConfigFilePath: 发布路径
+        :type ConfigFilePath: str
+        :param ConfigVersionDesc: 配置项版本描述
+        :type ConfigVersionDesc: str
+        :param ConfigFileCode: 配置项文件编码，utf-8 或 gbk。注：如果选择 gbk，需要新版本 tsf-consul-template （公有云虚拟机需要使用 1.32 tsf-agent，容器需要从文档中获取最新的 tsf-consul-template-docker.tar.gz）的支持
+        :type ConfigFileCode: str
+        :param ConfigPostCmd: 后置命令
+        :type ConfigPostCmd: str
+        :param EncodeWithBase64: Base64编码的配置项
+        :type EncodeWithBase64: bool
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
+        """
+        self.ConfigName = None
+        self.ConfigVersion = None
+        self.ConfigFileName = None
+        self.ConfigFileValue = None
+        self.ApplicationId = None
+        self.ConfigFilePath = None
+        self.ConfigVersionDesc = None
+        self.ConfigFileCode = None
+        self.ConfigPostCmd = None
+        self.EncodeWithBase64 = None
+        self.ProgramIdList = None
+
+
+    def _deserialize(self, params):
+        self.ConfigName = params.get("ConfigName")
+        self.ConfigVersion = params.get("ConfigVersion")
+        self.ConfigFileName = params.get("ConfigFileName")
+        self.ConfigFileValue = params.get("ConfigFileValue")
+        self.ApplicationId = params.get("ApplicationId")
+        self.ConfigFilePath = params.get("ConfigFilePath")
+        self.ConfigVersionDesc = params.get("ConfigVersionDesc")
+        self.ConfigFileCode = params.get("ConfigFileCode")
+        self.ConfigPostCmd = params.get("ConfigPostCmd")
+        self.EncodeWithBase64 = params.get("EncodeWithBase64")
+        self.ProgramIdList = params.get("ProgramIdList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateFileConfigWithDetailRespResponse(AbstractModel):
+    """CreateFileConfigWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 文件配置项
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.FileConfig`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = FileConfig()
+            self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
 
@@ -4346,6 +4630,57 @@ class CreatePathRewritesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreatePathRewritesWithDetailRespRequest(AbstractModel):
+    """CreatePathRewritesWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PathRewrites: 路径重写列表
+        :type PathRewrites: list of PathRewriteCreateObject
+        """
+        self.PathRewrites = None
+
+
+    def _deserialize(self, params):
+        if params.get("PathRewrites") is not None:
+            self.PathRewrites = []
+            for item in params.get("PathRewrites"):
+                obj = PathRewriteCreateObject()
+                obj._deserialize(item)
+                self.PathRewrites.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreatePathRewritesWithDetailRespResponse(AbstractModel):
+    """CreatePathRewritesWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回路径重写规则 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class CreatePublicConfigRequest(AbstractModel):
     """CreatePublicConfig请求参数结构体
 
@@ -4413,6 +4748,78 @@ class CreatePublicConfigResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class CreatePublicConfigWithDetailRespRequest(AbstractModel):
+    """CreatePublicConfigWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigName: 配置项名称
+        :type ConfigName: str
+        :param ConfigVersion: 配置项版本
+        :type ConfigVersion: str
+        :param ConfigValue: 配置项值，总是接收yaml格式的内容
+        :type ConfigValue: str
+        :param ConfigVersionDesc: 配置项版本描述
+        :type ConfigVersionDesc: str
+        :param ConfigType: 配置项类型
+        :type ConfigType: str
+        :param EncodeWithBase64: Base64编码的配置项
+        :type EncodeWithBase64: bool
+        :param ProgramIdList: 无
+        :type ProgramIdList: list of str
+        """
+        self.ConfigName = None
+        self.ConfigVersion = None
+        self.ConfigValue = None
+        self.ConfigVersionDesc = None
+        self.ConfigType = None
+        self.EncodeWithBase64 = None
+        self.ProgramIdList = None
+
+
+    def _deserialize(self, params):
+        self.ConfigName = params.get("ConfigName")
+        self.ConfigVersion = params.get("ConfigVersion")
+        self.ConfigValue = params.get("ConfigValue")
+        self.ConfigVersionDesc = params.get("ConfigVersionDesc")
+        self.ConfigType = params.get("ConfigType")
+        self.EncodeWithBase64 = params.get("EncodeWithBase64")
+        self.ProgramIdList = params.get("ProgramIdList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreatePublicConfigWithDetailRespResponse(AbstractModel):
+    """CreatePublicConfigWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 公共配置项 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.Config`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = Config()
+            self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
 
@@ -4666,6 +5073,61 @@ class CreateTaskResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateUnitNamespacesRequest(AbstractModel):
+    """CreateUnitNamespaces请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GatewayInstanceId: 网关实体ID
+        :type GatewayInstanceId: str
+        :param UnitNamespaceList: 单元化命名空间对象列表
+        :type UnitNamespaceList: list of UnitNamespace
+        """
+        self.GatewayInstanceId = None
+        self.UnitNamespaceList = None
+
+
+    def _deserialize(self, params):
+        self.GatewayInstanceId = params.get("GatewayInstanceId")
+        if params.get("UnitNamespaceList") is not None:
+            self.UnitNamespaceList = []
+            for item in params.get("UnitNamespaceList"):
+                obj = UnitNamespace()
+                obj._deserialize(item)
+                self.UnitNamespaceList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateUnitNamespacesResponse(AbstractModel):
+    """CreateUnitNamespaces返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 是否成功
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateUnitRuleRequest(AbstractModel):
     """CreateUnitRule请求参数结构体
 
@@ -4726,6 +5188,71 @@ class CreateUnitRuleResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateUnitRuleWithDetailRespRequest(AbstractModel):
+    """CreateUnitRuleWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GatewayInstanceId: 网关实体ID
+        :type GatewayInstanceId: str
+        :param Name: 规则名称
+        :type Name: str
+        :param Description: 规则描述
+        :type Description: str
+        :param UnitRuleItemList: 规则项列表
+        :type UnitRuleItemList: list of UnitRuleItem
+        """
+        self.GatewayInstanceId = None
+        self.Name = None
+        self.Description = None
+        self.UnitRuleItemList = None
+
+
+    def _deserialize(self, params):
+        self.GatewayInstanceId = params.get("GatewayInstanceId")
+        self.Name = params.get("Name")
+        self.Description = params.get("Description")
+        if params.get("UnitRuleItemList") is not None:
+            self.UnitRuleItemList = []
+            for item in params.get("UnitRuleItemList"):
+                obj = UnitRuleItem()
+                obj._deserialize(item)
+                self.UnitRuleItemList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateUnitRuleWithDetailRespResponse(AbstractModel):
+    """CreateUnitRuleWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 单元化规则 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.UnitRule`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = UnitRule()
+            self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
 
@@ -4793,6 +5320,51 @@ class DeleteApiGroupResponse(AbstractModel):
     def __init__(self):
         r"""
         :param Result: 成功失败
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteApiRateLimitRuleRequest(AbstractModel):
+    """DeleteApiRateLimitRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleId: 限流规则ID
+        :type RuleId: str
+        """
+        self.RuleId = None
+
+
+    def _deserialize(self, params):
+        self.RuleId = params.get("RuleId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteApiRateLimitRuleResponse(AbstractModel):
+    """DeleteApiRateLimitRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 是否成功
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -5075,6 +5647,55 @@ class DeleteFileConfigResponse(AbstractModel):
         r"""
         :param Result: 删除结果
 注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
+class DeleteGatewayApiRequest(AbstractModel):
+    """DeleteGatewayApi请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 分组ID
+        :type GroupId: str
+        :param ApiList: Api ID 数组
+        :type ApiList: list of str
+        """
+        self.GroupId = None
+        self.ApiList = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.ApiList = params.get("ApiList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteGatewayApiResponse(AbstractModel):
+    """DeleteGatewayApi返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 是否成功
         :type Result: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -11001,6 +11622,53 @@ class DescribeRepositoryResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeResourceTaskStatusRequest(AbstractModel):
+    """DescribeResourceTaskStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务ID
+        :type TaskId: str
+        """
+        self.TaskId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeResourceTaskStatusResponse(AbstractModel):
+    """DescribeResourceTaskStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 资源任务执行状态结果
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.ResourceTaskStatusResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = ResourceTaskStatusResult()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeSimpleApplicationsRequest(AbstractModel):
     """DescribeSimpleApplications请求参数结构体
 
@@ -11847,6 +12515,70 @@ class DescribeUnitRulesResponse(AbstractModel):
                 obj = TsfPageUnitRule()
                 obj._deserialize(item)
                 self.Result.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeUnitRulesV2Request(AbstractModel):
+    """DescribeUnitRulesV2请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GatewayInstanceId: 网关实体ID
+        :type GatewayInstanceId: str
+        :param SearchWord: 根据规则名或备注内容模糊查询
+        :type SearchWord: str
+        :param Status: 启用状态, disabled: 未发布， enabled: 发布
+        :type Status: str
+        :param Offset: 翻页查询偏移量
+        :type Offset: int
+        :param Limit: 翻页查询每页记录数
+        :type Limit: int
+        """
+        self.GatewayInstanceId = None
+        self.SearchWord = None
+        self.Status = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.GatewayInstanceId = params.get("GatewayInstanceId")
+        self.SearchWord = params.get("SearchWord")
+        self.Status = params.get("Status")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeUnitRulesV2Response(AbstractModel):
+    """DescribeUnitRulesV2返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 分页列表信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.TsfPageUnitRuleV2`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = TsfPageUnitRuleV2()
+            self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
 
@@ -17826,6 +18558,62 @@ class ReleaseConfigResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ReleaseConfigWithDetailRespRequest(AbstractModel):
+    """ReleaseConfigWithDetailResp请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConfigId: 配置ID
+        :type ConfigId: str
+        :param GroupId: 部署组ID
+        :type GroupId: str
+        :param ReleaseDesc: 发布描述
+        :type ReleaseDesc: str
+        """
+        self.ConfigId = None
+        self.GroupId = None
+        self.ReleaseDesc = None
+
+
+    def _deserialize(self, params):
+        self.ConfigId = params.get("ConfigId")
+        self.GroupId = params.get("GroupId")
+        self.ReleaseDesc = params.get("ReleaseDesc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ReleaseConfigWithDetailRespResponse(AbstractModel):
+    """ReleaseConfigWithDetailResp返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 配置项发布 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: :class:`tencentcloud.tsf.v20180326.models.ConfigRelease`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = ConfigRelease()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class ReleaseFileConfigRequest(AbstractModel):
     """ReleaseFileConfig请求参数结构体
 
@@ -18193,6 +18981,31 @@ class ResourceFieldRef(AbstractModel):
 
     def _deserialize(self, params):
         self.Resource = params.get("Resource")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResourceTaskStatusResult(AbstractModel):
+    """资源任务转态结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskStatus: 任务的执行状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskStatus: int
+        """
+        self.TaskStatus = None
+
+
+    def _deserialize(self, params):
+        self.TaskStatus = params.get("TaskStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -21035,6 +21848,41 @@ class TsfPageUnitRule(AbstractModel):
         
 
 
+class TsfPageUnitRuleV2(AbstractModel):
+    """单元化规则翻页对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 记录总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param Content: 记录实体列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: list of UnitRule
+        """
+        self.TotalCount = None
+        self.Content = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Content") is not None:
+            self.Content = []
+            for item in params.get("Content"):
+                obj = UnitRule()
+                obj._deserialize(item)
+                self.Content.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TsfPageVmGroup(AbstractModel):
     """列表中部署组分页信息
 
@@ -21262,6 +22110,15 @@ class UnitRuleItem(AbstractModel):
         :param UnitRuleTagList: 规则标签列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type UnitRuleTagList: list of UnitRuleTag
+        :param ItemIndex: 项目id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ItemIndex: int
+        :param CreatedTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedTime: str
+        :param UpdatedTime: 修改时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedTime: str
         """
         self.Relationship = None
         self.DestNamespaceId = None
@@ -21272,6 +22129,9 @@ class UnitRuleItem(AbstractModel):
         self.Priority = None
         self.Description = None
         self.UnitRuleTagList = None
+        self.ItemIndex = None
+        self.CreatedTime = None
+        self.UpdatedTime = None
 
 
     def _deserialize(self, params):
@@ -21289,6 +22149,9 @@ class UnitRuleItem(AbstractModel):
                 obj = UnitRuleTag()
                 obj._deserialize(item)
                 self.UnitRuleTagList.append(obj)
+        self.ItemIndex = params.get("ItemIndex")
+        self.CreatedTime = params.get("CreatedTime")
+        self.UpdatedTime = params.get("UpdatedTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

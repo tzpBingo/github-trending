@@ -141,6 +141,29 @@ class IotvideoClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CallTRTCDevice(self, request):
+        """呼叫TRTC设备
+
+        :param request: Request instance for CallTRTCDevice.
+        :type request: :class:`tencentcloud.iotvideo.v20211125.models.CallTRTCDeviceRequest`
+        :rtype: :class:`tencentcloud.iotvideo.v20211125.models.CallTRTCDeviceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CallTRTCDevice", params, headers=headers)
+            response = json.loads(body)
+            model = models.CallTRTCDeviceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CancelAIModelApplication(self, request):
         """取消AI模型申请
 
@@ -188,7 +211,7 @@ class IotvideoClient(AbstractClient):
 
 
     def CheckForwardAuth(self, request):
-        """判断是否开启的转发的权限
+        """判断是否开启转发的权限
 
         :param request: Request instance for CheckForwardAuth.
         :type request: :class:`tencentcloud.iotvideo.v20211125.models.CheckForwardAuthRequest`

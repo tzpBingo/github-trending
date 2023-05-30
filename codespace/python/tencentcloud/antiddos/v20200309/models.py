@@ -275,9 +275,9 @@ class BGPIPInstance(AbstractModel):
 "deblocking"：解封中
 "isolate"：回收隔离中
         :type Status: str
-        :param ExpiredTime: 购买时间
+        :param ExpiredTime: 到期时间
         :type ExpiredTime: str
-        :param CreatedTime: 到期时间
+        :param CreatedTime: 购买时间
         :type CreatedTime: str
         :param Name: 资产实例的名称
         :type Name: str
@@ -574,6 +574,9 @@ class BGPInstance(AbstractModel):
         :type ElasticServiceBandwidth: int
         :param GiftServiceBandWidth: 赠送的业务带宽
         :type GiftServiceBandWidth: int
+        :param ModifyTime: 修改时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ModifyTime: str
         """
         self.InstanceDetail = None
         self.SpecificationLimit = None
@@ -594,6 +597,7 @@ class BGPInstance(AbstractModel):
         self.Line = None
         self.ElasticServiceBandwidth = None
         self.GiftServiceBandWidth = None
+        self.ModifyTime = None
 
 
     def _deserialize(self, params):
@@ -636,6 +640,7 @@ class BGPInstance(AbstractModel):
         self.Line = params.get("Line")
         self.ElasticServiceBandwidth = params.get("ElasticServiceBandwidth")
         self.GiftServiceBandWidth = params.get("GiftServiceBandWidth")
+        self.ModifyTime = params.get("ModifyTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -813,12 +818,16 @@ class BoundIpInfo(AbstractModel):
         :type DeviceType: str
         :param IspCode: 运营商，绑定操作为必填项，解绑操作可不填。0：电信；1：联通；2：移动；5：BGP
         :type IspCode: int
+        :param Domain: 域名化资产对应的域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
         """
         self.Ip = None
         self.BizType = None
         self.InstanceId = None
         self.DeviceType = None
         self.IspCode = None
+        self.Domain = None
 
 
     def _deserialize(self, params):
@@ -827,6 +836,7 @@ class BoundIpInfo(AbstractModel):
         self.InstanceId = params.get("InstanceId")
         self.DeviceType = params.get("DeviceType")
         self.IspCode = params.get("IspCode")
+        self.Domain = params.get("Domain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1488,12 +1498,15 @@ class CreateBoundIPRequest(AbstractModel):
         :type UnBoundDevList: list of BoundIpInfo
         :param CopyPolicy: 已弃用，不填
         :type CopyPolicy: str
+        :param FilterRegion: 如果该资源实例为域名化资产则，该参数必填
+        :type FilterRegion: str
         """
         self.Business = None
         self.Id = None
         self.BoundDevList = None
         self.UnBoundDevList = None
         self.CopyPolicy = None
+        self.FilterRegion = None
 
 
     def _deserialize(self, params):
@@ -1512,6 +1525,7 @@ class CreateBoundIPRequest(AbstractModel):
                 obj._deserialize(item)
                 self.UnBoundDevList.append(obj)
         self.CopyPolicy = params.get("CopyPolicy")
+        self.FilterRegion = params.get("FilterRegion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3449,12 +3463,20 @@ class DescribeBasicDeviceStatusRequest(AbstractModel):
         r"""
         :param IpList: IP 资源列表
         :type IpList: list of str
+        :param IdList: 域名化资源传id
+        :type IdList: list of str
+        :param FilterRegion: 地域名称
+        :type FilterRegion: int
         """
         self.IpList = None
+        self.IdList = None
+        self.FilterRegion = None
 
 
     def _deserialize(self, params):
         self.IpList = params.get("IpList")
+        self.IdList = params.get("IdList")
+        self.FilterRegion = params.get("FilterRegion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3476,10 +3498,14 @@ class DescribeBasicDeviceStatusResponse(AbstractModel):
 2 - 正常状态
 3 - 攻击状态
         :type Data: list of KeyValue
+        :param CLBData: 域名化资产的名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CLBData: list of KeyValue
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Data = None
+        self.CLBData = None
         self.RequestId = None
 
 
@@ -3490,6 +3516,12 @@ class DescribeBasicDeviceStatusResponse(AbstractModel):
                 obj = KeyValue()
                 obj._deserialize(item)
                 self.Data.append(obj)
+        if params.get("CLBData") is not None:
+            self.CLBData = []
+            for item in params.get("CLBData"):
+                obj = KeyValue()
+                obj._deserialize(item)
+                self.CLBData.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -3675,6 +3707,10 @@ class DescribeBizTrendRequest(AbstractModel):
         :type Domain: str
         :param ProtoInfo: 协议及端口列表，协议可取值TCP, UDP, HTTP, HTTPS，仅统计纬度为连接数时有效
         :type ProtoInfo: list of ProtocolPort
+        :param BusinessType: 业务类型可取值domain, port
+port：端口业务
+domain：域名业务
+        :type BusinessType: str
         """
         self.Statistics = None
         self.Business = None
@@ -3685,6 +3721,7 @@ class DescribeBizTrendRequest(AbstractModel):
         self.MetricName = None
         self.Domain = None
         self.ProtoInfo = None
+        self.BusinessType = None
 
 
     def _deserialize(self, params):
@@ -3702,6 +3739,7 @@ class DescribeBizTrendRequest(AbstractModel):
                 obj = ProtocolPort()
                 obj._deserialize(item)
                 self.ProtoInfo.append(obj)
+        self.BusinessType = params.get("BusinessType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3722,17 +3760,22 @@ class DescribeBizTrendResponse(AbstractModel):
         :type DataList: list of float
         :param MetricName: 统计纬度
         :type MetricName: str
+        :param MaxData: 返回DataList中的最大值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MaxData: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.DataList = None
         self.MetricName = None
+        self.MaxData = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.DataList = params.get("DataList")
         self.MetricName = params.get("MetricName")
+        self.MaxData = params.get("MaxData")
         self.RequestId = params.get("RequestId")
 
 
@@ -4904,6 +4947,8 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         :type FilterConvoy: int
         :param ExcludeAdvancedInfo: 默认false；接口传true，返回数据中不包含高级信息，高级信息包含：InstanceList[0].Usage。
         :type ExcludeAdvancedInfo: bool
+        :param FilterAssetIpList: 资产IP数组
+        :type FilterAssetIpList: list of str
         """
         self.Offset = None
         self.Limit = None
@@ -4922,6 +4967,7 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterTrialFlag = None
         self.FilterConvoy = None
         self.ExcludeAdvancedInfo = None
+        self.FilterAssetIpList = None
 
 
     def _deserialize(self, params):
@@ -4944,6 +4990,7 @@ class DescribeListBGPInstancesRequest(AbstractModel):
         self.FilterTrialFlag = params.get("FilterTrialFlag")
         self.FilterConvoy = params.get("FilterConvoy")
         self.ExcludeAdvancedInfo = params.get("ExcludeAdvancedInfo")
+        self.FilterAssetIpList = params.get("FilterAssetIpList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5650,16 +5697,20 @@ class DescribeListSchedulingDomainRequest(AbstractModel):
         :type Limit: int
         :param FilterDomain: 调度域名搜索
         :type FilterDomain: str
+        :param Status: 运行状态 0 代表未运行  1 正在运行  2 运行异常 
+        :type Status: str
         """
         self.Offset = None
         self.Limit = None
         self.FilterDomain = None
+        self.Status = None
 
 
     def _deserialize(self, params):
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
         self.FilterDomain = params.get("FilterDomain")
+        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5846,6 +5897,8 @@ class DescribeNewL7RulesRequest(AbstractModel):
         :type ProtocolList: list of str
         :param Cname: 高防IP实例的Cname
         :type Cname: str
+        :param Export: 默认为false，当为true时，将不对各个规则做策略检查，直接导出所有规则
+        :type Export: bool
         """
         self.Business = None
         self.StatusList = None
@@ -5855,6 +5908,7 @@ class DescribeNewL7RulesRequest(AbstractModel):
         self.Offset = None
         self.ProtocolList = None
         self.Cname = None
+        self.Export = None
 
 
     def _deserialize(self, params):
@@ -5866,6 +5920,7 @@ class DescribeNewL7RulesRequest(AbstractModel):
         self.Offset = params.get("Offset")
         self.ProtocolList = params.get("ProtocolList")
         self.Cname = params.get("Cname")
+        self.Export = params.get("Export")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6002,8 +6057,6 @@ class DescribeOverviewCCTrendRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Business: 大禹子产品代号（bgpip表示高防IP；bgp-multip表示共享包；basic表示DDoS基础防护）
-        :type Business: str
         :param Period: 统计粒度，取值[300(5分钟)，3600(小时)，86400(天)]
         :type Period: int
         :param StartTime: 统计开始时间
@@ -6012,26 +6065,28 @@ class DescribeOverviewCCTrendRequest(AbstractModel):
         :type EndTime: str
         :param MetricName: 指标，取值[inqps(总请求峰值，dropqps(攻击请求峰值))，incount(请求次数), dropcount(攻击次数)]
         :type MetricName: str
+        :param Business: 大禹子产品代号（bgpip表示高防IP；bgp-multip表示共享包；basic表示DDoS基础防护）
+        :type Business: str
         :param IpList: 资源的IP
         :type IpList: list of str
         :param Id: 资源实例ID
         :type Id: str
         """
-        self.Business = None
         self.Period = None
         self.StartTime = None
         self.EndTime = None
         self.MetricName = None
+        self.Business = None
         self.IpList = None
         self.Id = None
 
 
     def _deserialize(self, params):
-        self.Business = params.get("Business")
         self.Period = params.get("Period")
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
         self.MetricName = params.get("MetricName")
+        self.Business = params.get("Business")
         self.IpList = params.get("IpList")
         self.Id = params.get("Id")
         memeber_set = set(params.keys())
@@ -6145,8 +6200,6 @@ class DescribeOverviewDDoSTrendRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Business: 大禹子产品代号（bgpip表示高防IP；bgp-multip表示高防包；basic表示DDoS基础防护）
-        :type Business: str
         :param Period: 统计粒度，取值[300(5分钟)，3600(小时)，86400(天)]
         :type Period: int
         :param StartTime: 统计开始时间
@@ -6155,26 +6208,28 @@ class DescribeOverviewDDoSTrendRequest(AbstractModel):
         :type EndTime: str
         :param MetricName: 指标，取值[bps(攻击流量带宽，pps(攻击包速率))]
         :type MetricName: str
+        :param Business: 大禹子产品代号（bgpip表示高防IP；bgp-multip表示高防包；basic表示DDoS基础防护）
+        :type Business: str
         :param IpList: 资源实例的IP列表
         :type IpList: list of str
         :param Id: 资源实例ID
         :type Id: str
         """
-        self.Business = None
         self.Period = None
         self.StartTime = None
         self.EndTime = None
         self.MetricName = None
+        self.Business = None
         self.IpList = None
         self.Id = None
 
 
     def _deserialize(self, params):
-        self.Business = params.get("Business")
         self.Period = params.get("Period")
         self.StartTime = params.get("StartTime")
         self.EndTime = params.get("EndTime")
         self.MetricName = params.get("MetricName")
+        self.Business = params.get("Business")
         self.IpList = params.get("IpList")
         self.Id = params.get("Id")
         memeber_set = set(params.keys())
@@ -6486,11 +6541,15 @@ other(托管IP)
         :type DeviceType: str
         :param InstanceId: IP所属的云产品实例ID，例如是弹性网卡的IP，InstanceId为弹性网卡的ID(eni-*); 如果是托管IP没有对应的资源实例ID,InstanceId为""
         :type InstanceId: str
+        :param Domain: 域名化资产对应的域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
         """
         self.Ip = None
         self.BizType = None
         self.DeviceType = None
         self.InstanceId = None
+        self.Domain = None
 
 
     def _deserialize(self, params):
@@ -6498,6 +6557,7 @@ other(托管IP)
         self.BizType = params.get("BizType")
         self.DeviceType = params.get("DeviceType")
         self.InstanceId = params.get("InstanceId")
+        self.Domain = params.get("Domain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6663,11 +6723,15 @@ class IPLineInfo(AbstractModel):
         :type Cname: str
         :param ResourceFlag: 资源flag，0：高防包资源，1：高防IP资源，2：非高防资源IP
         :type ResourceFlag: int
+        :param Domain: 域名化资产对应的域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
         """
         self.Type = None
         self.Eip = None
         self.Cname = None
         self.ResourceFlag = None
+        self.Domain = None
 
 
     def _deserialize(self, params):
@@ -6675,6 +6739,7 @@ class IPLineInfo(AbstractModel):
         self.Eip = params.get("Eip")
         self.Cname = params.get("Cname")
         self.ResourceFlag = params.get("ResourceFlag")
+        self.Domain = params.get("Domain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6826,7 +6891,7 @@ class L4RuleSource(AbstractModel):
         r"""
         :param Source: 回源IP或域名
         :type Source: str
-        :param Weight: 权重值，取值[0,100]
+        :param Weight: 权重值，取值[0,100]，暂不支持
         :type Weight: int
         :param Port: 8000
 注意：此字段可能返回 null，表示取不到有效值。

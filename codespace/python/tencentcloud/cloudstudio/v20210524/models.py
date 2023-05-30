@@ -199,14 +199,18 @@ class CreateWorkspaceByTemplateRequest(AbstractModel):
         :type CloudStudioSessionTeam: str
         :param TemplateId: 模板ID
         :type TemplateId: int
+        :param Name: 工作空间名称
+        :type Name: str
         """
         self.CloudStudioSessionTeam = None
         self.TemplateId = None
+        self.Name = None
 
 
     def _deserialize(self, params):
         self.CloudStudioSessionTeam = params.get("CloudStudioSessionTeam")
         self.TemplateId = params.get("TemplateId")
+        self.Name = params.get("Name")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -630,6 +634,52 @@ class DescribeWorkspaceEnvListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeWorkspaceIsReadyRequest(AbstractModel):
+    """DescribeWorkspaceIsReady请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SpaceKey: 工作空间 spaceKey
+        :type SpaceKey: str
+        """
+        self.SpaceKey = None
+
+
+    def _deserialize(self, params):
+        self.SpaceKey = params.get("SpaceKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeWorkspaceIsReadyResponse(AbstractModel):
+    """DescribeWorkspaceIsReady返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 工作空间是否就绪
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: bool
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeWorkspaceNameExistRequest(AbstractModel):
     """DescribeWorkspaceNameExist请求参数结构体
 
@@ -669,13 +719,20 @@ class DescribeWorkspaceNameExistResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param Data: 工作空间信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.cloudstudio.v20210524.models.WorkspaceInfoDTO`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = WorkspaceInfoDTO()
+            self.Data._deserialize(params.get("Data"))
         self.RequestId = params.get("RequestId")
 
 
@@ -1545,14 +1602,19 @@ class WorkspaceInfo(AbstractModel):
         :param SpaceKey: 工作空间标识
 注意：此字段可能返回 null，表示取不到有效值。
         :type SpaceKey: str
+        :param Name: 工作空间名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
         """
         self.WorkspaceId = None
         self.SpaceKey = None
+        self.Name = None
 
 
     def _deserialize(self, params):
         self.WorkspaceId = params.get("WorkspaceId")
         self.SpaceKey = params.get("SpaceKey")
+        self.Name = params.get("Name")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1985,10 +2047,8 @@ class WorkspaceTokenDTO(AbstractModel):
     def __init__(self):
         r"""
         :param SpaceKey: 工作空间 SpaceKey
-注意：此字段可能返回 null，表示取不到有效值。
         :type SpaceKey: str
         :param TokenExpiredLimitSec: token过期时间，单位是秒，默认 3600
-注意：此字段可能返回 null，表示取不到有效值。
         :type TokenExpiredLimitSec: int
         """
         self.SpaceKey = None

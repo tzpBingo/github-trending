@@ -37,6 +37,9 @@ __all__ = (  # Keep this alphabetically ordered
     "BotCommandScopeChatAdministrators",
     "BotCommandScopeChatMember",
     "BotCommandScopeDefault",
+    "BotDescription",
+    "BotName",
+    "BotShortDescription",
     "CallbackGame",
     "CallbackQuery",
     "Chat",
@@ -100,6 +103,7 @@ __all__ = (  # Keep this alphabetically ordered
     "InlineQueryResultLocation",
     "InlineQueryResultMpeg4Gif",
     "InlineQueryResultPhoto",
+    "InlineQueryResultsButton",
     "InlineQueryResultVenue",
     "InlineQueryResultVideo",
     "InlineQueryResultVoice",
@@ -114,6 +118,7 @@ __all__ = (  # Keep this alphabetically ordered
     "InputMediaPhoto",
     "InputMediaVideo",
     "InputMessageContent",
+    "InputSticker",
     "InputTextMessageContent",
     "InputVenueMessageContent",
     "Invoice",
@@ -166,6 +171,7 @@ __all__ = (  # Keep this alphabetically ordered
     "Sticker",
     "StickerSet",
     "SuccessfulPayment",
+    "SwitchInlineQueryChosenChat",
     "TelegramObject",
     "Update",
     "User",
@@ -200,6 +206,8 @@ from ._botcommandscope import (
     BotCommandScopeChatMember,
     BotCommandScopeDefault,
 )
+from ._botdescription import BotDescription, BotShortDescription
+from ._botname import BotName
 from ._callbackquery import CallbackQuery
 from ._chat import Chat
 from ._chatadministratorrights import ChatAdministratorRights
@@ -234,6 +242,7 @@ from ._files.inputmedia import (
     InputMediaPhoto,
     InputMediaVideo,
 )
+from ._files.inputsticker import InputSticker
 from ._files.location import Location
 from ._files.photosize import PhotoSize
 from ._files.sticker import MaskPosition, Sticker, StickerSet
@@ -275,6 +284,7 @@ from ._inline.inlinequeryresultgif import InlineQueryResultGif
 from ._inline.inlinequeryresultlocation import InlineQueryResultLocation
 from ._inline.inlinequeryresultmpeg4gif import InlineQueryResultMpeg4Gif
 from ._inline.inlinequeryresultphoto import InlineQueryResultPhoto
+from ._inline.inlinequeryresultsbutton import InlineQueryResultsButton
 from ._inline.inlinequeryresultvenue import InlineQueryResultVenue
 from ._inline.inlinequeryresultvideo import InlineQueryResultVideo
 from ._inline.inlinequeryresultvoice import InlineQueryResultVoice
@@ -331,6 +341,7 @@ from ._replykeyboardmarkup import ReplyKeyboardMarkup
 from ._replykeyboardremove import ReplyKeyboardRemove
 from ._sentwebappmessage import SentWebAppMessage
 from ._shared import ChatShared, UserShared
+from ._switchinlinequerychosenchat import SwitchInlineQueryChosenChat
 from ._telegramobject import TelegramObject
 from ._update import Update
 from ._user import User

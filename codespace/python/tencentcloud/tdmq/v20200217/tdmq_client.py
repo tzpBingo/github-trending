@@ -358,6 +358,29 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateRabbitMQUser(self, request):
+        """创建RabbitMQ的用户
+
+        :param request: Request instance for CreateRabbitMQUser.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateRabbitMQUserRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.CreateRabbitMQUserResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateRabbitMQUser", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateRabbitMQUserResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateRabbitMQVipInstance(self, request):
         """创建RabbitMQ专享版实例
 
@@ -372,6 +395,29 @@ class TdmqClient(AbstractClient):
             body = self.call("CreateRabbitMQVipInstance", params, headers=headers)
             response = json.loads(body)
             model = models.CreateRabbitMQVipInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateRabbitMQVirtualHost(self, request):
+        """创建RabbitMQ的vhost
+
+        :param request: Request instance for CreateRabbitMQVirtualHost.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateRabbitMQVirtualHostRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.CreateRabbitMQVirtualHostResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateRabbitMQVirtualHost", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateRabbitMQVirtualHostResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1553,6 +1599,52 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribePulsarProInstanceDetail(self, request):
+        """获取Pulsar专业版集群实例信息
+
+        :param request: Request instance for DescribePulsarProInstanceDetail.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribePulsarProInstanceDetailRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribePulsarProInstanceDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribePulsarProInstanceDetail", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribePulsarProInstanceDetailResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribePulsarProInstances(self, request):
+        """查询用户已购的Pulsar专业版实例列表
+
+        :param request: Request instance for DescribePulsarProInstances.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribePulsarProInstancesRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribePulsarProInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribePulsarProInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribePulsarProInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeRabbitMQNodeList(self, request):
         """RabbitMQ专享版查询节点列表
 
@@ -1682,6 +1774,29 @@ class TdmqClient(AbstractClient):
             body = self.call("DescribeRocketMQGroups", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeRocketMQGroupsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeRocketMQMsg(self, request):
+        """rocketmq消息详情
+
+        :param request: Request instance for DescribeRocketMQMsg.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQMsgRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQMsgResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRocketMQMsg", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRocketMQMsgResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2148,6 +2263,29 @@ class TdmqClient(AbstractClient):
             body = self.call("ModifyRocketMQGroup", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyRocketMQGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyRocketMQInstanceSpec(self, request):
+        """本API用于修改RocketMQ专享实例配置，可以支持实例规格、节点数和存储的升配和实例规格的降配。本API发起订单并成功支付后进入实例配置变更的流程，可通过DescribeRocketMQVipInstances查询实例是否已变更完成。
+
+        :param request: Request instance for ModifyRocketMQInstanceSpec.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.ModifyRocketMQInstanceSpecRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.ModifyRocketMQInstanceSpecResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyRocketMQInstanceSpec", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyRocketMQInstanceSpecResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

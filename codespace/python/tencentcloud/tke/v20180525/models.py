@@ -137,7 +137,7 @@ class AddExistedInstancesRequest(AbstractModel):
 
 参数InstanceAdvancedSettingsOverride数组的长度应与InstanceIds数组一致；当长度大于InstanceIds数组长度时将报错；当长度小于InstanceIds数组时，没有对应配置的instace将使用默认配置。
         :type InstanceAdvancedSettingsOverrides: list of InstanceAdvancedSettings
-        :param ImageId: 节点镜像（节点选项时，该参数是必传参数）
+        :param ImageId: 节点镜像
         :type ImageId: str
         """
         self.ClusterId = None
@@ -286,16 +286,20 @@ class AddVpcCniSubnetsRequest(AbstractModel):
         :type SubnetIds: list of str
         :param VpcId: 集群所属的VPC的ID
         :type VpcId: str
+        :param SkipAddingNonMasqueradeCIDRs: 是否同步添加 vpc 网段到 ip-masq-agent-config 的 NonMasqueradeCIDRs 字段，默认 false 会同步添加
+        :type SkipAddingNonMasqueradeCIDRs: bool
         """
         self.ClusterId = None
         self.SubnetIds = None
         self.VpcId = None
+        self.SkipAddingNonMasqueradeCIDRs = None
 
 
     def _deserialize(self, params):
         self.ClusterId = params.get("ClusterId")
         self.SubnetIds = params.get("SubnetIds")
         self.VpcId = params.get("VpcId")
+        self.SkipAddingNonMasqueradeCIDRs = params.get("SkipAddingNonMasqueradeCIDRs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -434,6 +438,64 @@ class AutoscalingAdded(AbstractModel):
         self.Initializing = params.get("Initializing")
         self.Normal = params.get("Normal")
         self.Total = params.get("Total")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BackupStorageLocation(AbstractModel):
+    """仓储仓库信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 备份仓库名称	
+        :type Name: str
+        :param StorageRegion: 存储仓库所属地域，比如COS广州(ap-guangzhou)	
+        :type StorageRegion: str
+        :param Provider: 存储服务提供方，默认腾讯云	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Provider: str
+        :param Bucket: 对象存储桶名称，如果是COS必须是tke-backup-前缀开头	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
+        :param Path: 对象存储桶路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Path: str
+        :param State: 存储仓库状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type State: str
+        :param Message: 详细状态信息	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param LastValidationTime: 最后一次检查时间	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastValidationTime: str
+        """
+        self.Name = None
+        self.StorageRegion = None
+        self.Provider = None
+        self.Bucket = None
+        self.Path = None
+        self.State = None
+        self.Message = None
+        self.LastValidationTime = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.StorageRegion = params.get("StorageRegion")
+        self.Provider = params.get("Provider")
+        self.Bucket = params.get("Bucket")
+        self.Path = params.get("Path")
+        self.State = params.get("State")
+        self.Message = params.get("Message")
+        self.LastValidationTime = params.get("LastValidationTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -782,7 +844,7 @@ class Cluster(AbstractModel):
         :param TagSpecification: 标签描述列表。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TagSpecification: list of TagSpecification
-        :param ClusterStatus: 集群状态 (Running 运行中  Creating 创建中 Idling 闲置中  Abnormal 异常  )
+        :param ClusterStatus: 集群状态 (Trading 集群开通中,Creating 创建中,Running 运行中,Deleting 删除中,Idling 闲置中,Recovering 唤醒中,Scaling 规模调整中,Upgrading 升级中,WaittingForConnect 等待注册,Trading 集群开通中,Isolated 欠费隔离中,Pause 集群升级暂停,NodeUpgrading 节点升级中,RuntimeUpgrading 节点运行时升级中,MasterScaling Master扩缩容中,ClusterLevelUpgrading 调整规格中,ResourceIsolate 隔离中,ResourceIsolated 已隔离,ResourceReverse 冲正中,Abnormal 异常)
         :type ClusterStatus: str
         :param Property: 集群属性(包括集群不同属性的MAP，属性字段包括NodeNameType (lan-ip模式和hostname 模式，默认无lan-ip模式))
 注意：此字段可能返回 null，表示取不到有效值。
@@ -819,6 +881,9 @@ class Cluster(AbstractModel):
         :param RuntimeVersion: 运行时版本
 注意：此字段可能返回 null，表示取不到有效值。
         :type RuntimeVersion: str
+        :param ClusterEtcdNodeNum: 集群当前etcd数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterEtcdNodeNum: int
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -843,6 +908,7 @@ class Cluster(AbstractModel):
         self.AutoUpgradeClusterLevel = None
         self.QGPUShareEnable = None
         self.RuntimeVersion = None
+        self.ClusterEtcdNodeNum = None
 
 
     def _deserialize(self, params):
@@ -876,6 +942,7 @@ class Cluster(AbstractModel):
         self.AutoUpgradeClusterLevel = params.get("AutoUpgradeClusterLevel")
         self.QGPUShareEnable = params.get("QGPUShareEnable")
         self.RuntimeVersion = params.get("RuntimeVersion")
+        self.ClusterEtcdNodeNum = params.get("ClusterEtcdNodeNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1574,6 +1641,10 @@ class ClusterNetworkSettings(AbstractModel):
         :param Ipv6ServiceCIDR: 用于分配service的IP range，由系统自动分配
 注意：此字段可能返回 null，表示取不到有效值。
         :type Ipv6ServiceCIDR: str
+        :param CiliumMode: 集群Cilium Mode配置
+- clusterIP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CiliumMode: str
         """
         self.ClusterCIDR = None
         self.IgnoreClusterCIDRConflict = None
@@ -1588,6 +1659,7 @@ class ClusterNetworkSettings(AbstractModel):
         self.IgnoreServiceCIDRConflict = None
         self.IsDualStack = None
         self.Ipv6ServiceCIDR = None
+        self.CiliumMode = None
 
 
     def _deserialize(self, params):
@@ -1604,6 +1676,7 @@ class ClusterNetworkSettings(AbstractModel):
         self.IgnoreServiceCIDRConflict = params.get("IgnoreServiceCIDRConflict")
         self.IsDualStack = params.get("IsDualStack")
         self.Ipv6ServiceCIDR = params.get("Ipv6ServiceCIDR")
+        self.CiliumMode = params.get("CiliumMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1965,6 +2038,63 @@ class ControllerStatus(AbstractModel):
         
 
 
+class CreateBackupStorageLocationRequest(AbstractModel):
+    """CreateBackupStorageLocation请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StorageRegion: 存储仓库所属地域，比如COS广州(ap-guangzhou)
+        :type StorageRegion: str
+        :param Bucket: 对象存储桶名称，如果是COS必须是tke-backup前缀开头
+        :type Bucket: str
+        :param Name: 备份仓库名称
+        :type Name: str
+        :param Provider: 存储服务提供方，默认腾讯云
+        :type Provider: str
+        :param Path: 对象存储桶路径
+        :type Path: str
+        """
+        self.StorageRegion = None
+        self.Bucket = None
+        self.Name = None
+        self.Provider = None
+        self.Path = None
+
+
+    def _deserialize(self, params):
+        self.StorageRegion = params.get("StorageRegion")
+        self.Bucket = params.get("Bucket")
+        self.Name = params.get("Name")
+        self.Provider = params.get("Provider")
+        self.Path = params.get("Path")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateBackupStorageLocationResponse(AbstractModel):
+    """CreateBackupStorageLocation返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class CreateClusterEndpointRequest(AbstractModel):
     """CreateClusterEndpoint请求参数结构体
 
@@ -1982,7 +2112,12 @@ class CreateClusterEndpointRequest(AbstractModel):
         :type Domain: str
         :param SecurityGroup: 使用的安全组，只有外网访问需要传递（开启外网访问时必传）
         :type SecurityGroup: str
-        :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置
+        :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置，是一个json格式化后的字符串：{"InternetAccessible":{"InternetChargeType":"TRAFFIC_POSTPAID_BY_HOUR","InternetMaxBandwidthOut":"200"},"VipIsp":"","BandwidthPackageId":""}。
+各个参数意义：
+InternetAccessible.InternetChargeType含义：TRAFFIC_POSTPAID_BY_HOUR按流量按小时后计费;BANDWIDTH_POSTPAID_BY_HOUR 按带宽按小时后计费;InternetAccessible.BANDWIDTH_PACKAGE 按带宽包计费。
+InternetMaxBandwidthOut含义：最大出带宽，单位Mbps，范围支持0到2048，默认值10。
+VipIsp含义：CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
+BandwidthPackageId含义：带宽包ID，指定此参数时，网络计费方式（InternetAccessible.InternetChargeType）只支持按带宽包计费（BANDWIDTH_PACKAGE。
         :type ExtensiveParameters: str
         """
         self.ClusterId = None
@@ -2265,7 +2400,7 @@ class CreateClusterReleaseRequest(AbstractModel):
         :type Chart: str
         :param Values: 自定义参数
         :type Values: :class:`tencentcloud.tke.v20180525.models.ReleaseValues`
-        :param ChartFrom: 制品来源，范围：tke 应用市场/第三方chart
+        :param ChartFrom: 制品来源，范围：tke-market 或 other
         :type ChartFrom: str
         :param ChartVersion: 制品版本
         :type ChartVersion: str
@@ -3786,6 +3921,8 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         :type EdgeVersion: str
         :param RegistryPrefix: 边缘组件镜像仓库前缀
         :type RegistryPrefix: str
+        :param TagSpecification: 集群绑定的云标签
+        :type TagSpecification: :class:`tencentcloud.tke.v20180525.models.TagSpecification`
         """
         self.K8SVersion = None
         self.VpcId = None
@@ -3801,6 +3938,7 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         self.ChargeType = None
         self.EdgeVersion = None
         self.RegistryPrefix = None
+        self.TagSpecification = None
 
 
     def _deserialize(self, params):
@@ -3822,6 +3960,9 @@ class CreateTKEEdgeClusterRequest(AbstractModel):
         self.ChargeType = params.get("ChargeType")
         self.EdgeVersion = params.get("EdgeVersion")
         self.RegistryPrefix = params.get("RegistryPrefix")
+        if params.get("TagSpecification") is not None:
+            self.TagSpecification = TagSpecification()
+            self.TagSpecification._deserialize(params.get("TagSpecification"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3995,6 +4136,47 @@ class DataDisk(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class DeleteBackupStorageLocationRequest(AbstractModel):
+    """DeleteBackupStorageLocation请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 备份仓库名称
+        :type Name: str
+        """
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteBackupStorageLocationResponse(AbstractModel):
+    """DeleteBackupStorageLocation返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class DeleteClusterAsGroupsRequest(AbstractModel):
@@ -5341,6 +5523,57 @@ class DescribeAvailableTKEEdgeVersionResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeBackupStorageLocationsRequest(AbstractModel):
+    """DescribeBackupStorageLocations请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Names: 多个备份仓库名称，如果不填写，默认返回当前地域所有存储仓库名称
+        :type Names: list of str
+        """
+        self.Names = None
+
+
+    def _deserialize(self, params):
+        self.Names = params.get("Names")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBackupStorageLocationsResponse(AbstractModel):
+    """DescribeBackupStorageLocations返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BackupStorageLocationSet: 详细备份仓库信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BackupStorageLocationSet: list of BackupStorageLocation
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BackupStorageLocationSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("BackupStorageLocationSet") is not None:
+            self.BackupStorageLocationSet = []
+            for item in params.get("BackupStorageLocationSet"):
+                obj = BackupStorageLocation()
+                obj._deserialize(item)
+                self.BackupStorageLocationSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeClusterAsGroupOptionRequest(AbstractModel):
     """DescribeClusterAsGroupOption请求参数结构体
 
@@ -5803,6 +6036,84 @@ class DescribeClusterEndpointsResponse(AbstractModel):
         self.ClusterExternalDomain = params.get("ClusterExternalDomain")
         self.ClusterIntranetDomain = params.get("ClusterIntranetDomain")
         self.SecurityGroup = params.get("SecurityGroup")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeClusterInspectionResultsOverviewRequest(AbstractModel):
+    """DescribeClusterInspectionResultsOverview请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterIds: Array of String	目标集群列表，为空查询用户所有集群
+
+        :type ClusterIds: list of str
+        :param GroupBy: 聚合字段信息，概览结果按照 GroupBy 信息聚合后返回，可选参数：
+catalogue.first：按一级分类聚合
+catalogue.second：按二级分类聚合
+        :type GroupBy: list of str
+        """
+        self.ClusterIds = None
+        self.GroupBy = None
+
+
+    def _deserialize(self, params):
+        self.ClusterIds = params.get("ClusterIds")
+        self.GroupBy = params.get("GroupBy")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeClusterInspectionResultsOverviewResponse(AbstractModel):
+    """DescribeClusterInspectionResultsOverview返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Statistics: 诊断结果统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statistics: list of KubeJarvisStateStatistic
+        :param Diagnostics: 诊断结果概览
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Diagnostics: list of KubeJarvisStateDiagnosticOverview
+        :param InspectionOverview: 集群诊断结果概览
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InspectionOverview: list of KubeJarvisStateInspectionOverview
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Statistics = None
+        self.Diagnostics = None
+        self.InspectionOverview = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Statistics") is not None:
+            self.Statistics = []
+            for item in params.get("Statistics"):
+                obj = KubeJarvisStateStatistic()
+                obj._deserialize(item)
+                self.Statistics.append(obj)
+        if params.get("Diagnostics") is not None:
+            self.Diagnostics = []
+            for item in params.get("Diagnostics"):
+                obj = KubeJarvisStateDiagnosticOverview()
+                obj._deserialize(item)
+                self.Diagnostics.append(obj)
+        if params.get("InspectionOverview") is not None:
+            self.InspectionOverview = []
+            for item in params.get("InspectionOverview"):
+                obj = KubeJarvisStateInspectionOverview()
+                obj._deserialize(item)
+                self.InspectionOverview.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -6410,6 +6721,8 @@ class DescribeClusterReleasesRequest(AbstractModel):
         :type Limit: int
         :param Offset: 页偏移量
         :type Offset: int
+        :param ClusterType: 集群类型, 目前支持传入 tke, eks, tkeedge, external 
+        :type ClusterType: str
         :param Namespace: helm Release 安装的namespace
         :type Namespace: str
         :param ReleaseName: helm Release 的名字
@@ -6420,6 +6733,7 @@ class DescribeClusterReleasesRequest(AbstractModel):
         self.ClusterId = None
         self.Limit = None
         self.Offset = None
+        self.ClusterType = None
         self.Namespace = None
         self.ReleaseName = None
         self.ChartName = None
@@ -6429,6 +6743,7 @@ class DescribeClusterReleasesRequest(AbstractModel):
         self.ClusterId = params.get("ClusterId")
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
+        self.ClusterType = params.get("ClusterType")
         self.Namespace = params.get("Namespace")
         self.ReleaseName = params.get("ReleaseName")
         self.ChartName = params.get("ChartName")
@@ -9540,6 +9855,8 @@ class DescribeTKEEdgeClusterCredentialResponse(AbstractModel):
         :type Health: str
         :param GridDaemon: 是否部署GridDaemon以支持headless service
         :type GridDaemon: str
+        :param UnitCluster: 公网访问kins集群
+        :type UnitCluster: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -9551,6 +9868,7 @@ class DescribeTKEEdgeClusterCredentialResponse(AbstractModel):
         self.HealthRegion = None
         self.Health = None
         self.GridDaemon = None
+        self.UnitCluster = None
         self.RequestId = None
 
 
@@ -9574,6 +9892,7 @@ class DescribeTKEEdgeClusterCredentialResponse(AbstractModel):
         self.HealthRegion = params.get("HealthRegion")
         self.Health = params.get("Health")
         self.GridDaemon = params.get("GridDaemon")
+        self.UnitCluster = params.get("UnitCluster")
         self.RequestId = params.get("RequestId")
 
 
@@ -9645,7 +9964,7 @@ class DescribeTKEEdgeClustersRequest(AbstractModel):
         :type Offset: int
         :param Limit: 最大输出条数，默认20
         :type Limit: int
-        :param Filters: 过滤条件,当前只支持按照单个条件ClusterName进行过滤
+        :param Filters: 过滤条件,当前只支持按照ClusterName和云标签进行过滤,云标签过滤格式Tags:["key1:value1","key2:value2"]
         :type Filters: list of Filter
         """
         self.ClusterIds = None
@@ -10460,6 +10779,12 @@ class EdgeCluster(AbstractModel):
         :param ChargeType: 集群付费模式，支持POSTPAID_BY_HOUR或者PREPAID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ChargeType: str
+        :param EdgeVersion: 边缘集群组件的版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EdgeVersion: str
+        :param TagSpecification: 集群绑定的云标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagSpecification: :class:`tencentcloud.tke.v20180525.models.TagSpecification`
         """
         self.ClusterId = None
         self.ClusterName = None
@@ -10476,6 +10801,8 @@ class EdgeCluster(AbstractModel):
         self.Level = None
         self.AutoUpgradeClusterLevel = None
         self.ChargeType = None
+        self.EdgeVersion = None
+        self.TagSpecification = None
 
 
     def _deserialize(self, params):
@@ -10496,6 +10823,10 @@ class EdgeCluster(AbstractModel):
         self.Level = params.get("Level")
         self.AutoUpgradeClusterLevel = params.get("AutoUpgradeClusterLevel")
         self.ChargeType = params.get("ChargeType")
+        self.EdgeVersion = params.get("EdgeVersion")
+        if params.get("TagSpecification") is not None:
+            self.TagSpecification = TagSpecification()
+            self.TagSpecification._deserialize(params.get("TagSpecification"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11144,12 +11475,15 @@ class EnableVpcCniNetworkTypeRequest(AbstractModel):
         :type Subnets: list of str
         :param ExpiredSeconds: 在固定IP模式下，Pod销毁后退还IP的时间，传参必须大于300；不传默认IP永不销毁。
         :type ExpiredSeconds: int
+        :param SkipAddingNonMasqueradeCIDRs: 是否同步添加 vpc 网段到 ip-masq-agent-config 的 NonMasqueradeCIDRs 字段，默认 false 会同步添加
+        :type SkipAddingNonMasqueradeCIDRs: bool
         """
         self.ClusterId = None
         self.VpcCniType = None
         self.EnableStaticIp = None
         self.Subnets = None
         self.ExpiredSeconds = None
+        self.SkipAddingNonMasqueradeCIDRs = None
 
 
     def _deserialize(self, params):
@@ -11158,6 +11492,7 @@ class EnableVpcCniNetworkTypeRequest(AbstractModel):
         self.EnableStaticIp = params.get("EnableStaticIp")
         self.Subnets = params.get("Subnets")
         self.ExpiredSeconds = params.get("ExpiredSeconds")
+        self.SkipAddingNonMasqueradeCIDRs = params.get("SkipAddingNonMasqueradeCIDRs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12733,6 +13068,418 @@ pending 还未开始
         
 
 
+class KubeJarvisStateCatalogue(AbstractModel):
+    """集群巡检诊断的默认目录类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CatalogueLevel: 目录级别，支持参数：
+first：一级目录
+second：二级目录
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CatalogueLevel: str
+        :param CatalogueName: 目录名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CatalogueName: str
+        """
+        self.CatalogueLevel = None
+        self.CatalogueName = None
+
+
+    def _deserialize(self, params):
+        self.CatalogueLevel = params.get("CatalogueLevel")
+        self.CatalogueName = params.get("CatalogueName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateDiagnostic(AbstractModel):
+    """集群巡检诊断结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 诊断开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param EndTime: 诊断结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param Catalogues: 诊断目录
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Catalogues: list of KubeJarvisStateCatalogue
+        :param Type: 诊断类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param Name: 诊断名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param Desc: 诊断描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Desc: str
+        :param Results: 诊断结果列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Results: list of KubeJarvisStateResultsItem
+        :param Statistics: 诊断结果统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statistics: list of KubeJarvisStateStatistic
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.Catalogues = None
+        self.Type = None
+        self.Name = None
+        self.Desc = None
+        self.Results = None
+        self.Statistics = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        if params.get("Catalogues") is not None:
+            self.Catalogues = []
+            for item in params.get("Catalogues"):
+                obj = KubeJarvisStateCatalogue()
+                obj._deserialize(item)
+                self.Catalogues.append(obj)
+        self.Type = params.get("Type")
+        self.Name = params.get("Name")
+        self.Desc = params.get("Desc")
+        if params.get("Results") is not None:
+            self.Results = []
+            for item in params.get("Results"):
+                obj = KubeJarvisStateResultsItem()
+                obj._deserialize(item)
+                self.Results.append(obj)
+        if params.get("Statistics") is not None:
+            self.Statistics = []
+            for item in params.get("Statistics"):
+                obj = KubeJarvisStateStatistic()
+                obj._deserialize(item)
+                self.Statistics.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateDiagnosticOverview(AbstractModel):
+    """集群巡检诊断概览
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Catalogues: 诊断目录
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Catalogues: list of KubeJarvisStateCatalogue
+        :param Statistics: 诊断结果统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statistics: list of KubeJarvisStateStatistic
+        """
+        self.Catalogues = None
+        self.Statistics = None
+
+
+    def _deserialize(self, params):
+        if params.get("Catalogues") is not None:
+            self.Catalogues = []
+            for item in params.get("Catalogues"):
+                obj = KubeJarvisStateCatalogue()
+                obj._deserialize(item)
+                self.Catalogues.append(obj)
+        if params.get("Statistics") is not None:
+            self.Statistics = []
+            for item in params.get("Statistics"):
+                obj = KubeJarvisStateStatistic()
+                obj._deserialize(item)
+                self.Statistics.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateInspectionOverview(AbstractModel):
+    """集群巡检检查结果概览
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        :param Statistics: 诊断结果统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statistics: list of KubeJarvisStateStatistic
+        :param Diagnostics: 诊断结果详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Diagnostics: list of KubeJarvisStateDiagnosticOverview
+        """
+        self.ClusterId = None
+        self.Statistics = None
+        self.Diagnostics = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        if params.get("Statistics") is not None:
+            self.Statistics = []
+            for item in params.get("Statistics"):
+                obj = KubeJarvisStateStatistic()
+                obj._deserialize(item)
+                self.Statistics.append(obj)
+        if params.get("Diagnostics") is not None:
+            self.Diagnostics = []
+            for item in params.get("Diagnostics"):
+                obj = KubeJarvisStateDiagnosticOverview()
+                obj._deserialize(item)
+                self.Diagnostics.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateInspectionResult(AbstractModel):
+    """集群巡检检查结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        :param StartTime: 诊断开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param EndTime: 诊断结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param Statistics: 诊断结果统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statistics: list of KubeJarvisStateStatistic
+        :param Diagnostics: 诊断结果详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Diagnostics: list of KubeJarvisStateDiagnostic
+        :param Error: 查询巡检报告相关报错
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Error: str
+        """
+        self.ClusterId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Statistics = None
+        self.Diagnostics = None
+        self.Error = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        if params.get("Statistics") is not None:
+            self.Statistics = []
+            for item in params.get("Statistics"):
+                obj = KubeJarvisStateStatistic()
+                obj._deserialize(item)
+                self.Statistics.append(obj)
+        if params.get("Diagnostics") is not None:
+            self.Diagnostics = []
+            for item in params.get("Diagnostics"):
+                obj = KubeJarvisStateDiagnostic()
+                obj._deserialize(item)
+                self.Diagnostics.append(obj)
+        self.Error = params.get("Error")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateInspectionResultsItem(AbstractModel):
+    """集群巡检结果历史列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 巡检结果名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param Statistics: 诊断结果统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statistics: list of KubeJarvisStateStatistic
+        """
+        self.Name = None
+        self.Statistics = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        if params.get("Statistics") is not None:
+            self.Statistics = []
+            for item in params.get("Statistics"):
+                obj = KubeJarvisStateStatistic()
+                obj._deserialize(item)
+                self.Statistics.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateResultObjInfo(AbstractModel):
+    """集群巡检诊断对象信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PropertyName: 对象属性名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PropertyName: str
+        :param PropertyValue: 对象属性值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PropertyValue: str
+        """
+        self.PropertyName = None
+        self.PropertyValue = None
+
+
+    def _deserialize(self, params):
+        self.PropertyName = params.get("PropertyName")
+        self.PropertyValue = params.get("PropertyValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateResultsItem(AbstractModel):
+    """集群巡检诊断结果详情信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Level: 诊断结果级别
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Level: str
+        :param ObjName: 诊断对象名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ObjName: str
+        :param ObjInfo: 诊断对象信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ObjInfo: list of KubeJarvisStateResultObjInfo
+        :param Title: 诊断项标题
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Title: str
+        :param Desc: 诊断项描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Desc: str
+        :param Proposal: 诊断建议
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Proposal: str
+        :param ProposalDocUrl: 诊断建议文档链接
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProposalDocUrl: str
+        :param ProposalDocName: 诊断建议文档名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProposalDocName: str
+        """
+        self.Level = None
+        self.ObjName = None
+        self.ObjInfo = None
+        self.Title = None
+        self.Desc = None
+        self.Proposal = None
+        self.ProposalDocUrl = None
+        self.ProposalDocName = None
+
+
+    def _deserialize(self, params):
+        self.Level = params.get("Level")
+        self.ObjName = params.get("ObjName")
+        if params.get("ObjInfo") is not None:
+            self.ObjInfo = []
+            for item in params.get("ObjInfo"):
+                obj = KubeJarvisStateResultObjInfo()
+                obj._deserialize(item)
+                self.ObjInfo.append(obj)
+        self.Title = params.get("Title")
+        self.Desc = params.get("Desc")
+        self.Proposal = params.get("Proposal")
+        self.ProposalDocUrl = params.get("ProposalDocUrl")
+        self.ProposalDocName = params.get("ProposalDocName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class KubeJarvisStateStatistic(AbstractModel):
+    """集群巡检统计结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param HealthyLevel: 诊断结果的健康水平
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HealthyLevel: str
+        :param Count: 诊断结果的统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Count: int
+        """
+        self.HealthyLevel = None
+        self.Count = None
+
+
+    def _deserialize(self, params):
+        self.HealthyLevel = params.get("HealthyLevel")
+        self.Count = params.get("Count")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Label(AbstractModel):
     """k8s中标签，一般以数组的方式存在
 
@@ -12759,6 +13506,126 @@ class Label(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class ListClusterInspectionResultsItemsRequest(AbstractModel):
+    """ListClusterInspectionResultsItems请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 目标集群ID
+        :type ClusterId: str
+        :param StartTime: 查询历史结果的开始时间，Unix时间戳
+        :type StartTime: str
+        :param EndTime: 查询历史结果的结束时间，默认当前距离开始时间3天，Unix时间戳
+        :type EndTime: str
+        """
+        self.ClusterId = None
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ListClusterInspectionResultsItemsResponse(AbstractModel):
+    """ListClusterInspectionResultsItems返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InspectionResultsItems: 巡检结果历史列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InspectionResultsItems: list of KubeJarvisStateInspectionResultsItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InspectionResultsItems = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("InspectionResultsItems") is not None:
+            self.InspectionResultsItems = []
+            for item in params.get("InspectionResultsItems"):
+                obj = KubeJarvisStateInspectionResultsItem()
+                obj._deserialize(item)
+                self.InspectionResultsItems.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class ListClusterInspectionResultsRequest(AbstractModel):
+    """ListClusterInspectionResults请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterIds: 目标集群列表，为空查询用户所有集群
+
+        :type ClusterIds: list of str
+        :param Hide: 隐藏的字段信息，为了减少无效的字段返回，隐藏字段不会在返回值中返回。可选值：results
+
+        :type Hide: list of str
+        :param Name: 指定查询结果的报告名称，默认查询最新的每个集群只查询最新的一条
+        :type Name: str
+        """
+        self.ClusterIds = None
+        self.Hide = None
+        self.Name = None
+
+
+    def _deserialize(self, params):
+        self.ClusterIds = params.get("ClusterIds")
+        self.Hide = params.get("Hide")
+        self.Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ListClusterInspectionResultsResponse(AbstractModel):
+    """ListClusterInspectionResults返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InspectionResults: 集群诊断结果列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InspectionResults: list of KubeJarvisStateInspectionResult
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InspectionResults = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("InspectionResults") is not None:
+            self.InspectionResults = []
+            for item in params.get("InspectionResults"):
+                obj = KubeJarvisStateInspectionResult()
+                obj._deserialize(item)
+                self.InspectionResults.append(obj)
+        self.RequestId = params.get("RequestId")
 
 
 class LivenessOrReadinessProbe(AbstractModel):
@@ -16790,6 +17657,9 @@ class ServiceAccountAuthenticationOptions(AbstractModel):
 
     def __init__(self):
         r"""
+        :param UseTKEDefault: 使用TKE默认issuer和jwksuri
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UseTKEDefault: bool
         :param Issuer: service-account-issuer
 注意：此字段可能返回 null，表示取不到有效值。
         :type Issuer: str
@@ -16800,12 +17670,14 @@ class ServiceAccountAuthenticationOptions(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type AutoCreateDiscoveryAnonymousAuth: bool
         """
+        self.UseTKEDefault = None
         self.Issuer = None
         self.JWKSURI = None
         self.AutoCreateDiscoveryAnonymousAuth = None
 
 
     def _deserialize(self, params):
+        self.UseTKEDefault = params.get("UseTKEDefault")
         self.Issuer = params.get("Issuer")
         self.JWKSURI = params.get("JWKSURI")
         self.AutoCreateDiscoveryAnonymousAuth = params.get("AutoCreateDiscoveryAnonymousAuth")
@@ -17389,6 +18261,56 @@ class UninstallLogAgentResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateClusterKubeconfigRequest(AbstractModel):
+    """UpdateClusterKubeconfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param SubAccounts: 子账户Uin列表，传空默认为调用此接口的SubUin
+        :type SubAccounts: list of str
+        """
+        self.ClusterId = None
+        self.SubAccounts = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.SubAccounts = params.get("SubAccounts")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateClusterKubeconfigResponse(AbstractModel):
+    """UpdateClusterKubeconfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UpdatedSubAccounts: 已更新的子账户Uin列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedSubAccounts: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UpdatedSubAccounts = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.UpdatedSubAccounts = params.get("UpdatedSubAccounts")
         self.RequestId = params.get("RequestId")
 
 
@@ -17983,7 +18905,7 @@ class UpgradeClusterReleaseRequest(AbstractModel):
         :type Chart: str
         :param Values: 自定义参数，覆盖chart 中values.yaml 中的参数
         :type Values: :class:`tencentcloud.tke.v20180525.models.ReleaseValues`
-        :param ChartFrom: 制品来源，范围：tke-market/tcr/other
+        :param ChartFrom: 制品来源，范围：tke-market 或 other
         :type ChartFrom: str
         :param ChartVersion: 制品版本( 从第三安装时，不传这个参数）
         :type ChartVersion: str
@@ -18242,14 +19164,23 @@ class VirtualNodeSpec(AbstractModel):
         :type DisplayName: str
         :param SubnetId: 子网ID
         :type SubnetId: str
+        :param Tags: 腾讯云标签
+        :type Tags: list of Tag
         """
         self.DisplayName = None
         self.SubnetId = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
         self.DisplayName = params.get("DisplayName")
         self.SubnetId = params.get("SubnetId")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

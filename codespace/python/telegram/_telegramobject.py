@@ -58,6 +58,12 @@ class TelegramObject:
     The :mod:`pickle` and :func:`~copy.deepcopy` behavior of objects of this type are defined by
     :meth:`__getstate__`, :meth:`__setstate__` and :meth:`__deepcopy__`.
 
+    Tip:
+        Objects of this type can be serialized via Python's :mod:`pickle` module and pickled
+        objects from one version of PTB are usually loadable in future versions. However, we can
+        not guarantee that this compatibility will always be provided. At least a manual one-time
+        conversion of the data may be needed on major updates of the library.
+
     .. versionchanged:: 20.0
 
         * Removed argument and attribute ``bot`` for several subclasses. Use
@@ -92,7 +98,7 @@ class TelegramObject:
     # unless it's overridden
     __INIT_PARAMS_CHECK: Optional[Type["TelegramObject"]] = None
 
-    def __init__(self, *, api_kwargs: JSONDict = None) -> None:
+    def __init__(self, *, api_kwargs: Optional[JSONDict] = None) -> None:
         # Setting _frozen to `False` here means that classes without arguments still need to
         # implement __init__. However, with `True` would mean increased usage of
         # `with self._unfrozen()` in the `__init__` of subclasses and we have fewer empty
@@ -281,7 +287,7 @@ class TelegramObject:
 
         # Make sure that we have a `_bot` attribute. This is necessary, since __getstate__ omits
         # this as Bots are not pickable.
-        setattr(self, "_bot", None)
+        self._bot = None
 
         # get api_kwargs first because we may need to add entries to it (see try-except below)
         api_kwargs = cast(Dict[str, object], state.pop("api_kwargs", {}))
@@ -299,7 +305,7 @@ class TelegramObject:
         # and then set the rest as MappingProxyType attribute. Converting to MappingProxyType
         # is necessary, since __getstate__ converts it to a dict as MPT is not pickable.
         self._apply_api_kwargs(api_kwargs)
-        setattr(self, "api_kwargs", MappingProxyType(api_kwargs))
+        self.api_kwargs = MappingProxyType(api_kwargs)
 
         # Apply freezing if necessary
         # we .get(…) the setting for backwards compatibility with objects that were pickled
@@ -328,7 +334,7 @@ class TelegramObject:
         result = cls.__new__(cls)  # create a new instance
         memodict[id(self)] = result  # save the id of the object in the dict
 
-        setattr(result, "_frozen", False)  # unfreeze the new object for setting the attributes
+        result._frozen = False  # unfreeze the new object for setting the attributes
 
         # now we set the attributes in the deepcopied object
         for k in self._get_attrs_names(include_private=True):
@@ -440,7 +446,10 @@ class TelegramObject:
 
     @classmethod
     def _de_json(
-        cls: Type[Tele_co], data: Optional[JSONDict], bot: "Bot", api_kwargs: JSONDict = None
+        cls: Type[Tele_co],
+        data: Optional[JSONDict],
+        bot: "Bot",
+        api_kwargs: Optional[JSONDict] = None,
     ) -> Optional[Tele_co]:
         if data is None:
             return None

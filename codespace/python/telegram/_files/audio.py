@@ -46,6 +46,13 @@ class Audio(_BaseThumbedMedium):
         thumb (:class:`telegram.PhotoSize`, optional): Thumbnail of the album cover to
             which the music file belongs.
 
+            .. deprecated:: 20.2
+               |thumbargumentdeprecation| :paramref:`thumbnail`.
+        thumbnail (:class:`telegram.PhotoSize`, optional): Thumbnail of the album cover to
+            which the music file belongs.
+
+            .. versionadded:: 20.2
+
     Attributes:
         file_id (:obj:`str`): Identifier for this file, which can be used to download
             or reuse the file.
@@ -58,8 +65,10 @@ class Audio(_BaseThumbedMedium):
         file_name (:obj:`str`): Optional. Original filename as defined by sender.
         mime_type (:obj:`str`): Optional. MIME type of the file as defined by sender.
         file_size (:obj:`int`): Optional. File size in bytes.
-        thumb (:class:`telegram.PhotoSize`): Optional. Thumbnail of the album cover to
+        thumbnail (:class:`telegram.PhotoSize`): Optional. Thumbnail of the album cover to
             which the music file belongs.
+
+            .. versionadded:: 20.2
 
 
     """
@@ -71,20 +80,22 @@ class Audio(_BaseThumbedMedium):
         file_id: str,
         file_unique_id: str,
         duration: int,
-        performer: str = None,
-        title: str = None,
-        mime_type: str = None,
-        file_size: int = None,
-        thumb: PhotoSize = None,
-        file_name: str = None,
+        performer: Optional[str] = None,
+        title: Optional[str] = None,
+        mime_type: Optional[str] = None,
+        file_size: Optional[int] = None,
+        thumb: Optional[PhotoSize] = None,
+        file_name: Optional[str] = None,
+        thumbnail: Optional[PhotoSize] = None,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(
             file_id=file_id,
             file_unique_id=file_unique_id,
             file_size=file_size,
             thumb=thumb,
+            thumbnail=thumbnail,
             api_kwargs=api_kwargs,
         )
         with self._unfrozen():

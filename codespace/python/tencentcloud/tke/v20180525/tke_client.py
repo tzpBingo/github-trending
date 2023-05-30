@@ -210,6 +210,29 @@ class TkeClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateBackupStorageLocation(self, request):
+        """创建备份仓库，指定了存储仓库类型（如COS）、COS桶地区、名称等信息，当前最多允许创建100个仓库， 注意此接口当前是全局接口，多个地域的TKE集群如果要备份到相同的备份仓库中，不需要重复创建备份仓库
+
+        :param request: Request instance for CreateBackupStorageLocation.
+        :type request: :class:`tencentcloud.tke.v20180525.models.CreateBackupStorageLocationRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.CreateBackupStorageLocationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateBackupStorageLocation", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateBackupStorageLocationResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateCluster(self, request):
         """创建集群
 
@@ -326,7 +349,7 @@ class TkeClient(AbstractClient):
 
 
     def CreateClusterRelease(self, request):
-        """在应用市场中给集群创建应用
+        """集群创建应用
 
         :param request: Request instance for CreateClusterRelease.
         :type request: :class:`tencentcloud.tke.v20180525.models.CreateClusterReleaseRequest`
@@ -799,6 +822,29 @@ class TkeClient(AbstractClient):
             body = self.call("CreateTKEEdgeCluster", params, headers=headers)
             response = json.loads(body)
             model = models.CreateTKEEdgeClusterResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteBackupStorageLocation(self, request):
+        """删除备份仓库
+
+        :param request: Request instance for DeleteBackupStorageLocation.
+        :type request: :class:`tencentcloud.tke.v20180525.models.DeleteBackupStorageLocationRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.DeleteBackupStorageLocationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteBackupStorageLocation", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteBackupStorageLocationResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1452,6 +1498,29 @@ class TkeClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeBackupStorageLocations(self, request):
+        """查询备份仓库信息
+
+        :param request: Request instance for DescribeBackupStorageLocations.
+        :type request: :class:`tencentcloud.tke.v20180525.models.DescribeBackupStorageLocationsRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.DescribeBackupStorageLocationsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBackupStorageLocations", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBackupStorageLocationsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeClusterAsGroupOption(self, request):
         """集群弹性伸缩配置
 
@@ -1627,6 +1696,29 @@ class TkeClient(AbstractClient):
             body = self.call("DescribeClusterEndpoints", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeClusterEndpointsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeClusterInspectionResultsOverview(self, request):
+        """查询用户单个Region下的所有集群巡检结果概览信息
+
+        :param request: Request instance for DescribeClusterInspectionResultsOverview.
+        :type request: :class:`tencentcloud.tke.v20180525.models.DescribeClusterInspectionResultsOverviewRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.DescribeClusterInspectionResultsOverviewResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClusterInspectionResultsOverview", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeClusterInspectionResultsOverviewResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -3499,6 +3591,52 @@ class TkeClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ListClusterInspectionResults(self, request):
+        """查询指定集群的巡检结果信息
+
+        :param request: Request instance for ListClusterInspectionResults.
+        :type request: :class:`tencentcloud.tke.v20180525.models.ListClusterInspectionResultsRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.ListClusterInspectionResultsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ListClusterInspectionResults", params, headers=headers)
+            response = json.loads(body)
+            model = models.ListClusterInspectionResultsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ListClusterInspectionResultsItems(self, request):
+        """查询集群巡检结果历史列表
+
+        :param request: Request instance for ListClusterInspectionResultsItems.
+        :type request: :class:`tencentcloud.tke.v20180525.models.ListClusterInspectionResultsItemsRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.ListClusterInspectionResultsItemsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ListClusterInspectionResultsItems", params, headers=headers)
+            response = json.loads(body)
+            model = models.ListClusterInspectionResultsItemsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyClusterAsGroupAttribute(self, request):
         """修改集群伸缩组属性
 
@@ -4157,6 +4295,29 @@ class TkeClient(AbstractClient):
             body = self.call("UninstallLogAgent", params, headers=headers)
             response = json.loads(body)
             model = models.UninstallLogAgentResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def UpdateClusterKubeconfig(self, request):
+        """对集群的Kubeconfig信息进行更新
+
+        :param request: Request instance for UpdateClusterKubeconfig.
+        :type request: :class:`tencentcloud.tke.v20180525.models.UpdateClusterKubeconfigRequest`
+        :rtype: :class:`tencentcloud.tke.v20180525.models.UpdateClusterKubeconfigResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UpdateClusterKubeconfig", params, headers=headers)
+            response = json.loads(body)
+            model = models.UpdateClusterKubeconfigResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

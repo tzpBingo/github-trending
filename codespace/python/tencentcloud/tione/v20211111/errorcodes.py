@@ -101,6 +101,9 @@ FAILEDOPERATION_EXECDATABASEFAIL = 'FailedOperation.ExecDatabaseFail'
 # 标签操作失败。
 FAILEDOPERATION_EXECTAGFAIL = 'FailedOperation.ExecTagFail'
 
+# 余额不足冻结失败。
+FAILEDOPERATION_FREEZEBILLFAILED = 'FailedOperation.FreezeBillFailed'
+
 # 白名单免费配额不足。
 FAILEDOPERATION_INSUFFICIENTWHITELISTQUOTA = 'FailedOperation.InsufficientWhitelistQuota'
 
@@ -122,7 +125,7 @@ FAILEDOPERATION_NOPERMISSION = 'FailedOperation.NoPermission'
 # 操作不允许。
 FAILEDOPERATION_NOTALLOW = 'FailedOperation.NotAllow'
 
-# 请求正在处理中，请稍候再试。
+# 请求正在处理中，请稍后再试。
 FAILEDOPERATION_PROCESSING = 'FailedOperation.Processing'
 
 # 查询资源标签失败。
@@ -136,6 +139,9 @@ FAILEDOPERATION_QUERYMODELSBYTAGSFAILED = 'FailedOperation.QueryModelsByTagsFail
 
 # 查询计费价格失败。
 FAILEDOPERATION_QUERYPRICEFAILED = 'FailedOperation.QueryPriceFailed'
+
+# 查询计费项详情失败。
+FAILEDOPERATION_QUERYRESOURCESPECFAILED = 'FailedOperation.QueryResourceSpecFailed'
 
 # 查询计费项失败。
 FAILEDOPERATION_QUERYSPECSFAILED = 'FailedOperation.QuerySpecsFailed'
@@ -185,6 +191,12 @@ INTERNALERROR_QUERYHDFSINFOFAILED = 'InternalError.QueryHDFSInfoFailed'
 # 查询预付费资源组详情失败。
 INTERNALERROR_QUERYRESOURCEGROUPFAILED = 'InternalError.QueryResourceGroupFailed'
 
+# 查询资源套餐规格失败
+INTERNALERROR_QUERYRESOURCESPECFAILED = 'InternalError.QueryResourceSpecFailed'
+
+# 查询子网信息失败。
+INTERNALERROR_QUERYSUBNETINFOFAILED = 'InternalError.QuerySubnetInfoFailed'
+
 # 停止任务失败。
 INTERNALERROR_STOPJOBINSTANCEFAILED = 'InternalError.StopJobInstanceFailed'
 
@@ -205,6 +217,9 @@ INVALIDPARAMETER_VALIDATEERROR = 'InvalidParameter.ValidateError'
 
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
+
+# AI市场公共算法版本Id不存在
+INVALIDPARAMETERVALUE_AIMARKETPUBLICALGOVERSIONNOTEXIST = 'InvalidParameterValue.AIMarketPublicAlgoVersionNotExist'
 
 # 名称不合法。
 INVALIDPARAMETERVALUE_BADNAME = 'InvalidParameterValue.BadName'
@@ -257,6 +272,12 @@ INVALIDPARAMETERVALUE_LIMITEXCEEDED = 'InvalidParameterValue.LimitExceeded'
 # 操作不允许。
 INVALIDPARAMETERVALUE_NOTALLOW = 'InvalidParameterValue.NotAllow'
 
+# 资源配置不合法
+INVALIDPARAMETERVALUE_RESOURCECONFIGILLEGAL = 'InvalidParameterValue.ResourceConfigIllegal'
+
+# 裸金属类型资源组不支持配置输入数据
+INVALIDPARAMETERVALUE_UNSUPPORTEDDATACONFIG = 'InvalidParameterValue.UnsupportedDataConfig'
+
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'
 
@@ -269,7 +290,7 @@ OPERATIONDENIED = 'OperationDenied'
 # 余额不足，创建/更新失败。
 OPERATIONDENIED_BALANCEINSUFFICIENT = 'OperationDenied.BalanceInsufficient'
 
-# 后付费资源售罄。
+# 按量计费资源售罄。
 OPERATIONDENIED_BILLINGSTATUSRESOURCEINSUFFICIENT = 'OperationDenied.BillingStatusResourceInsufficient'
 
 # 觅影资源包余额不足，请先充值。
@@ -305,7 +326,7 @@ RESOURCESSOLDOUT = 'ResourcesSoldOut'
 # 未授权操作。
 UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
 
-# 资源不属于当前登陆用户主账号，无权限访问。
+# 资源不属于当前登录用户主账号，无权限访问。
 UNAUTHORIZEDOPERATION_NOPERMISSION = 'UnauthorizedOperation.NoPermission'
 
 # 未知参数错误。

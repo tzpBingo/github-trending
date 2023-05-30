@@ -332,6 +332,9 @@ INTERNALERROR_CVMCAEMASTERINTERNALERROR = 'InternalError.CvmCaeMasterInternalErr
 # MASTER通道查询失败。
 INTERNALERROR_CVMCAEMASTERNONALIVE = 'InternalError.CvmCaeMasterNonAlive'
 
+# 数据查询失败。
+INTERNALERROR_CVMCAEMASTERQUERYERROR = 'InternalError.CvmCaeMasterQueryError'
+
 # TSF暂时不能响应请求。。
 INTERNALERROR_DISPATCHCOMMONERROR = 'InternalError.DispatchCommonError'
 
@@ -418,6 +421,9 @@ INVALIDPARAMETER_BADREQUEST = 'InvalidParameter.BadRequest'
 
 # 配置模板名称不符合规范。
 INVALIDPARAMETER_CONFIGTEMPLATENAMEINVALID = 'InvalidParameter.ConfigTemplateNameInvalid'
+
+# TSF MASTER 解包失败。
+INVALIDPARAMETER_CVMCAEMASTERJSONDECODEFAIL = 'InvalidParameter.CvmCaeMasterJsonDecodeFail'
 
 # TSF MASTER 实例状态异常。
 INVALIDPARAMETER_CVMCAEMASTERUNKNOWNINSTANCESTATUS = 'InvalidParameter.CvmCaeMasterUnknownInstanceStatus'
@@ -557,6 +563,9 @@ INVALIDPARAMETERVALUE_APPLICATIONNAMEREGXINVALID = 'InvalidParameterValue.Applic
 # 无法获取应用。
 INVALIDPARAMETERVALUE_APPLICATIONNOTEXISTS = 'InvalidParameterValue.ApplicationNotExists'
 
+# 无效的应用排序类型。
+INVALIDPARAMETERVALUE_APPLICATIONORDERTYPEINVALID = 'InvalidParameterValue.ApplicationOrderTypeInvalid'
+
 # 无效的应用分页参数。
 INVALIDPARAMETERVALUE_APPLICATIONPAGELIMITINVALID = 'InvalidParameterValue.ApplicationPageLimitInvalid'
 
@@ -671,6 +680,9 @@ INVALIDPARAMETERVALUE_CONTAINERGROUPNODEPORTINVALID = 'InvalidParameterValue.Con
 # 服务端口值非法。
 INVALIDPARAMETERVALUE_CONTAINERGROUPPORTINVALID = 'InvalidParameterValue.ContainergroupPortInvalid'
 
+# 服务端口不能为空。
+INVALIDPARAMETERVALUE_CONTAINERGROUPPORTNULL = 'InvalidParameterValue.ContainergroupPortNull'
+
 # 服务端口不允许重复映射。
 INVALIDPARAMETERVALUE_CONTAINERGROUPPORTSREPEAT = 'InvalidParameterValue.ContainergroupPortsRepeat'
 
@@ -716,6 +728,9 @@ INVALIDPARAMETERVALUE_CVMCAEMASTERAGENTNOTFOUND = 'InvalidParameterValue.CvmCaeM
 # TSF MASTER 部署组中无云主机。
 INVALIDPARAMETERVALUE_CVMCAEMASTERGROUPNOAGENT = 'InvalidParameterValue.CvmCaeMasterGroupNoAgent'
 
+# 任务不存在。
+INVALIDPARAMETERVALUE_CVMCAEMASTERTASKNOTEXIST = 'InvalidParameterValue.CvmCaeMasterTaskNotExist'
+
 # 部署组不存在。
 INVALIDPARAMETERVALUE_DEPLOYGROUPNOTEXISTS = 'InvalidParameterValue.DeployGroupNotExists'
 
@@ -751,6 +766,9 @@ INVALIDPARAMETERVALUE_FILECONFIGRELEASENOTEXISTS = 'InvalidParameterValue.FileCo
 
 # 文件配置项版本描述不合规。
 INVALIDPARAMETERVALUE_FILECONFIGVERSIONDESCINVALID = 'InvalidParameterValue.FileConfigVersionDescInvalid'
+
+# 文件配置项版本不合规。
+INVALIDPARAMETERVALUE_FILECONFIGVERSIONINVALID = 'InvalidParameterValue.FileConfigVersionInvalid'
 
 # 请求参数异常:%s。
 INVALIDPARAMETERVALUE_GATEWAYPARAMETERERROR = 'InvalidParameterValue.GatewayParameterError'
@@ -913,6 +931,9 @@ INVALIDPARAMETERVALUE_SERVICENOTEXISTSORPERMISSIONDENIED = 'InvalidParameterValu
 
 # 无效请求参数。
 INVALIDPARAMETERVALUE_TASKPARAMETERINVALID = 'InvalidParameterValue.TaskParameterInvalid'
+
+# TSF应用性能管理业务日志搜索解析时间格式错误。
+INVALIDPARAMETERVALUE_TSFAPMBUSILOGSEARCHPARSERSPDATEFORMATERROR = 'InvalidParameterValue.TsfApmBusiLogSearchParseRspDateFormatError'
 
 # 仅有停止状态下的部署组才可以不启动。
 INVALIDPARAMETERVALUE_WRONGDONTSTARTVALUE = 'InvalidParameterValue.WrongDontStartValue'

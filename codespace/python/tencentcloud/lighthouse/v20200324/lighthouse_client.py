@@ -202,6 +202,29 @@ class LighthouseClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateDisks(self, request):
+        """本接口(CreateDisks)用于创建一个或多个云硬盘。
+
+        :param request: Request instance for CreateDisks.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.CreateDisksRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.CreateDisksResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateDisks", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateDisksResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateFirewallRules(self, request):
         """本接口（CreateFirewallRules）用于在实例上添加防火墙规则。
 
@@ -1161,7 +1184,7 @@ class LighthouseClient(AbstractClient):
 
 
     def DetachCcn(self, request):
-        """本接口 (AttachCcn) 用于解除与云联网的关联。
+        """本接口 (DetachCcn) 用于解除与云联网的关联。
 
         :param request: Request instance for DetachCcn.
         :type request: :class:`tencentcloud.lighthouse.v20200324.models.DetachCcnRequest`
@@ -1364,6 +1387,34 @@ class LighthouseClient(AbstractClient):
             body = self.call("InquirePriceRenewInstances", params, headers=headers)
             response = json.loads(body)
             model = models.InquirePriceRenewInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def IsolateDisks(self, request):
+        """本接口(IsolateDisks)用于退还一个或多个轻量应用服务器云硬盘。
+
+        只有状态为 UNATTACHED 的数据盘才可以进行此操作。
+        接口调用成功后，云硬盘会进入SHUTDOWN 状态。
+        支持批量操作。每次请求批量资源的上限为 20。
+        本接口为异步接口，请求发送成功后会返回一个 RequestId，此时操作并未立即完成。云硬盘操作结果可以通过调用 [DescribeDisks](https://cloud.tencent.com/document/product/1207/66093) 接口查询，如果云硬盘的最新操作状态（LatestOperationState）为“SUCCESS”，则代表操作成功。
+
+        :param request: Request instance for IsolateDisks.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.IsolateDisksRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.IsolateDisksResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("IsolateDisks", params, headers=headers)
+            response = json.loads(body)
+            model = models.IsolateDisksResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1702,6 +1753,33 @@ class LighthouseClient(AbstractClient):
             body = self.call("RebootInstances", params, headers=headers)
             response = json.loads(body)
             model = models.RebootInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RenewDisks(self, request):
+        """本接口(RenewDisks)用于续费一个或多个轻量应用服务器云硬盘。
+
+        只有状态为 ATTACHED，UNATTACHED 或 SHUTDOWN 的数据盘才可以进行此操作。
+        支持批量操作。每次请求批量云硬盘的上限为 50。
+        本接口为异步接口，请求发送成功后会返回一个 RequestId，此时操作并未立即完成。云硬盘操作结果可以通过调用 [DescribeDisks](https://cloud.tencent.com/document/product/1207/66093) 接口查询，如果云硬盘的最新操作状态（LatestOperationState）为“SUCCESS”，则代表操作成功。
+
+        :param request: Request instance for RenewDisks.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.RenewDisksRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.RenewDisksResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RenewDisks", params, headers=headers)
+            response = json.loads(body)
+            model = models.RenewDisksResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

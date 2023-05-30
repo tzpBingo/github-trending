@@ -75,8 +75,7 @@ class LiveClient(AbstractClient):
 
 
     def AddLiveWatermark(self, request):
-        """添加水印，成功返回水印 ID 后，需要调用[CreateLiveWatermarkRule](/document/product/267/32629)接口将水印 ID 绑定到流使用。
-        水印数量上限 100，超过后需要先删除，再添加。
+        """添加水印，成功返回水印 ID 后，需要调用[CreateLiveWatermarkRule](/document/product/267/32629)接口将水印 ID 绑定到流使用。 水印数量上限 100，超过后需要先删除，再添加。
 
         :param request: Request instance for AddLiveWatermark.
         :type request: :class:`tencentcloud.live.v20180801.models.AddLiveWatermarkRequest`
@@ -2115,6 +2114,29 @@ class LiveClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeLiveXP2PDetailInfoList(self, request):
+        """P2P流数据查询接口，用来获取流量、卡播和起播信息。
+
+        :param request: Request instance for DescribeLiveXP2PDetailInfoList.
+        :type request: :class:`tencentcloud.live.v20180801.models.DescribeLiveXP2PDetailInfoListRequest`
+        :rtype: :class:`tencentcloud.live.v20180801.models.DescribeLiveXP2PDetailInfoListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeLiveXP2PDetailInfoList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeLiveXP2PDetailInfoListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeLogDownloadList(self, request):
         """批量获取日志URL。
 
@@ -2516,7 +2538,7 @@ class LiveClient(AbstractClient):
 
 
     def DescribeUploadStreamNums(self, request):
-        """直播上行路数查询
+        """直播上行路数查询。
 
         :param request: Request instance for DescribeUploadStreamNums.
         :type request: :class:`tencentcloud.live.v20180801.models.DescribeUploadStreamNumsRequest`

@@ -1364,13 +1364,13 @@ class Condition(AbstractModel):
 
 
 class ConditionsTemp(AbstractModel):
-    """告警条件模版
+    """告警条件模板
 
     """
 
     def __init__(self):
         r"""
-        :param TemplateName: 模版名称
+        :param TemplateName: 模板名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type TemplateName: str
         :param Condition: 指标触发条件
@@ -4313,6 +4313,8 @@ class DescribeAlarmNoticesRequest(AbstractModel):
         :type NoticeIds: list of str
         :param Tags: 模板根据标签过滤
         :type Tags: list of Tag
+        :param OnCallFormIDs: 值班列表
+        :type OnCallFormIDs: list of str
         """
         self.Module = None
         self.PageNumber = None
@@ -4325,6 +4327,7 @@ class DescribeAlarmNoticesRequest(AbstractModel):
         self.GroupIds = None
         self.NoticeIds = None
         self.Tags = None
+        self.OnCallFormIDs = None
 
 
     def _deserialize(self, params):
@@ -4344,6 +4347,7 @@ class DescribeAlarmNoticesRequest(AbstractModel):
                 obj = Tag()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.OnCallFormIDs = params.get("OnCallFormIDs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4424,7 +4428,7 @@ class DescribeAlarmPoliciesRequest(AbstractModel):
         :param ProjectIds: 策略所属项目的id数组，可在此页面查看
 [项目管理](https://console.cloud.tencent.com/project)
         :type ProjectIds: list of int
-        :param NoticeIds: 通知模版的id列表，可查询通知模版列表获取。
+        :param NoticeIds: 通知模板的id列表，可查询通知模板列表获取。
 可使用 [查询通知模板列表](https://cloud.tencent.com/document/product/248/51280) 接口查询。
         :type NoticeIds: list of str
         :param RuleTypes: 根据触发条件筛选 不传展示全部策略 STATIC=展示静态阈值策略 DYNAMIC=展示动态阈值策略
@@ -4441,12 +4445,16 @@ class DescribeAlarmPoliciesRequest(AbstractModel):
         :type TriggerTasks: list of AlarmPolicyTriggerTask
         :param OneClickPolicyType: 根据一键告警策略筛选 不传展示全部策略 ONECLICK=展示一键告警策略 NOT_ONECLICK=展示非一键告警策略
         :type OneClickPolicyType: list of str
-        :param NotBindAll: 根据全部对象过滤，1代表需要过滤掉全部对象，0则无需过滤
+        :param NotBindAll: 返回结果过滤掉绑定全部对象的策略，1代表需要过滤，0则无需过滤
         :type NotBindAll: int
-        :param NotInstanceGroup: 根据实例对象过滤，1代表需要过滤掉有实例对象，0则无需过滤
+        :param NotInstanceGroup: 返回结果过滤掉关联实例为实例分组的策略，1代表需要过滤，0则无需过滤
         :type NotInstanceGroup: int
         :param Tags: 策略根据标签过滤
         :type Tags: list of Tag
+        :param PromInsId: prom实例id，自定义指标策略时会用到
+        :type PromInsId: str
+        :param ReceiverOnCallFormIDs: 根据排班表搜索
+        :type ReceiverOnCallFormIDs: list of str
         """
         self.Module = None
         self.PageNumber = None
@@ -4472,6 +4480,8 @@ class DescribeAlarmPoliciesRequest(AbstractModel):
         self.NotBindAll = None
         self.NotInstanceGroup = None
         self.Tags = None
+        self.PromInsId = None
+        self.ReceiverOnCallFormIDs = None
 
 
     def _deserialize(self, params):
@@ -4509,6 +4519,8 @@ class DescribeAlarmPoliciesRequest(AbstractModel):
                 obj = Tag()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.PromInsId = params.get("PromInsId")
+        self.ReceiverOnCallFormIDs = params.get("ReceiverOnCallFormIDs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5283,6 +5295,29 @@ class DescribeBindingPolicyObjectListResponse(AbstractModel):
         if params.get("InstanceGroup") is not None:
             self.InstanceGroup = DescribeBindingPolicyObjectListInstanceGroup()
             self.InstanceGroup._deserialize(params.get("InstanceGroup"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeClusterAgentCreatingProgressRequest(AbstractModel):
+    """DescribeClusterAgentCreatingProgress请求参数结构体
+
+    """
+
+
+class DescribeClusterAgentCreatingProgressResponse(AbstractModel):
+    """DescribeClusterAgentCreatingProgress返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -7971,11 +8006,14 @@ class DescribePrometheusClusterAgentsResponse(AbstractModel):
         :type Agents: list of PrometheusAgentOverview
         :param Total: 被关联集群总量
         :type Total: int
+        :param IsFirstBind: 是否为首次绑定，需要安装预聚合规则
+        :type IsFirstBind: bool
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Agents = None
         self.Total = None
+        self.IsFirstBind = None
         self.RequestId = None
 
 
@@ -7987,6 +8025,7 @@ class DescribePrometheusClusterAgentsResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Agents.append(obj)
         self.Total = params.get("Total")
+        self.IsFirstBind = params.get("IsFirstBind")
         self.RequestId = params.get("RequestId")
 
 
@@ -8125,6 +8164,9 @@ class DescribePrometheusGlobalConfigResponse(AbstractModel):
         :param RawJobs: RawJobs列表以及对应targets信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type RawJobs: list of PrometheusConfigItem
+        :param Probes: Probes列表以及对应targets信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Probes: list of PrometheusConfigItem
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -8132,6 +8174,7 @@ class DescribePrometheusGlobalConfigResponse(AbstractModel):
         self.ServiceMonitors = None
         self.PodMonitors = None
         self.RawJobs = None
+        self.Probes = None
         self.RequestId = None
 
 
@@ -8155,6 +8198,12 @@ class DescribePrometheusGlobalConfigResponse(AbstractModel):
                 obj = PrometheusConfigItem()
                 obj._deserialize(item)
                 self.RawJobs.append(obj)
+        if params.get("Probes") is not None:
+            self.Probes = []
+            for item in params.get("Probes"):
+                obj = PrometheusConfigItem()
+                obj._deserialize(item)
+                self.Probes.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -9729,16 +9778,24 @@ class Filter(AbstractModel):
         :type Key: str
         :param Value: 过滤值，in过滤方式用逗号分割多个值
         :type Value: str
+        :param Name: 过滤条件名称
+        :type Name: str
+        :param Values: 过滤条件取值范围
+        :type Values: list of str
         """
         self.Type = None
         self.Key = None
         self.Value = None
+        self.Name = None
+        self.Values = None
 
 
     def _deserialize(self, params):
         self.Type = params.get("Type")
         self.Key = params.get("Key")
         self.Value = params.get("Value")
+        self.Name = params.get("Name")
+        self.Values = params.get("Values")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10617,6 +10674,12 @@ class Metric(AbstractModel):
         :param ProductId: 集成中心产品ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ProductId: int
+        :param Operators: 匹配运算符
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Operators: list of Operator
+        :param Periods: 指标触发
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Periods: list of int
         """
         self.Namespace = None
         self.MetricName = None
@@ -10629,6 +10692,8 @@ class Metric(AbstractModel):
         self.IsAdvanced = None
         self.IsOpen = None
         self.ProductId = None
+        self.Operators = None
+        self.Periods = None
 
 
     def _deserialize(self, params):
@@ -10645,6 +10710,13 @@ class Metric(AbstractModel):
         self.IsAdvanced = params.get("IsAdvanced")
         self.IsOpen = params.get("IsOpen")
         self.ProductId = params.get("ProductId")
+        if params.get("Operators") is not None:
+            self.Operators = []
+            for item in params.get("Operators"):
+                obj = Operator()
+                obj._deserialize(item)
+                self.Operators.append(obj)
+        self.Periods = params.get("Periods")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11030,7 +11102,7 @@ class ModifyAlarmPolicyConditionRequest(AbstractModel):
         :type GroupBy: list of str
         :param LogAlarmReqInfo: 日志告警创建请求参数信息
         :type LogAlarmReqInfo: :class:`tencentcloud.monitor.v20180724.models.LogAlarmReq`
-        :param NoticeIds: 模版id，专供prom使用
+        :param NoticeIds: 模板id，专供prom使用
         :type NoticeIds: list of str
         :param Enable: 启停状态，0=停用，1=启用
         :type Enable: int
@@ -11168,11 +11240,14 @@ class ModifyAlarmPolicyNoticeRequest(AbstractModel):
         :type NoticeIds: list of str
         :param PolicyIds: 告警策略ID数组，支持给多个告警策略批量绑定通知模板。最多30个。
         :type PolicyIds: list of str
+        :param HierarchicalNotices: 告警分级通知规则配置
+        :type HierarchicalNotices: list of AlarmHierarchicalNotice
         """
         self.Module = None
         self.PolicyId = None
         self.NoticeIds = None
         self.PolicyIds = None
+        self.HierarchicalNotices = None
 
 
     def _deserialize(self, params):
@@ -11180,6 +11255,12 @@ class ModifyAlarmPolicyNoticeRequest(AbstractModel):
         self.PolicyId = params.get("PolicyId")
         self.NoticeIds = params.get("NoticeIds")
         self.PolicyIds = params.get("PolicyIds")
+        if params.get("HierarchicalNotices") is not None:
+            self.HierarchicalNotices = []
+            for item in params.get("HierarchicalNotices"):
+                obj = AlarmHierarchicalNotice()
+                obj._deserialize(item)
+                self.HierarchicalNotices.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12318,7 +12399,7 @@ class PolicyTag(AbstractModel):
 
 
 class ProductSimple(AbstractModel):
-    """云监控支持的产品简要信息
+    """云产品监控支持的产品简要信息
 
     """
 
@@ -12668,7 +12749,7 @@ class PrometheusAlertRule(AbstractModel):
 
 
 class PrometheusClusterAgentBasic(AbstractModel):
-    """与云监控融合托管prometheus实例，关联集群基础信息
+    """与腾讯云可观测平台融合托管 Prometheus 实例，关联集群基础信息
 
     """
 
@@ -12690,6 +12771,8 @@ class PrometheusClusterAgentBasic(AbstractModel):
         :type NotInstallBasicScrape: bool
         :param NotScrape: 是否采集指标，true代表drop所有指标，false代表采集默认指标
         :type NotScrape: bool
+        :param OpenDefaultRecord: 是否开启默认预聚合规则
+        :type OpenDefaultRecord: bool
         """
         self.Region = None
         self.ClusterType = None
@@ -12699,6 +12782,7 @@ class PrometheusClusterAgentBasic(AbstractModel):
         self.ExternalLabels = None
         self.NotInstallBasicScrape = None
         self.NotScrape = None
+        self.OpenDefaultRecord = None
 
 
     def _deserialize(self, params):
@@ -12717,6 +12801,7 @@ class PrometheusClusterAgentBasic(AbstractModel):
                 self.ExternalLabels.append(obj)
         self.NotInstallBasicScrape = params.get("NotInstallBasicScrape")
         self.NotScrape = params.get("NotScrape")
+        self.OpenDefaultRecord = params.get("OpenDefaultRecord")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12782,16 +12867,23 @@ class PrometheusConfigItem(AbstractModel):
         :param TemplateId: 用于出参，如果该配置来至模板，则为模板id
 注意：此字段可能返回 null，表示取不到有效值。
         :type TemplateId: str
+        :param Targets: 目标数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Targets: :class:`tencentcloud.monitor.v20180724.models.Targets`
         """
         self.Name = None
         self.Config = None
         self.TemplateId = None
+        self.Targets = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Config = params.get("Config")
         self.TemplateId = params.get("TemplateId")
+        if params.get("Targets") is not None:
+            self.Targets = Targets()
+            self.Targets._deserialize(params.get("Targets"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13142,6 +13234,12 @@ class PrometheusInstancesOverview(AbstractModel):
         :type BoundTotal: int
         :param BoundNormal: 绑定集群正常状态总数
         :type BoundNormal: int
+        :param ResourcePackageStatus: 资源包状态，0-无可用资源包，1-有可用资源包
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourcePackageStatus: int
+        :param ResourcePackageSpecName: 资源包规格名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourcePackageSpecName: str
         """
         self.InstanceId = None
         self.InstanceName = None
@@ -13158,6 +13256,8 @@ class PrometheusInstancesOverview(AbstractModel):
         self.AutoRenewFlag = None
         self.BoundTotal = None
         self.BoundNormal = None
+        self.ResourcePackageStatus = None
+        self.ResourcePackageSpecName = None
 
 
     def _deserialize(self, params):
@@ -13176,6 +13276,8 @@ class PrometheusInstancesOverview(AbstractModel):
         self.AutoRenewFlag = params.get("AutoRenewFlag")
         self.BoundTotal = params.get("BoundTotal")
         self.BoundNormal = params.get("BoundNormal")
+        self.ResourcePackageStatus = params.get("ResourcePackageStatus")
+        self.ResourcePackageSpecName = params.get("ResourcePackageSpecName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13305,12 +13407,24 @@ class PrometheusRecordRuleYamlItem(AbstractModel):
         :param ClusterId: 该聚合规则如果来源于用户集群crd资源定义，则ClusterId为所属集群ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterId: str
+        :param Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param Id: id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
+        :param Count: 规则数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Count: int
         """
         self.Name = None
         self.UpdateTime = None
         self.TemplateId = None
         self.Content = None
         self.ClusterId = None
+        self.Status = None
+        self.Id = None
+        self.Count = None
 
 
     def _deserialize(self, params):
@@ -13319,6 +13433,9 @@ class PrometheusRecordRuleYamlItem(AbstractModel):
         self.TemplateId = params.get("TemplateId")
         self.Content = params.get("Content")
         self.ClusterId = params.get("ClusterId")
+        self.Status = params.get("Status")
+        self.Id = params.get("Id")
+        self.Count = params.get("Count")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -14095,7 +14212,7 @@ class SendCustomAlarmMsgRequest(AbstractModel):
         r"""
         :param Module: 接口模块名，当前取值monitor
         :type Module: str
-        :param PolicyId: 消息策略ID，在云监控自定义消息页面配置
+        :param PolicyId: 消息策略ID，在自定义消息页面配置
         :type PolicyId: str
         :param Msg: 用户想要发送的自定义消息内容
         :type Msg: str
@@ -14364,6 +14481,46 @@ class TagInstance(AbstractModel):
         
 
 
+class Targets(AbstractModel):
+    """抓取目标数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        :param Up: 在线数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Up: int
+        :param Down: 不在线数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Down: int
+        :param Unknown: 未知状态数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Unknown: int
+        """
+        self.Total = None
+        self.Up = None
+        self.Down = None
+        self.Unknown = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        self.Up = params.get("Up")
+        self.Down = params.get("Down")
+        self.Unknown = params.get("Unknown")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TaskStepInfo(AbstractModel):
     """任务步骤信息
 
@@ -14567,7 +14724,7 @@ class Toleration(AbstractModel):
 
 
 class URLNotice(AbstractModel):
-    """云监控告警通知模板 - 回调通知详情
+    """告警通知模板 - 回调通知详情
 
     """
 
@@ -15796,7 +15953,7 @@ class UpgradeGrafanaInstanceResponse(AbstractModel):
 
 
 class UserNotice(AbstractModel):
-    """云监控告警通知模板 - 用户通知详情
+    """告警通知模板 - 用户通知详情
 
     """
 
@@ -15841,6 +15998,9 @@ class UserNotice(AbstractModel):
         :param Weekday: 通知周期 1-7表示周一到周日
 注意：此字段可能返回 null，表示取不到有效值。
         :type Weekday: list of int
+        :param OnCallFormIDs: 值班表id列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OnCallFormIDs: list of str
         """
         self.ReceiverType = None
         self.StartTime = None
@@ -15855,6 +16015,7 @@ class UserNotice(AbstractModel):
         self.NeedPhoneArriveNotice = None
         self.PhoneCallType = None
         self.Weekday = None
+        self.OnCallFormIDs = None
 
 
     def _deserialize(self, params):
@@ -15871,6 +16032,7 @@ class UserNotice(AbstractModel):
         self.NeedPhoneArriveNotice = params.get("NeedPhoneArriveNotice")
         self.PhoneCallType = params.get("PhoneCallType")
         self.Weekday = params.get("Weekday")
+        self.OnCallFormIDs = params.get("OnCallFormIDs")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

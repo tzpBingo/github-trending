@@ -164,6 +164,9 @@ RESOURCENOTFOUND_INVOCATIONNOTFOUND = 'ResourceNotFound.InvocationNotFound'
 # 角色不存在。
 RESOURCENOTFOUND_ROLENOTFOUND = 'ResourceNotFound.RoleNotFound'
 
+# 资源不可用。
+RESOURCEUNAVAILABLE = 'ResourceUnavailable'
+
 # Agent 未安装。
 RESOURCEUNAVAILABLE_AGENTNOTINSTALLED = 'ResourceUnavailable.AgentNotInstalled'
 
@@ -196,3 +199,6 @@ UNAUTHORIZEDOPERATION_MFANOTFOUND = 'UnauthorizedOperation.MFANotFound'
 
 # 未知参数错误。
 UNKNOWNPARAMETER = 'UnknownParameter'
+
+# 操作不支持。
+UNSUPPORTEDOPERATION = 'UnsupportedOperation'

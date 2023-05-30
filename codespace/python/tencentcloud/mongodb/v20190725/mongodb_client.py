@@ -50,7 +50,7 @@ class MongodbClient(AbstractClient):
 
 
     def CreateAccountUser(self, request):
-        """本接口(CreateAccountUser)用于创建mongodb实例账号。
+        """本接口（CreateAccountUser）用于自定义实例访问账号。
 
         :param request: Request instance for CreateAccountUser.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.CreateAccountUserRequest`
@@ -73,7 +73,7 @@ class MongodbClient(AbstractClient):
 
 
     def CreateBackupDBInstance(self, request):
-        """备份实例接口
+        """本接口（CreateBackupDBInstance）用于备份实例。
 
         :param request: Request instance for CreateBackupDBInstance.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.CreateBackupDBInstanceRequest`
@@ -164,8 +164,31 @@ class MongodbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteAccountUser(self, request):
+        """本接口（DeleteAccountUser）用于删除实例的自定义账号。
+
+        :param request: Request instance for DeleteAccountUser.
+        :type request: :class:`tencentcloud.mongodb.v20190725.models.DeleteAccountUserRequest`
+        :rtype: :class:`tencentcloud.mongodb.v20190725.models.DeleteAccountUserResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteAccountUser", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteAccountUserResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeAccountUsers(self, request):
-        """本接口(DescribeAccountUsers)用于获取当前实例的全部账号。
+        """本接口（DescribeAccountUsers）用于获取当前实例的全部账号。
 
         :param request: Request instance for DescribeAccountUsers.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.DescribeAccountUsersRequest`
@@ -234,7 +257,7 @@ class MongodbClient(AbstractClient):
 
 
     def DescribeClientConnections(self, request):
-        """本接口(DescribeClientConnections)用于查询实例客户端连接信息，包括连接IP和连接数量。
+        """本接口（DescribeClientConnections）用于查询实例客户端连接信息，包括连接 IP 和连接数量。
 
         :param request: Request instance for DescribeClientConnections.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.DescribeClientConnectionsRequest`
@@ -349,7 +372,7 @@ class MongodbClient(AbstractClient):
 
 
     def DescribeDBInstances(self, request):
-        """本接口(DescribeDBInstances)用于查询云数据库实例列表，支持通过项目ID、实例ID、实例状态等过滤条件来筛选实例。支持查询主实例、灾备实例和只读实例信息列表。
+        """本接口（DescribeDBInstances）用于查询云数据库实例列表，支持通过项目ID、实例ID、实例状态等过滤条件来筛选主实例、灾备实例和只读实例信息列表。
 
         :param request: Request instance for DescribeDBInstances.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.DescribeDBInstancesRequest`
@@ -372,7 +395,7 @@ class MongodbClient(AbstractClient):
 
 
     def DescribeInstanceParams(self, request):
-        """本接口(DescribeInstanceParams)用于查询当前实例可修改的参数列表。
+        """本接口（DescribeInstanceParams）用于查询当前实例可修改的参数列表。
 
         :param request: Request instance for DescribeInstanceParams.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.DescribeInstanceParamsRequest`
@@ -395,7 +418,7 @@ class MongodbClient(AbstractClient):
 
 
     def DescribeSecurityGroup(self, request):
-        """查询实例绑定的安全组
+        """本接口（DescribeSecurityGroup）用于查询实例绑定的安全组。
 
         :param request: Request instance for DescribeSecurityGroup.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.DescribeSecurityGroupRequest`
@@ -533,7 +556,7 @@ class MongodbClient(AbstractClient):
 
 
     def InquirePriceModifyDBInstanceSpec(self, request):
-        """本接口 (InquirePriceModifyDBInstanceSpec) 用于调整实例的配置询价。
+        """本接口 (InquirePriceModifyDBInstanceSpec) 用于查询实例配置变更后的价格。
 
         :param request: Request instance for InquirePriceModifyDBInstanceSpec.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.InquirePriceModifyDBInstanceSpecRequest`
@@ -648,7 +671,7 @@ class MongodbClient(AbstractClient):
 
 
     def ModifyDBInstanceSecurityGroup(self, request):
-        """修改实例绑定的安全组
+        """本接口（ModifyDBInstanceSecurityGroup）用于修改实例绑定的安全组
 
         :param request: Request instance for ModifyDBInstanceSecurityGroup.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.ModifyDBInstanceSecurityGroupRequest`
@@ -786,7 +809,7 @@ class MongodbClient(AbstractClient):
 
 
     def SetAccountUserPrivilege(self, request):
-        """本接口(SetAccountUserPrivilege)用于设置mongodb实例的账号权限。
+        """本接口（SetAccountUserPrivilege）用于设置实例的账号权限。
 
         :param request: Request instance for SetAccountUserPrivilege.
         :type request: :class:`tencentcloud.mongodb.v20190725.models.SetAccountUserPrivilegeRequest`

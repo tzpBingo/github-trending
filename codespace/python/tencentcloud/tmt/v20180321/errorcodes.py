@@ -20,6 +20,9 @@ FAILEDOPERATION = 'FailedOperation'
 # 数据插入错误。
 FAILEDOPERATION_INSERTERR = 'FailedOperation.InsertErr'
 
+# 暂时无法识别该语种。
+FAILEDOPERATION_LANGUAGERECOGNITIONERR = 'FailedOperation.LanguageRecognitionErr'
+
 # 本月免费额度已用完，如需继续使用您可以在机器翻译控制台升级为付费使用。
 FAILEDOPERATION_NOFREEAMOUNT = 'FailedOperation.NoFreeAmount'
 
@@ -59,6 +62,9 @@ INVALIDPARAMETER_MISSINGPARAMETER = 'InvalidParameter.MissingParameter'
 # Seq之间的间隙请不要大于2000。
 INVALIDPARAMETER_SEQINTERVALTOOLARGE = 'InvalidParameter.SeqIntervalTooLarge'
 
+# 参数取值错误。
+INVALIDPARAMETERVALUE = 'InvalidParameterValue'
+
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'
 
@@ -80,7 +86,7 @@ UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 # 音频分片长度超过限制，请保证分片长度小于8s。
 UNSUPPORTEDOPERATION_AUDIODURATIONEXCEED = 'UnsupportedOperation.AudioDurationExceed'
 
-# 单次请求text超过长度限制，请保证单次请求⻓度低于2000。
+# 单次请求text超过长度限制。
 UNSUPPORTEDOPERATION_TEXTTOOLONG = 'UnsupportedOperation.TextTooLong'
 
 # 不支持的目标语言，请参照语言列表。

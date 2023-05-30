@@ -716,6 +716,29 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeAlertRecordHistory(self, request):
+        """获取告警历史，例如今天未恢复的告警
+
+        :param request: Request instance for DescribeAlertRecordHistory.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeAlertRecordHistoryRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeAlertRecordHistoryResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAlertRecordHistory", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAlertRecordHistoryResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeConfigExtras(self, request):
         """本接口用于获取特殊采集配置，特殊采集配置应用于自建K8S环境的采集Agent
 
@@ -1504,7 +1527,7 @@ class ClsClient(AbstractClient):
 
         同时我们给此接口专门优化定制了多个语言版本的SDK供您选择，SDK提供统一的异步发送、资源控制、自动重试、优雅关闭、感知上报等功能，使上报日志功能更完善，详情请参考[SDK采集](https://cloud.tencent.com/document/product/614/67157)。
 
-        同时云API上传日志接口也支持同步上传日志数据，如果您选继续使用此接口请参考下文。
+        同时云API上传日志接口也支持同步上传日志数据，如果您选择继续使用此接口请参考下文。
 
         ## 功能描述
 

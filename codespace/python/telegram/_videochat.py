@@ -23,7 +23,7 @@ from typing import TYPE_CHECKING, Optional, Sequence, Tuple
 from telegram._telegramobject import TelegramObject
 from telegram._user import User
 from telegram._utils.argumentparsing import parse_sequence_arg
-from telegram._utils.datetime import from_timestamp
+from telegram._utils.datetime import extract_tzinfo_from_defaults, from_timestamp
 from telegram._utils.types import JSONDict
 
 if TYPE_CHECKING:
@@ -42,7 +42,7 @@ class VideoChatStarted(TelegramObject):
 
     __slots__ = ()
 
-    def __init__(self, *, api_kwargs: JSONDict = None) -> None:
+    def __init__(self, *, api_kwargs: Optional[JSONDict] = None) -> None:
         super().__init__(api_kwargs=api_kwargs)
 
         self._freeze()
@@ -75,7 +75,7 @@ class VideoChatEnded(TelegramObject):
         self,
         duration: int,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ) -> None:
         super().__init__(api_kwargs=api_kwargs)
         self.duration: int = duration
@@ -115,7 +115,7 @@ class VideoChatParticipantsInvited(TelegramObject):
         self,
         users: Sequence[User],
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ) -> None:
         super().__init__(api_kwargs=api_kwargs)
         self.users: Tuple[User, ...] = parse_sequence_arg(users)
@@ -149,9 +149,15 @@ class VideoChatScheduled(TelegramObject):
     Args:
         start_date (:obj:`datetime.datetime`): Point in time (Unix timestamp) when the video
             chat is supposed to be started by a chat administrator
+
+            .. versionchanged:: 20.3
+                |datetime_localization|
     Attributes:
         start_date (:obj:`datetime.datetime`): Point in time (Unix timestamp) when the video
             chat is supposed to be started by a chat administrator
+
+            .. versionchanged:: 20.3
+                |datetime_localization|
 
     """
 
@@ -161,7 +167,7 @@ class VideoChatScheduled(TelegramObject):
         self,
         start_date: dtm.datetime,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ) -> None:
         super().__init__(api_kwargs=api_kwargs)
         self.start_date: dtm.datetime = start_date
@@ -178,6 +184,9 @@ class VideoChatScheduled(TelegramObject):
         if not data:
             return None
 
-        data["start_date"] = from_timestamp(data["start_date"])
+        # Get the local timezone from the bot if it has defaults
+        loc_tzinfo = extract_tzinfo_from_defaults(bot)
+
+        data["start_date"] = from_timestamp(data["start_date"], tzinfo=loc_tzinfo)
 
         return super().de_json(data=data, bot=bot)

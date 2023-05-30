@@ -164,6 +164,30 @@ class CfsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateMigrationTask(self, request):
+        """用于创建迁移任务。
+        此接口需提交工单，开启白名单之后才能使用。
+
+        :param request: Request instance for CreateMigrationTask.
+        :type request: :class:`tencentcloud.cfs.v20190719.models.CreateMigrationTaskRequest`
+        :rtype: :class:`tencentcloud.cfs.v20190719.models.CreateMigrationTaskResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateMigrationTask", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateMigrationTaskResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteAutoSnapshotPolicy(self, request):
         """删除快照定期策略
 
@@ -279,6 +303,30 @@ class CfsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteMigrationTask(self, request):
+        """用于删除迁移任务。
+        此接口需提交工单，开启白名单之后才能使用。
+
+        :param request: Request instance for DeleteMigrationTask.
+        :type request: :class:`tencentcloud.cfs.v20190719.models.DeleteMigrationTaskRequest`
+        :rtype: :class:`tencentcloud.cfs.v20190719.models.DeleteMigrationTaskResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteMigrationTask", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteMigrationTaskResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteMountTarget(self, request):
         """本接口（DeleteMountTarget）用于删除挂载点
 
@@ -362,6 +410,30 @@ class CfsClient(AbstractClient):
             body = self.call("DescribeAvailableZoneInfo", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeAvailableZoneInfoResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeBucketList(self, request):
+        """用于获取数据源桶列表。
+        此接口需提交工单，开启白名单之后才能使用。
+
+        :param request: Request instance for DescribeBucketList.
+        :type request: :class:`tencentcloud.cfs.v20190719.models.DescribeBucketListRequest`
+        :rtype: :class:`tencentcloud.cfs.v20190719.models.DescribeBucketListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBucketList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBucketListResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -532,6 +604,30 @@ class CfsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeMigrationTasks(self, request):
+        """用于获取迁移任务列表。
+        此接口需提交工单，开启白名单之后才能使用。
+
+        :param request: Request instance for DescribeMigrationTasks.
+        :type request: :class:`tencentcloud.cfs.v20190719.models.DescribeMigrationTasksRequest`
+        :rtype: :class:`tencentcloud.cfs.v20190719.models.DescribeMigrationTasksResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeMigrationTasks", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeMigrationTasksResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeMountTargets(self, request):
         """本接口（DescribeMountTargets）用于查询文件系统挂载点信息
 
@@ -601,6 +697,52 @@ class CfsClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyFileSystemAutoScaleUpRule(self, request):
+        """用来设置文件系统扩容策略
+
+        :param request: Request instance for ModifyFileSystemAutoScaleUpRule.
+        :type request: :class:`tencentcloud.cfs.v20190719.models.ModifyFileSystemAutoScaleUpRuleRequest`
+        :rtype: :class:`tencentcloud.cfs.v20190719.models.ModifyFileSystemAutoScaleUpRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyFileSystemAutoScaleUpRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyFileSystemAutoScaleUpRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ScaleUpFileSystem(self, request):
+        """该接口用于对turbo 文件系统扩容使用
+
+        :param request: Request instance for ScaleUpFileSystem.
+        :type request: :class:`tencentcloud.cfs.v20190719.models.ScaleUpFileSystemRequest`
+        :rtype: :class:`tencentcloud.cfs.v20190719.models.ScaleUpFileSystemResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ScaleUpFileSystem", params, headers=headers)
+            response = json.loads(body)
+            model = models.ScaleUpFileSystemResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def SetUserQuota(self, request):
         """设置文件系统配额，提供UID/GID的配额设置的接口
 
@@ -638,6 +780,30 @@ class CfsClient(AbstractClient):
             body = self.call("SignUpCfsService", params, headers=headers)
             response = json.loads(body)
             model = models.SignUpCfsServiceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def StopMigrationTask(self, request):
+        """用于终止迁移任务。
+        此接口需提交工单，开启白名单之后才能使用。
+
+        :param request: Request instance for StopMigrationTask.
+        :type request: :class:`tencentcloud.cfs.v20190719.models.StopMigrationTaskRequest`
+        :rtype: :class:`tencentcloud.cfs.v20190719.models.StopMigrationTaskResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StopMigrationTask", params, headers=headers)
+            response = json.loads(body)
+            model = models.StopMigrationTaskResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

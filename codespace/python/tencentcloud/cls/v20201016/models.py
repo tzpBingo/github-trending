@@ -272,6 +272,10 @@ class AlarmTarget(AbstractModel):
         :type EndTimeOffset: int
         :param LogsetId: 日志集ID。
         :type LogsetId: str
+        :param SyntaxRule: 检索语法规则，默认值为0。
+0：Lucene语法，1：CQL语法。
+详细说明参见<a href="https://cloud.tencent.com/document/product/614/47044#RetrievesConditionalRules" target="_blank">检索条件语法规则</a>
+        :type SyntaxRule: int
         """
         self.TopicId = None
         self.Query = None
@@ -279,6 +283,7 @@ class AlarmTarget(AbstractModel):
         self.StartTimeOffset = None
         self.EndTimeOffset = None
         self.LogsetId = None
+        self.SyntaxRule = None
 
 
     def _deserialize(self, params):
@@ -288,6 +293,7 @@ class AlarmTarget(AbstractModel):
         self.StartTimeOffset = params.get("StartTimeOffset")
         self.EndTimeOffset = params.get("EndTimeOffset")
         self.LogsetId = params.get("LogsetId")
+        self.SyntaxRule = params.get("SyntaxRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -349,6 +355,132 @@ class AlarmTargetInfo(AbstractModel):
         
 
 
+class AlertHistoryNotice(AbstractModel):
+    """告警通知渠道组详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 通知渠道组名称
+        :type Name: str
+        :param AlarmNoticeId: 通知渠道组ID
+        :type AlarmNoticeId: str
+        """
+        self.Name = None
+        self.AlarmNoticeId = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.AlarmNoticeId = params.get("AlarmNoticeId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AlertHistoryRecord(AbstractModel):
+    """告警历史详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RecordId: 告警历史ID
+        :type RecordId: str
+        :param AlarmId: 告警策略ID
+        :type AlarmId: str
+        :param AlarmName: 告警策略名称
+        :type AlarmName: str
+        :param TopicId: 监控对象ID
+        :type TopicId: str
+        :param TopicName: 监控对象名称
+        :type TopicName: str
+        :param Region: 监控对象所属地域
+        :type Region: str
+        :param Trigger: 触发条件
+        :type Trigger: str
+        :param TriggerCount: 持续周期，持续满足触发条件TriggerCount个周期后，再进行告警
+        :type TriggerCount: int
+        :param AlarmPeriod: 告警通知发送频率，单位为分钟
+        :type AlarmPeriod: int
+        :param Notices: 通知渠道组
+        :type Notices: list of AlertHistoryNotice
+        :param Duration: 告警持续时间，单位为分钟
+        :type Duration: int
+        :param Status: 告警状态，0代表未恢复，1代表已恢复，2代表已失效
+        :type Status: int
+        :param CreateTime: 告警发生时间，毫秒级Unix时间戳
+        :type CreateTime: int
+        :param GroupTriggerCondition: 告警分组触发时对应的分组信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupTriggerCondition: list of GroupTriggerConditionInfo
+        :param AlarmLevel: 告警级别，0代表警告(Warn)，1代表提醒(Info)，2代表紧急 (Critical)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmLevel: int
+        :param MonitorObjectType: 监控对象类型。
+0:执行语句共用监控对象; 1:每个执行语句单独选择监控对象。 
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MonitorObjectType: int
+        """
+        self.RecordId = None
+        self.AlarmId = None
+        self.AlarmName = None
+        self.TopicId = None
+        self.TopicName = None
+        self.Region = None
+        self.Trigger = None
+        self.TriggerCount = None
+        self.AlarmPeriod = None
+        self.Notices = None
+        self.Duration = None
+        self.Status = None
+        self.CreateTime = None
+        self.GroupTriggerCondition = None
+        self.AlarmLevel = None
+        self.MonitorObjectType = None
+
+
+    def _deserialize(self, params):
+        self.RecordId = params.get("RecordId")
+        self.AlarmId = params.get("AlarmId")
+        self.AlarmName = params.get("AlarmName")
+        self.TopicId = params.get("TopicId")
+        self.TopicName = params.get("TopicName")
+        self.Region = params.get("Region")
+        self.Trigger = params.get("Trigger")
+        self.TriggerCount = params.get("TriggerCount")
+        self.AlarmPeriod = params.get("AlarmPeriod")
+        if params.get("Notices") is not None:
+            self.Notices = []
+            for item in params.get("Notices"):
+                obj = AlertHistoryNotice()
+                obj._deserialize(item)
+                self.Notices.append(obj)
+        self.Duration = params.get("Duration")
+        self.Status = params.get("Status")
+        self.CreateTime = params.get("CreateTime")
+        if params.get("GroupTriggerCondition") is not None:
+            self.GroupTriggerCondition = []
+            for item in params.get("GroupTriggerCondition"):
+                obj = GroupTriggerConditionInfo()
+                obj._deserialize(item)
+                self.GroupTriggerCondition.append(obj)
+        self.AlarmLevel = params.get("AlarmLevel")
+        self.MonitorObjectType = params.get("MonitorObjectType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AnalysisDimensional(AbstractModel):
     """多维分析的分析维度
 
@@ -357,12 +489,16 @@ class AnalysisDimensional(AbstractModel):
     def __init__(self):
         r"""
         :param Name: 分析名称
+注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param Type: 分析类型：query，field ，original
+注意：此字段可能返回 null，表示取不到有效值。
         :type Type: str
         :param Content: 分析内容
+注意：此字段可能返回 null，表示取不到有效值。
         :type Content: str
         :param ConfigInfo: 配置
+注意：此字段可能返回 null，表示取不到有效值。
         :type ConfigInfo: list of AlarmAnalysisConfig
         """
         self.Name = None
@@ -1057,19 +1193,19 @@ class CosRechargeInfo(AbstractModel):
         :param LogsetId: 日志集ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type LogsetId: str
-        :param Name: cos导入任务名称
+        :param Name: COS导入任务名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
-        :param Bucket: cos存储桶
+        :param Bucket: COS存储桶
 注意：此字段可能返回 null，表示取不到有效值。
         :type Bucket: str
-        :param BucketRegion: cos存储桶地域
+        :param BucketRegion: COS存储桶所在地域
 注意：此字段可能返回 null，表示取不到有效值。
         :type BucketRegion: str
-        :param Prefix: cos存储桶前缀地址
+        :param Prefix: COS文件所在文件夹的前缀
 注意：此字段可能返回 null，表示取不到有效值。
         :type Prefix: str
-        :param LogType: 采集的日志类型，json_log代表json格式日志，delimiter_log代表分隔符格式日志，minimalist_log代表极简日志；
+        :param LogType: 采集的日志类型，json_log代表json格式日志，delimiter_log代表分隔符格式日志，minimalist_log代表单行全文；
 默认为minimalist_log
 注意：此字段可能返回 null，表示取不到有效值。
         :type LogType: str
@@ -1633,13 +1769,18 @@ class CreateCosRechargeResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param Id: cos_recharge记录id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.Id = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.Id = params.get("Id")
         self.RequestId = params.get("RequestId")
 
 
@@ -1851,6 +1992,8 @@ class CreateMachineGroupRequest(AbstractModel):
         :type UpdateEndTime: str
         :param ServiceLogging: 是否开启服务日志，用于记录因Loglistener 服务自身产生的log，开启后，会创建内部日志集cls_service_logging和日志主题loglistener_status,loglistener_alarm,loglistener_business，不产生计费
         :type ServiceLogging: bool
+        :param MetaTags: 机器组元数据信息列表
+        :type MetaTags: list of MetaTagInfo
         """
         self.GroupName = None
         self.MachineGroupType = None
@@ -1859,6 +2002,7 @@ class CreateMachineGroupRequest(AbstractModel):
         self.UpdateStartTime = None
         self.UpdateEndTime = None
         self.ServiceLogging = None
+        self.MetaTags = None
 
 
     def _deserialize(self, params):
@@ -1876,6 +2020,12 @@ class CreateMachineGroupRequest(AbstractModel):
         self.UpdateStartTime = params.get("UpdateStartTime")
         self.UpdateEndTime = params.get("UpdateEndTime")
         self.ServiceLogging = params.get("ServiceLogging")
+        if params.get("MetaTags") is not None:
+            self.MetaTags = []
+            for item in params.get("MetaTags"):
+                obj = MetaTagInfo()
+                obj._deserialize(item)
+                self.MetaTags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1935,6 +2085,10 @@ class CreateShipperRequest(AbstractModel):
         :type Content: :class:`tencentcloud.cls.v20201016.models.ContentInfo`
         :param FilenameMode: 投递文件命名配置，0：随机数命名，1：投递时间命名，默认0（随机数命名）
         :type FilenameMode: int
+        :param StartTime: 投递数据范围的开始时间点，不能超出日志主题的生命周期起点。如果用户不填写，默认为用户新建投递任务的时间。
+        :type StartTime: int
+        :param EndTime: 投递数据范围的结束时间点，不能填写未来时间。如果用户不填写，默认为持续投递，即无限。
+        :type EndTime: int
         """
         self.TopicId = None
         self.Bucket = None
@@ -1947,6 +2101,8 @@ class CreateShipperRequest(AbstractModel):
         self.Compress = None
         self.Content = None
         self.FilenameMode = None
+        self.StartTime = None
+        self.EndTime = None
 
 
     def _deserialize(self, params):
@@ -1970,6 +2126,8 @@ class CreateShipperRequest(AbstractModel):
             self.Content = ContentInfo()
             self.Content._deserialize(params.get("Content"))
         self.FilenameMode = params.get("FilenameMode")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2023,6 +2181,13 @@ class CreateTopicRequest(AbstractModel):
         :type StorageType: str
         :param Period: 生命周期，单位天，标准存储取值范围1\~3600，低频存储取值范围7\~3600天。取值为3640时代表永久保存
         :type Period: int
+        :param Describes: 日志主题描述
+        :type Describes: str
+        :param HotPeriod: 0：关闭日志沉降。
+非0：开启日志沉降后标准存储的天数。HotPeriod需要大于等于7，且小于Period。仅在StorageType为 hot 时生效
+        :type HotPeriod: int
+        :param IsWebTracking: webtracking开关； false: 关闭 true： 开启
+        :type IsWebTracking: bool
         """
         self.LogsetId = None
         self.TopicName = None
@@ -2032,6 +2197,9 @@ class CreateTopicRequest(AbstractModel):
         self.MaxSplitPartitions = None
         self.StorageType = None
         self.Period = None
+        self.Describes = None
+        self.HotPeriod = None
+        self.IsWebTracking = None
 
 
     def _deserialize(self, params):
@@ -2048,6 +2216,9 @@ class CreateTopicRequest(AbstractModel):
         self.MaxSplitPartitions = params.get("MaxSplitPartitions")
         self.StorageType = params.get("StorageType")
         self.Period = params.get("Period")
+        self.Describes = params.get("Describes")
+        self.HotPeriod = params.get("HotPeriod")
+        self.IsWebTracking = params.get("IsWebTracking")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2755,37 +2926,26 @@ class DescribeAlarmsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: <br><li> name
+        :param Filters: name
+- 按照【告警策略名称】进行过滤。
+- 类型：String
+- 必选：否
 
-按照【告警策略名称】进行过滤。
-类型：String
+alarmId
+- 按照【告警策略ID】进行过滤。
+- 类型：String
+- 必选：否
 
-必选：否
+topicId
+- 按照【监控对象的日志主题ID】进行过滤。
+- 类型：String
+- 必选：否
 
-<br><li> alarmId
-
-按照【告警策略ID】进行过滤。
-类型：String
-
-必选：否
-
-<br><li> topicId
-
-按照【监控对象的日志主题ID】进行过滤。
-
-类型：String
-
-必选：否
-
-<br><li> enable
-
-按照【启用状态】进行过滤。
-
-类型：String
-
-备注：enable参数值范围: 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False。 其它值将返回参数错误信息.
-
-必选：否
+enable
+- 按照【启用状态】进行过滤。
+- 类型：String
+- 备注：enable参数值范围: 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False。 其它值将返回参数错误信息.
+- 必选：否
 
 每次请求的Filters的上限为10，Filter.Values的上限为5。
         :type Filters: list of Filter
@@ -2844,6 +3004,86 @@ class DescribeAlarmsResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Alarms.append(obj)
         self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAlertRecordHistoryRequest(AbstractModel):
+    """DescribeAlertRecordHistory请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param From: 查询时间范围启始时间，毫秒级unix时间戳
+        :type From: int
+        :param To: 查询时间范围结束时间，毫秒级unix时间戳
+        :type To: int
+        :param Offset: 分页的偏移量，默认值为0。
+        :type Offset: int
+        :param Limit: 分页单页限制数目，最大值100。
+        :type Limit: int
+        :param Filters: - alertId：按照告警策略ID进行过滤。类型：String 必选：否
+- topicId：按照监控对象ID进行过滤。类型：String 必选：否
+- status：按照告警状态进行过滤。类型：String 必选：否，0代表未恢复，1代表已恢复，2代表已失效
+- alarmLevel：按照告警等级进行过滤。类型：String 必选：否，0代表警告，1代表提醒，2代表紧急
+
+每次请求的Filters的上限为10，Filter.Values的上限为100。
+        :type Filters: list of Filter
+        """
+        self.From = None
+        self.To = None
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.From = params.get("From")
+        self.To = params.get("To")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAlertRecordHistoryResponse(AbstractModel):
+    """DescribeAlertRecordHistory返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 告警历史总数
+        :type TotalCount: int
+        :param Records: 告警历史详情
+        :type Records: list of AlertHistoryRecord
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.Records = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("Records") is not None:
+            self.Records = []
+            for item in params.get("Records"):
+                obj = AlertHistoryRecord()
+                obj._deserialize(item)
+                self.Records.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -2973,27 +3213,20 @@ class DescribeConfigsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: <br><li> configName
+        :param Filters: configName
+- 按照【采集配置名称】进行模糊匹配过滤。
+- 类型：String
+- 必选：否
 
-按照【采集配置名称】进行模糊匹配过滤。
-类型：String
+configId
+- 按照【采集配置ID】进行过滤。
+- 类型：String
+- 必选：否
 
-必选：否
-
-<br><li> configId
-
-按照【采集配置ID】进行过滤。
-类型：String
-
-必选：否
-
-<br><li> topicId
-
-按照【日志主题】进行过滤。
-
-类型：String
-
-必选：否
+topicId
+- 按照【日志主题】进行过滤。
+- 类型：String
+- 必选：否
 
 每次请求的Filters的上限为10，Filter.Values的上限为5。
         :type Filters: list of Filter
@@ -3414,12 +3647,17 @@ class DescribeLogHistogramRequest(AbstractModel):
         :type TopicId: str
         :param Interval: 时间间隔: 单位ms  限制性条件：(To-From) / interval <= 200
         :type Interval: int
+        :param SyntaxRule: 检索语法规则，默认值为0。
+0：Lucene语法，1：CQL语法。
+详细说明参见<a href="https://cloud.tencent.com/document/product/614/47044#RetrievesConditionalRules" target="_blank">检索条件语法规则</a>
+        :type SyntaxRule: int
         """
         self.From = None
         self.To = None
         self.Query = None
         self.TopicId = None
         self.Interval = None
+        self.SyntaxRule = None
 
 
     def _deserialize(self, params):
@@ -3428,6 +3666,7 @@ class DescribeLogHistogramRequest(AbstractModel):
         self.Query = params.get("Query")
         self.TopicId = params.get("TopicId")
         self.Interval = params.get("Interval")
+        self.SyntaxRule = params.get("SyntaxRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3478,35 +3717,25 @@ class DescribeLogsetsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: <br><li> logsetName
+        :param Filters: logsetName
+- 按照【日志集名称】进行过滤。
+- 类型：String
+- 必选：否
 
-按照【日志集名称】进行过滤。
-类型：String
+logsetId
+- 按照【日志集ID】进行过滤。
+- 类型：String
+- 必选：否
 
-必选：否
+tagKey
+- 按照【标签键】进行过滤。
+- 类型：String
+- 必选：否
 
-<br><li> logsetId
-
-按照【日志集ID】进行过滤。
-类型：String
-
-必选：否
-
-<br><li> tagKey
-
-按照【标签键】进行过滤。
-
-类型：String
-
-必选：否
-
-<br><li> tag:tagKey
-
-按照【标签键值对】进行过滤。tagKey使用具体的标签键进行替换。
-类型：String
-
-必选：否
-
+tag:tagKey
+- 按照【标签键值对】进行过滤。tagKey使用具体的标签键进行替换。
+- 类型：String
+- 必选：否
 
 每次请求的Filters的上限为10，Filter.Values的上限为5。
         :type Filters: list of Filter
@@ -3626,35 +3855,25 @@ class DescribeMachineGroupsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: <br><li> machineGroupName
+        :param Filters: machineGroupName
+- 按照【机器组名称】进行过滤。
+- 类型：String
+- 必选：否
 
-按照【机器组名称】进行过滤。
-类型：String
+machineGroupId
+- 按照【机器组ID】进行过滤。
+- 类型：String
+- 必选：否
 
-必选：否
+tagKey
+- 按照【标签键】进行过滤。
+- 类型：String
+- 必选：否
 
-<br><li> machineGroupId
-
-按照【机器组ID】进行过滤。
-类型：String
-
-必选：否
-
-<br><li> tagKey
-
-按照【标签键】进行过滤。
-
-类型：String
-
-必选：否
-
-<br><li> tag:tagKey
-
-按照【标签键值对】进行过滤。tagKey使用具体的标签键进行替换。
-类型：String
-
-必选：否
-
+tag:tagKey
+- 按照【标签键值对】进行过滤。tagKey使用具体的标签键进行替换。
+- 类型：String
+- 必选：否
 
 每次请求的Filters的上限为10，Filter.Values的上限为5。
         :type Filters: list of Filter
@@ -3903,27 +4122,9 @@ class DescribeShippersRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Filters: <br><li> shipperName
-
-按照【投递规则名称】进行过滤。
-类型：String
-
-必选：否
-
-<br><li> shipperId
-
-按照【投递规则ID】进行过滤。
-类型：String
-
-必选：否
-
-<br><li> topicId
-
-按照【日志主题】进行过滤。
-
-类型：String
-
-必选：否
+        :param Filters: - shipperName：按照【投递规则名称】进行过滤。类型：String。必选：否
+- shipperId：按照【投递规则ID】进行过滤。类型：String。必选：否
+- topicId：按照【日志主题】进行过滤。类型：String。必选：否
 
 每次请求的Filters的上限为10，Filter.Values的上限为5。
         :type Filters: list of Filter
@@ -4051,6 +4252,31 @@ class DescribeTopicsResponse(AbstractModel):
                 self.Topics.append(obj)
         self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
+
+
+class DynamicIndex(AbstractModel):
+    """动态更新索引配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: 动态索引配置开关
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: bool
+        """
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class ExcludePathInfo(AbstractModel):
@@ -4210,6 +4436,13 @@ auto：自动匹配rfc3164或者rfc5424其中一种协议
 该字段适用于：创建采集规则配置、修改采集规则配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type ParseProtocol: str
+        :param MetadataType: 元数据类型，0: 不使用元数据信息，1:使用机器组元数据，2:使用用户自定义元数据，3:使用采集配置路径，
+        :type MetadataType: int
+        :param PathRegex: 采集配置路径正则表达式，MetadataType为1时必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PathRegex: str
+        :param MetaTags: 用户自定义元数据信息，MetadataType为2时必填
+        :type MetaTags: list of MetaTagInfo
         """
         self.TimeKey = None
         self.TimeFormat = None
@@ -4226,6 +4459,9 @@ auto：自动匹配rfc3164或者rfc5424其中一种协议
         self.Protocol = None
         self.Address = None
         self.ParseProtocol = None
+        self.MetadataType = None
+        self.PathRegex = None
+        self.MetaTags = None
 
 
     def _deserialize(self, params):
@@ -4249,6 +4485,14 @@ auto：自动匹配rfc3164或者rfc5424其中一种协议
         self.Protocol = params.get("Protocol")
         self.Address = params.get("Address")
         self.ParseProtocol = params.get("ParseProtocol")
+        self.MetadataType = params.get("MetadataType")
+        self.PathRegex = params.get("PathRegex")
+        if params.get("MetaTags") is not None:
+            self.MetaTags = []
+            for item in params.get("MetaTags"):
+                obj = MetaTagInfo()
+                obj._deserialize(item)
+                self.MetaTags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4329,7 +4573,7 @@ class FullTextInfo(AbstractModel):
         :type CaseSensitive: bool
         :param Tokenizer: 全文索引的分词符，其中的每个字符代表一个分词符；
 仅支持英文符号、\n\t\r及转义符\；
-注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义
+注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义。使用API Explorer进行调试时请使用JSON参数输入方式，以避免\n\t\r被重复转义
         :type Tokenizer: str
         :param ContainZH: 是否包含中文
 注意：此字段可能返回 null，表示取不到有效值。
@@ -4470,6 +4714,34 @@ class GetAlarmLogResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class GroupTriggerConditionInfo(AbstractModel):
+    """分组触发条件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 分组触发字段名称
+        :type Key: str
+        :param Value: 分组触发字段值
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class HistogramInfo(AbstractModel):
     """直方图详细信息
 
@@ -4543,14 +4815,19 @@ class JsonInfo(AbstractModel):
         :param MetaFields: 元数据信息列表, 可选值为 __SOURCE__、__FILENAME__、__TIMESTAMP__、__HOSTNAME__。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MetaFields: list of str
+        :param JsonType: 投递Json格式，0：字符串方式投递；1:以结构化方式投递
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JsonType: int
         """
         self.EnableTag = None
         self.MetaFields = None
+        self.JsonType = None
 
 
     def _deserialize(self, params):
         self.EnableTag = params.get("EnableTag")
         self.MetaFields = params.get("MetaFields")
+        self.JsonType = params.get("JsonType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4646,6 +4923,12 @@ class LogContextInfo(AbstractModel):
         :param HostName: 日志来源主机名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostName: str
+        :param RawLog: 原始日志(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RawLog: str
+        :param IndexStatus: 日志创建索引异常原因(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IndexStatus: str
         """
         self.Source = None
         self.Filename = None
@@ -4654,6 +4937,8 @@ class LogContextInfo(AbstractModel):
         self.PkgLogId = None
         self.BTime = None
         self.HostName = None
+        self.RawLog = None
+        self.IndexStatus = None
 
 
     def _deserialize(self, params):
@@ -4664,6 +4949,8 @@ class LogContextInfo(AbstractModel):
         self.PkgLogId = params.get("PkgLogId")
         self.BTime = params.get("BTime")
         self.HostName = params.get("HostName")
+        self.RawLog = params.get("RawLog")
+        self.IndexStatus = params.get("IndexStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4700,6 +4987,12 @@ class LogInfo(AbstractModel):
         :param HostName: 日志来源主机名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type HostName: str
+        :param RawLog: 原始日志(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RawLog: str
+        :param IndexStatus: 日志创建索引异常原因(仅在日志创建索引异常时有值)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IndexStatus: str
         """
         self.Time = None
         self.TopicId = None
@@ -4710,6 +5003,8 @@ class LogInfo(AbstractModel):
         self.PkgLogId = None
         self.LogJson = None
         self.HostName = None
+        self.RawLog = None
+        self.IndexStatus = None
 
 
     def _deserialize(self, params):
@@ -4722,6 +5017,8 @@ class LogInfo(AbstractModel):
         self.PkgLogId = params.get("PkgLogId")
         self.LogJson = params.get("LogJson")
         self.HostName = params.get("HostName")
+        self.RawLog = params.get("RawLog")
+        self.IndexStatus = params.get("IndexStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4873,6 +5170,8 @@ class MachineGroupInfo(AbstractModel):
         :param ServiceLogging: 是否开启服务日志，用于记录因Loglistener 服务自身产生的log，开启后，会创建内部日志集cls_service_logging和日志主题loglistener_status,loglistener_alarm,loglistener_business，不产生计费
 注意：此字段可能返回 null，表示取不到有效值。
         :type ServiceLogging: bool
+        :param MetaTags: 机器组元数据信息列表
+        :type MetaTags: list of MetaTagInfo
         """
         self.GroupId = None
         self.GroupName = None
@@ -4883,6 +5182,7 @@ class MachineGroupInfo(AbstractModel):
         self.UpdateStartTime = None
         self.UpdateEndTime = None
         self.ServiceLogging = None
+        self.MetaTags = None
 
 
     def _deserialize(self, params):
@@ -4902,6 +5202,12 @@ class MachineGroupInfo(AbstractModel):
         self.UpdateStartTime = params.get("UpdateStartTime")
         self.UpdateEndTime = params.get("UpdateEndTime")
         self.ServiceLogging = params.get("ServiceLogging")
+        if params.get("MetaTags") is not None:
+            self.MetaTags = []
+            for item in params.get("MetaTags"):
+                obj = MetaTagInfo()
+                obj._deserialize(item)
+                self.MetaTags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5043,6 +5349,34 @@ class MergePartitionResponse(AbstractModel):
                 obj._deserialize(item)
                 self.Partitions.append(obj)
         self.RequestId = params.get("RequestId")
+
+
+class MetaTagInfo(AbstractModel):
+    """元数据信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Key: 元数据key
+        :type Key: str
+        :param Value: 元数据value
+        :type Value: str
+        """
+        self.Key = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Key = params.get("Key")
+        self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class ModifyAlarmNoticeRequest(AbstractModel):
@@ -5667,6 +6001,8 @@ class ModifyMachineGroupRequest(AbstractModel):
         :type UpdateEndTime: str
         :param ServiceLogging: 是否开启服务日志，用于记录因Loglistener 服务自身产生的log，开启后，会创建内部日志集cls_service_logging和日志主题loglistener_status,loglistener_alarm,loglistener_business，不产生计费
         :type ServiceLogging: bool
+        :param MetaTags: 机器组元数据信息列表
+        :type MetaTags: list of MetaTagInfo
         """
         self.GroupId = None
         self.GroupName = None
@@ -5676,6 +6012,7 @@ class ModifyMachineGroupRequest(AbstractModel):
         self.UpdateStartTime = None
         self.UpdateEndTime = None
         self.ServiceLogging = None
+        self.MetaTags = None
 
 
     def _deserialize(self, params):
@@ -5694,6 +6031,12 @@ class ModifyMachineGroupRequest(AbstractModel):
         self.UpdateStartTime = params.get("UpdateStartTime")
         self.UpdateEndTime = params.get("UpdateEndTime")
         self.ServiceLogging = params.get("ServiceLogging")
+        if params.get("MetaTags") is not None:
+            self.MetaTags = []
+            for item in params.get("MetaTags"):
+                obj = MetaTagInfo()
+                obj._deserialize(item)
+                self.MetaTags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5835,6 +6178,13 @@ class ModifyTopicRequest(AbstractModel):
         :type MaxSplitPartitions: int
         :param Period: 生命周期，单位天，标准存储取值范围1\~3600，低频存储取值范围7\~3600。取值为3640时代表永久保存
         :type Period: int
+        :param Describes: 日志主题描述
+        :type Describes: str
+        :param HotPeriod: 0：关闭日志沉降。
+非0：开启日志沉降后标准存储的天数。HotPeriod需要大于等于7，且小于Period。仅在StorageType为 hot 时生效
+        :type HotPeriod: int
+        :param IsWebTracking: webtracking开关； false: 关闭 true: 开启
+        :type IsWebTracking: bool
         """
         self.TopicId = None
         self.TopicName = None
@@ -5843,6 +6193,9 @@ class ModifyTopicRequest(AbstractModel):
         self.AutoSplit = None
         self.MaxSplitPartitions = None
         self.Period = None
+        self.Describes = None
+        self.HotPeriod = None
+        self.IsWebTracking = None
 
 
     def _deserialize(self, params):
@@ -5858,6 +6211,9 @@ class ModifyTopicRequest(AbstractModel):
         self.AutoSplit = params.get("AutoSplit")
         self.MaxSplitPartitions = params.get("MaxSplitPartitions")
         self.Period = params.get("Period")
+        self.Describes = params.get("Describes")
+        self.HotPeriod = params.get("HotPeriod")
+        self.IsWebTracking = params.get("IsWebTracking")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6182,10 +6538,14 @@ class RuleInfo(AbstractModel):
         :param Tag: 元字段索引配置，如果为空时代表未开启元字段索引
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tag: :class:`tencentcloud.cls.v20201016.models.RuleTagInfo`
+        :param DynamicIndex: 动态索引配置，如果为空时代表未开启动态段索引
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DynamicIndex: :class:`tencentcloud.cls.v20201016.models.DynamicIndex`
         """
         self.FullText = None
         self.KeyValue = None
         self.Tag = None
+        self.DynamicIndex = None
 
 
     def _deserialize(self, params):
@@ -6198,6 +6558,9 @@ class RuleInfo(AbstractModel):
         if params.get("Tag") is not None:
             self.Tag = RuleTagInfo()
             self.Tag._deserialize(params.get("Tag"))
+        if params.get("DynamicIndex") is not None:
+            self.DynamicIndex = DynamicIndex()
+            self.DynamicIndex._deserialize(params.get("DynamicIndex"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6316,6 +6679,10 @@ class SearchLogRequest(AbstractModel):
 1：不采样，即精确分析
 默认值为1
         :type SamplingRate: float
+        :param SyntaxRule: 检索语法规则，默认值为0。
+0：Lucene语法，1：CQL语法。
+详细说明参见<a href="https://cloud.tencent.com/document/product/614/47044#RetrievesConditionalRules" target="_blank">检索条件语法规则</a>
+        :type SyntaxRule: int
         """
         self.From = None
         self.To = None
@@ -6326,6 +6693,7 @@ class SearchLogRequest(AbstractModel):
         self.Sort = None
         self.UseNewAnalysis = None
         self.SamplingRate = None
+        self.SyntaxRule = None
 
 
     def _deserialize(self, params):
@@ -6338,6 +6706,7 @@ class SearchLogRequest(AbstractModel):
         self.Sort = params.get("Sort")
         self.UseNewAnalysis = params.get("UseNewAnalysis")
         self.SamplingRate = params.get("SamplingRate")
+        self.SyntaxRule = params.get("SyntaxRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6380,6 +6749,9 @@ class SearchLogResponse(AbstractModel):
 当UseNewAnalysis为true时生效
 注意：此字段可能返回 null，表示取不到有效值。
         :type Columns: list of Column
+        :param SamplingRate: 本次统计分析使用的采样率
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SamplingRate: float
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -6391,6 +6763,7 @@ class SearchLogResponse(AbstractModel):
         self.AnalysisResults = None
         self.AnalysisRecords = None
         self.Columns = None
+        self.SamplingRate = None
         self.RequestId = None
 
 
@@ -6418,6 +6791,7 @@ class SearchLogResponse(AbstractModel):
                 obj = Column()
                 obj._deserialize(item)
                 self.Columns.append(obj)
+        self.SamplingRate = params.get("SamplingRate")
         self.RequestId = params.get("RequestId")
 
 
@@ -6460,6 +6834,26 @@ class ShipperInfo(AbstractModel):
         :param FilenameMode: 投递文件命名配置，0：随机数命名，1：投递时间命名，默认0（随机数命名）
 注意：此字段可能返回 null，表示取不到有效值。
         :type FilenameMode: int
+        :param StartTime: 投递数据范围的开始时间点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: int
+        :param EndTime: 投递数据范围的结束时间点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: int
+        :param Progress: 历史数据投递的进度（仅当用户选择的数据内中历史数据时才有效）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Progress: float
+        :param RemainTime: 历史数据全部投递完成剩余的时间（仅当用户选择的数据中有历史数据时才有效）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RemainTime: int
+        :param HistoryStatus: 历史任务状态：
+0：实时任务
+1：任务准备中
+2：任务运行中
+3：任务运行异常
+4：任务运行结束
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HistoryStatus: int
         """
         self.ShipperId = None
         self.TopicId = None
@@ -6475,6 +6869,11 @@ class ShipperInfo(AbstractModel):
         self.Content = None
         self.CreateTime = None
         self.FilenameMode = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Progress = None
+        self.RemainTime = None
+        self.HistoryStatus = None
 
 
     def _deserialize(self, params):
@@ -6501,6 +6900,11 @@ class ShipperInfo(AbstractModel):
             self.Content._deserialize(params.get("Content"))
         self.CreateTime = params.get("CreateTime")
         self.FilenameMode = params.get("FilenameMode")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Progress = params.get("Progress")
+        self.RemainTime = params.get("RemainTime")
+        self.HistoryStatus = params.get("HistoryStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6818,7 +7222,7 @@ class ValueInfo(AbstractModel):
         :param Tokenizer: 字段的分词符，其中的每个字符代表一个分词符；
 仅支持英文符号、\n\t\r及转义符\；
 long及double类型字段需为空；
-注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义
+注意：\n\t\r本身已被转义，直接使用双引号包裹即可作为入参，无需再次转义。使用API Explorer进行调试时请使用JSON参数输入方式，以避免\n\t\r被重复转义
         :type Tokenizer: str
         :param SqlFlag: 字段是否开启分析功能
         :type SqlFlag: bool

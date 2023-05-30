@@ -322,6 +322,30 @@ class ApplicationList(AbstractModel):
         
 
 
+class AsrConf(AbstractModel):
+    """语音转文本配置数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: 语音转文本服务开关，取值：open/close
+        :type Status: str
+        """
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AudioTextStatisticsItem(AbstractModel):
     """录音转文本用量统计数据
 
@@ -419,15 +443,19 @@ class CreateAppRequest(AbstractModel):
         :param ProjectId: 腾讯云项目ID，默认为0，表示默认项目
         :type ProjectId: int
         :param EngineList: 需要支持的引擎列表，默认全选。
+取值：android/ios/unity/cocos/unreal/windows
         :type EngineList: list of str
         :param RegionList: 服务区域列表，默认全选。
+取值：mainland-大陆地区，hmt-港澳台，sea-东南亚，na-北美，eu-欧洲，jpkr-日韩亚太，sa-南美，oc-澳洲，me-中东
         :type RegionList: list of str
         :param RealtimeSpeechConf: 实时语音服务配置数据
         :type RealtimeSpeechConf: :class:`tencentcloud.gme.v20180711.models.RealtimeSpeechConf`
-        :param VoiceMessageConf: 语音消息及转文本服务配置数据
+        :param VoiceMessageConf: 语音消息服务配置数据
         :type VoiceMessageConf: :class:`tencentcloud.gme.v20180711.models.VoiceMessageConf`
         :param VoiceFilterConf: 语音分析服务配置数据
         :type VoiceFilterConf: :class:`tencentcloud.gme.v20180711.models.VoiceFilterConf`
+        :param AsrConf: 语音转文本配置数据
+        :type AsrConf: :class:`tencentcloud.gme.v20180711.models.AsrConf`
         :param Tags: 需要添加的标签列表
         :type Tags: list of Tag
         """
@@ -438,6 +466,7 @@ class CreateAppRequest(AbstractModel):
         self.RealtimeSpeechConf = None
         self.VoiceMessageConf = None
         self.VoiceFilterConf = None
+        self.AsrConf = None
         self.Tags = None
 
 
@@ -455,6 +484,9 @@ class CreateAppRequest(AbstractModel):
         if params.get("VoiceFilterConf") is not None:
             self.VoiceFilterConf = VoiceFilterConf()
             self.VoiceFilterConf._deserialize(params.get("VoiceFilterConf"))
+        if params.get("AsrConf") is not None:
+            self.AsrConf = AsrConf()
+            self.AsrConf._deserialize(params.get("AsrConf"))
         if params.get("Tags") is not None:
             self.Tags = []
             for item in params.get("Tags"):
@@ -489,10 +521,12 @@ class CreateAppResp(AbstractModel):
         :type CreateTime: int
         :param RealtimeSpeechConf: 实时语音服务配置数据
         :type RealtimeSpeechConf: :class:`tencentcloud.gme.v20180711.models.RealtimeSpeechConf`
-        :param VoiceMessageConf: 语音消息及转文本服务配置数据
+        :param VoiceMessageConf: 语音消息服务配置数据
         :type VoiceMessageConf: :class:`tencentcloud.gme.v20180711.models.VoiceMessageConf`
         :param VoiceFilterConf: 语音分析服务配置数据
         :type VoiceFilterConf: :class:`tencentcloud.gme.v20180711.models.VoiceFilterConf`
+        :param AsrConf: 语音转文本服务配置数据
+        :type AsrConf: :class:`tencentcloud.gme.v20180711.models.AsrConf`
         """
         self.BizId = None
         self.AppName = None
@@ -502,6 +536,7 @@ class CreateAppResp(AbstractModel):
         self.RealtimeSpeechConf = None
         self.VoiceMessageConf = None
         self.VoiceFilterConf = None
+        self.AsrConf = None
 
 
     def _deserialize(self, params):
@@ -519,6 +554,9 @@ class CreateAppResp(AbstractModel):
         if params.get("VoiceFilterConf") is not None:
             self.VoiceFilterConf = VoiceFilterConf()
             self.VoiceFilterConf._deserialize(params.get("VoiceFilterConf"))
+        if params.get("AsrConf") is not None:
+            self.AsrConf = AsrConf()
+            self.AsrConf._deserialize(params.get("AsrConf"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2135,7 +2173,7 @@ class RealtimeSpeechConf(AbstractModel):
         r"""
         :param Status: 实时语音服务开关，取值：open/close
         :type Status: str
-        :param Quality: 实时语音音质类型，取值：high-高音质
+        :param Quality: 实时语音音质类型，取值：high-高音质 ordinary-普通音质
         :type Quality: str
         """
         self.Status = None
@@ -2180,7 +2218,7 @@ class RealtimeTextStatisticsItem(AbstractModel):
 
 
 class RecordInfo(AbstractModel):
-    """房间内录制信息信息
+    """房间内录制信息。
     注意：此字段可能返回 null，表示取不到有效值。
 
     """
@@ -2472,6 +2510,15 @@ class ScanVoiceResult(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class SceneInfo(AbstractModel):
+    """SceneInfo场景信息
+    'RealTime','实时语音分析',
+    'VoiceMessage','语音消息',
+    'GMECloudApi':'GME云API接口'
+
+    """
 
 
 class ServiceStatus(AbstractModel):
@@ -2925,7 +2972,6 @@ class UserMicStatus(AbstractModel):
         :param Uid: 客户端用于标识用户的Openid。（Uid、StrUid必须填一个，优先处理StrUid。）
         :type Uid: int
         :param StrUid: 客户端用于标识字符串型用户的Openid。（Uid、StrUid必须填一个，优先处理StrUid。）
-注意：此字段可能返回 null，表示取不到有效值。
         :type StrUid: str
         """
         self.EnableMic = None
@@ -2955,12 +3001,22 @@ class VoiceFilterConf(AbstractModel):
         r"""
         :param Status: 语音过滤服务开关，取值：open/close
         :type Status: str
+        :param SceneInfos: 场景配置信息，如开关状态，回调地址。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SceneInfos: list of SceneInfo
         """
         self.Status = None
+        self.SceneInfos = None
 
 
     def _deserialize(self, params):
         self.Status = params.get("Status")
+        if params.get("SceneInfos") is not None:
+            self.SceneInfos = []
+            for item in params.get("SceneInfos"):
+                obj = SceneInfo()
+                obj._deserialize(item)
+                self.SceneInfos.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

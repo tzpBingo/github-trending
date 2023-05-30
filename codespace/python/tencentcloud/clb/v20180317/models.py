@@ -1490,6 +1490,8 @@ class CreateListenerRequest(AbstractModel):
         :type MaxConn: int
         :param MaxCps: 监听器最大新增连接数，只有TCP/UDP/TCP_SSL/QUIC监听器支持，不传或者传-1表示监听器维度不限速。
         :type MaxCps: int
+        :param IdleConnectTimeout: 空闲连接超时时间，此参数仅适用于TCP监听器，单位：秒。默认值：900，取值范围：共享型实例和独占型实例支持：300～900，性能容量型实例支持：300~2000。如需设置超过2000s，请通过 [工单申请](https://console.cloud.tencent.com/workorder/category),最大可设置到3600s。
+        :type IdleConnectTimeout: int
         """
         self.LoadBalancerId = None
         self.Ports = None
@@ -1508,6 +1510,7 @@ class CreateListenerRequest(AbstractModel):
         self.MultiCertInfo = None
         self.MaxConn = None
         self.MaxCps = None
+        self.IdleConnectTimeout = None
 
 
     def _deserialize(self, params):
@@ -1534,6 +1537,7 @@ class CreateListenerRequest(AbstractModel):
             self.MultiCertInfo._deserialize(params.get("MultiCertInfo"))
         self.MaxConn = params.get("MaxConn")
         self.MaxCps = params.get("MaxCps")
+        self.IdleConnectTimeout = params.get("IdleConnectTimeout")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4764,6 +4768,9 @@ class IdleLoadBalancer(AbstractModel):
         :type Status: int
         :param Forward: 负载均衡类型标识，1：负载均衡，0：传统型负载均衡。
         :type Forward: int
+        :param Domain: 负载均衡域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
         """
         self.LoadBalancerId = None
         self.LoadBalancerName = None
@@ -4772,6 +4779,7 @@ class IdleLoadBalancer(AbstractModel):
         self.IdleReason = None
         self.Status = None
         self.Forward = None
+        self.Domain = None
 
 
     def _deserialize(self, params):
@@ -4782,6 +4790,7 @@ class IdleLoadBalancer(AbstractModel):
         self.IdleReason = params.get("IdleReason")
         self.Status = params.get("Status")
         self.Forward = params.get("Forward")
+        self.Domain = params.get("Domain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4802,7 +4811,11 @@ class InternetAccessible(AbstractModel):
 BANDWIDTH_PACKAGE 按带宽包计费;
 注意：此字段可能返回 null，表示取不到有效值。
         :type InternetChargeType: str
-        :param InternetMaxBandwidthOut: 最大出带宽，单位Mbps，范围支持0到2048，仅对公网属性的LB生效，默认值 10
+        :param InternetMaxBandwidthOut: 最大出带宽，单位Mbps，仅对公网属性的共享型、性能容量型和独占型 CLB 实例、以及内网属性的性能容量型 CLB 实例生效。
+- 对于公网属性的共享型和独占型 CLB 实例，最大出带宽的范围为1Mbps-2048Mbps。
+- 对于公网属性和内网属性的性能容量型 CLB实例
+  - 当您开通了普通规格的性能容量型时，最大出带宽的范围为1Mbps-10240Mbps。普通规格的性能容量型正在内测中，请提交 [内测申请](https://cloud.tencent.com/apply/p/hf45esx99lf)。
+  - 当您开通了超大型规格的性能容量型时，最大出带宽的范围为1Mbps-61440Mbps。超大型规格的性能容量型正在内测中，请提交 [工单申请](https://console.cloud.tencent.com/workorder/category)。
 注意：此字段可能返回 null，表示取不到有效值。
         :type InternetMaxBandwidthOut: int
         :param BandwidthpkgSubType: 带宽包的类型，如SINGLEISP
@@ -5038,6 +5051,9 @@ class Listener(AbstractModel):
         :param MaxCps: 监听器最大新增连接数，-1表示监听器维度不限速。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxCps: int
+        :param IdleConnectTimeout: 空闲连接超时时间，仅支持TCP监听器。默认值:900；共享型实例和独占型实例取值范围：300～900，性能容量型实例取值范围:300～1980。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IdleConnectTimeout: int
         """
         self.ListenerId = None
         self.Protocol = None
@@ -5061,6 +5077,7 @@ class Listener(AbstractModel):
         self.TargetGroupList = None
         self.MaxConn = None
         self.MaxCps = None
+        self.IdleConnectTimeout = None
 
 
     def _deserialize(self, params):
@@ -5102,6 +5119,7 @@ class Listener(AbstractModel):
                 self.TargetGroupList.append(obj)
         self.MaxConn = params.get("MaxConn")
         self.MaxCps = params.get("MaxCps")
+        self.IdleConnectTimeout = params.get("IdleConnectTimeout")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6088,6 +6106,8 @@ class ModifyDomainAttributesRequest(AbstractModel):
         :type Http2: bool
         :param DefaultServer: 是否设为默认域名，注意，一个监听器下只能设置一个默认域名。
         :type DefaultServer: bool
+        :param Quic: 是否开启Quic，注意，只有HTTPS域名才能开启Quic
+        :type Quic: bool
         :param NewDefaultServerDomain: 监听器下必须配置一个默认域名，若要关闭原默认域名，必须同时指定另一个域名作为新的默认域名，如果新的默认域名是多域名，可以指定多域名列表中的任意一个。
         :type NewDefaultServerDomain: str
         :param NewDomains: 要修改的新域名列表。NewDomain和NewDomains只能传一个。
@@ -6102,6 +6122,7 @@ class ModifyDomainAttributesRequest(AbstractModel):
         self.Certificate = None
         self.Http2 = None
         self.DefaultServer = None
+        self.Quic = None
         self.NewDefaultServerDomain = None
         self.NewDomains = None
         self.MultiCertInfo = None
@@ -6117,6 +6138,7 @@ class ModifyDomainAttributesRequest(AbstractModel):
             self.Certificate._deserialize(params.get("Certificate"))
         self.Http2 = params.get("Http2")
         self.DefaultServer = params.get("DefaultServer")
+        self.Quic = params.get("Quic")
         self.NewDefaultServerDomain = params.get("NewDefaultServerDomain")
         self.NewDomains = params.get("NewDomains")
         if params.get("MultiCertInfo") is not None:
@@ -6305,6 +6327,8 @@ class ModifyListenerRequest(AbstractModel):
         :type MaxConn: int
         :param MaxCps: 监听器粒度新建连接数上限，当前仅性能容量型实例且仅TCP/UDP/TCP_SSL/QUIC监听器支持。取值范围：1-实例规格新建连接上限，其中-1表示关闭监听器粒度新建连接数限速。
         :type MaxCps: int
+        :param IdleConnectTimeout: 空闲连接超时时间，此参数仅适用于TCP监听器，单位：秒。默认值：900，取值范围：共享型实例和独占型实例支持：300～900，性能容量型实例支持：300~2000。如需设置超过2000s，请通过 [工单申请](https://console.cloud.tencent.com/workorder/category),最大可设置到3600s。
+        :type IdleConnectTimeout: int
         """
         self.LoadBalancerId = None
         self.ListenerId = None
@@ -6321,6 +6345,7 @@ class ModifyListenerRequest(AbstractModel):
         self.MultiCertInfo = None
         self.MaxConn = None
         self.MaxCps = None
+        self.IdleConnectTimeout = None
 
 
     def _deserialize(self, params):
@@ -6345,6 +6370,7 @@ class ModifyListenerRequest(AbstractModel):
             self.MultiCertInfo._deserialize(params.get("MultiCertInfo"))
         self.MaxConn = params.get("MaxConn")
         self.MaxCps = params.get("MaxCps")
+        self.IdleConnectTimeout = params.get("IdleConnectTimeout")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6392,6 +6418,8 @@ class ModifyLoadBalancerAttributesRequest(AbstractModel):
         :type SnatPro: bool
         :param DeleteProtect: 是否开启删除保护
         :type DeleteProtect: bool
+        :param ModifyClassicDomain: 将负载均衡二级域名由mycloud.com改为tencentclb.com，子域名也会变换。修改后mycloud.com域名将失效。
+        :type ModifyClassicDomain: bool
         """
         self.LoadBalancerId = None
         self.LoadBalancerName = None
@@ -6400,6 +6428,7 @@ class ModifyLoadBalancerAttributesRequest(AbstractModel):
         self.LoadBalancerPassToTarget = None
         self.SnatPro = None
         self.DeleteProtect = None
+        self.ModifyClassicDomain = None
 
 
     def _deserialize(self, params):
@@ -6414,6 +6443,7 @@ class ModifyLoadBalancerAttributesRequest(AbstractModel):
         self.LoadBalancerPassToTarget = params.get("LoadBalancerPassToTarget")
         self.SnatPro = params.get("SnatPro")
         self.DeleteProtect = params.get("DeleteProtect")
+        self.ModifyClassicDomain = params.get("ModifyClassicDomain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6560,9 +6590,9 @@ class ModifyRuleRequest(AbstractModel):
         :type SessionExpireTime: int
         :param ForwardType: 负载均衡实例与后端服务之间的转发协议，默认HTTP，可取值：HTTP、HTTPS、TRPC。
         :type ForwardType: str
-        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填。
+        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填。目前暂未对外开放。
         :type TrpcCallee: str
-        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填。
+        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填。目前暂未对外开放。
         :type TrpcFunc: str
         """
         self.LoadBalancerId = None
@@ -7523,7 +7553,7 @@ class RuleInput(AbstractModel):
         :param Scheduler: 规则的请求转发方式，可选值：WRR、LEAST_CONN、IP_HASH
 分别表示按权重轮询、最小连接数、按IP哈希， 默认为 WRR。
         :type Scheduler: str
-        :param ForwardType: 负载均衡与后端服务之间的转发协议，目前支持 HTTP/HTTPS/TRPC
+        :param ForwardType: 负载均衡与后端服务之间的转发协议，目前支持 HTTP/HTTPS/TRPC，TRPC暂未对外开放。
         :type ForwardType: str
         :param DefaultServer: 是否将该域名设为默认域名，注意，一个监听器下只能设置一个默认域名。
         :type DefaultServer: bool
@@ -7531,9 +7561,9 @@ class RuleInput(AbstractModel):
         :type Http2: bool
         :param TargetType: 后端目标类型，NODE表示绑定普通节点，TARGETGROUP表示绑定目标组
         :type TargetType: str
-        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填
+        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时必填。目前暂未对外开放。
         :type TrpcCallee: str
-        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填
+        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时必填。目前暂未对外开放
         :type TrpcFunc: str
         :param Quic: 是否开启QUIC，注意，只有HTTPS域名才能开启QUIC
         :type Quic: bool
@@ -7640,10 +7670,10 @@ class RuleOutput(AbstractModel):
         :param WafDomainId: WAF实例ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type WafDomainId: str
-        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时有效
+        :param TrpcCallee: TRPC被调服务器路由，ForwardType为TRPC时有效。目前暂未对外开放。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TrpcCallee: str
-        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时有效
+        :param TrpcFunc: TRPC调用服务接口，ForwardType为TRPC时有效。目前暂未对外开放。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TrpcFunc: str
         :param QuicStatus: QUIC状态
@@ -8383,7 +8413,7 @@ class TargetHealth(AbstractModel):
         :type TargetId: str
         :param HealthStatusDetail: 当前健康状态的详细信息。如：Alive、Dead、Unknown。Alive状态为健康，Dead状态为异常，Unknown状态包括尚未开始探测、探测中、状态未知。
         :type HealthStatusDetail: str
-        :param HealthStatusDetial: 当前健康状态的详细信息。如：Alive、Dead、Unknown。Alive状态为健康，Dead状态为异常，Unknown状态包括尚未开始探测、探测中、状态未知。(该参数对象即将下线，不推荐使用，请使用HealthStatusDetail获取健康详情)
+        :param HealthStatusDetial: (**该参数对象即将下线，不推荐使用，请使用HealthStatusDetail获取健康详情**) 当前健康状态的详细信息。如：Alive、Dead、Unknown。Alive状态为健康，Dead状态为异常，Unknown状态包括尚未开始探测、探测中、状态未知。
         :type HealthStatusDetial: str
         """
         self.IP = None

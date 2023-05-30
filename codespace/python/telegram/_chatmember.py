@@ -23,7 +23,7 @@ from typing import TYPE_CHECKING, ClassVar, Dict, Optional, Type
 from telegram import constants
 from telegram._telegramobject import TelegramObject
 from telegram._user import User
-from telegram._utils.datetime import from_timestamp
+from telegram._utils.datetime import extract_tzinfo_from_defaults, from_timestamp
 from telegram._utils.types import JSONDict
 
 if TYPE_CHECKING:
@@ -92,7 +92,7 @@ class ChatMember(TelegramObject):
         user: User,
         status: str,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required by all subclasses
@@ -125,7 +125,10 @@ class ChatMember(TelegramObject):
 
         data["user"] = User.de_json(data.get("user"), bot)
         if "until_date" in data:
-            data["until_date"] = from_timestamp(data["until_date"])
+            # Get the local timezone from the bot if it has defaults
+            loc_tzinfo = extract_tzinfo_from_defaults(bot)
+
+            data["until_date"] = from_timestamp(data["until_date"], tzinfo=loc_tzinfo)
 
         return super().de_json(data=data, bot=bot)
 
@@ -159,9 +162,9 @@ class ChatMemberOwner(ChatMember):
         self,
         user: User,
         is_anonymous: bool,
-        custom_title: str = None,
+        custom_title: Optional[str] = None,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(status=ChatMember.OWNER, user=user, api_kwargs=api_kwargs)
         with self._unfrozen():
@@ -292,13 +295,13 @@ class ChatMemberAdministrator(ChatMember):
         can_promote_members: bool,
         can_change_info: bool,
         can_invite_users: bool,
-        can_post_messages: bool = None,
-        can_edit_messages: bool = None,
-        can_pin_messages: bool = None,
-        can_manage_topics: bool = None,
-        custom_title: str = None,
+        can_post_messages: Optional[bool] = None,
+        can_edit_messages: Optional[bool] = None,
+        can_pin_messages: Optional[bool] = None,
+        can_manage_topics: Optional[bool] = None,
+        custom_title: Optional[str] = None,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(status=ChatMember.ADMINISTRATOR, user=user, api_kwargs=api_kwargs)
         with self._unfrozen():
@@ -341,7 +344,7 @@ class ChatMemberMember(ChatMember):
         self,
         user: User,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(status=ChatMember.MEMBER, user=user, api_kwargs=api_kwargs)
         self._freeze()
@@ -386,6 +389,9 @@ class ChatMemberRestricted(ChatMember):
             .. versionadded:: 20.0
         until_date (:class:`datetime.datetime`): Date when restrictions
            will be lifted for this user.
+
+            .. versionchanged:: 20.3
+                |datetime_localization|
         can_send_audios (:obj:`bool`): :obj:`True`, if the user is allowed to send audios.
 
             .. versionadded:: 20.1
@@ -438,6 +444,9 @@ class ChatMemberRestricted(ChatMember):
             .. versionadded:: 20.0
         until_date (:class:`datetime.datetime`): Date when restrictions
            will be lifted for this user.
+
+            .. versionchanged:: 20.3
+                |datetime_localization|
         can_send_audios (:obj:`bool`): :obj:`True`, if the user is allowed to send audios.
 
             .. versionadded:: 20.1
@@ -502,7 +511,7 @@ class ChatMemberRestricted(ChatMember):
         can_send_video_notes: bool,
         can_send_voice_notes: bool,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(status=ChatMember.RESTRICTED, user=user, api_kwargs=api_kwargs)
         with self._unfrozen():
@@ -547,7 +556,7 @@ class ChatMemberLeft(ChatMember):
         self,
         user: User,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(status=ChatMember.LEFT, user=user, api_kwargs=api_kwargs)
         self._freeze()
@@ -565,12 +574,18 @@ class ChatMemberBanned(ChatMember):
         until_date (:class:`datetime.datetime`): Date when restrictions
            will be lifted for this user.
 
+            .. versionchanged:: 20.3
+                |datetime_localization|
+
     Attributes:
         status (:obj:`str`): The member's status in the chat,
             always :tg-const:`telegram.ChatMember.BANNED`.
         user (:class:`telegram.User`): Information about the user.
         until_date (:class:`datetime.datetime`): Date when restrictions
            will be lifted for this user.
+
+            .. versionchanged:: 20.3
+                |datetime_localization|
 
     """
 
@@ -581,7 +596,7 @@ class ChatMemberBanned(ChatMember):
         user: User,
         until_date: datetime.datetime,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(status=ChatMember.BANNED, user=user, api_kwargs=api_kwargs)
         with self._unfrozen():

@@ -26,6 +26,29 @@ class EssClient(AbstractClient):
     _service = 'ess'
 
 
+    def BindEmployeeUserIdWithClientOpenId(self, request):
+        """将电子签系统员工userId与客户系统员工openId进行绑定
+
+        :param request: Request instance for BindEmployeeUserIdWithClientOpenId.
+        :type request: :class:`tencentcloud.ess.v20201111.models.BindEmployeeUserIdWithClientOpenIdRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.BindEmployeeUserIdWithClientOpenIdResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("BindEmployeeUserIdWithClientOpenId", params, headers=headers)
+            response = json.loads(body)
+            model = models.BindEmployeeUserIdWithClientOpenIdResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CancelFlow(self, request):
         """用于撤销签署流程
         适用场景：如果某个合同流程当前至少还有一方没有签署，则可通过该接口取消该合同流程。常用于合同发错、内容填错，需要及时撤销的场景。
@@ -75,8 +98,9 @@ class EssClient(AbstractClient):
 
 
     def CreateBatchCancelFlowUrl(self, request):
-        """电子签企业版：指定需要批量撤回的签署流程Id，获取批量撤销链接
-        客户指定需要撤回的签署流程Id，最多100个，超过100不处理；接口调用成功返回批量撤回合同的链接，通过链接跳转到电子签小程序完成批量撤回
+        """注：此接口将会废弃，请使用撤销单个签署流程（CancelFlow）接口。
+        指定需要批量撤回的签署流程Id，获取批量撤销链接。
+        客户指定需要撤回的签署流程Id，最多100个，超过100不处理；接口调用成功返回批量撤回合同的链接，通过链接跳转到电子签小程序完成批量撤回。
 
         :param request: Request instance for CreateBatchCancelFlowUrl.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateBatchCancelFlowUrlRequest`
@@ -98,8 +122,31 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateChannelSubOrganizationModifyQrCode(self, request):
+        """生成子客编辑企业信息二维码
+
+        :param request: Request instance for CreateChannelSubOrganizationModifyQrCode.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateChannelSubOrganizationModifyQrCodeRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateChannelSubOrganizationModifyQrCodeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateChannelSubOrganizationModifyQrCode", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateChannelSubOrganizationModifyQrCodeResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateConvertTaskApi(self, request):
-        """创建文件转换任务
+        """上传了word、excel文件后，通过该接口发起文件转换任务，将word、excel文件转换为pdf文件。
 
         :param request: Request instance for CreateConvertTaskApi.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateConvertTaskApiRequest`
@@ -123,7 +170,7 @@ class EssClient(AbstractClient):
 
     def CreateDocument(self, request):
         """创建签署流程电子文档
-        适用场景：见创建签署流程接口。x0b
+        适用场景：见创建签署流程接口。
         注：该接口需要给对应的流程指定一个模板id，并且填充该模板中需要补充的信息。是“发起流程”接口的前置接口。
 
         :param request: Request instance for CreateDocument.
@@ -147,7 +194,7 @@ class EssClient(AbstractClient):
 
 
     def CreateFlow(self, request):
-        """创建签署流程
+        """通过模板创建签署流程
         适用场景：在标准制式的合同场景中，可通过提前预制好模板文件，每次调用模板文件的id，补充合同内容信息及签署信息生成电子合同。
         注：该接口是通过模板生成合同流程的前置接口，先创建一个不包含签署文件的流程。配合“创建电子文档”接口和“发起流程”接口使用。
 
@@ -252,6 +299,8 @@ class EssClient(AbstractClient):
         """指定需要批量催办的签署流程Id，批量催办合同，最多100个; 接口失败后返回错误信息
         注意:
         该接口不可直接调用，请联系客户经理申请使用
+        仅能催办当前状态为“待签署”的签署人，且只能催办一次
+        发起合同时，签署人的NotifyType需设置为sms，否则无法催办
 
         :param request: Request instance for CreateFlowReminds.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowRemindsRequest`
@@ -300,7 +349,11 @@ class EssClient(AbstractClient):
 
 
     def CreateFlowSignUrl(self, request):
-        """创建签署链接，请联系客户经理申请使用
+        """创建个人H5签署链接，请联系客户经理申请使用 <br/>
+        该接口用于发起合同后，生成C端签署人的签署链接 <br/>
+        注意：该接口目前签署人类型仅支持个人签署方（PERSON） <br/>
+        注意：该接口可生成签署链接的C端签署人必须仅有手写签名和时间类型的签署控件<br/>
+        注意：该接口返回的签署链接是用于APP集成的场景，支持APP打开或浏览器直接打开，不支持微信小程序嵌入。微信小程序请使用小程序跳转或半屏弹窗的方式<br/>
 
         :param request: Request instance for CreateFlowSignUrl.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowSignUrlRequest`
@@ -323,7 +376,7 @@ class EssClient(AbstractClient):
 
 
     def CreateIntegrationEmployees(self, request):
-        """创建员工
+        """创建员工,如需在此接口提醒员工实名，入参Employees的OpenId不传
 
         :param request: Request instance for CreateIntegrationEmployees.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateIntegrationEmployeesRequest`
@@ -345,10 +398,39 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateIntegrationUserRoles(self, request):
+        """绑定员工与对应角色
+
+        :param request: Request instance for CreateIntegrationUserRoles.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateIntegrationUserRolesRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateIntegrationUserRolesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateIntegrationUserRoles", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateIntegrationUserRolesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateMultiFlowSignQRCode(self, request):
         """此接口（CreateMultiFlowSignQRCode）用于创建一码多扫流程签署二维码。
         适用场景：无需填写签署人信息，可通过模板id生成签署二维码，签署人可通过扫描二维码补充签署信息进行实名签署。常用于提前不知道签署人的身份信息场景，例如：劳务工招工、大批量员工入职等场景。
-        适用的模板仅限于B2C（1、无序签署，2、顺序签署时B静默签署，3、顺序签署时B非首位签署）、单C的模板，且模板中发起方没有填写控件。
+
+        **本接口适用于发起方没有填写控件的 B2C或者单C模板**
+
+        **若是B2C模板,还要满足以下任意一个条件**
+        - 模板中配置的签署顺序是无序
+        - B端企业的签署方式是静默签署
+        - B端企业是非首位签署
 
         :param request: Request instance for CreateMultiFlowSignQRCode.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateMultiFlowSignQRCodeRequest`
@@ -395,6 +477,29 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreatePreparedPersonalEsign(self, request):
+        """本接口（CreatePreparedPersonalEsign）用于创建导入个人印章（处方单场景专用，使用此接口请与客户经理确认）。
+
+        :param request: Request instance for CreatePreparedPersonalEsign.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreatePreparedPersonalEsignRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreatePreparedPersonalEsignResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreatePreparedPersonalEsign", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreatePreparedPersonalEsignResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateReleaseFlow(self, request):
         """发起解除协议，主要应用场景为：基于一份已经签署的合同(签署流程)，进行解除操作。
 
@@ -419,7 +524,7 @@ class EssClient(AbstractClient):
 
 
     def CreateSchemeUrl(self, request):
-        """获取小程序跳转链接
+        """获取小程序签署链接
 
         适用场景：如果需要签署人在自己的APP、小程序、H5应用中签署，可以通过此接口获取跳转腾讯电子签小程序的签署跳转链接。
 
@@ -475,7 +580,7 @@ class EssClient(AbstractClient):
 
 
     def CreateUserAutoSignEnableUrl(self, request):
-        """企业方可以通过此接口获取个人用户开启自动签的跳转链接
+        """企业方可以通过此接口获取个人用户开启自动签的跳转链接（处方单场景专用，使用此接口请与客户经理确认）
 
         :param request: Request instance for CreateUserAutoSignEnableUrl.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateUserAutoSignEnableUrlRequest`
@@ -511,6 +616,29 @@ class EssClient(AbstractClient):
             body = self.call("DeleteIntegrationEmployees", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteIntegrationEmployeesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteIntegrationRoleUsers(self, request):
+        """解绑员工与对应角色关系
+
+        :param request: Request instance for DeleteIntegrationRoleUsers.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DeleteIntegrationRoleUsersRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DeleteIntegrationRoleUsersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteIntegrationRoleUsers", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteIntegrationRoleUsersResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -663,7 +791,7 @@ class EssClient(AbstractClient):
 
 
     def DescribeIntegrationEmployees(self, request):
-        """查询员工信息，每次返回的数据量最大为20
+        """查询企业员工列表，每次返回的数据量最大为20
 
         :param request: Request instance for DescribeIntegrationEmployees.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeIntegrationEmployeesRequest`
@@ -699,6 +827,29 @@ class EssClient(AbstractClient):
             body = self.call("DescribeIntegrationMainOrganizationUser", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeIntegrationMainOrganizationUserResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeIntegrationRoles(self, request):
+        """查询企业角色列表
+
+        :param request: Request instance for DescribeIntegrationRoles.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DescribeIntegrationRolesRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DescribeIntegrationRolesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeIntegrationRoles", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeIntegrationRolesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -779,7 +930,7 @@ class EssClient(AbstractClient):
 
 
     def DescribeUserAutoSignStatus(self, request):
-        """企业方可以通过此接口查询个人用户自动签开启状态
+        """企业方可以通过此接口查询个人用户自动签开启状态。（处方单场景专用，使用此接口请与客户经理确认）
 
         :param request: Request instance for DescribeUserAutoSignStatus.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeUserAutoSignStatusRequest`
@@ -802,7 +953,7 @@ class EssClient(AbstractClient):
 
 
     def DisableUserAutoSign(self, request):
-        """企业方可以通过此接口关闭个人的自动签功能
+        """企业方可以通过此接口关闭个人的自动签功能（处方单场景专用，使用此接口请与客户经理确认）
 
         :param request: Request instance for DisableUserAutoSign.
         :type request: :class:`tencentcloud.ess.v20201111.models.DisableUserAutoSignRequest`
@@ -825,7 +976,7 @@ class EssClient(AbstractClient):
 
 
     def GetTaskResultApi(self, request):
-        """查询转换任务状态
+        """通过发起转换任务接口（CreateConvertTaskApi）返回的任务Id查询转换任务状态，通过本接口确认转换任务是否完成。大文件转换所需的时间可能会比较长。
 
         :param request: Request instance for GetTaskResultApi.
         :type request: :class:`tencentcloud.ess.v20201111.models.GetTaskResultApiRequest`
@@ -897,6 +1048,52 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def UnbindEmployeeUserIdWithClientOpenId(self, request):
+        """将存在绑定关系的电子签系统员工userId与客户系统员工openId进行解绑
+
+        :param request: Request instance for UnbindEmployeeUserIdWithClientOpenId.
+        :type request: :class:`tencentcloud.ess.v20201111.models.UnbindEmployeeUserIdWithClientOpenIdRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.UnbindEmployeeUserIdWithClientOpenIdResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UnbindEmployeeUserIdWithClientOpenId", params, headers=headers)
+            response = json.loads(body)
+            model = models.UnbindEmployeeUserIdWithClientOpenIdResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def UpdateIntegrationEmployees(self, request):
+        """更新员工信息(姓名，手机号，邮件)，用户实名后无法更改姓名与手机号
+
+        :param request: Request instance for UpdateIntegrationEmployees.
+        :type request: :class:`tencentcloud.ess.v20201111.models.UpdateIntegrationEmployeesRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.UpdateIntegrationEmployeesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UpdateIntegrationEmployees", params, headers=headers)
+            response = json.loads(body)
+            model = models.UpdateIntegrationEmployeesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def UploadFiles(self, request):
         """此接口（UploadFiles）用于文件上传。
         适用场景：用于生成pdf资源编号（FileIds）来配合“用PDF创建流程”接口使用，使用场景可详见“用PDF创建流程”接口说明。
@@ -924,7 +1121,7 @@ class EssClient(AbstractClient):
 
 
     def VerifyPdf(self, request):
-        """验证合同文件
+        """对流程的合同文件进行验证，判断文件是否合法。
 
         :param request: Request instance for VerifyPdf.
         :type request: :class:`tencentcloud.ess.v20201111.models.VerifyPdfRequest`

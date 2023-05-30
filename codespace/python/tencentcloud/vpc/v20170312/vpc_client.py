@@ -966,7 +966,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateFlowLog(self, request):
-        """本接口（CreateFlowLog）用于创建流日志
+        """本接口（CreateFlowLog）用于创建网络流日志。
 
         :param request: Request instance for CreateFlowLog.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateFlowLogRequest`
@@ -1254,7 +1254,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateRoutes(self, request):
-        """本接口(CreateRoutes)用于创建路由策略。
+        """本接口（CreateRoutes）用于创建路由策略。
         * 向指定路由表批量新增路由策略。
 
         :param request: Request instance for CreateRoutes.
@@ -1716,7 +1716,7 @@ class VpcClient(AbstractClient):
 
 
     def CreateVpnGatewaySslServer(self, request):
-        """创建 Server端
+        """本接口（CreateVpnGatewaySslServer）用于创建SSL-VPN Server端。
 
         :param request: Request instance for CreateVpnGatewaySslServer.
         :type request: :class:`tencentcloud.vpc.v20170312.models.CreateVpnGatewaySslServerRequest`
@@ -1953,7 +1953,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteFlowLog(self, request):
-        """本接口（DeleteFlowLog）用于删除流日志
+        """本接口（DeleteFlowLog）用于删除流日志。
 
         :param request: Request instance for DeleteFlowLog.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteFlowLogRequest`
@@ -2424,6 +2424,29 @@ class VpcClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteTrafficPackages(self, request):
+        """删除共享带宽包（仅非活动状态的流量包可删除）。
+
+        :param request: Request instance for DeleteTrafficPackages.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteTrafficPackagesRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DeleteTrafficPackagesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteTrafficPackages", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteTrafficPackagesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteVpc(self, request):
         """本接口（DeleteVpc）用于删除私有网络。
         * 删除前请确保 VPC 内已经没有相关资源，例如云服务器、云数据库、NoSQL、VPN网关、专线网关、负载均衡、对等连接、与之互通的基础网络设备等。
@@ -2519,7 +2542,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteVpnConnection(self, request):
-        """本接口(DeleteVpnConnection)用于删除VPN通道。
+        """本接口（DeleteVpnConnection）用于删除VPN通道。
 
         :param request: Request instance for DeleteVpnConnection.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteVpnConnectionRequest`
@@ -2565,7 +2588,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteVpnGatewayRoutes(self, request):
-        """本接口（DeleteVpnGatewayCcnRoutes）用于删除VPN网关路由
+        """本接口（DeleteVpnGatewayRoutes）用于删除VPN网关路由
 
         :param request: Request instance for DeleteVpnGatewayRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteVpnGatewayRoutesRequest`
@@ -2588,7 +2611,7 @@ class VpcClient(AbstractClient):
 
 
     def DeleteVpnGatewaySslClient(self, request):
-        """删除SSL-VPN-CLIENT
+        """本接口（DeleteVpnGatewaySslClient）用于删除SSL-VPN-CLIENT。
 
         :param request: Request instance for DeleteVpnGatewaySslClient.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DeleteVpnGatewaySslClientRequest`
@@ -3167,7 +3190,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeFlowLog(self, request):
-        """本接口（DescribeFlowLog）用于查询流日志实例信息
+        """本接口（DescribeFlowLog）用于查询流日志实例信息。
 
         :param request: Request instance for DescribeFlowLog.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeFlowLogRequest`
@@ -3999,6 +4022,29 @@ class VpcClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeSubnetResourceDashboard(self, request):
+        """本接口(DescribeSubnetResourceDashboard)用于查看Subnet资源信息。
+
+        :param request: Request instance for DescribeSubnetResourceDashboard.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeSubnetResourceDashboardRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DescribeSubnetResourceDashboardResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSubnetResourceDashboard", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSubnetResourceDashboardResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeSubnets(self, request):
         """本接口（DescribeSubnets）用于查询子网列表。
 
@@ -4107,6 +4153,30 @@ class VpcClient(AbstractClient):
             body = self.call("DescribeTrafficPackages", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeTrafficPackagesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeUsedIpAddress(self, request):
+        """本接口(DescribeUsedIpAddress)用于查询Subnet或者Vpc内的ip的使用情况，
+        如被ip被占用，返回占用ip的资源类别与id；如未被占用，返回空值
+
+        :param request: Request instance for DescribeUsedIpAddress.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeUsedIpAddressRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.DescribeUsedIpAddressResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUsedIpAddress", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeUsedIpAddressResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -4380,7 +4450,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpnConnections(self, request):
-        """本接口（DescribeVpnConnections）查询VPN通道列表。
+        """本接口（DescribeVpnConnections）用于查询VPN通道列表。
 
         :param request: Request instance for DescribeVpnConnections.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpnConnectionsRequest`
@@ -4403,7 +4473,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpnGatewayCcnRoutes(self, request):
-        """本接口（DescribeVpnGatewayCcnRoutes）用于查询VPN网关云联网路由
+        """本接口（DescribeVpnGatewayCcnRoutes）用于查询VPN网关云联网路由。
 
         :param request: Request instance for DescribeVpnGatewayCcnRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpnGatewayCcnRoutesRequest`
@@ -4426,7 +4496,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpnGatewayRoutes(self, request):
-        """查询路由型VPN网关的目的路由
+        """本接口（DescribeVpnGatewayRoutes）用于查询VPN网关路由。
 
         :param request: Request instance for DescribeVpnGatewayRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpnGatewayRoutesRequest`
@@ -4449,7 +4519,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpnGatewaySslClients(self, request):
-        """查询SSL-VPN-CLIENT 列表
+        """本接口（DescribeVpnGatewaySslClients）用于查询SSL-VPN-CLIENT 列表。
 
         :param request: Request instance for DescribeVpnGatewaySslClients.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpnGatewaySslClientsRequest`
@@ -4472,7 +4542,7 @@ class VpcClient(AbstractClient):
 
 
     def DescribeVpnGatewaySslServers(self, request):
-        """查询SSL-VPN SERVER 列表信息
+        """本接口（DescribeVpnGatewaySslServers）用于查询SSL-VPN SERVER 列表信息。
 
         :param request: Request instance for DescribeVpnGatewaySslServers.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DescribeVpnGatewaySslServersRequest`
@@ -4919,7 +4989,7 @@ class VpcClient(AbstractClient):
 
 
     def DownloadCustomerGatewayConfiguration(self, request):
-        """本接口(DownloadCustomerGatewayConfiguration)用于下载VPN通道配置。
+        """本接口（DownloadCustomerGatewayConfiguration）用于下载VPN通道配置。
 
         :param request: Request instance for DownloadCustomerGatewayConfiguration.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DownloadCustomerGatewayConfigurationRequest`
@@ -4942,7 +5012,7 @@ class VpcClient(AbstractClient):
 
 
     def DownloadVpnGatewaySslClientCert(self, request):
-        """下载SSL-VPN-CLIENT 客户端证书
+        """本接口（DownloadVpnGatewaySslClientCert）用于下载SSL-VPN-CLIENT 客户端证书。
 
         :param request: Request instance for DownloadVpnGatewaySslClientCert.
         :type request: :class:`tencentcloud.vpc.v20170312.models.DownloadVpnGatewaySslClientCertRequest`
@@ -5105,7 +5175,7 @@ class VpcClient(AbstractClient):
 
 
     def EnableVpnGatewaySslClientCert(self, request):
-        """启用SSL-VPN-CLIENT 证书
+        """本接口（EnableVpnGatewaySslClientCert）用于启用SSL-VPN-CLIENT 证书。
 
         :param request: Request instance for EnableVpnGatewaySslClientCert.
         :type request: :class:`tencentcloud.vpc.v20170312.models.EnableVpnGatewaySslClientCertRequest`
@@ -5118,6 +5188,29 @@ class VpcClient(AbstractClient):
             body = self.call("EnableVpnGatewaySslClientCert", params, headers=headers)
             response = json.loads(body)
             model = models.EnableVpnGatewaySslClientCertResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def GenerateVpnConnectionDefaultHealthCheckIp(self, request):
+        """本接口（GenerateVpnConnectionDefaultHealthCheckIp）用于获取一对VPN通道健康检查地址。
+
+        :param request: Request instance for GenerateVpnConnectionDefaultHealthCheckIp.
+        :type request: :class:`tencentcloud.vpc.v20170312.models.GenerateVpnConnectionDefaultHealthCheckIpRequest`
+        :rtype: :class:`tencentcloud.vpc.v20170312.models.GenerateVpnConnectionDefaultHealthCheckIpResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("GenerateVpnConnectionDefaultHealthCheckIp", params, headers=headers)
+            response = json.loads(body)
+            model = models.GenerateVpnConnectionDefaultHealthCheckIpResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -5696,7 +5789,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyFlowLogAttribute(self, request):
-        """本接口（ModifyFlowLogAttribute）用于修改流日志属性
+        """本接口（ModifyFlowLogAttribute）用于修改流日志属性。
 
         :param request: Request instance for ModifyFlowLogAttribute.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyFlowLogAttributeRequest`
@@ -6450,7 +6543,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyVpnGatewayCcnRoutes(self, request):
-        """本接口（ModifyVpnGatewayCcnRoutes）用于修改VPN网关云联网路由
+        """本接口（ModifyVpnGatewayCcnRoutes）用于修改VPN网关云联网路由。
 
         :param request: Request instance for ModifyVpnGatewayCcnRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyVpnGatewayCcnRoutesRequest`
@@ -6473,7 +6566,7 @@ class VpcClient(AbstractClient):
 
 
     def ModifyVpnGatewayRoutes(self, request):
-        """修改VPN路由是否启用
+        """本接口（ModifyVpnGatewayRoutes）用于修改VPN路由是否启用。
 
         :param request: Request instance for ModifyVpnGatewayRoutes.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ModifyVpnGatewayRoutesRequest`
@@ -6894,7 +6987,7 @@ class VpcClient(AbstractClient):
 
 
     def ResetVpnConnection(self, request):
-        """本接口(ResetVpnConnection)用于重置VPN通道。
+        """本接口（ResetVpnConnection）用于重置VPN通道。
 
         :param request: Request instance for ResetVpnConnection.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ResetVpnConnectionRequest`
@@ -6917,7 +7010,7 @@ class VpcClient(AbstractClient):
 
 
     def ResetVpnGatewayInternetMaxBandwidth(self, request):
-        """本接口（ResetVpnGatewayInternetMaxBandwidth）调整VPN网关带宽上限。目前支持升级配置，如果是包年包月VPN网关需要在有效期内。
+        """本接口（ResetVpnGatewayInternetMaxBandwidth）用于调整VPN网关带宽上限。VPN网关带宽目前仅支持部分带宽范围内升降配，如【5,100】Mbps和【200,1000】Mbps，在各自带宽范围内可提升配额，跨范围提升配额和降配暂不支持，如果是包年包月VPN网关需要在有效期内。
 
         :param request: Request instance for ResetVpnGatewayInternetMaxBandwidth.
         :type request: :class:`tencentcloud.vpc.v20170312.models.ResetVpnGatewayInternetMaxBandwidthRequest`
@@ -7010,7 +7103,7 @@ class VpcClient(AbstractClient):
 
 
     def SetVpnGatewaysRenewFlag(self, request):
-        """设置VPNGW续费标记
+        """本接口（SetVpnGatewaysRenewFlag）用于设置VPNGW续费标记。
 
         :param request: Request instance for SetVpnGatewaysRenewFlag.
         :type request: :class:`tencentcloud.vpc.v20170312.models.SetVpnGatewaysRenewFlagRequest`

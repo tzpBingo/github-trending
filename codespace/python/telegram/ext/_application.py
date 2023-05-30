@@ -18,9 +18,9 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains the Application class."""
 import asyncio
+import contextlib
 import inspect
 import itertools
-import logging
 import platform
 import signal
 from collections import defaultdict
@@ -52,7 +52,8 @@ from typing import (
 
 from telegram._update import Update
 from telegram._utils.defaultvalue import DEFAULT_NONE, DEFAULT_TRUE, DefaultValue
-from telegram._utils.types import DVType, ODVInput
+from telegram._utils.logging import get_logger
+from telegram._utils.types import SCT, DVType, ODVInput
 from telegram._utils.warnings import warn
 from telegram.error import TelegramError
 from telegram.ext._basepersistence import BasePersistence
@@ -74,8 +75,9 @@ DEFAULT_GROUP: int = 0
 
 _AppType = TypeVar("_AppType", bound="Application")  # pylint: disable=invalid-name
 _STOP_SIGNAL = object()
+_DEFAULT_0 = DefaultValue(0)
 
-_logger = logging.getLogger(__name__)
+_LOGGER = get_logger(__name__)
 
 
 class ApplicationHandlerStop(Exception):
@@ -104,7 +106,7 @@ class ApplicationHandlerStop(Exception):
 
     __slots__ = ("state",)
 
-    def __init__(self, state: object = None) -> None:
+    def __init__(self, state: Optional[object] = None) -> None:
         super().__init__()
         self.state: Optional[object] = state
 
@@ -137,7 +139,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
     Examples:
         :any:`Echo Bot <examples.echobot>`
 
-    .. seealso:: :wiki:`Your First Bot <Extensions-–-Your-first-Bot>`,
+    .. seealso:: :wiki:`Your First Bot <Extensions---Your-first-Bot>`,
         :wiki:`Architecture Overview <Architecture>`
 
     .. versionchanged:: 20.0
@@ -391,7 +393,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
             :meth:`shutdown`
         """
         if self._initialized:
-            _logger.debug("This Application is already initialized.")
+            _LOGGER.debug("This Application is already initialized.")
             return
 
         await self.bot.initialize()
@@ -441,7 +443,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
             raise RuntimeError("This Application is still running!")
 
         if not self._initialized:
-            _logger.debug("This Application is already shut down. Returning.")
+            _LOGGER.debug("This Application is already shut down. Returning.")
             return
 
         await self.bot.shutdown()
@@ -449,10 +451,10 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
             await self.updater.shutdown()
 
         if self.persistence:
-            _logger.debug("Updating & flushing persistence before shutdown")
+            _LOGGER.debug("Updating & flushing persistence before shutdown")
             await self.update_persistence()
             await self.persistence.flush()
-            _logger.debug("Updated and flushed persistence")
+            _LOGGER.debug("Updated and flushed persistence")
 
         self._initialized = False
 
@@ -555,18 +557,18 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
                     # TODO: Add this once we drop py3.7
                     # name=f'Application:{self.bot.id}:persistence_updater'
                 )
-                _logger.debug("Loop for updating persistence started")
+                _LOGGER.debug("Loop for updating persistence started")
 
             if self._job_queue:
                 await self._job_queue.start()  # type: ignore[union-attr]
-                _logger.debug("JobQueue started")
+                _LOGGER.debug("JobQueue started")
 
             self.__update_fetcher_task = asyncio.create_task(
                 self._update_fetcher(),
                 # TODO: Add this once we drop py3.7
                 # name=f'Application:{self.bot.id}:update_fetcher'
             )
-            _logger.info("Application started")
+            _LOGGER.info("Application started")
 
         except Exception as exc:
             self._running = False
@@ -599,32 +601,32 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
             raise RuntimeError("This Application is not running!")
 
         self._running = False
-        _logger.info("Application is stopping. This might take a moment.")
+        _LOGGER.info("Application is stopping. This might take a moment.")
 
         # Stop listening for new updates and handle all pending ones
         await self.update_queue.put(_STOP_SIGNAL)
-        _logger.debug("Waiting for update_queue to join")
+        _LOGGER.debug("Waiting for update_queue to join")
         await self.update_queue.join()
         if self.__update_fetcher_task:
             await self.__update_fetcher_task
-        _logger.debug("Application stopped fetching of updates.")
+        _LOGGER.debug("Application stopped fetching of updates.")
 
         if self._job_queue:
-            _logger.debug("Waiting for running jobs to finish")
+            _LOGGER.debug("Waiting for running jobs to finish")
             await self._job_queue.stop(wait=True)  # type: ignore[union-attr]
-            _logger.debug("JobQueue stopped")
+            _LOGGER.debug("JobQueue stopped")
 
-        _logger.debug("Waiting for `create_task` calls to be processed")
+        _LOGGER.debug("Waiting for `create_task` calls to be processed")
         await asyncio.gather(*self.__create_task_tasks, return_exceptions=True)
 
         # Make sure that this is the *last* step of stopping the application!
         if self.persistence and self.__update_persistence_task:
-            _logger.debug("Waiting for persistence loop to finish")
+            _LOGGER.debug("Waiting for persistence loop to finish")
             self.__update_persistence_event.set()
             await self.__update_persistence_task
             self.__update_persistence_event.clear()
 
-        _logger.info("Application.stop() complete")
+        _LOGGER.info("Application.stop() complete")
 
     def run_polling(
         self,
@@ -635,8 +637,8 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         write_timeout: ODVInput[float] = DEFAULT_NONE,
         connect_timeout: ODVInput[float] = DEFAULT_NONE,
         pool_timeout: ODVInput[float] = DEFAULT_NONE,
-        allowed_updates: List[str] = None,
-        drop_pending_updates: bool = None,
+        allowed_updates: Optional[List[str]] = None,
+        drop_pending_updates: Optional[bool] = None,
         close_loop: bool = True,
         stop_signals: ODVInput[Sequence[int]] = DEFAULT_NONE,
     ) -> None:
@@ -671,7 +673,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         Args:
             poll_interval (:obj:`float`, optional): Time to wait between polling updates from
                 Telegram in seconds. Default is ``0.0``.
-            timeout (:obj:`float`, optional): Passed to
+            timeout (:obj:`int`, optional): Passed to
                 :paramref:`telegram.Bot.get_updates.timeout`. Default is ``10`` seconds.
             bootstrap_retries (:obj:`int`, optional): Whether the bootstrapping phase of the
                 :class:`telegram.ext.Updater` will retry on failures on the Telegram server.
@@ -744,17 +746,17 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         listen: str = "127.0.0.1",
         port: int = 80,
         url_path: str = "",
-        cert: Union[str, Path] = None,
-        key: Union[str, Path] = None,
+        cert: Optional[Union[str, Path]] = None,
+        key: Optional[Union[str, Path]] = None,
         bootstrap_retries: int = 0,
-        webhook_url: str = None,
-        allowed_updates: List[str] = None,
-        drop_pending_updates: bool = None,
-        ip_address: str = None,
+        webhook_url: Optional[str] = None,
+        allowed_updates: Optional[List[str]] = None,
+        drop_pending_updates: Optional[bool] = None,
+        ip_address: Optional[str] = None,
         max_connections: int = 40,
         close_loop: bool = True,
         stop_signals: ODVInput[Sequence[int]] = DEFAULT_NONE,
-        secret_token: str = None,
+        secret_token: Optional[str] = None,
     ) -> None:
         """Convenience method that takes care of initializing and starting the app,
         listening for updates from Telegram using :meth:`telegram.ext.Updater.start_webhook` and
@@ -937,7 +939,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
     def create_task(
         self,
         coroutine: Union[Generator[Optional["asyncio.Future[object]"], None, RT], Awaitable[RT]],
-        update: object = None,
+        update: Optional[object] = None,
     ) -> "asyncio.Task[RT]":
         """Thin wrapper around :func:`asyncio.create_task` that handles exceptions raised by
         the :paramref:`coroutine` with :meth:`process_error`.
@@ -968,7 +970,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
     def __create_task(
         self,
         coroutine: Union[Generator[Optional["asyncio.Future[object]"], None, RT], Awaitable[RT]],
-        update: object = None,
+        update: Optional[object] = None,
         is_error_handler: bool = False,
     ) -> "asyncio.Task[RT]":
         # Unfortunately, we can't know if `coroutine` runs one of the error handler functions
@@ -997,15 +999,13 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         self.__create_task_tasks.discard(task)  # Discard from our set since we are done with it
         # We just retrieve the eventual exception so that asyncio doesn't complain in case
         # it's not retrieved somewhere else
-        try:
+        with contextlib.suppress(asyncio.CancelledError, asyncio.InvalidStateError):
             task.exception()
-        except (asyncio.CancelledError, asyncio.InvalidStateError):
-            pass
 
     async def __create_task_callback(
         self,
         coroutine: Union[Generator[Optional["asyncio.Future[object]"], None, RT], Awaitable[RT]],
-        update: object = None,
+        update: Optional[object] = None,
         is_error_handler: bool = False,
     ) -> RT:
         try:
@@ -1026,7 +1026,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
 
             # Avoid infinite recursion of error handlers.
             elif is_error_handler:
-                _logger.exception(
+                _LOGGER.exception(
                     "An error was raised and an uncaught error was raised while "
                     "handling the error with an error_handler.",
                     exc_info=exception,
@@ -1046,24 +1046,33 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
     async def _update_fetcher(self) -> None:
         # Continuously fetch updates from the queue. Exit only once the signal object is found.
         while True:
-            update = await self.update_queue.get()
+            try:
+                update = await self.update_queue.get()
 
-            if update is _STOP_SIGNAL:
-                _logger.debug("Dropping pending updates")
-                while not self.update_queue.empty():
+                if update is _STOP_SIGNAL:
+                    _LOGGER.debug("Dropping pending updates")
+                    while not self.update_queue.empty():
+                        self.update_queue.task_done()
+
+                    # For the _STOP_SIGNAL
                     self.update_queue.task_done()
+                    return
 
-                # For the _STOP_SIGNAL
-                self.update_queue.task_done()
-                return
+                _LOGGER.debug("Processing update %s", update)
 
-            _logger.debug("Processing update %s", update)
-
-            if self._concurrent_updates:
-                # We don't await the below because it has to be run concurrently
-                self.create_task(self.__process_update_wrapper(update), update=update)
-            else:
-                await self.__process_update_wrapper(update)
+                if self._concurrent_updates:
+                    # We don't await the below because it has to be run concurrently
+                    self.create_task(self.__process_update_wrapper(update), update=update)
+                else:
+                    await self.__process_update_wrapper(update)
+            except asyncio.CancelledError:
+                # This may happen if the application is manually run via application.start() and
+                # then a KeyboardInterrupt is sent. We must prevent this loop to die since
+                # application.stop() will wait for it's clean shutdown.
+                _LOGGER.warning(
+                    "Fetching updates got a asyncio.CancelledError. Ignoring as this task may only"
+                    "be closed via `Application.stop`."
+                )
 
     async def __process_update_wrapper(self, update: object) -> None:
         async with self._concurrent_updates_sem:
@@ -1117,13 +1126,13 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
 
             # Stop processing with any other handler.
             except ApplicationHandlerStop:
-                _logger.debug("Stopping further handlers due to ApplicationHandlerStop")
+                _LOGGER.debug("Stopping further handlers due to ApplicationHandlerStop")
                 break
 
             # Dispatch any error.
             except Exception as exc:
                 if await self.process_error(update=update, error=exc):
-                    _logger.debug("Error handler stopped further handlers.")
+                    _LOGGER.debug("Error handler stopped further handlers.")
                     break
 
         if any_blocking:
@@ -1200,7 +1209,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
             Union[List[BaseHandler[Any, CCT]], Tuple[BaseHandler[Any, CCT]]],
             Dict[int, Union[List[BaseHandler[Any, CCT]], Tuple[BaseHandler[Any, CCT]]]],
         ],
-        group: Union[int, DefaultValue[int]] = DefaultValue(0),
+        group: Union[int, DefaultValue[int]] = _DEFAULT_0,
     ) -> None:
         """Registers multiple handlers at once. The order of the handlers in the passed
         sequence(s) matters. See :meth:`add_handler` for details.
@@ -1297,7 +1306,10 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         self._user_ids_to_be_deleted_in_persistence.add(user_id)
 
     def migrate_chat_data(
-        self, message: "Message" = None, old_chat_id: int = None, new_chat_id: int = None
+        self,
+        message: Optional["Message"] = None,
+        old_chat_id: Optional[int] = None,
+        new_chat_id: Optional[int] = None,
     ) -> None:
         """Moves the contents of :attr:`chat_data` at key :paramref:`old_chat_id` to the key
         :paramref:`new_chat_id`. Also marks the entries to be updated accordingly in the next run
@@ -1360,7 +1372,9 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         self._chat_ids_to_be_updated_in_persistence.add(new_chat_id)
         # old_chat_id is marked for deletion by drop_chat_data above
 
-    def _mark_for_persistence_update(self, *, update: object = None, job: "Job" = None) -> None:
+    def _mark_for_persistence_update(
+        self, *, update: Optional[object] = None, job: Optional["Job"] = None
+    ) -> None:
         if isinstance(update, Update):
             if update.effective_chat:
                 self._chat_ids_to_be_updated_in_persistence.add(update.effective_chat.id)
@@ -1372,6 +1386,36 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
                 self._chat_ids_to_be_updated_in_persistence.add(job.chat_id)
             if job.user_id:
                 self._user_ids_to_be_updated_in_persistence.add(job.user_id)
+
+    def mark_data_for_update_persistence(
+        self, chat_ids: Optional[SCT[int]] = None, user_ids: Optional[SCT[int]] = None
+    ) -> None:
+        """Mark entries of :attr:`chat_data` and :attr:`user_data` to be updated on the next
+        run of :meth:`update_persistence`.
+
+        Tip:
+            Use this method sparingly. If you have to use this method, it likely means that you
+            access and modify ``context.application.chat/user_data[some_id]`` within a callback.
+            Note that for data which should be available globally in all handler callbacks
+            independent of the chat/user, it is recommended to use :attr:`bot_data` instead.
+
+        .. versionadded:: 20.3
+
+        Args:
+            chat_ids (:obj:`int` | Collection[:obj:`int`], optional): Chat IDs to mark.
+            user_ids (:obj:`int` | Collection[:obj:`int`], optional): User IDs to mark.
+
+        """
+        if chat_ids:
+            if isinstance(chat_ids, int):
+                self._chat_ids_to_be_updated_in_persistence.add(chat_ids)
+            else:
+                self._chat_ids_to_be_updated_in_persistence.update(chat_ids)
+        if user_ids:
+            if isinstance(user_ids, int):
+                self._user_ids_to_be_updated_in_persistence.add(user_ids)
+            else:
+                self._user_ids_to_be_updated_in_persistence.update(user_ids)
 
     async def _persistence_updater(self) -> None:
         # Update the persistence in regular intervals. Exit only when the stop event has been set
@@ -1399,8 +1443,9 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         along with :attr:`~telegram.ext.ExtBot.callback_data_cache` and the conversation states of
         any persistent :class:`~telegram.ext.ConversationHandler` registered for this application.
 
-        For :attr:`user_data`, :attr:`chat_data`, only entries used since the last run of this
-        method are updated.
+        For :attr:`user_data` and :attr:`chat_data`, only those entries are updated which either
+        were used or have been manually marked via :meth:`mark_data_for_update_persistence` since
+        the last run of this method.
 
         Tip:
             This method will be called in regular intervals by the application. There is usually
@@ -1410,7 +1455,8 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
             Any data is deep copied with :func:`copy.deepcopy` before handing it over to the
             persistence in order to avoid race conditions, so all persisted data must be copyable.
 
-        .. seealso:: :attr:`telegram.ext.BasePersistence.update_interval`.
+        .. seealso:: :attr:`telegram.ext.BasePersistence.update_interval`,
+            :meth:`mark_data_for_update_persistence`
         """
         async with self.__update_persistence_lock:
             await self.__update_persistence()
@@ -1419,7 +1465,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         if not self.persistence:
             return
 
-        _logger.debug("Starting next run of updating the persistence.")
+        _LOGGER.debug("Starting next run of updating the persistence.")
 
         coroutines: Set[Coroutine] = set()
 
@@ -1487,13 +1533,13 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
                 # *all* tasks will be done.
                 if not new_state.done():
                     if self.running:
-                        _logger.debug(
+                        _LOGGER.debug(
                             "A ConversationHandlers state was not yet resolved. Updating the "
                             "persistence with the current state. Will check again on next run of "
                             "Application.update_persistence."
                         )
                     else:
-                        _logger.warning(
+                        _LOGGER.warning(
                             "A ConversationHandlers state was not yet resolved. Updating the "
                             "persistence with the current state."
                         )
@@ -1513,7 +1559,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
             )
 
         results = await asyncio.gather(*coroutines, return_exceptions=True)
-        _logger.debug("Finished updating persistence.")
+        _LOGGER.debug("Finished updating persistence.")
 
         # dispatch any errors
         await asyncio.gather(
@@ -1554,7 +1600,7 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
                 :meth:`process_error`. Defaults to :obj:`True`.
         """
         if callback in self.error_handlers:
-            _logger.warning("The callback is already registered as an error handler. Ignoring.")
+            _LOGGER.warning("The callback is already registered as an error handler. Ignoring.")
             return
 
         self.error_handlers[callback] = block
@@ -1572,9 +1618,9 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
         self,
         update: Optional[object],
         error: Exception,
-        job: "Job[CCT]" = None,
-        coroutine: Union[
-            Generator[Optional["asyncio.Future[object]"], None, RT], Awaitable[RT]
+        job: Optional["Job[CCT]"] = None,
+        coroutine: Optional[
+            Union[Generator[Optional["asyncio.Future[object]"], None, RT], Awaitable[RT]]
         ] = None,
     ) -> bool:
         """Processes an error by passing it to all error handlers registered with
@@ -1631,12 +1677,12 @@ class Application(Generic[BT, CCT, UD, CD, BD, JQ], AsyncContextManager["Applica
                     except ApplicationHandlerStop:
                         return True
                     except Exception as exc:
-                        _logger.exception(
+                        _LOGGER.exception(
                             "An error was raised and an uncaught error was raised while "
                             "handling the error with an error_handler.",
                             exc_info=exc,
                         )
             return False
 
-        _logger.exception("No error handlers are registered, logging exception.", exc_info=error)
+        _LOGGER.exception("No error handlers are registered, logging exception.", exc_info=error)
         return False

@@ -754,6 +754,8 @@ class CreateTriggerRequest(AbstractModel):
         :type Enable: str
         :param CustomArgument: 用户自定义参数，仅支持timer触发器
         :type CustomArgument: str
+        :param Description: 触发器描述
+        :type Description: str
         """
         self.FunctionName = None
         self.TriggerName = None
@@ -763,6 +765,7 @@ class CreateTriggerRequest(AbstractModel):
         self.Qualifier = None
         self.Enable = None
         self.CustomArgument = None
+        self.Description = None
 
 
     def _deserialize(self, params):
@@ -774,6 +777,7 @@ class CreateTriggerRequest(AbstractModel):
         self.Qualifier = params.get("Qualifier")
         self.Enable = params.get("Enable")
         self.CustomArgument = params.get("CustomArgument")
+        self.Description = params.get("Description")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1332,6 +1336,7 @@ class Function(AbstractModel):
         :param AddTime: 创建时间
         :type AddTime: str
         :param Runtime: 运行时
+注意：此字段可能返回 null，表示取不到有效值。
         :type Runtime: str
         :param FunctionName: 函数名称
         :type FunctionName: str
@@ -1978,6 +1983,7 @@ class GetFunctionResponse(AbstractModel):
         :param MemorySize: 函数的最大可用内存
         :type MemorySize: int
         :param Runtime: 函数的运行环境
+注意：此字段可能返回 null，表示取不到有效值。
         :type Runtime: str
         :param FunctionName: 函数的名称
         :type FunctionName: str
@@ -2482,6 +2488,12 @@ class ImageConfig(AbstractModel):
         :param ContainerImageAccelerate: 镜像加速开关，默认False
 注意：此字段可能返回 null，表示取不到有效值。
         :type ContainerImageAccelerate: bool
+        :param ImagePort: 镜像函数端口设置
+-1: 无端口镜像函数
+0: 默认端口，当前默认端口是9000
+其他: 特殊端口
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImagePort: int
         """
         self.ImageType = None
         self.ImageUri = None
@@ -2490,6 +2502,7 @@ class ImageConfig(AbstractModel):
         self.Command = None
         self.Args = None
         self.ContainerImageAccelerate = None
+        self.ImagePort = None
 
 
     def _deserialize(self, params):
@@ -2500,6 +2513,7 @@ class ImageConfig(AbstractModel):
         self.Command = params.get("Command")
         self.Args = params.get("Args")
         self.ContainerImageAccelerate = params.get("ContainerImageAccelerate")
+        self.ImagePort = params.get("ImagePort")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2701,6 +2715,9 @@ class LayerVersionInfo(AbstractModel):
         :type LayerName: str
         :param Status: 层的具体版本当前状态，状态值[参考此处](https://cloud.tencent.com/document/product/583/47175#.E5.B1.82.EF.BC.88layer.EF.BC.89.E7.8A.B6.E6.80.81)
         :type Status: str
+        :param Stamp: Stamp
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Stamp: str
         """
         self.CompatibleRuntimes = None
         self.AddTime = None
@@ -2709,6 +2726,7 @@ class LayerVersionInfo(AbstractModel):
         self.LayerVersion = None
         self.LayerName = None
         self.Status = None
+        self.Stamp = None
 
 
     def _deserialize(self, params):
@@ -2719,6 +2737,7 @@ class LayerVersionInfo(AbstractModel):
         self.LayerVersion = params.get("LayerVersion")
         self.LayerName = params.get("LayerName")
         self.Status = params.get("Status")
+        self.Stamp = params.get("Stamp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3266,8 +3285,9 @@ class ListTriggersRequest(AbstractModel):
         :type OrderBy: str
         :param Order: 以升序还是降序的方式返回结果，可选值 ASC 和 DESC，默认DESC
         :type Order: str
-        :param Filters: * Qualifier:
-函数版本，别名
+        :param Filters: * Qualifier: 函数版本，别名
+* TriggerName: 函数触发器名称
+* Description: 函数触发器描述
         :type Filters: list of Filter
         """
         self.FunctionName = None
@@ -3829,6 +3849,7 @@ class PublishVersionResponse(AbstractModel):
         :param Timeout: 函数的超时时间
         :type Timeout: int
         :param Runtime: 函数的运行环境
+注意：此字段可能返回 null，表示取不到有效值。
         :type Runtime: str
         :param Namespace: 函数的命名空间
         :type Namespace: str
@@ -4108,7 +4129,7 @@ class Result(AbstractModel):
         :type BillDuration: int
         :param FunctionRequestId: 此次函数执行的Id
         :type FunctionRequestId: str
-        :param InvokeResult: 0为正确，异步调用返回为空
+        :param InvokeResult: 请求 Invoke 接口，该参数已弃用。请求 InvokeFunction 接口，该参数值为请求执行[状态码](https://cloud.tencent.com/document/product/583/42611)。
         :type InvokeResult: int
         """
         self.Log = None
@@ -4397,6 +4418,8 @@ class Trigger(AbstractModel):
         :type TriggerAttribute: str
         :param Qualifier: 触发器绑定的别名或版本
         :type Qualifier: str
+        :param Description: 触发器描述
+        :type Description: str
         """
         self.ModTime = None
         self.Type = None
@@ -4410,6 +4433,7 @@ class Trigger(AbstractModel):
         self.BindStatus = None
         self.TriggerAttribute = None
         self.Qualifier = None
+        self.Description = None
 
 
     def _deserialize(self, params):
@@ -4425,6 +4449,7 @@ class Trigger(AbstractModel):
         self.BindStatus = params.get("BindStatus")
         self.TriggerAttribute = params.get("TriggerAttribute")
         self.Qualifier = params.get("Qualifier")
+        self.Description = params.get("Description")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4575,6 +4600,9 @@ class TriggerInfo(AbstractModel):
         :type BindStatus: str
         :param TriggerAttribute: 触发器类型，双向表示两侧控制台均可操作，单向表示SCF控制台单向创建
         :type TriggerAttribute: str
+        :param Description: 客户自定义触发器描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
         """
         self.Enable = None
         self.Qualifier = None
@@ -4588,6 +4616,7 @@ class TriggerInfo(AbstractModel):
         self.ResourceId = None
         self.BindStatus = None
         self.TriggerAttribute = None
+        self.Description = None
 
 
     def _deserialize(self, params):
@@ -4603,6 +4632,7 @@ class TriggerInfo(AbstractModel):
         self.ResourceId = params.get("ResourceId")
         self.BindStatus = params.get("BindStatus")
         self.TriggerAttribute = params.get("TriggerAttribute")
+        self.Description = params.get("Description")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4984,6 +5014,71 @@ class UpdateNamespaceRequest(AbstractModel):
 
 class UpdateNamespaceResponse(AbstractModel):
     """UpdateNamespace返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateTriggerStatusRequest(AbstractModel):
+    """UpdateTriggerStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Enable: 触发器的初始是能状态OPEN表示开启 CLOSE表示关闭
+        :type Enable: str
+        :param FunctionName: 函数名称
+        :type FunctionName: str
+        :param TriggerName: 触发器名称
+        :type TriggerName: str
+        :param Type: 触发器类型
+        :type Type: str
+        :param Qualifier: 函数的版本，默认为 $LATEST，建议填写 [$DEFAULT](https://cloud.tencent.com/document/product/583/36149#.E9.BB.98.E8.AE.A4.E5.88.AB.E5.90.8D)方便后续进行版本的灰度发布。
+        :type Qualifier: str
+        :param Namespace: 函数的命名空间
+        :type Namespace: str
+        :param TriggerDesc: 如果更新的触发器类型为 COS 触发器，该字段为必填值，存放 JSON 格式的数据 {"event":"cos:ObjectCreated:*"}，数据内容和 SetTrigger 接口中该字段的格式相同；如果更新的触发器类型为定时触发器或 CMQ 触发器，可以不指定该字段
+        :type TriggerDesc: str
+        """
+        self.Enable = None
+        self.FunctionName = None
+        self.TriggerName = None
+        self.Type = None
+        self.Qualifier = None
+        self.Namespace = None
+        self.TriggerDesc = None
+
+
+    def _deserialize(self, params):
+        self.Enable = params.get("Enable")
+        self.FunctionName = params.get("FunctionName")
+        self.TriggerName = params.get("TriggerName")
+        self.Type = params.get("Type")
+        self.Qualifier = params.get("Qualifier")
+        self.Namespace = params.get("Namespace")
+        self.TriggerDesc = params.get("TriggerDesc")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateTriggerStatusResponse(AbstractModel):
+    """UpdateTriggerStatus返回参数结构体
 
     """
 

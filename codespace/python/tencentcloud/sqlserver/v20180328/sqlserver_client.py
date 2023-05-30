@@ -279,6 +279,52 @@ class SqlserverClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateCloudDBInstances(self, request):
+        """本接口（CreateCloudDBInstances）用于创建高可用实例(虚拟机版本)。
+
+        :param request: Request instance for CreateCloudDBInstances.
+        :type request: :class:`tencentcloud.sqlserver.v20180328.models.CreateCloudDBInstancesRequest`
+        :rtype: :class:`tencentcloud.sqlserver.v20180328.models.CreateCloudDBInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateCloudDBInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateCloudDBInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateCloudReadOnlyDBInstances(self, request):
+        """本接口（CreateCloudReadOnlyDBInstances）用于添加只读副本实例(虚拟机版本)。
+
+        :param request: Request instance for CreateCloudReadOnlyDBInstances.
+        :type request: :class:`tencentcloud.sqlserver.v20180328.models.CreateCloudReadOnlyDBInstancesRequest`
+        :rtype: :class:`tencentcloud.sqlserver.v20180328.models.CreateCloudReadOnlyDBInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateCloudReadOnlyDBInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateCloudReadOnlyDBInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateDB(self, request):
         """本接口（CreateDB）用于创建数据库。
 
@@ -877,6 +923,29 @@ class SqlserverClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeDBInstancesAttribute(self, request):
+        """本接口（DescribeDBInstancesAttribute）用于查询实例附属属性
+
+        :param request: Request instance for DescribeDBInstancesAttribute.
+        :type request: :class:`tencentcloud.sqlserver.v20180328.models.DescribeDBInstancesAttributeRequest`
+        :rtype: :class:`tencentcloud.sqlserver.v20180328.models.DescribeDBInstancesAttributeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDBInstancesAttribute", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDBInstancesAttributeResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeDBSecurityGroups(self, request):
         """本接口(DescribeDBSecurityGroups)用于查询实例的安全组详情。
 
@@ -1397,6 +1466,29 @@ class SqlserverClient(AbstractClient):
             body = self.call("DescribeUploadIncrementalInfo", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeUploadIncrementalInfoResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeXEvents(self, request):
+        """本接口（DescribeXEvents）用于查询扩展事件列表。
+
+        :param request: Request instance for DescribeXEvents.
+        :type request: :class:`tencentcloud.sqlserver.v20180328.models.DescribeXEventsRequest`
+        :rtype: :class:`tencentcloud.sqlserver.v20180328.models.DescribeXEventsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeXEvents", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeXEventsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2215,7 +2307,7 @@ class SqlserverClient(AbstractClient):
 
 
     def RestoreInstance(self, request):
-        """本接口（RestoreInstance）用于根据备份文件恢复实例。
+        """本接口（RestoreInstance）用于按照备份集回档数据库。
 
         :param request: Request instance for RestoreInstance.
         :type request: :class:`tencentcloud.sqlserver.v20180328.models.RestoreInstanceRequest`
@@ -2238,7 +2330,7 @@ class SqlserverClient(AbstractClient):
 
 
     def RollbackInstance(self, request):
-        """本接口（RollbackInstance）用于回档实例
+        """本接口（RollbackInstance）用于按照时间点回档实例
 
         :param request: Request instance for RollbackInstance.
         :type request: :class:`tencentcloud.sqlserver.v20180328.models.RollbackInstanceRequest`
@@ -2320,6 +2412,29 @@ class SqlserverClient(AbstractClient):
             body = self.call("StartIncrementalMigration", params, headers=headers)
             response = json.loads(body)
             model = models.StartIncrementalMigrationResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def StartInstanceXEvent(self, request):
+        """本接口（StartInstanceXEvent）用于开启、关闭扩展事件。
+
+        :param request: Request instance for StartInstanceXEvent.
+        :type request: :class:`tencentcloud.sqlserver.v20180328.models.StartInstanceXEventRequest`
+        :rtype: :class:`tencentcloud.sqlserver.v20180328.models.StartInstanceXEventResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StartInstanceXEvent", params, headers=headers)
+            response = json.loads(body)
+            model = models.StartInstanceXEventResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

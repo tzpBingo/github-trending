@@ -1048,6 +1048,12 @@ class DetectInfoText(AbstractModel):
         :param IdCard: 本次验证使用的身份证号。
 注意：此字段可能返回 null，表示取不到有效值。
         :type IdCard: str
+        :param UseIDType: 用户认证时使用的证件号码类型：
+0：二代身份证的证件号码
+1：港澳台居住证的证件号码
+2：其他（核验使用的证件号码非合法身份号码）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UseIDType: int
         :param Name: 本次验证使用的姓名。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
@@ -1127,10 +1133,17 @@ class DetectInfoText(AbstractModel):
         :param NFCBillingCounts: nfc重复计费计数
 注意：此字段可能返回 null，表示取不到有效值。
         :type NFCBillingCounts: int
+        :param PassNo: 港澳台居住证通行证号码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PassNo: str
+        :param VisaNum: 港澳台居住证签发次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VisaNum: str
         """
         self.ErrCode = None
         self.ErrMsg = None
         self.IdCard = None
+        self.UseIDType = None
         self.Name = None
         self.OcrNation = None
         self.OcrAddress = None
@@ -1154,12 +1167,15 @@ class DetectInfoText(AbstractModel):
         self.LivenessMode = None
         self.NFCRequestIds = None
         self.NFCBillingCounts = None
+        self.PassNo = None
+        self.VisaNum = None
 
 
     def _deserialize(self, params):
         self.ErrCode = params.get("ErrCode")
         self.ErrMsg = params.get("ErrMsg")
         self.IdCard = params.get("IdCard")
+        self.UseIDType = params.get("UseIDType")
         self.Name = params.get("Name")
         self.OcrNation = params.get("OcrNation")
         self.OcrAddress = params.get("OcrAddress")
@@ -1188,6 +1204,8 @@ class DetectInfoText(AbstractModel):
         self.LivenessMode = params.get("LivenessMode")
         self.NFCRequestIds = params.get("NFCRequestIds")
         self.NFCBillingCounts = params.get("NFCBillingCounts")
+        self.PassNo = params.get("PassNo")
+        self.VisaNum = params.get("VisaNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1765,6 +1783,8 @@ class GetEidTokenConfig(AbstractModel):
         :type IntentionQuestions: list of IntentionQuestion
         :param IntentionRecognition: 意愿核身过程中识别用户的回答意图，开启后除了IntentionQuestions的Answers列表中的标准回答会通过，近似意图的回答也会通过，默认不开启。
         :type IntentionRecognition: bool
+        :param IsSupportHMTResidentPermitOCR: 是否支持港澳台居住证识别
+        :type IsSupportHMTResidentPermitOCR: bool
         """
         self.InputType = None
         self.UseIntentionVerify = None
@@ -1772,6 +1792,7 @@ class GetEidTokenConfig(AbstractModel):
         self.IntentionVerifyText = None
         self.IntentionQuestions = None
         self.IntentionRecognition = None
+        self.IsSupportHMTResidentPermitOCR = None
 
 
     def _deserialize(self, params):
@@ -1786,6 +1807,7 @@ class GetEidTokenConfig(AbstractModel):
                 obj._deserialize(item)
                 self.IntentionQuestions.append(obj)
         self.IntentionRecognition = params.get("IntentionRecognition")
+        self.IsSupportHMTResidentPermitOCR = params.get("IsSupportHMTResidentPermitOCR")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2434,10 +2456,31 @@ class IntentionQuestionResult(AbstractModel):
 
     def __init__(self):
         r"""
-        :param FinalResultCode: 意愿核身最终结果：
-0：认证通过，-1：认证未通过，-2：浏览器内核不兼容，无法进行意愿校验
+        :param FinalResultDetailCode: 意愿核身错误码：
+0: "成功"       
+-1: "参数错误"    
+-2: "系统异常"    
+-101: "请保持人脸在框内"    
+-102: "检测到多张人脸"   
+-103: "人脸检测失败"   
+-104: "人脸检测不完整"   
+-105: "请勿遮挡眼睛"    
+-106: "请勿遮挡嘴巴"     
+-107: "请勿遮挡鼻子"     
+-201: "人脸比对相似度低"    
+-202: "人脸比对失败"    
+-301: "意愿核验不通过"   
+-800: "前端不兼容错误"    
+-801: "用户未授权摄像头和麦克风权限"   
+-802: "获取视频流失败"   
+-803: "用户主动关闭链接/异常断开链接"   
+-998: "系统数据异常"   
+-999: "系统未知错误，请联系人工核实"   
 注意：此字段可能返回 null，表示取不到有效值。
-        :type FinalResultCode: str
+        :type FinalResultDetailCode: int
+        :param FinalResultMessage: 意愿核身错误信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinalResultMessage: str
         :param Video: 视频base64（其中包含全程问题和回答音频，mp4格式）
 注意：此字段可能返回 null，表示取不到有效值。
         :type Video: str
@@ -2454,22 +2497,30 @@ class IntentionQuestionResult(AbstractModel):
         :param Audios: 答案录音音频
 注意：此字段可能返回 null，表示取不到有效值。
         :type Audios: list of str
+        :param FinalResultCode: 意愿核身最终结果：
+0：认证通过，-1：认证未通过，-2：浏览器内核不兼容，无法进行意愿校验。建议使用“FinalResultDetailCode”参数获取详细的错误码信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinalResultCode: str
         """
-        self.FinalResultCode = None
+        self.FinalResultDetailCode = None
+        self.FinalResultMessage = None
         self.Video = None
         self.ScreenShot = None
         self.ResultCode = None
         self.AsrResult = None
         self.Audios = None
+        self.FinalResultCode = None
 
 
     def _deserialize(self, params):
-        self.FinalResultCode = params.get("FinalResultCode")
+        self.FinalResultDetailCode = params.get("FinalResultDetailCode")
+        self.FinalResultMessage = params.get("FinalResultMessage")
         self.Video = params.get("Video")
         self.ScreenShot = params.get("ScreenShot")
         self.ResultCode = params.get("ResultCode")
         self.AsrResult = params.get("AsrResult")
         self.Audios = params.get("Audios")
+        self.FinalResultCode = params.get("FinalResultCode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

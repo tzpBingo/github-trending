@@ -608,10 +608,8 @@ class CSV(AbstractModel):
         :param CSVSerde: CSV序列化及反序列化数据结构。
         :type CSVSerde: :class:`tencentcloud.dlc.v20210125.models.CSVSerde`
         :param HeadLines: 标题行，默认为0。
-注意：此字段可能返回 null，表示取不到有效值。
         :type HeadLines: int
         :param Format: 格式，默认值为CSV
-注意：此字段可能返回 null，表示取不到有效值。
         :type Format: str
         """
         self.CodeCompress = None
@@ -743,6 +741,47 @@ class CancelNotebookSessionStatementRequest(AbstractModel):
 
 class CancelNotebookSessionStatementResponse(AbstractModel):
     """CancelNotebookSessionStatement返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class CancelSparkSessionBatchSQLRequest(AbstractModel):
+    """CancelSparkSessionBatchSQL请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BatchId: 批任务唯一标识
+        :type BatchId: str
+        """
+        self.BatchId = None
+
+
+    def _deserialize(self, params):
+        self.BatchId = params.get("BatchId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CancelSparkSessionBatchSQLResponse(AbstractModel):
+    """CancelSparkSessionBatchSQL返回参数结构体
 
     """
 
@@ -1165,6 +1204,10 @@ class CreateDataEngineRequest(AbstractModel):
         :type ImageVersionName: str
         :param MainClusterName: 主集群名称
         :type MainClusterName: str
+        :param ElasticSwitch: spark jar 包年包月集群是否开启弹性
+        :type ElasticSwitch: bool
+        :param ElasticLimit: spark jar 包年包月集群弹性上限
+        :type ElasticLimit: int
         """
         self.EngineType = None
         self.DataEngineName = None
@@ -1193,6 +1236,8 @@ class CreateDataEngineRequest(AbstractModel):
         self.DataEngineConfigPairs = None
         self.ImageVersionName = None
         self.MainClusterName = None
+        self.ElasticSwitch = None
+        self.ElasticLimit = None
 
 
     def _deserialize(self, params):
@@ -1235,6 +1280,8 @@ class CreateDataEngineRequest(AbstractModel):
                 self.DataEngineConfigPairs.append(obj)
         self.ImageVersionName = params.get("ImageVersionName")
         self.MainClusterName = params.get("MainClusterName")
+        self.ElasticSwitch = params.get("ElasticSwitch")
+        self.ElasticLimit = params.get("ElasticLimit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1916,6 +1963,8 @@ class CreateSparkAppRequest(AbstractModel):
         :type SparkImageVersion: str
         :param AppExecutorMaxNumbers: 指定的Executor数量（最大值），默认为1，当开启动态分配有效，若未开启，则该值等于AppExecutorNums
         :type AppExecutorMaxNumbers: int
+        :param SessionId: 关联dlc查询脚本id
+        :type SessionId: str
         """
         self.AppName = None
         self.AppType = None
@@ -1943,6 +1992,7 @@ class CreateSparkAppRequest(AbstractModel):
         self.SparkImage = None
         self.SparkImageVersion = None
         self.AppExecutorMaxNumbers = None
+        self.SessionId = None
 
 
     def _deserialize(self, params):
@@ -1972,6 +2022,7 @@ class CreateSparkAppRequest(AbstractModel):
         self.SparkImage = params.get("SparkImage")
         self.SparkImageVersion = params.get("SparkImageVersion")
         self.AppExecutorMaxNumbers = params.get("AppExecutorMaxNumbers")
+        self.SessionId = params.get("SessionId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2053,6 +2104,92 @@ class CreateSparkAppTaskResponse(AbstractModel):
     def _deserialize(self, params):
         self.BatchId = params.get("BatchId")
         self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateSparkSessionBatchSQLRequest(AbstractModel):
+    """CreateSparkSessionBatchSQL请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DataEngineName: DLC Spark作业引擎名称
+        :type DataEngineName: str
+        :param ExecuteSQL: 运行sql
+        :type ExecuteSQL: str
+        :param DriverSize: 指定的Driver规格，当前支持：small（默认，1cu）、medium（2cu）、large（4cu）、xlarge（8cu）
+        :type DriverSize: str
+        :param ExecutorSize: 指定的Executor规格，当前支持：small（默认，1cu）、medium（2cu）、large（4cu）、xlarge（8cu）
+        :type ExecutorSize: str
+        :param ExecutorNumbers: 指定的Executor数量，默认为1
+        :type ExecutorNumbers: int
+        :param ExecutorMaxNumbers: 指定的Executor数量（最大值），默认为1，当开启动态分配有效，若未开启，则该值等于ExecutorNumbers
+        :type ExecutorMaxNumbers: int
+        :param TimeoutInSecond: 指定的Session超时时间，单位秒，默认3600秒
+        :type TimeoutInSecond: int
+        :param SessionId: Session唯一标识，当指定sessionid，则使用该session运行任务。
+        :type SessionId: str
+        :param SessionName: 指定要创建的session名称
+        :type SessionName: str
+        :param Arguments: Session相关配置，当前支持：dlc.eni、dlc.role.arn、dlc.sql.set.config以及用户指定的配置，注：roleArn必填；
+        :type Arguments: list of KVPair
+        """
+        self.DataEngineName = None
+        self.ExecuteSQL = None
+        self.DriverSize = None
+        self.ExecutorSize = None
+        self.ExecutorNumbers = None
+        self.ExecutorMaxNumbers = None
+        self.TimeoutInSecond = None
+        self.SessionId = None
+        self.SessionName = None
+        self.Arguments = None
+
+
+    def _deserialize(self, params):
+        self.DataEngineName = params.get("DataEngineName")
+        self.ExecuteSQL = params.get("ExecuteSQL")
+        self.DriverSize = params.get("DriverSize")
+        self.ExecutorSize = params.get("ExecutorSize")
+        self.ExecutorNumbers = params.get("ExecutorNumbers")
+        self.ExecutorMaxNumbers = params.get("ExecutorMaxNumbers")
+        self.TimeoutInSecond = params.get("TimeoutInSecond")
+        self.SessionId = params.get("SessionId")
+        self.SessionName = params.get("SessionName")
+        if params.get("Arguments") is not None:
+            self.Arguments = []
+            for item in params.get("Arguments"):
+                obj = KVPair()
+                obj._deserialize(item)
+                self.Arguments.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateSparkSessionBatchSQLResponse(AbstractModel):
+    """CreateSparkSessionBatchSQL返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BatchId: 批任务唯一标识
+        :type BatchId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.BatchId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.BatchId = params.get("BatchId")
         self.RequestId = params.get("RequestId")
 
 
@@ -3044,6 +3181,12 @@ class DataEngineInfo(AbstractModel):
         :param StartStandbyCluster: 是否开启备集群
 注意：此字段可能返回 null，表示取不到有效值。
         :type StartStandbyCluster: bool
+        :param ElasticSwitch: spark jar 包年包月集群是否开启弹性
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ElasticSwitch: bool
+        :param ElasticLimit: spark jar 包年包月集群弹性上限
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ElasticLimit: int
         """
         self.DataEngineName = None
         self.EngineType = None
@@ -3082,6 +3225,8 @@ class DataEngineInfo(AbstractModel):
         self.ChildImageVersionId = None
         self.ImageVersionName = None
         self.StartStandbyCluster = None
+        self.ElasticSwitch = None
+        self.ElasticLimit = None
 
 
     def _deserialize(self, params):
@@ -3134,6 +3279,8 @@ class DataEngineInfo(AbstractModel):
         self.ChildImageVersionId = params.get("ChildImageVersionId")
         self.ImageVersionName = params.get("ImageVersionName")
         self.StartStandbyCluster = params.get("StartStandbyCluster")
+        self.ElasticSwitch = params.get("ElasticSwitch")
+        self.ElasticLimit = params.get("ElasticLimit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3209,6 +3356,30 @@ class DataGovernPolicy(AbstractModel):
     """数据治理规则
 
     """
+
+    def __init__(self):
+        r"""
+        :param RuleType: 治理规则类型，Customize: 自定义；Intelligence: 智能治理
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleType: str
+        :param GovernEngine: 治理引擎
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GovernEngine: str
+        """
+        self.RuleType = None
+        self.GovernEngine = None
+
+
+    def _deserialize(self, params):
+        self.RuleType = params.get("RuleType")
+        self.GovernEngine = params.get("GovernEngine")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DatabaseInfo(AbstractModel):
@@ -4452,14 +4623,18 @@ class DescribeNotebookSessionStatementRequest(AbstractModel):
         :type SessionId: str
         :param StatementId: Session Statement唯一标识
         :type StatementId: str
+        :param TaskId: 任务唯一标识
+        :type TaskId: str
         """
         self.SessionId = None
         self.StatementId = None
+        self.TaskId = None
 
 
     def _deserialize(self, params):
         self.SessionId = params.get("SessionId")
         self.StatementId = params.get("StatementId")
+        self.TaskId = params.get("TaskId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4922,13 +5097,13 @@ class DescribeSparkAppJobsRequest(AbstractModel):
         :type Sorting: str
         :param Filters: 按照该参数过滤,支持spark-job-name
         :type Filters: list of Filter
-        :param StartTime: 更新时间起始点
+        :param StartTime: 更新时间起始点，支持格式：yyyy-MM-dd HH:mm:ss
         :type StartTime: str
-        :param EndTime: 更新时间截止点
+        :param EndTime: 更新时间截止点，支持格式：yyyy-MM-dd HH:mm:ss
         :type EndTime: str
-        :param Offset: 查询列表偏移量
+        :param Offset: 查询列表偏移量, 默认值0
         :type Offset: int
-        :param Limit: 查询列表限制数量
+        :param Limit: 查询列表限制数量, 默认值100
         :type Limit: int
         """
         self.SortBy = None
@@ -5080,6 +5255,61 @@ class DescribeSparkAppTasksResponse(AbstractModel):
                 obj = TaskResponseInfo()
                 obj._deserialize(item)
                 self.SparkAppTasks.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeSparkSessionBatchSqlLogRequest(AbstractModel):
+    """DescribeSparkSessionBatchSqlLog请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BatchId: SparkSQL唯一标识
+        :type BatchId: str
+        """
+        self.BatchId = None
+
+
+    def _deserialize(self, params):
+        self.BatchId = params.get("BatchId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeSparkSessionBatchSqlLogResponse(AbstractModel):
+    """DescribeSparkSessionBatchSqlLog返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param State: 状态：0：初始化、1：成功、2：失败、3：取消、4：异常；
+        :type State: int
+        :param LogSet: 日志信息列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogSet: list of SparkSessionBatchLog
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.State = None
+        self.LogSet = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.State = params.get("State")
+        if params.get("LogSet") is not None:
+            self.LogSet = []
+            for item in params.get("LogSet"):
+                obj = SparkSessionBatchLog()
+                obj._deserialize(item)
+                self.LogSet.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -6009,11 +6239,14 @@ class GenerateCreateMangedTableSqlRequest(AbstractModel):
         :type Partitions: list of TPartition
         :param Properties: 表属性信息
         :type Properties: list of Property
+        :param UpsertKeys: V2 upsert表 upsert键
+        :type UpsertKeys: list of str
         """
         self.TableBaseInfo = None
         self.Columns = None
         self.Partitions = None
         self.Properties = None
+        self.UpsertKeys = None
 
 
     def _deserialize(self, params):
@@ -6038,6 +6271,7 @@ class GenerateCreateMangedTableSqlRequest(AbstractModel):
                 obj = Property()
                 obj._deserialize(item)
                 self.Properties.append(obj)
+        self.UpsertKeys = params.get("UpsertKeys")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6089,11 +6323,15 @@ class JobLogResult(AbstractModel):
         :param LogJson: 日志内容，json字符串
 注意：此字段可能返回 null，表示取不到有效值。
         :type LogJson: str
+        :param PkgLogId: 日志ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PkgLogId: str
         """
         self.Time = None
         self.TopicId = None
         self.TopicName = None
         self.LogJson = None
+        self.PkgLogId = None
 
 
     def _deserialize(self, params):
@@ -6101,6 +6339,7 @@ class JobLogResult(AbstractModel):
         self.TopicId = params.get("TopicId")
         self.TopicName = params.get("TopicName")
         self.LogJson = params.get("LogJson")
+        self.PkgLogId = params.get("PkgLogId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6161,6 +6400,8 @@ class ListTaskJobLogDetailRequest(AbstractModel):
         :type Asc: bool
         :param Filters: 预览日志的通用过滤条件
         :type Filters: list of Filter
+        :param BatchId: SparkSQL任务唯一ID
+        :type BatchId: str
         """
         self.TaskId = None
         self.StartTime = None
@@ -6169,6 +6410,7 @@ class ListTaskJobLogDetailRequest(AbstractModel):
         self.Context = None
         self.Asc = None
         self.Filters = None
+        self.BatchId = None
 
 
     def _deserialize(self, params):
@@ -6184,6 +6426,7 @@ class ListTaskJobLogDetailRequest(AbstractModel):
                 obj = Filter()
                 obj._deserialize(item)
                 self.Filters.append(obj)
+        self.BatchId = params.get("BatchId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6209,12 +6452,16 @@ class ListTaskJobLogDetailResponse(AbstractModel):
         :param Results: 日志详情
 注意：此字段可能返回 null，表示取不到有效值。
         :type Results: list of JobLogResult
+        :param LogUrl: 日志url
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogUrl: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Context = None
         self.ListOver = None
         self.Results = None
+        self.LogUrl = None
         self.RequestId = None
 
 
@@ -6227,6 +6474,7 @@ class ListTaskJobLogDetailResponse(AbstractModel):
                 obj = JobLogResult()
                 obj._deserialize(item)
                 self.Results.append(obj)
+        self.LogUrl = params.get("LogUrl")
         self.RequestId = params.get("RequestId")
 
 
@@ -6436,6 +6684,8 @@ class ModifySparkAppRequest(AbstractModel):
         :type SparkImageVersion: str
         :param AppExecutorMaxNumbers: 指定的Executor数量（最大值），默认为1，当开启动态分配有效，若未开启，则该值等于AppExecutorNums
         :type AppExecutorMaxNumbers: int
+        :param SessionId: 关联dlc查询脚本
+        :type SessionId: str
         """
         self.AppName = None
         self.AppType = None
@@ -6464,6 +6714,7 @@ class ModifySparkAppRequest(AbstractModel):
         self.SparkImage = None
         self.SparkImageVersion = None
         self.AppExecutorMaxNumbers = None
+        self.SessionId = None
 
 
     def _deserialize(self, params):
@@ -6494,6 +6745,7 @@ class ModifySparkAppRequest(AbstractModel):
         self.SparkImage = params.get("SparkImage")
         self.SparkImageVersion = params.get("SparkImageVersion")
         self.AppExecutorMaxNumbers = params.get("AppExecutorMaxNumbers")
+        self.SessionId = params.get("SessionId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7441,6 +7693,18 @@ class SparkJobInfo(AbstractModel):
         :param JobExecutorMaxNumbers: 指定的Executor数量（最大值），默认为1，当开启动态分配有效，若未开启，则该值等于JobExecutorNums
 注意：此字段可能返回 null，表示取不到有效值。
         :type JobExecutorMaxNumbers: int
+        :param SparkImageVersion: 镜像版本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SparkImageVersion: str
+        :param SessionId: 查询脚本关联id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SessionId: str
+        :param DataEngineClusterType: spark_emr_livy
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataEngineClusterType: str
+        :param DataEngineImageVersion: Spark 3.2-EMR
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataEngineImageVersion: str
         """
         self.JobId = None
         self.JobName = None
@@ -7477,6 +7741,10 @@ class SparkJobInfo(AbstractModel):
         self.TaskNum = None
         self.DataEngineStatus = None
         self.JobExecutorMaxNumbers = None
+        self.SparkImageVersion = None
+        self.SessionId = None
+        self.DataEngineClusterType = None
+        self.DataEngineImageVersion = None
 
 
     def _deserialize(self, params):
@@ -7517,6 +7785,95 @@ class SparkJobInfo(AbstractModel):
         self.TaskNum = params.get("TaskNum")
         self.DataEngineStatus = params.get("DataEngineStatus")
         self.JobExecutorMaxNumbers = params.get("JobExecutorMaxNumbers")
+        self.SparkImageVersion = params.get("SparkImageVersion")
+        self.SessionId = params.get("SessionId")
+        self.DataEngineClusterType = params.get("DataEngineClusterType")
+        self.DataEngineImageVersion = params.get("DataEngineImageVersion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SparkSessionBatchLog(AbstractModel):
+    """SparkSQL批任务运行日志
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Step: 日志步骤：BEG/CS/DS/DSS/DSF/FINF/RTO/CANCEL/CT/DT/DTS/DTF/FINT/EXCE
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Step: str
+        :param Time: 时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Time: str
+        :param Message: 日志提示
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param Operate: 日志操作
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Operate: list of SparkSessionBatchLogOperate
+        """
+        self.Step = None
+        self.Time = None
+        self.Message = None
+        self.Operate = None
+
+
+    def _deserialize(self, params):
+        self.Step = params.get("Step")
+        self.Time = params.get("Time")
+        self.Message = params.get("Message")
+        if params.get("Operate") is not None:
+            self.Operate = []
+            for item in params.get("Operate"):
+                obj = SparkSessionBatchLogOperate()
+                obj._deserialize(item)
+                self.Operate.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SparkSessionBatchLogOperate(AbstractModel):
+    """SparkSQL批任务日志操作信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Text: 操作提示
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Text: str
+        :param Operate: 操作类型：COPY、LOG、UI、RESULT、List、TAB
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Operate: str
+        :param Supplement: 补充信息：如：taskid、sessionid、sparkui等
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Supplement: list of KVPair
+        """
+        self.Text = None
+        self.Operate = None
+        self.Supplement = None
+
+
+    def _deserialize(self, params):
+        self.Text = params.get("Text")
+        self.Operate = params.get("Operate")
+        if params.get("Supplement") is not None:
+            self.Supplement = []
+            for item in params.get("Supplement"):
+                obj = KVPair()
+                obj._deserialize(item)
+                self.Supplement.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7868,6 +8225,9 @@ class TableBaseInfo(AbstractModel):
         :param GovernPolicy: 数据治理配置项
 注意：此字段可能返回 null，表示取不到有效值。
         :type GovernPolicy: :class:`tencentcloud.dlc.v20210125.models.DataGovernPolicy`
+        :param DbGovernPolicyIsDisable: 库数据治理是否关闭，关闭：true，开启：false
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DbGovernPolicyIsDisable: str
         """
         self.DatabaseName = None
         self.TableName = None
@@ -7878,6 +8238,7 @@ class TableBaseInfo(AbstractModel):
         self.UserAlias = None
         self.UserSubUin = None
         self.GovernPolicy = None
+        self.DbGovernPolicyIsDisable = None
 
 
     def _deserialize(self, params):
@@ -7892,6 +8253,7 @@ class TableBaseInfo(AbstractModel):
         if params.get("GovernPolicy") is not None:
             self.GovernPolicy = DataGovernPolicy()
             self.GovernPolicy._deserialize(params.get("GovernPolicy"))
+        self.DbGovernPolicyIsDisable = params.get("DbGovernPolicyIsDisable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

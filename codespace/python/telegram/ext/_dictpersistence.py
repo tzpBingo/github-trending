@@ -90,7 +90,7 @@ class DictPersistence(BasePersistence[Dict[Any, Any], Dict[Any, Any], Dict[Any, 
 
     def __init__(
         self,
-        store_data: PersistenceInput = None,
+        store_data: Optional[PersistenceInput] = None,
         user_data_json: str = "",
         chat_data_json: str = "",
         bot_data_json: str = "",
@@ -468,12 +468,12 @@ class DictPersistence(BasePersistence[Dict[Any, Any], Dict[Any, Any], Dict[Any, 
         tmp: Dict[int, Dict[object, object]] = {}
         decoded_data = json.loads(data)
         for user, user_data in decoded_data.items():
-            user = int(user)
-            tmp[user] = {}
+            int_user_id = int(user)
+            tmp[int_user_id] = {}
             for key, value in user_data.items():
                 try:
-                    key = int(key)
+                    _id = int(key)
                 except ValueError:
-                    pass
-                tmp[user][key] = value
+                    _id = key
+                tmp[int_user_id][_id] = value
         return tmp

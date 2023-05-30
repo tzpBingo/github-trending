@@ -18,6 +18,55 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class AuthorizedTransferRequest(AbstractModel):
+    """AuthorizedTransfer请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BusinessSecurityData: 业务加密入参。
+        :type BusinessSecurityData: :class:`tencentcloud.trp.v20210515.models.InputEncryptData`
+        """
+        self.BusinessSecurityData = None
+
+
+    def _deserialize(self, params):
+        if params.get("BusinessSecurityData") is not None:
+            self.BusinessSecurityData = InputEncryptData()
+            self.BusinessSecurityData._deserialize(params.get("BusinessSecurityData"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AuthorizedTransferResponse(AbstractModel):
+    """AuthorizedTransfer返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 业务出参。
+        :type Data: :class:`tencentcloud.trp.v20210515.models.OutputAuthorizedTransfer`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = OutputAuthorizedTransfer()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
 class ChainData(AbstractModel):
     """上链数据
 
@@ -1048,10 +1097,20 @@ class CreateTraceCodesRequest(AbstractModel):
         :type CorpId: int
         :param Codes: 码
         :type Codes: list of CodeItem
+        :param CodeType: 码绑定激活策略，默认  0
+0: 传什么码就激活什么码
+1: 层级码 + 层级子码
+        :type CodeType: int
+        :param CheckType: 错误检查类型，默认 0
+0: 没有新导入码时正常返回
+1: 没有新导入码时报错，并返回没有导入成功的原因
+        :type CheckType: int
         """
         self.BatchId = None
         self.CorpId = None
         self.Codes = None
+        self.CodeType = None
+        self.CheckType = None
 
 
     def _deserialize(self, params):
@@ -1063,6 +1122,8 @@ class CreateTraceCodesRequest(AbstractModel):
                 obj = CodeItem()
                 obj._deserialize(item)
                 self.Codes.append(obj)
+        self.CodeType = params.get("CodeType")
+        self.CheckType = params.get("CheckType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2393,26 +2454,38 @@ class DescribeScanStatsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param BatchId: 批次ID
-        :type BatchId: str
         :param CorpId: 企业ID
         :type CorpId: int
         :param PageSize: 分页数量
         :type PageSize: int
         :param PageNumber: 当前分页
         :type PageNumber: int
+        :param MerchantId: 商户ID
+        :type MerchantId: str
+        :param ProductId: 产品ID
+        :type ProductId: str
+        :param BatchId: 批次ID
+        :type BatchId: str
+        :param Code: 安心码
+        :type Code: str
         """
-        self.BatchId = None
         self.CorpId = None
         self.PageSize = None
         self.PageNumber = None
+        self.MerchantId = None
+        self.ProductId = None
+        self.BatchId = None
+        self.Code = None
 
 
     def _deserialize(self, params):
-        self.BatchId = params.get("BatchId")
         self.CorpId = params.get("CorpId")
         self.PageSize = params.get("PageSize")
         self.PageNumber = params.get("PageNumber")
+        self.MerchantId = params.get("MerchantId")
+        self.ProductId = params.get("ProductId")
+        self.BatchId = params.get("BatchId")
+        self.Code = params.get("Code")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2617,6 +2690,57 @@ class DescribeTraceCodesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTraceDataByIdRequest(AbstractModel):
+    """DescribeTraceDataById请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: 溯源ID
+        :type Id: str
+        :param CorpId: 企业ID
+        :type CorpId: int
+        """
+        self.Id = None
+        self.CorpId = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.CorpId = params.get("CorpId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTraceDataByIdResponse(AbstractModel):
+    """DescribeTraceDataById返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TraceData: 无
+        :type TraceData: :class:`tencentcloud.trp.v20210515.models.TraceData`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TraceData = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("TraceData") is not None:
+            self.TraceData = TraceData()
+            self.TraceData._deserialize(params.get("TraceData"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeTraceDataListRequest(AbstractModel):
     """DescribeTraceDataList请求参数结构体
 
@@ -2695,10 +2819,102 @@ class DescribeTraceDataListResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class EffectFeedbackRequest(AbstractModel):
+    """EffectFeedback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BusinessSecurityData: 业务加密入参。
+        :type BusinessSecurityData: :class:`tencentcloud.trp.v20210515.models.InputEncryptData`
+        """
+        self.BusinessSecurityData = None
+
+
+    def _deserialize(self, params):
+        if params.get("BusinessSecurityData") is not None:
+            self.BusinessSecurityData = InputEncryptData()
+            self.BusinessSecurityData._deserialize(params.get("BusinessSecurityData"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EffectFeedbackResponse(AbstractModel):
+    """EffectFeedback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 业务出参。
+        :type Data: :class:`tencentcloud.trp.v20210515.models.OutputAuthorizedTransfer`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = OutputAuthorizedTransfer()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
 class Ext(AbstractModel):
     """预留字段
 
     """
+
+
+class InputEncryptData(AbstractModel):
+    """业务加密入参
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EncryptMethod: 加密方式，0：AES加密；
+
+        :type EncryptMethod: int
+        :param EncryptMode: 加密算法中的块处理模式，1：CBC模式； 目前只支持CBC模式
+        :type EncryptMode: int
+        :param PaddingType: 填充模式，0：ZeroPadding；1：PKCS5Padding；2：
+PKCS7Padding。
+        :type PaddingType: int
+        :param EncryptData: 加密数据，将AuthorizedData结构体数组（数组最大长度不超过20）序列化成JSON字符串，对得到的字符串加密并填充到该字段。
+        :type EncryptData: str
+        :param IsAuthorized: 用户是否授权，本接口取值：1，已授权。
+
+        :type IsAuthorized: int
+        """
+        self.EncryptMethod = None
+        self.EncryptMode = None
+        self.PaddingType = None
+        self.EncryptData = None
+        self.IsAuthorized = None
+
+
+    def _deserialize(self, params):
+        self.EncryptMethod = params.get("EncryptMethod")
+        self.EncryptMode = params.get("EncryptMode")
+        self.PaddingType = params.get("PaddingType")
+        self.EncryptData = params.get("EncryptData")
+        self.IsAuthorized = params.get("IsAuthorized")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class Job(AbstractModel):
@@ -3304,12 +3520,16 @@ class ModifyTraceDataRequest(AbstractModel):
         :type TraceItems: list of TraceItem
         :param PhaseName: 溯源阶段名称
         :type PhaseName: str
+        :param PhaseData: 环节数据
+        :type PhaseData: :class:`tencentcloud.trp.v20210515.models.PhaseData`
+        :param Status: 溯源状态 0: 无效, 1: 有效
+        :type Status: int
+        :param Rank: 排序
+        :type Rank: int
         :param Type: [无效] 类型
         :type Type: int
         :param Code: [无效] 溯源码
         :type Code: str
-        :param Rank: [无效] 排序
-        :type Rank: int
         :param Phase: [无效] 溯源阶段 0:商品 1:通用 2:生产溯源 3:销售溯源
         :type Phase: int
         :param TraceTime: [无效] 溯源时间
@@ -3324,19 +3544,17 @@ class ModifyTraceDataRequest(AbstractModel):
         :type ChainData: :class:`tencentcloud.trp.v20210515.models.ChainData`
         :param CorpId: 企业ID
         :type CorpId: int
-        :param Status: 溯源状态 0: 无效, 1: 有效
-        :type Status: int
-        :param PhaseData: 环节数据
-        :type PhaseData: :class:`tencentcloud.trp.v20210515.models.PhaseData`
         """
         self.TraceId = None
         self.BatchId = None
         self.TaskId = None
         self.TraceItems = None
         self.PhaseName = None
+        self.PhaseData = None
+        self.Status = None
+        self.Rank = None
         self.Type = None
         self.Code = None
-        self.Rank = None
         self.Phase = None
         self.TraceTime = None
         self.CreateTime = None
@@ -3344,8 +3562,6 @@ class ModifyTraceDataRequest(AbstractModel):
         self.ChainTime = None
         self.ChainData = None
         self.CorpId = None
-        self.Status = None
-        self.PhaseData = None
 
 
     def _deserialize(self, params):
@@ -3359,9 +3575,13 @@ class ModifyTraceDataRequest(AbstractModel):
                 obj._deserialize(item)
                 self.TraceItems.append(obj)
         self.PhaseName = params.get("PhaseName")
+        if params.get("PhaseData") is not None:
+            self.PhaseData = PhaseData()
+            self.PhaseData._deserialize(params.get("PhaseData"))
+        self.Status = params.get("Status")
+        self.Rank = params.get("Rank")
         self.Type = params.get("Type")
         self.Code = params.get("Code")
-        self.Rank = params.get("Rank")
         self.Phase = params.get("Phase")
         self.TraceTime = params.get("TraceTime")
         self.CreateTime = params.get("CreateTime")
@@ -3371,10 +3591,6 @@ class ModifyTraceDataRequest(AbstractModel):
             self.ChainData = ChainData()
             self.ChainData._deserialize(params.get("ChainData"))
         self.CorpId = params.get("CorpId")
-        self.Status = params.get("Status")
-        if params.get("PhaseData") is not None:
-            self.PhaseData = PhaseData()
-            self.PhaseData._deserialize(params.get("PhaseData"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3403,6 +3619,41 @@ class ModifyTraceDataResponse(AbstractModel):
     def _deserialize(self, params):
         self.TraceId = params.get("TraceId")
         self.RequestId = params.get("RequestId")
+
+
+class OutputAuthorizedTransfer(AbstractModel):
+    """业务出参
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Code: 推送状态，0表示成功。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Code: int
+        :param Message: 错误码。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param Value: 错误信息描述。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Value: str
+        """
+        self.Code = None
+        self.Message = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.Code = params.get("Code")
+        self.Message = params.get("Message")
+        self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class PackSpec(AbstractModel):
@@ -3655,6 +3906,55 @@ class Quota(AbstractModel):
         
 
 
+class ReportBatchCallbackStatusRequest(AbstractModel):
+    """ReportBatchCallbackStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BusinessSecurityData: 业务加密入参。
+        :type BusinessSecurityData: :class:`tencentcloud.trp.v20210515.models.InputEncryptData`
+        """
+        self.BusinessSecurityData = None
+
+
+    def _deserialize(self, params):
+        if params.get("BusinessSecurityData") is not None:
+            self.BusinessSecurityData = InputEncryptData()
+            self.BusinessSecurityData._deserialize(params.get("BusinessSecurityData"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ReportBatchCallbackStatusResponse(AbstractModel):
+    """ReportBatchCallbackStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 业务出参。
+        :type Data: :class:`tencentcloud.trp.v20210515.models.OutputAuthorizedTransfer`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = OutputAuthorizedTransfer()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
 class ScanLog(AbstractModel):
     """扫码明细
 
@@ -3780,6 +4080,10 @@ class ScanStat(AbstractModel):
         :type CreateTime: str
         :param UpdateTime: 更新时间
         :type UpdateTime: str
+        :param MerchantName: 商户名称
+        :type MerchantName: str
+        :param ProductName: 产品名称
+        :type ProductName: str
         """
         self.Code = None
         self.CorpId = None
@@ -3790,6 +4094,8 @@ class ScanStat(AbstractModel):
         self.Uv = None
         self.CreateTime = None
         self.UpdateTime = None
+        self.MerchantName = None
+        self.ProductName = None
 
 
     def _deserialize(self, params):
@@ -3802,6 +4108,8 @@ class ScanStat(AbstractModel):
         self.Uv = params.get("Uv")
         self.CreateTime = params.get("CreateTime")
         self.UpdateTime = params.get("UpdateTime")
+        self.MerchantName = params.get("MerchantName")
+        self.ProductName = params.get("ProductName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3891,31 +4199,24 @@ class TraceData(AbstractModel):
     def __init__(self):
         r"""
         :param TraceId: 溯源ID
-注意：此字段可能返回 null，表示取不到有效值。
         :type TraceId: str
         :param CorpId: 企业ID
-注意：此字段可能返回 null，表示取不到有效值。
         :type CorpId: int
         :param Type: 码类型 0: 批次, 1: 码, 2: 生产任务
-注意：此字段可能返回 null，表示取不到有效值。
         :type Type: int
         :param Code: 码值，跟码类型一一对应
 注意：此字段可能返回 null，表示取不到有效值。
         :type Code: str
         :param Rank: 排序，在Phase相同情况下，值越小排名靠前
-注意：此字段可能返回 null，表示取不到有效值。
         :type Rank: int
         :param Phase: 溯源阶段 0:商品 1:通用 2:生产溯源 3:销售溯源
-注意：此字段可能返回 null，表示取不到有效值。
         :type Phase: int
         :param PhaseName: 溯源环节名称
-注意：此字段可能返回 null，表示取不到有效值。
         :type PhaseName: str
         :param TraceTime: 溯源时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type TraceTime: str
         :param TraceItems: 无
-注意：此字段可能返回 null，表示取不到有效值。
         :type TraceItems: list of TraceItem
         :param CreateTime: 创建时间
 注意：此字段可能返回 null，表示取不到有效值。
@@ -3933,7 +4234,6 @@ class TraceData(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type PhaseData: :class:`tencentcloud.trp.v20210515.models.PhaseData`
         :param Status: 溯源阶段状态 0: 无效, 1: 有效
-注意：此字段可能返回 null，表示取不到有效值。
         :type Status: int
         """
         self.TraceId = None
@@ -3988,45 +4288,46 @@ class TraceData(AbstractModel):
 
 
 class TraceItem(AbstractModel):
-    """溯源数据项
-    Type的枚举值
+    """溯源数据项 Type 的枚举值
+
     text:文本类型, longtext:长文本类型, banner:单图片类型, image:多图片类型, video:视频类型, mp:小程序类型
+
     具体组合如下
-    Type: "text" 文本类型, 对应值 Value: "文本字符串"
-    Type: "longtext" 长文本类型, 对应值 Value: "长文本字符串, 支持换行\n"
-    Type: "banner" 单图片类型, 对应图片地址 Value: "https://sample.cdn.com/xxx.jpg"
-    Type: "image" 多图片类型, 对应图片地址 Values: ["https://sample.cdn.com/1.jpg", "https://sample.cdn.com/2.jpg"]
-    Type: "video" 视频类型, 对应视频地址 Value: "https://sample.cdn.com/xxx.mp4"
-    Type: "mp" 小程序类型, 对应配置 Values: ["WXAPPID", "WXAPP_PATH", "跳转说明"]
+    - Type: "text" 文本类型, 对应值 Value: "文本字符串"
+    - Type: "longtext" 长文本类型, 对应值 Value: "长文本字符串, 支持换行\n"
+    - Type: "banner" 单图片类型, 对应图片地址 Value: "https://sample.cdn.com/xxx.jpg"
+    - Type: "image" 多图片类型, 对应图片地址 Values: ["https://sample.cdn.com/1.jpg", "https://sample.cdn.com/2.jpg"]
+    - Type: "video" 视频类型, 对应视频地址 Value: "https://sample.cdn.com/xxx.mp4"
+    - Type: "mp" 小程序类型, 对应配置 Values: ["WXAPPID", "WXAPP_PATH", "跳转说明"]
 
     """
 
     def __init__(self):
         r"""
         :param Name: 字段名称
-注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param Value: 字段值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Value: str
-        :param Type: 类型 text:文本类型, longtext:长文本类型, banner:单图片类型, image:多图片类型, video:视频类型, mp:小程序类型
-注意：此字段可能返回 null，表示取不到有效值。
+        :param Type: 字段类型
+text:文本类型, 
+longtext:长文本类型, banner:单图片类型, image:多图片类型,
+video:视频类型,
+mp:小程序类型
         :type Type: str
         :param ReadOnly: 只读
-注意：此字段可能返回 null，表示取不到有效值。
         :type ReadOnly: bool
         :param Hidden: 扫码展示
-注意：此字段可能返回 null，表示取不到有效值。
         :type Hidden: bool
         :param Values: 多个值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Values: list of str
         :param Key: 类型标识
-注意：此字段可能返回 null，表示取不到有效值。
         :type Key: str
         :param Ext: 扩展字段
-注意：此字段可能返回 null，表示取不到有效值。
         :type Ext: str
+        :param Attrs: 额外属性
+        :type Attrs: list of TraceItem
+        :param List: 子页面，只读
+        :type List: list of TraceData
         """
         self.Name = None
         self.Value = None
@@ -4036,6 +4337,8 @@ class TraceItem(AbstractModel):
         self.Values = None
         self.Key = None
         self.Ext = None
+        self.Attrs = None
+        self.List = None
 
 
     def _deserialize(self, params):
@@ -4047,6 +4350,18 @@ class TraceItem(AbstractModel):
         self.Values = params.get("Values")
         self.Key = params.get("Key")
         self.Ext = params.get("Ext")
+        if params.get("Attrs") is not None:
+            self.Attrs = []
+            for item in params.get("Attrs"):
+                obj = TraceItem()
+                obj._deserialize(item)
+                self.Attrs.append(obj)
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = TraceData()
+                obj._deserialize(item)
+                self.List.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

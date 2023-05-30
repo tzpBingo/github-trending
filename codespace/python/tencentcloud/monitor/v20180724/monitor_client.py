@@ -165,7 +165,7 @@ class MonitorClient(AbstractClient):
 
 
     def CreateAlarmPolicy(self, request):
-        """创建云监控告警策略
+        """创建告警策略
 
         :param request: Request instance for CreateAlarmPolicy.
         :type request: :class:`tencentcloud.monitor.v20180724.models.CreateAlarmPolicyRequest`
@@ -374,7 +374,7 @@ class MonitorClient(AbstractClient):
 
 
     def CreatePrometheusClusterAgent(self, request):
-        """与云监控融合的2.0实例关联集群
+        """与腾讯云可观测融合的2.0实例关联集群
 
         :param request: Request instance for CreatePrometheusClusterAgent.
         :type request: :class:`tencentcloud.monitor.v20180724.models.CreatePrometheusClusterAgentRequest`
@@ -606,7 +606,7 @@ class MonitorClient(AbstractClient):
 
 
     def DeleteAlarmNotices(self, request):
-        """云监控告警删除告警通知模板
+        """删除告警通知模板
 
         :param request: Request instance for DeleteAlarmNotices.
         :type request: :class:`tencentcloud.monitor.v20180724.models.DeleteAlarmNoticesRequest`
@@ -1139,7 +1139,7 @@ class MonitorClient(AbstractClient):
 
 
     def DescribeAlarmNoticeCallbacks(self, request):
-        """云监控告警获取告警通知模板所有回调URL
+        """获取告警通知模板所有回调URL
 
         :param request: Request instance for DescribeAlarmNoticeCallbacks.
         :type request: :class:`tencentcloud.monitor.v20180724.models.DescribeAlarmNoticeCallbacksRequest`
@@ -1336,6 +1336,29 @@ class MonitorClient(AbstractClient):
             body = self.call("DescribeBindingPolicyObjectList", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeBindingPolicyObjectListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeClusterAgentCreatingProgress(self, request):
+        """获取prom实例中集群详细的关联状态
+
+        :param request: Request instance for DescribeClusterAgentCreatingProgress.
+        :type request: :class:`tencentcloud.monitor.v20180724.models.DescribeClusterAgentCreatingProgressRequest`
+        :rtype: :class:`tencentcloud.monitor.v20180724.models.DescribeClusterAgentCreatingProgressResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClusterAgentCreatingProgress", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeClusterAgentCreatingProgressResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1599,7 +1622,7 @@ class MonitorClient(AbstractClient):
 
 
     def DescribeMonitorTypes(self, request):
-        """云监控支持多种类型的监控，此接口列出支持的所有类型
+        """腾讯云可观测平台支持多种类型的监控，此接口列出支持的所有类型
 
         :param request: Request instance for DescribeMonitorTypes.
         :type request: :class:`tencentcloud.monitor.v20180724.models.DescribeMonitorTypesRequest`
@@ -1737,7 +1760,7 @@ class MonitorClient(AbstractClient):
 
 
     def DescribeProductList(self, request):
-        """查询云监控产品列表，支持云服务器CVM、云数据库、云消息队列、负载均衡、容器服务、专线等云产品。
+        """查询腾讯云可观测平台云产品列表，支持云服务器CVM、云数据库、云消息队列、负载均衡、容器服务、专线等云产品。
 
         :param request: Request instance for DescribeProductList.
         :type request: :class:`tencentcloud.monitor.v20180724.models.DescribeProductListRequest`
@@ -2017,7 +2040,7 @@ class MonitorClient(AbstractClient):
 
 
     def DescribePrometheusInstancesOverview(self, request):
-        """获取与云监控融合实例列表
+        """获取与 Prometheus 监控融合实例列表
 
         :param request: Request instance for DescribePrometheusInstancesOverview.
         :type request: :class:`tencentcloud.monitor.v20180724.models.DescribePrometheusInstancesOverviewRequest`
@@ -2462,7 +2485,7 @@ class MonitorClient(AbstractClient):
 
 
     def ModifyAlarmNotice(self, request):
-        """云监控告警编辑告警通知模板
+        """编辑告警通知模板
 
         :param request: Request instance for ModifyAlarmNotice.
         :type request: :class:`tencentcloud.monitor.v20180724.models.ModifyAlarmNoticeRequest`
@@ -2531,7 +2554,7 @@ class MonitorClient(AbstractClient):
 
 
     def ModifyAlarmPolicyNotice(self, request):
-        """云监控告警修改告警策略绑定的告警通知模板
+        """修改告警策略绑定的告警通知模板
 
         :param request: Request instance for ModifyAlarmPolicyNotice.
         :type request: :class:`tencentcloud.monitor.v20180724.models.ModifyAlarmPolicyNoticeRequest`
@@ -2577,7 +2600,7 @@ class MonitorClient(AbstractClient):
 
 
     def ModifyAlarmPolicyTasks(self, request):
-        """云监控告警修改告警策略的触发任务，TriggerTasks字段放触发任务列表，TriggerTasks传空数组时，代表解绑该策略的所有触发任务。
+        """修改告警策略的触发任务，TriggerTasks字段放触发任务列表，TriggerTasks传空数组时，代表解绑该策略的所有触发任务。
 
         :param request: Request instance for ModifyAlarmPolicyTasks.
         :type request: :class:`tencentcloud.monitor.v20180724.models.ModifyAlarmPolicyTasksRequest`
@@ -2830,7 +2853,9 @@ class MonitorClient(AbstractClient):
 
 
     def PutMonitorData(self, request):
-        """默认接口请求频率限制：50次/秒。
+        """对应的功能控制台及后端服务已于2年前下线，剩余该API接口未下线。
+
+        默认接口请求频率限制：50次/秒。
         默认单租户指标上限：100个。
         单次上报最多 30 个指标/值对，请求返回错误时，请求中所有的指标/值均不会被保存。
 

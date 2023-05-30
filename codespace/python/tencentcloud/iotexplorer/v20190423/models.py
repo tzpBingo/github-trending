@@ -1045,11 +1045,11 @@ class CreateStudioProductRequest(AbstractModel):
         :type ProductName: str
         :param CategoryId: 产品分组模板ID , ( 自定义模板填写1 , 控制台调用会使用预置的其他ID)
         :type CategoryId: int
-        :param ProductType: 产品类型 填写 ( 0 普通产品 )
+        :param ProductType: 产品类型 填写 ( 0 普通产品 ， 5 网关产品)
         :type ProductType: int
-        :param EncryptionType: 加密类型 加密类型，1表示证书认证，2表示签名认证。
+        :param EncryptionType: 加密类型 ，1表示证书认证，2表示秘钥认证，21表示TID认证-SE方式，22表示TID认证-软加固方式
         :type EncryptionType: str
-        :param NetType: 连接类型 可以填写 wifi cellular else
+        :param NetType: 连接类型 可以填写 wifi、wifi-ble、cellular、5g、lorawan、ble、ethernet、wifi-ethernet、else、sub_zigbee、sub_ble、sub_433mhz、sub_else、sub_blemesh
         :type NetType: str
         :param DataProtocol: 数据协议 (1 使用物模型 2 为自定义)
         :type DataProtocol: int
@@ -3390,14 +3390,24 @@ class DeviceUser(AbstractModel):
         :type UserId: str
         :param Role: 用户角色 1所有者，0：其他分享者
         :type Role: int
+        :param FamilyId: 家庭ID，所有者带该参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FamilyId: str
+        :param FamilyName: 家庭名称，所有者带该参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FamilyName: str
         """
         self.UserId = None
         self.Role = None
+        self.FamilyId = None
+        self.FamilyName = None
 
 
     def _deserialize(self, params):
         self.UserId = params.get("UserId")
         self.Role = params.get("Role")
+        self.FamilyId = params.get("FamilyId")
+        self.FamilyName = params.get("FamilyName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5505,12 +5515,15 @@ class ModifyStudioProductRequest(AbstractModel):
         :type ModuleId: int
         :param EnableProductScript: 是否打开二进制转Json功能, 取值为字符串 true/false
         :type EnableProductScript: str
+        :param BindStrategy: 传1或者2；1代表强踢，2代表非强踢。传其它值不做任何处理
+        :type BindStrategy: int
         """
         self.ProductId = None
         self.ProductName = None
         self.ProductDesc = None
         self.ModuleId = None
         self.EnableProductScript = None
+        self.BindStrategy = None
 
 
     def _deserialize(self, params):
@@ -5519,6 +5532,7 @@ class ModifyStudioProductRequest(AbstractModel):
         self.ProductDesc = params.get("ProductDesc")
         self.ModuleId = params.get("ModuleId")
         self.EnableProductScript = params.get("EnableProductScript")
+        self.BindStrategy = params.get("BindStrategy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5878,15 +5892,16 @@ class ProductEntry(AbstractModel):
         :type ProductName: str
         :param CategoryId: 产品分组模板ID
         :type CategoryId: int
-        :param EncryptionType: 加密类型
+        :param EncryptionType: 加密类型。1表示证书认证，2表示秘钥认证，21表示TID认证-SE方式，22表示TID认证-软加固方式
         :type EncryptionType: str
-        :param NetType: 连接类型
+        :param NetType: 连接类型。如：
+wifi、wifi-ble、cellular、5g、lorawan、ble、ethernet、wifi-ethernet、else、sub_zigbee、sub_ble、sub_433mhz、sub_else、sub_blemesh
         :type NetType: str
-        :param DataProtocol: 数据协议
+        :param DataProtocol: 数据协议 (1 使用物模型 2 为自定义类型)
         :type DataProtocol: int
         :param ProductDesc: 产品描述
         :type ProductDesc: str
-        :param DevStatus: 状态
+        :param DevStatus: 状态 如：all 全部, dev 开发中, audit 审核中 released 已发布
         :type DevStatus: str
         :param CreateTime: 创建时间
         :type CreateTime: int
@@ -5894,7 +5909,7 @@ class ProductEntry(AbstractModel):
         :type UpdateTime: int
         :param Region: 区域
         :type Region: str
-        :param ProductType: 产品类型
+        :param ProductType: 产品类型。如： 0 普通产品 ， 5 网关产品
         :type ProductType: int
         :param ProjectId: 项目ID
         :type ProjectId: str
@@ -5909,6 +5924,9 @@ class ProductEntry(AbstractModel):
         :param CreatorNickName: 创建者昵称
 注意：此字段可能返回 null，表示取不到有效值。
         :type CreatorNickName: str
+        :param BindStrategy: 绑定策略（1：强踢；2：非强踢；0：表示无意义）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BindStrategy: int
         """
         self.ProductId = None
         self.ProductName = None
@@ -5927,6 +5945,7 @@ class ProductEntry(AbstractModel):
         self.EnableProductScript = None
         self.CreateUserId = None
         self.CreatorNickName = None
+        self.BindStrategy = None
 
 
     def _deserialize(self, params):
@@ -5947,6 +5966,7 @@ class ProductEntry(AbstractModel):
         self.EnableProductScript = params.get("EnableProductScript")
         self.CreateUserId = params.get("CreateUserId")
         self.CreatorNickName = params.get("CreatorNickName")
+        self.BindStrategy = params.get("BindStrategy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6074,6 +6094,9 @@ class ProjectEntryEx(AbstractModel):
         :param DeviceCount: 设备注册总数
 注意：此字段可能返回 null，表示取不到有效值。
         :type DeviceCount: int
+        :param EnableOpenState: 是否开通物联使能
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnableOpenState: int
         """
         self.ProjectId = None
         self.ProjectName = None
@@ -6086,6 +6109,7 @@ class ProjectEntryEx(AbstractModel):
         self.InstanceId = None
         self.ApplicationCount = None
         self.DeviceCount = None
+        self.EnableOpenState = None
 
 
     def _deserialize(self, params):
@@ -6100,6 +6124,7 @@ class ProjectEntryEx(AbstractModel):
         self.InstanceId = params.get("InstanceId")
         self.ApplicationCount = params.get("ApplicationCount")
         self.DeviceCount = params.get("DeviceCount")
+        self.EnableOpenState = params.get("EnableOpenState")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram Game."""
-import sys
 from typing import TYPE_CHECKING, Dict, List, Optional, Sequence, Tuple
 
 from telegram._files.animation import Animation
@@ -102,11 +101,11 @@ class Game(TelegramObject):
         title: str,
         description: str,
         photo: Sequence[PhotoSize],
-        text: str = None,
-        text_entities: Sequence[MessageEntity] = None,
-        animation: Animation = None,
+        text: Optional[str] = None,
+        text_entities: Optional[Sequence[MessageEntity]] = None,
+        animation: Optional[Animation] = None,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
         # Required
@@ -158,15 +157,12 @@ class Game(TelegramObject):
         if not self.text:
             raise RuntimeError("This Game has no 'text'.")
 
-        # Is it a narrow build, if so we don't need to convert
-        if sys.maxunicode == 0xFFFF:
-            return self.text[entity.offset : entity.offset + entity.length]
         entity_text = self.text.encode("utf-16-le")
         entity_text = entity_text[entity.offset * 2 : (entity.offset + entity.length) * 2]
 
         return entity_text.decode("utf-16-le")
 
-    def parse_text_entities(self, types: List[str] = None) -> Dict[MessageEntity, str]:
+    def parse_text_entities(self, types: Optional[List[str]] = None) -> Dict[MessageEntity, str]:
         """
         Returns a :obj:`dict` that maps :class:`telegram.MessageEntity` to :obj:`str`.
         It contains entities from this message filtered by their

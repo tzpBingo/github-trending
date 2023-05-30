@@ -14,6 +14,9 @@
 # limitations under the License.
 
 
+# 无权执行该操作，请检查您的CAM策略，确保您拥有对应的CAM权限。
+AUTHFAILURE_UNAUTHORIZEDOPERATION = 'AuthFailure.UnauthorizedOperation'
+
 # 控制台服务异常。
 FAILEDOPERATION_CONSOLESERVERERROR = 'FailedOperation.ConsoleServerError'
 
@@ -65,10 +68,10 @@ INVALIDPARAMETERVALUE_TEXTLENGTHEXCEED = 'InvalidParameterValue.TextLengthExceed
 # URL格式不合法。
 INVALIDPARAMETERVALUE_URLILLEGAL = 'InvalidParameterValue.UrlIllegal'
 
-# 图片包含非法信息，审核不通过。
+# 图片包含违法违规信息，审核不通过。
 OPERATIONDENIED_IMAGEILLEGALDETECTED = 'OperationDenied.ImageIllegalDetected'
 
-# 文本包含非法信息，审核不通过。
+# 文本包含违法违规信息，审核不通过。
 OPERATIONDENIED_TEXTILLEGALDETECTED = 'OperationDenied.TextIllegalDetected'
 
 # 请求的次数超过了频率限制。

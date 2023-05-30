@@ -164,6 +164,29 @@ class LcicClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def BatchDescribeDocument(self, request):
+        """批量获取文档详情
+
+        :param request: Request instance for BatchDescribeDocument.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.BatchDescribeDocumentRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.BatchDescribeDocumentResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("BatchDescribeDocument", params, headers=headers)
+            response = json.loads(body)
+            model = models.BatchDescribeDocumentResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def BatchRegister(self, request):
         """如果批量注册的用户已存在，则会被覆盖。一次最多注册1000个用户。默认请求频率限制：10次/秒
 
@@ -463,6 +486,52 @@ class LcicClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteSupervisor(self, request):
+        """删除巡课
+
+        :param request: Request instance for DeleteSupervisor.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.DeleteSupervisorRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.DeleteSupervisorResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteSupervisor", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteSupervisorResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeAnswerList(self, request):
+        """获取房间答题详情
+
+        :param request: Request instance for DescribeAnswerList.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.DescribeAnswerListRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.DescribeAnswerListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAnswerList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAnswerListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeAppDetail(self, request):
         """获取应用详情
 
@@ -509,6 +578,29 @@ class LcicClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeDeveloper(self, request):
+        """开发商信息获取
+
+        :param request: Request instance for DescribeDeveloper.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.DescribeDeveloperRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.DescribeDeveloperResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDeveloper", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDeveloperResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeDocument(self, request):
         """获取文档信息
 
@@ -523,6 +615,31 @@ class LcicClient(AbstractClient):
             body = self.call("DescribeDocument", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeDocumentResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeDocuments(self, request):
+        """有新接口替换
+
+        批量获取文档信息（已废弃，替代接口BatchDescribeDocument）
+
+        :param request: Request instance for DescribeDocuments.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.DescribeDocumentsRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.DescribeDocumentsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDocuments", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDocumentsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -624,6 +741,29 @@ class LcicClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeQuestionList(self, request):
+        """获取房间提问列表
+
+        :param request: Request instance for DescribeQuestionList.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.DescribeQuestionListRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.DescribeQuestionListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeQuestionList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeQuestionListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeRoom(self, request):
         """获取房间信息
 
@@ -693,6 +833,29 @@ class LcicClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeSupervisors(self, request):
+        """获取巡课列表
+
+        :param request: Request instance for DescribeSupervisors.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.DescribeSupervisorsRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.DescribeSupervisorsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSupervisors", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSupervisorsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeUser(self, request):
         """获取用户信息
 
@@ -707,6 +870,29 @@ class LcicClient(AbstractClient):
             body = self.call("DescribeUser", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeUserResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def EndRoom(self, request):
+        """结束房间的直播
+
+        :param request: Request instance for EndRoom.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.EndRoomRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.EndRoomResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("EndRoom", params, headers=headers)
+            response = json.loads(body)
+            model = models.EndRoomResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -762,6 +948,29 @@ class LcicClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def GetRooms(self, request):
+        """获取房间列表
+
+        :param request: Request instance for GetRooms.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.GetRoomsRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.GetRoomsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("GetRooms", params, headers=headers)
+            response = json.loads(body)
+            model = models.GetRoomsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def GetWatermark(self, request):
         """获取水印设置
 
@@ -776,6 +985,29 @@ class LcicClient(AbstractClient):
             body = self.call("GetWatermark", params, headers=headers)
             response = json.loads(body)
             model = models.GetWatermarkResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def KickUserFromRoom(self, request):
+        """从房间里面踢出用户
+
+        :param request: Request instance for KickUserFromRoom.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.KickUserFromRoomRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.KickUserFromRoomResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("KickUserFromRoom", params, headers=headers)
+            response = json.loads(body)
+            model = models.KickUserFromRoomResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -983,6 +1215,29 @@ class LcicClient(AbstractClient):
             body = self.call("SetWatermark", params, headers=headers)
             response = json.loads(body)
             model = models.SetWatermarkResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def StartRoom(self, request):
+        """开始房间的直播。 说明：开始房间接口调用之前需要有用户进入课堂初始化课堂信息。
+
+        :param request: Request instance for StartRoom.
+        :type request: :class:`tencentcloud.lcic.v20220817.models.StartRoomRequest`
+        :rtype: :class:`tencentcloud.lcic.v20220817.models.StartRoomResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StartRoom", params, headers=headers)
+            response = json.loads(body)
+            model = models.StartRoomResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

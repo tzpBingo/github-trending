@@ -33,7 +33,7 @@ class AutoSnapshotPolicyInfo(AbstractModel):
         :type CreationTime: str
         :param FileSystemNums: 关联的文件系统个数
         :type FileSystemNums: int
-        :param DayOfWeek: 快照定期备份在一星期哪一天
+        :param DayOfWeek: 快照定期备份在一星期哪一天，该参数与DayOfMonth,IntervalDays互斥
         :type DayOfWeek: str
         :param Hour: 快照定期备份在一天的哪一小时
         :type Hour: str
@@ -51,6 +51,12 @@ class AutoSnapshotPolicyInfo(AbstractModel):
         :type RegionName: str
         :param FileSystems: 文件系统信息
         :type FileSystems: list of FileSystemByPolicy
+        :param DayOfMonth: 快照定期备份在一个月的某个时间；该参数与DayOfWeek,IntervalDays互斥
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DayOfMonth: str
+        :param IntervalDays: 快照定期间隔天数，1-365 天；该参数与DayOfMonth,DayOfWeek互斥
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IntervalDays: int
         """
         self.AutoSnapshotPolicyId = None
         self.PolicyName = None
@@ -65,6 +71,8 @@ class AutoSnapshotPolicyInfo(AbstractModel):
         self.AliveDays = None
         self.RegionName = None
         self.FileSystems = None
+        self.DayOfMonth = None
+        self.IntervalDays = None
 
 
     def _deserialize(self, params):
@@ -86,6 +94,8 @@ class AutoSnapshotPolicyInfo(AbstractModel):
                 obj = FileSystemByPolicy()
                 obj._deserialize(item)
                 self.FileSystems.append(obj)
+        self.DayOfMonth = params.get("DayOfMonth")
+        self.IntervalDays = params.get("IntervalDays")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -299,6 +309,35 @@ class BindAutoSnapshotPolicyResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class BucketInfo(AbstractModel):
+    """对象存储桶
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 桶名称
+        :type Name: str
+        :param Region: 桶所在地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        """
+        self.Name = None
+        self.Region = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Region = params.get("Region")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CreateAutoSnapshotPolicyRequest(AbstractModel):
     """CreateAutoSnapshotPolicy请求参数结构体
 
@@ -306,26 +345,34 @@ class CreateAutoSnapshotPolicyRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DayOfWeek: 快照重复日期，星期一到星期日
-        :type DayOfWeek: str
         :param Hour: 快照重复时间点
         :type Hour: str
         :param PolicyName: 策略名称
         :type PolicyName: str
+        :param DayOfWeek: 快照重复日期，星期一到星期日
+        :type DayOfWeek: str
         :param AliveDays: 快照保留时长
         :type AliveDays: int
+        :param DayOfMonth: 快照按月重复，每月1-31号，选择一天，每月将在这一天自动创建快照。
+        :type DayOfMonth: str
+        :param IntervalDays: 间隔天数
+        :type IntervalDays: int
         """
-        self.DayOfWeek = None
         self.Hour = None
         self.PolicyName = None
+        self.DayOfWeek = None
         self.AliveDays = None
+        self.DayOfMonth = None
+        self.IntervalDays = None
 
 
     def _deserialize(self, params):
-        self.DayOfWeek = params.get("DayOfWeek")
         self.Hour = params.get("Hour")
         self.PolicyName = params.get("PolicyName")
+        self.DayOfWeek = params.get("DayOfWeek")
         self.AliveDays = params.get("AliveDays")
+        self.DayOfMonth = params.get("DayOfMonth")
+        self.IntervalDays = params.get("IntervalDays")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -365,13 +412,13 @@ class CreateCfsFileSystemRequest(AbstractModel):
         r"""
         :param Zone: 可用区名称，例如ap-beijing-1，请参考 [概览](https://cloud.tencent.com/document/product/582/13225) 文档中的地域与可用区列表
         :type Zone: str
-        :param NetInterface: 网络类型，可选值为 VPC，BASIC，CCN；其中 VPC 为私有网络，BASIC 为基础网络, CCN 为云联网，Turbo系列当前必须选择云联网。目前基础网络已逐渐淘汰，不推荐使用。
+        :param NetInterface: 网络类型，可选值为 VPC，CCN；其中 VPC 为私有网络， CCN 为云联网。通用标准型/性能型请选择VPC，Turbo标准型/性能型请选择CCN。
         :type NetInterface: str
-        :param PGroupId: 权限组 ID，通用标准型和性能型必填，turbo系列请填写pgroupbasic
+        :param PGroupId: 权限组 ID
         :type PGroupId: str
         :param Protocol: 文件系统协议类型， 值为 NFS、CIFS、TURBO ; 若留空则默认为 NFS协议，turbo系列必须选择turbo，不支持NFS、CIFS
         :type Protocol: str
-        :param StorageType: 文件系统存储类型，默认值为 SD ；其中 SD 为通用标准型标准型存储， HP为通用性能型存储， TB为turbo标准型， TP 为turbo性能型。
+        :param StorageType: 文件系统存储类型，默认值为 SD ；其中 SD 为通用标准型存储， HP为通用性能型存储， TB为Turbo标准型， TP 为Turbo性能型。
         :type StorageType: str
         :param VpcId: 私有网络（VPC） ID，若网络类型选择的是VPC，该字段为必填。
         :type VpcId: str
@@ -690,6 +737,107 @@ class CreateCfsSnapshotResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateMigrationTaskRequest(AbstractModel):
+    """CreateMigrationTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskName: 迁移任务名称
+        :type TaskName: str
+        :param MigrationType: 迁移方式标志位，默认为0。0: 桶迁移；1: 清单迁移
+        :type MigrationType: int
+        :param MigrationMode: 迁移模式，默认为0。0: 全量迁移
+        :type MigrationMode: int
+        :param SrcSecretId: 数据源账号的SecretId
+        :type SrcSecretId: str
+        :param SrcSecretKey: 数据源账号的SecretKey
+        :type SrcSecretKey: str
+        :param FileSystemId: 文件系统实例Id
+        :type FileSystemId: str
+        :param FsPath: 文件系统路径
+        :type FsPath: str
+        :param CoverType: 同名文件迁移时覆盖策略，默认为0。0: 最后修改时间优先；1: 全覆盖；2: 不覆盖
+        :type CoverType: int
+        :param SrcService: 数据源服务商。COS: 腾讯云COS，OSS: 阿里云OSS，OBS:华为云OBS
+        :type SrcService: str
+        :param BucketName: 数据源桶名称，名称和地址至少有一个
+        :type BucketName: str
+        :param BucketRegion: 数据源桶地域
+        :type BucketRegion: str
+        :param BucketAddress: 数据源桶地址，名称和地址至少有一个
+        :type BucketAddress: str
+        :param ListAddress: 清单地址，迁移方式为清单迁移时必填
+        :type ListAddress: str
+        :param FsName: 目标文件系统名称
+        :type FsName: str
+        :param BucketPath: 源桶路径，默认为/
+        :type BucketPath: str
+        """
+        self.TaskName = None
+        self.MigrationType = None
+        self.MigrationMode = None
+        self.SrcSecretId = None
+        self.SrcSecretKey = None
+        self.FileSystemId = None
+        self.FsPath = None
+        self.CoverType = None
+        self.SrcService = None
+        self.BucketName = None
+        self.BucketRegion = None
+        self.BucketAddress = None
+        self.ListAddress = None
+        self.FsName = None
+        self.BucketPath = None
+
+
+    def _deserialize(self, params):
+        self.TaskName = params.get("TaskName")
+        self.MigrationType = params.get("MigrationType")
+        self.MigrationMode = params.get("MigrationMode")
+        self.SrcSecretId = params.get("SrcSecretId")
+        self.SrcSecretKey = params.get("SrcSecretKey")
+        self.FileSystemId = params.get("FileSystemId")
+        self.FsPath = params.get("FsPath")
+        self.CoverType = params.get("CoverType")
+        self.SrcService = params.get("SrcService")
+        self.BucketName = params.get("BucketName")
+        self.BucketRegion = params.get("BucketRegion")
+        self.BucketAddress = params.get("BucketAddress")
+        self.ListAddress = params.get("ListAddress")
+        self.FsName = params.get("FsName")
+        self.BucketPath = params.get("BucketPath")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateMigrationTaskResponse(AbstractModel):
+    """CreateMigrationTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 迁移任务Id
+        :type TaskId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteAutoSnapshotPolicyRequest(AbstractModel):
     """DeleteAutoSnapshotPolicy请求参数结构体
 
@@ -927,6 +1075,47 @@ class DeleteCfsSnapshotResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteMigrationTaskRequest(AbstractModel):
+    """DeleteMigrationTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 迁移任务ID
+        :type TaskId: str
+        """
+        self.TaskId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteMigrationTaskResponse(AbstractModel):
+    """DeleteMigrationTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteMountTargetRequest(AbstractModel):
     """DeleteMountTarget请求参数结构体
 
@@ -1129,6 +1318,69 @@ class DescribeAvailableZoneInfoResponse(AbstractModel):
                 obj = AvailableRegion()
                 obj._deserialize(item)
                 self.RegionZones.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBucketListRequest(AbstractModel):
+    """DescribeBucketList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SrcService: 数据源服务商。COS: 腾讯云COS，OSS: 阿里云OSS，OBS:华为云OBS
+        :type SrcService: str
+        :param SrcSecretId: 数据源账号的SecretId
+
+        :type SrcSecretId: str
+        :param SrcSecretKey: 数据源账号的SecretKey
+        :type SrcSecretKey: str
+        """
+        self.SrcService = None
+        self.SrcSecretId = None
+        self.SrcSecretKey = None
+
+
+    def _deserialize(self, params):
+        self.SrcService = params.get("SrcService")
+        self.SrcSecretId = params.get("SrcSecretId")
+        self.SrcSecretKey = params.get("SrcSecretKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBucketListResponse(AbstractModel):
+    """DescribeBucketList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 桶的数量
+        :type TotalCount: int
+        :param BucketList: 桶列表
+        :type BucketList: list of BucketInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.BucketList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("BucketList") is not None:
+            self.BucketList = []
+            for item in params.get("BucketList"):
+                obj = BucketInfo()
+                obj._deserialize(item)
+                self.BucketList.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -1472,6 +1724,87 @@ class DescribeCfsSnapshotsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeMigrationTasksRequest(AbstractModel):
+    """DescribeMigrationTasks请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Offset: 分页的偏移量，默认值为0。
+        :type Offset: int
+        :param Limit: 分页单页限制数目，默认值为20，最大值100。
+        :type Limit: int
+        :param Filters: <br><li> taskId
+
+按照【迁移任务id】进行过滤。
+类型：String
+
+必选：否
+
+<br><li> taskName
+
+按照【迁移任务名字】进行模糊搜索过滤。
+类型：String
+
+必选：否
+
+每次请求的Filters的上限为10，Filter.Values的上限为100。
+        :type Filters: list of Filter
+        """
+        self.Offset = None
+        self.Limit = None
+        self.Filters = None
+
+
+    def _deserialize(self, params):
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeMigrationTasksResponse(AbstractModel):
+    """DescribeMigrationTasks返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 迁移任务的数量
+        :type TotalCount: int
+        :param MigrationTasks: 迁移任务详情
+        :type MigrationTasks: list of MigrationTaskInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.MigrationTasks = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("MigrationTasks") is not None:
+            self.MigrationTasks = []
+            for item in params.get("MigrationTasks"):
+                obj = MigrationTaskInfo()
+                obj._deserialize(item)
+                self.MigrationTasks.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeMountTargetsRequest(AbstractModel):
     """DescribeMountTargets请求参数结构体
 
@@ -1766,7 +2099,13 @@ class FileSystemInfo(AbstractModel):
         :type CreationToken: str
         :param FileSystemId: 文件系统 ID
         :type FileSystemId: str
-        :param LifeCycleState: 文件系统状态
+        :param LifeCycleState: 文件系统状态。取值范围：
+- creating:创建中
+- mounting:挂载中
+- create_failed:创建失败
+- available:可使用
+- unserviced:停服中
+- upgrading:升级中
         :type LifeCycleState: str
         :param SizeByte: 文件系统已使用容量
         :type SizeByte: int
@@ -1800,7 +2139,7 @@ class FileSystemInfo(AbstractModel):
         :type Capacity: int
         :param Tags: 文件系统标签列表
         :type Tags: list of TagInfo
-        :param TieringState: 文件系统声明周期管理状态
+        :param TieringState: 文件系统生命周期管理状态
         :type TieringState: str
         :param TieringDetail: 分层存储详情
 注意：此字段可能返回 null，表示取不到有效值。
@@ -1897,6 +2236,212 @@ class Filter(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class MigrationTaskInfo(AbstractModel):
+    """CFS数据迁移任务信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskName: 迁移任务名称
+        :type TaskName: str
+        :param TaskId: 迁移任务id
+        :type TaskId: str
+        :param MigrationType: 迁移方式标志位，默认为0。0: 桶迁移；1: 清单迁移
+        :type MigrationType: int
+        :param MigrationMode: 迁移模式，默认为0。0: 全量迁移
+        :type MigrationMode: int
+        :param BucketName: 数据源桶名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BucketName: str
+        :param BucketRegion: 数据源桶地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BucketRegion: str
+        :param BucketAddress: 数据源桶地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BucketAddress: str
+        :param ListAddress: 清单地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ListAddress: str
+        :param FsName: 文件系统实例名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FsName: str
+        :param FileSystemId: 文件系统实例Id
+        :type FileSystemId: str
+        :param FsPath: 文件系统路径
+        :type FsPath: str
+        :param CoverType: 同名文件迁移时覆盖策略，默认为0。0: 最后修改时间优先；1: 全覆盖；2: 不覆盖
+        :type CoverType: int
+        :param CreateTime: 创建时间
+        :type CreateTime: int
+        :param EndTime: 完成/终止时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: int
+        :param Status: 迁移状态。0: 已完成；1: 进行中；2: 已终止
+        :type Status: int
+        :param FileTotalCount: 文件数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileTotalCount: int
+        :param FileMigratedCount: 已迁移文件数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileMigratedCount: int
+        :param FileFailedCount: 迁移失败文件数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileFailedCount: int
+        :param FileTotalSize: 文件容量，单位Byte
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileTotalSize: int
+        :param FileMigratedSize: 已迁移文件容量，单位Byte
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileMigratedSize: int
+        :param FileFailedSize: 迁移失败文件容量，单位Byte
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileFailedSize: int
+        :param FileTotalList: 全部清单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileTotalList: str
+        :param FileCompletedList: 已完成文件清单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileCompletedList: str
+        :param FileFailedList: 失败文件清单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileFailedList: str
+        :param BucketPath: 源桶路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BucketPath: str
+        """
+        self.TaskName = None
+        self.TaskId = None
+        self.MigrationType = None
+        self.MigrationMode = None
+        self.BucketName = None
+        self.BucketRegion = None
+        self.BucketAddress = None
+        self.ListAddress = None
+        self.FsName = None
+        self.FileSystemId = None
+        self.FsPath = None
+        self.CoverType = None
+        self.CreateTime = None
+        self.EndTime = None
+        self.Status = None
+        self.FileTotalCount = None
+        self.FileMigratedCount = None
+        self.FileFailedCount = None
+        self.FileTotalSize = None
+        self.FileMigratedSize = None
+        self.FileFailedSize = None
+        self.FileTotalList = None
+        self.FileCompletedList = None
+        self.FileFailedList = None
+        self.BucketPath = None
+
+
+    def _deserialize(self, params):
+        self.TaskName = params.get("TaskName")
+        self.TaskId = params.get("TaskId")
+        self.MigrationType = params.get("MigrationType")
+        self.MigrationMode = params.get("MigrationMode")
+        self.BucketName = params.get("BucketName")
+        self.BucketRegion = params.get("BucketRegion")
+        self.BucketAddress = params.get("BucketAddress")
+        self.ListAddress = params.get("ListAddress")
+        self.FsName = params.get("FsName")
+        self.FileSystemId = params.get("FileSystemId")
+        self.FsPath = params.get("FsPath")
+        self.CoverType = params.get("CoverType")
+        self.CreateTime = params.get("CreateTime")
+        self.EndTime = params.get("EndTime")
+        self.Status = params.get("Status")
+        self.FileTotalCount = params.get("FileTotalCount")
+        self.FileMigratedCount = params.get("FileMigratedCount")
+        self.FileFailedCount = params.get("FileFailedCount")
+        self.FileTotalSize = params.get("FileTotalSize")
+        self.FileMigratedSize = params.get("FileMigratedSize")
+        self.FileFailedSize = params.get("FileFailedSize")
+        self.FileTotalList = params.get("FileTotalList")
+        self.FileCompletedList = params.get("FileCompletedList")
+        self.FileFailedList = params.get("FileFailedList")
+        self.BucketPath = params.get("BucketPath")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyFileSystemAutoScaleUpRuleRequest(AbstractModel):
+    """ModifyFileSystemAutoScaleUpRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileSystemId: 文件系统id
+        :type FileSystemId: str
+        :param ScaleUpThreshold: 扩容阈值，范围[10-90]
+        :type ScaleUpThreshold: int
+        :param TargetThreshold: 扩容后目标阈值,范围[10-90],该值要小于ScaleUpThreshold
+        :type TargetThreshold: int
+        :param Status: 规则状态0:关闭，1 开启
+
+        :type Status: int
+        """
+        self.FileSystemId = None
+        self.ScaleUpThreshold = None
+        self.TargetThreshold = None
+        self.Status = None
+
+
+    def _deserialize(self, params):
+        self.FileSystemId = params.get("FileSystemId")
+        self.ScaleUpThreshold = params.get("ScaleUpThreshold")
+        self.TargetThreshold = params.get("TargetThreshold")
+        self.Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyFileSystemAutoScaleUpRuleResponse(AbstractModel):
+    """ModifyFileSystemAutoScaleUpRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileSystemId: 文件系统id
+        :type FileSystemId: str
+        :param Status: 规则状态0:关闭，1 开启
+        :type Status: int
+        :param ScaleUpThreshold: 扩容阈值,范围[10-90]
+        :type ScaleUpThreshold: int
+        :param TargetThreshold: 扩容后达到阈值,范围[10-90]
+        :type TargetThreshold: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FileSystemId = None
+        self.Status = None
+        self.ScaleUpThreshold = None
+        self.TargetThreshold = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FileSystemId = params.get("FileSystemId")
+        self.Status = params.get("Status")
+        self.ScaleUpThreshold = params.get("ScaleUpThreshold")
+        self.TargetThreshold = params.get("TargetThreshold")
+        self.RequestId = params.get("RequestId")
 
 
 class MountInfo(AbstractModel):
@@ -2075,6 +2620,59 @@ class PGroupRuleInfo(AbstractModel):
         
 
 
+class ScaleUpFileSystemRequest(AbstractModel):
+    """ScaleUpFileSystem请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileSystemId: 文件系统Id
+        :type FileSystemId: str
+        :param TargetCapacity: 扩容的目标容量
+        :type TargetCapacity: int
+        """
+        self.FileSystemId = None
+        self.TargetCapacity = None
+
+
+    def _deserialize(self, params):
+        self.FileSystemId = params.get("FileSystemId")
+        self.TargetCapacity = params.get("TargetCapacity")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ScaleUpFileSystemResponse(AbstractModel):
+    """ScaleUpFileSystem返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FileSystemId: 文件系统Id
+        :type FileSystemId: str
+        :param TargetCapacity: 扩容的目标容量
+        :type TargetCapacity: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.FileSystemId = None
+        self.TargetCapacity = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.FileSystemId = params.get("FileSystemId")
+        self.TargetCapacity = params.get("TargetCapacity")
+        self.RequestId = params.get("RequestId")
+
+
 class SetUserQuotaRequest(AbstractModel):
     """SetUserQuota请求参数结构体
 
@@ -2192,6 +2790,9 @@ class SnapshotInfo(AbstractModel):
         :type FsName: str
         :param Tags: 快照标签
         :type Tags: list of TagInfo
+        :param SnapshotType: 快照类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SnapshotType: str
         """
         self.CreationTime = None
         self.SnapshotName = None
@@ -2206,6 +2807,7 @@ class SnapshotInfo(AbstractModel):
         self.DeleteTime = None
         self.FsName = None
         self.Tags = None
+        self.SnapshotType = None
 
 
     def _deserialize(self, params):
@@ -2227,6 +2829,7 @@ class SnapshotInfo(AbstractModel):
                 obj = TagInfo()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.SnapshotType = params.get("SnapshotType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2306,6 +2909,55 @@ class SnapshotStatistics(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class StopMigrationTaskRequest(AbstractModel):
+    """StopMigrationTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 迁移任务名称
+        :type TaskId: str
+        """
+        self.TaskId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StopMigrationTaskResponse(AbstractModel):
+    """StopMigrationTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 迁移任务Id
+        :type TaskId: str
+        :param Status: 迁移状态。0: 已完成；1: 进行中；2: 已终止
+        :type Status: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.Status = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.Status = params.get("Status")
+        self.RequestId = params.get("RequestId")
 
 
 class TagInfo(AbstractModel):
@@ -2410,6 +3062,10 @@ class UpdateAutoSnapshotPolicyRequest(AbstractModel):
         :type AliveDays: int
         :param IsActivated: 是否激活定期快照功能
         :type IsActivated: int
+        :param DayOfMonth: 定期快照在每月的第几天创建快照，该参数与DayOfWeek互斥
+        :type DayOfMonth: str
+        :param IntervalDays: 间隔天数定期执行快照，该参数与DayOfWeek,DayOfMonth 互斥
+        :type IntervalDays: int
         """
         self.AutoSnapshotPolicyId = None
         self.PolicyName = None
@@ -2417,6 +3073,8 @@ class UpdateAutoSnapshotPolicyRequest(AbstractModel):
         self.Hour = None
         self.AliveDays = None
         self.IsActivated = None
+        self.DayOfMonth = None
+        self.IntervalDays = None
 
 
     def _deserialize(self, params):
@@ -2426,6 +3084,8 @@ class UpdateAutoSnapshotPolicyRequest(AbstractModel):
         self.Hour = params.get("Hour")
         self.AliveDays = params.get("AliveDays")
         self.IsActivated = params.get("IsActivated")
+        self.DayOfMonth = params.get("DayOfMonth")
+        self.IntervalDays = params.get("IntervalDays")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

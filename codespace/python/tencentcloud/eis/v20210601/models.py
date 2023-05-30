@@ -217,6 +217,32 @@ class ListDeployableRuntimesMCRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param ProjectId: 应用id
+        :type ProjectId: int
+        :param InstanceId: 实例id
+        :type InstanceId: int
+        :param PlanType: 版本类型 0-pro 1-lite
+        :type PlanType: int
+        """
+        self.ProjectId = None
+        self.InstanceId = None
+        self.PlanType = None
+
+
+    def _deserialize(self, params):
+        self.ProjectId = params.get("ProjectId")
+        self.InstanceId = params.get("InstanceId")
+        self.PlanType = params.get("PlanType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class ListDeployableRuntimesMCResponse(AbstractModel):
     """ListDeployableRuntimesMC返回参数结构体
@@ -342,12 +368,16 @@ class ListRuntimesMCRequest(AbstractModel):
         r"""
         :param RuntimeClass: 环境运行类型：0:运行时类型、1:api类型
         :type RuntimeClass: int
+        :param PlanType: 计划类型：0-pro 1-lite
+        :type PlanType: int
         """
         self.RuntimeClass = None
+        self.PlanType = None
 
 
     def _deserialize(self, params):
         self.RuntimeClass = params.get("RuntimeClass")
+        self.PlanType = params.get("PlanType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

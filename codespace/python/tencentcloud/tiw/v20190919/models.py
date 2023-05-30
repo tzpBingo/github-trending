@@ -18,6 +18,70 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class ApplicationItem(AbstractModel):
+    """白板应用
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用SdkAppId
+        :type SdkAppId: int
+        :param AppName: 应用名
+        :type AppName: str
+        :param CreateTime: 创建时间
+        :type CreateTime: str
+        :param TagList: 标签列表
+        :type TagList: list of Tag
+        """
+        self.SdkAppId = None
+        self.AppName = None
+        self.CreateTime = None
+        self.TagList = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.AppName = params.get("AppName")
+        self.CreateTime = params.get("CreateTime")
+        if params.get("TagList") is not None:
+            self.TagList = []
+            for item in params.get("TagList"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.TagList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ApplyTiwTrialRequest(AbstractModel):
+    """ApplyTiwTrial请求参数结构体
+
+    """
+
+
+class ApplyTiwTrialResponse(AbstractModel):
+    """ApplyTiwTrial返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class AuthParam(AbstractModel):
     """鉴权参数
 
@@ -107,6 +171,200 @@ class Concat(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class CreateApplicationRequest(AbstractModel):
+    """CreateApplication请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用SdkAppId
+        :type SdkAppId: int
+        :param AppName: App名字
+        :type AppName: str
+        :param SKey: 创建IM应用需要的SKey
+        :type SKey: str
+        :param TinyId: 创建IM应用需要的TinyId
+        :type TinyId: str
+        :param TagList: 需要绑定的标签列表
+        :type TagList: list of Tag
+        """
+        self.SdkAppId = None
+        self.AppName = None
+        self.SKey = None
+        self.TinyId = None
+        self.TagList = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.AppName = params.get("AppName")
+        self.SKey = params.get("SKey")
+        self.TinyId = params.get("TinyId")
+        if params.get("TagList") is not None:
+            self.TagList = []
+            for item in params.get("TagList"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.TagList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateApplicationResponse(AbstractModel):
+    """CreateApplication返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppId: 客户的AppId
+        :type AppId: int
+        :param AppName: App名字
+        :type AppName: str
+        :param SdkAppId: 应用SdkAppId
+        :type SdkAppId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.AppId = None
+        self.AppName = None
+        self.SdkAppId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.AppId = params.get("AppId")
+        self.AppName = params.get("AppName")
+        self.SdkAppId = params.get("SdkAppId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateOfflineRecordRequest(AbstractModel):
+    """CreateOfflineRecord请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param RoomId: 录制任务对应的房间号
+        :type RoomId: int
+        :param GroupId: 录制任务对应的群组Id
+        :type GroupId: str
+        :param MixStream: 混流参数配置
+目前课后录制暂未支持自定义混流布局Custom参数
+        :type MixStream: :class:`tencentcloud.tiw.v20190919.models.MixStream`
+        :param Whiteboard: 白板参数配置
+        :type Whiteboard: :class:`tencentcloud.tiw.v20190919.models.Whiteboard`
+        """
+        self.SdkAppId = None
+        self.RoomId = None
+        self.GroupId = None
+        self.MixStream = None
+        self.Whiteboard = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.RoomId = params.get("RoomId")
+        self.GroupId = params.get("GroupId")
+        if params.get("MixStream") is not None:
+            self.MixStream = MixStream()
+            self.MixStream._deserialize(params.get("MixStream"))
+        if params.get("Whiteboard") is not None:
+            self.Whiteboard = Whiteboard()
+            self.Whiteboard._deserialize(params.get("Whiteboard"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateOfflineRecordResponse(AbstractModel):
+    """CreateOfflineRecord返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class CreatePPTCheckTaskRequest(AbstractModel):
+    """CreatePPTCheckTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param Url: 经过URL编码后的PPT文件地址。URL 编码会将字符转换为可通过因特网传输的格式，例如文档地址为http://example.com/测试.pptx，经过URL编码之后为http://example.com/%E6%B5%8B%E8%AF%95.pptx。为了提高URL解析的成功率，请对URL进行编码。
+        :type Url: str
+        :param AutoHandleUnsupportedElement: 是否对不支持元素开启自动处理的功能。默认不开启。
+
+在开启自动处理的情况下，会自动进行如下处理：
+1. 墨迹：移除不支持的墨迹（比如使用WPS画的）
+2. 自动翻页：移除PPT上所有的自动翻页设置，并设置为单击鼠标翻页
+3. 已损坏音视频：移除PPT上对损坏音视频的引用
+        :type AutoHandleUnsupportedElement: bool
+        """
+        self.SdkAppId = None
+        self.Url = None
+        self.AutoHandleUnsupportedElement = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.Url = params.get("Url")
+        self.AutoHandleUnsupportedElement = params.get("AutoHandleUnsupportedElement")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreatePPTCheckTaskResponse(AbstractModel):
+    """CreatePPTCheckTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 检测任务的唯一标识Id，用于查询该任务的进度以及检测结果
+        :type TaskId: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.RequestId = params.get("RequestId")
 
 
 class CreateSnapshotTaskRequest(AbstractModel):
@@ -405,6 +663,399 @@ class CustomLayout(AbstractModel):
         
 
 
+class DataItem(AbstractModel):
+    """画图数据，Time/Value/Details
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Time: 时间
+按月格式yyyy-mm
+按天格式yyyy-mm-dd
+按分钟格式 yyyy-mm-dd HH:MM:SS
+        :type Time: str
+        :param Value: 画图所需要的值
+        :type Value: int
+        :param Details: 各个具体指标的详情
+        :type Details: list of Detail
+        """
+        self.Time = None
+        self.Value = None
+        self.Details = None
+
+
+    def _deserialize(self, params):
+        self.Time = params.get("Time")
+        self.Value = params.get("Value")
+        if params.get("Details") is not None:
+            self.Details = []
+            for item in params.get("Details"):
+                obj = Detail()
+                obj._deserialize(item)
+                self.Details.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAPIServiceRequest(AbstractModel):
+    """DescribeAPIService请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Service: 目前支持的Service为cos:GetService，cdn:DescribeDomainsConfig
+        :type Service: str
+        :param Data: JSON格式的请求参数
+        :type Data: str
+        """
+        self.Service = None
+        self.Data = None
+
+
+    def _deserialize(self, params):
+        self.Service = params.get("Service")
+        self.Data = params.get("Data")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAPIServiceResponse(AbstractModel):
+    """DescribeAPIService返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResponseData: Json格式的响应数据
+        :type ResponseData: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ResponseData = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.ResponseData = params.get("ResponseData")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeApplicationInfosRequest(AbstractModel):
+    """DescribeApplicationInfos请求参数结构体
+
+    """
+
+
+class DescribeApplicationInfosResponse(AbstractModel):
+    """DescribeApplicationInfos返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ApplicationInfos: 应用列表
+        :type ApplicationInfos: list of ApplicationItem
+        :param AllOption: 是否包含所有的应用，0-不包含，1-包含
+        :type AllOption: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ApplicationInfos = None
+        self.AllOption = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("ApplicationInfos") is not None:
+            self.ApplicationInfos = []
+            for item in params.get("ApplicationInfos"):
+                obj = ApplicationItem()
+                obj._deserialize(item)
+                self.ApplicationInfos.append(obj)
+        self.AllOption = params.get("AllOption")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeApplicationUsageRequest(AbstractModel):
+    """DescribeApplicationUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BeginTime: 用量开始时间（包括该时间点）
+        :type BeginTime: str
+        :param EndTime: 用量结束时间（不包括该时间点）
+        :type EndTime: str
+        :param SubProduct: 白板子产品名
+        :type SubProduct: str
+        :param TimeLevel: 时间跨度单位
+- MONTHLY：月
+- DAILY：天
+- MINUTELY：分钟
+        :type TimeLevel: str
+        :param SdkAppId: 白板应用的SdkAppId
+        :type SdkAppId: int
+        :param IsWeighted: true: 返回加权求和后的用量数据
+false: 返回原始用量数据
+        :type IsWeighted: bool
+        """
+        self.BeginTime = None
+        self.EndTime = None
+        self.SubProduct = None
+        self.TimeLevel = None
+        self.SdkAppId = None
+        self.IsWeighted = None
+
+
+    def _deserialize(self, params):
+        self.BeginTime = params.get("BeginTime")
+        self.EndTime = params.get("EndTime")
+        self.SubProduct = params.get("SubProduct")
+        self.TimeLevel = params.get("TimeLevel")
+        self.SdkAppId = params.get("SdkAppId")
+        self.IsWeighted = params.get("IsWeighted")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeApplicationUsageResponse(AbstractModel):
+    """DescribeApplicationUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 画图所需的用量数据
+        :type Data: list of DataItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = DataItem()
+                obj._deserialize(item)
+                self.Data.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeBoardSDKLogRequest(AbstractModel):
+    """DescribeBoardSDKLog请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 白板应用的SdkAppId
+        :type SdkAppId: int
+        :param RoomId: 需要查询日志的白板房间号
+        :type RoomId: str
+        :param UserId: 需要查询日志的用户ID
+        :type UserId: str
+        :param TimeRange: 查询时间段，Unix时间戳，单位毫秒，第一个值为开始时间戳，第二个值为结束时间
+        :type TimeRange: list of int
+        :param AggregationInterval: 聚合日志条数查询的桶的时间范围，如5m, 1h, 4h等
+        :type AggregationInterval: str
+        :param Query: 额外的查询条件
+        :type Query: str
+        :param Ascending: 是否按时间升序排列
+        :type Ascending: bool
+        :param Context: 用于递归拉取的上下文Key，在上一次请求中返回
+        :type Context: str
+        """
+        self.SdkAppId = None
+        self.RoomId = None
+        self.UserId = None
+        self.TimeRange = None
+        self.AggregationInterval = None
+        self.Query = None
+        self.Ascending = None
+        self.Context = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.RoomId = params.get("RoomId")
+        self.UserId = params.get("UserId")
+        self.TimeRange = params.get("TimeRange")
+        self.AggregationInterval = params.get("AggregationInterval")
+        self.Query = params.get("Query")
+        self.Ascending = params.get("Ascending")
+        self.Context = params.get("Context")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBoardSDKLogResponse(AbstractModel):
+    """DescribeBoardSDKLog返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 总共能查到日志条数
+        :type Total: int
+        :param Sources: 日志详细内容
+        :type Sources: list of str
+        :param Buckets: 按时间段聚合后每个时间段的日志条数
+        :type Buckets: list of str
+        :param Context: 用于递归拉取的上下文Key，下一次请求的时候带上
+        :type Context: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.Sources = None
+        self.Buckets = None
+        self.Context = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        self.Sources = params.get("Sources")
+        self.Buckets = params.get("Buckets")
+        self.Context = params.get("Context")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeIMApplicationsRequest(AbstractModel):
+    """DescribeIMApplications请求参数结构体
+
+    """
+
+
+class DescribeIMApplicationsResponse(AbstractModel):
+    """DescribeIMApplications返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeOfflineRecordCallbackRequest(AbstractModel):
+    """DescribeOfflineRecordCallback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用的SdkAppId
+        :type SdkAppId: int
+        """
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOfflineRecordCallbackResponse(AbstractModel):
+    """DescribeOfflineRecordCallback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeOfflineRecordRequest(AbstractModel):
+    """DescribeOfflineRecord请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param TaskId: 课后录制任务的Id
+        :type TaskId: str
+        """
+        self.SdkAppId = None
+        self.TaskId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.TaskId = params.get("TaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOfflineRecordResponse(AbstractModel):
+    """DescribeOfflineRecord返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeOnlineRecordCallbackRequest(AbstractModel):
     """DescribeOnlineRecordCallback请求参数结构体
 
@@ -581,6 +1232,176 @@ class DescribeOnlineRecordResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribePPTCheckCallbackRequest(AbstractModel):
+    """DescribePPTCheckCallback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用的SdkAppId
+        :type SdkAppId: int
+        """
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePPTCheckCallbackResponse(AbstractModel):
+    """DescribePPTCheckCallback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Callback: 回调地址
+        :type Callback: str
+        :param CallbackKey: 回调鉴权密钥
+        :type CallbackKey: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Callback = None
+        self.CallbackKey = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Callback = params.get("Callback")
+        self.CallbackKey = params.get("CallbackKey")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribePPTCheckRequest(AbstractModel):
+    """DescribePPTCheck请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param TaskId: 任务的唯一标识Id
+        :type TaskId: str
+        """
+        self.SdkAppId = None
+        self.TaskId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.TaskId = params.get("TaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePPTCheckResponse(AbstractModel):
+    """DescribePPTCheck返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务的唯一标识Id
+        :type TaskId: str
+        :param IsOK: PPT文件是否正常
+        :type IsOK: bool
+        :param ResultUrl: 修复后的PPT URL，只有创建任务时参数AutoHandleUnsupportedElement=true，才返回此参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResultUrl: str
+        :param Slides: 错误PPT页面列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Slides: list of PPTErrSlide
+        :param Status: 任务的当前状态 - QUEUED: 正在排队等待 - PROCESSING: 执行中 - FINISHED: 执行完成	
+        :type Status: str
+        :param Progress: 当前进度,取值范围为0~100
+        :type Progress: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TaskId = None
+        self.IsOK = None
+        self.ResultUrl = None
+        self.Slides = None
+        self.Status = None
+        self.Progress = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.IsOK = params.get("IsOK")
+        self.ResultUrl = params.get("ResultUrl")
+        if params.get("Slides") is not None:
+            self.Slides = []
+            for item in params.get("Slides"):
+                obj = PPTErrSlide()
+                obj._deserialize(item)
+                self.Slides.append(obj)
+        self.Status = params.get("Status")
+        self.Progress = params.get("Progress")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribePostpaidUsageRequest(AbstractModel):
+    """DescribePostpaidUsage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BeginTime: 开始时间
+        :type BeginTime: str
+        :param EndTime: 结束时间
+        :type EndTime: str
+        """
+        self.BeginTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.BeginTime = params.get("BeginTime")
+        self.EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribePostpaidUsageResponse(AbstractModel):
+    """DescribePostpaidUsage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeQualityMetricsRequest(AbstractModel):
     """DescribeQualityMetrics请求参数结构体
 
@@ -659,6 +1480,176 @@ class DescribeQualityMetricsResponse(AbstractModel):
                 obj = TimeValue()
                 obj._deserialize(item)
                 self.Content.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeRecordSearchRequest(AbstractModel):
+    """DescribeRecordSearch请求参数结构体
+
+    """
+
+
+class DescribeRecordSearchResponse(AbstractModel):
+    """DescribeRecordSearch返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RecordTaskSet: 录制任务搜索结果集合
+        :type RecordTaskSet: list of RecordTaskSearchResult
+        :param TotalCount: 录制总任务数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RecordTaskSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("RecordTaskSet") is not None:
+            self.RecordTaskSet = []
+            for item in params.get("RecordTaskSet"):
+                obj = RecordTaskSearchResult()
+                obj._deserialize(item)
+                self.RecordTaskSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeRoomListRequest(AbstractModel):
+    """DescribeRoomList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 白板应用的SdkAppId
+        :type SdkAppId: int
+        :param TimeRange: 查询时间段，Unix时间戳，单位毫秒，第一个值为开始时间戳，第二个值为结束时间
+        :type TimeRange: list of int
+        :param Query: 额外的查询条件
+        :type Query: str
+        :param MaxSize: 返回最大的数据条数，默认1000
+        :type MaxSize: int
+        """
+        self.SdkAppId = None
+        self.TimeRange = None
+        self.Query = None
+        self.MaxSize = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.TimeRange = params.get("TimeRange")
+        self.Query = params.get("Query")
+        self.MaxSize = params.get("MaxSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRoomListResponse(AbstractModel):
+    """DescribeRoomList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoomList: 白板房间列表
+        :type RoomList: list of RoomListItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RoomList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("RoomList") is not None:
+            self.RoomList = []
+            for item in params.get("RoomList"):
+                obj = RoomListItem()
+                obj._deserialize(item)
+                self.RoomList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeRunningTasksRequest(AbstractModel):
+    """DescribeRunningTasks请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppID: 应用的SdkAppID
+        :type SdkAppID: int
+        :param TaskType: 指定需要获取的任务类型。
+有效取值如下：
+- TranscodeH5: 动态转码任务，文档转HTML5页面
+- TranscodeJPG: 静态转码任务，文档转图片
+- WhiteboardPush: 白板推流任务
+- OnlineRecord: 实时录制任务
+        :type TaskType: str
+        :param Offset: 分页获取时的任务偏移量，默认为0。
+        :type Offset: int
+        :param Limit: 每次获取任务列表时最大获取任务数，默认值为100。
+有效取值范围：[1, 500]
+        :type Limit: int
+        """
+        self.SdkAppID = None
+        self.TaskType = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppID = params.get("SdkAppID")
+        self.TaskType = params.get("TaskType")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRunningTasksResponse(AbstractModel):
+    """DescribeRunningTasks返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Total: 当前正在执行中的任务总数
+        :type Total: int
+        :param Tasks: 任务信息列表
+        :type Tasks: list of RunningTaskItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Total = None
+        self.Tasks = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Total = params.get("Total")
+        if params.get("Tasks") is not None:
+            self.Tasks = []
+            for item in params.get("Tasks"):
+                obj = RunningTaskItem()
+                obj._deserialize(item)
+                self.Tasks.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -1037,6 +2028,231 @@ class DescribeTranscodeResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTranscodeSearchRequest(AbstractModel):
+    """DescribeTranscodeSearch请求参数结构体
+
+    """
+
+
+class DescribeTranscodeSearchResponse(AbstractModel):
+    """DescribeTranscodeSearch返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TranscodeTaskSet: 转码任务搜索结果集合
+        :type TranscodeTaskSet: list of TranscodeTaskSearchResult
+        :param TotalCount: 转码总任务数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TranscodeTaskSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("TranscodeTaskSet") is not None:
+            self.TranscodeTaskSet = []
+            for item in params.get("TranscodeTaskSet"):
+                obj = TranscodeTaskSearchResult()
+                obj._deserialize(item)
+                self.TranscodeTaskSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeUsageSummaryRequest(AbstractModel):
+    """DescribeUsageSummary请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BeginTime: 统计时间段的开始时间
+        :type BeginTime: str
+        :param EndTime: 统计时间段的结束时间
+        :type EndTime: str
+        :param SubProducts: 需要获取用量的子产品列表
+        :type SubProducts: list of str
+        :param IsWeighted: true: 返回加权后的数据
+false: 返回原始数据
+        :type IsWeighted: bool
+        """
+        self.BeginTime = None
+        self.EndTime = None
+        self.SubProducts = None
+        self.IsWeighted = None
+
+
+    def _deserialize(self, params):
+        self.BeginTime = params.get("BeginTime")
+        self.EndTime = params.get("EndTime")
+        self.SubProducts = params.get("SubProducts")
+        self.IsWeighted = params.get("IsWeighted")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeUsageSummaryResponse(AbstractModel):
+    """DescribeUsageSummary返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeUserListRequest(AbstractModel):
+    """DescribeUserList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 白板应用的SdkAppId
+        :type SdkAppId: int
+        :param RoomId: 需要查询用户列表的白板房间号
+        :type RoomId: str
+        :param TimeRange: 查询时间段，Unix时间戳，单位毫秒，第一个值为开始时间戳，第二个值为结束时间
+        :type TimeRange: list of int
+        :param Query: 额外的查询条件
+        :type Query: str
+        :param MaxSize: 返回最大的数据条数，默认1000
+        :type MaxSize: int
+        """
+        self.SdkAppId = None
+        self.RoomId = None
+        self.TimeRange = None
+        self.Query = None
+        self.MaxSize = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.RoomId = params.get("RoomId")
+        self.TimeRange = params.get("TimeRange")
+        self.Query = params.get("Query")
+        self.MaxSize = params.get("MaxSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeUserListResponse(AbstractModel):
+    """DescribeUserList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserList: 房间内的用户列表
+        :type UserList: list of UserListItem
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.UserList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("UserList") is not None:
+            self.UserList = []
+            for item in params.get("UserList"):
+                obj = UserListItem()
+                obj._deserialize(item)
+                self.UserList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeUserResourcesRequest(AbstractModel):
+    """DescribeUserResources请求参数结构体
+
+    """
+
+
+class DescribeUserResourcesResponse(AbstractModel):
+    """DescribeUserResources返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeUserStatusRequest(AbstractModel):
+    """DescribeUserStatus请求参数结构体
+
+    """
+
+
+class DescribeUserStatusResponse(AbstractModel):
+    """DescribeUserStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AppId: 客户的AppId
+        :type AppId: int
+        :param IsTiwUser: 是否开通过白板（试用或正式）
+
+0: 从未开通过白板服务
+1: 已经开通过白板服务
+        :type IsTiwUser: int
+        :param IsSaaSUser: 是否开通过互动课堂（试用或正式）
+        :type IsSaaSUser: int
+        :param IsTiwOfflineRecordUser: 是否使用白板的课后录制
+        :type IsTiwOfflineRecordUser: int
+        :param IsAuthenticated: 用户是否实名认证
+        :type IsAuthenticated: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.AppId = None
+        self.IsTiwUser = None
+        self.IsSaaSUser = None
+        self.IsTiwOfflineRecordUser = None
+        self.IsAuthenticated = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.AppId = params.get("AppId")
+        self.IsTiwUser = params.get("IsTiwUser")
+        self.IsSaaSUser = params.get("IsSaaSUser")
+        self.IsTiwOfflineRecordUser = params.get("IsTiwOfflineRecordUser")
+        self.IsAuthenticated = params.get("IsAuthenticated")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeVideoGenerationTaskCallbackRequest(AbstractModel):
     """DescribeVideoGenerationTaskCallback请求参数结构体
 
@@ -1170,6 +2386,166 @@ class DescribeVideoGenerationTaskResponse(AbstractModel):
                 obj = VideoInfo()
                 obj._deserialize(item)
                 self.VideoInfoList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeWarningCallbackRequest(AbstractModel):
+    """DescribeWarningCallback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用的SdkAppId
+        :type SdkAppId: int
+        """
+        self.SdkAppId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeWarningCallbackResponse(AbstractModel):
+    """DescribeWarningCallback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Callback: 告警事件回调地址，如果未设置回调地址，该字段为空字符串
+        :type Callback: str
+        :param CallbackKey: 告警回调鉴权密钥
+        :type CallbackKey: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Callback = None
+        self.CallbackKey = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Callback = params.get("Callback")
+        self.CallbackKey = params.get("CallbackKey")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeWhiteboardApplicationConfigRequest(AbstractModel):
+    """DescribeWhiteboardApplicationConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param TaskTypes: 需要查询的任务类型
+recording: 实时录制
+transcode: 文档转码
+        :type TaskTypes: list of str
+        :param SdkAppIds: 需要查询配置的SdkAppId列表
+        :type SdkAppIds: list of int
+        """
+        self.SdkAppId = None
+        self.TaskTypes = None
+        self.SdkAppIds = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.TaskTypes = params.get("TaskTypes")
+        self.SdkAppIds = params.get("SdkAppIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeWhiteboardApplicationConfigResponse(AbstractModel):
+    """DescribeWhiteboardApplicationConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param Configs: 白板应用任务相关配置
+        :type Configs: list of WhiteboardApplicationConfig
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.SdkAppId = None
+        self.Configs = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        if params.get("Configs") is not None:
+            self.Configs = []
+            for item in params.get("Configs"):
+                obj = WhiteboardApplicationConfig()
+                obj._deserialize(item)
+                self.Configs.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeWhiteboardBucketConfigRequest(AbstractModel):
+    """DescribeWhiteboardBucketConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param TaskType: 需要查询的任务类型
+recording: 实时录制
+transcode: 文档转码
+        :type TaskType: str
+        """
+        self.SdkAppId = None
+        self.TaskType = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.TaskType = params.get("TaskType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeWhiteboardBucketConfigResponse(AbstractModel):
+    """DescribeWhiteboardBucketConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -1318,6 +2694,74 @@ class DescribeWhiteboardPushResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeWhiteboardPushSearchRequest(AbstractModel):
+    """DescribeWhiteboardPushSearch请求参数结构体
+
+    """
+
+
+class DescribeWhiteboardPushSearchResponse(AbstractModel):
+    """DescribeWhiteboardPushSearch返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param WhiteboardPushTaskSet: 推流任务搜索结果集合
+        :type WhiteboardPushTaskSet: list of WhiteboardPushTaskSearchResult
+        :param TotalCount: 推流总任务数
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.WhiteboardPushTaskSet = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("WhiteboardPushTaskSet") is not None:
+            self.WhiteboardPushTaskSet = []
+            for item in params.get("WhiteboardPushTaskSet"):
+                obj = WhiteboardPushTaskSearchResult()
+                obj._deserialize(item)
+                self.WhiteboardPushTaskSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
+class Detail(AbstractModel):
+    """计费用量数据里，带不同指标Tag的详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagName: 用量指标
+        :type TagName: str
+        :param Weight: 用量权重
+        :type Weight: float
+        :param Value: 用量的值
+        :type Value: float
+        """
+        self.TagName = None
+        self.Weight = None
+        self.Value = None
+
+
+    def _deserialize(self, params):
+        self.TagName = params.get("TagName")
+        self.Weight = params.get("Weight")
+        self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Interrupt(AbstractModel):
     """实时录制中出现的用户视频流断流次数统计
 
@@ -1435,6 +2879,213 @@ class MixStream(AbstractModel):
         
 
 
+class ModifyApplicationRequest(AbstractModel):
+    """ModifyApplication请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用SdkAppId
+        :type SdkAppId: int
+        :param AppName: App名字
+        :type AppName: str
+        """
+        self.SdkAppId = None
+        self.AppName = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.AppName = params.get("AppName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyApplicationResponse(AbstractModel):
+    """ModifyApplication返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyAutoRenewFlagRequest(AbstractModel):
+    """ModifyAutoRenewFlag请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SubProduct: 资源Id，从DescribeUserResources接口中获取Level=1的正式月功能费的SubProduct，一般为sp_tiw_package
+        :type SubProduct: str
+        :param ResourceId: 资源Id，从DescribeUserResources接口中获取Level=1的正式月功能费资源Id
+        :type ResourceId: str
+        :param AutoRenewFlag: 自动续费标记，0表示默认状态(用户未设置，即初始状态)， 1表示自动续费，2表示明确不自动续费(用户设置)，若业务无续费概念或无需自动续 费，需要设置为0
+        :type AutoRenewFlag: int
+        """
+        self.SubProduct = None
+        self.ResourceId = None
+        self.AutoRenewFlag = None
+
+
+    def _deserialize(self, params):
+        self.SubProduct = params.get("SubProduct")
+        self.ResourceId = params.get("ResourceId")
+        self.AutoRenewFlag = params.get("AutoRenewFlag")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyAutoRenewFlagResponse(AbstractModel):
+    """ModifyAutoRenewFlag返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyWhiteboardApplicationConfigRequest(AbstractModel):
+    """ModifyWhiteboardApplicationConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param Configs: 白板应用任务相关配置
+        :type Configs: list of WhiteboardApplicationConfig
+        """
+        self.SdkAppId = None
+        self.Configs = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        if params.get("Configs") is not None:
+            self.Configs = []
+            for item in params.get("Configs"):
+                obj = WhiteboardApplicationConfig()
+                obj._deserialize(item)
+                self.Configs.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyWhiteboardApplicationConfigResponse(AbstractModel):
+    """ModifyWhiteboardApplicationConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyWhiteboardBucketConfigRequest(AbstractModel):
+    """ModifyWhiteboardBucketConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param TaskType: 需要查询的任务类型
+recording: 实时录制
+transcode: 文档转码
+        :type TaskType: str
+        :param BucketName: COS存储桶名字
+        :type BucketName: str
+        :param BucketLocation: COS存储桶地域
+        :type BucketLocation: str
+        :param BucketPrefix: 存储桶里资源前缀
+        :type BucketPrefix: str
+        :param ResultDomain: 返回Url域名
+        :type ResultDomain: str
+        """
+        self.SdkAppId = None
+        self.TaskType = None
+        self.BucketName = None
+        self.BucketLocation = None
+        self.BucketPrefix = None
+        self.ResultDomain = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.TaskType = params.get("TaskType")
+        self.BucketName = params.get("BucketName")
+        self.BucketLocation = params.get("BucketLocation")
+        self.BucketPrefix = params.get("BucketPrefix")
+        self.ResultDomain = params.get("ResultDomain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyWhiteboardBucketConfigResponse(AbstractModel):
+    """ModifyWhiteboardBucketConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class OmittedDuration(AbstractModel):
     """拼接视频中被忽略的时间段
 
@@ -1458,6 +3109,76 @@ class OmittedDuration(AbstractModel):
         self.VideoTime = params.get("VideoTime")
         self.PauseTime = params.get("PauseTime")
         self.ResumeTime = params.get("ResumeTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PPTErr(AbstractModel):
+    """PPT错误元素
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 元素名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param Type: 0: 不支持的墨迹类型，1: 不支持自动翻页，2: 存在已损坏音视频，3: 存在不可访问资源，4: 只读文件
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: int
+        :param Detail: 错误详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Detail: str
+        """
+        self.Name = None
+        self.Type = None
+        self.Detail = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Type = params.get("Type")
+        self.Detail = params.get("Detail")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PPTErrSlide(AbstractModel):
+    """PPT错误页面列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Page: 异常元素存在的页面，由页面类型+页码组成，页码类型包括：幻灯片、幻灯片母版、幻灯片布局等
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Page: str
+        :param Errs: 错误元素列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Errs: list of PPTErr
+        """
+        self.Page = None
+        self.Errs = None
+
+
+    def _deserialize(self, params):
+        self.Page = params.get("Page")
+        if params.get("Errs") is not None:
+            self.Errs = []
+            for item in params.get("Errs"):
+                obj = PPTErr()
+                obj._deserialize(item)
+                self.Errs.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1572,6 +3293,135 @@ false - 所有流都录制大画面，默认为false。
         
 
 
+class RecordTaskResult(AbstractModel):
+    """实时录制结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FinishReason: AUTO - 自动停止录制， USER_CALL - 用户主动调用停止录制
+        :type FinishReason: str
+        :param ExceptionCnt: 异常数
+        :type ExceptionCnt: int
+        :param RoomId: 房间号
+        :type RoomId: int
+        :param GroupId: 分组
+        :type GroupId: str
+        :param RecordStartTime: 录制真实开始时间
+        :type RecordStartTime: int
+        :param RecordStopTime: 录制结束时间
+        :type RecordStopTime: int
+        :param TotalTime: 录制总时长
+        :type TotalTime: int
+        :param VideoInfos: 视频信息列表
+        :type VideoInfos: list of VideoInfo
+        :param OmittedDurations: 被忽略的视频时间段
+        :type OmittedDurations: list of OmittedDuration
+        :param Details: 详情
+        :type Details: str
+        :param ErrorCode: 任务失败错误码
+        :type ErrorCode: int
+        :param ErrorMsg: 错误信息
+        :type ErrorMsg: str
+        """
+        self.FinishReason = None
+        self.ExceptionCnt = None
+        self.RoomId = None
+        self.GroupId = None
+        self.RecordStartTime = None
+        self.RecordStopTime = None
+        self.TotalTime = None
+        self.VideoInfos = None
+        self.OmittedDurations = None
+        self.Details = None
+        self.ErrorCode = None
+        self.ErrorMsg = None
+
+
+    def _deserialize(self, params):
+        self.FinishReason = params.get("FinishReason")
+        self.ExceptionCnt = params.get("ExceptionCnt")
+        self.RoomId = params.get("RoomId")
+        self.GroupId = params.get("GroupId")
+        self.RecordStartTime = params.get("RecordStartTime")
+        self.RecordStopTime = params.get("RecordStopTime")
+        self.TotalTime = params.get("TotalTime")
+        if params.get("VideoInfos") is not None:
+            self.VideoInfos = []
+            for item in params.get("VideoInfos"):
+                obj = VideoInfo()
+                obj._deserialize(item)
+                self.VideoInfos.append(obj)
+        if params.get("OmittedDurations") is not None:
+            self.OmittedDurations = []
+            for item in params.get("OmittedDurations"):
+                obj = OmittedDuration()
+                obj._deserialize(item)
+                self.OmittedDurations.append(obj)
+        self.Details = params.get("Details")
+        self.ErrorCode = params.get("ErrorCode")
+        self.ErrorMsg = params.get("ErrorMsg")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RecordTaskSearchResult(AbstractModel):
+    """实时录制任务搜索结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务唯一ID
+        :type TaskId: str
+        :param Status: 实时录制任务状态
+- PAUSED: 录制已暂停
+- PREPARED: 录制在准备阶段
+- RECORDING: 正在录制
+- STOPPED：录制已停止
+- FINISHED: 录制已结束
+        :type Status: str
+        :param RoomId: 实时录制房间号
+        :type RoomId: int
+        :param CreateTime: 任务创建时间
+        :type CreateTime: str
+        :param SdkAppId: 用户应用SdkAppId
+        :type SdkAppId: int
+        :param Result: 实时录制结果
+        :type Result: :class:`tencentcloud.tiw.v20190919.models.RecordTaskResult`
+        """
+        self.TaskId = None
+        self.Status = None
+        self.RoomId = None
+        self.CreateTime = None
+        self.SdkAppId = None
+        self.Result = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.Status = params.get("Status")
+        self.RoomId = params.get("RoomId")
+        self.CreateTime = params.get("CreateTime")
+        self.SdkAppId = params.get("SdkAppId")
+        if params.get("Result") is not None:
+            self.Result = RecordTaskResult()
+            self.Result._deserialize(params.get("Result"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ResumeOnlineRecordRequest(AbstractModel):
     """ResumeOnlineRecord请求参数结构体
 
@@ -1617,6 +3467,42 @@ class ResumeOnlineRecordResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class RoomListItem(AbstractModel):
+    """日志查询里返回的白板房间数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RoomId: 房间ID
+        :type RoomId: str
+        :param StartTime: 房间在查询时间段内最早出现的时间，Unix时间戳，单位毫秒
+        :type StartTime: int
+        :param EndTime: 房间在查询时间段内最晚出现的时间，Unix时间戳，单位毫秒
+        :type EndTime: int
+        :param UserNumber: 房间里成员数
+        :type UserNumber: int
+        """
+        self.RoomId = None
+        self.StartTime = None
+        self.EndTime = None
+        self.UserNumber = None
+
+
+    def _deserialize(self, params):
+        self.RoomId = params.get("RoomId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.UserNumber = params.get("UserNumber")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RoomUsageDataItem(AbstractModel):
     """互动白板房间用量信息
 
@@ -1658,6 +3544,120 @@ class RoomUsageDataItem(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class RunningTaskItem(AbstractModel):
+    """正在运行的任务列表项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppID: 应用SdkAppID
+        :type SdkAppID: int
+        :param TaskID: 任务ID
+        :type TaskID: str
+        :param TaskType: 任务类型
+- TranscodeH5: 动态转码任务，文档转HTML5页面
+- TranscodeJPG: 静态转码任务，文档转图片
+- WhiteboardPush: 白板推流任务
+- OnlineRecord: 实时录制任务
+        :type TaskType: str
+        :param CreateTime: 任务创建时间
+        :type CreateTime: str
+        :param CancelTime: 任务取消时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CancelTime: str
+        :param Status: 任务状态
+- QUEUED: 任务正在排队等待执行中
+- PROCESSING: 任务正在执行中 
+- FINISHED: 任务已完成
+        :type Status: str
+        :param Progress: 任务当前进度
+        :type Progress: int
+        :param FileURL: 转码任务中转码文件的原始URL
+此参数只有任务类型为TranscodeH5、TranscodeJPG类型时才会有有效值。其他任务类型为空字符串。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileURL: str
+        :param RoomID: 房间号
+
+当任务类型为TranscodeH5、TranscodeJPG时，房间号为0。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoomID: int
+        """
+        self.SdkAppID = None
+        self.TaskID = None
+        self.TaskType = None
+        self.CreateTime = None
+        self.CancelTime = None
+        self.Status = None
+        self.Progress = None
+        self.FileURL = None
+        self.RoomID = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppID = params.get("SdkAppID")
+        self.TaskID = params.get("TaskID")
+        self.TaskType = params.get("TaskType")
+        self.CreateTime = params.get("CreateTime")
+        self.CancelTime = params.get("CancelTime")
+        self.Status = params.get("Status")
+        self.Progress = params.get("Progress")
+        self.FileURL = params.get("FileURL")
+        self.RoomID = params.get("RoomID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetOfflineRecordCallbackRequest(AbstractModel):
+    """SetOfflineRecordCallback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param Callback: 课后录制任务结果回调地址，如果传空字符串会删除原来的回调地址配置，回调地址仅支持 http或https协议，即回调地址以http://或https://开头
+        :type Callback: str
+        """
+        self.SdkAppId = None
+        self.Callback = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.Callback = params.get("Callback")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetOfflineRecordCallbackResponse(AbstractModel):
+    """SetOfflineRecordCallback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class SetOnlineRecordCallbackKeyRequest(AbstractModel):
@@ -1735,6 +3735,96 @@ class SetOnlineRecordCallbackRequest(AbstractModel):
 
 class SetOnlineRecordCallbackResponse(AbstractModel):
     """SetOnlineRecordCallback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class SetPPTCheckCallbackKeyRequest(AbstractModel):
+    """SetPPTCheckCallbackKey请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 应用的SdkAppId
+        :type SdkAppId: int
+        :param CallbackKey: 设置回调鉴权密钥，最长64字符，如果传入空字符串，那么删除现有的鉴权回调密钥，回调鉴权方式请参考文档：https://cloud.tencent.com/document/product/1137/40257	
+        :type CallbackKey: str
+        """
+        self.SdkAppId = None
+        self.CallbackKey = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.CallbackKey = params.get("CallbackKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetPPTCheckCallbackKeyResponse(AbstractModel):
+    """SetPPTCheckCallbackKey返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class SetPPTCheckCallbackRequest(AbstractModel):
+    """SetPPTCheckCallback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId	
+        :type SdkAppId: int
+        :param Callback: 进度回调地址，如果传空字符串会删除原来的回调地址配置，回调地址仅支持http或https协议，即回调地址以http://或https://开头。 回调数据格式请参考文档：https://cloud.tencent.com/document/product/1137/40260#c9cbe05f-fe1a-4410-b4dc-40cc301c7b81	
+        :type Callback: str
+        """
+        self.SdkAppId = None
+        self.Callback = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.Callback = params.get("Callback")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetPPTCheckCallbackResponse(AbstractModel):
+    """SetPPTCheckCallback返回参数结构体
 
     """
 
@@ -1916,6 +4006,56 @@ class SetVideoGenerationTaskCallbackRequest(AbstractModel):
 
 class SetVideoGenerationTaskCallbackResponse(AbstractModel):
     """SetVideoGenerationTaskCallback返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class SetWarningCallbackRequest(AbstractModel):
+    """SetWarningCallback请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SdkAppId: 客户的SdkAppId
+        :type SdkAppId: int
+        :param Callback: 告警回调地址，如果传空字符串会删除原来的回调地址配置，回调地址仅支持http或https协议，即回调地址以http://或https://开头。
+回调数据格式请参考文档：https://cloud.tencent.com/document/product/1137/90112
+        :type Callback: str
+        :param CallbackKey: 设置告警回调鉴权密钥，最长64字符，如果传入空字符串，那么删除现有的鉴权回调密钥，回调鉴权方式请参考文档：https://cloud.tencent.com/document/product/1137/40257
+        :type CallbackKey: str
+        """
+        self.SdkAppId = None
+        self.Callback = None
+        self.CallbackKey = None
+
+
+    def _deserialize(self, params):
+        self.SdkAppId = params.get("SdkAppId")
+        self.Callback = params.get("Callback")
+        self.CallbackKey = params.get("CallbackKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SetWarningCallbackResponse(AbstractModel):
+    """SetWarningCallback返回参数结构体
 
     """
 
@@ -2266,7 +4406,8 @@ class StartWhiteboardPushRequest(AbstractModel):
         :type SdkAppId: int
         :param RoomId: 需要推流的白板房间号，取值范围: (1, 4294967295)。
 
-在没有指定TRTCRoomId和TRTCRoomIdStr的情况下，默认会以RoomId作为白板流进行推流的TRTC房间号。
+1. 白板推流默认以RoomId的字符串表达形式作为IM群组的GroupID（比如RoomId为1234，则IM群组的GroupID为"1234"）加群进行信令同步，请在开始推流前确保相应IM群组已创建完成，否则会导致推流失败。
+2. 在没有指定TRTCRoomId和TRTCRoomIdStr的情况下，默认会以RoomId作为白板流进行推流的TRTC房间号。
         :type RoomId: int
         :param PushUserId: 用于白板推流服务进入白板房间的用户ID。在没有额外指定`IMAuthParam`和`TRTCAuthParam`的情况下，这个用户ID同时会用于IM登录、IM加群、TRTC进房推流等操作。
 用户ID最大长度不能大于60个字节，该用户ID必须是一个单独的未同时在其他地方使用的用户ID，白板推流服务使用这个用户ID进入房间进行白板音视频推流，若该用户ID和其他地方同时在使用的用户ID重复，会导致白板推流服务与其他使用场景帐号互踢，影响正常推流。
@@ -2647,6 +4788,34 @@ class StreamLayout(AbstractModel):
         
 
 
+class Tag(AbstractModel):
+    """标签
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TagKey: 标签键
+        :type TagKey: str
+        :param TagValue: 标签值
+        :type TagValue: str
+        """
+        self.TagKey = None
+        self.TagValue = None
+
+
+    def _deserialize(self, params):
+        self.TagKey = params.get("TagKey")
+        self.TagValue = params.get("TagValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TimeValue(AbstractModel):
     """查询指标返回的时间序列
 
@@ -2666,6 +4835,118 @@ class TimeValue(AbstractModel):
     def _deserialize(self, params):
         self.Time = params.get("Time")
         self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TranscodeTaskResult(AbstractModel):
+    """转码任务结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResultUrl: 转码结果地址
+        :type ResultUrl: str
+        :param Resolution: 分辨率
+        :type Resolution: str
+        :param Title: 标题（一般为文件名）
+        :type Title: str
+        :param Pages: 转码页数
+        :type Pages: int
+        :param ThumbnailUrl: 缩略图URL前缀，比如，该URL前缀为http://example.com/g0jb42ps49vtebjshilb/，那么动态PPT第1页的缩略图URL为
+http://example.com/g0jb42ps49vtebjshilb/1.jpg，其它页以此类推
+
+如果发起文档转码请求参数中带了ThumbnailResolution参数，并且转码类型为动态转码，该参数不为空，其余情况该参数为空字符串
+        :type ThumbnailUrl: str
+        :param ThumbnailResolution: 动态转码缩略图生成分辨率
+        :type ThumbnailResolution: str
+        :param CompressFileUrl: 转码压缩文件下载的URL，如果发起文档转码请求参数中CompressFileType为空或者不是支持的压缩格式，该参数为空字符串
+        :type CompressFileUrl: str
+        :param ErrorCode: 任务失败错误码
+        :type ErrorCode: int
+        :param ErrorMsg: 任务失败错误信息
+        :type ErrorMsg: str
+        """
+        self.ResultUrl = None
+        self.Resolution = None
+        self.Title = None
+        self.Pages = None
+        self.ThumbnailUrl = None
+        self.ThumbnailResolution = None
+        self.CompressFileUrl = None
+        self.ErrorCode = None
+        self.ErrorMsg = None
+
+
+    def _deserialize(self, params):
+        self.ResultUrl = params.get("ResultUrl")
+        self.Resolution = params.get("Resolution")
+        self.Title = params.get("Title")
+        self.Pages = params.get("Pages")
+        self.ThumbnailUrl = params.get("ThumbnailUrl")
+        self.ThumbnailResolution = params.get("ThumbnailResolution")
+        self.CompressFileUrl = params.get("CompressFileUrl")
+        self.ErrorCode = params.get("ErrorCode")
+        self.ErrorMsg = params.get("ErrorMsg")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TranscodeTaskSearchResult(AbstractModel):
+    """转码任务搜索结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CreateTime: 任务创建时间
+        :type CreateTime: str
+        :param TaskId: 任务唯一ID
+        :type TaskId: str
+        :param Status: 任务的当前状态
+- QUEUED: 正在排队等待转换
+- PROCESSING: 转换中
+- FINISHED: 转换完成
+        :type Status: str
+        :param OriginalFilename: 转码文件原始名称
+        :type OriginalFilename: str
+        :param SdkAppId: 用户应用SdkAppId
+        :type SdkAppId: int
+        :param Result: 转码任务结果
+        :type Result: :class:`tencentcloud.tiw.v20190919.models.TranscodeTaskResult`
+        :param IsStatic: 是否静态转码
+        :type IsStatic: bool
+        """
+        self.CreateTime = None
+        self.TaskId = None
+        self.Status = None
+        self.OriginalFilename = None
+        self.SdkAppId = None
+        self.Result = None
+        self.IsStatic = None
+
+
+    def _deserialize(self, params):
+        self.CreateTime = params.get("CreateTime")
+        self.TaskId = params.get("TaskId")
+        self.Status = params.get("Status")
+        self.OriginalFilename = params.get("OriginalFilename")
+        self.SdkAppId = params.get("SdkAppId")
+        if params.get("Result") is not None:
+            self.Result = TranscodeTaskResult()
+            self.Result._deserialize(params.get("Result"))
+        self.IsStatic = params.get("IsStatic")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2708,6 +4989,38 @@ class UsageDataItem(AbstractModel):
         self.SdkAppId = params.get("SdkAppId")
         self.SubProduct = params.get("SubProduct")
         self.Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UserListItem(AbstractModel):
+    """日志查询里返回的白板用户数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserId: 房间内的用户ID
+        :type UserId: str
+        :param StartTime: 用户在查询时间段内最早出现的时间，Unix时间戳，单位毫秒
+        :type StartTime: int
+        :param EndTime: 用户在查询时间段内最晚出现的时间，Unix时间戳，单位毫秒
+        :type EndTime: int
+        """
+        self.UserId = None
+        self.StartTime = None
+        self.EndTime = None
+
+
+    def _deserialize(self, params):
+        self.UserId = params.get("UserId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2814,6 +5127,69 @@ class Whiteboard(AbstractModel):
         
 
 
+class WhiteboardApplicationConfig(AbstractModel):
+    """白板应用配置，包括资源存储桶，域名，回调地址，回调密钥等
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskType: 任务类型
+
+recording: 实时录制
+transcode: 文档转码
+        :type TaskType: str
+        :param BucketName: 存储桶名字
+        :type BucketName: str
+        :param BucketLocation: 存储桶地域
+        :type BucketLocation: str
+        :param BucketPrefix: 资源在存储桶中的前缀
+        :type BucketPrefix: str
+        :param ResultDomain: 目标CDN域名
+        :type ResultDomain: str
+        :param Callback: 回调地址
+        :type Callback: str
+        :param CallbackKey: 回调鉴权密钥
+        :type CallbackKey: str
+        :param SdkAppId: 配置的应用SdkAppId
+        :type SdkAppId: int
+        :param AdminUserId: IM管理员UserId
+        :type AdminUserId: str
+        :param AdminUserSig: IM管理员UserSig
+        :type AdminUserSig: str
+        """
+        self.TaskType = None
+        self.BucketName = None
+        self.BucketLocation = None
+        self.BucketPrefix = None
+        self.ResultDomain = None
+        self.Callback = None
+        self.CallbackKey = None
+        self.SdkAppId = None
+        self.AdminUserId = None
+        self.AdminUserSig = None
+
+
+    def _deserialize(self, params):
+        self.TaskType = params.get("TaskType")
+        self.BucketName = params.get("BucketName")
+        self.BucketLocation = params.get("BucketLocation")
+        self.BucketPrefix = params.get("BucketPrefix")
+        self.ResultDomain = params.get("ResultDomain")
+        self.Callback = params.get("Callback")
+        self.CallbackKey = params.get("CallbackKey")
+        self.SdkAppId = params.get("SdkAppId")
+        self.AdminUserId = params.get("AdminUserId")
+        self.AdminUserSig = params.get("AdminUserSig")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class WhiteboardPushBackupParam(AbstractModel):
     """白板推流备份相关请求参数
 
@@ -2834,6 +5210,115 @@ class WhiteboardPushBackupParam(AbstractModel):
     def _deserialize(self, params):
         self.PushUserId = params.get("PushUserId")
         self.PushUserSig = params.get("PushUserSig")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class WhiteboardPushResult(AbstractModel):
+    """白板推流任务结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FinishReason: AUTO - 自动停止推流， USER_CALL - 用户主动调用停止推流
+        :type FinishReason: str
+        :param ExceptionCnt: 异常数
+        :type ExceptionCnt: int
+        :param RoomId: 房间号
+        :type RoomId: int
+        :param GroupId: IM群组ID
+        :type GroupId: str
+        :param PushStartTime: 推流真实开始时间
+        :type PushStartTime: int
+        :param PushStopTime: 推流结束时间
+        :type PushStopTime: int
+        :param IMSyncTime: 白板推流首帧对应的IM时间戳，可用于录制回放时IM聊天消息与白板推流视频进行同步对时。
+        :type IMSyncTime: int
+        :param ErrorCode: 任务失败错误码
+        :type ErrorCode: int
+        :param ErrorMsg: 错误信息
+        :type ErrorMsg: str
+        """
+        self.FinishReason = None
+        self.ExceptionCnt = None
+        self.RoomId = None
+        self.GroupId = None
+        self.PushStartTime = None
+        self.PushStopTime = None
+        self.IMSyncTime = None
+        self.ErrorCode = None
+        self.ErrorMsg = None
+
+
+    def _deserialize(self, params):
+        self.FinishReason = params.get("FinishReason")
+        self.ExceptionCnt = params.get("ExceptionCnt")
+        self.RoomId = params.get("RoomId")
+        self.GroupId = params.get("GroupId")
+        self.PushStartTime = params.get("PushStartTime")
+        self.PushStopTime = params.get("PushStopTime")
+        self.IMSyncTime = params.get("IMSyncTime")
+        self.ErrorCode = params.get("ErrorCode")
+        self.ErrorMsg = params.get("ErrorMsg")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class WhiteboardPushTaskSearchResult(AbstractModel):
+    """实时录制任务搜索结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务唯一ID
+        :type TaskId: str
+        :param Status: 白板推流任务状态
+- PREPARED: 推流在准备阶段
+- PUSHING: 正在推流
+- STOPPED：推流已停止
+        :type Status: str
+        :param RoomId: 白板推流房间号
+        :type RoomId: int
+        :param CreateTime: 任务创建时间
+        :type CreateTime: str
+        :param SdkAppId: 用户应用SdkAppId
+        :type SdkAppId: int
+        :param Result: 白板推流结果
+        :type Result: :class:`tencentcloud.tiw.v20190919.models.WhiteboardPushResult`
+        :param PushUserId: 白板推流用户ID
+        :type PushUserId: str
+        """
+        self.TaskId = None
+        self.Status = None
+        self.RoomId = None
+        self.CreateTime = None
+        self.SdkAppId = None
+        self.Result = None
+        self.PushUserId = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.Status = params.get("Status")
+        self.RoomId = params.get("RoomId")
+        self.CreateTime = params.get("CreateTime")
+        self.SdkAppId = params.get("SdkAppId")
+        if params.get("Result") is not None:
+            self.Result = WhiteboardPushResult()
+            self.Result._deserialize(params.get("Result"))
+        self.PushUserId = params.get("PushUserId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

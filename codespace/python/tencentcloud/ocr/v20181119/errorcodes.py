@@ -17,6 +17,9 @@
 # 帐号已欠费。
 FAILEDOPERATION_ARREARSERROR = 'FailedOperation.ArrearsError'
 
+# 身份证CardSide类型错误
+FAILEDOPERATION_CARDSIDEERROR = 'FailedOperation.CardSideError'
+
 # 今日次数达到限制。
 FAILEDOPERATION_COUNTLIMITERROR = 'FailedOperation.CountLimitError'
 
@@ -40,6 +43,9 @@ FAILEDOPERATION_ENGINERECOGNIZETIMEOUT = 'FailedOperation.EngineRecognizeTimeout
 
 # 身份证信息不合法（身份证号、姓名字段校验非法等）。
 FAILEDOPERATION_IDCARDINFOILLEGAL = 'FailedOperation.IdCardInfoIllegal'
+
+# 图片分辨率过小或身份证在原图中的占比过小
+FAILEDOPERATION_IDCARDTOOSMALL = 'FailedOperation.IdCardTooSmall'
 
 # 银行卡信息非法。
 FAILEDOPERATION_ILLEGALBANKCARDERROR = 'FailedOperation.IllegalBankCardError'

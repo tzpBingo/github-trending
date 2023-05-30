@@ -345,6 +345,8 @@ class CreateTawInstanceRequest(AbstractModel):
         :type ResourcePackageType: int
         :param ResourcePackageNum: 预付费资源包数量(仅预付费需要)
         :type ResourcePackageNum: int
+        :param InstanceType: 实例类型 1:原web相关类型 2:app端类型
+        :type InstanceType: int
         """
         self.AreaId = None
         self.ChargeType = None
@@ -357,6 +359,7 @@ class CreateTawInstanceRequest(AbstractModel):
         self.BuyingChannel = None
         self.ResourcePackageType = None
         self.ResourcePackageNum = None
+        self.InstanceType = None
 
 
     def _deserialize(self, params):
@@ -376,6 +379,7 @@ class CreateTawInstanceRequest(AbstractModel):
         self.BuyingChannel = params.get("BuyingChannel")
         self.ResourcePackageType = params.get("ResourcePackageType")
         self.ResourcePackageNum = params.get("ResourcePackageNum")
+        self.InstanceType = params.get("InstanceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -847,6 +851,322 @@ class DeleteWhitelistResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.Msg = params.get("Msg")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAppDimensionMetricsRequest(AbstractModel):
+    """DescribeAppDimensionMetrics请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectID: app 项目ID
+        :type ProjectID: int
+        :param From: 查询的表名
+        :type From: str
+        :param Fields: 查询指标 fields
+        :type Fields: str
+        :param Filter: 查询的过滤条件
+        :type Filter: str
+        :param FilterSimple: 查询简单过滤条件
+        :type FilterSimple: str
+        :param GroupBy: group by 条件
+        :type GroupBy: list of str
+        :param OrderBy: order by 条件
+        :type OrderBy: list of str
+        :param Limit: limit 参数
+        :type Limit: int
+        :param Offset: offset 参数
+        :type Offset: int
+        :param BusinessContext: 业务上下文参数
+        :type BusinessContext: str
+        """
+        self.ProjectID = None
+        self.From = None
+        self.Fields = None
+        self.Filter = None
+        self.FilterSimple = None
+        self.GroupBy = None
+        self.OrderBy = None
+        self.Limit = None
+        self.Offset = None
+        self.BusinessContext = None
+
+
+    def _deserialize(self, params):
+        self.ProjectID = params.get("ProjectID")
+        self.From = params.get("From")
+        self.Fields = params.get("Fields")
+        self.Filter = params.get("Filter")
+        self.FilterSimple = params.get("FilterSimple")
+        self.GroupBy = params.get("GroupBy")
+        self.OrderBy = params.get("OrderBy")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.BusinessContext = params.get("BusinessContext")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAppDimensionMetricsResponse(AbstractModel):
+    """DescribeAppDimensionMetrics返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 查询数据返回
+        :type Data: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAppMetricsDataRequest(AbstractModel):
+    """DescribeAppMetricsData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectID: app 项目ID
+        :type ProjectID: int
+        :param From: 查询的表名
+        :type From: str
+        :param Fields: 查询指标 field
+        :type Fields: str
+        :param Filter: 查询的过滤条件
+        :type Filter: str
+        :param FilterSimple: 查询简单过滤条件
+        :type FilterSimple: str
+        :param GroupBy: group by 条件
+        :type GroupBy: list of str
+        :param OrderBy: order by 条件
+        :type OrderBy: list of str
+        :param Limit: limit 参数
+        :type Limit: int
+        :param Offset: offset 参数
+        :type Offset: int
+        :param GroupByModifier: group by 参数
+        :type GroupByModifier: str
+        """
+        self.ProjectID = None
+        self.From = None
+        self.Fields = None
+        self.Filter = None
+        self.FilterSimple = None
+        self.GroupBy = None
+        self.OrderBy = None
+        self.Limit = None
+        self.Offset = None
+        self.GroupByModifier = None
+
+
+    def _deserialize(self, params):
+        self.ProjectID = params.get("ProjectID")
+        self.From = params.get("From")
+        self.Fields = params.get("Fields")
+        self.Filter = params.get("Filter")
+        self.FilterSimple = params.get("FilterSimple")
+        self.GroupBy = params.get("GroupBy")
+        self.OrderBy = params.get("OrderBy")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.GroupByModifier = params.get("GroupByModifier")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAppMetricsDataResponse(AbstractModel):
+    """DescribeAppMetricsData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 查询数据返回
+        :type Data: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAppSingleCaseDetailListRequest(AbstractModel):
+    """DescribeAppSingleCaseDetailList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectID: app 项目ID
+        :type ProjectID: int
+        :param From: 查询的表名
+        :type From: str
+        :param Fields: 查询指标 field
+        :type Fields: str
+        :param Filter: 查询的过滤条件
+        :type Filter: str
+        :param FilterSimple: 查询简单过滤条件
+        :type FilterSimple: str
+        :param GroupBy: group by 条件
+        :type GroupBy: list of str
+        :param OrderBy: order by 条件
+        :type OrderBy: list of str
+        :param Limit: limit 参数
+        :type Limit: int
+        :param Offset: offset 参数
+        :type Offset: int
+        """
+        self.ProjectID = None
+        self.From = None
+        self.Fields = None
+        self.Filter = None
+        self.FilterSimple = None
+        self.GroupBy = None
+        self.OrderBy = None
+        self.Limit = None
+        self.Offset = None
+
+
+    def _deserialize(self, params):
+        self.ProjectID = params.get("ProjectID")
+        self.From = params.get("From")
+        self.Fields = params.get("Fields")
+        self.Filter = params.get("Filter")
+        self.FilterSimple = params.get("FilterSimple")
+        self.GroupBy = params.get("GroupBy")
+        self.OrderBy = params.get("OrderBy")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAppSingleCaseDetailListResponse(AbstractModel):
+    """DescribeAppSingleCaseDetailList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 查询数据返回
+        :type Data: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAppSingleCaseListRequest(AbstractModel):
+    """DescribeAppSingleCaseList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectID: app 项目 ID
+        :type ProjectID: int
+        :param From: 查询的表名
+        :type From: str
+        :param Fields: 查询指标 field
+        :type Fields: str
+        :param Filter: 查询的过滤条件
+        :type Filter: str
+        :param FilterSimple: 查询简单过滤条件
+        :type FilterSimple: str
+        :param GroupBy: group by 条件
+        :type GroupBy: list of str
+        :param OrderBy: order by 条件
+        :type OrderBy: list of str
+        :param Limit: limit 参数
+        :type Limit: int
+        :param Offset: offset 参数
+        :type Offset: int
+        """
+        self.ProjectID = None
+        self.From = None
+        self.Fields = None
+        self.Filter = None
+        self.FilterSimple = None
+        self.GroupBy = None
+        self.OrderBy = None
+        self.Limit = None
+        self.Offset = None
+
+
+    def _deserialize(self, params):
+        self.ProjectID = params.get("ProjectID")
+        self.From = params.get("From")
+        self.Fields = params.get("Fields")
+        self.Filter = params.get("Filter")
+        self.FilterSimple = params.get("FilterSimple")
+        self.GroupBy = params.get("GroupBy")
+        self.OrderBy = params.get("OrderBy")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAppSingleCaseListResponse(AbstractModel):
+    """DescribeAppSingleCaseList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 查询数据返回
+        :type Data: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Data = params.get("Data")
         self.RequestId = params.get("RequestId")
 
 
@@ -3516,12 +3836,16 @@ class DescribeReleaseFileSignRequest(AbstractModel):
         r"""
         :param Timeout: 超时时间，不填默认是 5 分钟
         :type Timeout: int
+        :param FileType: bucket类型，不填默认web，2:app
+        :type FileType: int
         """
         self.Timeout = None
+        self.FileType = None
 
 
     def _deserialize(self, params):
         self.Timeout = params.get("Timeout")
+        self.FileType = params.get("FileType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4811,6 +5135,9 @@ class RumInstanceInfo(AbstractModel):
         :type InstanceName: str
         :param CreatedAt: 创建时间
         :type CreatedAt: str
+        :param InstanceType: 实例类型 1:原web相关类型 2:app端类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceType: int
         """
         self.InstanceStatus = None
         self.AreaId = None
@@ -4824,6 +5151,7 @@ class RumInstanceInfo(AbstractModel):
         self.DataRetentionDays = None
         self.InstanceName = None
         self.CreatedAt = None
+        self.InstanceType = None
 
 
     def _deserialize(self, params):
@@ -4844,6 +5172,7 @@ class RumInstanceInfo(AbstractModel):
         self.DataRetentionDays = params.get("DataRetentionDays")
         self.InstanceName = params.get("InstanceName")
         self.CreatedAt = params.get("CreatedAt")
+        self.InstanceType = params.get("InstanceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4897,6 +5226,9 @@ class RumProject(AbstractModel):
         :param ProjectStatus: 项目状态(1 创建中，2 运行中，3 异常，4 重启中，5 停止中，6 已停止， 7 销毁中，8 已销毁)
 注意：此字段可能返回 null，表示取不到有效值。
         :type ProjectStatus: int
+        :param AccessPoint: 日志接入点，用户忽略。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccessPoint: str
         """
         self.Name = None
         self.Creator = None
@@ -4914,6 +5246,7 @@ class RumProject(AbstractModel):
         self.Desc = None
         self.IsStar = None
         self.ProjectStatus = None
+        self.AccessPoint = None
 
 
     def _deserialize(self, params):
@@ -4933,6 +5266,7 @@ class RumProject(AbstractModel):
         self.Desc = params.get("Desc")
         self.IsStar = params.get("IsStar")
         self.ProjectStatus = params.get("ProjectStatus")
+        self.AccessPoint = params.get("AccessPoint")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

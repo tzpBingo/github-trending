@@ -73,7 +73,7 @@ class CfwClient(AbstractClient):
 
 
     def AddNatAcRule(self, request):
-        """添加nat访问控制规则
+        """添加nat访问控制规则(地域必填)
 
         :param request: Request instance for AddNatAcRule.
         :type request: :class:`tencentcloud.cfw.v20190904.models.AddNatAcRuleRequest`
@@ -592,6 +592,29 @@ class CfwClient(AbstractClient):
             body = self.call("DescribeIPStatusList", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeIPStatusListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeLogs(self, request):
+        """日志审计日志查询
+
+        :param request: Request instance for DescribeLogs.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeLogsRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeLogsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeLogs", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeLogsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

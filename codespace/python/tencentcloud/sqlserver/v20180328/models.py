@@ -1169,15 +1169,25 @@ class CreateBusinessDBInstancesResponse(AbstractModel):
         r"""
         :param DealName: 订单名称
         :type DealName: str
+        :param FlowId: 流程ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FlowId: int
+        :param InstanceIdSet: 实例ID集合
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceIdSet: list of str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.DealName = None
+        self.FlowId = None
+        self.InstanceIdSet = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.DealName = params.get("DealName")
+        self.FlowId = params.get("FlowId")
+        self.InstanceIdSet = params.get("InstanceIdSet")
         self.RequestId = params.get("RequestId")
 
 
@@ -1235,6 +1245,286 @@ class CreateBusinessIntelligenceFileResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.FileTaskId = params.get("FileTaskId")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateCloudDBInstancesRequest(AbstractModel):
+    """CreateCloudDBInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Zone: 实例可用区，类似ap-guangzhou-1（广州一区）；实例可售卖区域可以通过接口DescribeZones获取
+        :type Zone: str
+        :param Memory: 实例内存大小，单位GB
+        :type Memory: int
+        :param Storage: 实例磁盘大小，单位GB
+        :type Storage: int
+        :param Cpu: 实例核心数
+        :type Cpu: int
+        :param MachineType: 购买实例的宿主机磁盘类型,CLOUD_HSSD-虚拟机加强型SSD云盘，CLOUD_TSSD-虚拟机极速型SSD云盘，CLOUD_BSSD-虚拟机通用型SSD云盘
+        :type MachineType: str
+        :param InstanceChargeType: 付费模式，取值支持 PREPAID（预付费），POSTPAID（后付费）。
+        :type InstanceChargeType: str
+        :param ProjectId: 项目ID
+        :type ProjectId: int
+        :param GoodsNum: 本次购买几个实例，默认值为1。取值不超过10
+        :type GoodsNum: int
+        :param SubnetId: VPC子网ID，形如subnet-bdoe83fa；SubnetId和VpcId需同时设置或者同时不设置
+        :type SubnetId: str
+        :param VpcId: VPC网络ID，形如vpc-dsp338hz；SubnetId和VpcId需同时设置或者同时不设置
+        :type VpcId: str
+        :param Period: 购买实例周期，默认取值为1，表示一个月。取值不超过48
+        :type Period: int
+        :param AutoVoucher: 是否自动使用代金券；1 - 是，0 - 否，默认不使用
+        :type AutoVoucher: int
+        :param VoucherIds: 代金券ID数组，目前单个订单只能使用一张
+        :type VoucherIds: list of str
+        :param DBVersion: sqlserver版本，目前所有支持的版本有：2008R2 (SQL Server 2008 R2 Enterprise)，2012SP3 (SQL Server 2012 Enterprise)，201202 (SQL Server 2012 Standard)，2014SP2 (SQL Server 2014 Enterprise)，201402 (SQL Server 2014 Standard)，2016SP1 (SQL Server 2016 Enterprise)，201602 (SQL Server 2016 Standard)，2017 (SQL Server 2017 Enterprise)，201702 (SQL Server 2017 Standard)，2019 (SQL Server 2019 Enterprise)，201902 (SQL Server 2019 Standard)。每个地域支持售卖的版本不同，可通过DescribeProductConfig接口来拉取每个地域可售卖的版本信息。不填，默认为版本2008R2。
+        :type DBVersion: str
+        :param AutoRenewFlag: 自动续费标志：0-正常续费  1-自动续费，默认为1自动续费。只在购买预付费实例时有效。
+        :type AutoRenewFlag: int
+        :param SecurityGroupList: 安全组列表，填写形如sg-xxx的安全组ID
+        :type SecurityGroupList: list of str
+        :param Weekly: 可维护时间窗配置，以周为单位，表示周几允许维护，1-7分别代表周一到周末
+        :type Weekly: list of int
+        :param StartTime: 可维护时间窗配置，每天可维护的开始时间
+        :type StartTime: str
+        :param Span: 可维护时间窗配置，持续时间，单位：小时
+        :type Span: int
+        :param MultiZones: 是否跨可用区部署，默认值为false
+        :type MultiZones: bool
+        :param ResourceTags: 新建实例绑定的标签集合
+        :type ResourceTags: list of ResourceTag
+        :param Collation: 系统字符集排序规则，默认：Chinese_PRC_CI_AS
+        :type Collation: str
+        :param TimeZone: 系统时区，默认：China Standard Time
+        :type TimeZone: str
+        """
+        self.Zone = None
+        self.Memory = None
+        self.Storage = None
+        self.Cpu = None
+        self.MachineType = None
+        self.InstanceChargeType = None
+        self.ProjectId = None
+        self.GoodsNum = None
+        self.SubnetId = None
+        self.VpcId = None
+        self.Period = None
+        self.AutoVoucher = None
+        self.VoucherIds = None
+        self.DBVersion = None
+        self.AutoRenewFlag = None
+        self.SecurityGroupList = None
+        self.Weekly = None
+        self.StartTime = None
+        self.Span = None
+        self.MultiZones = None
+        self.ResourceTags = None
+        self.Collation = None
+        self.TimeZone = None
+
+
+    def _deserialize(self, params):
+        self.Zone = params.get("Zone")
+        self.Memory = params.get("Memory")
+        self.Storage = params.get("Storage")
+        self.Cpu = params.get("Cpu")
+        self.MachineType = params.get("MachineType")
+        self.InstanceChargeType = params.get("InstanceChargeType")
+        self.ProjectId = params.get("ProjectId")
+        self.GoodsNum = params.get("GoodsNum")
+        self.SubnetId = params.get("SubnetId")
+        self.VpcId = params.get("VpcId")
+        self.Period = params.get("Period")
+        self.AutoVoucher = params.get("AutoVoucher")
+        self.VoucherIds = params.get("VoucherIds")
+        self.DBVersion = params.get("DBVersion")
+        self.AutoRenewFlag = params.get("AutoRenewFlag")
+        self.SecurityGroupList = params.get("SecurityGroupList")
+        self.Weekly = params.get("Weekly")
+        self.StartTime = params.get("StartTime")
+        self.Span = params.get("Span")
+        self.MultiZones = params.get("MultiZones")
+        if params.get("ResourceTags") is not None:
+            self.ResourceTags = []
+            for item in params.get("ResourceTags"):
+                obj = ResourceTag()
+                obj._deserialize(item)
+                self.ResourceTags.append(obj)
+        self.Collation = params.get("Collation")
+        self.TimeZone = params.get("TimeZone")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCloudDBInstancesResponse(AbstractModel):
+    """CreateCloudDBInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealName: 订单名称
+        :type DealName: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DealName = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DealName = params.get("DealName")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateCloudReadOnlyDBInstancesRequest(AbstractModel):
+    """CreateCloudReadOnlyDBInstances请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 主实例ID，格式如：mssql-3l3fgqn7
+        :type InstanceId: str
+        :param Zone: 实例可用区，类似ap-guangzhou-1（广州一区）；实例可售卖区域可以通过接口DescribeZones获取
+        :type Zone: str
+        :param ReadOnlyGroupType: 只读组类型选项，1-按照一个实例一个只读组的方式发货，2-新建只读组后发货，所有实例都在这个只读组下面， 3-发货的所有实例都在已有的只读组下面
+        :type ReadOnlyGroupType: int
+        :param Memory: 实例内存大小，单位GB
+        :type Memory: int
+        :param Storage: 实例磁盘大小，单位GB
+        :type Storage: int
+        :param Cpu: 实例核心数
+        :type Cpu: int
+        :param MachineType: 购买实例的宿主机磁盘类型,CLOUD_HSSD-虚拟机加强型SSD云盘，CLOUD_TSSD-虚拟机极速型SSD云盘，CLOUD_BSSD-虚拟机通用型SSD云盘
+        :type MachineType: str
+        :param ReadOnlyGroupForcedUpgrade: 0-默认不升级主实例，1-强制升级主实例完成ro部署；主实例为非集群版时需要填1，强制升级为集群版。填1 说明您已同意将主实例升级到集群版实例。
+        :type ReadOnlyGroupForcedUpgrade: int
+        :param ReadOnlyGroupId: ReadOnlyGroupType=3时必填,已存在的只读组ID
+        :type ReadOnlyGroupId: str
+        :param ReadOnlyGroupName: ReadOnlyGroupType=2时必填，新建的只读组名称
+        :type ReadOnlyGroupName: str
+        :param ReadOnlyGroupIsOfflineDelay: ReadOnlyGroupType=2时必填，新建的只读组是否开启延迟剔除功能，1-开启，0-关闭。当只读副本与主实例延迟大于阈值后，自动剔除。
+        :type ReadOnlyGroupIsOfflineDelay: int
+        :param ReadOnlyGroupMaxDelayTime: ReadOnlyGroupType=2 且 ReadOnlyGroupIsOfflineDelay=1时必填，新建的只读组延迟剔除的阈值。
+        :type ReadOnlyGroupMaxDelayTime: int
+        :param ReadOnlyGroupMinInGroup: ReadOnlyGroupType=2 且 ReadOnlyGroupIsOfflineDelay=1时必填，新建的只读组延迟剔除后至少保留只读副本的个数。
+        :type ReadOnlyGroupMinInGroup: int
+        :param InstanceChargeType: 付费模式，取值支持 PREPAID（预付费），POSTPAID（后付费）。
+        :type InstanceChargeType: str
+        :param GoodsNum: 本次购买几个只读实例，默认值为1。
+        :type GoodsNum: int
+        :param SubnetId: VPC子网ID，形如subnet-bdoe83fa；SubnetId和VpcId需同时设置或者同时不设置
+        :type SubnetId: str
+        :param VpcId: VPC网络ID，形如vpc-dsp338hz；SubnetId和VpcId需同时设置或者同时不设置
+        :type VpcId: str
+        :param Period: 购买实例周期，默认取值为1，表示一个月。取值不超过48
+        :type Period: int
+        :param SecurityGroupList: 安全组列表，填写形如sg-xxx的安全组ID
+        :type SecurityGroupList: list of str
+        :param AutoVoucher: 是否自动使用代金券；1 - 是，0 - 否，默认不使用
+        :type AutoVoucher: int
+        :param VoucherIds: 代金券ID数组，目前单个订单只能使用一张
+        :type VoucherIds: list of str
+        :param ResourceTags: 新建实例绑定的标签集合
+        :type ResourceTags: list of ResourceTag
+        :param Collation: 系统字符集排序规则，默认：Chinese_PRC_CI_AS
+        :type Collation: str
+        :param TimeZone: 系统时区，默认：China Standard Time
+        :type TimeZone: str
+        """
+        self.InstanceId = None
+        self.Zone = None
+        self.ReadOnlyGroupType = None
+        self.Memory = None
+        self.Storage = None
+        self.Cpu = None
+        self.MachineType = None
+        self.ReadOnlyGroupForcedUpgrade = None
+        self.ReadOnlyGroupId = None
+        self.ReadOnlyGroupName = None
+        self.ReadOnlyGroupIsOfflineDelay = None
+        self.ReadOnlyGroupMaxDelayTime = None
+        self.ReadOnlyGroupMinInGroup = None
+        self.InstanceChargeType = None
+        self.GoodsNum = None
+        self.SubnetId = None
+        self.VpcId = None
+        self.Period = None
+        self.SecurityGroupList = None
+        self.AutoVoucher = None
+        self.VoucherIds = None
+        self.ResourceTags = None
+        self.Collation = None
+        self.TimeZone = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Zone = params.get("Zone")
+        self.ReadOnlyGroupType = params.get("ReadOnlyGroupType")
+        self.Memory = params.get("Memory")
+        self.Storage = params.get("Storage")
+        self.Cpu = params.get("Cpu")
+        self.MachineType = params.get("MachineType")
+        self.ReadOnlyGroupForcedUpgrade = params.get("ReadOnlyGroupForcedUpgrade")
+        self.ReadOnlyGroupId = params.get("ReadOnlyGroupId")
+        self.ReadOnlyGroupName = params.get("ReadOnlyGroupName")
+        self.ReadOnlyGroupIsOfflineDelay = params.get("ReadOnlyGroupIsOfflineDelay")
+        self.ReadOnlyGroupMaxDelayTime = params.get("ReadOnlyGroupMaxDelayTime")
+        self.ReadOnlyGroupMinInGroup = params.get("ReadOnlyGroupMinInGroup")
+        self.InstanceChargeType = params.get("InstanceChargeType")
+        self.GoodsNum = params.get("GoodsNum")
+        self.SubnetId = params.get("SubnetId")
+        self.VpcId = params.get("VpcId")
+        self.Period = params.get("Period")
+        self.SecurityGroupList = params.get("SecurityGroupList")
+        self.AutoVoucher = params.get("AutoVoucher")
+        self.VoucherIds = params.get("VoucherIds")
+        if params.get("ResourceTags") is not None:
+            self.ResourceTags = []
+            for item in params.get("ResourceTags"):
+                obj = ResourceTag()
+                obj._deserialize(item)
+                self.ResourceTags.append(obj)
+        self.Collation = params.get("Collation")
+        self.TimeZone = params.get("TimeZone")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCloudReadOnlyDBInstancesResponse(AbstractModel):
+    """CreateCloudReadOnlyDBInstances返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealNames: 订单名称数组
+        :type DealNames: list of str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DealNames = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.DealNames = params.get("DealNames")
         self.RequestId = params.get("RequestId")
 
 
@@ -2039,6 +2329,12 @@ class DBInstance(AbstractModel):
         :param SlaveZones: 备可用区信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type SlaveZones: :class:`tencentcloud.sqlserver.v20180328.models.SlaveZones`
+        :param Architecture: 架构标识，SINGLE-单节点 DOUBLE-双节点 TRIPLE-三节点
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Architecture: str
+        :param Style: 类型标识，EXCLUSIVE-独享型，SHARED-共享型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Style: str
         """
         self.InstanceId = None
         self.Name = None
@@ -2092,6 +2388,8 @@ class DBInstance(AbstractModel):
         self.TimeZone = None
         self.IsDrZone = None
         self.SlaveZones = None
+        self.Architecture = None
+        self.Style = None
 
 
     def _deserialize(self, params):
@@ -2154,6 +2452,8 @@ class DBInstance(AbstractModel):
         if params.get("SlaveZones") is not None:
             self.SlaveZones = SlaveZones()
             self.SlaveZones._deserialize(params.get("SlaveZones"))
+        self.Architecture = params.get("Architecture")
+        self.Style = params.get("Style")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3687,6 +3987,79 @@ class DescribeDBInstanceInterResponse(AbstractModel):
                 obj = InterInstance()
                 obj._deserialize(item)
                 self.InterInstanceSet.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeDBInstancesAttributeRequest(AbstractModel):
+    """DescribeDBInstancesAttribute请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDBInstancesAttributeResponse(AbstractModel):
+    """DescribeDBInstancesAttribute返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param RegularBackupEnable: 定期备份状态 enable-开启，disable-关闭
+        :type RegularBackupEnable: str
+        :param RegularBackupSaveDays: 定期备份保留天数 [90 - 3650]天
+        :type RegularBackupSaveDays: int
+        :param RegularBackupStrategy: 定期备份策略 years-每年，quarters-每季度，months-每月
+        :type RegularBackupStrategy: str
+        :param RegularBackupCounts: 定期备份保留个数
+        :type RegularBackupCounts: int
+        :param RegularBackupStartTime: 定期备份开始日期，格式-YYYY-MM-DD 默认当前日期
+        :type RegularBackupStartTime: str
+        :param BlockedThreshold: 阻塞进程阈值，单位毫秒
+        :type BlockedThreshold: int
+        :param EventSaveDays: 慢SQL、阻塞、死锁扩展事件文件保留时长
+        :type EventSaveDays: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.InstanceId = None
+        self.RegularBackupEnable = None
+        self.RegularBackupSaveDays = None
+        self.RegularBackupStrategy = None
+        self.RegularBackupCounts = None
+        self.RegularBackupStartTime = None
+        self.BlockedThreshold = None
+        self.EventSaveDays = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.RegularBackupEnable = params.get("RegularBackupEnable")
+        self.RegularBackupSaveDays = params.get("RegularBackupSaveDays")
+        self.RegularBackupStrategy = params.get("RegularBackupStrategy")
+        self.RegularBackupCounts = params.get("RegularBackupCounts")
+        self.RegularBackupStartTime = params.get("RegularBackupStartTime")
+        self.BlockedThreshold = params.get("BlockedThreshold")
+        self.EventSaveDays = params.get("EventSaveDays")
         self.RequestId = params.get("RequestId")
 
 
@@ -5343,6 +5716,80 @@ class DescribeUploadIncrementalInfoResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeXEventsRequest(AbstractModel):
+    """DescribeXEvents请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param EventType: 事件类型，slow-慢SQL事件，blocked-阻塞事件，deadlock-死锁事件
+        :type EventType: str
+        :param StartTime: 扩展文件生成开始时间
+        :type StartTime: str
+        :param EndTime: 扩展文件生成结束时间
+        :type EndTime: str
+        :param Offset: 分页返回，页编号，默认值为第0页
+        :type Offset: int
+        :param Limit: 分页返回，每页返回的数目，取值为1~100，默认值为20
+        :type Limit: int
+        """
+        self.InstanceId = None
+        self.EventType = None
+        self.StartTime = None
+        self.EndTime = None
+        self.Offset = None
+        self.Limit = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.EventType = params.get("EventType")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.Offset = params.get("Offset")
+        self.Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeXEventsResponse(AbstractModel):
+    """DescribeXEvents返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Events: 扩展事件列表
+        :type Events: list of Events
+        :param TotalCount: 扩展事件总数量
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Events = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Events") is not None:
+            self.Events = []
+            for item in params.get("Events"):
+                obj = Events()
+                obj._deserialize(item)
+                self.Events.append(obj)
+        self.TotalCount = params.get("TotalCount")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeZonesRequest(AbstractModel):
     """DescribeZones请求参数结构体
 
@@ -5422,6 +5869,90 @@ class DisassociateSecurityGroupsResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
+
+
+class EventConfig(AbstractModel):
+    """设置实例扩展事件阈值
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventType: 事件类型，slow-设置慢SQL阈值，blocked-设置阻塞、死锁阈值
+        :type EventType: str
+        :param Threshold: 阈值，单位毫秒。0表示关闭，大于0表示开启
+        :type Threshold: int
+        """
+        self.EventType = None
+        self.Threshold = None
+
+
+    def _deserialize(self, params):
+        self.EventType = params.get("EventType")
+        self.Threshold = params.get("Threshold")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Events(AbstractModel):
+    """实例扩展事件详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Id: ID
+        :type Id: int
+        :param FileName: 扩展事件文件名称
+        :type FileName: str
+        :param Size: 扩展事件文件大小
+        :type Size: int
+        :param EventType: 事件类型，slow-慢SQL事件，blocked-阻塞事件，deadlock-死锁事件
+        :type EventType: str
+        :param Status: 事件记录状态，1-成功，2-失败
+        :type Status: int
+        :param StartTime: 扩展文件生成开始时间
+        :type StartTime: str
+        :param EndTime: 扩展文件生成开始时间
+        :type EndTime: str
+        :param InternalAddr: 内网下载地址
+        :type InternalAddr: str
+        :param ExternalAddr: 外网下载地址
+        :type ExternalAddr: str
+        """
+        self.Id = None
+        self.FileName = None
+        self.Size = None
+        self.EventType = None
+        self.Status = None
+        self.StartTime = None
+        self.EndTime = None
+        self.InternalAddr = None
+        self.ExternalAddr = None
+
+
+    def _deserialize(self, params):
+        self.Id = params.get("Id")
+        self.FileName = params.get("FileName")
+        self.Size = params.get("Size")
+        self.EventType = params.get("EventType")
+        self.Status = params.get("Status")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.InternalAddr = params.get("InternalAddr")
+        self.ExternalAddr = params.get("ExternalAddr")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class FileAction(AbstractModel):
@@ -8434,13 +8965,19 @@ class RestoreInstanceRequest(AbstractModel):
         :type TargetInstanceId: str
         :param RenameRestore: 按照ReNameRestoreDatabase中的库进行恢复，并重命名，不填则按照默认方式命名恢复的库，且恢复所有的库。
         :type RenameRestore: list of RenameRestoreDatabase
-        :param GroupId: 备份任务组ID，在单库备份文件模式下，可通过[DescribeBackups](https://cloud.tencent.com/document/product/238/19943) 接口获得。
+        :param Type: 回档类型，0-覆盖方式；1-重命名方式，默认1
+        :type Type: int
+        :param DBList: 需要覆盖回档的数据库，只有覆盖回档时必填
+        :type DBList: list of str
+        :param GroupId: 备份任务组ID，在单库备份文件模式下
         :type GroupId: str
         """
         self.InstanceId = None
         self.BackupId = None
         self.TargetInstanceId = None
         self.RenameRestore = None
+        self.Type = None
+        self.DBList = None
         self.GroupId = None
 
 
@@ -8454,6 +8991,8 @@ class RestoreInstanceRequest(AbstractModel):
                 obj = RenameRestoreDatabase()
                 obj._deserialize(item)
                 self.RenameRestore.append(obj)
+        self.Type = params.get("Type")
+        self.DBList = params.get("DBList")
         self.GroupId = params.get("GroupId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -8496,10 +9035,10 @@ class RollbackInstanceRequest(AbstractModel):
         :type InstanceId: str
         :param Type: 回档类型，0-回档的数据库覆盖原库；1-回档的数据库以重命名的形式生成，不覆盖原库
         :type Type: int
-        :param DBs: 需要回档的数据库
-        :type DBs: list of str
         :param Time: 回档目标时间点
         :type Time: str
+        :param DBs: 需要回档的数据库
+        :type DBs: list of str
         :param TargetInstanceId: 备份恢复到的同一个APPID下的实例ID，不填则恢复到原实例ID
         :type TargetInstanceId: str
         :param RenameRestore: 按照ReNameRestoreDatabase中的库进行重命名，仅在Type = 1重命名回档方式有效；不填则按照默认方式命名库，DBs参数确定要恢复的库
@@ -8507,8 +9046,8 @@ class RollbackInstanceRequest(AbstractModel):
         """
         self.InstanceId = None
         self.Type = None
-        self.DBs = None
         self.Time = None
+        self.DBs = None
         self.TargetInstanceId = None
         self.RenameRestore = None
 
@@ -8516,8 +9055,8 @@ class RollbackInstanceRequest(AbstractModel):
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
         self.Type = params.get("Type")
-        self.DBs = params.get("DBs")
         self.Time = params.get("Time")
+        self.DBs = params.get("DBs")
         self.TargetInstanceId = params.get("TargetInstanceId")
         if params.get("RenameRestore") is not None:
             self.RenameRestore = []
@@ -8963,6 +9502,56 @@ class StartIncrementalMigrationResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.FlowId = params.get("FlowId")
+        self.RequestId = params.get("RequestId")
+
+
+class StartInstanceXEventRequest(AbstractModel):
+    """StartInstanceXEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param EventConfig: 开启、关闭扩展事件
+        :type EventConfig: list of EventConfig
+        """
+        self.InstanceId = None
+        self.EventConfig = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        if params.get("EventConfig") is not None:
+            self.EventConfig = []
+            for item in params.get("EventConfig"):
+                obj = EventConfig()
+                obj._deserialize(item)
+                self.EventConfig.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StartInstanceXEventResponse(AbstractModel):
+    """StartInstanceXEvent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 

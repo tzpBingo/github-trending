@@ -1016,9 +1016,9 @@ class CreateMigrationServiceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SrcDatabaseType: 源实例数据库类型，mysql,redis,percona,mongodb,postgresql,sqlserver,mariadb
+        :param SrcDatabaseType: 源实例数据库类型，如mysql,redis,percona,mongodb,postgresql,sqlserver,mariadb,cynosdbmysql
         :type SrcDatabaseType: str
-        :param DstDatabaseType: 目标实例数据库类型，mysql,redis,percona,mongodb,postgresql,sqlserver,mariadb
+        :param DstDatabaseType: 目标实例数据库类型，如mysql,redis,percona,mongodb,postgresql,sqlserver,mariadb,cynosdbmysql
         :type DstDatabaseType: str
         :param SrcRegion: 源实例地域，如：ap-guangzhou
         :type SrcRegion: str
@@ -1085,6 +1085,47 @@ class CreateMigrationServiceResponse(AbstractModel):
 
     def _deserialize(self, params):
         self.JobIds = params.get("JobIds")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateModifyCheckSyncJobRequest(AbstractModel):
+    """CreateModifyCheckSyncJob请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 同步任务id
+        :type JobId: str
+        """
+        self.JobId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateModifyCheckSyncJobResponse(AbstractModel):
+    """CreateModifyCheckSyncJob返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -2181,7 +2222,9 @@ class DescribeMigrationDetailResponse(AbstractModel):
         :param BriefMsg: 迁移任务简要错误信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type BriefMsg: str
-        :param Status: 任务状态，取值为：created(创建完成)、checking(校验中)、checkPass(校验通过)、checkNotPass(校验不通过)、readyRun(准备运行)、running(任务运行中)、readyComplete(准备完成)、success(任务成功)、failed(任务失败)、stopping(中止中)、completing(完成中)
+        :param Status: 任务状态，取值为：created(创建完成)、checking(校验中)、checkPass(校验通过)、checkNotPass(校验不通过)、readyRun(准备运行)、running(任务运行中)、readyComplete(准备完成)、success(任务成功)、failed(任务失败)、stopping(中止中)、completing(完成中)、
+pausing(暂停中)、
+manualPaused(已暂停)
 注意：此字段可能返回 null，表示取不到有效值。
         :type Status: str
         :param Action: 任务操作信息
@@ -2414,6 +2457,76 @@ class DescribeMigrationJobsResponse(AbstractModel):
                 obj = JobItem()
                 obj._deserialize(item)
                 self.JobList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeModifyCheckSyncJobResultRequest(AbstractModel):
+    """DescribeModifyCheckSyncJobResult请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 同步任务id
+        :type JobId: str
+        """
+        self.JobId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeModifyCheckSyncJobResultResponse(AbstractModel):
+    """DescribeModifyCheckSyncJobResult返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: 校验任务执行状态，如：notStarted(未开始)、running(校验中)、failed(校验任务失败)、success(任务成功)
+        :type Status: str
+        :param StepCount: 校验的步骤总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StepCount: int
+        :param StepCur: 当前所在步骤
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StepCur: int
+        :param Progress: 总体进度，范围为[0,100]	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Progress: int
+        :param StepInfos: 步骤详细信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StepInfos: list of StepInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Status = None
+        self.StepCount = None
+        self.StepCur = None
+        self.Progress = None
+        self.StepInfos = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        self.StepCount = params.get("StepCount")
+        self.StepCur = params.get("StepCur")
+        self.Progress = params.get("Progress")
+        if params.get("StepInfos") is not None:
+            self.StepInfos = []
+            for item in params.get("StepInfos"):
+                obj = StepInfo()
+                obj._deserialize(item)
+                self.StepInfos.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -2765,6 +2878,53 @@ class DifferenceItem(AbstractModel):
         
 
 
+class DynamicOptions(AbstractModel):
+    """数据同步中的选项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param OpTypes: 所要同步的DML和DDL的选项，Insert(插入操作)、Update(更新操作)、Delete(删除操作)、DDL(结构同步)，PartialDDL(自定义,和DdlOptions一起起作用 )；必填、dts会用该值覆盖原有的值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OpTypes: list of str
+        :param DdlOptions: DDL同步选项，具体描述要同步那些DDL; 当OpTypes取值PartialDDL时、字段不能为空；必填、dts会用该值覆盖原有的值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DdlOptions: list of DdlOption
+        :param ConflictHandleType: 冲突处理选项，ReportError(报错)、Ignore(忽略)、Cover(覆盖)、ConditionCover(条件覆盖); 目前目标端为kafka的链路不支持修改该配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConflictHandleType: str
+        :param ConflictHandleOption: 冲突处理的详细选项，如条件覆盖中的条件行和条件操作；不能部分更新该选项的内部字段；有更新时、需要全量更新该字段
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConflictHandleOption: :class:`tencentcloud.dts.v20211206.models.ConflictHandleOption`
+        """
+        self.OpTypes = None
+        self.DdlOptions = None
+        self.ConflictHandleType = None
+        self.ConflictHandleOption = None
+
+
+    def _deserialize(self, params):
+        self.OpTypes = params.get("OpTypes")
+        if params.get("DdlOptions") is not None:
+            self.DdlOptions = []
+            for item in params.get("DdlOptions"):
+                obj = DdlOption()
+                obj._deserialize(item)
+                self.DdlOptions.append(obj)
+        self.ConflictHandleType = params.get("ConflictHandleType")
+        if params.get("ConflictHandleOption") is not None:
+            self.ConflictHandleOption = ConflictHandleOption()
+            self.ConflictHandleOption._deserialize(params.get("ConflictHandleOption"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Endpoint(AbstractModel):
     """数据同步中的描述源端和目的端的信息
 
@@ -3065,7 +3225,9 @@ class JobItem(AbstractModel):
         :param BriefMsg: 迁移任务错误信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type BriefMsg: str
-        :param Status: 任务状态，取值为：creating(创建中)、created(创建完成)、checking(校验中)、checkPass(校验通过)、checkNotPass(校验不通过)、readyRun(准备运行)、running(任务运行)、readyComplete(准备完成)、success(任务成功)、failed(任务失败)、stopping(中止中)、completing(完成中)
+        :param Status: 任务状态，取值为：creating(创建中)、created(创建完成)、checking(校验中)、checkPass(校验通过)、checkNotPass(校验不通过)、readyRun(准备运行)、running(任务运行)、readyComplete(准备完成)、success(任务成功)、failed(任务失败)、stopping(中止中)、completing(完成中)、
+pausing(暂停中)、
+manualPaused(已暂停)
 注意：此字段可能返回 null，表示取不到有效值。
         :type Status: str
         :param RunMode: 任务运行模式，值包括：immediate(立即运行)，timed(定时运行)
@@ -3712,6 +3874,59 @@ class ModifyMigrationJobResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifySyncJobConfigRequest(AbstractModel):
+    """ModifySyncJobConfig请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 同步任务id
+        :type JobId: str
+        :param DynamicObjects: 修改后的同步对象
+        :type DynamicObjects: :class:`tencentcloud.dts.v20211206.models.Objects`
+        :param DynamicOptions: 修改后的同步任务选项
+        :type DynamicOptions: :class:`tencentcloud.dts.v20211206.models.DynamicOptions`
+        """
+        self.JobId = None
+        self.DynamicObjects = None
+        self.DynamicOptions = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        if params.get("DynamicObjects") is not None:
+            self.DynamicObjects = Objects()
+            self.DynamicObjects._deserialize(params.get("DynamicObjects"))
+        if params.get("DynamicOptions") is not None:
+            self.DynamicOptions = DynamicOptions()
+            self.DynamicOptions._deserialize(params.get("DynamicOptions"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifySyncJobConfigResponse(AbstractModel):
+    """ModifySyncJobConfig返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class Objects(AbstractModel):
     """同步的数据库对对象描述
 
@@ -3719,13 +3934,13 @@ class Objects(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Mode: 迁移对象类型 Partial(部分对象)，默认为Partial
+        :param Mode: 同步对象类型 Partial(部分对象)
 注意：此字段可能返回 null，表示取不到有效值。
         :type Mode: str
         :param Databases: 同步对象，当 Mode 为 Partial 时，不为空
 注意：此字段可能返回 null，表示取不到有效值。
         :type Databases: list of Database
-        :param AdvancedObjects: 高级对象类型，如function、procedure，当需要同步高级对象时，初始化类型必须包含结构初始化类型，即Options.InitType字段值为Structure或Full
+        :param AdvancedObjects: 高级对象类型，如function、procedure，当需要同步高级对象时，初始化类型必须包含结构初始化类型，即任务的Options.InitType字段值为Structure或Full
 注意：此字段可能返回 null，表示取不到有效值。
         :type AdvancedObjects: list of str
         :param OnlineDDL: OnlineDDL类型，冗余字段不做配置用途
@@ -4523,6 +4738,47 @@ class StartMigrateJobResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class StartModifySyncJobRequest(AbstractModel):
+    """StartModifySyncJob请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param JobId: 同步任务id
+        :type JobId: str
+        """
+        self.JobId = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StartModifySyncJobResponse(AbstractModel):
+    """StartModifySyncJob返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class StartSyncJobRequest(AbstractModel):
     """StartSyncJob请求参数结构体
 
@@ -4667,7 +4923,7 @@ class StepInfo(AbstractModel):
         :param Warnings: 警告信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Warnings: list of StepTip
-        :param Progress: 当前步骤进度，范围为[0-100]
+        :param Progress: 当前步骤进度，范围为[0-100]，若为-1表示当前步骤不支持查看进度
 注意：此字段可能返回 null，表示取不到有效值。
         :type Progress: int
         """
@@ -5453,7 +5709,7 @@ class View(AbstractModel):
         :param ViewName: view名
 注意：此字段可能返回 null，表示取不到有效值。
         :type ViewName: str
-        :param NewViewName: 新view名
+        :param NewViewName: 预留字段、目前暂时不支持view的重命名
 注意：此字段可能返回 null，表示取不到有效值。
         :type NewViewName: str
         """

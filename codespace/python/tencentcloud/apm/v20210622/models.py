@@ -264,6 +264,12 @@ class ApmInstanceDetail(AbstractModel):
         :param TotalCount: 该实例已上报的总应用数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type TotalCount: int
+        :param LogSet: CLS日志集 | ES集群ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogSet: str
+        :param MetricDuration: Metric数据保存时长
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MetricDuration: int
         """
         self.AmountOfUsedStorage = None
         self.Name = None
@@ -289,6 +295,8 @@ class ApmInstanceDetail(AbstractModel):
         self.LogTopicID = None
         self.ClientCount = None
         self.TotalCount = None
+        self.LogSet = None
+        self.MetricDuration = None
 
 
     def _deserialize(self, params):
@@ -321,6 +329,8 @@ class ApmInstanceDetail(AbstractModel):
         self.LogTopicID = params.get("LogTopicID")
         self.ClientCount = params.get("ClientCount")
         self.TotalCount = params.get("TotalCount")
+        self.LogSet = params.get("LogSet")
+        self.MetricDuration = params.get("MetricDuration")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1021,6 +1031,112 @@ class Line(AbstractModel):
         
 
 
+class ModifyApmInstanceRequest(AbstractModel):
+    """ModifyApmInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param Name: 实例名
+        :type Name: str
+        :param Tags: 标签列表
+        :type Tags: list of ApmTag
+        :param Description: 实例详情
+        :type Description: str
+        :param TraceDuration: Trace数据保存时长
+        :type TraceDuration: int
+        :param OpenBilling: 是否开启计费
+        :type OpenBilling: bool
+        :param SpanDailyCounters: 实例上报额度
+        :type SpanDailyCounters: int
+        :param ErrRateThreshold: 错误率阈值
+        :type ErrRateThreshold: int
+        :param SampleRate: 采样率
+        :type SampleRate: int
+        :param ErrorSample: 是否开启错误采样 0 关 1 开
+        :type ErrorSample: int
+        :param SlowRequestSavedThreshold: 慢请求阈值
+        :type SlowRequestSavedThreshold: int
+        :param IsRelatedLog: 是否开启日志功能 0 关 1 开
+        :type IsRelatedLog: int
+        :param LogRegion: 日志地域
+        :type LogRegion: str
+        :param LogTopicID: CLS日志主题ID | ES 索引名
+        :type LogTopicID: str
+        :param LogSet: CLS日志集 | ES集群ID
+        :type LogSet: str
+        :param LogSource: CLS | ES
+        :type LogSource: str
+        """
+        self.InstanceId = None
+        self.Name = None
+        self.Tags = None
+        self.Description = None
+        self.TraceDuration = None
+        self.OpenBilling = None
+        self.SpanDailyCounters = None
+        self.ErrRateThreshold = None
+        self.SampleRate = None
+        self.ErrorSample = None
+        self.SlowRequestSavedThreshold = None
+        self.IsRelatedLog = None
+        self.LogRegion = None
+        self.LogTopicID = None
+        self.LogSet = None
+        self.LogSource = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.Name = params.get("Name")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = ApmTag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        self.Description = params.get("Description")
+        self.TraceDuration = params.get("TraceDuration")
+        self.OpenBilling = params.get("OpenBilling")
+        self.SpanDailyCounters = params.get("SpanDailyCounters")
+        self.ErrRateThreshold = params.get("ErrRateThreshold")
+        self.SampleRate = params.get("SampleRate")
+        self.ErrorSample = params.get("ErrorSample")
+        self.SlowRequestSavedThreshold = params.get("SlowRequestSavedThreshold")
+        self.IsRelatedLog = params.get("IsRelatedLog")
+        self.LogRegion = params.get("LogRegion")
+        self.LogTopicID = params.get("LogTopicID")
+        self.LogSet = params.get("LogSet")
+        self.LogSource = params.get("LogSource")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyApmInstanceResponse(AbstractModel):
+    """ModifyApmInstance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class OrderBy(AbstractModel):
     """sql排序字段
 
@@ -1079,3 +1195,44 @@ class QueryMetricItem(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class TerminateApmInstanceRequest(AbstractModel):
+    """TerminateApmInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        """
+        self.InstanceId = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TerminateApmInstanceResponse(AbstractModel):
+    """TerminateApmInstance返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")

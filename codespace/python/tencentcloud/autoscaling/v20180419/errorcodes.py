@@ -176,6 +176,9 @@ INVALIDPARAMETERVALUE_INVALIDAUTOSCALINGPOLICYID = 'InvalidParameterValue.Invali
 # 为CLB指定的地域不合法。
 INVALIDPARAMETERVALUE_INVALIDCLBREGION = 'InvalidParameterValue.InvalidClbRegion'
 
+# 指定的置放群组ID格式不正确。
+INVALIDPARAMETERVALUE_INVALIDDISASTERRECOVERGROUPID = 'InvalidParameterValue.InvalidDisasterRecoverGroupId'
+
 # 过滤条件无效。
 INVALIDPARAMETERVALUE_INVALIDFILTER = 'InvalidParameterValue.InvalidFilter'
 
@@ -269,6 +272,9 @@ INVALIDPARAMETERVALUE_SUBNETIDS = 'InvalidParameterValue.SubnetIds'
 # 负载均衡器四层监听器的后端端口重复。
 INVALIDPARAMETERVALUE_TARGETPORTDUPLICATED = 'InvalidParameterValue.TargetPortDuplicated'
 
+# 不支持执行目标追踪策略。
+INVALIDPARAMETERVALUE_TARGETTRACKINGSCALINGPOLICY = 'InvalidParameterValue.TargetTrackingScalingPolicy'
+
 # 指定的阈值不在有效范围。
 INVALIDPARAMETERVALUE_THRESHOLDOUTOFRANGE = 'InvalidParameterValue.ThresholdOutOfRange'
 
@@ -326,6 +332,9 @@ LIMITEXCEEDED_QUOTANOTENOUGH = 'LimitExceeded.QuotaNotEnough'
 # 定时任务数量超过限制。
 LIMITEXCEEDED_SCHEDULEDACTIONLIMITEXCEEDED = 'LimitExceeded.ScheduledActionLimitExceeded'
 
+# 每个伸缩组限制创建一个目标追踪策略。
+LIMITEXCEEDED_TARGETTRACKINGSCALINGPOLICY = 'LimitExceeded.TargetTrackingScalingPolicy'
+
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
 
@@ -373,6 +382,9 @@ RESOURCENOTFOUND_CMQQUEUENOTFOUND = 'ResourceNotFound.CmqQueueNotFound'
 
 # 命令不存在。
 RESOURCENOTFOUND_COMMANDNOTFOUND = 'ResourceNotFound.CommandNotFound'
+
+# 指定的置放群组ID不存在。
+RESOURCENOTFOUND_DISASTERRECOVERGROUPNOTFOUND = 'ResourceNotFound.DisasterRecoverGroupNotFound'
 
 # 指定的实例不存在。
 RESOURCENOTFOUND_INSTANCESNOTFOUND = 'ResourceNotFound.InstancesNotFound'
@@ -475,6 +487,9 @@ RESOURCEUNAVAILABLE_TDMQCMQTOPICHASNOSUBSCRIBER = 'ResourceUnavailable.TDMQCMQTo
 
 # 指定的可用区不可用。
 RESOURCEUNAVAILABLE_ZONEUNAVAILABLE = 'ResourceUnavailable.ZoneUnavailable'
+
+# 未授权弹性伸缩预设服务角色AS_QCSRole，请前往弹性伸缩控制台进行授权。
+UNAUTHORIZEDOPERATION_AUTOSCALINGROLEUNAUTHORIZED = 'UnauthorizedOperation.AutoScalingRoleUnauthorized'
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'

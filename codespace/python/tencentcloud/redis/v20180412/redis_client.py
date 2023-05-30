@@ -165,7 +165,7 @@ class RedisClient(AbstractClient):
 
 
     def ChangeReplicaToMaster(self, request):
-        """该接口仅支持多AZ实例副本组提主和单AZ副本提主
+        """本接口（ChangeReplicaToMaster）适用于实例副本组提主或副本提主。
 
         :param request: Request instance for ChangeReplicaToMaster.
         :type request: :class:`tencentcloud.redis.v20180412.models.ChangeReplicaToMasterRequest`
@@ -233,6 +233,29 @@ class RedisClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CloneInstances(self, request):
+        """本接口（CloneInstances）用于基于当前实例的备份文件克隆一个完整的新实例。
+
+        :param request: Request instance for CloneInstances.
+        :type request: :class:`tencentcloud.redis.v20180412.models.CloneInstancesRequest`
+        :rtype: :class:`tencentcloud.redis.v20180412.models.CloneInstancesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CloneInstances", params, headers=headers)
+            response = json.loads(body)
+            model = models.CloneInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CloseSSL(self, request):
         """关闭SSL
 
@@ -280,7 +303,7 @@ class RedisClient(AbstractClient):
 
 
     def CreateInstances(self, request):
-        """本接口(CreateInstances)用于创建redis实例。
+        """本接口（CreateInstances）用于创建 Redis 实例。
 
         :param request: Request instance for CreateInstances.
         :type request: :class:`tencentcloud.redis.v20180412.models.CreateInstancesRequest`
@@ -418,7 +441,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeAutoBackupConfig(self, request):
-        """获取备份配置
+        """本接口（DescribeAutoBackupConfig）用于获取自动备份配置规则。
 
         :param request: Request instance for DescribeAutoBackupConfig.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeAutoBackupConfigRequest`
@@ -486,6 +509,29 @@ class RedisClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeBandwidthRange(self, request):
+        """本接口（DescribeBandwidthRange）用于查询实例带宽信息。
+
+        :param request: Request instance for DescribeBandwidthRange.
+        :type request: :class:`tencentcloud.redis.v20180412.models.DescribeBandwidthRangeRequest`
+        :rtype: :class:`tencentcloud.redis.v20180412.models.DescribeBandwidthRangeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBandwidthRange", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBandwidthRangeResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeCommonDBInstances(self, request):
         """查询Redis实例列表信息。该接口已废弃。
 
@@ -510,7 +556,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeDBSecurityGroups(self, request):
-        """本接口(DescribeDBSecurityGroups)用于查询实例的安全组详情。
+        """本接口（DescribeDBSecurityGroups）用于查询实例的安全组详情。
 
         :param request: Request instance for DescribeDBSecurityGroups.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeDBSecurityGroupsRequest`
@@ -533,7 +579,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceAccount(self, request):
-        """查看实例子账号信息
+        """本接口（DescribeInstanceAccount）用于查看实例子账号信息。
 
         :param request: Request instance for DescribeInstanceAccount.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceAccountRequest`
@@ -602,7 +648,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceDealDetail(self, request):
-        """查询订单信息
+        """本接口（DescribeInstanceDealDetail）用于查询订单信息。
 
         :param request: Request instance for DescribeInstanceDealDetail.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceDealDetailRequest`
@@ -809,7 +855,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceNodeInfo(self, request):
-        """查询实例节点信息
+        """本接口（DescribeInstanceNodeInfo）用于查询实例节点信息。
 
         :param request: Request instance for DescribeInstanceNodeInfo.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceNodeInfoRequest`
@@ -855,7 +901,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceParams(self, request):
-        """查询实例参数列表
+        """本接口（DescribeInstanceParams）用于查询实例参数列表。
 
         :param request: Request instance for DescribeInstanceParams.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceParamsRequest`
@@ -878,7 +924,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceSecurityGroup(self, request):
-        """查询实例安全组信息
+        """本接口（DescribeInstanceSecurityGroup）用于查询实例安全组信息。
 
         :param request: Request instance for DescribeInstanceSecurityGroup.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceSecurityGroupRequest`
@@ -901,7 +947,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceShards(self, request):
-        """获取集群版实例分片信息
+        """本接口（DescribeInstanceShards）用于获取集群架构实例的分片信息。
 
         :param request: Request instance for DescribeInstanceShards.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceShardsRequest`
@@ -924,7 +970,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstanceZoneInfo(self, request):
-        """查询Redis节点详细信息
+        """本接口（DescribeInstanceZoneInfo）用于查询 Redis 节点详细信息。
 
         :param request: Request instance for DescribeInstanceZoneInfo.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstanceZoneInfoRequest`
@@ -947,7 +993,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeInstances(self, request):
-        """查询Redis实例列表
+        """本接口（DescribeInstances）用于查询Redis实例列表。
 
         :param request: Request instance for DescribeInstances.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeInstancesRequest`
@@ -993,7 +1039,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeParamTemplateInfo(self, request):
-        """查询参数模板详情。
+        """本接口（DescribeParamTemplateInfo）用于查询参数模板详情。
 
         :param request: Request instance for DescribeParamTemplateInfo.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeParamTemplateInfoRequest`
@@ -1154,7 +1200,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeSSLStatus(self, request):
-        """查询SSL状态
+        """本接口（DescribeSSLStatus）用于查询实例 SSL 认证相关信息，包括开启状态、配置状态、证书地址等。
 
         :param request: Request instance for DescribeSSLStatus.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeSSLStatusRequest`
@@ -1223,7 +1269,7 @@ class RedisClient(AbstractClient):
 
 
     def DescribeTaskList(self, request):
-        """查询任务列表信息
+        """本接口（DescribeTaskList）用于查询指定实例的任务列表信息。
 
         :param request: Request instance for DescribeTaskList.
         :type request: :class:`tencentcloud.redis.v20180412.models.DescribeTaskListRequest`
@@ -1453,7 +1499,7 @@ class RedisClient(AbstractClient):
 
 
     def KillMasterGroup(self, request):
-        """模拟故障
+        """本接口（KillMasterGroup）模拟故障。
 
         :param request: Request instance for KillMasterGroup.
         :type request: :class:`tencentcloud.redis.v20180412.models.KillMasterGroupRequest`
@@ -1476,7 +1522,7 @@ class RedisClient(AbstractClient):
 
 
     def ManualBackupInstance(self, request):
-        """手动备份Redis实例
+        """本接口（ManualBackupInstance）用于手动备份Redis实例。
 
         :param request: Request instance for ManualBackupInstance.
         :type request: :class:`tencentcloud.redis.v20180412.models.ManualBackupInstanceRequest`
@@ -1499,7 +1545,7 @@ class RedisClient(AbstractClient):
 
 
     def ModfiyInstancePassword(self, request):
-        """修改redis密码
+        """本接口（ModfiyInstancePassword）用于修改实例访问密码。
 
         :param request: Request instance for ModfiyInstancePassword.
         :type request: :class:`tencentcloud.redis.v20180412.models.ModfiyInstancePasswordRequest`
@@ -1522,7 +1568,7 @@ class RedisClient(AbstractClient):
 
 
     def ModifyAutoBackupConfig(self, request):
-        """设置自动备份配置
+        """本接口（ModifyAutoBackupConfig）用于设置自动备份的配置。
 
         :param request: Request instance for ModifyAutoBackupConfig.
         :type request: :class:`tencentcloud.redis.v20180412.models.ModifyAutoBackupConfigRequest`
@@ -1811,6 +1857,29 @@ class RedisClient(AbstractClient):
             body = self.call("ReleaseWanAddress", params, headers=headers)
             response = json.loads(body)
             model = models.ReleaseWanAddressResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def RemoveReplicationInstance(self, request):
+        """移除复制组成员
+
+        :param request: Request instance for RemoveReplicationInstance.
+        :type request: :class:`tencentcloud.redis.v20180412.models.RemoveReplicationInstanceRequest`
+        :rtype: :class:`tencentcloud.redis.v20180412.models.RemoveReplicationInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RemoveReplicationInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.RemoveReplicationInstanceResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

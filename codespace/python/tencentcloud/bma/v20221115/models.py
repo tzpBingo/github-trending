@@ -51,6 +51,8 @@ class BrandData(AbstractModel):
         :type InsertTime: str
         :param Services: 服务信息
         :type Services: :class:`tencentcloud.bma.v20221115.models.ServiceData`
+        :param Uin: 账号id
+        :type Uin: str
         """
         self.CompanyId = None
         self.CompanyName = None
@@ -65,6 +67,7 @@ class BrandData(AbstractModel):
         self.Trademarks = None
         self.InsertTime = None
         self.Services = None
+        self.Uin = None
 
 
     def _deserialize(self, params):
@@ -88,6 +91,7 @@ class BrandData(AbstractModel):
         if params.get("Services") is not None:
             self.Services = ServiceData()
             self.Services._deserialize(params.get("Services"))
+        self.Uin = params.get("Uin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -108,6 +112,8 @@ class CreateBPBrandRequest(AbstractModel):
         :type BrandName: str
         :param CompanyName: 企业名称
         :type CompanyName: str
+        :param BrandLogo: 品牌logo
+        :type BrandLogo: str
         :param Phone: 联系电话
         :type Phone: str
         :param License: 营业执照
@@ -130,9 +136,12 @@ class CreateBPBrandRequest(AbstractModel):
         :type ProtectOfficialAccounts: list of str
         :param ProtectMiniPrograms: 保护小程序
         :type ProtectMiniPrograms: list of str
+        :param APISource: 请求来源：0-反钓鱼 2-反假冒
+        :type APISource: int
         """
         self.BrandName = None
         self.CompanyName = None
+        self.BrandLogo = None
         self.Phone = None
         self.License = None
         self.Authorization = None
@@ -144,11 +153,13 @@ class CreateBPBrandRequest(AbstractModel):
         self.ProtectAPPs = None
         self.ProtectOfficialAccounts = None
         self.ProtectMiniPrograms = None
+        self.APISource = None
 
 
     def _deserialize(self, params):
         self.BrandName = params.get("BrandName")
         self.CompanyName = params.get("CompanyName")
+        self.BrandLogo = params.get("BrandLogo")
         self.Phone = params.get("Phone")
         self.License = params.get("License")
         self.Authorization = params.get("Authorization")
@@ -160,6 +171,7 @@ class CreateBPBrandRequest(AbstractModel):
         self.ProtectAPPs = params.get("ProtectAPPs")
         self.ProtectOfficialAccounts = params.get("ProtectOfficialAccounts")
         self.ProtectMiniPrograms = params.get("ProtectMiniPrograms")
+        self.APISource = params.get("APISource")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -891,6 +903,9 @@ class FakeURLData(AbstractModel):
         :param Snapshot: 网址截图
 注意：此字段可能返回 null，表示取不到有效值。
         :type Snapshot: str
+        :param AccountStatus: 账户资源状态：0-不可用 1-可用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccountStatus: int
         """
         self.FakeURLId = None
         self.BrandName = None
@@ -913,6 +928,7 @@ class FakeURLData(AbstractModel):
         self.InsertTime = None
         self.CertificationStatus = None
         self.Snapshot = None
+        self.AccountStatus = None
 
 
     def _deserialize(self, params):
@@ -937,6 +953,7 @@ class FakeURLData(AbstractModel):
         self.InsertTime = params.get("InsertTime")
         self.CertificationStatus = params.get("CertificationStatus")
         self.Snapshot = params.get("Snapshot")
+        self.AccountStatus = params.get("AccountStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -954,10 +971,8 @@ class Filter(AbstractModel):
     def __init__(self):
         r"""
         :param Name: 过滤参数键
-注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param Value: 过滤参数值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Value: str
         """
         self.Name = None

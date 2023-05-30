@@ -139,6 +139,9 @@ class AlarmIndicatorInfo(AbstractModel):
         :param Operator: 实时任务告警需要的参数
 注意：此字段可能返回 null，表示取不到有效值。
         :type Operator: int
+        :param AlarmIndicatorUnit: 告警指标阈值单位：ms(毫秒)、s(秒)、min(分钟)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmIndicatorUnit: str
         """
         self.Id = None
         self.AlarmIndicator = None
@@ -146,6 +149,7 @@ class AlarmIndicatorInfo(AbstractModel):
         self.TriggerType = None
         self.EstimatedTime = None
         self.Operator = None
+        self.AlarmIndicatorUnit = None
 
 
     def _deserialize(self, params):
@@ -155,6 +159,7 @@ class AlarmIndicatorInfo(AbstractModel):
         self.TriggerType = params.get("TriggerType")
         self.EstimatedTime = params.get("EstimatedTime")
         self.Operator = params.get("Operator")
+        self.AlarmIndicatorUnit = params.get("AlarmIndicatorUnit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1861,12 +1866,15 @@ class CommitRuleGroupTaskRequest(AbstractModel):
         :type ExecConfig: :class:`tencentcloud.wedata.v20210820.models.RuleExecConfig`
         :param ProjectId: 项目ID
         :type ProjectId: str
+        :param EngineType: 该规则运行的执行引擎，不传时会请求该数据源下默认的执行引擎
+        :type EngineType: str
         """
         self.RuleGroupId = None
         self.TriggerType = None
         self.ExecRuleConfig = None
         self.ExecConfig = None
         self.ProjectId = None
+        self.EngineType = None
 
 
     def _deserialize(self, params):
@@ -1882,6 +1890,7 @@ class CommitRuleGroupTaskRequest(AbstractModel):
             self.ExecConfig = RuleExecConfig()
             self.ExecConfig._deserialize(params.get("ExecConfig"))
         self.ProjectId = params.get("ProjectId")
+        self.EngineType = params.get("EngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2759,16 +2768,21 @@ class CreateOfflineTaskResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param TaskId: 任务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskId: str
         :param Data: 结果
         :type Data: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.TaskId = None
         self.Data = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
         self.Data = params.get("Data")
         self.RequestId = params.get("RequestId")
 
@@ -2955,6 +2969,8 @@ class CreateRuleRequest(AbstractModel):
         :type FieldConfig: :class:`tencentcloud.wedata.v20210820.models.RuleFieldConfig`
         :param TargetObjectValue: 目标字段名称  CITY
         :type TargetObjectValue: str
+        :param SourceEngineTypes: 该规则支持的执行引擎列表
+        :type SourceEngineTypes: list of int non-negative
         """
         self.ProjectId = None
         self.RuleGroupId = None
@@ -2979,6 +2995,7 @@ class CreateRuleRequest(AbstractModel):
         self.RelConditionExpr = None
         self.FieldConfig = None
         self.TargetObjectValue = None
+        self.SourceEngineTypes = None
 
 
     def _deserialize(self, params):
@@ -3009,6 +3026,7 @@ class CreateRuleRequest(AbstractModel):
             self.FieldConfig = RuleFieldConfig()
             self.FieldConfig._deserialize(params.get("FieldConfig"))
         self.TargetObjectValue = params.get("TargetObjectValue")
+        self.SourceEngineTypes = params.get("SourceEngineTypes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3498,6 +3516,9 @@ class DataSourceInfo(AbstractModel):
         :param BizParamsString: BizParams json字符串
 注意：此字段可能返回 null，表示取不到有效值。
         :type BizParamsString: str
+        :param ModifiedTime: 修改时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ModifiedTime: int
         """
         self.DatabaseName = None
         self.Description = None
@@ -3528,6 +3549,7 @@ class DataSourceInfo(AbstractModel):
         self.CreateTime = None
         self.ParamsString = None
         self.BizParamsString = None
+        self.ModifiedTime = None
 
 
     def _deserialize(self, params):
@@ -3560,6 +3582,7 @@ class DataSourceInfo(AbstractModel):
         self.CreateTime = params.get("CreateTime")
         self.ParamsString = params.get("ParamsString")
         self.BizParamsString = params.get("BizParamsString")
+        self.ModifiedTime = params.get("ModifiedTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3708,6 +3731,9 @@ class DatasourceBaseInfo(AbstractModel):
         :param ClusterId: 数据源所属的集群id
 注意：此字段可能返回 null，表示取不到有效值。
         :type ClusterId: str
+        :param Version: 数据源版本信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Version: str
         """
         self.DatabaseNames = None
         self.Description = None
@@ -3717,6 +3743,7 @@ class DatasourceBaseInfo(AbstractModel):
         self.Region = None
         self.Type = None
         self.ClusterId = None
+        self.Version = None
 
 
     def _deserialize(self, params):
@@ -3728,6 +3755,7 @@ class DatasourceBaseInfo(AbstractModel):
         self.Region = params.get("Region")
         self.Type = params.get("Type")
         self.ClusterId = params.get("ClusterId")
+        self.Version = params.get("Version")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5097,13 +5125,22 @@ class DescribeDatabaseInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
+        :param Filters: 过滤参数
+        :type Filters: list of Filter
         :param ConnectionType: 如果是hive这里写rpc，如果是其他类型不传
         :type ConnectionType: str
         """
+        self.Filters = None
         self.ConnectionType = None
 
 
     def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self.Filters.append(obj)
         self.ConnectionType = params.get("ConnectionType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -5121,13 +5158,22 @@ class DescribeDatabaseInfoListResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param DatabaseInfo: 数据库列表
+        :type DatabaseInfo: list of DatabaseInfo
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self.DatabaseInfo = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
+        if params.get("DatabaseInfo") is not None:
+            self.DatabaseInfo = []
+            for item in params.get("DatabaseInfo"):
+                obj = DatabaseInfo()
+                obj._deserialize(item)
+                self.DatabaseInfo.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -7140,6 +7186,109 @@ class DescribeOfflineTaskTokenResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeOperateTasksRequest(AbstractModel):
+    """DescribeOperateTasks请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProjectId: 项目id
+        :type ProjectId: str
+        :param FolderIdList: 文件夹id，多个文件夹以逗号分隔
+        :type FolderIdList: str
+        :param WorkFlowIdList: 工作流id，多个工作流id之间以英文字符逗号分隔
+        :type WorkFlowIdList: str
+        :param WorkFlowNameList: 工作流名称，多个工作流名称之间以英文字符逗号分隔
+        :type WorkFlowNameList: str
+        :param TaskNameList: 任务名称，多个任务名称之间以英文字符逗号分隔
+        :type TaskNameList: str
+        :param TaskIdList: 任务id，多个任务id之间以英文字符逗号分隔
+        :type TaskIdList: str
+        :param PageNumber: 页号
+        :type PageNumber: str
+        :param PageSize: 分页大小
+        :type PageSize: str
+        :param SortItem: 排序字段，支持字段为FirstSubmitTime和FirstRunTime，标识最近提交和首次执行事件
+        :type SortItem: str
+        :param SortType: 排序类型。两种取值 DESC、ASC
+        :type SortType: str
+        :param InChargeList: 责任人，多个责任人之间以英文字符逗号分隔
+        :type InChargeList: str
+        :param TaskTypeIdList: 任务类型Id字符串，多个任务类型id之间以英文字符逗号分隔
+        :type TaskTypeIdList: str
+        :param StatusList: 任务状态字符串，多个任务状态之间以英文字符逗号分隔
+        :type StatusList: str
+        :param TaskCycleUnitList: 任务周期类型字符串，多个任务周期之间以英文字符逗号分隔
+        :type TaskCycleUnitList: str
+        :param ProductNameList: 任务所属产品类型
+        :type ProductNameList: str
+        """
+        self.ProjectId = None
+        self.FolderIdList = None
+        self.WorkFlowIdList = None
+        self.WorkFlowNameList = None
+        self.TaskNameList = None
+        self.TaskIdList = None
+        self.PageNumber = None
+        self.PageSize = None
+        self.SortItem = None
+        self.SortType = None
+        self.InChargeList = None
+        self.TaskTypeIdList = None
+        self.StatusList = None
+        self.TaskCycleUnitList = None
+        self.ProductNameList = None
+
+
+    def _deserialize(self, params):
+        self.ProjectId = params.get("ProjectId")
+        self.FolderIdList = params.get("FolderIdList")
+        self.WorkFlowIdList = params.get("WorkFlowIdList")
+        self.WorkFlowNameList = params.get("WorkFlowNameList")
+        self.TaskNameList = params.get("TaskNameList")
+        self.TaskIdList = params.get("TaskIdList")
+        self.PageNumber = params.get("PageNumber")
+        self.PageSize = params.get("PageSize")
+        self.SortItem = params.get("SortItem")
+        self.SortType = params.get("SortType")
+        self.InChargeList = params.get("InChargeList")
+        self.TaskTypeIdList = params.get("TaskTypeIdList")
+        self.StatusList = params.get("StatusList")
+        self.TaskCycleUnitList = params.get("TaskCycleUnitList")
+        self.ProductNameList = params.get("ProductNameList")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeOperateTasksResponse(AbstractModel):
+    """DescribeOperateTasks返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: 任务列表信息
+        :type Data: :class:`tencentcloud.wedata.v20210820.models.TaskInfoPage`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = TaskInfoPage()
+            self.Data._deserialize(params.get("Data"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeOrganizationalFunctionsRequest(AbstractModel):
     """DescribeOrganizationalFunctions请求参数结构体
 
@@ -7516,18 +7665,26 @@ class DescribeRealTimeTaskMetricOverviewRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 无
+        :param TaskId: 要查看的实时任务的任务Id
         :type TaskId: str
         :param ProjectId: 无
         :type ProjectId: str
+        :param StartTime: 开始时间
+        :type StartTime: int
+        :param EndTime: 结束时间
+        :type EndTime: int
         """
         self.TaskId = None
         self.ProjectId = None
+        self.StartTime = None
+        self.EndTime = None
 
 
     def _deserialize(self, params):
         self.TaskId = params.get("TaskId")
         self.ProjectId = params.get("ProjectId")
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9147,14 +9304,18 @@ class DescribeRulesRequest(AbstractModel):
         :type ProjectId: str
         :param RuleGroupId: 规则组id
         :type RuleGroupId: int
+        :param EngineType: 该规则运行的执行引擎，不传时会请求该数据源下默认的执行引擎
+        :type EngineType: str
         """
         self.ProjectId = None
         self.RuleGroupId = None
+        self.EngineType = None
 
 
     def _deserialize(self, params):
         self.ProjectId = params.get("ProjectId")
         self.RuleGroupId = params.get("RuleGroupId")
+        self.EngineType = params.get("EngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11295,6 +11456,8 @@ class GenHiveTableDDLSqlRequest(AbstractModel):
         :type AddPositionDeletes: int
         :param AddDeleteFiles: 增加的delete file数量阈值
         :type AddDeleteFiles: int
+        :param TargetDatasourceId: 下游节点数据源ID
+        :type TargetDatasourceId: str
         """
         self.ProjectId = None
         self.SinkDatabase = None
@@ -11316,6 +11479,7 @@ class GenHiveTableDDLSqlRequest(AbstractModel):
         self.AddEqualityDeletes = None
         self.AddPositionDeletes = None
         self.AddDeleteFiles = None
+        self.TargetDatasourceId = None
 
 
     def _deserialize(self, params):
@@ -11354,6 +11518,7 @@ class GenHiveTableDDLSqlRequest(AbstractModel):
         self.AddEqualityDeletes = params.get("AddEqualityDeletes")
         self.AddPositionDeletes = params.get("AddPositionDeletes")
         self.AddDeleteFiles = params.get("AddDeleteFiles")
+        self.TargetDatasourceId = params.get("TargetDatasourceId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11646,6 +11811,9 @@ class InLongAgentDetail(AbstractModel):
         :param AgentTotal: agent数量
 注意：此字段可能返回 null，表示取不到有效值。
         :type AgentTotal: int
+        :param LifeDays: 生命周期
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LifeDays: int
         """
         self.AgentId = None
         self.AgentName = None
@@ -11660,6 +11828,7 @@ class InLongAgentDetail(AbstractModel):
         self.AgentGroupId = None
         self.CvmAgentStatusList = None
         self.AgentTotal = None
+        self.LifeDays = None
 
 
     def _deserialize(self, params):
@@ -11681,6 +11850,7 @@ class InLongAgentDetail(AbstractModel):
                 obj._deserialize(item)
                 self.CvmAgentStatusList.append(obj)
         self.AgentTotal = params.get("AgentTotal")
+        self.LifeDays = params.get("LifeDays")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13175,6 +13345,8 @@ MONTH_CYCLE:M
         :type DatasourceId: str
         :param TableId: 数据表Id
         :type TableId: str
+        :param ExecEngineType: 运行的执行引擎，不传时会请求该数据源下默认的执行引擎
+        :type ExecEngineType: str
         """
         self.RuleGroupId = None
         self.MonitorType = None
@@ -13192,6 +13364,7 @@ MONTH_CYCLE:M
         self.DatabaseId = None
         self.DatasourceId = None
         self.TableId = None
+        self.ExecEngineType = None
 
 
     def _deserialize(self, params):
@@ -13216,6 +13389,7 @@ MONTH_CYCLE:M
         self.DatabaseId = params.get("DatabaseId")
         self.DatasourceId = params.get("DatasourceId")
         self.TableId = params.get("TableId")
+        self.ExecEngineType = params.get("ExecEngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -13612,6 +13786,8 @@ class ModifyRuleRequest(AbstractModel):
         :type FieldConfig: :class:`tencentcloud.wedata.v20210820.models.RuleFieldConfig`
         :param TargetObjectValue: 目标字段名称  CITY
         :type TargetObjectValue: str
+        :param SourceEngineTypes: 该规则适配的执行引擎
+        :type SourceEngineTypes: list of int non-negative
         """
         self.ProjectId = None
         self.RuleId = None
@@ -13635,6 +13811,7 @@ class ModifyRuleRequest(AbstractModel):
         self.RelConditionExpr = None
         self.FieldConfig = None
         self.TargetObjectValue = None
+        self.SourceEngineTypes = None
 
 
     def _deserialize(self, params):
@@ -13664,6 +13841,7 @@ class ModifyRuleRequest(AbstractModel):
             self.FieldConfig = RuleFieldConfig()
             self.FieldConfig._deserialize(params.get("FieldConfig"))
         self.TargetObjectValue = params.get("TargetObjectValue")
+        self.SourceEngineTypes = params.get("SourceEngineTypes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15759,6 +15937,9 @@ class Rule(AbstractModel):
         :param TargetObjectValue: 目标字段名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type TargetObjectValue: str
+        :param SourceEngineTypes: 源端对应的引擎类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SourceEngineTypes: list of int non-negative
         """
         self.RuleId = None
         self.RuleGroupId = None
@@ -15794,6 +15975,7 @@ class Rule(AbstractModel):
         self.TargetObjectDataType = None
         self.TargetObjectDataTypeName = None
         self.TargetObjectValue = None
+        self.SourceEngineTypes = None
 
 
     def _deserialize(self, params):
@@ -15835,6 +16017,7 @@ class Rule(AbstractModel):
         self.TargetObjectDataType = params.get("TargetObjectDataType")
         self.TargetObjectDataTypeName = params.get("TargetObjectDataTypeName")
         self.TargetObjectValue = params.get("TargetObjectValue")
+        self.SourceEngineTypes = params.get("SourceEngineTypes")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15958,14 +16141,19 @@ class RuleExecConfig(AbstractModel):
         :param ExecutorGroupId: 执行资源组
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExecutorGroupId: str
+        :param EngineType: 运行的执行引擎，不传时会请求该数据源下默认的执行引擎
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EngineType: str
         """
         self.QueueName = None
         self.ExecutorGroupId = None
+        self.EngineType = None
 
 
     def _deserialize(self, params):
         self.QueueName = params.get("QueueName")
         self.ExecutorGroupId = params.get("ExecutorGroupId")
+        self.EngineType = params.get("EngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16582,6 +16770,9 @@ class RuleGroupExecResult(AbstractModel):
         :param ExecDetail: 执行详情，调度计划或者关联生产任务ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ExecDetail: str
+        :param EngineType: 实际执行引擎
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EngineType: str
         """
         self.RuleGroupExecId = None
         self.RuleGroupId = None
@@ -16597,6 +16788,7 @@ class RuleGroupExecResult(AbstractModel):
         self.DatasourceId = None
         self.Permission = None
         self.ExecDetail = None
+        self.EngineType = None
 
 
     def _deserialize(self, params):
@@ -16614,6 +16806,7 @@ class RuleGroupExecResult(AbstractModel):
         self.DatasourceId = params.get("DatasourceId")
         self.Permission = params.get("Permission")
         self.ExecDetail = params.get("ExecDetail")
+        self.EngineType = params.get("EngineType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -16701,6 +16894,12 @@ class RuleGroupExecStrategy(AbstractModel):
         :param TaskAction: 时间指定
 注意：此字段可能返回 null，表示取不到有效值。
         :type TaskAction: str
+        :param ExecEngineType: 运行的执行引擎，不传时会请求该数据源下默认的执行引擎
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExecEngineType: str
+        :param ExecPlan: 执行计划
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExecPlan: str
         """
         self.RuleGroupId = None
         self.MonitorType = None
@@ -16714,6 +16913,8 @@ class RuleGroupExecStrategy(AbstractModel):
         self.DelayTime = None
         self.CycleStep = None
         self.TaskAction = None
+        self.ExecEngineType = None
+        self.ExecPlan = None
 
 
     def _deserialize(self, params):
@@ -16734,6 +16935,8 @@ class RuleGroupExecStrategy(AbstractModel):
         self.DelayTime = params.get("DelayTime")
         self.CycleStep = params.get("CycleStep")
         self.TaskAction = params.get("TaskAction")
+        self.ExecEngineType = params.get("ExecEngineType")
+        self.ExecPlan = params.get("ExecPlan")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17744,10 +17947,8 @@ class SearchConditionInstance(AbstractModel):
         :param ExecutionSpace: 执行空间 "DRY_RUN"
         :type ExecutionSpace: int
         :param ProductName: 产品名称，可选
-注意：此字段可能返回 null，表示取不到有效值。
         :type ProductName: int
         :param ResourceGroup: 资源组
-注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceGroup: int
         """
         self.ExecutionSpace = None
@@ -19351,6 +19552,47 @@ class TaskInfoDataPage(AbstractModel):
                 obj._deserialize(item)
                 self.Items.append(obj)
         self.TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TaskInfoPage(AbstractModel):
+    """任务分页查询
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PageNumber: 页号
+        :type PageNumber: int
+        :param PageSize: 页大小
+        :type PageSize: int
+        :param Items: 工作流列表信息
+        :type Items: list of TaskCanvasInfo
+        :param TotalPage: 总页数
+        :type TotalPage: int
+        """
+        self.PageNumber = None
+        self.PageSize = None
+        self.Items = None
+        self.TotalPage = None
+
+
+    def _deserialize(self, params):
+        self.PageNumber = params.get("PageNumber")
+        self.PageSize = params.get("PageSize")
+        if params.get("Items") is not None:
+            self.Items = []
+            for item in params.get("Items"):
+                obj = TaskCanvasInfo()
+                obj._deserialize(item)
+                self.Items.append(obj)
+        self.TotalPage = params.get("TotalPage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

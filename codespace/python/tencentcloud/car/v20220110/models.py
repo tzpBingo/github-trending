@@ -86,17 +86,27 @@ class CreateSessionRequest(AbstractModel):
         :type UserId: str
         :param UserIp: 用户IP，用户客户端的公网IP，用于就近调度
         :type UserIp: str
-        :param ClientSession: 客户端session信息，从SDK请求中获得
+        :param ClientSession: 客户端session信息，从SDK请求中获得。特殊的，当 RunMode 参数为 RunWithoutClient 时，该字段可以为空
         :type ClientSession: str
         :param RunMode: 云端运行模式。
 RunWithoutClient：允许无客户端连接的情况下仍保持云端 App 运行
 默认值（空）：要求必须有客户端连接才会保持云端 App 运行。
         :type RunMode: str
+        :param HostUserId: 【多人互动】房主用户ID，在多人互动模式下为必填字段。
+如果该用户是房主，HostUserId需要和UserId保持一致；
+如果该用户非房主，HostUserId需要填写房主的HostUserId。
+        :type HostUserId: str
+        :param Role: 【多人互动】角色。
+Player：玩家（可通过键鼠等操作应用）
+Viewer：观察者（只能观看，无法操作）
+        :type Role: str
         """
         self.UserId = None
         self.UserIp = None
         self.ClientSession = None
         self.RunMode = None
+        self.HostUserId = None
+        self.Role = None
 
 
     def _deserialize(self, params):
@@ -104,6 +114,8 @@ RunWithoutClient：允许无客户端连接的情况下仍保持云端 App 运�
         self.UserIp = params.get("UserIp")
         self.ClientSession = params.get("ClientSession")
         self.RunMode = params.get("RunMode")
+        self.HostUserId = params.get("HostUserId")
+        self.Role = params.get("Role")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -160,6 +172,88 @@ class DestroySessionRequest(AbstractModel):
 
 class DestroySessionResponse(AbstractModel):
     """DestroySession返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class StartPublishStreamRequest(AbstractModel):
+    """StartPublishStream请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserId: 唯一用户身份标识，由业务方自定义，平台不予理解。（UserId将作为StreamId进行推流，比如绑定推流域名为abc.livepush.myqcloud.com，那么推流地址为rtmp://abc.livepush.myqcloud.com/live/UserId?txSecret=xxx&txTime=xxx）
+        :type UserId: str
+        """
+        self.UserId = None
+
+
+    def _deserialize(self, params):
+        self.UserId = params.get("UserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StartPublishStreamResponse(AbstractModel):
+    """StartPublishStream返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class StopPublishStreamRequest(AbstractModel):
+    """StopPublishStream请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param UserId: 唯一用户身份标识，由业务方自定义，平台不予理解。（可根据业务需要决定使用用户的唯一身份标识或是使用时间戳随机生成；在用户重连时应保持UserId不变）
+        :type UserId: str
+        """
+        self.UserId = None
+
+
+    def _deserialize(self, params):
+        self.UserId = params.get("UserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StopPublishStreamResponse(AbstractModel):
+    """StopPublishStream返回参数结构体
 
     """
 

@@ -23,6 +23,12 @@ FAILEDOPERATION_CHECKIFSUPPORTPODSTRETCH = 'FailedOperation.CheckIfSupportPodStr
 # 重复的订单，请检查emr控制台。
 FAILEDOPERATION_DUPLICATEORDERNOTALLOWED = 'FailedOperation.DuplicateOrderNotAllowed'
 
+# 获取cam角色失败。
+FAILEDOPERATION_GETCAMROLEFAILED = 'FailedOperation.GetCamRoleFailed'
+
+# 调用cam服务失败。
+FAILEDOPERATION_GETCAMSERVERFAILED = 'FailedOperation.GetCamServerFailed'
+
 # 操作失败，不支持pod。
 FAILEDOPERATION_NOTSUPPORTPOD = 'FailedOperation.NotSupportPod'
 
@@ -94,6 +100,9 @@ INTERNALERROR_WOODSERVERERROR = 'InternalError.WoodServerError'
 
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
+
+# 参数错误。
+INVALIDPARAMETER_APPIDRESOURCENOTMATCH = 'InvalidParameter.AppIdResourceNotMatch'
 
 # 展示策略错误。
 INVALIDPARAMETER_DISPLAYSTRATEGYNOTMATCH = 'InvalidParameter.DisplayStrategyNotMatch'
@@ -199,6 +208,9 @@ INVALIDPARAMETER_INVALIDMETATYPE = 'InvalidParameter.InvalidMetaType'
 
 # 变配规格无效。
 INVALIDPARAMETER_INVALIDMODIFYSPEC = 'InvalidParameter.InvalidModifySpec'
+
+# 不合法的节点类型。
+INVALIDPARAMETER_INVALIDNODEFLAG = 'InvalidParameter.InvalidNodeFlag'
 
 # 无效的NodeType。
 INVALIDPARAMETER_INVALIDNODETYPE = 'InvalidParameter.InvalidNodeType'
@@ -329,6 +341,9 @@ INVALIDPARAMETERVALUE_INVALIDTKEINSTANCE = 'InvalidParameterValue.InvalidTkeInst
 # 引导脚本数量超过限制。
 LIMITEXCEEDED_BOOTSTRAPACTIONSNUMLIMITEXCEEDED = 'LimitExceeded.BootstrapActionsNumLimitExceeded'
 
+# 安全组数量超过限制。
+LIMITEXCEEDED_SECURITYGROUPNUMLIMITEXCEEDED = 'LimitExceeded.SecurityGroupNumLimitExceeded'
+
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
 
@@ -376,6 +391,9 @@ RESOURCESSOLDOUT_CBSSOLDOUT = 'ResourcesSoldOut.CbsSoldOut'
 
 # 云服务器已售罄。
 RESOURCESSOLDOUT_CVMSOLDOUT = 'ResourcesSoldOut.CvmSoldOut'
+
+# 校验账号操作无权限。
+UNAUTHORIZEDOPERATION_CHECKCAMAUTH = 'UnauthorizedOperation.CheckCamAuth'
 
 # 未知参数错误。
 UNKNOWNPARAMETER = 'UnknownParameter'

@@ -35,6 +35,9 @@ INTERNALERROR = 'InternalError'
 # 后台处理出错。
 INTERNALERROR_BACKENDERROR = 'InternalError.BackendError'
 
+# 配置已被锁定，请解除配置锁定之后在重试。
+INTERNALERROR_CONFIGLOCKED = 'InternalError.ConfigLocked'
+
 # 数据库错误。
 INTERNALERROR_DBERROR = 'InternalError.DBError'
 
@@ -110,8 +113,14 @@ INVALIDPARAMETER_CERTTOOSHORTKEYSIZE = 'InvalidParameter.CertTooShortKeySize'
 # 证书错误。
 INVALIDPARAMETER_CERTUNSUPPORTEDTYPE = 'InvalidParameter.CertUnsupportedType'
 
+# IPv6 访问与客户端 IP 地理位置功能冲突。
+INVALIDPARAMETER_CLIENTIPCOUNTRYCONFLICTSWITHIPV6 = 'InvalidParameter.ClientIpCountryConflictsWithIpv6'
+
 # CNAME模式下无法申请泛域名证书。
 INVALIDPARAMETER_CNAMEWILDHOSTNOTALLOWAPPLYCERTIFICATE = 'InvalidParameter.CnameWildHostNotAllowApplyCertificate'
+
+# 源站不能和域名一致。
+INVALIDPARAMETER_CONFLICTHOSTORIGIN = 'InvalidParameter.ConflictHostOrigin'
 
 # 域名不存在或不属于该账号。
 INVALIDPARAMETER_DOMAINNOTFOUND = 'InvalidParameter.DomainNotFound'
@@ -173,6 +182,9 @@ INVALIDPARAMETER_ERRINVALIDCONDITIONVALUETOOLONGVALUE = 'InvalidParameter.ErrInv
 # 非法条件-非法参数值-正则表达式数量超出限制。
 INVALIDPARAMETER_ERRINVALIDCONDITIONVALUETOOMANYREGULAR = 'InvalidParameter.ErrInvalidConditionValueTooManyRegular'
 
+# 非法条件-非法参数值-参数值数量超出限制。
+INVALIDPARAMETER_ERRINVALIDCONDITIONVALUETOOMANYVALUES = 'InvalidParameter.ErrInvalidConditionValueTooManyValues'
+
 # 非法条件-非法参数值-通配符数量超出限制。
 INVALIDPARAMETER_ERRINVALIDCONDITIONVALUETOOMANYWILDCARD = 'InvalidParameter.ErrInvalidConditionValueTooManyWildcard'
 
@@ -212,8 +224,14 @@ INVALIDPARAMETER_INVALIDCACHECONFIGFOLLOWORIGIN = 'InvalidParameter.InvalidCache
 # 无效的缓存键。
 INVALIDPARAMETER_INVALIDCACHEKEY = 'InvalidParameter.InvalidCacheKey'
 
+# 无效的缓存键忽略大小写。
+INVALIDPARAMETER_INVALIDCACHEKEYIGNORECASE = 'InvalidParameter.InvalidCacheKeyIgnoreCase'
+
 # 无效的查询字符串。
 INVALIDPARAMETER_INVALIDCACHEKEYQUERYSTRINGVALUE = 'InvalidParameter.InvalidCacheKeyQueryStringValue'
+
+# 无效的自定义Cache Key Scheme无效。
+INVALIDPARAMETER_INVALIDCACHEKEYSCHEME = 'InvalidParameter.InvalidCacheKeyScheme'
 
 # 无效的节点缓存。
 INVALIDPARAMETER_INVALIDCACHEONLYONSWITCH = 'InvalidParameter.InvalidCacheOnlyOnSwitch'
@@ -227,6 +245,9 @@ INVALIDPARAMETER_INVALIDCERTINFO = 'InvalidParameter.InvalidCertInfo'
 # 无效的客户端IP请求头。
 INVALIDPARAMETER_INVALIDCLIENTIPHEADERNAME = 'InvalidParameter.InvalidClientIpHeaderName'
 
+# 分区域回源的源站无效。
+INVALIDPARAMETER_INVALIDCLIENTIPORIGIN = 'InvalidParameter.InvalidClientIpOrigin'
+
 # 无效的智能加速。
 INVALIDPARAMETER_INVALIDDYNAMICROUTINE = 'InvalidParameter.InvalidDynamicRoutine'
 
@@ -234,10 +255,19 @@ INVALIDPARAMETER_INVALIDDYNAMICROUTINE = 'InvalidParameter.InvalidDynamicRoutine
 INVALIDPARAMETER_INVALIDDYNAMICROUTINEBILLING = 'InvalidParameter.InvalidDynamicRoutineBilling'
 
 # 无效的自定义错误页面。
+INVALIDPARAMETER_INVALIDERRORPAGE = 'InvalidParameter.InvalidErrorPage'
+
+# 无效的自定义错误页面。
 INVALIDPARAMETER_INVALIDERRORPAGEREDIRECTURL = 'InvalidParameter.InvalidErrorPageRedirectUrl'
 
 # 无效的HTTPS。
 INVALIDPARAMETER_INVALIDHTTPS = 'InvalidParameter.InvalidHttps'
+
+# 无效的HTTPS证书。
+INVALIDPARAMETER_INVALIDHTTPSCERTINFO = 'InvalidParameter.InvalidHttpsCertInfo'
+
+# 加密套件与TLS版本不匹配。
+INVALIDPARAMETER_INVALIDHTTPSCIPHERSUITEANDTLSVERSION = 'InvalidParameter.InvalidHttpsCipherSuiteAndTlsVersion'
 
 # 无效的HTTPS HSTS。
 INVALIDPARAMETER_INVALIDHTTPSHSTSMAXAGE = 'InvalidParameter.InvalidHttpsHstsMaxAge'
@@ -262,6 +292,9 @@ INVALIDPARAMETER_INVALIDPOSTSIZEVALUE = 'InvalidParameter.InvalidPostSizeValue'
 
 # 套餐包不支持Quic配置。
 INVALIDPARAMETER_INVALIDQUICBILLING = 'InvalidParameter.InvalidQuicBilling'
+
+# 无效的分片回源。
+INVALIDPARAMETER_INVALIDRANGEORIGINPULL = 'InvalidParameter.InvalidRangeOriginPull'
 
 # 无效的请求头header。
 INVALIDPARAMETER_INVALIDREQUESTHEADERNAME = 'InvalidParameter.InvalidRequestHeaderName'
@@ -302,6 +335,9 @@ INVALIDPARAMETER_INVALIDRULEENGINETARGETSURL = 'InvalidParameter.InvalidRuleEngi
 # 无效的回源Host。
 INVALIDPARAMETER_INVALIDSERVERNAME = 'InvalidParameter.InvalidServerName'
 
+# 无效的回源请求参数设置-无效查询字符串值。
+INVALIDPARAMETER_INVALIDUPSTREAMREQUESTQUERYSTRINGVALUE = 'InvalidParameter.InvalidUpstreamRequestQueryStringValue'
+
 # URL重写的目标HOST无效。
 INVALIDPARAMETER_INVALIDURLREDIRECTHOST = 'InvalidParameter.InvalidUrlRedirectHost'
 
@@ -323,7 +359,7 @@ INVALIDPARAMETER_ORIGINISINNERIP = 'InvalidParameter.OriginIsInnerIp'
 # 修改源站操作中源站组Id必填。
 INVALIDPARAMETER_ORIGINORIGINGROUPIDISREQUIRED = 'InvalidParameter.OriginOriginGroupIdIsRequired'
 
-# 参数错误。
+# 参数错误: 无效 "结束时间", 不在允许的查询范围内: [开始时间, 开始+ 7天]
 INVALIDPARAMETER_PARAMETERERROR = 'InvalidParameter.ParameterError'
 
 # 套餐不存在。
@@ -358,6 +394,9 @@ INVALIDPARAMETER_ZONENOTFOUND = 'InvalidParameter.ZoneNotFound'
 
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
+
+# 与已经添加的记录冲突。
+INVALIDPARAMETERVALUE_CONFLICTRECORD = 'InvalidParameterValue.ConflictRecord'
 
 # DNS 记录与 DNSSEC 功能冲突。
 INVALIDPARAMETERVALUE_CONFLICTWITHDNSSEC = 'InvalidParameterValue.ConflictWithDNSSEC'
@@ -398,6 +437,12 @@ LIMITEXCEEDED_RATELIMITEXCEEDED = 'LimitExceeded.RateLimitExceeded'
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'
 
+# 请联系商务开启「中国大陆网络优化(国际加速)」功能。
+OPERATIONDENIED_ACCELERATEMAINLANDDISABLE = 'OperationDenied.AccelerateMainlandDisable'
+
+# 有域名在共享cname组内，不可切换接入类型。
+OPERATIONDENIED_DOMAININSHARECNAMEGROUP = 'OperationDenied.DomainInShareCnameGroup'
+
 # 域名被封禁，暂时无法操作。
 OPERATIONDENIED_DOMAINISBLOCKED = 'OperationDenied.DomainIsBlocked'
 
@@ -422,11 +467,17 @@ OPERATIONDENIED_NSNOTALLOWTRAFFICSTRATEGY = 'OperationDenied.NSNotAllowTrafficSt
 # DNS 记录不允许添加。
 OPERATIONDENIED_RECORDISFORBIDDEN = 'OperationDenied.RecordIsForbidden'
 
+# 当前有互相排斥的请求操作并行发起，请稍后重试。
+OPERATIONDENIED_RESOURCELOCKEDTEMPORARY = 'OperationDenied.ResourceLockedTemporary'
+
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
 
 # 资源被本账号别称域名占用。
 RESOURCEINUSE_ALIASDOMAIN = 'ResourceInUse.AliasDomain'
+
+# 当前已存在相同的别称域名，不支持重复添加
+RESOURCEINUSE_ALIASNAME = 'ResourceInUse.AliasName'
 
 # 资源被本账号Cname接入占用。
 RESOURCEINUSE_CNAME = 'ResourceInUse.Cname'
@@ -476,6 +527,9 @@ RESOURCEINSUFFICIENT = 'ResourceInsufficient'
 # 资源不存在。
 RESOURCENOTFOUND = 'ResourceNotFound'
 
+# 最大上传大小额度未配置
+RESOURCENOTFOUND_POSTMAXSIZEQUOTANOTFOUND = 'ResourceNotFound.PostMaxSizeQuotaNotFound'
+
 # 资源不可用。
 RESOURCEUNAVAILABLE = 'ResourceUnavailable'
 
@@ -517,3 +571,6 @@ UNAUTHORIZEDOPERATION_UNKNOWN = 'UnauthorizedOperation.Unknown'
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
+
+# 别称域名不支持目标域名源站类型为对象存储。
+UNSUPPORTEDOPERATION_TARGETNAMEORIGINTYPECOS = 'UnsupportedOperation.TargetNameOriginTypeCos'

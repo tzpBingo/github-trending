@@ -215,7 +215,7 @@ class DescribeTaskListRequest(AbstractModel):
         :type TaskTitle: str
         :param TaskTag: 标签键
         :type TaskTag: list of str
-        :param TaskStatus: 状态
+        :param TaskStatus: 任务状态(1001 -- 未开始 1002 -- 进行中 1003 -- 暂停中 1004 -- 任务结束)
         :type TaskStatus: int
         :param TaskStartTime: 开始时间，固定格式%Y-%m-%d %H:%M:%S
         :type TaskStartTime: str
@@ -737,6 +737,12 @@ class Task(AbstractModel):
         :param Tags: 标签列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of TagWithDescribe
+        :param TaskPlanId: 关联的演练计划ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskPlanId: int
+        :param TaskPlanTitle: 关联的演练计划名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskPlanTitle: str
         """
         self.TaskId = None
         self.TaskTitle = None
@@ -759,6 +765,8 @@ class Task(AbstractModel):
         self.TaskMonitors = None
         self.TaskPolicy = None
         self.Tags = None
+        self.TaskPlanId = None
+        self.TaskPlanTitle = None
 
 
     def _deserialize(self, params):
@@ -800,6 +808,8 @@ class Task(AbstractModel):
                 obj = TagWithDescribe()
                 obj._deserialize(item)
                 self.Tags.append(obj)
+        self.TaskPlanId = params.get("TaskPlanId")
+        self.TaskPlanTitle = params.get("TaskPlanTitle")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

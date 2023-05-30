@@ -35,8 +35,14 @@ FAILEDOPERATION_FLOWHASDOCUMENT = 'FailedOperation.FlowHasDocument'
 # 流程未找到关联的电子文件信息，请检查操作步骤，检查参数，并在修改后重试。
 FAILEDOPERATION_FLOWHASNODOCUMENT = 'FailedOperation.FlowHasNoDocument'
 
+# 当前无可用的许可
+FAILEDOPERATION_LICENSENOQUOTA = 'FailedOperation.LicenseNoQuota'
+
 # 签署审核未通过，请先完成审核。
 FAILEDOPERATION_NOSIGNREVIEWPASS = 'FailedOperation.NoSignReviewPass'
+
+# 未找到集团子企业相关用户信息，请检查用户相关参数
+FAILEDOPERATION_NOTFOUNDSHADOWUSER = 'FailedOperation.NotFoundShadowUser'
 
 # 企业经营状态与工商局信息不符。
 FAILEDOPERATION_ORGANIZATIONEXPERIENCECHANGE = 'FailedOperation.OrganizationExperienceChange'
@@ -245,6 +251,9 @@ INVALIDPARAMETER_INVALIDVERIFYCHANNEL = 'InvalidParameter.InvalidVerifyChannel'
 # 验证码不正确。
 INVALIDPARAMETER_INVALIDVERIFYCODE = 'InvalidParameter.InvalidVerifyCode'
 
+# Limit参数超出最大限制
+INVALIDPARAMETER_LIMIT = 'InvalidParameter.Limit'
+
 # 缺少必填控件的值。
 INVALIDPARAMETER_MISSINGREQUIREDCOMPONENTVALUE = 'InvalidParameter.MissingRequiredComponentValue'
 
@@ -256,6 +265,9 @@ INVALIDPARAMETER_NAME = 'InvalidParameter.Name'
 
 # 不支持的通知类型，请检查并联系客服处理。
 INVALIDPARAMETER_NOTIFYTYPE = 'InvalidParameter.NotifyType'
+
+# 参数Offset不正确
+INVALIDPARAMETER_OFFSET = 'InvalidParameter.Offset'
 
 # 不合法的企业名称，请修改后重试。
 INVALIDPARAMETER_ORGANIZATIONNAME = 'InvalidParameter.OrganizationName'
@@ -499,6 +511,9 @@ OPERATIONDENIED_SERVERSIGNNOALLOWCOMPONENT = 'OperationDenied.ServerSignNoAllowC
 
 # 静默签署不支持手写签名，请配置印章并使用印章重试。
 OPERATIONDENIED_SERVERSIGNNOSUPPORTSIGNATURE = 'OperationDenied.ServerSignNoSupportSignature'
+
+# 子企业暂未加入。
+OPERATIONDENIED_SUBORGNOTJOIN = 'OperationDenied.SubOrgNotJoin'
 
 # 用户不归属于当前企业，无法操作，请检查后重试。
 OPERATIONDENIED_USERNOTINORGANIZATION = 'OperationDenied.UserNotInOrganization'

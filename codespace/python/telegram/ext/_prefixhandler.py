@@ -127,20 +127,14 @@ class PrefixHandler(BaseHandler[Update, CCT]):
         prefix: SCT[str],
         command: SCT[str],
         callback: HandlerCallback[Update, CCT, RT],
-        filters: filters_module.BaseFilter = None,
+        filters: Optional[filters_module.BaseFilter] = None,
         block: DVType[bool] = DEFAULT_TRUE,
     ):
         super().__init__(callback=callback, block=block)
 
-        if isinstance(prefix, str):
-            prefixes = {prefix.lower()}
-        else:
-            prefixes = {x.lower() for x in prefix}
+        prefixes = {prefix.lower()} if isinstance(prefix, str) else {x.lower() for x in prefix}
 
-        if isinstance(command, str):
-            commands = {command.lower()}
-        else:
-            commands = {x.lower() for x in command}
+        commands = {command.lower()} if isinstance(command, str) else {x.lower() for x in command}
 
         self.commands: FrozenSet[str] = frozenset(
             p + c for p, c in itertools.product(prefixes, commands)

@@ -49,6 +49,29 @@ class WafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def AddCustomWhiteRule(self, request):
+        """增加精准白名单规则
+
+        :param request: Request instance for AddCustomWhiteRule.
+        :type request: :class:`tencentcloud.waf.v20180125.models.AddCustomWhiteRuleRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.AddCustomWhiteRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AddCustomWhiteRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.AddCustomWhiteRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def AddDomainWhiteRule(self, request):
         """增加域名规则白名单
 
@@ -118,6 +141,29 @@ class WafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateHost(self, request):
+        """clb-waf中添加防护的域名
+
+        :param request: Request instance for CreateHost.
+        :type request: :class:`tencentcloud.waf.v20180125.models.CreateHostRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.CreateHostResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateHost", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateHostResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteAccessExport(self, request):
         """本接口用于删除访问日志导出
 
@@ -164,9 +210,31 @@ class WafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteCustomWhiteRule(self, request):
+        """删除精准白名单规则
+
+        :param request: Request instance for DeleteCustomWhiteRule.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DeleteCustomWhiteRuleRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DeleteCustomWhiteRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteCustomWhiteRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteCustomWhiteRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteDomainWhiteRules(self, request):
         """删除域名规则白名单
-
 
         :param request: Request instance for DeleteDomainWhiteRules.
         :type request: :class:`tencentcloud.waf.v20180125.models.DeleteDomainWhiteRulesRequest`
@@ -556,6 +624,52 @@ class WafClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribePeakPoints(self, request):
+        """查询业务和攻击概要趋势
+
+        :param request: Request instance for DescribePeakPoints.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribePeakPointsRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribePeakPointsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribePeakPoints", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribePeakPointsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribePeakValue(self, request):
+        """获取业务和攻击概览峰值
+
+        :param request: Request instance for DescribePeakValue.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribePeakValueRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribePeakValueResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribePeakValue", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribePeakValueResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribePolicyStatus(self, request):
         """获取防护状态以及生效的实例id
 
@@ -639,6 +753,29 @@ class WafClient(AbstractClient):
             body = self.call("DescribeUserClbWafRegions", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeUserClbWafRegionsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeVipInfo(self, request):
+        """根据过滤条件查询VIP信息
+
+        :param request: Request instance for DescribeVipInfo.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribeVipInfoRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribeVipInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeVipInfo", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeVipInfoResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -741,7 +878,7 @@ class WafClient(AbstractClient):
 
 
     def ModifyAccessPeriod(self, request):
-        """本接口用于修改访问日志保存期限
+        """本接口用于修改访问日志保存期限及大字段是否存储
 
         :param request: Request instance for ModifyAccessPeriod.
         :type request: :class:`tencentcloud.waf.v20180125.models.ModifyAccessPeriodRequest`
@@ -800,6 +937,29 @@ class WafClient(AbstractClient):
             body = self.call("ModifyCustomRuleStatus", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyCustomRuleStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyCustomWhiteRule(self, request):
+        """编辑精准白名单
+
+        :param request: Request instance for ModifyCustomWhiteRule.
+        :type request: :class:`tencentcloud.waf.v20180125.models.ModifyCustomWhiteRuleRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.ModifyCustomWhiteRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyCustomWhiteRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyCustomWhiteRuleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

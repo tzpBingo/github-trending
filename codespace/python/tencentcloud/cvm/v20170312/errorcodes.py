@@ -212,6 +212,9 @@ INVALIDPARAMETER = 'InvalidParameter'
 # 最多指定一个参数。
 INVALIDPARAMETER_ATMOSTONE = 'InvalidParameter.AtMostOne'
 
+# 不支持参数CdcId。
+INVALIDPARAMETER_CDCNOTSUPPORTED = 'InvalidParameter.CdcNotSupported'
+
 # DataDiskIds不应该传入RootDisk的Id。
 INVALIDPARAMETER_DATADISKIDCONTAINSROOTDISK = 'InvalidParameter.DataDiskIdContainsRootDisk'
 
@@ -260,7 +263,7 @@ INVALIDPARAMETER_LACKCORECOUNTORTHREADPERCORE = 'InvalidParameter.LackCoreCountO
 # 本地数据盘不支持创建实例镜像。
 INVALIDPARAMETER_LOCALDATADISKNOTSUPPORT = 'InvalidParameter.LocalDataDiskNotSupport'
 
-# 不支持同时指定密钥登陆和保持镜像登陆方式。
+# 不支持同时指定密钥登录和保持镜像登录方式。
 INVALIDPARAMETER_PARAMETERCONFLICT = 'InvalidParameter.ParameterConflict'
 
 # 不支持设置登录密码。
@@ -394,6 +397,9 @@ INVALIDPARAMETERVALUE_INVALIDIMAGEID = 'InvalidParameterValue.InvalidImageId'
 
 # 镜像无法用于重装当前实例。
 INVALIDPARAMETERVALUE_INVALIDIMAGEIDFORRETSETINSTANCE = 'InvalidParameterValue.InvalidImageIdForRetsetInstance'
+
+# 指定的镜像ID为共享镜像。
+INVALIDPARAMETERVALUE_INVALIDIMAGEIDISSHARED = 'InvalidParameterValue.InvalidImageIdIsShared'
 
 # 当前地域不支持指定镜像所包含的操作系统。
 INVALIDPARAMETERVALUE_INVALIDIMAGEOSNAME = 'InvalidParameterValue.InvalidImageOsName'
@@ -668,6 +674,9 @@ REGIONABILITYLIMIT_UNSUPPORTEDTOIMPORTIMAGE = 'RegionAbilityLimit.UnsupportedToI
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
 
+# 磁盘回滚正在执行中，请稍后再试。
+RESOURCEINUSE_DISKROLLBACKING = 'ResourceInUse.DiskRollbacking'
+
 # 高性能计算集群使用中。
 RESOURCEINUSE_HPCCLUSTER = 'ResourceInUse.HpcCluster'
 
@@ -682,6 +691,9 @@ RESOURCEINSUFFICIENT_CLOUDDISKUNAVAILABLE = 'ResourceInsufficient.CloudDiskUnava
 
 # 实例个数超过容灾组的配额
 RESOURCEINSUFFICIENT_DISASTERRECOVERGROUPCVMQUOTA = 'ResourceInsufficient.DisasterRecoverGroupCvmQuota'
+
+# 安全组资源配额不足。
+RESOURCEINSUFFICIENT_INSUFFICIENTGROUPQUOTA = 'ResourceInsufficient.InsufficientGroupQuota'
 
 # 指定的实例类型库存不足。
 RESOURCEINSUFFICIENT_SPECIFIEDINSTANCETYPE = 'ResourceInsufficient.SpecifiedInstanceType'
@@ -920,7 +932,7 @@ UNSUPPORTEDOPERATION_ONLYFORPREPAIDACCOUNT = 'UnsupportedOperation.OnlyForPrepai
 # 无效的原机型。
 UNSUPPORTEDOPERATION_ORIGINALINSTANCETYPEINVALID = 'UnsupportedOperation.OriginalInstanceTypeInvalid'
 
-# 你的账户不支持镜像预热
+# 您的账户不支持镜像预热
 UNSUPPORTEDOPERATION_PREHEATIMAGE = 'UnsupportedOperation.PreheatImage'
 
 # 公共镜像或市场镜像不支持导出。

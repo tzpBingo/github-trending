@@ -114,14 +114,39 @@ class CloudNativeAPIGatewayNode(AbstractModel):
         :type NodeId: str
         :param NodeIp: 节点 ip
         :type NodeIp: str
+        :param ZoneId: Zone id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ZoneId: str
+        :param Zone: Zone
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Zone: str
+        :param GroupId: 分组ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupId: str
+        :param GroupName: 分组名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GroupName: str
+        :param Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
         """
         self.NodeId = None
         self.NodeIp = None
+        self.ZoneId = None
+        self.Zone = None
+        self.GroupId = None
+        self.GroupName = None
+        self.Status = None
 
 
     def _deserialize(self, params):
         self.NodeId = params.get("NodeId")
         self.NodeIp = params.get("NodeIp")
+        self.ZoneId = params.get("ZoneId")
+        self.Zone = params.get("Zone")
+        self.GroupId = params.get("GroupId")
+        self.GroupName = params.get("GroupName")
+        self.Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -961,13 +986,10 @@ class EngineRegionInfo(AbstractModel):
     def __init__(self):
         r"""
         :param EngineRegion: 引擎节点所在地域
-注意：此字段可能返回 null，表示取不到有效值。
         :type EngineRegion: str
         :param Replica: 此地域节点分配数量
-注意：此字段可能返回 null，表示取不到有效值。
         :type Replica: int
         :param VpcInfos: 集群网络信息
-注意：此字段可能返回 null，表示取不到有效值。
         :type VpcInfos: list of VpcInfo
         """
         self.EngineRegion = None
@@ -1075,6 +1097,9 @@ class EnvInfo(AbstractModel):
         :type EnvDesc: str
         :param ClientBandWidth: 客户端带宽
         :type ClientBandWidth: int
+        :param EnableConfigIntranet: 客户端内网开关
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnableConfigIntranet: bool
         """
         self.EnvName = None
         self.VpcInfos = None
@@ -1090,6 +1115,7 @@ class EnvInfo(AbstractModel):
         self.AliasEnvName = None
         self.EnvDesc = None
         self.ClientBandWidth = None
+        self.EnableConfigIntranet = None
 
 
     def _deserialize(self, params):
@@ -1112,6 +1138,7 @@ class EnvInfo(AbstractModel):
         self.AliasEnvName = params.get("AliasEnvName")
         self.EnvDesc = params.get("EnvDesc")
         self.ClientBandWidth = params.get("ClientBandWidth")
+        self.EnableConfigIntranet = params.get("EnableConfigIntranet")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

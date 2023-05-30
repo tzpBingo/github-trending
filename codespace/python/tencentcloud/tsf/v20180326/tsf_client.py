@@ -279,6 +279,29 @@ class TsfClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateApiRateLimitRuleWithDetailResp(self, request):
+        """创建API限流规则,并返回规则信息
+
+        :param request: Request instance for CreateApiRateLimitRuleWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreateApiRateLimitRuleWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreateApiRateLimitRuleWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateApiRateLimitRuleWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateApiRateLimitRuleWithDetailRespResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateApplication(self, request):
         """创建应用
 
@@ -371,6 +394,52 @@ class TsfClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateConfigTemplateWithDetailResp(self, request):
+        """创建参数模板,并返回模版详细信息
+
+        :param request: Request instance for CreateConfigTemplateWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreateConfigTemplateWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreateConfigTemplateWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateConfigTemplateWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateConfigTemplateWithDetailRespResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateConfigWithDetailResp(self, request):
+        """创建配置项，返回详细信息
+
+        :param request: Request instance for CreateConfigWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreateConfigWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreateConfigWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateConfigWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateConfigWithDetailRespResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateContainGroup(self, request):
         """（已废弃，请使用 CreateGroup 和 DeployContainerGroup 创建和部署容器部署组）创建容器部署组
 
@@ -408,6 +477,29 @@ class TsfClient(AbstractClient):
             body = self.call("CreateFileConfig", params, headers=headers)
             response = json.loads(body)
             model = models.CreateFileConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateFileConfigWithDetailResp(self, request):
+        """创建文件配置项，返回详细信息
+
+        :param request: Request instance for CreateFileConfigWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreateFileConfigWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreateFileConfigWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateFileConfigWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateFileConfigWithDetailRespResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -601,6 +693,29 @@ class TsfClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreatePathRewritesWithDetailResp(self, request):
+        """创建路径重写，并返回路径重写规则信息
+
+        :param request: Request instance for CreatePathRewritesWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreatePathRewritesWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreatePathRewritesWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreatePathRewritesWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreatePathRewritesWithDetailRespResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreatePublicConfig(self, request):
         """创建公共配置项
 
@@ -615,6 +730,29 @@ class TsfClient(AbstractClient):
             body = self.call("CreatePublicConfig", params, headers=headers)
             response = json.loads(body)
             model = models.CreatePublicConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreatePublicConfigWithDetailResp(self, request):
+        """创建公共配置项，并返回配置项详细信息
+
+        :param request: Request instance for CreatePublicConfigWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreatePublicConfigWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreatePublicConfigWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreatePublicConfigWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreatePublicConfigWithDetailRespResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -693,6 +831,29 @@ class TsfClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateUnitNamespaces(self, request):
+        """批量创建单元化命名空间
+
+        :param request: Request instance for CreateUnitNamespaces.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreateUnitNamespacesRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreateUnitNamespacesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateUnitNamespaces", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateUnitNamespacesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateUnitRule(self, request):
         """创建单元化规则
 
@@ -716,6 +877,29 @@ class TsfClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateUnitRuleWithDetailResp(self, request):
+        """创建单元化规则, 并返回详细信息
+
+        :param request: Request instance for CreateUnitRuleWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.CreateUnitRuleWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.CreateUnitRuleWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateUnitRuleWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateUnitRuleWithDetailRespResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteApiGroup(self, request):
         """删除Api分组
 
@@ -730,6 +914,29 @@ class TsfClient(AbstractClient):
             body = self.call("DeleteApiGroup", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteApiGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteApiRateLimitRule(self, request):
+        """删除API限流规则
+
+        :param request: Request instance for DeleteApiRateLimitRule.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.DeleteApiRateLimitRuleRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.DeleteApiRateLimitRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteApiRateLimitRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteApiRateLimitRuleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -868,6 +1075,29 @@ class TsfClient(AbstractClient):
             body = self.call("DeleteFileConfig", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteFileConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteGatewayApi(self, request):
+        """批量删除API
+
+        :param request: Request instance for DeleteGatewayApi.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.DeleteGatewayApiRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.DeleteGatewayApiResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteGatewayApi", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteGatewayApiResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2995,6 +3225,29 @@ class TsfClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeResourceTaskStatus(self, request):
+        """资源任务的执行状态描述接口
+
+        :param request: Request instance for DescribeResourceTaskStatus.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.DescribeResourceTaskStatusRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.DescribeResourceTaskStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeResourceTaskStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeResourceTaskStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeSimpleApplications(self, request):
         """查询简单应用列表
 
@@ -3262,6 +3515,29 @@ class TsfClient(AbstractClient):
             body = self.call("DescribeUnitRules", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeUnitRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeUnitRulesV2(self, request):
+        """查询单元化规则列表V2
+
+        :param request: Request instance for DescribeUnitRulesV2.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.DescribeUnitRulesV2Request`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.DescribeUnitRulesV2Response`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUnitRulesV2", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeUnitRulesV2Response()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -4092,6 +4368,29 @@ class TsfClient(AbstractClient):
             body = self.call("ReleaseConfig", params, headers=headers)
             response = json.loads(body)
             model = models.ReleaseConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ReleaseConfigWithDetailResp(self, request):
+        """发布配置,并且返回配置 ID
+
+        :param request: Request instance for ReleaseConfigWithDetailResp.
+        :type request: :class:`tencentcloud.tsf.v20180326.models.ReleaseConfigWithDetailRespRequest`
+        :rtype: :class:`tencentcloud.tsf.v20180326.models.ReleaseConfigWithDetailRespResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ReleaseConfigWithDetailResp", params, headers=headers)
+            response = json.loads(body)
+            model = models.ReleaseConfigWithDetailRespResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

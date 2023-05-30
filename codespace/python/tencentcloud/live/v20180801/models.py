@@ -178,6 +178,10 @@ URL中禁止包含的字符：
         :type Width: int
         :param Height: 水印高度，占直播原始画面高度百分比，建议高宽只设置一项，另外一项会自适应缩放，避免变形。默认原始高度。
         :type Height: int
+        :param BackgroundWidth: 背景水印宽度。默认宽度1920。
+        :type BackgroundWidth: int
+        :param BackgroundHeight: 背景水印高度。默认高度1080。
+        :type BackgroundHeight: int
         """
         self.PictureUrl = None
         self.WatermarkName = None
@@ -185,6 +189,8 @@ URL中禁止包含的字符：
         self.YPosition = None
         self.Width = None
         self.Height = None
+        self.BackgroundWidth = None
+        self.BackgroundHeight = None
 
 
     def _deserialize(self, params):
@@ -194,6 +200,8 @@ URL中禁止包含的字符：
         self.YPosition = params.get("YPosition")
         self.Width = params.get("Width")
         self.Height = params.get("Height")
+        self.BackgroundWidth = params.get("BackgroundWidth")
+        self.BackgroundHeight = params.get("BackgroundHeight")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -297,7 +305,9 @@ class BandwidthInfo(AbstractModel):
     def __init__(self):
         r"""
         :param Time: 返回格式：
-yyyy-mm-dd HH:MM:SS
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
 根据粒度会有不同程度的缩减。
         :type Time: str
         :param Bandwidth: 带宽。
@@ -424,13 +434,20 @@ class BillDataInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Time: 时间点，格式: yyyy-mm-dd HH:MM:SS。
+        :param Time: 时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type Time: str
         :param Bandwidth: 带宽，单位是 Mbps。
         :type Bandwidth: float
         :param Flux: 流量，单位是 MB。
         :type Flux: float
-        :param PeakTime: 峰值时间点，格式: yyyy-mm-dd HH:MM:SS，原始数据为5分钟粒度，如果查询小时和天粒度数据，则返回对应粒度内的带宽峰值时间点。
+        :param PeakTime: 峰值时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+原始数据为5分钟粒度，如果查询小时和天粒度数据，则返回对应粒度内的带宽峰值时间点。
         :type PeakTime: str
         """
         self.Time = None
@@ -525,6 +542,9 @@ class CallBackTemplateInfo(AbstractModel):
         :param PushExceptionNotifyUrl: 推流异常回调 URL。
 注意：此字段可能返回 null，表示取不到有效值。
         :type PushExceptionNotifyUrl: str
+        :param AudioAuditNotifyUrl: 音频审核回调 URL。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AudioAuditNotifyUrl: str
         """
         self.TemplateId = None
         self.TemplateName = None
@@ -537,6 +557,7 @@ class CallBackTemplateInfo(AbstractModel):
         self.PornCensorshipNotifyUrl = None
         self.CallbackKey = None
         self.PushExceptionNotifyUrl = None
+        self.AudioAuditNotifyUrl = None
 
 
     def _deserialize(self, params):
@@ -551,6 +572,7 @@ class CallBackTemplateInfo(AbstractModel):
         self.PornCensorshipNotifyUrl = params.get("PornCensorshipNotifyUrl")
         self.CallbackKey = params.get("CallbackKey")
         self.PushExceptionNotifyUrl = params.get("PushExceptionNotifyUrl")
+        self.AudioAuditNotifyUrl = params.get("AudioAuditNotifyUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -657,7 +679,10 @@ class CdnPlayStatData(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Time: 时间点，格式: yyyy-mm-dd HH:MM:SS。
+        :param Time: 时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type Time: str
         :param Bandwidth: 带宽，单位: Mbps。
         :type Bandwidth: float
@@ -1228,7 +1253,7 @@ class CreateLiveCallbackTemplateRequest(AbstractModel):
         :param SnapshotNotifyUrl: 截图回调 URL，
 相关协议文档：[事件消息通知](/document/product/267/32744)。
         :type SnapshotNotifyUrl: str
-        :param PornCensorshipNotifyUrl: 鉴黄回调 URL，
+        :param PornCensorshipNotifyUrl: 鉴黄回调 URL ，
 相关协议文档：[事件消息通知](/document/product/267/32741)。
         :type PornCensorshipNotifyUrl: str
         :param CallbackKey: 回调 Key，回调 URL 公用，回调签名详见事件消息通知文档。
@@ -1238,6 +1263,8 @@ class CreateLiveCallbackTemplateRequest(AbstractModel):
         :type StreamMixNotifyUrl: str
         :param PushExceptionNotifyUrl: 推流异常回调 URL。
         :type PushExceptionNotifyUrl: str
+        :param AudioAuditNotifyUrl: 音频审核回调 URL。
+        :type AudioAuditNotifyUrl: str
         """
         self.TemplateName = None
         self.Description = None
@@ -1249,6 +1276,7 @@ class CreateLiveCallbackTemplateRequest(AbstractModel):
         self.CallbackKey = None
         self.StreamMixNotifyUrl = None
         self.PushExceptionNotifyUrl = None
+        self.AudioAuditNotifyUrl = None
 
 
     def _deserialize(self, params):
@@ -1262,6 +1290,7 @@ class CreateLiveCallbackTemplateRequest(AbstractModel):
         self.CallbackKey = params.get("CallbackKey")
         self.StreamMixNotifyUrl = params.get("StreamMixNotifyUrl")
         self.PushExceptionNotifyUrl = params.get("PushExceptionNotifyUrl")
+        self.AudioAuditNotifyUrl = params.get("AudioAuditNotifyUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3565,9 +3594,14 @@ class DescribeBillBandwidthAndFluxListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StartTime: 起始时间点，格式为yyyy-mm-dd HH:MM:SS。
+        :param StartTime: 起始时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
-        :param EndTime: 结束时间点，格式为yyyy-mm-dd HH:MM:SS，起始和结束时间跨度不支持超过31天。支持最近3年的数据查询
+        :param EndTime: 结束时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+起始和结束时间跨度不支持超过31天。支持最近3年的数据查询
         :type EndTime: str
         :param PlayDomains: 直播播放域名，若不填，表示总体数据。
         :type PlayDomains: list of str
@@ -3630,11 +3664,15 @@ class DescribeBillBandwidthAndFluxListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param PeakBandwidthTime: 峰值带宽所在时间点，格式为yyyy-mm-dd HH:MM:SS。
+        :param PeakBandwidthTime: 峰值带宽所在时间点，接口返回支持两种时间格式(与接口请求传递的时间格式一致)：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type PeakBandwidthTime: str
         :param PeakBandwidth: 峰值带宽，单位是Mbps。
         :type PeakBandwidth: float
-        :param P95PeakBandwidthTime: 95峰值带宽所在时间点，格式为yyyy-mm-dd HH:MM:SS。
+        :param P95PeakBandwidthTime: 95峰值带宽所在时间点，接口返回支持两种时间格式(与接口请求传递的时间格式一致)：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type P95PeakBandwidthTime: str
         :param P95PeakBandwidth: 95峰值带宽，单位是Mbps。
         :type P95PeakBandwidth: float
@@ -3676,9 +3714,15 @@ class DescribeCallbackRecordsListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StartTime: 起始时间点，格式为yyyy-mm-dd HH:MM:SS。
+        :param StartTime: 起始时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
-        :param EndTime: 结束时间点，格式为yyyy-mm-dd HH:MM:SS，起始和结束时间跨度不支持超过1天。
+        :param EndTime: 结束时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+
+查询的起始和结束时间跨度不支持超过1天。仅支持查询最近14天的数据。
         :type EndTime: str
         :param StreamName: 流名称，精确匹配。
         :type StreamName: str
@@ -3774,10 +3818,14 @@ class DescribeConcurrentRecordStreamNumRequest(AbstractModel):
         :param LiveType: 直播类型，SlowLive：慢直播。
 NormalLive：普通直播。
         :type LiveType: str
-        :param StartTime: 起始时间，格式：yyyy-mm-dd HH:MM:SS。
+        :param StartTime: 起始时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
 可以查询最近180天的数据。
         :type StartTime: str
-        :param EndTime: 结束时间，格式：yyyy-mm-dd HH:MM:SS。
+        :param EndTime: 结束时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
 时间跨度最大支持31天。
         :type EndTime: str
         :param MainlandOrOversea: 如果为空，查询所有地区数据；如果为“Mainland”，查询国内数据；如果为“Oversea”，则查询国外数据。
@@ -3840,9 +3888,14 @@ class DescribeDeliverBandwidthListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StartTime: 起始时间，格式为%Y-%m-%d %H:%M:%S。
+        :param StartTime: 起始时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
-        :param EndTime: 结束时间，格式为%Y-%m-%d %H:%M:%S，支持最近三个月的数据查询，时间跨度最大是1个月。
+        :param EndTime: 结束时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+支持最近三个月的数据查询，时间跨度最大是1个月。
         :type EndTime: str
         """
         self.StartTime = None
@@ -6040,11 +6093,14 @@ class DescribeLiveTranscodeTotalInfoRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StartTime: 开始时间，北京时间。
-格式：yyyy-mm-dd HH:MM:SS。
+        :param StartTime: 结束时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
-        :param EndTime: 结束时间，北京时间。
-格式：yyyy-mm-dd HH:MM:SS。
+        :param EndTime: 结束时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type EndTime: str
         :param PushDomains: 推流域名列表，若不填，表示查询所有域名总体数据。
 指定域名时返回1小时粒度数据。
@@ -6214,6 +6270,71 @@ class DescribeLiveWatermarksResponse(AbstractModel):
                 obj = WatermarkInfo()
                 obj._deserialize(item)
                 self.WatermarkList.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeLiveXP2PDetailInfoListRequest(AbstractModel):
+    """DescribeLiveXP2PDetailInfoList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param QueryTime: utc分钟粒度查询时间，查询某一分钟的用量数据，格式为：yyyy-mm-ddTHH:MM:00Z，参考https://cloud.tencent.com/document/product/266/11732#I，
+例如：北京时间2019-01-08 10:00:00，对应utc时间为：2019-01-08T10:00:00+08:00。
+
+支持最近六个月的查询。
+        :type QueryTime: str
+        :param Type: 类型数组，分直播live和点播vod，不传默认查全部。
+        :type Type: list of str
+        :param StreamNames: 查询流数组，不传默认查所有流。
+        :type StreamNames: list of str
+        :param Dimension: 查询维度，不传该参数则默认查询流维度的数据，传递该参数则只查对应维度的数据，和返回值的字段相关，目前支持AppId维度查询。
+        :type Dimension: list of str
+        """
+        self.QueryTime = None
+        self.Type = None
+        self.StreamNames = None
+        self.Dimension = None
+
+
+    def _deserialize(self, params):
+        self.QueryTime = params.get("QueryTime")
+        self.Type = params.get("Type")
+        self.StreamNames = params.get("StreamNames")
+        self.Dimension = params.get("Dimension")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeLiveXP2PDetailInfoListResponse(AbstractModel):
+    """DescribeLiveXP2PDetailInfoList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DataInfoList: P2P流统计信息。
+        :type DataInfoList: list of XP2PDetailInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.DataInfoList = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("DataInfoList") is not None:
+            self.DataInfoList = []
+            for item in params.get("DataInfoList"):
+                obj = XP2PDetailInfo()
+                obj._deserialize(item)
+                self.DataInfoList.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -6945,9 +7066,14 @@ class DescribeScreenShotSheetNumListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StartTime: utc起始时间，格式为yyyy-mm-ddTHH:MM:SSZ
+        :param StartTime: 起始时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
-        :param EndTime: utc结束时间，格式为yyyy-mm-ddTHH:MM:SSZ，支持查询最近1年数据。
+        :param EndTime: 结束时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+支持查询最近1年的数据。
         :type EndTime: str
         :param Zone: 地域信息，可选值包括Mainland，Oversea，前者是查询中国大陆范围内的数据，后者是除中国大陆范围之外的数据，若不传该参数，则查询所有地区的数据。
         :type Zone: str
@@ -7628,9 +7754,14 @@ class DescribeUploadStreamNumsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param StartTime: 起始时间点，格式为yyyy-mm-dd HH:MM:SS。
+        :param StartTime: 起始时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
-        :param EndTime: 结束时间点，格式为yyyy-mm-dd HH:MM:SS，起始和结束时间跨度不支持超过31天。支持最近31天的数据查询
+        :param EndTime: 结束时间点，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+起始和结束时间跨度不支持超过31天。支持最近31天的数据查询
         :type EndTime: str
         :param Domains: 直播域名，若不填，表示总体数据。
         :type Domains: list of str
@@ -8604,6 +8735,15 @@ class LivePackageInfo(AbstractModel):
 4: 已耗尽。
 5: 已退款
         :type Status: int
+        :param WillRenew: 是否自动续购。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WillRenew: int
+        :param RenewalResult: 续购状态。
+1 ：续购成功。
+0 ：尚未续购。
+<0  : 续购失败。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RenewalResult: int
         """
         self.Id = None
         self.Total = None
@@ -8613,6 +8753,8 @@ class LivePackageInfo(AbstractModel):
         self.ExpireTime = None
         self.Type = None
         self.Status = None
+        self.WillRenew = None
+        self.RenewalResult = None
 
 
     def _deserialize(self, params):
@@ -8624,6 +8766,8 @@ class LivePackageInfo(AbstractModel):
         self.ExpireTime = params.get("ExpireTime")
         self.Type = params.get("Type")
         self.Status = params.get("Status")
+        self.WillRenew = params.get("WillRenew")
+        self.RenewalResult = params.get("RenewalResult")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8698,6 +8842,8 @@ class ModifyLiveCallbackTemplateRequest(AbstractModel):
         :type CallbackKey: str
         :param PushExceptionNotifyUrl: 推流异常回调 URL。
         :type PushExceptionNotifyUrl: str
+        :param AudioAuditNotifyUrl: 音频审核回调 URL。
+        :type AudioAuditNotifyUrl: str
         """
         self.TemplateId = None
         self.TemplateName = None
@@ -8709,6 +8855,7 @@ class ModifyLiveCallbackTemplateRequest(AbstractModel):
         self.PornCensorshipNotifyUrl = None
         self.CallbackKey = None
         self.PushExceptionNotifyUrl = None
+        self.AudioAuditNotifyUrl = None
 
 
     def _deserialize(self, params):
@@ -8722,6 +8869,7 @@ class ModifyLiveCallbackTemplateRequest(AbstractModel):
         self.PornCensorshipNotifyUrl = params.get("PornCensorshipNotifyUrl")
         self.CallbackKey = params.get("CallbackKey")
         self.PushExceptionNotifyUrl = params.get("PushExceptionNotifyUrl")
+        self.AudioAuditNotifyUrl = params.get("AudioAuditNotifyUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11955,8 +12103,10 @@ class TranscodeTotalInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Time: 时间点，北京时间，
-示例：2019-03-01 00:00:00。
+        :param Time: 时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type Time: str
         :param Duration: 转码时长，单位：分钟。
         :type Duration: int
@@ -12065,6 +12215,10 @@ URL中禁止包含的字符：
         :type Width: int
         :param Height: 水印高度，占直播原始画面宽度百分比，建议高宽只设置一项，另外一项会自适应缩放，避免变形。默认原始高度。
         :type Height: int
+        :param BackgroundWidth: 背景水印宽度。默认宽度1920。
+        :type BackgroundWidth: int
+        :param BackgroundHeight: 背景水印高度。默认高度1080。
+        :type BackgroundHeight: int
         """
         self.WatermarkId = None
         self.PictureUrl = None
@@ -12073,6 +12227,8 @@ URL中禁止包含的字符：
         self.WatermarkName = None
         self.Width = None
         self.Height = None
+        self.BackgroundWidth = None
+        self.BackgroundHeight = None
 
 
     def _deserialize(self, params):
@@ -12083,6 +12239,8 @@ URL中禁止包含的字符：
         self.WatermarkName = params.get("WatermarkName")
         self.Width = params.get("Width")
         self.Height = params.get("Height")
+        self.BackgroundWidth = params.get("BackgroundWidth")
+        self.BackgroundHeight = params.get("BackgroundHeight")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12135,6 +12293,10 @@ class WatermarkInfo(AbstractModel):
         :type Width: int
         :param Height: 水印高。
         :type Height: int
+        :param BackgroundWidth: 背景水印宽。
+        :type BackgroundWidth: int
+        :param BackgroundHeight: 背景水印高。
+        :type BackgroundHeight: int
         """
         self.WatermarkId = None
         self.PictureUrl = None
@@ -12145,6 +12307,8 @@ class WatermarkInfo(AbstractModel):
         self.CreateTime = None
         self.Width = None
         self.Height = None
+        self.BackgroundWidth = None
+        self.BackgroundHeight = None
 
 
     def _deserialize(self, params):
@@ -12157,6 +12321,75 @@ class WatermarkInfo(AbstractModel):
         self.CreateTime = params.get("CreateTime")
         self.Width = params.get("Width")
         self.Height = params.get("Height")
+        self.BackgroundWidth = params.get("BackgroundWidth")
+        self.BackgroundHeight = params.get("BackgroundHeight")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class XP2PDetailInfo(AbstractModel):
+    """央视P2P流信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CdnBytes: CDN流量。
+        :type CdnBytes: int
+        :param P2pBytes: P2P流量。
+        :type P2pBytes: int
+        :param StuckPeople: 卡播人数。
+        :type StuckPeople: int
+        :param StuckTimes: 卡播次数。
+        :type StuckTimes: int
+        :param OnlinePeople: 在线人数。
+        :type OnlinePeople: int
+        :param Request: 起播请求次数
+        :type Request: int
+        :param RequestSuccess: 起播成功次数
+        :type RequestSuccess: int
+        :param Time: 时间，一分钟粒度，utc格式：yyyy-mm-ddTHH:MM:SSZ，参考https://cloud.tencent.com/document/product/266/11732#I。。
+        :type Time: str
+        :param Type: 类型，分live和vod两种。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param StreamName: 流ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StreamName: str
+        :param AppId: AppId。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AppId: str
+        """
+        self.CdnBytes = None
+        self.P2pBytes = None
+        self.StuckPeople = None
+        self.StuckTimes = None
+        self.OnlinePeople = None
+        self.Request = None
+        self.RequestSuccess = None
+        self.Time = None
+        self.Type = None
+        self.StreamName = None
+        self.AppId = None
+
+
+    def _deserialize(self, params):
+        self.CdnBytes = params.get("CdnBytes")
+        self.P2pBytes = params.get("P2pBytes")
+        self.StuckPeople = params.get("StuckPeople")
+        self.StuckTimes = params.get("StuckTimes")
+        self.OnlinePeople = params.get("OnlinePeople")
+        self.Request = params.get("Request")
+        self.RequestSuccess = params.get("RequestSuccess")
+        self.Time = params.get("Time")
+        self.Type = params.get("Type")
+        self.StreamName = params.get("StreamName")
+        self.AppId = params.get("AppId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

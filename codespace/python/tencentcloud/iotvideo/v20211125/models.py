@@ -591,6 +591,57 @@ class CallDeviceActionSyncResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CallTRTCDeviceRequest(AbstractModel):
+    """CallTRTCDevice请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ProductId: 产品ID
+        :type ProductId: str
+        :param DeviceName: 设备名称
+        :type DeviceName: str
+        """
+        self.ProductId = None
+        self.DeviceName = None
+
+
+    def _deserialize(self, params):
+        self.ProductId = params.get("ProductId")
+        self.DeviceName = params.get("DeviceName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CallTRTCDeviceResponse(AbstractModel):
+    """CallTRTCDevice返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TRTCParams: TRTC SDK房间参数
+        :type TRTCParams: :class:`tencentcloud.iotvideo.v20211125.models.TRTCParams`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TRTCParams = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("TRTCParams") is not None:
+            self.TRTCParams = TRTCParams()
+            self.TRTCParams._deserialize(params.get("TRTCParams"))
+        self.RequestId = params.get("RequestId")
+
+
 class CancelAIModelApplicationRequest(AbstractModel):
     """CancelAIModelApplication请求参数结构体
 
@@ -4930,6 +4981,9 @@ class DeviceInfo(AbstractModel):
         :type EnableState: int
         :param ExpireTime: 设备过期时间
         :type ExpireTime: int
+        :param LogLevel: 设备的sdk日志等级，0：关闭，1：错误，2：告警，3：信息，4：调试
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogLevel: int
         """
         self.DeviceName = None
         self.Online = None
@@ -4937,6 +4991,7 @@ class DeviceInfo(AbstractModel):
         self.DevicePsk = None
         self.EnableState = None
         self.ExpireTime = None
+        self.LogLevel = None
 
 
     def _deserialize(self, params):
@@ -4946,6 +5001,7 @@ class DeviceInfo(AbstractModel):
         self.DevicePsk = params.get("DevicePsk")
         self.EnableState = params.get("EnableState")
         self.ExpireTime = params.get("ExpireTime")
+        self.LogLevel = params.get("LogLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6728,6 +6784,51 @@ class StatusStatistic(AbstractModel):
     def _deserialize(self, params):
         self.Status = params.get("Status")
         self.Total = params.get("Total")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TRTCParams(AbstractModel):
+    """TRTC调用参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param SDKAppId: 应用id，供TRTC SDK使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SDKAppId: int
+        :param UserId: 用户id，供TRTC SDK使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserId: str
+        :param UserSig: 用户id签名，供TRTC SDK使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserSig: str
+        :param StrRoomId: 房间id，供TRTC SDK使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StrRoomId: str
+        :param PrivateMapKey: 权限票据，供TRTC SDK使用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrivateMapKey: str
+        """
+        self.SDKAppId = None
+        self.UserId = None
+        self.UserSig = None
+        self.StrRoomId = None
+        self.PrivateMapKey = None
+
+
+    def _deserialize(self, params):
+        self.SDKAppId = params.get("SDKAppId")
+        self.UserId = params.get("UserId")
+        self.UserSig = params.get("UserSig")
+        self.StrRoomId = params.get("StrRoomId")
+        self.PrivateMapKey = params.get("PrivateMapKey")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

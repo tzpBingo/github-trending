@@ -80,6 +80,9 @@ INTERNALERROR_OSSEXCEPTION = 'InternalError.OssException'
 # 服务处理出错，请稍后重试。若无法解决，请联系智能客服或提交工单。
 INTERNALERROR_SYSTEM = 'InternalError.System'
 
+# 未知错误。
+INTERNALERROR_UNKNOWNINTERNALERROR = 'InternalError.UnknownInternalError'
+
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
 
@@ -91,6 +94,9 @@ INVALIDPARAMETER_PAYLOAD = 'InvalidParameter.Payload'
 
 # AMPParams取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_AMPPARAMS = 'InvalidParameterValue.AMPParams'
+
+# Action 操作参数取值与规范不符，请修正后再试。
+INVALIDPARAMETERVALUE_ACTION = 'InvalidParameterValue.Action'
 
 # BatchEventCount取值与规范不符，请修正后再试。
 INVALIDPARAMETERVALUE_BATCHEVENTCOUNT = 'InvalidParameterValue.BatchEventCount'

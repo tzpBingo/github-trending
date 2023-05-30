@@ -110,6 +110,9 @@ INVALIDPARAMETERVALUE_FSSIZELIMITEXCEEDED = 'InvalidParameterValue.FsSizeLimitEx
 # 规则IP错误。
 INVALIDPARAMETERVALUE_INVALIDAUTHCLIENTIP = 'InvalidParameterValue.InvalidAuthClientIp'
 
+# 扩容策略参数无效
+INVALIDPARAMETERVALUE_INVALIDAUTOSCALEUPPARAMS = 'InvalidParameterValue.InvalidAutoScaleUpParams'
+
 # 用于保证请求幂等性的字符串错误。
 INVALIDPARAMETERVALUE_INVALIDCLIENTTOKEN = 'InvalidParameterValue.InvalidClientToken'
 
@@ -134,6 +137,12 @@ INVALIDPARAMETERVALUE_INVALIDMOUNTTARGETIP = 'InvalidParameterValue.InvalidMount
 # 无效的网络类型。
 INVALIDPARAMETERVALUE_INVALIDNETINTERFACE = 'InvalidParameterValue.InvalidNetInterface'
 
+# DayOfMonth 参数错误
+INVALIDPARAMETERVALUE_INVALIDPARAMDAYOFMONTH = 'InvalidParameterValue.InvalidParamDayOfMonth'
+
+# IntervalDays 参数值错误
+INVALIDPARAMETERVALUE_INVALIDPARAMINTERVALDAYS = 'InvalidParameterValue.InvalidParamIntervalDays'
+
 # 权限组不属于该用户。
 INVALIDPARAMETERVALUE_INVALIDPGROUP = 'InvalidParameterValue.InvalidPgroup'
 
@@ -157,6 +166,9 @@ INVALIDPARAMETERVALUE_INVALIDRESOURCETAGS = 'InvalidParameterValue.InvalidResour
 
 # 读写权限设置错误。
 INVALIDPARAMETERVALUE_INVALIDRWPERMISSION = 'InvalidParameterValue.InvalidRwPermission'
+
+# 扩容目标容量参数错误
+INVALIDPARAMETERVALUE_INVALIDSCALEUPTARGETCAPACITY = 'InvalidParameterValue.InvalidScaleupTargetCapacity'
 
 # 无效的快照状态。
 INVALIDPARAMETERVALUE_INVALIDSNAPSHOTSTATUS = 'InvalidParameterValue.InvalidSnapshotStatus'
@@ -215,6 +227,9 @@ INVALIDPARAMETERVALUE_MISSINGNAMEORDESCINFO = 'InvalidParameterValue.MissingName
 # 权限组名称不能为空。
 INVALIDPARAMETERVALUE_MISSINGPGROUPNAME = 'InvalidParameterValue.MissingPgroupName'
 
+# 缺少快照策略参数
+INVALIDPARAMETERVALUE_MISSINGPOLICYPARAM = 'InvalidParameterValue.MissingPolicyParam'
+
 # 未绑定存储包。
 INVALIDPARAMETERVALUE_MISSINGSTORAGERESOURCEPKG = 'InvalidParameterValue.MissingStorageResourcePkg'
 
@@ -260,6 +275,9 @@ INVALIDPARAMETERVALUE_TAGKEYFILTERLIMITEXCEEDED = 'InvalidParameterValue.TagKeyF
 # 标签键长度超过限制（不能超过127字节）。
 INVALIDPARAMETERVALUE_TAGKEYLIMITEXCEEDED = 'InvalidParameterValue.TagKeyLimitExceeded'
 
+# 标签值个数超过上限（10个）。
+INVALIDPARAMETERVALUE_TAGVALUEFILTERLIMITEXCEEDED = 'InvalidParameterValue.TagValueFilterLimitExceeded'
+
 # 标签值长度超过限制（不能超过255字节）。
 INVALIDPARAMETERVALUE_TAGVALUELIMITEXCEEDED = 'InvalidParameterValue.TagValueLimitExceeded'
 
@@ -271,6 +289,15 @@ INVALIDPARAMETERVALUE_UNAVAILABLEZONE = 'InvalidParameterValue.UnavailableZone'
 
 # ZoneId和Region不匹配。
 INVALIDPARAMETERVALUE_ZONEIDREGIONNOTMATCH = 'InvalidParameterValue.ZoneIdRegionNotMatch'
+
+# 缺少参数错误。
+MISSINGPARAMETER = 'MissingParameter'
+
+# 操作被拒绝。
+OPERATIONDENIED = 'OperationDenied'
+
+# 资源被占用。
+RESOURCEINUSE = 'ResourceInUse'
 
 # 文件系统数量达到上限。
 RESOURCEINSUFFICIENT_FILESYSTEMLIMITEXCEEDED = 'ResourceInsufficient.FileSystemLimitExceeded'
@@ -284,6 +311,9 @@ RESOURCEINSUFFICIENT_REGIONSOLDOUT = 'ResourceInsufficient.RegionSoldOut'
 # 规则条数超过上限。
 RESOURCEINSUFFICIENT_RULELIMITEXCEEDED = 'ResourceInsufficient.RuleLimitExceeded'
 
+# 文件系统过大，不支持快照
+RESOURCEINSUFFICIENT_SNAPSHOTSIZELIMITEXCEEDED = 'ResourceInsufficient.SnapshotSizeLimitExceeded'
+
 # 该子网下已无可用IP。
 RESOURCEINSUFFICIENT_SUBNETIPALLOCCUPIED = 'ResourceInsufficient.SubnetIpAllOccupied'
 
@@ -293,11 +323,17 @@ RESOURCEINSUFFICIENT_TAGLIMITEXCEEDED = 'ResourceInsufficient.TagLimitExceeded'
 # 标签限额不足。
 RESOURCEINSUFFICIENT_TAGQUOTASEXCEEDED = 'ResourceInsufficient.TagQuotasExceeded'
 
+# Turbo类型特殊容量文件系统数量限制
+RESOURCEINSUFFICIENT_TURBOSPECIALCAPACITYFILESYSTEMCOUNTLIMIT = 'ResourceInsufficient.TurboSpecialCapacityFileSystemCountLimit'
+
 # 资源不存在。
 RESOURCENOTFOUND = 'ResourceNotFound'
 
 # 该文件系统不存在。
 RESOURCENOTFOUND_FILESYSTEMNOTFOUND = 'ResourceNotFound.FileSystemNotFound'
+
+# 文件系统不存在。
+RESOURCENOTFOUND_FSNOTEXIST = 'ResourceNotFound.FsNotExist'
 
 # 挂载点不存在。
 RESOURCENOTFOUND_MOUNTTARGETNOTFOUND = 'ResourceNotFound.MountTargetNotFound'
@@ -305,17 +341,26 @@ RESOURCENOTFOUND_MOUNTTARGETNOTFOUND = 'ResourceNotFound.MountTargetNotFound'
 # 权限组不存在。
 RESOURCENOTFOUND_PGROUPNOTFOUND = 'ResourceNotFound.PgroupNotFound'
 
+# 资源不存在：资源ID 不存在。
+RESOURCENOTFOUND_RESOURCEPACKAGENOTFOUND = 'ResourceNotFound.ResourcePackageNotFound'
+
 # 权限规则不存在。
 RESOURCENOTFOUND_RULENOTFOUND = 'ResourceNotFound.RuleNotFound'
 
 # 快照ID 不存在。
 RESOURCENOTFOUND_SNAPSHOTNOTFOUND = 'ResourceNotFound.SnapshotNotFound'
 
+# 未授权操作。
+UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
 
 # 该可用区不支持基础网络。
 UNSUPPORTEDOPERATION_BASICNETINTERFACENOTSUPPORTED = 'UnsupportedOperation.BasicNetInterfaceNotSupported'
+
+# appid不在kms白名单(kms目前是白名单开启状态)。
+UNSUPPORTEDOPERATION_MISSINGKMSACCESSPERMISSION = 'UnsupportedOperation.MissingKmsAccessPermission'
 
 # 用户已欠费, 请充值后重试。
 UNSUPPORTEDOPERATION_OUTOFSERVICE = 'UnsupportedOperation.OutOfService'

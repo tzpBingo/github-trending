@@ -18,7 +18,6 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Telegram Poll."""
 import datetime
-import sys
 from typing import TYPE_CHECKING, ClassVar, Dict, List, Optional, Sequence, Tuple
 
 from telegram import constants
@@ -27,7 +26,7 @@ from telegram._telegramobject import TelegramObject
 from telegram._user import User
 from telegram._utils import enum
 from telegram._utils.argumentparsing import parse_sequence_arg
-from telegram._utils.datetime import from_timestamp
+from telegram._utils.datetime import extract_tzinfo_from_defaults, from_timestamp
 from telegram._utils.types import JSONDict
 
 if TYPE_CHECKING:
@@ -57,7 +56,7 @@ class PollOption(TelegramObject):
 
     __slots__ = ("voter_count", "text")
 
-    def __init__(self, text: str, voter_count: int, *, api_kwargs: JSONDict = None):
+    def __init__(self, text: str, voter_count: int, *, api_kwargs: Optional[JSONDict] = None):
         super().__init__(api_kwargs=api_kwargs)
         self.text: str = text
         self.voter_count: int = voter_count
@@ -108,7 +107,12 @@ class PollAnswer(TelegramObject):
     __slots__ = ("option_ids", "user", "poll_id")
 
     def __init__(
-        self, poll_id: str, user: User, option_ids: Sequence[int], *, api_kwargs: JSONDict = None
+        self,
+        poll_id: str,
+        user: User,
+        option_ids: Sequence[int],
+        *,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
         self.poll_id: str = poll_id
@@ -174,6 +178,9 @@ class Poll(TelegramObject):
         close_date (:obj:`datetime.datetime`, optional): Point in time (Unix timestamp) when the
             poll will be automatically closed. Converted to :obj:`datetime.datetime`.
 
+            .. versionchanged:: 20.3
+                |datetime_localization|
+
     Attributes:
         id (:obj:`str`): Unique poll identifier.
         question (:obj:`str`): Poll question, :tg-const:`telegram.Poll.MIN_QUESTION_LENGTH`-
@@ -207,6 +214,9 @@ class Poll(TelegramObject):
         close_date (:obj:`datetime.datetime`): Optional. Point in time when the poll will be
             automatically closed.
 
+            .. versionchanged:: 20.3
+                |datetime_localization|
+
     """
 
     __slots__ = (
@@ -235,13 +245,13 @@ class Poll(TelegramObject):
         is_anonymous: bool,
         type: str,  # pylint: disable=redefined-builtin
         allows_multiple_answers: bool,
-        correct_option_id: int = None,
-        explanation: str = None,
-        explanation_entities: Sequence[MessageEntity] = None,
-        open_period: int = None,
-        close_date: datetime.datetime = None,
+        correct_option_id: Optional[int] = None,
+        explanation: Optional[str] = None,
+        explanation_entities: Optional[Sequence[MessageEntity]] = None,
+        open_period: Optional[int] = None,
+        close_date: Optional[datetime.datetime] = None,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(api_kwargs=api_kwargs)
         self.id: str = id  # pylint: disable=invalid-name
@@ -272,9 +282,12 @@ class Poll(TelegramObject):
         if not data:
             return None
 
+        # Get the local timezone from the bot if it has defaults
+        loc_tzinfo = extract_tzinfo_from_defaults(bot)
+
         data["options"] = [PollOption.de_json(option, bot) for option in data["options"]]
         data["explanation_entities"] = MessageEntity.de_list(data.get("explanation_entities"), bot)
-        data["close_date"] = from_timestamp(data.get("close_date"))
+        data["close_date"] = from_timestamp(data.get("close_date"), tzinfo=loc_tzinfo)
 
         return super().de_json(data=data, bot=bot)
 
@@ -300,15 +313,14 @@ class Poll(TelegramObject):
         if not self.explanation:
             raise RuntimeError("This Poll has no 'explanation'.")
 
-        # Is it a narrow build, if so we don't need to convert
-        if sys.maxunicode == 0xFFFF:
-            return self.explanation[entity.offset : entity.offset + entity.length]
         entity_text = self.explanation.encode("utf-16-le")
         entity_text = entity_text[entity.offset * 2 : (entity.offset + entity.length) * 2]
 
         return entity_text.decode("utf-16-le")
 
-    def parse_explanation_entities(self, types: List[str] = None) -> Dict[MessageEntity, str]:
+    def parse_explanation_entities(
+        self, types: Optional[List[str]] = None
+    ) -> Dict[MessageEntity, str]:
         """
         Returns a :obj:`dict` that maps :class:`telegram.MessageEntity` to :obj:`str`.
         It contains entities from this polls explanation filtered by their ``type`` attribute as

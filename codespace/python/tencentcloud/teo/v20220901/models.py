@@ -18,6 +18,32 @@ import warnings
 from tencentcloud.common.abstract_model import AbstractModel
 
 
+class AccelerateMainland(AbstractModel):
+    """中国大陆加速优化配置。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 是否开启中国大陆加速优化配置，取值有：
+<li>on：开启；</li>
+<li>off：关闭。</li>
+        :type Switch: str
+        """
+        self.Switch = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AccelerateType(AbstractModel):
     """加速类型
 
@@ -447,6 +473,223 @@ class AiRule(AbstractModel):
         
 
 
+class AlgDetectJS(AbstractModel):
+    """Bot主动特征识别客户端行为校验。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 操作名称。
+        :type Name: str
+        :param WorkLevel: 工作量证明 (proof_Of-Work)校验强度，默认low，取值有：
+<li>low：低；</li>
+<li>middle：中；</li>
+<li>high：高。</li>
+        :type WorkLevel: str
+        :param ExecuteMode: 执行方式，js延迟执行的时间。单位为ms，默认500，取值：0～1000。
+        :type ExecuteMode: int
+        :param InvalidStatTime: 客户端末启用JS（末完成检测）统计周期。单位为秒，默认10，取值：5～3600。
+        :type InvalidStatTime: int
+        :param InvalidThreshold: 客户端末启用JS（末完成检测）触发阈值。单位为次，默认300，取值：1～100000000。
+        :type InvalidThreshold: int
+        :param AlgDetectResults: Bot主动特征识别客户端行为校验结果。
+        :type AlgDetectResults: list of AlgDetectResult
+        """
+        self.Name = None
+        self.WorkLevel = None
+        self.ExecuteMode = None
+        self.InvalidStatTime = None
+        self.InvalidThreshold = None
+        self.AlgDetectResults = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.WorkLevel = params.get("WorkLevel")
+        self.ExecuteMode = params.get("ExecuteMode")
+        self.InvalidStatTime = params.get("InvalidStatTime")
+        self.InvalidThreshold = params.get("InvalidThreshold")
+        if params.get("AlgDetectResults") is not None:
+            self.AlgDetectResults = []
+            for item in params.get("AlgDetectResults"):
+                obj = AlgDetectResult()
+                obj._deserialize(item)
+                self.AlgDetectResults.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AlgDetectResult(AbstractModel):
+    """Bot主动特征识别校验结果。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 校验结果，取值有：
+<li>invalid：不合法Cookie；</li>
+<li>cookie_empty：末携带Cookie或Cookie己过期；</li>
+<li>js_empty：客户端末启用JS（末完成检测）；</li>
+<li>low：会话速率和周期特征校验低风险；</li>
+<li>middle：会话速率和周期特征校验中风险；</li>
+<li>high：会话速率和周期特征校验高风险；</li>
+<li>timeout：检测超时时长；</li>
+<li>not_browser：不合法浏览器；</li>
+<li>is_bot：Bot客户端。</li>
+        :type Result: str
+        :param Action: 处罚动作，取值有：
+<li>drop：拦截；</li>
+<li>monitor：观察；</li>
+<li>silence：静默；</li>
+<li>shortdelay：（短时间）等待后响应；</li>
+<li>longdelay：（长时间）等待后响应。</li>
+        :type Action: str
+        """
+        self.Result = None
+        self.Action = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.Action = params.get("Action")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AlgDetectRule(AbstractModel):
+    """Bot主动特征识别规则。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RuleID: 规则id。
+        :type RuleID: int
+        :param RuleName: 规则名。
+        :type RuleName: str
+        :param Switch: 规则开关。
+        :type Switch: str
+        :param AlgConditions: 自定义规则。
+        :type AlgConditions: list of AclCondition
+        :param AlgDetectSession: Cookie校验和会话行为分析。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlgDetectSession: :class:`tencentcloud.teo.v20220901.models.AlgDetectSession`
+        :param AlgDetectJS: 客户端行为校验。
+        :type AlgDetectJS: list of AlgDetectJS
+        :param UpdateTime: 更新时间。仅出参使用。
+        :type UpdateTime: str
+        """
+        self.RuleID = None
+        self.RuleName = None
+        self.Switch = None
+        self.AlgConditions = None
+        self.AlgDetectSession = None
+        self.AlgDetectJS = None
+        self.UpdateTime = None
+
+
+    def _deserialize(self, params):
+        self.RuleID = params.get("RuleID")
+        self.RuleName = params.get("RuleName")
+        self.Switch = params.get("Switch")
+        if params.get("AlgConditions") is not None:
+            self.AlgConditions = []
+            for item in params.get("AlgConditions"):
+                obj = AclCondition()
+                obj._deserialize(item)
+                self.AlgConditions.append(obj)
+        if params.get("AlgDetectSession") is not None:
+            self.AlgDetectSession = AlgDetectSession()
+            self.AlgDetectSession._deserialize(params.get("AlgDetectSession"))
+        if params.get("AlgDetectJS") is not None:
+            self.AlgDetectJS = []
+            for item in params.get("AlgDetectJS"):
+                obj = AlgDetectJS()
+                obj._deserialize(item)
+                self.AlgDetectJS.append(obj)
+        self.UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AlgDetectSession(AbstractModel):
+    """Cookie校验与会话跟踪。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 操作名称。
+        :type Name: str
+        :param DetectMode: 校验方式，默认update_detect，取值有：
+<li>detect：仅校验；</li>
+<li>update_detect：更新Cookie并校验。</li>
+        :type DetectMode: str
+        :param SessionAnalyzeSwitch: 会话速率和周期特征校验开关，默认off，取值有：
+<li>off：关闭；</li>
+<li>on：打开。</li>
+        :type SessionAnalyzeSwitch: str
+        :param InvalidStatTime: 校验结果为未携带Cookie或Cookie已过期的统计周期。单位为秒，默认10，取值：5～3600。
+        :type InvalidStatTime: int
+        :param InvalidThreshold: 校验结果为未携带Cookie或Cookie已过期的触发阈值。单位为次，默认300，取值：1～100000000。
+        :type InvalidThreshold: int
+        :param AlgDetectResults: Cookie校验校验结果。
+        :type AlgDetectResults: list of AlgDetectResult
+        :param SessionBehaviors: 会话速率和周期特征校验结果。
+        :type SessionBehaviors: list of AlgDetectResult
+        """
+        self.Name = None
+        self.DetectMode = None
+        self.SessionAnalyzeSwitch = None
+        self.InvalidStatTime = None
+        self.InvalidThreshold = None
+        self.AlgDetectResults = None
+        self.SessionBehaviors = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.DetectMode = params.get("DetectMode")
+        self.SessionAnalyzeSwitch = params.get("SessionAnalyzeSwitch")
+        self.InvalidStatTime = params.get("InvalidStatTime")
+        self.InvalidThreshold = params.get("InvalidThreshold")
+        if params.get("AlgDetectResults") is not None:
+            self.AlgDetectResults = []
+            for item in params.get("AlgDetectResults"):
+                obj = AlgDetectResult()
+                obj._deserialize(item)
+                self.AlgDetectResults.append(obj)
+        if params.get("SessionBehaviors") is not None:
+            self.SessionBehaviors = []
+            for item in params.get("SessionBehaviors"):
+                obj = AlgDetectResult()
+                obj._deserialize(item)
+                self.SessionBehaviors.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AliasDomain(AbstractModel):
     """别称域名信息。
 
@@ -565,6 +808,8 @@ class ApplicationProxy(AbstractModel):
         :type UpdateTime: str
         :param ApplicationProxyRules: 规则列表。
         :type ApplicationProxyRules: list of ApplicationProxyRule
+        :param AccelerateMainland: 中国大陆加速优化配置。
+        :type AccelerateMainland: :class:`tencentcloud.teo.v20220901.models.AccelerateMainland`
         """
         self.ZoneId = None
         self.ZoneName = None
@@ -583,6 +828,7 @@ class ApplicationProxy(AbstractModel):
         self.Ipv6 = None
         self.UpdateTime = None
         self.ApplicationProxyRules = None
+        self.AccelerateMainland = None
 
 
     def _deserialize(self, params):
@@ -610,6 +856,9 @@ class ApplicationProxy(AbstractModel):
                 obj = ApplicationProxyRule()
                 obj._deserialize(item)
                 self.ApplicationProxyRules.append(obj)
+        if params.get("AccelerateMainland") is not None:
+            self.AccelerateMainland = AccelerateMainland()
+            self.AccelerateMainland._deserialize(params.get("AccelerateMainland"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -794,6 +1043,8 @@ class BotConfig(AbstractModel):
         :type IntelligenceRule: :class:`tencentcloud.teo.v20220901.models.IntelligenceRule`
         :param BotUserRules: Bot自定义规则。如果为null，默认使用历史配置。
         :type BotUserRules: list of BotUserRule
+        :param AlgDetectRule: Bot主动特征识别规则。
+        :type AlgDetectRule: list of AlgDetectRule
         :param Customizes: Bot托管定制策略，入参可不填，仅出参使用。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Customizes: list of BotUserRule
@@ -803,6 +1054,7 @@ class BotConfig(AbstractModel):
         self.BotPortraitRule = None
         self.IntelligenceRule = None
         self.BotUserRules = None
+        self.AlgDetectRule = None
         self.Customizes = None
 
 
@@ -823,6 +1075,12 @@ class BotConfig(AbstractModel):
                 obj = BotUserRule()
                 obj._deserialize(item)
                 self.BotUserRules.append(obj)
+        if params.get("AlgDetectRule") is not None:
+            self.AlgDetectRule = []
+            for item in params.get("AlgDetectRule"):
+                obj = AlgDetectRule()
+                obj._deserialize(item)
+                self.AlgDetectRule.append(obj)
         if params.get("Customizes") is not None:
             self.Customizes = []
             for item in params.get("Customizes"):
@@ -847,7 +1105,6 @@ class BotExtendAction(AbstractModel):
         r"""
         :param Action: 处置动作，取值有：
 <li>monitor：观察；</li>
-<li>trans：放行；</li>
 <li>alg：JavaScript挑战；</li>
 <li>captcha：托管挑战；</li>
 <li>random：随机，按照ExtendActions分配处置动作和比例；</li>
@@ -997,6 +1254,7 @@ class BotUserRule(AbstractModel):
 <li>trans：放行；</li>
 <li>alg：JavaScript挑战；</li>
 <li>captcha：托管挑战；</li>
+<li>random：随机处置；</li>
 <li>silence：静默；</li>
 <li>shortdelay：短时响应；</li>
 <li>longdelay：长时响应。</li>
@@ -1196,7 +1454,7 @@ class CacheKey(AbstractModel):
 <li>off：不忽略。</li>
 注意：此字段可能返回 null，表示取不到有效值。
         :type IgnoreCase: str
-        :param QueryString: CacheKey中包含请求参数。
+        :param QueryString: CacheKey 中包含请求参数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type QueryString: :class:`tencentcloud.teo.v20220901.models.QueryString`
         """
@@ -1307,7 +1565,7 @@ class ClientIpCountry(AbstractModel):
 <li>on：开启；</li>
 <li>off：关闭。</li>
         :type Switch: str
-        :param HeaderName: 存放客户端IP所属地域信息的请求头名称，当Switch=on时有效。
+        :param HeaderName: 存放客户端 IP 所属地域信息的请求头名称，当 Switch=on 时有效。
 为空则使用默认值：EO-Client-IPCountry。
         :type HeaderName: str
         """
@@ -1338,7 +1596,7 @@ class ClientIpHeader(AbstractModel):
 <li>on：开启；</li>
 <li>off：关闭。</li>
         :type Switch: str
-        :param HeaderName: 回源时，存放客户端IP的请求头名称。
+        :param HeaderName: 回源时，存放客户端 IP 的请求头名称。
 为空则使用默认值：X-Forwarded-IP。
 注意：此字段可能返回 null，表示取不到有效值。
         :type HeaderName: str
@@ -1678,10 +1936,10 @@ class CreateApplicationProxyRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ZoneId: 站点ID。
+        :param ZoneId: 站点 ID。
         :type ZoneId: str
-        :param ProxyName: 当ProxyType=hostname时，表示域名或子域名；
-当ProxyType=instance时，表示代理名称。
+        :param ProxyName: 当 ProxyType=hostname 时，表示域名或子域名；
+当 ProxyType=instance 时，表示代理名称。
         :type ProxyName: str
         :param PlatType: 调度模式，取值有：
 <li>ip：表示Anycast IP调度；</li>
@@ -1702,12 +1960,14 @@ class CreateApplicationProxyRequest(AbstractModel):
         :param SessionPersistTime: 会话保持时间，取值范围：30-3600，单位：秒。
 不填写使用默认值600。
         :type SessionPersistTime: int
-        :param Ipv6: Ipv6访问配置。
-不填写表示关闭Ipv6访问。
+        :param Ipv6: Ipv6 访问配置。
+不填写表示关闭 Ipv6 访问。
         :type Ipv6: :class:`tencentcloud.teo.v20220901.models.Ipv6`
         :param ApplicationProxyRules: 规则详细信息。
 不填写则不创建规则。
         :type ApplicationProxyRules: list of ApplicationProxyRule
+        :param AccelerateMainland: 中国大陆加速优化配置。不填写表示关闭中国大陆加速优化。
+        :type AccelerateMainland: :class:`tencentcloud.teo.v20220901.models.AccelerateMainland`
         """
         self.ZoneId = None
         self.ProxyName = None
@@ -1718,6 +1978,7 @@ class CreateApplicationProxyRequest(AbstractModel):
         self.SessionPersistTime = None
         self.Ipv6 = None
         self.ApplicationProxyRules = None
+        self.AccelerateMainland = None
 
 
     def _deserialize(self, params):
@@ -1737,6 +1998,9 @@ class CreateApplicationProxyRequest(AbstractModel):
                 obj = ApplicationProxyRule()
                 obj._deserialize(item)
                 self.ApplicationProxyRules.append(obj)
+        if params.get("AccelerateMainland") is not None:
+            self.AccelerateMainland = AccelerateMainland()
+            self.AccelerateMainland._deserialize(params.get("AccelerateMainland"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2302,6 +2566,57 @@ class CreateRuleResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateSecurityIPGroupRequest(AbstractModel):
+    """CreateSecurityIPGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 站点 Id。
+        :type ZoneId: str
+        :param IPGroup: IP 组信息。
+        :type IPGroup: :class:`tencentcloud.teo.v20220901.models.IPGroup`
+        """
+        self.ZoneId = None
+        self.IPGroup = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        if params.get("IPGroup") is not None:
+            self.IPGroup = IPGroup()
+            self.IPGroup._deserialize(params.get("IPGroup"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateSecurityIPGroupResponse(AbstractModel):
+    """CreateSecurityIPGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: IP 组 Id。
+        :type GroupId: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.GroupId = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateSpeedTestingRequest(AbstractModel):
     """CreateSpeedTesting请求参数结构体
 
@@ -2438,6 +2753,113 @@ class DDoS(AbstractModel):
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DDoSAttackEvent(AbstractModel):
+    """DDoS攻击事件对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: 事件ID。
+        :type EventId: str
+        :param AttackType: 攻击类型(对应交互事件名称)。
+        :type AttackType: str
+        :param AttackStatus: 攻击状态。
+        :type AttackStatus: int
+        :param AttackMaxBandWidth: 攻击最大带宽。
+        :type AttackMaxBandWidth: int
+        :param AttackPacketMaxRate: 攻击包速率峰值。
+        :type AttackPacketMaxRate: int
+        :param AttackStartTime: 攻击开始时间，单位为s。
+        :type AttackStartTime: int
+        :param AttackEndTime: 攻击结束时间，单位为s。
+        :type AttackEndTime: int
+        :param PolicyId: DDoS策略组ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PolicyId: int
+        :param ZoneId: 站点ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ZoneId: str
+        :param Area: 攻击事件所属地区，取值有：
+<li>overseas：全球（除中国大陆地区）数据；</li>
+<li>mainland：中国大陆地区数据。</li>
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Area: str
+        :param DDoSBlockData: 封禁解封信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DDoSBlockData: list of DDoSBlockData
+        """
+        self.EventId = None
+        self.AttackType = None
+        self.AttackStatus = None
+        self.AttackMaxBandWidth = None
+        self.AttackPacketMaxRate = None
+        self.AttackStartTime = None
+        self.AttackEndTime = None
+        self.PolicyId = None
+        self.ZoneId = None
+        self.Area = None
+        self.DDoSBlockData = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        self.AttackType = params.get("AttackType")
+        self.AttackStatus = params.get("AttackStatus")
+        self.AttackMaxBandWidth = params.get("AttackMaxBandWidth")
+        self.AttackPacketMaxRate = params.get("AttackPacketMaxRate")
+        self.AttackStartTime = params.get("AttackStartTime")
+        self.AttackEndTime = params.get("AttackEndTime")
+        self.PolicyId = params.get("PolicyId")
+        self.ZoneId = params.get("ZoneId")
+        self.Area = params.get("Area")
+        if params.get("DDoSBlockData") is not None:
+            self.DDoSBlockData = []
+            for item in params.get("DDoSBlockData"):
+                obj = DDoSBlockData()
+                obj._deserialize(item)
+                self.DDoSBlockData.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DDoSBlockData(AbstractModel):
+    """DDoS封禁解封信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 开始时间，采用unix时间戳。
+        :type StartTime: int
+        :param EndTime: 结束时间，采用unix时间戳, 为0表示还处于封禁中。
+        :type EndTime: int
+        :param BlockArea: 封禁受影响区域。
+        :type BlockArea: str
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.BlockArea = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.BlockArea = params.get("BlockArea")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2803,6 +3225,51 @@ class DeleteRulesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteSecurityIPGroupRequest(AbstractModel):
+    """DeleteSecurityIPGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 站点 Id。
+        :type ZoneId: str
+        :param GroupId: IP 组 Id。
+        :type GroupId: int
+        """
+        self.ZoneId = None
+        self.GroupId = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        self.GroupId = params.get("GroupId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteSecurityIPGroupResponse(AbstractModel):
+    """DeleteSecurityIPGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteZoneRequest(AbstractModel):
     """DeleteZone请求参数结构体
 
@@ -2851,7 +3318,7 @@ class DescribeAccelerationDomainsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ZoneId: 加速域名所属站点ID。不填写该参数默认返回所有站点下的加速域名。
+        :param ZoneId: 加速域名所属站点ID。
         :type ZoneId: str
         :param Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：
 <li>domain-name<br>   按照【<strong>加速域名名称</strong>】进行过滤。<br>   类型：String<br>   必选：否
@@ -3413,6 +3880,104 @@ class DescribeDDoSAttackDataResponse(AbstractModel):
                 obj = SecEntry()
                 obj._deserialize(item)
                 self.Data.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeDDoSAttackEventRequest(AbstractModel):
+    """DescribeDDoSAttackEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param StartTime: 开始时间。
+        :type StartTime: str
+        :param EndTime: 结束时间。
+        :type EndTime: str
+        :param PolicyIds: ddos策略组集合，不填默认选择全部策略。
+        :type PolicyIds: list of int
+        :param ZoneIds: 站点集合，此参数必填，不填默认查询为空。
+        :type ZoneIds: list of str
+        :param Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
+        :type Limit: int
+        :param Offset: 分页的偏移量，默认值为0。
+        :type Offset: int
+        :param ShowDetail: 是否展示详细信息。
+        :type ShowDetail: bool
+        :param Area: 数据归属地区，取值有：
+<li>overseas：全球（除中国大陆地区）数据；</li>
+<li>mainland：中国大陆地区数据；</li>
+<li>global：全球数据；</li>不填默认取值为global。
+        :type Area: str
+        :param OrderBy: 排序字段，取值有：
+<li>MaxBandWidth：带宽峰值；</li>
+<li>AttackStartTime：攻击开始时间。</li>不填默认值为：AttackStartTime。
+        :type OrderBy: str
+        :param OrderType: 排序方式，取值有：
+<li>asc：升序方式；</li>
+<li>desc：降序方式。</li>不填默认值为：desc。
+        :type OrderType: str
+        """
+        self.StartTime = None
+        self.EndTime = None
+        self.PolicyIds = None
+        self.ZoneIds = None
+        self.Limit = None
+        self.Offset = None
+        self.ShowDetail = None
+        self.Area = None
+        self.OrderBy = None
+        self.OrderType = None
+
+
+    def _deserialize(self, params):
+        self.StartTime = params.get("StartTime")
+        self.EndTime = params.get("EndTime")
+        self.PolicyIds = params.get("PolicyIds")
+        self.ZoneIds = params.get("ZoneIds")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        self.ShowDetail = params.get("ShowDetail")
+        self.Area = params.get("Area")
+        self.OrderBy = params.get("OrderBy")
+        self.OrderType = params.get("OrderType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDDoSAttackEventResponse(AbstractModel):
+    """DescribeDDoSAttackEvent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Data: DDOS攻击事件数据列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: list of DDoSAttackEvent
+        :param TotalCount: 查询结果的总条数。
+        :type TotalCount: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Data = None
+        self.TotalCount = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self.Data = []
+            for item in params.get("Data"):
+                obj = DDoSAttackEvent()
+                obj._deserialize(item)
+                self.Data.append(obj)
+        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -4081,10 +4646,14 @@ class DescribeOverviewL7DataRequest(AbstractModel):
         :param EndTime: 结束时间。
         :type EndTime: str
         :param MetricNames: 查询的指标，取值有：
-<li>l7Flow_outFlux: 访问流量；</li>
+<li>l7Flow_outFlux: Edegone响应流量；</li>
+<li>l7Flow_inFlux: Edgeone请求流量；</li>
+<li>l7Flow_outBandwidth: Edegone响应带宽；</li>
+<li>l7Flow_inBandwidth: Edegone请求带宽；</li>
+<li>l7Flow_hit_outFlux: 缓存命中流量；</li>
 <li>l7Flow_request: 访问请求数；</li>
-<li>l7Flow_outBandwidth: 访问带宽；</li>
-<li>l7Flow_hit_outFlux: 缓存命中流量。</li>
+<li>l7Flow_flux: 访问请求上行+下行流量；</li>
+<li>l7Flow_bandwidth：访问请求上行+下行带宽。</li>
         :type MetricNames: list of str
         :param ZoneIds: 站点集合。
 若不填写，默认选择全部站点，且最多只能查询近30天的数据；若填写，则可查询站点绑定套餐支持的<a href="https://cloud.tencent.com/document/product/1552/77380#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>。
@@ -4788,9 +5357,13 @@ class DescribeTimingL7AnalysisDataRequest(AbstractModel):
         :param EndTime: 结束时间。
         :type EndTime: str
         :param MetricNames: 指标列表，取值有:
-<li>l7Flow_outFlux: 访问流量；</li>
+<li>l7Flow_outFlux: Edgeone响应流量；</li>
+<li>l7Flow_inFlux: Edgeone请求流量；</li>
+<li>l7Flow_outBandwidth: Edgeone响应带宽；</li>
+<li>l7Flow_inBandwidth：Edgeone请求带宽；</li>
 <li>l7Flow_request: 访问请求数；</li>
-<li>l7Flow_outBandwidth: 访问带宽。</li>
+<li>l7Flow_flux: 访问请求上行+下行流量；</li>
+<li>l7Flow_bandwidth：访问请求上行+下行带宽。</li>
         :type MetricNames: list of str
         :param ZoneIds: 站点集合。
 若不填写，默认选择全部站点，且最多只能查询近30天的数据；若填写，则可查询站点绑定套餐支持的<a href="https://cloud.tencent.com/document/product/1552/77380#edgeone-.E5.A5.97.E9.A4.90">数据分析最大查询范围</a>。
@@ -5007,7 +5580,7 @@ class DescribeTimingL7SourceDataRequest(AbstractModel):
 <li>l7Flow_inBandwidth_hy: 源站响应带宽；</li>
 <li>l7Flow_request_hy: 回源请求数；</li>
         :type MetricNames: list of str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
+        :param ZoneIds: 待查询的站点列表，此参数必填。
         :type ZoneIds: list of str
         :param Interval: 查询时间粒度，取值有：
 <li>min: 1分钟；</li>
@@ -5101,18 +5674,29 @@ class DescribeTopL7AnalysisDataRequest(AbstractModel):
         :param EndTime: 结束时间。
         :type EndTime: str
         :param MetricName: 查询的指标，取值有：
-<li> l7Flow_outFlux_country：请求的国家；</li>
-<li> l7Flow_outFlux_statusCode：请求的状态码；</li>
-<li> l7Flow_outFlux_domain：请求域名；</li>
-<li> l7Flow_outFlux_url：请求的URL; </li>
-<li> l7Flow_outFlux_resourceType：请求的资源类型；</li>
-<li> l7Flow_outFlux_sip：客户端的源IP；</li>
-<li> l7Flow_outFlux_referers：refer信息；</li>
-<li> l7Flow_outFlux_ua_device：设备类型; </li>
-<li> l7Flow_outFlux_ua_browser：浏览器类型；</li>
-<li> l7Flow_outFlux_us_os：操作系统类型。</li>
+<li> l7Flow_outFlux_country：按国家/地区维度统计流量指标；</li>
+<li> l7Flow_outFlux_statusCode：按状态码维度统计流量指标；</li>
+<li> l7Flow_outFlux_domain：按域名维度统计流量指标；</li>
+<li> l7Flow_outFlux_url：按URL维度统计流量指标; </li>
+<li> l7Flow_outFlux_resourceType：按资源类型维度统计流量指标；</li>
+<li> l7Flow_outFlux_sip：按客户端的源IP维度统计流量指标；</li>
+<li> l7Flow_outFlux_referers：按refer信息维度统计流量指标；</li>
+<li> l7Flow_outFlux_ua_device：按设备类型维度统计流量指标; </li>
+<li> l7Flow_outFlux_ua_browser：按浏览器类型维度统计流量指标；</li>
+<li> l7Flow_outFlux_us_os：按操作系统类型维度统计流量指标；</li>
+<li> l7Flow_request_country：按国家/地区维度统计请求数指标；</li>
+<li> l7Flow_request_statusCode：按状态码维度统计请求数指标；</li>
+<li> l7Flow_request_domain：按域名维度统计请求数指标；</li>
+<li> l7Flow_request_url：按URL维度统计请求数指标; </li>
+<li> l7Flow_request_resourceType：按资源类型维度统计请求数指标；</li>
+<li> l7Flow_request_sip：按客户端的源IP维度统计请求数指标；</li>
+<li> l7Flow_request_referer：按refer信息维度统计请求数指标；</li>
+<li> l7Flow_request_ua_device：按设备类型维度统计请求数指标; </li>
+<li> l7Flow_request_ua_browser：按浏览器类型维度统计请求数指标；</li>
+<li> l7Flow_request_us_os：按操作系统类型维度统计请求数指标。</li>
+
         :type MetricName: str
-        :param ZoneIds: 站点集合，不填默认选择全部站点。
+        :param ZoneIds: 站点集合，此参数必填，不填默认查询为空。
         :type ZoneIds: list of str
         :param Limit: 查询前多少个数据，最大值为1000，不填默认默认为: 10， 表示查询前top10的数据。
         :type Limit: int
@@ -5230,7 +5814,7 @@ class DescribeTopL7CacheDataRequest(AbstractModel):
         :type MetricName: str
         :param ZoneIds: 站点id集合，不填默认选择全部站点。
         :type ZoneIds: list of str
-        :param Limit: 查询前多少个数据，不填默认默认为10， 表示查询前top 10的数据。
+        :param Limit: 查询前多少个数据，最大值为1000，不填默认默认为10， 表示查询前top 10的数据。
         :type Limit: int
         :param Filters: 过滤条件，详细的过滤条件如下：
 <li>domain<br>   按照【<strong>子域名</strong>】进行过滤，子域名形如： test.example.com。<br>   类型：String<br>   必选：否</li>
@@ -6813,7 +7397,9 @@ class ExceptUserRuleScope(AbstractModel):
         :type Type: str
         :param Modules: 生效的模块，该字段取值有：
 <li>waf：托管规则；</li>
-<li>cc：速率限制规则；</li>
+<li>rate：速率限制；</li>
+<li>acl：自定义规则；</li>
+<li>cc：cc攻击防护；</li>
 <li>bot：Bot防护。</li>
 注意：此字段可能返回 null，表示取不到有效值。
         :type Modules: list of str
@@ -7053,7 +7639,7 @@ class Grpc(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否开启Grpc配置，取值有：
+        :param Switch: 是否开启 Grpc 配置，取值有：
 <li>on：开启；</li>
 <li>off：关闭。</li>
         :type Switch: str
@@ -7111,7 +7697,7 @@ class Hsts(AbstractModel):
 <li>on：开启；</li>
 <li>off：关闭。</li>
         :type Switch: str
-        :param MaxAge: MaxAge数值。单位为秒，最大值为1天。
+        :param MaxAge: MaxAge 数值。单位为秒，最大值为1天。
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxAge: int
         :param IncludeSubDomains: 是否包含子域名，取值有：
@@ -7162,7 +7748,7 @@ class Https(AbstractModel):
 <li>off：关闭。</li>
 注意：此字段可能返回 null，表示取不到有效值。
         :type OcspStapling: str
-        :param TlsVersion: Tls版本设置，取值有：
+        :param TlsVersion: Tls 版本设置，取值有：
 <li>TLSv1：TLSv1版本；</li>
 <li>TLSV1.1：TLSv1.1版本；</li>
 <li>TLSV1.2：TLSv1.2版本；</li>
@@ -7211,6 +7797,38 @@ class Https(AbstractModel):
                 self.CertInfo.append(obj)
         self.ApplyType = params.get("ApplyType")
         self.CipherSuite = params.get("CipherSuite")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IPGroup(AbstractModel):
+    """IP 网段组
+
+    """
+
+    def __init__(self):
+        r"""
+        :param GroupId: 组 Id，创建时填 0 即可。
+        :type GroupId: int
+        :param Name: 组名称。
+        :type Name: str
+        :param Content: IP 组内容，可以填入 IP 及 IP 掩码。
+        :type Content: list of str
+        """
+        self.GroupId = None
+        self.Name = None
+        self.Content = None
+
+
+    def _deserialize(self, params):
+        self.GroupId = params.get("GroupId")
+        self.Name = params.get("Name")
+        self.Content = params.get("Content")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7571,7 +8189,7 @@ class Ipv6(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: Ipv6访问功能配置，取值有：
+        :param Switch: Ipv6 访问功能配置，取值有：
 <li>on：开启Ipv6访问功能；</li>
 <li>off：关闭Ipv6访问功能。</li>
         :type Switch: str
@@ -7978,12 +8596,12 @@ class ModifyApplicationProxyRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ZoneId: 站点ID。
+        :param ZoneId: 站点 ID。
         :type ZoneId: str
-        :param ProxyId: 代理ID。
+        :param ProxyId: 代理 ID。
         :type ProxyId: str
-        :param ProxyName: 当ProxyType=hostname时，表示域名或子域名；
-当ProxyType=instance时，表示代理名称。
+        :param ProxyName: 当 ProxyType=hostname 时，表示域名或子域名；
+当 ProxyType=instance 时，表示代理名称。
         :type ProxyName: str
         :param SessionPersistTime: 会话保持时间，取值范围：30-3600，单位：秒。
 不填写保持原有配置。
@@ -7992,8 +8610,10 @@ class ModifyApplicationProxyRequest(AbstractModel):
 <li>hostname：表示子域名模式；</li>
 <li>instance：表示实例模式。</li>不填写保持原有配置。
         :type ProxyType: str
-        :param Ipv6: Ipv6访问配置，不填写保持原有配置。
+        :param Ipv6: Ipv6 访问配置，不填写保持原有配置。
         :type Ipv6: :class:`tencentcloud.teo.v20220901.models.Ipv6`
+        :param AccelerateMainland: 中国大陆加速优化配置。 不填写表示保持原有配置。
+        :type AccelerateMainland: :class:`tencentcloud.teo.v20220901.models.AccelerateMainland`
         """
         self.ZoneId = None
         self.ProxyId = None
@@ -8001,6 +8621,7 @@ class ModifyApplicationProxyRequest(AbstractModel):
         self.SessionPersistTime = None
         self.ProxyType = None
         self.Ipv6 = None
+        self.AccelerateMainland = None
 
 
     def _deserialize(self, params):
@@ -8012,6 +8633,9 @@ class ModifyApplicationProxyRequest(AbstractModel):
         if params.get("Ipv6") is not None:
             self.Ipv6 = Ipv6()
             self.Ipv6._deserialize(params.get("Ipv6"))
+        if params.get("AccelerateMainland") is not None:
+            self.AccelerateMainland = AccelerateMainland()
+            self.AccelerateMainland._deserialize(params.get("AccelerateMainland"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8544,6 +9168,60 @@ class ModifyRuleResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class ModifySecurityIPGroupRequest(AbstractModel):
+    """ModifySecurityIPGroup请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ZoneId: 站点 Id。
+        :type ZoneId: str
+        :param IPGroup: IP 组配置。
+        :type IPGroup: :class:`tencentcloud.teo.v20220901.models.IPGroup`
+        :param Mode: 操作类型，取值有：
+<li> append: 向 IPGroup 中追加 Content 参数中内容；</li>
+<li> remove: 从 IPGroup 中删除 Content 参数中内容；</li>
+<li> update: 全量替换 IPGroup 内容，并可修改 IPGroup 名称。 </li>
+        :type Mode: str
+        """
+        self.ZoneId = None
+        self.IPGroup = None
+        self.Mode = None
+
+
+    def _deserialize(self, params):
+        self.ZoneId = params.get("ZoneId")
+        if params.get("IPGroup") is not None:
+            self.IPGroup = IPGroup()
+            self.IPGroup._deserialize(params.get("IPGroup"))
+        self.Mode = params.get("Mode")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifySecurityIPGroupResponse(AbstractModel):
+    """ModifySecurityIPGroup返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class ModifySecurityPolicyRequest(AbstractModel):
     """ModifySecurityPolicy请求参数结构体
 
@@ -8754,7 +9432,7 @@ class ModifyZoneSettingRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ZoneId: 待变更的站点ID。
+        :param ZoneId: 待变更的站点 ID。
         :type ZoneId: str
         :param CacheConfig: 缓存过期时间配置。
 不填写表示保持原有配置。
@@ -8768,22 +9446,22 @@ class ModifyZoneSettingRequest(AbstractModel):
         :param OfflineCache: 离线缓存配置。
 不填写表示保持原有配置。
         :type OfflineCache: :class:`tencentcloud.teo.v20220901.models.OfflineCache`
-        :param Quic: Quic访问配置。
+        :param Quic: Quic 访问配置。
 不填写表示保持原有配置。
         :type Quic: :class:`tencentcloud.teo.v20220901.models.Quic`
-        :param PostMaxSize: Post请求传输配置。
+        :param PostMaxSize: Post 请求传输配置。
 不填写表示保持原有配置。
         :type PostMaxSize: :class:`tencentcloud.teo.v20220901.models.PostMaxSize`
         :param Compression: 智能压缩配置。
 不填写表示保持原有配置。
         :type Compression: :class:`tencentcloud.teo.v20220901.models.Compression`
-        :param UpstreamHttp2: Http2回源配置。
+        :param UpstreamHttp2: Http2 回源配置。
 不填写表示保持原有配置。
         :type UpstreamHttp2: :class:`tencentcloud.teo.v20220901.models.UpstreamHttp2`
-        :param ForceRedirect: 访问协议强制Https跳转配置。
+        :param ForceRedirect: 访问协议强制 Https 跳转配置。
 不填写表示保持原有配置。
         :type ForceRedirect: :class:`tencentcloud.teo.v20220901.models.ForceRedirect`
-        :param Https: Https加速配置。
+        :param Https: Https 加速配置。
 不填写表示保持原有配置。
         :type Https: :class:`tencentcloud.teo.v20220901.models.Https`
         :param Origin: 源站配置。
@@ -8792,24 +9470,27 @@ class ModifyZoneSettingRequest(AbstractModel):
         :param SmartRouting: 智能加速配置。
 不填写表示保持原有配置。
         :type SmartRouting: :class:`tencentcloud.teo.v20220901.models.SmartRouting`
-        :param WebSocket: WebSocket配置。
+        :param WebSocket: WebSocket 配置。
 不填写表示保持原有配置。
         :type WebSocket: :class:`tencentcloud.teo.v20220901.models.WebSocket`
-        :param ClientIpHeader: 客户端IP回源请求头配置。
+        :param ClientIpHeader: 客户端 IP 回源请求头配置。
 不填写表示保持原有配置。
         :type ClientIpHeader: :class:`tencentcloud.teo.v20220901.models.ClientIpHeader`
         :param CachePrefresh: 缓存预刷新配置。
 不填写表示保持原有配置。
         :type CachePrefresh: :class:`tencentcloud.teo.v20220901.models.CachePrefresh`
-        :param Ipv6: Ipv6访问配置。
+        :param Ipv6: Ipv6 访问配置。
 不填写表示保持原有配置。
         :type Ipv6: :class:`tencentcloud.teo.v20220901.models.Ipv6`
-        :param ClientIpCountry: 回源时是否携带客户端IP所属地域信息的配置。
+        :param ClientIpCountry: 回源时是否携带客户端 IP 所属地域信息的配置。
 不填写表示保持原有配置。
         :type ClientIpCountry: :class:`tencentcloud.teo.v20220901.models.ClientIpCountry`
-        :param Grpc: Grpc协议支持配置。
+        :param Grpc: Grpc 协议支持配置。
 不填写表示保持原有配置。
         :type Grpc: :class:`tencentcloud.teo.v20220901.models.Grpc`
+        :param ImageOptimize: 图片优化配置。
+不填写表示关闭。
+        :type ImageOptimize: :class:`tencentcloud.teo.v20220901.models.ImageOptimize`
         """
         self.ZoneId = None
         self.CacheConfig = None
@@ -8830,6 +9511,7 @@ class ModifyZoneSettingRequest(AbstractModel):
         self.Ipv6 = None
         self.ClientIpCountry = None
         self.Grpc = None
+        self.ImageOptimize = None
 
 
     def _deserialize(self, params):
@@ -8888,6 +9570,9 @@ class ModifyZoneSettingRequest(AbstractModel):
         if params.get("Grpc") is not None:
             self.Grpc = Grpc()
             self.Grpc._deserialize(params.get("Grpc"))
+        if params.get("ImageOptimize") is not None:
+            self.ImageOptimize = ImageOptimize()
+            self.ImageOptimize._deserialize(params.get("ImageOptimize"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9104,7 +9789,7 @@ class Origin(AbstractModel):
 <li>https：强制 https 回源。</li>
 注意：此字段可能返回 null，表示取不到有效值。
         :type OriginPullProtocol: str
-        :param CosPrivateAccess: 源站为腾讯云COS时，是否为私有访问bucket，取值有：
+        :param CosPrivateAccess: 源站为腾讯云 COS 时，是否为私有访问 bucket，取值有：
 <li>on：私有访问；</li>
 <li>off：公共访问。</li>
 注意：此字段可能返回 null，表示取不到有效值。
@@ -9271,21 +9956,16 @@ class OriginInfo(AbstractModel):
 <li>COS：COS源。</li>
 <li>ORIGIN_GROUP：源站组类型源站。</li>
 <li>AWS_S3：AWS S3对象存储源站。</li>
-注意：此字段可能返回 null，表示取不到有效值。
         :type OriginType: str
         :param Origin: 源站地址，当OriginType参数指定为ORIGIN_GROUP时，该参数填写源站组ID，其他情况下填写源站地址。
-注意：此字段可能返回 null，表示取不到有效值。
         :type Origin: str
         :param BackupOrigin: 备用源站组ID，该参数在OriginType参数指定为ORIGIN_GROUP时生效，为空表示不使用备用源站。
-注意：此字段可能返回 null，表示取不到有效值。
         :type BackupOrigin: str
         :param PrivateAccess: 指定是否允许访问私有对象存储源站，当源站类型OriginType=COS或AWS_S3时有效，取值有：
 <li>on：使用私有鉴权；</li>
 <li>off：不使用私有鉴权。</li>不填写，默认值为：off。
-注意：此字段可能返回 null，表示取不到有效值。
         :type PrivateAccess: str
         :param PrivateParameters: 私有鉴权使用参数，当源站类型PrivateAccess=on时有效。
-注意：此字段可能返回 null，表示取不到有效值。
         :type PrivateParameters: list of PrivateParameter
         """
         self.OriginType = None
@@ -9563,7 +10243,7 @@ class PostMaxSize(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否开启POST请求上传文件限制，平台默认为限制为32MB，取值有：
+        :param Switch: 是否开启 POST 请求上传文件限制，平台默认为限制为32MB，取值有：
 <li>on：开启限制；</li>
 <li>off：关闭限制。</li>
         :type Switch: str
@@ -9702,7 +10382,7 @@ class Quic(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否开启Quic配置，取值有：
+        :param Switch: 是否开启 Quic 配置，取值有：
 <li>on：开启；</li>
 <li>off：关闭。</li>
         :type Switch: str
@@ -12304,7 +12984,7 @@ class UpstreamHttp2(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: http2回源配置开关，取值有：
+        :param Switch: http2 回源配置开关，取值有：
 <li>on：开启；</li>
 <li>off：关闭。</li>
         :type Switch: str
@@ -12517,9 +13197,9 @@ class WafRule(AbstractModel):
 <li> on：开启；</li>
 <li> off：关闭。</li>
         :type Switch: str
-        :param BlockRuleIDs: 黑名单，ID参考接口 [DescribeSecurityGroupManagedRules](https://tcloud4api.woa.com/document/product/1657/80807?!preview&!document=1)。
+        :param BlockRuleIDs: 黑名单ID列表，将规则ID加入本参数列表中代表该ID关闭，即该规则ID不再生效。
         :type BlockRuleIDs: list of int
-        :param ObserveRuleIDs: 观察模式ID列表，将规则ID加入本参数列表中代表该ID使用观察模式生效，即该规则ID进入观察模式。ID参考接口 [DescribeSecurityGroupManagedRules](https://tcloud4api.woa.com/document/product/1657/80807?!preview&!document=1)。
+        :param ObserveRuleIDs: 观察模式ID列表，将规则ID加入本参数列表中代表该ID使用观察模式生效，即该规则ID进入观察模式。
         :type ObserveRuleIDs: list of int
         """
         self.Switch = None
@@ -12716,8 +13396,9 @@ class Zone(AbstractModel):
         :param IsFake: 是否伪站点，取值有：
 <li> 0：非伪站点；</li>
 <li> 1：伪站点。</li>
-注意：此字段可能返回 null，表示取不到有效值。
         :type IsFake: int
+        :param LockStatus: 锁定状态，取值有：<li> enable：正常，允许进行修改操作；</li><li> disable：锁定中，不允许进行修改操作。</li>
+        :type LockStatus: str
         """
         self.ZoneId = None
         self.ZoneName = None
@@ -12738,6 +13419,7 @@ class Zone(AbstractModel):
         self.ActiveStatus = None
         self.AliasZoneName = None
         self.IsFake = None
+        self.LockStatus = None
 
 
     def _deserialize(self, params):
@@ -12777,6 +13459,7 @@ class Zone(AbstractModel):
         self.ActiveStatus = params.get("ActiveStatus")
         self.AliasZoneName = params.get("AliasZoneName")
         self.IsFake = params.get("IsFake")
+        self.LockStatus = params.get("LockStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12856,6 +13539,9 @@ class ZoneSetting(AbstractModel):
         :param ImageOptimize: 图片优化相关配置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ImageOptimize: :class:`tencentcloud.teo.v20220901.models.ImageOptimize`
+        :param AccelerateMainland: 中国大陆加速优化配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccelerateMainland: :class:`tencentcloud.teo.v20220901.models.AccelerateMainland`
         """
         self.ZoneName = None
         self.Area = None
@@ -12878,6 +13564,7 @@ class ZoneSetting(AbstractModel):
         self.ClientIpCountry = None
         self.Grpc = None
         self.ImageOptimize = None
+        self.AccelerateMainland = None
 
 
     def _deserialize(self, params):
@@ -12940,6 +13627,9 @@ class ZoneSetting(AbstractModel):
         if params.get("ImageOptimize") is not None:
             self.ImageOptimize = ImageOptimize()
             self.ImageOptimize._deserialize(params.get("ImageOptimize"))
+        if params.get("AccelerateMainland") is not None:
+            self.AccelerateMainland = AccelerateMainland()
+            self.AccelerateMainland._deserialize(params.get("AccelerateMainland"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

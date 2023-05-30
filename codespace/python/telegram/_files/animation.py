@@ -40,9 +40,16 @@ class Animation(_BaseThumbedMedium):
         height (:obj:`int`): Video height as defined by sender.
         duration (:obj:`int`): Duration of the video in seconds as defined by sender.
         thumb (:class:`telegram.PhotoSize`, optional): Animation thumbnail as defined by sender.
+
+            .. deprecated:: 20.2
+               |thumbargumentdeprecation| :paramref:`thumbnail`.
         file_name (:obj:`str`, optional): Original animation filename as defined by sender.
         mime_type (:obj:`str`, optional): MIME type of the file as defined by sender.
         file_size (:obj:`int`, optional): File size in bytes.
+        thumbnail (:class:`telegram.PhotoSize`, optional): Animation thumbnail as defined by
+            sender.
+
+            .. versionadded:: 20.2
 
     Attributes:
         file_id (:obj:`str`): Identifier for this file, which can be used to download
@@ -53,11 +60,13 @@ class Animation(_BaseThumbedMedium):
         width (:obj:`int`): Video width as defined by sender.
         height (:obj:`int`): Video height as defined by sender.
         duration (:obj:`int`): Duration of the video in seconds as defined by sender.
-        thumb (:class:`telegram.PhotoSize`): Optional. Animation thumbnail as defined by sender.
         file_name (:obj:`str`): Optional. Original animation filename as defined by sender.
         mime_type (:obj:`str`): Optional. MIME type of the file as defined by sender.
         file_size (:obj:`int`): Optional. File size in bytes.
+        thumbnail (:class:`telegram.PhotoSize`): Optional. Animation thumbnail as defined by
+            sender.
 
+            .. versionadded:: 20.2
 
     """
 
@@ -70,12 +79,13 @@ class Animation(_BaseThumbedMedium):
         width: int,
         height: int,
         duration: int,
-        thumb: PhotoSize = None,
-        file_name: str = None,
-        mime_type: str = None,
-        file_size: int = None,
+        thumb: Optional[PhotoSize] = None,
+        file_name: Optional[str] = None,
+        mime_type: Optional[str] = None,
+        file_size: Optional[int] = None,
+        thumbnail: Optional[PhotoSize] = None,
         *,
-        api_kwargs: JSONDict = None,
+        api_kwargs: Optional[JSONDict] = None,
     ):
         super().__init__(
             file_id=file_id,
@@ -83,6 +93,7 @@ class Animation(_BaseThumbedMedium):
             file_size=file_size,
             thumb=thumb,
             api_kwargs=api_kwargs,
+            thumbnail=thumbnail,
         )
         with self._unfrozen():
             # Required

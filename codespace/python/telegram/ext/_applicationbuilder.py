@@ -114,7 +114,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         * Unless a custom :class:`telegram.Bot` instance is set via :meth:`bot`, :meth:`build` will
           use :class:`telegram.ext.ExtBot` for the bot.
 
-    .. seealso:: :wiki:`Your First Bot <Extensions-–-Your-first-Bot>`,
+    .. seealso:: :wiki:`Your First Bot <Extensions---Your-first-Bot>`,
         :wiki:`Builder Pattern <Builder-Pattern>`
 
     .. _`builder pattern`: https://en.wikipedia.org/wiki/Builder_pattern
@@ -329,7 +329,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
     def application_class(
         self: BuilderType,
         application_class: Type[Application[Any, Any, Any, Any, Any, Any]],
-        kwargs: Dict[str, object] = None,
+        kwargs: Optional[Dict[str, object]] = None,
     ) -> BuilderType:
         """Sets a custom subclass instead of :class:`telegram.ext.Application`. The
         subclass's ``__init__`` should look like this
@@ -570,12 +570,13 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
         Note:
             Users have observed stability issues with HTTP/2, which happen due to how the `h2
-            library handles <https://github.com/python-hyper/h2/issues/1181>` cancellations of
+            library handles <https://github.com/python-hyper/h2/issues/1181>`_ cancellations of
             keepalive connections. See `#3556 <https://github.com/python-telegram-bot/
             python-telegram-bot/issues/3556>`_ for a discussion.
 
             If you want to use HTTP/2, you must install PTB with the optional requirement
             ``http2``, i.e.
+
             .. code-block:: bash
 
                pip install python-telegram-bot[http2]
@@ -584,7 +585,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
             robust option at this time" <https://www.python-httpx.org/http2#enabling-http2>`_.
 
         .. versionadded:: 20.1
-        .. versionchanged:: NEXT.VERSION
+        .. versionchanged:: 20.2
             Reset the default version to 1.1.
 
         Args:
@@ -728,7 +729,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
         Note:
             Users have observed stability issues with HTTP/2, which happen due to how the `h2
-            library handles <https://github.com/python-hyper/h2/issues/1181>` cancellations of
+            library handles <https://github.com/python-hyper/h2/issues/1181>`_ cancellations of
             keepalive connections. See `#3556 <https://github.com/python-telegram-bot/
             python-telegram-bot/issues/3556>`_ for a discussion.
 
@@ -741,7 +742,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
                pip install httpx[http2]
 
         .. versionadded:: 20.1
-        .. versionchanged:: NEXT.VERSION
+        .. versionchanged:: 20.2
             Reset the default version to 1.1.
 
         Args:
@@ -758,7 +759,7 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
     def private_key(
         self: BuilderType,
         private_key: Union[bytes, FilePathInput],
-        password: Union[bytes, FilePathInput] = None,
+        password: Optional[Union[bytes, FilePathInput]] = None,
     ) -> BuilderType:
         """Sets the private key and corresponding password for decryption of telegram passport data
         for :attr:`telegram.ext.Application.bot`.

@@ -839,7 +839,7 @@ class CreatePolicyRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param PolicyName: 策略名
+        :param PolicyName: 策略名称。长度为1~128个字符，可包含英文字母、数字和+=,.@-_。
         :type PolicyName: str
         :param PolicyDocument: 策略文档，示例：{"version":"2.0","statement":[{"action":"name/sts:AssumeRole","effect":"allow","principal":{"service":["cloudaudit.cloud.tencent.com","cls.cloud.tencent.com"]}}]}，principal用于指定角色的授权对象。获取该参数可参阅 获取角色详情（https://cloud.tencent.com/document/product/598/36221） 输出参数RoleInfo
         :type PolicyDocument: str
@@ -946,7 +946,7 @@ class CreateRoleRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param RoleName: 角色名称
+        :param RoleName: 角色名称。长度为1~128个字符，可包含英文字母、数字和+=,.@-_。
         :type RoleName: str
         :param PolicyDocument: 策略文档，示例：{"version":"2.0","statement":[{"action":"name/sts:AssumeRole","effect":"allow","principal":{"service":["cloudaudit.cloud.tencent.com","cls.cloud.tencent.com"]}}]}，principal用于指定角色的授权对象。获取该参数可参阅 获取角色详情（https://cloud.tencent.com/document/product/598/36221） 输出参数RoleInfo
         :type PolicyDocument: str
@@ -1208,12 +1208,16 @@ class CreateUserSAMLConfigRequest(AbstractModel):
         r"""
         :param SAMLMetadataDocument: SAML元数据文档，需要base64 encode
         :type SAMLMetadataDocument: str
+        :param AuxiliaryDomain: 辅助域名
+        :type AuxiliaryDomain: str
         """
         self.SAMLMetadataDocument = None
+        self.AuxiliaryDomain = None
 
 
     def _deserialize(self, params):
         self.SAMLMetadataDocument = params.get("SAMLMetadataDocument")
+        self.AuxiliaryDomain = params.get("AuxiliaryDomain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1889,12 +1893,16 @@ class DescribeSafeAuthFlagCollResponse(AbstractModel):
         :type ActionFlag: :class:`tencentcloud.cam.v20190116.models.LoginActionFlag`
         :param OffsiteFlag: 异地登录保护设置
         :type OffsiteFlag: :class:`tencentcloud.cam.v20190116.models.OffsiteFlag`
+        :param PromptTrust: 是否提示信任设备1 ：提示 0: 不提示
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PromptTrust: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.LoginFlag = None
         self.ActionFlag = None
         self.OffsiteFlag = None
+        self.PromptTrust = None
         self.RequestId = None
 
 
@@ -1908,6 +1916,7 @@ class DescribeSafeAuthFlagCollResponse(AbstractModel):
         if params.get("OffsiteFlag") is not None:
             self.OffsiteFlag = OffsiteFlag()
             self.OffsiteFlag._deserialize(params.get("OffsiteFlag"))
+        self.PromptTrust = params.get("PromptTrust")
         self.RequestId = params.get("RequestId")
 
 
@@ -2131,17 +2140,21 @@ class DescribeUserSAMLConfigResponse(AbstractModel):
         :type SAMLMetadata: str
         :param Status: 状态：0:未设置，1:已开启，2:已禁用
         :type Status: int
+        :param AuxiliaryDomain: 辅助域名
+        :type AuxiliaryDomain: str
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.SAMLMetadata = None
         self.Status = None
+        self.AuxiliaryDomain = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.SAMLMetadata = params.get("SAMLMetadata")
         self.Status = params.get("Status")
+        self.AuxiliaryDomain = params.get("AuxiliaryDomain")
         self.RequestId = params.get("RequestId")
 
 
@@ -5824,14 +5837,18 @@ class UpdateUserSAMLConfigRequest(AbstractModel):
         :type Operate: str
         :param SAMLMetadataDocument: 元数据文档，需要base64 encode，仅当Operate为updateSAML时需要此参数
         :type SAMLMetadataDocument: str
+        :param AuxiliaryDomain: 辅助域名
+        :type AuxiliaryDomain: str
         """
         self.Operate = None
         self.SAMLMetadataDocument = None
+        self.AuxiliaryDomain = None
 
 
     def _deserialize(self, params):
         self.Operate = params.get("Operate")
         self.SAMLMetadataDocument = params.get("SAMLMetadataDocument")
+        self.AuxiliaryDomain = params.get("AuxiliaryDomain")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

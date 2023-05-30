@@ -29,7 +29,10 @@ Warning:
 """
 import datetime as dtm  # skipcq: PYL-W0406
 import time
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
+
+if TYPE_CHECKING:
+    from telegram import Bot
 
 # pytz is only available if it was installed as dependency of APScheduler, so we make a little
 # workaround here
@@ -51,8 +54,8 @@ def _localize(datetime: dtm.datetime, tzinfo: dtm.tzinfo) -> dtm.datetime:
 
 def to_float_timestamp(
     time_object: Union[int, float, dtm.timedelta, dtm.datetime, dtm.time],
-    reference_timestamp: float = None,
-    tzinfo: dtm.tzinfo = None,
+    reference_timestamp: Optional[float] = None,
+    tzinfo: Optional[dtm.tzinfo] = None,
 ) -> float:
     """
     Converts a given time object to a float POSIX timestamp.
@@ -146,8 +149,8 @@ def to_float_timestamp(
 
 def to_timestamp(
     dt_obj: Union[int, float, dtm.timedelta, dtm.datetime, dtm.time, None],
-    reference_timestamp: float = None,
-    tzinfo: dtm.tzinfo = None,
+    reference_timestamp: Optional[float] = None,
+    tzinfo: Optional[dtm.tzinfo] = None,
 ) -> Optional[int]:
     """
     Wrapper over :func:`to_float_timestamp` which returns an integer (the float value truncated
@@ -162,7 +165,10 @@ def to_timestamp(
     )
 
 
-def from_timestamp(unixtime: Optional[int], tzinfo: dtm.tzinfo = UTC) -> Optional[dtm.datetime]:
+def from_timestamp(
+    unixtime: Optional[int],
+    tzinfo: Optional[dtm.tzinfo] = None,
+) -> Optional[dtm.datetime]:
     """
     Converts an (integer) unix timestamp to a timezone aware datetime object.
     :obj:`None` s are left alone (i.e. ``from_timestamp(None)`` is :obj:`None`).
@@ -170,7 +176,8 @@ def from_timestamp(unixtime: Optional[int], tzinfo: dtm.tzinfo = UTC) -> Optiona
     Args:
         unixtime (:obj:`int`): Integer POSIX timestamp.
         tzinfo (:obj:`datetime.tzinfo`, optional): The timezone to which the timestamp is to be
-            converted to. Defaults to UTC.
+            converted to. Defaults to :obj:`None`, in which case the returned datetime object will
+            be timezone aware and in UTC.
 
     Returns:
         Timezone aware equivalent :obj:`datetime.datetime` value if :paramref:`unixtime` is not
@@ -179,9 +186,19 @@ def from_timestamp(unixtime: Optional[int], tzinfo: dtm.tzinfo = UTC) -> Optiona
     if unixtime is None:
         return None
 
-    if tzinfo is not None:
-        return dtm.datetime.fromtimestamp(unixtime, tz=tzinfo)
-    return dtm.datetime.utcfromtimestamp(unixtime)
+    return dtm.datetime.fromtimestamp(unixtime, tz=UTC if tzinfo is None else tzinfo)
+
+
+def extract_tzinfo_from_defaults(bot: "Bot") -> Union[dtm.tzinfo, None]:
+    """
+    Extracts the timezone info from the default values of the bot.
+    If the bot has no default values, :obj:`None` is returned.
+    """
+    # We don't use `ininstance(bot, ExtBot)` here so that this works
+    # in `python-telegram-bot-raw` as well
+    if hasattr(bot, "defaults") and bot.defaults:
+        return bot.defaults.tzinfo
+    return None
 
 
 def _datetime_to_float_timestamp(dt_obj: dtm.datetime) -> float:

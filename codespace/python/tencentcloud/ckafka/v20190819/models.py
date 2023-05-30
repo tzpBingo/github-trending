@@ -219,6 +219,40 @@ class AclRuleInfo(AbstractModel):
         
 
 
+class AclRuleResp(AbstractModel):
+    """AclRule列表接口返回结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 总数据条数
+        :type TotalCount: int
+        :param AclRuleList: AclRule列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AclRuleList: list of AclRule
+        """
+        self.TotalCount = None
+        self.AclRuleList = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("AclRuleList") is not None:
+            self.AclRuleList = []
+            for item in params.get("AclRuleList"):
+                obj = AclRule()
+                obj._deserialize(item)
+                self.AclRuleList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AnalyseParam(AbstractModel):
     """数据处理-解析参数
 
@@ -1092,15 +1126,12 @@ class ClsParam(AbstractModel):
     def __init__(self):
         r"""
         :param DecodeJson: 生产的信息是否为json格式
-注意：此字段可能返回 null，表示取不到有效值。
         :type DecodeJson: bool
         :param Resource: cls日志主题id
         :type Resource: str
         :param LogSet: cls日志集id
-注意：此字段可能返回 null，表示取不到有效值。
         :type LogSet: str
         :param ContentKey: 当DecodeJson为false时必填
-注意：此字段可能返回 null，表示取不到有效值。
         :type ContentKey: str
         :param TimeField: 指定消息中的某字段内容作为cls日志的时间。
 字段内容格式需要是秒级时间戳
@@ -1421,6 +1452,34 @@ class ConsumerGroupResponse(AbstractModel):
         
 
 
+class ConsumerGroupSpeed(AbstractModel):
+    """消费者组消费速度排行
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ConsumerGroupName: 消费者组名称
+        :type ConsumerGroupName: str
+        :param Speed: 消费速度 Count/Minute
+        :type Speed: int
+        """
+        self.ConsumerGroupName = None
+        self.Speed = None
+
+
+    def _deserialize(self, params):
+        self.ConsumerGroupName = params.get("ConsumerGroupName")
+        self.Speed = params.get("Speed")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ConsumerGroupTopic(AbstractModel):
     """消费组主题对象
 
@@ -1628,6 +1687,84 @@ class CreateAclResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateAclRuleRequest(AbstractModel):
+    """CreateAclRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id信息
+        :type InstanceId: str
+        :param ResourceType: Acl资源类型,目前只支持Topic,枚举值列表：Topic
+        :type ResourceType: str
+        :param PatternType: 匹配类型，目前支持前缀匹配与预设策略，枚举值列表：PREFIXED/PRESET
+        :type PatternType: str
+        :param RuleName: 规则名称
+        :type RuleName: str
+        :param RuleList: 设置的ACL规则列表
+        :type RuleList: list of AclRuleInfo
+        :param Pattern: 表示前缀匹配的前缀的值
+        :type Pattern: str
+        :param IsApplied: 预设ACL规则是否应用到新增的topic中
+        :type IsApplied: int
+        :param Comment: ACL规则的备注
+        :type Comment: str
+        """
+        self.InstanceId = None
+        self.ResourceType = None
+        self.PatternType = None
+        self.RuleName = None
+        self.RuleList = None
+        self.Pattern = None
+        self.IsApplied = None
+        self.Comment = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.ResourceType = params.get("ResourceType")
+        self.PatternType = params.get("PatternType")
+        self.RuleName = params.get("RuleName")
+        if params.get("RuleList") is not None:
+            self.RuleList = []
+            for item in params.get("RuleList"):
+                obj = AclRuleInfo()
+                obj._deserialize(item)
+                self.RuleList.append(obj)
+        self.Pattern = params.get("Pattern")
+        self.IsApplied = params.get("IsApplied")
+        self.Comment = params.get("Comment")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateAclRuleResponse(AbstractModel):
+    """CreateAclRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 规则的唯一表示Key
+        :type Result: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class CreateCdcClusterRequest(AbstractModel):
     """CreateCdcCluster请求参数结构体
 
@@ -1734,6 +1871,8 @@ class CreateConnectResourceRequest(AbstractModel):
         :type SQLServerConnectParam: :class:`tencentcloud.ckafka.v20190819.models.SQLServerConnectParam`
         :param DorisConnectParam: Doris 配置，Type为 DORIS 时必填
         :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisConnectParam`
+        :param KafkaConnectParam: Kafka配置，Type为 KAFKA 时必填
+        :type KafkaConnectParam: :class:`tencentcloud.ckafka.v20190819.models.KafkaConnectParam`
         """
         self.ResourceName = None
         self.Type = None
@@ -1747,6 +1886,7 @@ class CreateConnectResourceRequest(AbstractModel):
         self.MariaDBConnectParam = None
         self.SQLServerConnectParam = None
         self.DorisConnectParam = None
+        self.KafkaConnectParam = None
 
 
     def _deserialize(self, params):
@@ -1780,6 +1920,9 @@ class CreateConnectResourceRequest(AbstractModel):
         if params.get("DorisConnectParam") is not None:
             self.DorisConnectParam = DorisConnectParam()
             self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
+        if params.get("KafkaConnectParam") is not None:
+            self.KafkaConnectParam = KafkaConnectParam()
+            self.KafkaConnectParam._deserialize(params.get("KafkaConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1994,6 +2137,74 @@ class CreateDatahubTaskResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Result") is not None:
             self.Result = CreateDatahubTaskRes()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreateDatahubTopicRequest(AbstractModel):
+    """CreateDatahubTopic请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称，是一个不超过 128 个字符的字符串，必须以字母为首字符，剩余部分可以包含字母、数字和横划线(-)
+        :type Name: str
+        :param PartitionNum: Partition个数，大于0
+        :type PartitionNum: int
+        :param RetentionMs: 消息保留时间，单位ms，当前最小值为60000ms
+        :type RetentionMs: int
+        :param Note: 主题备注，是一个不超过 64 个字符的字符串，必须以字母为首字符，剩余部分可以包含字母、数字和横划线(-)
+        :type Note: str
+        :param Tags: 标签列表
+        :type Tags: list of Tag
+        """
+        self.Name = None
+        self.PartitionNum = None
+        self.RetentionMs = None
+        self.Note = None
+        self.Tags = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.PartitionNum = params.get("PartitionNum")
+        self.RetentionMs = params.get("RetentionMs")
+        self.Note = params.get("Note")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateDatahubTopicResponse(AbstractModel):
+    """CreateDatahubTopic返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回创建结果
+        :type Result: :class:`tencentcloud.ckafka.v20190819.models.DatahubTopicResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = DatahubTopicResp()
             self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
@@ -3116,6 +3327,35 @@ class DatahubTopicDTO(AbstractModel):
         
 
 
+class DatahubTopicResp(AbstractModel):
+    """Datahub Topic 响应
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TopicName: Topic名称
+        :type TopicName: str
+        :param TopicId: TopicId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicId: str
+        """
+        self.TopicName = None
+        self.TopicId = None
+
+
+    def _deserialize(self, params):
+        self.TopicName = params.get("TopicName")
+        self.TopicId = params.get("TopicId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DateParam(AbstractModel):
     """数据处理——Value处理参数——转换时间格式参数
 
@@ -3834,6 +4074,65 @@ class DescribeACLResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeAclRuleRequest(AbstractModel):
+    """DescribeAclRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例Id
+        :type InstanceId: str
+        :param RuleName: ACL规则名
+        :type RuleName: str
+        :param PatternType: ACL规则匹配类型
+        :type PatternType: str
+        :param IsSimplified: 是否读取简略的ACL规则
+        :type IsSimplified: bool
+        """
+        self.InstanceId = None
+        self.RuleName = None
+        self.PatternType = None
+        self.IsSimplified = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.RuleName = params.get("RuleName")
+        self.PatternType = params.get("PatternType")
+        self.IsSimplified = params.get("IsSimplified")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAclRuleResponse(AbstractModel):
+    """DescribeAclRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回的AclRule结果集对象
+        :type Result: :class:`tencentcloud.ckafka.v20190819.models.AclRuleResp`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = AclRuleResp()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeAppInfoRequest(AbstractModel):
     """DescribeAppInfo请求参数结构体
 
@@ -3995,12 +4294,18 @@ class DescribeConnectResource(AbstractModel):
         :param ErrorMessage: 连接源的异常信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type ErrorMessage: str
-        :param CurrentStep: 连接源的当前所处步骤
-注意：此字段可能返回 null，表示取不到有效值。
-        :type CurrentStep: str
         :param DatahubTaskCount: 该连接源关联的Datahub任务数
 注意：此字段可能返回 null，表示取不到有效值。
         :type DatahubTaskCount: int
+        :param CurrentStep: 连接源的当前所处步骤
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CurrentStep: str
+        :param TaskProgress: 创建进度百分比
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskProgress: float
+        :param StepList: 步骤列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StepList: list of str
         :param DtsConnectParam: Dts配置，Type为DTS时返回
 注意：此字段可能返回 null，表示取不到有效值。
         :type DtsConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DtsConnectParam`
@@ -4031,6 +4336,9 @@ class DescribeConnectResource(AbstractModel):
         :param DorisConnectParam: Doris 配置，Type 为 DORIS 时返回
 注意：此字段可能返回 null，表示取不到有效值。
         :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisConnectParam`
+        :param KafkaConnectParam: Kafka配置，Type 为 KAFKA 时返回
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KafkaConnectParam: :class:`tencentcloud.ckafka.v20190819.models.KafkaConnectParam`
         """
         self.ResourceId = None
         self.ResourceName = None
@@ -4039,8 +4347,10 @@ class DescribeConnectResource(AbstractModel):
         self.Status = None
         self.CreateTime = None
         self.ErrorMessage = None
-        self.CurrentStep = None
         self.DatahubTaskCount = None
+        self.CurrentStep = None
+        self.TaskProgress = None
+        self.StepList = None
         self.DtsConnectParam = None
         self.MongoDBConnectParam = None
         self.EsConnectParam = None
@@ -4051,6 +4361,7 @@ class DescribeConnectResource(AbstractModel):
         self.SQLServerConnectParam = None
         self.CtsdbConnectParam = None
         self.DorisConnectParam = None
+        self.KafkaConnectParam = None
 
 
     def _deserialize(self, params):
@@ -4061,8 +4372,10 @@ class DescribeConnectResource(AbstractModel):
         self.Status = params.get("Status")
         self.CreateTime = params.get("CreateTime")
         self.ErrorMessage = params.get("ErrorMessage")
-        self.CurrentStep = params.get("CurrentStep")
         self.DatahubTaskCount = params.get("DatahubTaskCount")
+        self.CurrentStep = params.get("CurrentStep")
+        self.TaskProgress = params.get("TaskProgress")
+        self.StepList = params.get("StepList")
         if params.get("DtsConnectParam") is not None:
             self.DtsConnectParam = DtsConnectParam()
             self.DtsConnectParam._deserialize(params.get("DtsConnectParam"))
@@ -4093,6 +4406,9 @@ class DescribeConnectResource(AbstractModel):
         if params.get("DorisConnectParam") is not None:
             self.DorisConnectParam = DorisConnectParam()
             self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
+        if params.get("KafkaConnectParam") is not None:
+            self.KafkaConnectParam = KafkaConnectParam()
+            self.KafkaConnectParam._deserialize(params.get("KafkaConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4190,6 +4506,9 @@ class DescribeConnectResourceResp(AbstractModel):
         :param DorisConnectParam: Doris 配置，Type 为 DORIS 时返回
 注意：此字段可能返回 null，表示取不到有效值。
         :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisConnectParam`
+        :param KafkaConnectParam: Kafka配置，Type 为 KAFKA 时返回
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KafkaConnectParam: :class:`tencentcloud.ckafka.v20190819.models.KafkaConnectParam`
         """
         self.ResourceId = None
         self.ResourceName = None
@@ -4210,6 +4529,7 @@ class DescribeConnectResourceResp(AbstractModel):
         self.SQLServerConnectParam = None
         self.CtsdbConnectParam = None
         self.DorisConnectParam = None
+        self.KafkaConnectParam = None
 
 
     def _deserialize(self, params):
@@ -4252,6 +4572,9 @@ class DescribeConnectResourceResp(AbstractModel):
         if params.get("DorisConnectParam") is not None:
             self.DorisConnectParam = DorisConnectParam()
             self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
+        if params.get("KafkaConnectParam") is not None:
+            self.KafkaConnectParam = KafkaConnectParam()
+            self.KafkaConnectParam._deserialize(params.get("KafkaConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4300,11 +4623,14 @@ class DescribeConnectResourcesRequest(AbstractModel):
         :type Offset: int
         :param Limit: 返回数量，默认为20，最大值为100
         :type Limit: int
+        :param ResourceRegion: 连接源的关键字查询, 根据地域查询本地域内连接管理列表中的连接(仅支持包含region输入的连接源)
+        :type ResourceRegion: str
         """
         self.Type = None
         self.SearchWord = None
         self.Offset = None
         self.Limit = None
+        self.ResourceRegion = None
 
 
     def _deserialize(self, params):
@@ -4312,6 +4638,7 @@ class DescribeConnectResourcesRequest(AbstractModel):
         self.SearchWord = params.get("SearchWord")
         self.Offset = params.get("Offset")
         self.Limit = params.get("Limit")
+        self.ResourceRegion = params.get("ResourceRegion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5494,6 +5821,53 @@ class DescribeRouteResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeTaskStatusRequest(AbstractModel):
+    """DescribeTaskStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 任务唯一标记
+        :type FlowId: int
+        """
+        self.FlowId = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTaskStatusResponse(AbstractModel):
+    """DescribeTaskStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回结果
+        :type Result: :class:`tencentcloud.ckafka.v20190819.models.TaskStatusResponse`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = TaskStatusResponse()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeTopicAttributesRequest(AbstractModel):
     """DescribeTopicAttributes请求参数结构体
 
@@ -5604,6 +5978,65 @@ class DescribeTopicDetailResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Result") is not None:
             self.Result = TopicDetailResponse()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeTopicFlowRankingRequest(AbstractModel):
+    """DescribeTopicFlowRanking请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例ID
+        :type InstanceId: str
+        :param RankingType: 排行类别(PRO-Topic生产流量/CON-Topic消费流量)
+        :type RankingType: str
+        :param BeginDate: 排行起始日期
+        :type BeginDate: str
+        :param EndDate: 排行结束日期
+        :type EndDate: str
+        """
+        self.InstanceId = None
+        self.RankingType = None
+        self.BeginDate = None
+        self.EndDate = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.RankingType = params.get("RankingType")
+        self.BeginDate = params.get("BeginDate")
+        self.EndDate = params.get("EndDate")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTopicFlowRankingResponse(AbstractModel):
+    """DescribeTopicFlowRanking返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 流量排行
+        :type Result: :class:`tencentcloud.ckafka.v20190819.models.TopicFlowRankingResult`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = TopicFlowRankingResult()
             self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
@@ -6145,25 +6578,18 @@ class DtsModifyConnectParam(AbstractModel):
     def __init__(self):
         r"""
         :param Resource: Dts实例Id【不支持修改】
-注意：此字段可能返回 null，表示取不到有效值。
         :type Resource: str
         :param Port: Dts的连接port【不支持修改】
-注意：此字段可能返回 null，表示取不到有效值。
         :type Port: int
         :param GroupId: Dts消费分组的Id
-注意：此字段可能返回 null，表示取不到有效值。
         :type GroupId: str
         :param UserName: Dts消费分组的账号
-注意：此字段可能返回 null，表示取不到有效值。
         :type UserName: str
         :param Password: Dts消费分组的密码
-注意：此字段可能返回 null，表示取不到有效值。
         :type Password: str
         :param IsUpdate: 是否更新到关联的Datahub任务，默认为true
-注意：此字段可能返回 null，表示取不到有效值。
         :type IsUpdate: bool
         :param Topic: Dts订阅的topic【不支持修改】
-注意：此字段可能返回 null，表示取不到有效值。
         :type Topic: str
         """
         self.Resource = None
@@ -8372,6 +8798,51 @@ class KVParam(AbstractModel):
         
 
 
+class KafkaConnectParam(AbstractModel):
+    """Kafka连接源参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Resource: Kafka连接源的实例资源, 非自建时必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Resource: str
+        :param SelfBuilt: 是否为自建集群
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SelfBuilt: bool
+        :param IsUpdate: 是否更新到关联的Dip任务
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsUpdate: bool
+        :param BrokerAddress: Kafka连接的broker地址, 自建时必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BrokerAddress: str
+        :param Region: CKafka连接源的实例资源地域, 跨地域时必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        """
+        self.Resource = None
+        self.SelfBuilt = None
+        self.IsUpdate = None
+        self.BrokerAddress = None
+        self.Region = None
+
+
+    def _deserialize(self, params):
+        self.Resource = params.get("Resource")
+        self.SelfBuilt = params.get("SelfBuilt")
+        self.IsUpdate = params.get("IsUpdate")
+        self.BrokerAddress = params.get("BrokerAddress")
+        self.Region = params.get("Region")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class KafkaParam(AbstractModel):
     """Ckafka配置
 
@@ -8424,6 +8895,12 @@ class KafkaParam(AbstractModel):
         :param MsgMultiple: 源topic消息1条扩增成msgMultiple条写入目标topic(该参数目前只有ckafka流入ckafka适用)
 注意：此字段可能返回 null，表示取不到有效值。
         :type MsgMultiple: int
+        :param ConnectorSyncType: 数据同步专用参数, 正常数据处理可为空, 实例级别同步: 仅同步元数据填写"META_SYNC_INSTANCE_TYPE", 同步元数据及全部topic内消息的填写"META_AND_DATA_SYNC_INSTANCE_TYPE"; topic级别同步: 选中的源和目标topic中的消息(需要目标实例也包含该topic)填写"DATA_SYNC_TYPE"
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConnectorSyncType: str
+        :param KeepPartition: 数据同步专用参数, 当通过时,希望下游的消息写入分区与上游的一致,则填true,但下游分区小于上游时,会报错; 不需要一致则为false, 默认为false
+注意：此字段可能返回 null，表示取不到有效值。
+        :type KeepPartition: bool
         """
         self.SelfBuilt = None
         self.Resource = None
@@ -8441,6 +8918,8 @@ class KafkaParam(AbstractModel):
         self.UseAutoCreateTopic = None
         self.CompressionType = None
         self.MsgMultiple = None
+        self.ConnectorSyncType = None
+        self.KeepPartition = None
 
 
     def _deserialize(self, params):
@@ -8465,6 +8944,8 @@ class KafkaParam(AbstractModel):
         self.UseAutoCreateTopic = params.get("UseAutoCreateTopic")
         self.CompressionType = params.get("CompressionType")
         self.MsgMultiple = params.get("MsgMultiple")
+        self.ConnectorSyncType = params.get("ConnectorSyncType")
+        self.KeepPartition = params.get("KeepPartition")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8682,6 +9163,59 @@ class MariaDBParam(AbstractModel):
         
 
 
+class ModifyAclRuleRequest(AbstractModel):
+    """ModifyAclRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例Id
+        :type InstanceId: str
+        :param RuleName: ACL策略名
+        :type RuleName: str
+        :param IsApplied: 是否应用到新增的Topic
+        :type IsApplied: int
+        """
+        self.InstanceId = None
+        self.RuleName = None
+        self.IsApplied = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.RuleName = params.get("RuleName")
+        self.IsApplied = params.get("IsApplied")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyAclRuleResponse(AbstractModel):
+    """ModifyAclRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 规则的唯一表示Key
+        :type Result: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Result = params.get("Result")
+        self.RequestId = params.get("RequestId")
+
+
 class ModifyConnectResourceRequest(AbstractModel):
     """ModifyConnectResource请求参数结构体
 
@@ -8717,6 +9251,8 @@ class ModifyConnectResourceRequest(AbstractModel):
         :type CtsdbConnectParam: :class:`tencentcloud.ckafka.v20190819.models.CtsdbModifyConnectParam`
         :param DorisConnectParam: Doris配置，Type为DORIS
         :type DorisConnectParam: :class:`tencentcloud.ckafka.v20190819.models.DorisModifyConnectParam`
+        :param KafkaConnectParam: Kafka配置，Type为 KAFKA 时必填
+        :type KafkaConnectParam: :class:`tencentcloud.ckafka.v20190819.models.KafkaConnectParam`
         """
         self.ResourceId = None
         self.ResourceName = None
@@ -8732,6 +9268,7 @@ class ModifyConnectResourceRequest(AbstractModel):
         self.SQLServerConnectParam = None
         self.CtsdbConnectParam = None
         self.DorisConnectParam = None
+        self.KafkaConnectParam = None
 
 
     def _deserialize(self, params):
@@ -8769,6 +9306,9 @@ class ModifyConnectResourceRequest(AbstractModel):
         if params.get("DorisConnectParam") is not None:
             self.DorisConnectParam = DorisModifyConnectParam()
             self.DorisConnectParam._deserialize(params.get("DorisConnectParam"))
+        if params.get("KafkaConnectParam") is not None:
+            self.KafkaConnectParam = KafkaConnectParam()
+            self.KafkaConnectParam._deserialize(params.get("KafkaConnectParam"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8849,6 +9389,70 @@ class ModifyDatahubTaskResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Result") is not None:
             self.Result = DatahubTaskIdRes()
+            self.Result._deserialize(params.get("Result"))
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyDatahubTopicRequest(AbstractModel):
+    """ModifyDatahubTopic请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 名称
+        :type Name: str
+        :param RetentionMs: 消息保留时间，单位：ms，当前最小值为60000ms。
+        :type RetentionMs: int
+        :param Note: 主题备注，是一个不超过64个字符的字符串，必须以字母为首字符，剩余部分可以包含字母、数字和横划线-。
+        :type Note: str
+        :param Tags: 标签列表
+        :type Tags: list of Tag
+        """
+        self.Name = None
+        self.RetentionMs = None
+        self.Note = None
+        self.Tags = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.RetentionMs = params.get("RetentionMs")
+        self.Note = params.get("Note")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyDatahubTopicResponse(AbstractModel):
+    """ModifyDatahubTopic返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Result: 返回结果集
+        :type Result: :class:`tencentcloud.ckafka.v20190819.models.JgwOperateResponse`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Result = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Result") is not None:
+            self.Result = JgwOperateResponse()
             self.Result._deserialize(params.get("Result"))
         self.RequestId = params.get("RequestId")
 
@@ -10239,6 +10843,57 @@ class Region(AbstractModel):
         
 
 
+class RenewCkafkaInstanceRequest(AbstractModel):
+    """RenewCkafkaInstance请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例id
+        :type InstanceId: str
+        :param TimeSpan: 续费时长, 默认为1, 单位是月
+        :type TimeSpan: int
+        """
+        self.InstanceId = None
+        self.TimeSpan = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.TimeSpan = params.get("TimeSpan")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RenewCkafkaInstanceResponse(AbstractModel):
+    """RenewCkafkaInstance接口出参bigDealIds
+
+    """
+
+    def __init__(self):
+        r"""
+        :param BigDealId: 订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BigDealId: str
+        :param DealName: 子订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DealName: str
+        """
+        self.BigDealId = None
+        self.DealName = None
+
+
+    def _deserialize(self, params):
+        self.BigDealId = params.get("BigDealId")
+        self.DealName = params.get("DealName")
+
+
 class ReplaceParam(AbstractModel):
     """数据处理——Value处理参数——替换参数
 
@@ -10644,13 +11299,10 @@ class ScfParam(AbstractModel):
     def __init__(self):
         r"""
         :param FunctionName: SCF云函数函数名
-注意：此字段可能返回 null，表示取不到有效值。
         :type FunctionName: str
         :param Namespace: SCF云函数命名空间, 默认为default
-注意：此字段可能返回 null，表示取不到有效值。
         :type Namespace: str
         :param Qualifier: SCF云函数版本及别名, 默认为$DEFAULT
-注意：此字段可能返回 null，表示取不到有效值。
         :type Qualifier: str
         :param BatchSize: 每批最大发送消息数, 默认为1000
         :type BatchSize: int
@@ -10908,6 +11560,38 @@ class Tag(AbstractModel):
     def _deserialize(self, params):
         self.TagKey = params.get("TagKey")
         self.TagValue = params.get("TagValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TaskStatusResponse(AbstractModel):
+    """任务状态返回对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Status: 任务状态:
+0 成功
+1 失败
+2 进行中
+        :type Status: int
+        :param Output: 输出信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Output: str
+        """
+        self.Status = None
+        self.Output = None
+
+
+    def _deserialize(self, params):
+        self.Status = params.get("Status")
+        self.Output = params.get("Output")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -11206,6 +11890,98 @@ class TopicDetailResponse(AbstractModel):
         
 
 
+class TopicFlowRanking(AbstractModel):
+    """topic 流量排行
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TopicId: 主题Id
+        :type TopicId: str
+        :param TopicName: 主题名称
+        :type TopicName: str
+        :param PartitionNum: 分区数
+        :type PartitionNum: int
+        :param ReplicaNum: 副本数
+        :type ReplicaNum: int
+        :param TopicTraffic: Topic 流量
+        :type TopicTraffic: str
+        :param MessageHeap: Topic 消息堆积
+        :type MessageHeap: int
+        """
+        self.TopicId = None
+        self.TopicName = None
+        self.PartitionNum = None
+        self.ReplicaNum = None
+        self.TopicTraffic = None
+        self.MessageHeap = None
+
+
+    def _deserialize(self, params):
+        self.TopicId = params.get("TopicId")
+        self.TopicName = params.get("TopicName")
+        self.PartitionNum = params.get("PartitionNum")
+        self.ReplicaNum = params.get("ReplicaNum")
+        self.TopicTraffic = params.get("TopicTraffic")
+        self.MessageHeap = params.get("MessageHeap")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TopicFlowRankingResult(AbstractModel):
+    """topic 生产消息数据，消费者数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TopicFlow: Topic 流量数组
+        :type TopicFlow: list of TopicFlowRanking
+        :param ConsumeSpeed: 消费者组消费速度排行速度
+        :type ConsumeSpeed: list of ConsumerGroupSpeed
+        :param TopicMessageHeap: Topic 消息堆积/占用磁盘排行
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicMessageHeap: list of TopicMessageHeapRanking
+        """
+        self.TopicFlow = None
+        self.ConsumeSpeed = None
+        self.TopicMessageHeap = None
+
+
+    def _deserialize(self, params):
+        if params.get("TopicFlow") is not None:
+            self.TopicFlow = []
+            for item in params.get("TopicFlow"):
+                obj = TopicFlowRanking()
+                obj._deserialize(item)
+                self.TopicFlow.append(obj)
+        if params.get("ConsumeSpeed") is not None:
+            self.ConsumeSpeed = []
+            for item in params.get("ConsumeSpeed"):
+                obj = ConsumerGroupSpeed()
+                obj._deserialize(item)
+                self.ConsumeSpeed.append(obj)
+        if params.get("TopicMessageHeap") is not None:
+            self.TopicMessageHeap = []
+            for item in params.get("TopicMessageHeap"):
+                obj = TopicMessageHeapRanking()
+                obj._deserialize(item)
+                self.TopicMessageHeap.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TopicInSyncReplicaInfo(AbstractModel):
     """topic副本及详细信息
 
@@ -11286,6 +12062,56 @@ class TopicInSyncReplicaResult(AbstractModel):
                 obj._deserialize(item)
                 self.TopicInSyncReplicaList.append(obj)
         self.TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TopicMessageHeapRanking(AbstractModel):
+    """topic消息堆积、占用磁盘排行
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TopicId: 主题ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicId: str
+        :param TopicName: 主题名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicName: str
+        :param PartitionNum: 分区数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PartitionNum: int
+        :param ReplicaNum: 副本数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReplicaNum: int
+        :param TopicTraffic: Topic 流量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TopicTraffic: str
+        :param MessageHeap: topic消息堆积/占用磁盘
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MessageHeap: int
+        """
+        self.TopicId = None
+        self.TopicName = None
+        self.PartitionNum = None
+        self.ReplicaNum = None
+        self.TopicTraffic = None
+        self.MessageHeap = None
+
+
+    def _deserialize(self, params):
+        self.TopicId = params.get("TopicId")
+        self.TopicName = params.get("TopicName")
+        self.PartitionNum = params.get("PartitionNum")
+        self.ReplicaNum = params.get("ReplicaNum")
+        self.TopicTraffic = params.get("TopicTraffic")
+        self.MessageHeap = params.get("MessageHeap")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

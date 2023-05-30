@@ -325,6 +325,29 @@ class TeoClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateSecurityIPGroup(self, request):
+        """创建安全 IP 组
+
+        :param request: Request instance for CreateSecurityIPGroup.
+        :type request: :class:`tencentcloud.teo.v20220901.models.CreateSecurityIPGroupRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.CreateSecurityIPGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateSecurityIPGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateSecurityIPGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateSpeedTesting(self, request):
         """对用户指定的域名进行一次站点拨测
 
@@ -500,6 +523,29 @@ class TeoClient(AbstractClient):
             body = self.call("DeleteRules", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteSecurityIPGroup(self, request):
+        """删除指定 IP 组，如果有规则引用了 IP 组情况，则不允许删除。
+
+        :param request: Request instance for DeleteSecurityIPGroup.
+        :type request: :class:`tencentcloud.teo.v20220901.models.DeleteSecurityIPGroupRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.DeleteSecurityIPGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteSecurityIPGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteSecurityIPGroupResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -707,6 +753,29 @@ class TeoClient(AbstractClient):
             body = self.call("DescribeDDoSAttackData", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeDDoSAttackDataResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeDDoSAttackEvent(self, request):
+        """本接口（DescribeDDoSAttackEvent）用于查询DDoS攻击事件列表。
+
+        :param request: Request instance for DescribeDDoSAttackEvent.
+        :type request: :class:`tencentcloud.teo.v20220901.models.DescribeDDoSAttackEventRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.DescribeDDoSAttackEventResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDDoSAttackEvent", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDDoSAttackEventResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1834,6 +1903,29 @@ class TeoClient(AbstractClient):
             body = self.call("ModifyRulePriority", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyRulePriorityResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifySecurityIPGroup(self, request):
+        """修改安全 IP 组。
+
+        :param request: Request instance for ModifySecurityIPGroup.
+        :type request: :class:`tencentcloud.teo.v20220901.models.ModifySecurityIPGroupRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.ModifySecurityIPGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifySecurityIPGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifySecurityIPGroupResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

@@ -25,7 +25,9 @@ class AccessControl(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off 是否启用请求头部及请求url访问控制
+        :param Switch: 启用请求头部及请求url访问控制开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param AccessControlRules: 请求头部及请求url访问规则
 注意：此字段可能返回 null，表示取不到有效值。
@@ -250,7 +252,9 @@ global：全球加速
         :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
         :param QnPrivateAccess: 七牛云对象存储回源鉴权
         :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
-        :param HttpsBilling: HTTPS服务
+        :param OthersPrivateAccess: 其他厂商对象存储回源鉴权
+        :type OthersPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.OthersPrivateAccess`
+        :param HttpsBilling: HTTPS服务，默认开启（收费服务，详见计费说明和产品文档）
         :type HttpsBilling: :class:`tencentcloud.cdn.v20180606.models.HttpsBilling`
         """
         self.Domain = None
@@ -291,6 +295,7 @@ global：全球加速
         self.OssPrivateAccess = None
         self.HwPrivateAccess = None
         self.QnPrivateAccess = None
+        self.OthersPrivateAccess = None
         self.HttpsBilling = None
 
 
@@ -404,6 +409,9 @@ global：全球加速
         if params.get("QnPrivateAccess") is not None:
             self.QnPrivateAccess = QnPrivateAccess()
             self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
+        if params.get("OthersPrivateAccess") is not None:
+            self.OthersPrivateAccess = OthersPrivateAccess()
+            self.OthersPrivateAccess._deserialize(params.get("OthersPrivateAccess"))
         if params.get("HttpsBilling") is not None:
             self.HttpsBilling = HttpsBilling()
             self.HttpsBilling._deserialize(params.get("HttpsBilling"))
@@ -575,7 +583,10 @@ class AdvancedAuthentication(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 防盗链配置开关，on或off，开启时必须且只能配置一种模式，其余模式为null。
+        :param Switch: 防盗链配置开关，取值有：
+on：开启
+off：关闭
+开启时必须且只配置一种模式，其余模式需要设置为 null
         :type Switch: str
         :param TypeA: 时间戳防盗链高级版模式A配置。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -940,7 +951,9 @@ class AdvancedCCRules(AbstractModel):
         :param FrequencyLimit: 限频阈值
 注意：此字段可能返回 null，表示取不到有效值。
         :type FrequencyLimit: int
-        :param PunishmentSwitch: IP 惩罚开关，可选on|off
+        :param PunishmentSwitch: IP 惩罚配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type PunishmentSwitch: str
         :param PunishmentTime: IP 惩罚时长
@@ -955,7 +968,9 @@ class AdvancedCCRules(AbstractModel):
         :param Configure: 七层限频具体配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type Configure: list of ScdnSevenLayerRules
-        :param Switch: 是否开启改规则 on 开启，off关闭
+        :param Switch: 自定义cc规则配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -1372,7 +1387,7 @@ class Authentication(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 防盗链配置开关
+        :param Switch: 防盗链配置开关，取值有：
 on：开启
 off：关闭
 开启时必须且只配置一种模式，其余模式需要设置为 null
@@ -1654,7 +1669,9 @@ class AvifAdapter(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关，"on/off"
+        :param Switch: 图片优化AvifAdapter配置项开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -1679,7 +1696,9 @@ class AwsPrivateAccess(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关，on/off。
+        :param Switch: s3源站回源鉴权配置项开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param AccessKey: 访问ID。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -1723,7 +1742,7 @@ class BandwidthAlert(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 用量封顶配置开关
+        :param Switch: 用量封顶配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -1737,7 +1756,7 @@ RETURN_404：全部请求返回 404
         :param LastTriggerTime: 境内区域上次触发用量封顶阈值的时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type LastTriggerTime: str
-        :param AlertSwitch: 用量封顶提醒开关
+        :param AlertSwitch: 用量封顶提醒配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -1799,7 +1818,9 @@ class BotCookie(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on|off
+        :param Switch: Bot cookie策略配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param RuleType: 规则类型，当前只有all
         :type RuleType: str
@@ -1845,7 +1866,9 @@ class BotJavaScript(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on|off
+        :param Switch: Bot js策略配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param RuleType: 规则类型，当前只有file
         :type RuleType: str
@@ -2267,8 +2290,9 @@ class CacheConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param HeuristicCacheTimeSwitch: on 代表开启自定义启发式缓存时间
-off 代表关闭自定义启发式缓存时间
+        :param HeuristicCacheTimeSwitch: 启发式自定义时间缓存配置开关，取值有：
+on：开启
+off：关闭
         :type HeuristicCacheTimeSwitch: str
         :param HeuristicCacheTime: 单位 秒.
         :type HeuristicCacheTime: int
@@ -2296,7 +2320,7 @@ class CacheConfigCache(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 缓存配置开关
+        :param Switch: 路径缓存配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -2353,7 +2377,7 @@ class CacheConfigFollowOrigin(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 遵循源站配置开关
+        :param Switch: 路径缓存遵循源站配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -2386,7 +2410,7 @@ class CacheConfigNoCache(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 不缓存配置开关
+        :param Switch: 路径缓存不缓存配置配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -2527,7 +2551,9 @@ class CacheTagKey(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否使用CacheTag作为CacheKey的一部分
+        :param Switch: 使用CacheTag作为CacheKey的一部分配置开关，取值有
+on：开启，使用CacheTag作为CacheKey的一部分
+off：关闭，不使用CacheTag作为CacheKey的一部分
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param Value: 自定义CacheTag的值
@@ -3004,7 +3030,7 @@ class Compression(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 智能压缩配置开关
+        :param Switch: 智能压缩配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -3110,7 +3136,9 @@ class CookieKey(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off 是否使用Cookie作为Cache的一部分
+        :param Switch: 使用Cookie作为Cache的一部分配置开关，取值有：
+on：开启，使用Cookie作为Cache的一部分
+off：关闭，不使用Cookie作为Cache的一部分
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param Value: 使用的cookie，';' 分割
@@ -4695,7 +4723,14 @@ class DescribeDistrictIspDataRequest(AbstractModel):
         :type EndTime: str
         :param Metric: 指定查询指标，支持:
 bandwidth：带宽，单位为 bps
+flux：流量，单位为 byte
 request：请求数，单位为 次
+statusCode：状态码，返回 0、2xx、3xx、4xx、5xx 汇总数据，单位为 次
+2xx：返回 2xx 状态码汇总及各 2 开头状态码数据，单位为 次
+3xx：返回 3xx 状态码汇总及各 3 开头状态码数据，单位为 次
+4xx：返回 4xx 状态码汇总及各 4 开头状态码数据，单位为 次
+5xx：返回 5xx 状态码汇总及各 5 开头状态码数据，单位为 次
+支持指定具体状态码查询，若未产生过，则返回为空
         :type Metric: str
         :param Districts: 指定省份查询，不填充表示查询所有省份
 省份、国家/地区编码可以查看 [省份编码映射](https://cloud.tencent.com/document/product/228/6316#.E5.8C.BA.E5.9F.9F-.2F-.E8.BF.90.E8.90.A5.E5.95.86.E6.98.A0.E5.B0.84.E8.A1.A8)
@@ -5564,18 +5599,26 @@ class DescribePayTypeRequest(AbstractModel):
         :param Area: 指定服务地域查询
 mainland：境内计费方式查询
 overseas：境外计费方式查询
-未填充时默认为 mainland
+global：全球计费方式查询
+未填充时，默认为 mainland
         :type Area: str
         :param Product: 指定查询的产品数据，可选为cdn或者ecdn，默认为cdn
         :type Product: str
+        :param Type: 指定资源包查询
+flux：流量包
+https：HTTPS请求包
+未填充时，默认为 flux
+        :type Type: str
         """
         self.Area = None
         self.Product = None
+        self.Type = None
 
 
     def _deserialize(self, params):
         self.Area = params.get("Area")
         self.Product = params.get("Product")
+        self.Type = params.get("Type")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5592,7 +5635,7 @@ class DescribePayTypeResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param PayType: 计费类型：
+        :param PayType: 计费类型
 flux：流量计费
 bandwidth：带宽计费
 request：请求数计费
@@ -5600,22 +5643,23 @@ flux_sep：动静分离流量计费
 bandwidth_sep：动静分离带宽计费
 日结计费方式切换时，若当日产生消耗，则此字段表示第二天即将生效的计费方式，若未产生消耗，则表示已经生效的计费方式。
         :type PayType: str
-        :param BillingCycle: 计费周期：
+        :param BillingCycle: 计费周期
 day：日结计费
 month：月结计费
 hour：小时结计费
         :type BillingCycle: str
-        :param StatType: monthMax：日峰值月平均，月结模式
+        :param StatType: 统计类型
+monthMax：日峰值月平均，月结模式
 day95：日 95 带宽，月结模式
 month95：月95带宽，月结模式
 sum：总流量/总请求数，日结或月结模式
 max：峰值带宽，日结模式
         :type StatType: str
-        :param RegionType: 境外计费类型：
+        :param RegionType: 计费区域
 all：全地区统一计费
 multiple：分地区计费
         :type RegionType: str
-        :param CurrentPayType: 当前生效计费类型：
+        :param CurrentPayType: 当前生效计费类型
 flux：流量计费
 bandwidth：带宽计费
 request：请求数计费
@@ -7083,6 +7127,9 @@ off：不支持
         :param HttpsBilling: HTTPS服务，缺省时默认开启
 注意：此字段可能返回 null，表示取不到有效值。
         :type HttpsBilling: :class:`tencentcloud.cdn.v20180606.models.HttpsBilling`
+        :param OthersPrivateAccess: 其他厂商对象存储回源鉴权
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OthersPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.OthersPrivateAccess`
         """
         self.ResourceId = None
         self.AppId = None
@@ -7149,6 +7196,7 @@ off：不支持
         self.HwPrivateAccess = None
         self.QnPrivateAccess = None
         self.HttpsBilling = None
+        self.OthersPrivateAccess = None
 
 
     def _deserialize(self, params):
@@ -7323,6 +7371,9 @@ off：不支持
         if params.get("HttpsBilling") is not None:
             self.HttpsBilling = HttpsBilling()
             self.HttpsBilling._deserialize(params.get("HttpsBilling"))
+        if params.get("OthersPrivateAccess") is not None:
+            self.OthersPrivateAccess = OthersPrivateAccess()
+            self.OthersPrivateAccess._deserialize(params.get("OthersPrivateAccess"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7786,7 +7837,7 @@ class DomainFilter(AbstractModel):
 - status：域名状态，online，offline或processing。
 - serviceType：业务类型，web，download，media，hybrid或dynamic。
 - projectId：项目ID。
-- domainType：主源站类型，cname表示自有源，cos表示cos接入，third_party表示第三方对象存储。
+- domainType：主源站类型，cname表示自有源，cos表示cos接入，third_party表示第三方对象存储，igtm表示IGTM多活源。
 - fullUrlCache：全路径缓存，on或off。
 - https：是否配置https，on，off或processing。
 - originPullProtocol：回源协议类型，支持http，follow或https。
@@ -7835,12 +7886,16 @@ overseas：境外
         :type Area: str
         :param LogName: 日志包文件名
         :type LogName: str
+        :param FileSize: 文件大小，单位: Byte
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileSize: int
         """
         self.StartTime = None
         self.EndTime = None
         self.LogPath = None
         self.Area = None
         self.LogName = None
+        self.FileSize = None
 
 
     def _deserialize(self, params):
@@ -7849,6 +7904,7 @@ overseas：境外
         self.LogPath = params.get("LogPath")
         self.Area = params.get("Area")
         self.LogName = params.get("LogName")
+        self.FileSize = params.get("FileSize")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7865,7 +7921,7 @@ class DownstreamCapping(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 下行速度配置开关
+        :param Switch: 下行速度配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -8135,7 +8191,7 @@ class ErrorPage(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 状态码重定向配置开关
+        :param Switch: 状态码重定向配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8272,7 +8328,7 @@ class FollowRedirect(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 回源跟随开关
+        :param Switch: 回源跟随配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -8305,7 +8361,7 @@ class ForceRedirect(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 访问强制跳转配置开关
+        :param Switch: 访问强制跳转配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8432,7 +8488,9 @@ class GuetzliAdapter(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关，"on/off"
+        :param Switch: 图片优化-GuetzliAdapter配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -8485,7 +8543,9 @@ class HeaderKey(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否组成Cachekey
+        :param Switch: 组成Cachekey配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param Value: 组成CacheKey的header数组，';' 分割
@@ -8515,8 +8575,9 @@ class HeuristicCache(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on 代表开启启发式缓存
-off 代表关闭启发式缓存
+        :param Switch: 启发式缓存配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param CacheConfig: 自定义启发式缓存时间配置
         :type CacheConfig: :class:`tencentcloud.cdn.v20180606.models.CacheConfig`
@@ -8546,7 +8607,9 @@ class Hsts(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否开启，on或off。
+        :param Switch: HSTS 配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param MaxAge: MaxAge数值。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8670,7 +8733,7 @@ class Https(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: https 配置开关
+        :param Switch: https 配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8763,7 +8826,10 @@ class HttpsBilling(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: HTTPS服务，缺省时默认开启【会产生计费】
+        :param Switch: HTTPS服务配置开关，取值有：
+on：开启，缺省时默认开启，会产生计费
+off：关闭，拦截https请求
+
         :type Switch: str
         """
         self.Switch = None
@@ -8831,6 +8897,9 @@ global：全球
 2：用完续订
 3：到期或用完续订
         :type ExtensionMode: int
+        :param AutoExtension: HTTPS请求包是否自动续订
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoExtension: bool
         """
         self.Id = None
         self.Type = None
@@ -8850,6 +8919,7 @@ global：全球
         self.ContractExtension = None
         self.ExtensionAvailable = None
         self.ExtensionMode = None
+        self.AutoExtension = None
 
 
     def _deserialize(self, params):
@@ -8871,6 +8941,7 @@ global：全球
         self.ContractExtension = params.get("ContractExtension")
         self.ExtensionAvailable = params.get("ExtensionAvailable")
         self.ExtensionMode = params.get("ExtensionMode")
+        self.AutoExtension = params.get("AutoExtension")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8887,7 +8958,9 @@ class HwPrivateAccess(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关 on/off
+        :param Switch:  华为云对象存储回源鉴权配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param AccessKey: 访问 ID
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8974,7 +9047,7 @@ class IpFilter(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: IP 黑白名单配置开关
+        :param Switch: IP 黑白名单配置开关，取值有
 on：开启
 off：关闭
         :type Switch: str
@@ -9081,7 +9154,7 @@ class IpFreqLimit(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: IP 限频配置开关
+        :param Switch: IP 限频配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -9154,13 +9227,15 @@ offline：下线状态
 
 
 class Ipv6(AbstractModel):
-    """Ipv6启用配置，不可更改
+    """Ipv6源站启用配置，不可更改
 
     """
 
     def __init__(self):
         r"""
-        :param Switch: 域名是否开启ipv6功能，on或off。
+        :param Switch: 域名开启源站ipv6配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -9185,7 +9260,9 @@ class Ipv6Access(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 域名是否开启ipv6访问功能，on或off。
+        :param Switch: 域名开启ipv6访问配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -10625,7 +10702,7 @@ class MaxAge(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 浏览器缓存配置开关
+        :param Switch: 浏览器缓存配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -10802,7 +10879,9 @@ class OfflineCache(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off, 离线缓存是否开启
+        :param Switch: 离线缓存配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         """
         self.Switch = None
@@ -10822,11 +10901,11 @@ class OfflineCache(AbstractModel):
 class Origin(AbstractModel):
     """源站配置复杂类型，支持以下配置：
     + 源站指定为单个域名
-    + 源站指定为多个 IP，可配置端口（1~65535），可配置权重（1~100），格式为 IP:端口:权重
+    + 源站指定为多个 IP，可配置端口（1\~65535），可配置权重（1\~100），格式为 IP:端口:权重
     + 回源域名配置
     + 对象存储（COS）作为源站
     + 热备源站指定为单个域名
-    + 热备源站指定为多个 IP，可配置端口（1~65535），暂不支持权重配置
+    + 热备源站指定为多个 IP，可配置端口（1\~65535），暂不支持权重配置
     + 热备源站回源域名配置
 
     """
@@ -10842,6 +10921,8 @@ class Origin(AbstractModel):
 domain：域名类型
 domainv6：域名解析V6类型
 cos：对象存储源站
+third_party: 第三方存储源站
+igtm: IGTM多活源
 ip：IP 列表作为源站
 ipv6：源站列表为一个单独的 IPv6 地址
 ip_ipv6：源站列表为多个 IPv4 地址和IPv6 地址
@@ -10907,7 +10988,12 @@ ip_ipv6_domain：源站列表为多个 IPv4 地址IPv6 地址以及域名
         :param AdvanceHttps: HTTPS回源高级配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type AdvanceHttps: :class:`tencentcloud.cdn.v20180606.models.AdvanceHttps`
-        :param OriginCompany: 对象存储回源厂商
+        :param OriginCompany: 对象存储回源厂商，当源站类型为第三方存储源站(third_party)时必填，可选值包括以下:
+aws_s3: AWS S3
+ali_oss: 阿里云 OSS
+hw_obs: 华为 OBS
+qiniu_kodo: 七牛云 kodo
+others: 其它厂商对象存储,仅支持兼容以AWS签名算法的对象存储，如腾讯云金融专区COS
 注意：此字段可能返回 null，表示取不到有效值。
         :type OriginCompany: str
         """
@@ -10968,7 +11054,10 @@ class OriginAuthentication(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 鉴权开关，on或off
+        :param Switch: 回源鉴权高级配置开关，取值有：
+on：开启
+off：关闭
+
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param TypeA: 鉴权类型A配置
@@ -11025,7 +11114,9 @@ class OriginCombine(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on|off 是否开启合并回源
+        :param Switch: 合并回源配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         """
         self.Switch = None
@@ -11073,7 +11164,7 @@ class OriginPullOptimization(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 跨国回源优化配置开关
+        :param Switch: 跨国回源优化配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -11136,7 +11227,9 @@ class OssPrivateAccess(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关， on/off。
+        :param Switch: oss回源鉴权配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param AccessKey: 访问ID。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -11148,6 +11241,52 @@ class OssPrivateAccess(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type Region: str
         :param Bucket: Bucketname
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
+        """
+        self.Switch = None
+        self.AccessKey = None
+        self.SecretKey = None
+        self.Region = None
+        self.Bucket = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.AccessKey = params.get("AccessKey")
+        self.SecretKey = params.get("SecretKey")
+        self.Region = params.get("Region")
+        self.Bucket = params.get("Bucket")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OthersPrivateAccess(AbstractModel):
+    """其他厂商对象存储回源鉴权
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 其他厂商对象存储回源鉴权配置开关，取值有：
+on：开启
+off：关闭
+        :type Switch: str
+        :param AccessKey: 访问ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccessKey: str
+        :param SecretKey: 密钥。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SecretKey: str
+        :param Region: 地域。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param Bucket: 存储桶名称。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Bucket: str
         """
@@ -11512,9 +11651,10 @@ class PostSize(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是调整POST请求限制，平台默认为32MB。
-关闭：off，
-开启：on。
+        :param Switch: POST请求上传文件流式传输最大限制配置开关，取值有：
+on：开启，平台默认为32MB
+off：关闭
+
         :type Switch: str
         :param MaxSize: 最大限制，取值在1MB和200MB之间。
         :type MaxSize: int
@@ -11859,7 +11999,9 @@ class QnPrivateAccess(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关 on/off
+        :param Switch: 七牛元对象存储回源鉴权配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param AccessKey: 访问 ID
 注意：此字段可能返回 null，表示取不到有效值。
@@ -11892,13 +12034,19 @@ class QueryStringKey(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off CacheKey是否由QueryString组成
+        :param Switch: CacheKey是否由QueryString组成配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param Reorder: 是否重新排序
 注意：此字段可能返回 null，表示取不到有效值。
         :type Reorder: str
-        :param Action: includeAll | excludeAll | includeCustom | excludeCustom 使用/排除部分url参数
+        :param Action: 使用/排除部分url参数，取值有：
+includeAll：包含所有
+excludeAll：排除所有
+includeCustom：自定义包含
+excludeCustom：自定义排除
 注意：此字段可能返回 null，表示取不到有效值。
         :type Action: str
         :param Value: 使用/排除的url参数数组，';' 分割
@@ -11932,7 +12080,9 @@ class Quic(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否启动Quic配置
+        :param Switch: Quic功能配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         """
         self.Switch = None
@@ -11992,7 +12142,7 @@ class RangeOriginPull(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 分片回源配置开关
+        :param Switch: 分片回源配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -12028,7 +12178,9 @@ class RangeOriginPullRule(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 分片回源配置开关
+        :param Switch: 分片回源配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param RuleType: 规则类型：
 file：指定文件后缀生效
@@ -12068,7 +12220,9 @@ class RedirectConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 配置开关
+        :param Switch: 自定义回源302 follow请求host配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param FollowRedirectHost: 主源站follow302请求时带的自定义的host头部
         :type FollowRedirectHost: str
@@ -12100,7 +12254,7 @@ class Referer(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: referer 黑白名单配置开关
+        :param Switch: referer 黑白名单配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -12218,9 +12372,9 @@ class RemoteAuthentication(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 远程鉴权开关；
-on : 开启;
-off: 关闭；
+        :param Switch: 远程鉴权配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param RemoteAuthenticationRules: 远程鉴权规则配置
@@ -12367,7 +12521,7 @@ class RequestHeader(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 自定义请求头配置开关
+        :param Switch: 自定义请求头配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -12514,7 +12668,7 @@ class ResponseHeader(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 自定义响应头开关
+        :param Switch: 自定义响应头配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -12550,7 +12704,7 @@ class ResponseHeaderCache(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 源站头部缓存开关
+        :param Switch: 源站头部缓存配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -12576,7 +12730,10 @@ class Revalidate(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off 是否总是回源校验
+        :param Switch: 总是回源校验配置开关，取值有：
+on：开启
+off：关闭
+
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param Path: 只在特定请求路径回源站校验
@@ -12696,7 +12853,7 @@ class RuleEngine(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 规则引擎配置开关
+        :param Switch: 规则引擎配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -12727,7 +12884,10 @@ class RuleQueryString(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off CacheKey是否由QueryString组成
+        :param Switch: 路径保留参数配置开关，取值有：
+on：开启，CacheKey由QueryString组成
+off：关闭，CacheKey不由QueryString组成
+
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param Action: includeCustom 包含部分url参数
@@ -12762,7 +12922,9 @@ class ScdnAclConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 是否开启，on | off
+        :param Switch: SCDN访问控制配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param ScriptData: 新版本请使用AdvancedScriptData
 注意：此字段可能返回 null，表示取不到有效值。
@@ -12893,7 +13055,9 @@ class ScdnBotConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on|off
+        :param Switch: Scdn bot配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param BotCookie: Bot cookie策略
 注意：此字段可能返回 null，表示取不到有效值。
@@ -12954,7 +13118,9 @@ index：首页
         :param FrequencyLimit: 限频阈值
 注意：此字段可能返回 null，表示取不到有效值。
         :type FrequencyLimit: int
-        :param PunishmentSwitch: IP 惩罚开关，可选on|off
+        :param PunishmentSwitch: IP 惩罚配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type PunishmentSwitch: str
         :param PunishmentTime: IP 惩罚时长
@@ -13004,7 +13170,9 @@ class ScdnConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off
+        :param Switch: scdn cc配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param Rules: 自定义 cc 防护规则
 注意：此字段可能返回 null，表示取不到有效值。
@@ -13058,7 +13226,9 @@ class ScdnDdosConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on|off
+        :param Switch: Scdn ddos配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         """
         self.Switch = None
@@ -13595,7 +13765,9 @@ class ScdnWafConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on|off
+        :param Switch: Scdn waf配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param Mode: intercept|observe，默认intercept
 注意：此字段可能返回 null，表示取不到有效值。
@@ -13603,7 +13775,9 @@ class ScdnWafConfig(AbstractModel):
         :param ErrorPage: 重定向的错误页面
 注意：此字段可能返回 null，表示取不到有效值。
         :type ErrorPage: :class:`tencentcloud.cdn.v20180606.models.ScdnErrorPage`
-        :param WebShellSwitch: webshell拦截开关，on|off，默认off
+        :param WebShellSwitch: webshell拦截配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type WebShellSwitch: str
         :param Rules: 类型拦截规则
@@ -13612,7 +13786,9 @@ class ScdnWafConfig(AbstractModel):
         :param Level: waf规则等级，可取100|200|300
 注意：此字段可能返回 null，表示取不到有效值。
         :type Level: int
-        :param SubRuleSwitch: waf子规则开关
+        :param SubRuleSwitch: waf子规则配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type SubRuleSwitch: list of WafSubRuleStatus
         """
@@ -13689,7 +13865,9 @@ class SchemeKey(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on | off 是否使用scheme作为cache key的一部分
+        :param Switch: scheme作为cache key配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -13793,7 +13971,9 @@ class SecurityConfig(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: on|off
+        :param Switch: scdn 安全配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         """
         self.Switch = None
@@ -13817,7 +13997,7 @@ class Seo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: SEO 配置开关
+        :param Switch: SEO 搜索引擎优化配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -13906,14 +14086,16 @@ class ServerCert(AbstractModel):
 
 class ShareCname(AbstractModel):
     """ShareCname配置
+    ShareCname 为内测功能,如需使用,请联系腾讯云工程师开白.
 
     """
 
     def __init__(self):
         r"""
-        :param Switch: ShareCname 配置开关, 开关为off时，域名使用默认CNAME，若需要使用共享CNAME，将开关置为on.
+        :param Switch: ShareCname 配置开关, 取值有：
+on：开启，使用共享CNAME
+off：关闭，使用默认CNAME
 
-* ShareCname 为内测功能,如需使用,请联系腾讯云工程师开白.
         :type Switch: str
         :param Cname: 设置共享CNAME.
 注意：此字段可能返回 null，表示取不到有效值。
@@ -14225,7 +14407,9 @@ class StatisticItem(AbstractModel):
         :param AlertPercentage: 触发提醒阈值百分比
 注意：此字段可能返回 null，表示取不到有效值。
         :type AlertPercentage: int
-        :param AlertSwitch: 提醒开关 on/off
+        :param AlertSwitch: 累计用量封顶告警配置，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type AlertSwitch: str
         :param Metric: 指标类型，流量flux或带宽bandwidth
@@ -14234,7 +14418,9 @@ class StatisticItem(AbstractModel):
         :param Cycle: 检测周期，单位分钟，60或1440
 注意：此字段可能返回 null，表示取不到有效值。
         :type Cycle: int
-        :param Switch: 是否开启该选项，on/off
+        :param Switch: 累计用量封顶配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -14275,7 +14461,7 @@ class StatusCodeCache(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 状态码缓存过期配置开关
+        :param Switch: 状态码缓存过期配置开关，取值有：
 on：开启
 off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
@@ -14696,7 +14882,9 @@ class TpgAdapter(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关，"on/off"
+        :param Switch: 图片优化-TpgAdapter配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """
@@ -14940,7 +15128,9 @@ global：全球加速
         :type HwPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.HwPrivateAccess`
         :param QnPrivateAccess: 七牛云对象存储回源鉴权
         :type QnPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.QnPrivateAccess`
-        :param HttpsBilling: HTTPS服务
+        :param OthersPrivateAccess: 其他厂商对象存储回源鉴权
+        :type OthersPrivateAccess: :class:`tencentcloud.cdn.v20180606.models.OthersPrivateAccess`
+        :param HttpsBilling: HTTPS服务（收费服务，详见计费说明和产品文档）
         :type HttpsBilling: :class:`tencentcloud.cdn.v20180606.models.HttpsBilling`
         """
         self.Domain = None
@@ -14990,6 +15180,7 @@ global：全球加速
         self.ShareCname = None
         self.HwPrivateAccess = None
         self.QnPrivateAccess = None
+        self.OthersPrivateAccess = None
         self.HttpsBilling = None
 
 
@@ -15125,6 +15316,9 @@ global：全球加速
         if params.get("QnPrivateAccess") is not None:
             self.QnPrivateAccess = QnPrivateAccess()
             self.QnPrivateAccess._deserialize(params.get("QnPrivateAccess"))
+        if params.get("OthersPrivateAccess") is not None:
+            self.OthersPrivateAccess = OthersPrivateAccess()
+            self.OthersPrivateAccess._deserialize(params.get("OthersPrivateAccess"))
         if params.get("HttpsBilling") is not None:
             self.HttpsBilling = HttpsBilling()
             self.HttpsBilling._deserialize(params.get("HttpsBilling"))
@@ -15386,7 +15580,7 @@ class UrlRedirect(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 访问URL重写配置开关
+        :param Switch: 访问URL重写配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -15464,7 +15658,9 @@ class UserAgentFilter(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关，on或off
+        :param Switch: UserAgent黑白名单配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param FilterRules: UA黑白名单生效规则列表
@@ -15594,7 +15790,7 @@ class VideoSeek(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 视频拖拽开关
+        :param Switch: 视频拖拽配置开关，取值有：
 on：开启
 off：关闭
         :type Switch: str
@@ -15669,7 +15865,9 @@ class WafSubRuleStatus(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 子规则状态，on|off
+        :param Switch: Waf子规则开关状态配置开关，取值有：
+on：开启
+off：关闭
         :type Switch: str
         :param SubIds: 规则id列表
         :type SubIds: list of int
@@ -15692,14 +15890,16 @@ class WafSubRuleStatus(AbstractModel):
 
 class WebSocket(AbstractModel):
     """WebSocket配置
+    WebSocket 为ECDN产品功能，如需使用请通过ECDN域名配置.
 
     """
 
     def __init__(self):
         r"""
-        :param Switch: WebSocket 超时配置开关, 开关为off时，平台仍支持WebSocket连接，此时超时时间默认为15秒，若需要调整超时时间，将开关置为on.
+        :param Switch: WebSocket 超时配置开关，取值有：
+on：开启，可以调整超时时间
+off：关闭，平台仍支持WebSocket连接，此时超时时间默认为15秒
 
-* WebSocket 为ECDN产品功能，如需使用请通过ECDN域名配置.
         :type Switch: str
         :param Timeout: 设置超时时间，单位为秒，最大超时时间300秒。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -15728,7 +15928,9 @@ class WebpAdapter(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Switch: 开关，"on/off"
+        :param Switch: 图片优化-WebpAdapter配置开关，取值有：
+on：开启
+off：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         """

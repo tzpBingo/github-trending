@@ -27,7 +27,7 @@ class DcdbClient(AbstractClient):
 
 
     def ActiveHourDCDBInstance(self, request):
-        """解隔离DCDB后付费实例
+        """解隔离TDSQL按量计费实例
 
         :param request: Request instance for ActiveHourDCDBInstance.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.ActiveHourDCDBInstanceRequest`
@@ -189,7 +189,7 @@ class DcdbClient(AbstractClient):
 
 
     def CreateDCDBInstance(self, request):
-        """本接口（CreateDCDBInstance）用于创建包年包月的云数据库实例，可通过传入实例规格、数据库版本号、购买时长等信息创建云数据库实例。
+        """本接口（CreateDCDBInstance）用于创建包年包月的TDSQL实例，可通过传入实例规格、数据库版本号、购买时长等信息创建云数据库实例。
 
         :param request: Request instance for CreateDCDBInstance.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.CreateDCDBInstanceRequest`
@@ -211,8 +211,31 @@ class DcdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateDedicatedClusterDCDBInstance(self, request):
+        """创建TDSQL独享集群实例
+
+        :param request: Request instance for CreateDedicatedClusterDCDBInstance.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.CreateDedicatedClusterDCDBInstanceRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.CreateDedicatedClusterDCDBInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateDedicatedClusterDCDBInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateDedicatedClusterDCDBInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateHourDCDBInstance(self, request):
-        """创建DCDB后付费实例
+        """创建TDSQL按量计费实例
 
         :param request: Request instance for CreateHourDCDBInstance.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.CreateHourDCDBInstanceRequest`
@@ -225,6 +248,29 @@ class DcdbClient(AbstractClient):
             body = self.call("CreateHourDCDBInstance", params, headers=headers)
             response = json.loads(body)
             model = models.CreateHourDCDBInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateTmpDCDBInstance(self, request):
+        """回档TDSQL实例
+
+        :param request: Request instance for CreateTmpDCDBInstance.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.CreateTmpDCDBInstanceRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.CreateTmpDCDBInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateTmpDCDBInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateTmpDCDBInstanceResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -295,6 +341,52 @@ class DcdbClient(AbstractClient):
             body = self.call("DescribeAccounts", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeAccountsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeBackupFiles(self, request):
+        """本接口(DescribeBackupFiles)用于查看备份文件列表。
+
+        :param request: Request instance for DescribeBackupFiles.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.DescribeBackupFilesRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.DescribeBackupFilesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBackupFiles", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBackupFilesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeDBEncryptAttributes(self, request):
+        """本接口(DescribeDBEncryptAttributes)用于查询实例数据加密状态。
+
+        :param request: Request instance for DescribeDBEncryptAttributes.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.DescribeDBEncryptAttributesRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.DescribeDBEncryptAttributesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDBEncryptAttributes", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDBEncryptAttributesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -410,6 +502,29 @@ class DcdbClient(AbstractClient):
             body = self.call("DescribeDBSyncMode", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeDBSyncModeResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeDCDBInstanceDetail(self, request):
+        """本接口（DescribeDCDBInstanceDetail）用于获取TDSQL实例详情
+
+        :param request: Request instance for DescribeDCDBInstanceDetail.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.DescribeDCDBInstanceDetailRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.DescribeDCDBInstanceDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDCDBInstanceDetail", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDCDBInstanceDetailResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -812,7 +927,9 @@ class DcdbClient(AbstractClient):
 
 
     def DescribeSqlLogs(self, request):
-        """本接口（DescribeSqlLogs）用于获取实例SQL日志。
+        """已废弃接口
+
+        本接口（DescribeSqlLogs）用于获取实例SQL日志。
 
         :param request: Request instance for DescribeSqlLogs.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.DescribeSqlLogsRequest`
@@ -858,7 +975,7 @@ class DcdbClient(AbstractClient):
 
 
     def DestroyDCDBInstance(self, request):
-        """本接口(DestroyDCDBInstance)用于销毁已隔离的包年包月实例。
+        """本接口(DestroyDCDBInstance)用于销毁已隔离的TDSQL包年包月实例。
 
         :param request: Request instance for DestroyDCDBInstance.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.DestroyDCDBInstanceRequest`
@@ -881,7 +998,7 @@ class DcdbClient(AbstractClient):
 
 
     def DestroyHourDCDBInstance(self, request):
-        """本接口（DestroyHourDCDBInstance）用于销毁按量计费实例。
+        """本接口（DestroyHourDCDBInstance）用于TDSQL销毁按量计费实例。
 
         :param request: Request instance for DestroyHourDCDBInstance.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.DestroyHourDCDBInstanceRequest`
@@ -1020,7 +1137,7 @@ class DcdbClient(AbstractClient):
 
 
     def IsolateHourDCDBInstance(self, request):
-        """隔离DCDB后付费实例
+        """隔离TDSQL按量计费实例
 
         :param request: Request instance for IsolateHourDCDBInstance.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.IsolateHourDCDBInstanceRequest`
@@ -1491,8 +1608,31 @@ class DcdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def UpgradeDedicatedDCDBInstance(self, request):
+        """本接口（UpgradeDedicatedDCDBInstance）用于升级TDSQL独享集群实例
+
+        :param request: Request instance for UpgradeDedicatedDCDBInstance.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.UpgradeDedicatedDCDBInstanceRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.UpgradeDedicatedDCDBInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UpgradeDedicatedDCDBInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.UpgradeDedicatedDCDBInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def UpgradeHourDCDBInstance(self, request):
-        """本接口（UpgradeHourDCDBInstance）用于升级后付费分布式数据库实例。
+        """本接口（UpgradeHourDCDBInstance）用于升级分布式数据库TDSQL按量计费实例。
 
         :param request: Request instance for UpgradeHourDCDBInstance.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.UpgradeHourDCDBInstanceRequest`

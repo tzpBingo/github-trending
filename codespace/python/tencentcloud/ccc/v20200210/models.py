@@ -374,6 +374,43 @@ class CallInSkillGroupMetrics(AbstractModel):
         
 
 
+class CalleeAttribute(AbstractModel):
+    """被叫属性
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Callee: 被叫号码
+        :type Callee: str
+        :param UUI: 随路数据
+        :type UUI: str
+        :param Variables: 参数
+        :type Variables: list of Variable
+        """
+        self.Callee = None
+        self.UUI = None
+        self.Variables = None
+
+
+    def _deserialize(self, params):
+        self.Callee = params.get("Callee")
+        self.UUI = params.get("UUI")
+        if params.get("Variables") is not None:
+            self.Variables = []
+            for item in params.get("Variables"):
+                obj = Variable()
+                obj._deserialize(item)
+                self.Variables.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CarrierPrivilegeNumberApplicant(AbstractModel):
     """运营商白名单号码申请单
 
@@ -454,6 +491,10 @@ class CreateAutoCalloutTaskRequest(AbstractModel):
         :type Tries: int
         :param Variables: 自定义变量（仅高级版支持）
         :type Variables: list of Variable
+        :param UUI: UUI
+        :type UUI: str
+        :param CalleeAttributes: 被叫属性
+        :type CalleeAttributes: list of CalleeAttribute
         """
         self.SdkAppId = None
         self.NotBefore = None
@@ -465,6 +506,8 @@ class CreateAutoCalloutTaskRequest(AbstractModel):
         self.NotAfter = None
         self.Tries = None
         self.Variables = None
+        self.UUI = None
+        self.CalleeAttributes = None
 
 
     def _deserialize(self, params):
@@ -483,6 +526,13 @@ class CreateAutoCalloutTaskRequest(AbstractModel):
                 obj = Variable()
                 obj._deserialize(item)
                 self.Variables.append(obj)
+        self.UUI = params.get("UUI")
+        if params.get("CalleeAttributes") is not None:
+            self.CalleeAttributes = []
+            for item in params.get("CalleeAttributes"):
+                obj = CalleeAttribute()
+                obj._deserialize(item)
+                self.CalleeAttributes.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1311,16 +1361,20 @@ class DescribeCallInMetricsRequest(AbstractModel):
         :type EnabledSkillGroup: bool
         :param EnabledNumber: 是否返回线路维度信息，默认“否”
         :type EnabledNumber: bool
+        :param GroupIdList: 筛选技能组列表
+        :type GroupIdList: list of int
         """
         self.SdkAppId = None
         self.EnabledSkillGroup = None
         self.EnabledNumber = None
+        self.GroupIdList = None
 
 
     def _deserialize(self, params):
         self.SdkAppId = params.get("SdkAppId")
         self.EnabledSkillGroup = params.get("EnabledSkillGroup")
         self.EnabledNumber = params.get("EnabledNumber")
+        self.GroupIdList = params.get("GroupIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2097,14 +2151,22 @@ class DescribeStaffStatusMetricsRequest(AbstractModel):
         :type SdkAppId: int
         :param StaffList: 筛选坐席列表，默认不传返回全部坐席信息
         :type StaffList: list of str
+        :param GroupIdList: 筛选技能组ID列表
+        :type GroupIdList: list of int
+        :param StatusList: 筛选坐席状态列表
+        :type StatusList: list of str
         """
         self.SdkAppId = None
         self.StaffList = None
+        self.GroupIdList = None
+        self.StatusList = None
 
 
     def _deserialize(self, params):
         self.SdkAppId = params.get("SdkAppId")
         self.StaffList = params.get("StaffList")
+        self.GroupIdList = params.get("GroupIdList")
+        self.StatusList = params.get("StatusList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2187,6 +2249,10 @@ class DescribeTelCallInfoResponse(AbstractModel):
         :type SeatUsedCount: int
         :param VoipCallInCount: 音频套餐包消耗分钟数
         :type VoipCallInCount: int
+        :param AsrOfflineCount: 离线语音转文字套餐包消耗分钟数
+        :type AsrOfflineCount: int
+        :param AsrRealtimeCount: 实时语音转文字套餐包消耗分钟数
+        :type AsrRealtimeCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -2194,6 +2260,8 @@ class DescribeTelCallInfoResponse(AbstractModel):
         self.TelCallInCount = None
         self.SeatUsedCount = None
         self.VoipCallInCount = None
+        self.AsrOfflineCount = None
+        self.AsrRealtimeCount = None
         self.RequestId = None
 
 
@@ -2202,6 +2270,8 @@ class DescribeTelCallInfoResponse(AbstractModel):
         self.TelCallInCount = params.get("TelCallInCount")
         self.SeatUsedCount = params.get("SeatUsedCount")
         self.VoipCallInCount = params.get("VoipCallInCount")
+        self.AsrOfflineCount = params.get("AsrOfflineCount")
+        self.AsrRealtimeCount = params.get("AsrRealtimeCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -2499,10 +2569,8 @@ class Filter(AbstractModel):
     def __init__(self):
         r"""
         :param Name: 筛选字段名
-注意：此字段可能返回 null，表示取不到有效值。
         :type Name: str
         :param Values: 筛选条件值
-注意：此字段可能返回 null，表示取不到有效值。
         :type Values: list of str
         """
         self.Name = None
@@ -3277,6 +3345,9 @@ class SeatUserInfo(AbstractModel):
         :type Name: str
         :param Mail: 坐席邮箱
         :type Mail: str
+        :param StaffNumber: 工号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StaffNumber: str
         :param Phone: 坐席电话号码（带0086前缀）
         :type Phone: str
         :param Nick: 坐席昵称
@@ -3286,27 +3357,24 @@ class SeatUserInfo(AbstractModel):
         :param SkillGroupNameList: 坐席关联的技能组列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type SkillGroupNameList: list of str
-        :param StaffNumber: 工号
-注意：此字段可能返回 null，表示取不到有效值。
-        :type StaffNumber: str
         """
         self.Name = None
         self.Mail = None
+        self.StaffNumber = None
         self.Phone = None
         self.Nick = None
         self.UserId = None
         self.SkillGroupNameList = None
-        self.StaffNumber = None
 
 
     def _deserialize(self, params):
         self.Name = params.get("Name")
         self.Mail = params.get("Mail")
+        self.StaffNumber = params.get("StaffNumber")
         self.Phone = params.get("Phone")
         self.Nick = params.get("Nick")
         self.UserId = params.get("UserId")
         self.SkillGroupNameList = params.get("SkillGroupNameList")
-        self.StaffNumber = params.get("StaffNumber")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3347,6 +3415,9 @@ class ServeParticipant(AbstractModel):
         :param TransferFrom: 转接来源坐席信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type TransferFrom: str
+        :param TransferFromType: 转接来源参与者类型，取值与 Type 一致
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TransferFromType: str
         :param TransferTo: 转接去向坐席信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type TransferTo: str
@@ -3383,6 +3454,7 @@ class ServeParticipant(AbstractModel):
         self.RecordId = None
         self.Type = None
         self.TransferFrom = None
+        self.TransferFromType = None
         self.TransferTo = None
         self.TransferToType = None
         self.SkillGroupId = None
@@ -3403,6 +3475,7 @@ class ServeParticipant(AbstractModel):
         self.RecordId = params.get("RecordId")
         self.Type = params.get("Type")
         self.TransferFrom = params.get("TransferFrom")
+        self.TransferFromType = params.get("TransferFromType")
         self.TransferTo = params.get("TransferTo")
         self.TransferToType = params.get("TransferToType")
         self.SkillGroupId = params.get("SkillGroupId")
@@ -3668,6 +3741,12 @@ class StaffStatusMetrics(AbstractModel):
         :type UseMobileAccept: int
         :param UseMobileCallOut: 手机外呼开关
         :type UseMobileCallOut: bool
+        :param LastOnlineTimestamp: 最近一次上线时间戳
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastOnlineTimestamp: int
+        :param LastStatusTimestamp: 最近一次状态时间戳
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastStatusTimestamp: int
         """
         self.Email = None
         self.Status = None
@@ -3683,6 +3762,8 @@ class StaffStatusMetrics(AbstractModel):
         self.ReserveNotReady = None
         self.UseMobileAccept = None
         self.UseMobileCallOut = None
+        self.LastOnlineTimestamp = None
+        self.LastStatusTimestamp = None
 
 
     def _deserialize(self, params):
@@ -3702,6 +3783,8 @@ class StaffStatusMetrics(AbstractModel):
         self.ReserveNotReady = params.get("ReserveNotReady")
         self.UseMobileAccept = params.get("UseMobileAccept")
         self.UseMobileCallOut = params.get("UseMobileCallOut")
+        self.LastOnlineTimestamp = params.get("LastOnlineTimestamp")
+        self.LastStatusTimestamp = params.get("LastStatusTimestamp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

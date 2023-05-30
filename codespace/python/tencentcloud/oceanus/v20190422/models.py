@@ -210,6 +210,9 @@ class Cluster(AbstractModel):
         :param IsNeedManageNode: 前端区分 集群是否需要2CU逻辑 因为历史集群 变配不需要, default 1  新集群都需要
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsNeedManageNode: int
+        :param ClusterSessions: session集群信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterSessions: list of ClusterSession
         """
         self.ClusterId = None
         self.Name = None
@@ -246,6 +249,7 @@ class Cluster(AbstractModel):
         self.RunningCu = None
         self.PayMode = None
         self.IsNeedManageNode = None
+        self.ClusterSessions = None
 
 
     def _deserialize(self, params):
@@ -301,6 +305,12 @@ class Cluster(AbstractModel):
         self.RunningCu = params.get("RunningCu")
         self.PayMode = params.get("PayMode")
         self.IsNeedManageNode = params.get("IsNeedManageNode")
+        if params.get("ClusterSessions") is not None:
+            self.ClusterSessions = []
+            for item in params.get("ClusterSessions"):
+                obj = ClusterSession()
+                obj._deserialize(item)
+                self.ClusterSessions.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -308,6 +318,12 @@ class Cluster(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class ClusterSession(AbstractModel):
+    """session集群信息
+
+    """
 
 
 class ClusterVersion(AbstractModel):
@@ -345,11 +361,108 @@ class CopyJobItem(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param SourceId: 需要复制的作业serial id
+        :type SourceId: str
+        :param TargetClusterId: 目标集群的cluster serial id
+        :type TargetClusterId: str
+        :param SourceName: 需要复制的作业名称
+        :type SourceName: str
+        :param TargetName: 新作业的名称
+        :type TargetName: str
+        :param TargetFolderId: 新作业的目录id
+        :type TargetFolderId: str
+        :param JobType: 源作业类型
+        :type JobType: int
+        """
+        self.SourceId = None
+        self.TargetClusterId = None
+        self.SourceName = None
+        self.TargetName = None
+        self.TargetFolderId = None
+        self.JobType = None
+
+
+    def _deserialize(self, params):
+        self.SourceId = params.get("SourceId")
+        self.TargetClusterId = params.get("TargetClusterId")
+        self.SourceName = params.get("SourceName")
+        self.TargetName = params.get("TargetName")
+        self.TargetFolderId = params.get("TargetFolderId")
+        self.JobType = params.get("JobType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class CopyJobResult(AbstractModel):
     """复制作业单条明细结果
 
     """
+
+    def __init__(self):
+        r"""
+        :param JobId: 原作业id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobId: str
+        :param JobName: 原作业名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobName: str
+        :param TargetJobName: 新作业名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TargetJobName: str
+        :param TargetJobId: 新作业id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TargetJobId: str
+        :param Message: 失败时候的信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param Result: 0 成功  -1 失败
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Result: int
+        :param ClusterName: 目标集群名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterName: str
+        :param ClusterId: 目标集群id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ClusterId: str
+        :param JobType: 作业类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type JobType: int
+        """
+        self.JobId = None
+        self.JobName = None
+        self.TargetJobName = None
+        self.TargetJobId = None
+        self.Message = None
+        self.Result = None
+        self.ClusterName = None
+        self.ClusterId = None
+        self.JobType = None
+
+
+    def _deserialize(self, params):
+        self.JobId = params.get("JobId")
+        self.JobName = params.get("JobName")
+        self.TargetJobName = params.get("TargetJobName")
+        self.TargetJobId = params.get("TargetJobId")
+        self.Message = params.get("Message")
+        self.Result = params.get("Result")
+        self.ClusterName = params.get("ClusterName")
+        self.ClusterId = params.get("ClusterId")
+        self.JobType = params.get("JobType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class CopyJobsRequest(AbstractModel):
@@ -631,6 +744,8 @@ class CreateJobRequest(AbstractModel):
         :type FlinkVersion: str
         :param WorkSpaceId: 工作空间 SerialId
         :type WorkSpaceId: str
+        :param Tags: 作业标签
+        :type Tags: list of Tag
         """
         self.Name = None
         self.JobType = None
@@ -641,6 +756,7 @@ class CreateJobRequest(AbstractModel):
         self.FolderId = None
         self.FlinkVersion = None
         self.WorkSpaceId = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -653,6 +769,12 @@ class CreateJobRequest(AbstractModel):
         self.FolderId = params.get("FolderId")
         self.FlinkVersion = params.get("FlinkVersion")
         self.WorkSpaceId = params.get("WorkSpaceId")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2079,6 +2201,9 @@ class JobV1(AbstractModel):
         :param WorkSpaceName: 工作空间名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type WorkSpaceName: str
+        :param Tags: 作业标签
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         """
         self.JobId = None
         self.Region = None
@@ -2111,6 +2236,7 @@ class JobV1(AbstractModel):
         self.FlinkVersion = None
         self.WorkSpaceId = None
         self.WorkSpaceName = None
+        self.Tags = None
 
 
     def _deserialize(self, params):
@@ -2145,6 +2271,12 @@ class JobV1(AbstractModel):
         self.FlinkVersion = params.get("FlinkVersion")
         self.WorkSpaceId = params.get("WorkSpaceId")
         self.WorkSpaceName = params.get("WorkSpaceName")
+        if params.get("Tags") is not None:
+            self.Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self.Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2644,7 +2776,6 @@ class RunJobDescription(AbstractModel):
         :param SavepointId: Savepoint的Id
         :type SavepointId: str
         :param UseOldSystemConnector: 使用历史版本系统依赖
-注意：此字段可能返回 null，表示取不到有效值。
         :type UseOldSystemConnector: bool
         """
         self.JobId = None
@@ -2988,6 +3119,9 @@ class TreeResourceItem(AbstractModel):
         :param FolderId: 目录ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type FolderId: str
+        :param RefJobStatusCountSet: 分状态统计关联作业数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RefJobStatusCountSet: list of RefJobStatusCountItem
         """
         self.ResourceId = None
         self.Name = None
@@ -2995,6 +3129,7 @@ class TreeResourceItem(AbstractModel):
         self.Remark = None
         self.FileName = None
         self.FolderId = None
+        self.RefJobStatusCountSet = None
 
 
     def _deserialize(self, params):
@@ -3004,6 +3139,12 @@ class TreeResourceItem(AbstractModel):
         self.Remark = params.get("Remark")
         self.FileName = params.get("FileName")
         self.FolderId = params.get("FolderId")
+        if params.get("RefJobStatusCountSet") is not None:
+            self.RefJobStatusCountSet = []
+            for item in params.get("RefJobStatusCountSet"):
+                obj = RefJobStatusCountItem()
+                obj._deserialize(item)
+                self.RefJobStatusCountSet.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

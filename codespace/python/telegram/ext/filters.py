@@ -141,7 +141,7 @@ class BaseFilter:
 
     Also works with more than two filters::
 
-        filters.TEXT & (filters.Entity(URL) | filters.Entity(TEXT_LINK))
+        filters.TEXT & (filters.Entity("url") | filters.Entity("text_link"))
         filters.TEXT & (~ filters.FORWARDED)
 
     Note:
@@ -177,7 +177,7 @@ class BaseFilter:
 
     __slots__ = ("_name", "_data_filter")
 
-    def __init__(self, name: str = None, data_filter: bool = False):
+    def __init__(self, name: Optional[str] = None, data_filter: bool = False):
         self._name = self.__class__.__name__ if name is None else name
         self._data_filter = data_filter
 
@@ -244,7 +244,7 @@ class MessageFilter(BaseFilter):
 
     Please see :class:`BaseFilter` for details on how to create custom filters.
 
-    .. seealso:: :wiki:`Advanced Filters <Extensions-–-Advanced-Filters>`
+    .. seealso:: :wiki:`Advanced Filters <Extensions---Advanced-Filters>`
 
     """
 
@@ -358,7 +358,10 @@ class _MergedFilter(UpdateFilter):
     __slots__ = ("base_filter", "and_filter", "or_filter")
 
     def __init__(
-        self, base_filter: BaseFilter, and_filter: BaseFilter = None, or_filter: BaseFilter = None
+        self,
+        base_filter: BaseFilter,
+        and_filter: Optional[BaseFilter] = None,
+        or_filter: Optional[BaseFilter] = None,
     ):
         super().__init__()
         self.base_filter = base_filter
@@ -379,7 +382,7 @@ class _MergedFilter(UpdateFilter):
     def _merge(base_output: Union[bool, Dict], comp_output: Union[bool, Dict]) -> FilterDataDict:
         base = base_output if isinstance(base_output, dict) else {}
         comp = comp_output if isinstance(comp_output, dict) else {}
-        for k in comp.keys():
+        for k in comp:
             # Make sure comp values are lists
             comp_value = comp[k] if isinstance(comp[k], list) else []
             try:
@@ -387,7 +390,7 @@ class _MergedFilter(UpdateFilter):
                 if isinstance(base[k], list):
                     base[k] += comp_value
                 else:
-                    base[k] = [base[k]] + comp_value
+                    base[k] = [base[k], *comp_value]
             except KeyError:
                 base[k] = comp_value
         return base
@@ -514,7 +517,7 @@ class Caption(MessageFilter):
     allow those whose caption is appearing in the given list.
 
     Examples:
-        ``MessageHandler(filters.Caption(['PTB rocks!', 'PTB'], callback_method_2)``
+        ``MessageHandler(filters.Caption(['PTB rocks!', 'PTB']), callback_method_2)``
 
     .. seealso::
         :attr:`telegram.ext.filters.CAPTION`
@@ -526,7 +529,7 @@ class Caption(MessageFilter):
 
     __slots__ = ("strings",)
 
-    def __init__(self, strings: Union[List[str], Tuple[str, ...]] = None):
+    def __init__(self, strings: Optional[Union[List[str], Tuple[str, ...]]] = None):
         self.strings: Optional[Sequence[str]] = strings
         super().__init__(name=f"filters.Caption({strings})" if strings else "filters.CAPTION")
 
@@ -614,8 +617,8 @@ class _ChatUserBaseFilter(MessageFilter, ABC):
 
     def __init__(
         self,
-        chat_id: SCT[int] = None,
-        username: SCT[str] = None,
+        chat_id: Optional[SCT[int]] = None,
+        username: Optional[SCT[str]] = None,
         allow_empty: bool = False,
     ):
         super().__init__()
@@ -956,7 +959,7 @@ CONTACT = _Contact(name="filters.CONTACT")
 class _Dice(MessageFilter):
     __slots__ = ("emoji", "values")
 
-    def __init__(self, values: SCT[int] = None, emoji: DiceEmojiEnum = None):
+    def __init__(self, values: Optional[SCT[int]] = None, emoji: Optional[DiceEmojiEnum] = None):
         super().__init__()
         self.emoji: Optional[DiceEmojiEnum] = emoji
         self.values: Optional[Collection[int]] = [values] if isinstance(values, int) else values
@@ -2186,7 +2189,7 @@ class Text(MessageFilter):
 
     __slots__ = ("strings",)
 
-    def __init__(self, strings: Union[List[str], Tuple[str, ...]] = None):
+    def __init__(self, strings: Optional[Union[List[str], Tuple[str, ...]]] = None):
         self.strings: Optional[Sequence[str]] = strings
         super().__init__(name=f"filters.Text({strings})" if strings else "filters.TEXT")
 
@@ -2316,8 +2319,8 @@ class User(_ChatUserBaseFilter):
 
     def __init__(
         self,
-        user_id: SCT[int] = None,
-        username: SCT[str] = None,
+        user_id: Optional[SCT[int]] = None,
+        username: Optional[SCT[str]] = None,
         allow_empty: bool = False,
     ):
         super().__init__(chat_id=user_id, username=username, allow_empty=allow_empty)
@@ -2452,8 +2455,8 @@ class ViaBot(_ChatUserBaseFilter):
 
     def __init__(
         self,
-        bot_id: SCT[int] = None,
-        username: SCT[str] = None,
+        bot_id: Optional[SCT[int]] = None,
+        username: Optional[SCT[str]] = None,
         allow_empty: bool = False,
     ):
         super().__init__(chat_id=bot_id, username=username, allow_empty=allow_empty)

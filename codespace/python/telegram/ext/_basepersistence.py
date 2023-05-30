@@ -145,7 +145,7 @@ class BasePersistence(Generic[UD, CD, BD], ABC):
 
     def __init__(
         self,
-        store_data: PersistenceInput = None,
+        store_data: Optional[PersistenceInput] = None,
         update_interval: float = 60,
     ):
         self.store_data: PersistenceInput = store_data or PersistenceInput()
@@ -357,6 +357,11 @@ class BasePersistence(Generic[UD, CD, BD], ABC):
         :attr:`~telegram.ext.Application.user_data` to a callback. Can be used to update data
         stored in :attr:`~telegram.ext.Application.user_data` from an external source.
 
+        Warning:
+            When using :meth:`~telegram.ext.ApplicationBuilder.concurrent_updates`, this method
+            may be called while a handler callback is still running. This might lead to race
+            conditions.
+
         .. versionadded:: 13.6
 
         .. versionchanged:: 20.0
@@ -375,6 +380,11 @@ class BasePersistence(Generic[UD, CD, BD], ABC):
         :attr:`~telegram.ext.Application.chat_data` to a callback. Can be used to update data
         stored in :attr:`~telegram.ext.Application.chat_data` from an external source.
 
+        Warning:
+            When using :meth:`~telegram.ext.ApplicationBuilder.concurrent_updates`, this method
+            may be called while a handler callback is still running. This might lead to race
+            conditions.
+
         .. versionadded:: 13.6
 
         .. versionchanged:: 20.0
@@ -392,6 +402,11 @@ class BasePersistence(Generic[UD, CD, BD], ABC):
         """Will be called by the :class:`telegram.ext.Application` before passing the
         :attr:`~telegram.ext.Application.bot_data` to a callback. Can be used to update data stored
         in :attr:`~telegram.ext.Application.bot_data` from an external source.
+
+        Warning:
+            When using :meth:`~telegram.ext.ApplicationBuilder.concurrent_updates`, this method
+            may be called while a handler callback is still running. This might lead to race
+            conditions.
 
         .. versionadded:: 13.6
 
