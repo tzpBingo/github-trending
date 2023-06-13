@@ -326,6 +326,12 @@ INVALIDPARAMETER_CLOUDCRTIDERROR = 'InvalidParameter.CloudCrtIdError'
 # 赠送的腾讯云域名已过期。
 INVALIDPARAMETER_CLOUDDOMAINISSTOP = 'InvalidParameter.CloudDomainIsStop'
 
+# 模版使用中。
+INVALIDPARAMETER_CONFINUSED = 'InvalidParameter.ConfInUsed'
+
+# 配置没有找到。
+INVALIDPARAMETER_CONFNOTFOUND = 'InvalidParameter.ConfNotFound'
+
 # 证书使用中。
 INVALIDPARAMETER_CRTDATEINUSING = 'InvalidParameter.CrtDateInUsing'
 
@@ -386,6 +392,12 @@ INVALIDPARAMETER_INVALIDCROPPARAM = 'InvalidParameter.InvalidCropParam'
 # 图层参数错误。
 INVALIDPARAMETER_INVALIDLAYERPARAM = 'InvalidParameter.InvalidLayerParam'
 
+# 混流输入参数无效。
+INVALIDPARAMETER_INVALIDMIXINPUTPARAM = 'InvalidParameter.InvalidMixInputParam'
+
+# 输出流参数无效。
+INVALIDPARAMETER_INVALIDOUTPUTPARAM = 'InvalidParameter.InvalidOutputParam'
+
 # 输出流 ID 被占用。
 INVALIDPARAMETER_INVALIDOUTPUTSTREAMID = 'InvalidParameter.InvalidOutputStreamID'
 
@@ -421,6 +433,12 @@ INVALIDPARAMETER_MPPLUGINNOUSE = 'InvalidParameter.MpPluginNoUse'
 
 # 其他错误。
 INVALIDPARAMETER_OTHERERROR = 'InvalidParameter.OtherError'
+
+# 转码模板已存在。
+INVALIDPARAMETER_PROCESSORALREADYEXIST = 'InvalidParameter.ProcessorAlreadyExist'
+
+# 规则没有找到。
+INVALIDPARAMETER_RULENOTFOUND = 'InvalidParameter.RuleNotFound'
 
 # 同一会话输出流发生变化。
 INVALIDPARAMETER_SESSIONOUTPUTSTREAMCHANGED = 'InvalidParameter.SessionOutputStreamChanged'

@@ -53,8 +53,17 @@ FAILEDOPERATION_DISASSOCIATESECURITYGROUPSFAILED = 'FailedOperation.Disassociate
 # 拉取安全组详情失败。
 FAILEDOPERATION_GETSECURITYGROUPDETAILFAILED = 'FailedOperation.GetSecurityGroupDetailFailed'
 
+# 实例不可退费。
+FAILEDOPERATION_INSTANCECANNOTRETURN = 'FailedOperation.InstanceCanNotReturn'
+
+# 实例退费失败。
+FAILEDOPERATION_INSTANCERETURNFAILED = 'FailedOperation.InstanceReturnFailed'
+
 # 修改账号权限失败。
 FAILEDOPERATION_MODIFYRIGHTFAILED = 'FailedOperation.ModifyRightFailed'
+
+# 修改账号配置失败。
+FAILEDOPERATION_MODIFYUSERCONFIGFAILED = 'FailedOperation.ModifyUserConfigFailed'
 
 # 消息队列操作失败。
 FAILEDOPERATION_MSGQUEUEOPERATIONFAILED = 'FailedOperation.MsgQueueOperationFailed'

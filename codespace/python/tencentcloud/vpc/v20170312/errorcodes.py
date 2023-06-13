@@ -194,6 +194,9 @@ INVALIDPARAMETERVALUE_EIPBRANDWIDTHOUTINVALID = 'InvalidParameterValue.EIPBrandW
 # 缺少参数。
 INVALIDPARAMETERVALUE_EMPTY = 'InvalidParameterValue.Empty'
 
+# IPv6转换实例ID已经存在。
+INVALIDPARAMETERVALUE_IPV6RULEIDEXISTED = 'InvalidParameterValue.IPv6RuleIdExisted'
+
 # IPv6规则没有更改。
 INVALIDPARAMETERVALUE_IPV6RULENOTCHANGE = 'InvalidParameterValue.IPv6RuleNotChange'
 
@@ -343,6 +346,9 @@ INVALIDPARAMETERVALUE_RESOURCENOTSUPPORT = 'InvalidParameterValue.ResourceNotSup
 
 # SSL-VPN-SERVER 云端网段和SSL-VPN-SERVER 客户端网段重叠。
 INVALIDPARAMETERVALUE_SSLCCNVPNSERVERCIDRCONFLICT = 'InvalidParameterValue.SslCcnVpnServerCidrConflict'
+
+# 存在关机的主机还在使用当前资源，无法操作。
+INVALIDPARAMETERVALUE_STOPCHARGINGINSTANCEINUSE = 'InvalidParameterValue.StopChargingInstanceInUse'
 
 # 子网CIDR冲突。
 INVALIDPARAMETERVALUE_SUBNETCONFLICT = 'InvalidParameterValue.SubnetConflict'
@@ -730,6 +736,9 @@ UNSUPPORTEDOPERATION_ENABLEMULTICAST = 'UnsupportedOperation.EnableMulticast'
 
 # 终端节点服务本身不能是终端节点。
 UNSUPPORTEDOPERATION_ENDPOINTSERVICE = 'UnsupportedOperation.EndPointService'
+
+# 指定ResourceId对应的流日志已经创建
+UNSUPPORTEDOPERATION_FLOWLOGINSTANCEEXISTED = 'UnsupportedOperation.FlowLogInstanceExisted'
 
 # 不支持创建流日志：当前弹性网卡绑定的是KO机型。
 UNSUPPORTEDOPERATION_FLOWLOGSNOTSUPPORTKOINSTANCEENI = 'UnsupportedOperation.FlowLogsNotSupportKoInstanceEni'

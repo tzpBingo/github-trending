@@ -634,8 +634,10 @@ class CreateCallOutSessionRequest(AbstractModel):
         :type UserId: str
         :param Callee: 被叫号码，须带 0086 前缀
         :type Callee: str
-        :param Caller: 主叫号码，须带 0086 前缀
+        :param Caller: 主叫号码（废弃，使用Callers），须带 0086 前缀
         :type Caller: str
+        :param Callers: 指定主叫号码列表，如果前面的号码失败了会自动换成下一个号码，须带 0086 前缀
+        :type Callers: list of str
         :param IsForceUseMobile: 是否强制使用手机外呼，当前只支持 true，若为 true 请确保已配置白名单
         :type IsForceUseMobile: bool
         :param Uui: 自定义数据，长度限制 1024 字节
@@ -645,6 +647,7 @@ class CreateCallOutSessionRequest(AbstractModel):
         self.UserId = None
         self.Callee = None
         self.Caller = None
+        self.Callers = None
         self.IsForceUseMobile = None
         self.Uui = None
 
@@ -654,6 +657,7 @@ class CreateCallOutSessionRequest(AbstractModel):
         self.UserId = params.get("UserId")
         self.Callee = params.get("Callee")
         self.Caller = params.get("Caller")
+        self.Callers = params.get("Callers")
         self.IsForceUseMobile = params.get("IsForceUseMobile")
         self.Uui = params.get("Uui")
         memeber_set = set(params.keys())
@@ -801,7 +805,7 @@ class CreateSDKLoginTokenRequest(AbstractModel):
         r"""
         :param SdkAppId: 应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
         :type SdkAppId: int
-        :param SeatUserId: 坐席账号。
+        :param SeatUserId: 座席账号。
         :type SeatUserId: str
         """
         self.SdkAppId = None
@@ -2466,7 +2470,7 @@ class DisableCCCPhoneNumberResponse(AbstractModel):
 
 
 class ErrStaffItem(AbstractModel):
-    """批量添加客服时，返回出错客服的像个信息
+    """批量添加客服时，返回出错客服的信息
 
     """
 
@@ -2903,13 +2907,13 @@ class ModifyStaffRequest(AbstractModel):
         r"""
         :param SdkAppId: 应用ID
         :type SdkAppId: int
-        :param Email: 坐席账户
+        :param Email: 座席账户
         :type Email: str
-        :param Name: 坐席名称
+        :param Name: 座席名称
         :type Name: str
-        :param Phone: 坐席手机号（带0086前缀,示例：008618011111111）
+        :param Phone: 座席手机号（带0086前缀,示例：008618011111111）
         :type Phone: str
-        :param Nick: 坐席昵称
+        :param Nick: 座席昵称
         :type Nick: str
         :param SkillGroupIds: 绑定技能组ID列表
         :type SkillGroupIds: list of int
@@ -3164,7 +3168,7 @@ class PackageBuyInfo(AbstractModel):
         :type CapacityRemain: int
         :param BuyTime: 购买时间戳
         :type BuyTime: int
-        :param EndTime: 截至时间戳
+        :param EndTime: 截止时间戳
         :type EndTime: int
         """
         self.PackageId = None
@@ -3206,7 +3210,7 @@ class PhoneNumBuyInfo(AbstractModel):
         :type CallType: int
         :param BuyTime: 购买时间戳
         :type BuyTime: int
-        :param EndTime: 截至时间戳
+        :param EndTime: 截止时间戳
         :type EndTime: int
         :param State: 号码状态，1正常|2欠费停用|4管理员停用|5违规停用
         :type State: int
@@ -3598,7 +3602,7 @@ class StaffBuyInfo(AbstractModel):
         :type Num: int
         :param BuyTime: 购买时间戳
         :type BuyTime: int
-        :param EndTime: 截至时间戳
+        :param EndTime: 截止时间戳
         :type EndTime: int
         """
         self.Num = None

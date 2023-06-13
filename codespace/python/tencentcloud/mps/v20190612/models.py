@@ -4164,14 +4164,18 @@ class AsrFullTextConfigureInfo(AbstractModel):
         :param SubtitleFormat: 生成的字幕文件格式，不填或者填空字符串表示不生成字幕文件，可选值：
 <li>vtt：生成 WebVTT 字幕文件。</li>
         :type SubtitleFormat: str
+        :param SourceLanguage: 视频源语言。
+        :type SourceLanguage: str
         """
         self.Switch = None
         self.SubtitleFormat = None
+        self.SourceLanguage = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.SubtitleFormat = params.get("SubtitleFormat")
+        self.SourceLanguage = params.get("SourceLanguage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4195,14 +4199,18 @@ class AsrFullTextConfigureInfoForUpdate(AbstractModel):
         :param SubtitleFormat: 生成的字幕文件格式，填空字符串表示不生成字幕文件，可选值：
 <li>vtt：生成 WebVTT 字幕文件。</li>
         :type SubtitleFormat: str
+        :param SourceLanguage: 视频源语言。
+        :type SourceLanguage: str
         """
         self.Switch = None
         self.SubtitleFormat = None
+        self.SourceLanguage = None
 
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
         self.SubtitleFormat = params.get("SubtitleFormat")
+        self.SourceLanguage = params.get("SourceLanguage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4487,6 +4495,141 @@ class AwsSQS(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class BatchDeleteStreamLinkFlowRequest(AbstractModel):
+    """BatchDeleteStreamLinkFlow请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: EventId。
+        :type EventId: str
+        :param FlowIds: Event关联的流Id数组，如果不传默认删除Event下面的所有媒体传输流。
+        :type FlowIds: list of str
+        """
+        self.EventId = None
+        self.FlowIds = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        self.FlowIds = params.get("FlowIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchDeleteStreamLinkFlowResponse(AbstractModel):
+    """BatchDeleteStreamLinkFlow返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class BatchStartStreamLinkFlowRequest(AbstractModel):
+    """BatchStartStreamLinkFlow请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: EventId。
+        :type EventId: str
+        :param FlowIds: Event关联的流Id数组，如果不传默认启动Event下面的所有媒体传输流。
+        :type FlowIds: list of str
+        """
+        self.EventId = None
+        self.FlowIds = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        self.FlowIds = params.get("FlowIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchStartStreamLinkFlowResponse(AbstractModel):
+    """BatchStartStreamLinkFlow返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class BatchStopStreamLinkFlowRequest(AbstractModel):
+    """BatchStopStreamLinkFlow请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: EventId。
+        :type EventId: str
+        :param FlowIds: 流Id，如果不传默认停止Event下所有的媒体传输流。
+        :type FlowIds: list of str
+        """
+        self.EventId = None
+        self.FlowIds = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        self.FlowIds = params.get("FlowIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BatchStopStreamLinkFlowResponse(AbstractModel):
+    """BatchStopStreamLinkFlow返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class ClassificationConfigureInfo(AbstractModel):
@@ -4903,6 +5046,8 @@ class CreateAIRecognitionTemplateRequest(AbstractModel):
         :type AsrFullTextConfigure: :class:`tencentcloud.mps.v20190612.models.AsrFullTextConfigureInfo`
         :param AsrWordsConfigure: 语音关键词识别控制参数。
         :type AsrWordsConfigure: :class:`tencentcloud.mps.v20190612.models.AsrWordsConfigureInfo`
+        :param TranslateConfigure: 语音翻译控制参数。
+        :type TranslateConfigure: :class:`tencentcloud.mps.v20190612.models.TranslateConfigureInfo`
         """
         self.Name = None
         self.Comment = None
@@ -4911,6 +5056,7 @@ class CreateAIRecognitionTemplateRequest(AbstractModel):
         self.OcrWordsConfigure = None
         self.AsrFullTextConfigure = None
         self.AsrWordsConfigure = None
+        self.TranslateConfigure = None
 
 
     def _deserialize(self, params):
@@ -4931,6 +5077,9 @@ class CreateAIRecognitionTemplateRequest(AbstractModel):
         if params.get("AsrWordsConfigure") is not None:
             self.AsrWordsConfigure = AsrWordsConfigureInfo()
             self.AsrWordsConfigure._deserialize(params.get("AsrWordsConfigure"))
+        if params.get("TranslateConfigure") is not None:
+            self.TranslateConfigure = TranslateConfigureInfo()
+            self.TranslateConfigure._deserialize(params.get("TranslateConfigure"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6184,6 +6333,57 @@ class CreateSnapshotByTimeOffsetTemplateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class CreateStreamLinkEventRequest(AbstractModel):
+    """CreateStreamLinkEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventName: 事件名称。
+        :type EventName: str
+        :param Description: 事件描述。
+        :type Description: str
+        """
+        self.EventName = None
+        self.Description = None
+
+
+    def _deserialize(self, params):
+        self.EventName = params.get("EventName")
+        self.Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateStreamLinkEventResponse(AbstractModel):
+    """CreateStreamLinkEvent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 创建的Event信息。
+        :type Info: :class:`tencentcloud.mps.v20190612.models.DescribeEvent`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Info = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = DescribeEvent()
+            self.Info._deserialize(params.get("Info"))
+        self.RequestId = params.get("RequestId")
+
+
 class CreateStreamLinkFlowRequest(AbstractModel):
     """CreateStreamLinkFlow请求参数结构体
 
@@ -6227,6 +6427,62 @@ class CreateStreamLinkFlowRequest(AbstractModel):
 
 class CreateStreamLinkFlowResponse(AbstractModel):
     """CreateStreamLinkFlow返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 创建的Flow信息。
+        :type Info: :class:`tencentcloud.mps.v20190612.models.DescribeFlow`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Info = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = DescribeFlow()
+            self.Info._deserialize(params.get("Info"))
+        self.RequestId = params.get("RequestId")
+
+
+class CreateStreamLinkInputRequest(AbstractModel):
+    """CreateStreamLinkInput请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: 媒体传输流ID。
+        :type FlowId: str
+        :param InputGroup: 流的输入组。
+        :type InputGroup: list of CreateInput
+        """
+        self.FlowId = None
+        self.InputGroup = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
+        if params.get("InputGroup") is not None:
+            self.InputGroup = []
+            for item in params.get("InputGroup"):
+                obj = CreateInput()
+                obj._deserialize(item)
+                self.InputGroup.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateStreamLinkInputResponse(AbstractModel):
+    """CreateStreamLinkInput返回参数结构体
 
     """
 
@@ -7057,6 +7313,47 @@ class DeleteSnapshotByTimeOffsetTemplateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DeleteStreamLinkEventRequest(AbstractModel):
+    """DeleteStreamLinkEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: 媒体传输事件Id，删除前需要保证该Event关联的所有Flow都已经删除。
+        :type EventId: str
+        """
+        self.EventId = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteStreamLinkEventResponse(AbstractModel):
+    """DeleteStreamLinkEvent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteStreamLinkFlowRequest(AbstractModel):
     """DeleteStreamLinkFlow请求参数结构体
 
@@ -7647,6 +7944,58 @@ class DescribeContentReviewTemplatesResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeEvent(AbstractModel):
+    """查询Event的配置信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventName: Event的名称。
+        :type EventName: str
+        :param EventId: Event的Id，唯一标识一个event。
+        :type EventId: str
+        :param CreateTime: Event创建时间，格式为yyyy-MM-ddTHH:mm:ssZ。
+        :type CreateTime: str
+        :param Description: Event的描述。
+        :type Description: str
+        :param Status: Event的状态信息
+0：未运行
+1：运行中
+        :type Status: int
+        :param AttachedFlowGroup: Event关联的Flow列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttachedFlowGroup: list of DescribeFlowId
+        """
+        self.EventName = None
+        self.EventId = None
+        self.CreateTime = None
+        self.Description = None
+        self.Status = None
+        self.AttachedFlowGroup = None
+
+
+    def _deserialize(self, params):
+        self.EventName = params.get("EventName")
+        self.EventId = params.get("EventId")
+        self.CreateTime = params.get("CreateTime")
+        self.Description = params.get("Description")
+        self.Status = params.get("Status")
+        if params.get("AttachedFlowGroup") is not None:
+            self.AttachedFlowGroup = []
+            for item in params.get("AttachedFlowGroup"):
+                obj = DescribeFlowId()
+                obj._deserialize(item)
+                self.AttachedFlowGroup.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DescribeFlow(AbstractModel):
     """查询Flow的配置信息。
 
@@ -7700,6 +8049,34 @@ class DescribeFlow(AbstractModel):
                 obj._deserialize(item)
                 self.OutputGroup.append(obj)
         self.EventId = params.get("EventId")
+        self.Region = params.get("Region")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeFlowId(AbstractModel):
+    """Event管理的Flow列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FlowId: FlowId，唯一标识一个flow。
+        :type FlowId: str
+        :param Region: flow所在的区域名称。
+        :type Region: str
+        """
+        self.FlowId = None
+        self.Region = None
+
+
+    def _deserialize(self, params):
+        self.FlowId = params.get("FlowId")
         self.Region = params.get("Region")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -8973,6 +9350,185 @@ class DescribeStreamLinkActivateStateResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeStreamLinkEventAttachedFlowsRequest(AbstractModel):
+    """DescribeStreamLinkEventAttachedFlows请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: EventId。
+        :type EventId: str
+        :param PageNum: 当前页数，默认1。
+        :type PageNum: int
+        :param PageSize: 每页大小，默认10。
+        :type PageSize: int
+        """
+        self.EventId = None
+        self.PageNum = None
+        self.PageSize = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        self.PageNum = params.get("PageNum")
+        self.PageSize = params.get("PageSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeStreamLinkEventAttachedFlowsResponse(AbstractModel):
+    """DescribeStreamLinkEventAttachedFlows返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Infos: 流的配置信息列表。
+        :type Infos: list of DescribeFlow
+        :param TotalNum: 总数量。
+        :type TotalNum: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Infos = None
+        self.TotalNum = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Infos") is not None:
+            self.Infos = []
+            for item in params.get("Infos"):
+                obj = DescribeFlow()
+                obj._deserialize(item)
+                self.Infos.append(obj)
+        self.TotalNum = params.get("TotalNum")
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeStreamLinkEventRequest(AbstractModel):
+    """DescribeStreamLinkEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: 媒体传输事件ID。
+        :type EventId: str
+        """
+        self.EventId = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeStreamLinkEventResponse(AbstractModel):
+    """DescribeStreamLinkEvent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Info: 媒体传输事件的配置信息。
+        :type Info: :class:`tencentcloud.mps.v20190612.models.DescribeEvent`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Info = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Info") is not None:
+            self.Info = DescribeEvent()
+            self.Info._deserialize(params.get("Info"))
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeStreamLinkEventsRequest(AbstractModel):
+    """DescribeStreamLinkEvents请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PageNum: 当前页数，默认1。
+        :type PageNum: int
+        :param PageSize: 每页大小，默认10。
+        :type PageSize: int
+        """
+        self.PageNum = None
+        self.PageSize = None
+
+
+    def _deserialize(self, params):
+        self.PageNum = params.get("PageNum")
+        self.PageSize = params.get("PageSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeStreamLinkEventsResponse(AbstractModel):
+    """DescribeStreamLinkEvents返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Infos: 媒体传输事件的配置信息列表。
+        :type Infos: list of DescribeEvent
+        :param PageNum: 当前页数。
+        :type PageNum: int
+        :param PageSize: 每页大小。
+        :type PageSize: int
+        :param TotalNum: 总数量。
+        :type TotalNum: int
+        :param TotalPage: 总页数。
+        :type TotalPage: int
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Infos = None
+        self.PageNum = None
+        self.PageSize = None
+        self.TotalNum = None
+        self.TotalPage = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Infos") is not None:
+            self.Infos = []
+            for item in params.get("Infos"):
+                obj = DescribeEvent()
+                obj._deserialize(item)
+                self.Infos.append(obj)
+        self.PageNum = params.get("PageNum")
+        self.PageSize = params.get("PageSize")
+        self.TotalNum = params.get("TotalNum")
+        self.TotalPage = params.get("TotalPage")
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeStreamLinkFlowLogsRequest(AbstractModel):
     """DescribeStreamLinkFlowLogs请求参数结构体
 
@@ -9707,7 +10263,7 @@ class DescribeTranscodeTemplatesRequest(AbstractModel):
 <li>Video：视频格式，可以同时包含视频流和音频流的封装格式板；</li>
 <li>PureAudio：纯音频格式，只能包含音频流的封装格式。</li>
         :type ContainerType: str
-        :param TEHDType: 极速高清过滤条件，用于过滤普通转码或极速高清转码模板，可选值：
+        :param TEHDType: （建议使用TranscodeType代替）极速高清过滤条件，用于过滤普通转码或极速高清转码模板，可选值：
 <li>Common：普通转码模板；</li>
 <li>TEHD：极速高清模板。</li>
         :type TEHDType: str
@@ -9717,9 +10273,12 @@ class DescribeTranscodeTemplatesRequest(AbstractModel):
         :type Limit: int
         :param TranscodeType: 模板类型（替换旧版本 TEHDType），可选值：
 <li>Common：普通转码模板；</li>
-<li>TEHD：极速高清模板。</li>
+<li>TEHD：视频极速高清，老的类型（建议使用 TEHD-100） 。</li>
+<li>TEHD-100：视频极速高清</li>
+<li>TEHD-200：音频极速高清</li>
 <li>Enhance：音视频增强模板。</li>
 默认空，不限制类型。
+
         :type TranscodeType: str
         """
         self.Definitions = None
@@ -14455,6 +15014,8 @@ class ModifyAIRecognitionTemplateRequest(AbstractModel):
         :type AsrFullTextConfigure: :class:`tencentcloud.mps.v20190612.models.AsrFullTextConfigureInfoForUpdate`
         :param AsrWordsConfigure: 语音关键词识别控制参数。
         :type AsrWordsConfigure: :class:`tencentcloud.mps.v20190612.models.AsrWordsConfigureInfoForUpdate`
+        :param TranslateConfigure: 语音翻译控制参数。
+        :type TranslateConfigure: :class:`tencentcloud.mps.v20190612.models.TranslateConfigureInfoForUpdate`
         """
         self.Definition = None
         self.Name = None
@@ -14464,6 +15025,7 @@ class ModifyAIRecognitionTemplateRequest(AbstractModel):
         self.OcrWordsConfigure = None
         self.AsrFullTextConfigure = None
         self.AsrWordsConfigure = None
+        self.TranslateConfigure = None
 
 
     def _deserialize(self, params):
@@ -14485,6 +15047,9 @@ class ModifyAIRecognitionTemplateRequest(AbstractModel):
         if params.get("AsrWordsConfigure") is not None:
             self.AsrWordsConfigure = AsrWordsConfigureInfoForUpdate()
             self.AsrWordsConfigure._deserialize(params.get("AsrWordsConfigure"))
+        if params.get("TranslateConfigure") is not None:
+            self.TranslateConfigure = TranslateConfigureInfoForUpdate()
+            self.TranslateConfigure._deserialize(params.get("TranslateConfigure"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -15340,6 +15905,55 @@ class ModifySnapshotByTimeOffsetTemplateRequest(AbstractModel):
 
 class ModifySnapshotByTimeOffsetTemplateResponse(AbstractModel):
     """ModifySnapshotByTimeOffsetTemplate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class ModifyStreamLinkEventRequest(AbstractModel):
+    """ModifyStreamLinkEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param EventId: 媒体传输事件Event Id。
+        :type EventId: str
+        :param EventName: 需要修改的事件名称。
+        :type EventName: str
+        :param Description: Event的描述信息。
+        :type Description: str
+        """
+        self.EventId = None
+        self.EventName = None
+        self.Description = None
+
+
+    def _deserialize(self, params):
+        self.EventId = params.get("EventId")
+        self.EventName = params.get("EventName")
+        self.Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyStreamLinkEventResponse(AbstractModel):
+    """ModifyStreamLinkEvent返回参数结构体
 
     """
 
@@ -16878,6 +17492,8 @@ class ProcessLiveStreamRequest(AbstractModel):
         :type AiRecognitionTask: :class:`tencentcloud.mps.v20190612.models.AiRecognitionTaskInput`
         :param AiAnalysisTask: 视频内容分析类型任务参数。
         :type AiAnalysisTask: :class:`tencentcloud.mps.v20190612.models.AiAnalysisTaskInput`
+        :param AiQualityControlTask: 视频内容质检类型任务参数。
+        :type AiQualityControlTask: :class:`tencentcloud.mps.v20190612.models.AiQualityControlTaskInput`
         :param SessionId: 用于去重的识别码，如果七天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
         :type SessionId: str
         :param SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长 1000 个字符。
@@ -16890,6 +17506,7 @@ class ProcessLiveStreamRequest(AbstractModel):
         self.AiContentReviewTask = None
         self.AiRecognitionTask = None
         self.AiAnalysisTask = None
+        self.AiQualityControlTask = None
         self.SessionId = None
         self.SessionContext = None
 
@@ -16912,6 +17529,9 @@ class ProcessLiveStreamRequest(AbstractModel):
         if params.get("AiAnalysisTask") is not None:
             self.AiAnalysisTask = AiAnalysisTaskInput()
             self.AiAnalysisTask._deserialize(params.get("AiAnalysisTask"))
+        if params.get("AiQualityControlTask") is not None:
+            self.AiQualityControlTask = AiQualityControlTaskInput()
+            self.AiQualityControlTask._deserialize(params.get("AiQualityControlTask"))
         self.SessionId = params.get("SessionId")
         self.SessionContext = params.get("SessionContext")
         memeber_set = set(params.keys())
@@ -19855,6 +20475,74 @@ class TranscodeTemplate(AbstractModel):
         if params.get("EnhanceConfig") is not None:
             self.EnhanceConfig = EnhanceConfig()
             self.EnhanceConfig._deserialize(params.get("EnhanceConfig"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TranslateConfigureInfo(AbstractModel):
+    """语音翻译任务控制参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 语音翻译任务开关，可选值：
+<li>ON：开启智能语音翻译任务；</li>
+<li>OFF：关闭智能语音翻译任务。</li>
+        :type Switch: str
+        :param SourceLanguage: 视频源语言。
+        :type SourceLanguage: str
+        :param DestinationLanguage: 翻译目标语言。
+        :type DestinationLanguage: str
+        """
+        self.Switch = None
+        self.SourceLanguage = None
+        self.DestinationLanguage = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.SourceLanguage = params.get("SourceLanguage")
+        self.DestinationLanguage = params.get("DestinationLanguage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TranslateConfigureInfoForUpdate(AbstractModel):
+    """语音翻译任务控制参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 语音翻译任务开关，可选值：
+<li>ON：开启智能语音翻译任务；</li>
+<li>OFF：关闭智能语音翻译任务。</li>
+        :type Switch: str
+        :param SourceLanguage: 视频源语言。
+        :type SourceLanguage: str
+        :param DestinationLanguage: 翻译目标语言。
+        :type DestinationLanguage: str
+        """
+        self.Switch = None
+        self.SourceLanguage = None
+        self.DestinationLanguage = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.SourceLanguage = params.get("SourceLanguage")
+        self.DestinationLanguage = params.get("DestinationLanguage")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

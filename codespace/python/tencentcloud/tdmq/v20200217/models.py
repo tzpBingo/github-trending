@@ -1993,12 +1993,15 @@ class CreateEnvironmentRequest(AbstractModel):
         :type ClusterId: str
         :param RetentionPolicy: 消息保留策略
         :type RetentionPolicy: :class:`tencentcloud.tdmq.v20200217.models.RetentionPolicy`
+        :param AutoSubscriptionCreation: 是否开启自动创建订阅
+        :type AutoSubscriptionCreation: bool
         """
         self.EnvironmentId = None
         self.MsgTTL = None
         self.Remark = None
         self.ClusterId = None
         self.RetentionPolicy = None
+        self.AutoSubscriptionCreation = None
 
 
     def _deserialize(self, params):
@@ -2009,6 +2012,7 @@ class CreateEnvironmentRequest(AbstractModel):
         if params.get("RetentionPolicy") is not None:
             self.RetentionPolicy = RetentionPolicy()
             self.RetentionPolicy._deserialize(params.get("RetentionPolicy"))
+        self.AutoSubscriptionCreation = params.get("AutoSubscriptionCreation")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5100,6 +5104,10 @@ class DescribeNamespaceBundlesOptRequest(AbstractModel):
         :type Limit: int
         :param Offset: 查询偏移量
         :type Offset: int
+        :param Bundle: 过滤的 bundle
+        :type Bundle: str
+        :param OwnerBroker: bundle 所属的 broker ip 地址，支持模糊查询
+        :type OwnerBroker: str
         """
         self.ClusterName = None
         self.TenantId = None
@@ -5107,6 +5115,8 @@ class DescribeNamespaceBundlesOptRequest(AbstractModel):
         self.NeedMetrics = None
         self.Limit = None
         self.Offset = None
+        self.Bundle = None
+        self.OwnerBroker = None
 
 
     def _deserialize(self, params):
@@ -5116,6 +5126,8 @@ class DescribeNamespaceBundlesOptRequest(AbstractModel):
         self.NeedMetrics = params.get("NeedMetrics")
         self.Limit = params.get("Limit")
         self.Offset = params.get("Offset")
+        self.Bundle = params.get("Bundle")
+        self.OwnerBroker = params.get("OwnerBroker")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6608,6 +6620,9 @@ class Environment(AbstractModel):
         :param RetentionPolicy: 消息保留策略
 注意：此字段可能返回 null，表示取不到有效值。
         :type RetentionPolicy: :class:`tencentcloud.tdmq.v20200217.models.RetentionPolicy`
+        :param AutoSubscriptionCreation: 是否自动创建订阅
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoSubscriptionCreation: bool
         """
         self.EnvironmentId = None
         self.Remark = None
@@ -6618,6 +6633,7 @@ class Environment(AbstractModel):
         self.NamespaceName = None
         self.TopicNum = None
         self.RetentionPolicy = None
+        self.AutoSubscriptionCreation = None
 
 
     def _deserialize(self, params):
@@ -6632,6 +6648,7 @@ class Environment(AbstractModel):
         if params.get("RetentionPolicy") is not None:
             self.RetentionPolicy = RetentionPolicy()
             self.RetentionPolicy._deserialize(params.get("RetentionPolicy"))
+        self.AutoSubscriptionCreation = params.get("AutoSubscriptionCreation")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -7433,12 +7450,15 @@ class ModifyEnvironmentAttributesRequest(AbstractModel):
         :type ClusterId: str
         :param RetentionPolicy: 消息保留策略
         :type RetentionPolicy: :class:`tencentcloud.tdmq.v20200217.models.RetentionPolicy`
+        :param AutoSubscriptionCreation: 是否开启自动创建订阅
+        :type AutoSubscriptionCreation: bool
         """
         self.EnvironmentId = None
         self.MsgTTL = None
         self.Remark = None
         self.ClusterId = None
         self.RetentionPolicy = None
+        self.AutoSubscriptionCreation = None
 
 
     def _deserialize(self, params):
@@ -7449,6 +7469,7 @@ class ModifyEnvironmentAttributesRequest(AbstractModel):
         if params.get("RetentionPolicy") is not None:
             self.RetentionPolicy = RetentionPolicy()
             self.RetentionPolicy._deserialize(params.get("RetentionPolicy"))
+        self.AutoSubscriptionCreation = params.get("AutoSubscriptionCreation")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

@@ -67,6 +67,9 @@ class AlarmEventInfo(AbstractModel):
         :param Operator: 阈值计算算子，1 : 大于 2 ：小于
 注意：此字段可能返回 null，表示取不到有效值。
         :type Operator: int
+        :param RegularId: 告警规则ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegularId: str
         """
         self.AlarmId = None
         self.AlarmTime = None
@@ -85,6 +88,7 @@ class AlarmEventInfo(AbstractModel):
         self.IsSendSuccess = None
         self.MessageId = None
         self.Operator = None
+        self.RegularId = None
 
 
     def _deserialize(self, params):
@@ -105,6 +109,7 @@ class AlarmEventInfo(AbstractModel):
         self.IsSendSuccess = params.get("IsSendSuccess")
         self.MessageId = params.get("MessageId")
         self.Operator = params.get("Operator")
+        self.RegularId = params.get("RegularId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1336,24 +1341,28 @@ class CheckAlarmRegularNameExistRequest(AbstractModel):
         r"""
         :param ProjectId: 项目名称
         :type ProjectId: str
-        :param TaskId: 任务ID
-        :type TaskId: str
         :param AlarmRegularName: 规则名称
         :type AlarmRegularName: str
+        :param TaskId: 任务ID
+        :type TaskId: str
         :param Id: 主键ID
         :type Id: str
+        :param TaskType: 任务类型:201.实时,202.离线
+        :type TaskType: int
         """
         self.ProjectId = None
-        self.TaskId = None
         self.AlarmRegularName = None
+        self.TaskId = None
         self.Id = None
+        self.TaskType = None
 
 
     def _deserialize(self, params):
         self.ProjectId = params.get("ProjectId")
-        self.TaskId = params.get("TaskId")
         self.AlarmRegularName = params.get("AlarmRegularName")
+        self.TaskId = params.get("TaskId")
         self.Id = params.get("Id")
+        self.TaskType = params.get("TaskType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2794,11 +2803,11 @@ class CreateOrUpdateResourceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ProjectId: 项目ID
+        :param ProjectId: 项目ID，必填项
         :type ProjectId: str
-        :param Files: 文件名
+        :param Files: 文件名，必填项
         :type Files: list of str
-        :param FilePath: 文件所属路径，资源管理根路径为 /datastudio/resouce
+        :param FilePath: 必填项，文件所属路径，资源管理根路径为 /datastudio/resource/项目ID/文件夹名
         :type FilePath: str
         :param CosBucketName: cos存储桶名字
         :type CosBucketName: str
@@ -2806,7 +2815,7 @@ class CreateOrUpdateResourceRequest(AbstractModel):
         :type CosRegion: str
         :param NewFile: 是否为新文件，新增为 true，更新为 false
         :type NewFile: bool
-        :param FilesSize: 文件大小
+        :param FilesSize: 必填项，文件大小，与 Files 字段对应
         :type FilesSize: list of str
         """
         self.ProjectId = None
@@ -6102,15 +6111,30 @@ class DescribeInstanceListResponse(AbstractModel):
         r"""
         :param Data: 结果
         :type Data: str
+        :param InstanceList: 实例列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of InstanceList
+        :param TotalCount: 总条数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Data = None
+        self.InstanceList = None
+        self.TotalCount = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Data = params.get("Data")
+        if params.get("InstanceList") is not None:
+            self.InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = InstanceList()
+                obj._deserialize(item)
+                self.InstanceList.append(obj)
+        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -6151,15 +6175,25 @@ class DescribeInstanceLogListResponse(AbstractModel):
         r"""
         :param Data: 日志列表
         :type Data: str
+        :param InstanceLogList: 日志列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceLogList: list of InstanceLogList
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Data = None
+        self.InstanceLogList = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Data = params.get("Data")
+        if params.get("InstanceLogList") is not None:
+            self.InstanceLogList = []
+            for item in params.get("InstanceLogList"):
+                obj = InstanceLogList()
+                obj._deserialize(item)
+                self.InstanceLogList.append(obj)
         self.RequestId = params.get("RequestId")
 
 
@@ -6208,15 +6242,22 @@ class DescribeInstanceLogResponse(AbstractModel):
         r"""
         :param Data: 返回结果
         :type Data: str
+        :param InstanceLogInfo: 返回结果
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceLogInfo: :class:`tencentcloud.wedata.v20210820.models.IntegrationInstanceLog`
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.Data = None
+        self.InstanceLogInfo = None
         self.RequestId = None
 
 
     def _deserialize(self, params):
         self.Data = params.get("Data")
+        if params.get("InstanceLogInfo") is not None:
+            self.InstanceLogInfo = IntegrationInstanceLog()
+            self.InstanceLogInfo._deserialize(params.get("InstanceLogInfo"))
         self.RequestId = params.get("RequestId")
 
 
@@ -6941,10 +6982,14 @@ class DescribeIntegrationTasksResponse(AbstractModel):
         :param TaskInfoSet: 任务列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type TaskInfoSet: list of IntegrationTaskInfo
+        :param TotalCount: 任务总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self.TaskInfoSet = None
+        self.TotalCount = None
         self.RequestId = None
 
 
@@ -6955,6 +7000,7 @@ class DescribeIntegrationTasksResponse(AbstractModel):
                 obj = IntegrationTaskInfo()
                 obj._deserialize(item)
                 self.TaskInfoSet.append(obj)
+        self.TotalCount = params.get("TotalCount")
         self.RequestId = params.get("RequestId")
 
 
@@ -7223,6 +7269,16 @@ class DescribeOperateTasksRequest(AbstractModel):
         :type TaskCycleUnitList: str
         :param ProductNameList: 任务所属产品类型
         :type ProductNameList: str
+        :param SourceServiceId: 数据源id或（仅针对离线同步任务）来源数据源id
+        :type SourceServiceId: str
+        :param SourceServiceType: 数据源类型或（仅针对离线同步任务）来源数据源类型
+        :type SourceServiceType: str
+        :param TargetServiceId: （仅针对离线同步任务）目标数据源id
+        :type TargetServiceId: str
+        :param TargetServiceType: （仅针对离线同步任务）目标数据源类型
+        :type TargetServiceType: str
+        :param AlarmType: 告警类型，多个类型以逗号分隔
+        :type AlarmType: str
         """
         self.ProjectId = None
         self.FolderIdList = None
@@ -7239,6 +7295,11 @@ class DescribeOperateTasksRequest(AbstractModel):
         self.StatusList = None
         self.TaskCycleUnitList = None
         self.ProductNameList = None
+        self.SourceServiceId = None
+        self.SourceServiceType = None
+        self.TargetServiceId = None
+        self.TargetServiceType = None
+        self.AlarmType = None
 
 
     def _deserialize(self, params):
@@ -7257,6 +7318,11 @@ class DescribeOperateTasksRequest(AbstractModel):
         self.StatusList = params.get("StatusList")
         self.TaskCycleUnitList = params.get("TaskCycleUnitList")
         self.ProductNameList = params.get("ProductNameList")
+        self.SourceServiceId = params.get("SourceServiceId")
+        self.SourceServiceType = params.get("SourceServiceType")
+        self.TargetServiceId = params.get("TargetServiceId")
+        self.TargetServiceType = params.get("TargetServiceType")
+        self.AlarmType = params.get("AlarmType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9774,12 +9840,8 @@ class DescribeTaskAlarmRegulationsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskId: 任务ID
-        :type TaskId: str
         :param ProjectId: 项目ID
         :type ProjectId: str
-        :param TaskType: 任务类型(201代表实时任务，202代表离线任务)
-        :type TaskType: int
         :param PageNumber: 当前页
         :type PageNumber: int
         :param PageSize: 每页记录数
@@ -9788,20 +9850,22 @@ class DescribeTaskAlarmRegulationsRequest(AbstractModel):
         :type Filters: list of Filter
         :param OrderFields: 排序条件(RegularId)
         :type OrderFields: list of OrderField
+        :param TaskId: 任务ID
+        :type TaskId: str
+        :param TaskType: 任务类型(201代表实时任务，202代表离线任务)
+        :type TaskType: int
         """
-        self.TaskId = None
         self.ProjectId = None
-        self.TaskType = None
         self.PageNumber = None
         self.PageSize = None
         self.Filters = None
         self.OrderFields = None
+        self.TaskId = None
+        self.TaskType = None
 
 
     def _deserialize(self, params):
-        self.TaskId = params.get("TaskId")
         self.ProjectId = params.get("ProjectId")
-        self.TaskType = params.get("TaskType")
         self.PageNumber = params.get("PageNumber")
         self.PageSize = params.get("PageSize")
         if params.get("Filters") is not None:
@@ -9816,6 +9880,8 @@ class DescribeTaskAlarmRegulationsRequest(AbstractModel):
                 obj = OrderField()
                 obj._deserialize(item)
                 self.OrderFields.append(obj)
+        self.TaskId = params.get("TaskId")
+        self.TaskType = params.get("TaskType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -9832,7 +9898,7 @@ class DescribeTaskAlarmRegulationsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TaskAlarmInfos: 任务告警规则信息
+        :param TaskAlarmInfos: 告警规则信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type TaskAlarmInfos: list of TaskAlarmInfo
         :param TotalCount: 总记录数
@@ -11973,6 +12039,86 @@ class InstanceInfo(AbstractModel):
         
 
 
+class InstanceList(AbstractModel):
+    """离线运维实例列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param CostTime: 耗费时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CostTime: str
+        :param CurRunDate: 数据时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CurRunDate: str
+        :param CycleType: 周期类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CycleType: str
+        :param DoFlag: 是否补录
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DoFlag: int
+        :param InCharge: 责任人
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InCharge: str
+        :param LastLog: 日志
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastLog: str
+        :param SchedulerDesc: 调度计划
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SchedulerDesc: str
+        :param StartTime: 开始启动时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param State: 实例状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type State: str
+        :param TaskId: 任务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskId: str
+        :param TaskName: 任务名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskName: str
+        :param TryLimit: 尝试运行次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TryLimit: int
+        """
+        self.CostTime = None
+        self.CurRunDate = None
+        self.CycleType = None
+        self.DoFlag = None
+        self.InCharge = None
+        self.LastLog = None
+        self.SchedulerDesc = None
+        self.StartTime = None
+        self.State = None
+        self.TaskId = None
+        self.TaskName = None
+        self.TryLimit = None
+
+
+    def _deserialize(self, params):
+        self.CostTime = params.get("CostTime")
+        self.CurRunDate = params.get("CurRunDate")
+        self.CycleType = params.get("CycleType")
+        self.DoFlag = params.get("DoFlag")
+        self.InCharge = params.get("InCharge")
+        self.LastLog = params.get("LastLog")
+        self.SchedulerDesc = params.get("SchedulerDesc")
+        self.StartTime = params.get("StartTime")
+        self.State = params.get("State")
+        self.TaskId = params.get("TaskId")
+        self.TaskName = params.get("TaskName")
+        self.TryLimit = params.get("TryLimit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class InstanceLog(AbstractModel):
     """实例日志实体
 
@@ -12021,6 +12167,81 @@ class InstanceLog(AbstractModel):
         self.OriginFileName = params.get("OriginFileName")
         self.CreateTime = params.get("CreateTime")
         self.InstanceLogType = params.get("InstanceLogType")
+        self.CostTime = params.get("CostTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstanceLogList(AbstractModel):
+    """实例日志信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TaskId: 任务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskId: str
+        :param CurRunDate: 数据时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CurRunDate: str
+        :param Tries: 重试次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tries: str
+        :param LastUpdate: 最后更新事件
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastUpdate: str
+        :param BrokerIp: 节点ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BrokerIp: str
+        :param FileSize: 文件大小
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileSize: str
+        :param OriginFileName: 原始文件名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginFileName: str
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param InstanceLogType: 实例日志类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceLogType: str
+        :param TaskName: 任务名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskName: str
+        :param CostTime: 耗费时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CostTime: str
+        """
+        self.TaskId = None
+        self.CurRunDate = None
+        self.Tries = None
+        self.LastUpdate = None
+        self.BrokerIp = None
+        self.FileSize = None
+        self.OriginFileName = None
+        self.CreateTime = None
+        self.InstanceLogType = None
+        self.TaskName = None
+        self.CostTime = None
+
+
+    def _deserialize(self, params):
+        self.TaskId = params.get("TaskId")
+        self.CurRunDate = params.get("CurRunDate")
+        self.Tries = params.get("Tries")
+        self.LastUpdate = params.get("LastUpdate")
+        self.BrokerIp = params.get("BrokerIp")
+        self.FileSize = params.get("FileSize")
+        self.OriginFileName = params.get("OriginFileName")
+        self.CreateTime = params.get("CreateTime")
+        self.InstanceLogType = params.get("InstanceLogType")
+        self.TaskName = params.get("TaskName")
         self.CostTime = params.get("CostTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -12217,6 +12438,31 @@ class InstanceReportWriteNode(AbstractModel):
         self.RecordSpeed = params.get("RecordSpeed")
         self.ByteSpeed = params.get("ByteSpeed")
         self.TotalErrorRecords = params.get("TotalErrorRecords")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IntegrationInstanceLog(AbstractModel):
+    """实例日志信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param LogInfo: 任务日志信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogInfo: str
+        """
+        self.LogInfo = None
+
+
+    def _deserialize(self, params):
+        self.LogInfo = params.get("LogInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -12693,6 +12939,51 @@ class IntegrationTaskInfo(AbstractModel):
         :param Submit: 任务版本是否已提交运维
 注意：此字段可能返回 null，表示取不到有效值。
         :type Submit: bool
+        :param InputDatasourceType: MYSQL
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InputDatasourceType: str
+        :param OutputDatasourceType: DLC
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OutputDatasourceType: str
+        :param NumRecordsIn: 读取条数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NumRecordsIn: int
+        :param NumRecordsOut: 写入条数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NumRecordsOut: int
+        :param ReaderDelay: 读取延迟
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReaderDelay: float
+        :param NumRestarts: 重启次数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NumRestarts: int
+        :param CreateTime: 任务创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param UpdateTime: 任务更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        :param LastRunTime: 任务最后一次运行时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastRunTime: str
+        :param StopTime: 任务停止时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StopTime: str
+        :param HasVersion: 作业是否已提交
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HasVersion: bool
+        :param Locked: 任务是否被锁定
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Locked: bool
+        :param Locker: 任务锁定人
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Locker: str
+        :param RunningCu: 耗费资源量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RunningCu: float
+        :param TaskAlarmRegularList: 该任务关联的告警规则
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskAlarmRegularList: list of str
         """
         self.TaskName = None
         self.Description = None
@@ -12723,6 +13014,21 @@ class IntegrationTaskInfo(AbstractModel):
         self.InLongManagerVersion = None
         self.DataProxyUrl = None
         self.Submit = None
+        self.InputDatasourceType = None
+        self.OutputDatasourceType = None
+        self.NumRecordsIn = None
+        self.NumRecordsOut = None
+        self.ReaderDelay = None
+        self.NumRestarts = None
+        self.CreateTime = None
+        self.UpdateTime = None
+        self.LastRunTime = None
+        self.StopTime = None
+        self.HasVersion = None
+        self.Locked = None
+        self.Locker = None
+        self.RunningCu = None
+        self.TaskAlarmRegularList = None
 
 
     def _deserialize(self, params):
@@ -12782,6 +13088,21 @@ class IntegrationTaskInfo(AbstractModel):
         self.InLongManagerVersion = params.get("InLongManagerVersion")
         self.DataProxyUrl = params.get("DataProxyUrl")
         self.Submit = params.get("Submit")
+        self.InputDatasourceType = params.get("InputDatasourceType")
+        self.OutputDatasourceType = params.get("OutputDatasourceType")
+        self.NumRecordsIn = params.get("NumRecordsIn")
+        self.NumRecordsOut = params.get("NumRecordsOut")
+        self.ReaderDelay = params.get("ReaderDelay")
+        self.NumRestarts = params.get("NumRestarts")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        self.LastRunTime = params.get("LastRunTime")
+        self.StopTime = params.get("StopTime")
+        self.HasVersion = params.get("HasVersion")
+        self.Locked = params.get("Locked")
+        self.Locker = params.get("Locker")
+        self.RunningCu = params.get("RunningCu")
+        self.TaskAlarmRegularList = params.get("TaskAlarmRegularList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -17899,6 +18220,173 @@ class SchemaDetail(AbstractModel):
         
 
 
+class ScriptInfoResponse(AbstractModel):
+    """开发空间-脚本相关响应
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ResourceId: 资源id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceId: str
+        :param FileName: 脚本名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileName: str
+        :param FileExtensionType: 文件扩展名类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileExtensionType: str
+        :param Type: 文件类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param Md5Value: md5值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Md5Value: str
+        :param CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param UpdateTime: 更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        :param Size: 文件大小
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Size: float
+        :param LocalPath: 本地路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LocalPath: str
+        :param RemotePath: 远程路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RemotePath: str
+        :param OwnerName: 用户名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OwnerName: str
+        :param Owner: 用户id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Owner: str
+        :param PathDepth: 路径深度
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PathDepth: int
+        :param ProjectId: 项目id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProjectId: str
+        :param ExtraInfo: 附加信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExtraInfo: str
+        :param LocalTempPath: 本地临时文件路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LocalTempPath: str
+        :param ZipPath: 本地压缩文件路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ZipPath: str
+        :param Bucket: cos桶名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bucket: str
+        :param Region: cos地区
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        """
+        self.ResourceId = None
+        self.FileName = None
+        self.FileExtensionType = None
+        self.Type = None
+        self.Md5Value = None
+        self.CreateTime = None
+        self.UpdateTime = None
+        self.Size = None
+        self.LocalPath = None
+        self.RemotePath = None
+        self.OwnerName = None
+        self.Owner = None
+        self.PathDepth = None
+        self.ProjectId = None
+        self.ExtraInfo = None
+        self.LocalTempPath = None
+        self.ZipPath = None
+        self.Bucket = None
+        self.Region = None
+
+
+    def _deserialize(self, params):
+        self.ResourceId = params.get("ResourceId")
+        self.FileName = params.get("FileName")
+        self.FileExtensionType = params.get("FileExtensionType")
+        self.Type = params.get("Type")
+        self.Md5Value = params.get("Md5Value")
+        self.CreateTime = params.get("CreateTime")
+        self.UpdateTime = params.get("UpdateTime")
+        self.Size = params.get("Size")
+        self.LocalPath = params.get("LocalPath")
+        self.RemotePath = params.get("RemotePath")
+        self.OwnerName = params.get("OwnerName")
+        self.Owner = params.get("Owner")
+        self.PathDepth = params.get("PathDepth")
+        self.ProjectId = params.get("ProjectId")
+        self.ExtraInfo = params.get("ExtraInfo")
+        self.LocalTempPath = params.get("LocalTempPath")
+        self.ZipPath = params.get("ZipPath")
+        self.Bucket = params.get("Bucket")
+        self.Region = params.get("Region")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ScriptRequestInfo(AbstractModel):
+    """开发空间-上传脚本请求
+
+    """
+
+    def __init__(self):
+        r"""
+        :param FilePath: 脚本路径
+        :type FilePath: str
+        :param ProjectId: 项目id
+        :type ProjectId: str
+        :param Version: 脚本版本
+        :type Version: str
+        :param Operation: 操作类型
+        :type Operation: str
+        :param ExtraInfo: 额外信息
+        :type ExtraInfo: str
+        :param BucketName: 桶名称
+        :type BucketName: str
+        :param Region: 所属地区
+        :type Region: str
+        :param FileExtensionType: 文件扩展类型
+        :type FileExtensionType: str
+        """
+        self.FilePath = None
+        self.ProjectId = None
+        self.Version = None
+        self.Operation = None
+        self.ExtraInfo = None
+        self.BucketName = None
+        self.Region = None
+        self.FileExtensionType = None
+
+
+    def _deserialize(self, params):
+        self.FilePath = params.get("FilePath")
+        self.ProjectId = params.get("ProjectId")
+        self.Version = params.get("Version")
+        self.Operation = params.get("Operation")
+        self.ExtraInfo = params.get("ExtraInfo")
+        self.BucketName = params.get("BucketName")
+        self.Region = params.get("Region")
+        self.FileExtensionType = params.get("FileExtensionType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SearchCondition(AbstractModel):
     """查询实例条件
 
@@ -18935,6 +19423,30 @@ class TaskAlarmInfo(AbstractModel):
         :param WeComHook: 企业微信群Hook地址，多个hook地址使用,隔开
 注意：此字段可能返回 null，表示取不到有效值。
         :type WeComHook: str
+        :param UpdateTime: 最近操作时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        :param OperatorUin: 最近操作人Uin
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OperatorUin: str
+        :param TaskCount: 关联任务数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskCount: int
+        :param MonitorType: 监控对象类型,1:所有任务,2:指定任务,3:指定责任人
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MonitorType: int
+        :param MonitorObjectIds: 监控对象列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MonitorObjectIds: list of str
+        :param LatestAlarmInstanceId: 最近一次告警的实例ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LatestAlarmInstanceId: str
+        :param LatestAlarmTime: 最近一次告警时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LatestAlarmTime: str
+        :param Description: 告警规则描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
         """
         self.TaskId = None
         self.RegularName = None
@@ -18958,6 +19470,14 @@ class TaskAlarmInfo(AbstractModel):
         self.AlarmIndicatorInfos = None
         self.AlarmRecipientType = None
         self.WeComHook = None
+        self.UpdateTime = None
+        self.OperatorUin = None
+        self.TaskCount = None
+        self.MonitorType = None
+        self.MonitorObjectIds = None
+        self.LatestAlarmInstanceId = None
+        self.LatestAlarmTime = None
+        self.Description = None
 
 
     def _deserialize(self, params):
@@ -18988,6 +19508,14 @@ class TaskAlarmInfo(AbstractModel):
                 self.AlarmIndicatorInfos.append(obj)
         self.AlarmRecipientType = params.get("AlarmRecipientType")
         self.WeComHook = params.get("WeComHook")
+        self.UpdateTime = params.get("UpdateTime")
+        self.OperatorUin = params.get("OperatorUin")
+        self.TaskCount = params.get("TaskCount")
+        self.MonitorType = params.get("MonitorType")
+        self.MonitorObjectIds = params.get("MonitorObjectIds")
+        self.LatestAlarmInstanceId = params.get("LatestAlarmInstanceId")
+        self.LatestAlarmTime = params.get("LatestAlarmTime")
+        self.Description = params.get("Description")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19120,6 +19648,33 @@ class TaskCanvasInfo(AbstractModel):
         :param DelayTime: 延迟时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type DelayTime: int
+        :param ExecutionStartTime: 执行开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExecutionStartTime: str
+        :param ExecutionEndTime: 执行结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExecutionEndTime: str
+        :param Layer: 层级
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Layer: str
+        :param SourceServiceId: 来源数据源ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SourceServiceId: str
+        :param SourceServiceType: 来源数据源类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SourceServiceType: str
+        :param TargetServiceId: 目标数据源ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TargetServiceId: str
+        :param TargetServiceType: 目标数据源类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TargetServiceType: str
+        :param AlarmType: 任务告警类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AlarmType: str
+        :param CreateTime: 任务创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
         """
         self.TaskId = None
         self.TaskName = None
@@ -19143,6 +19698,15 @@ class TaskCanvasInfo(AbstractModel):
         self.VirtualFlag = None
         self.TaskAction = None
         self.DelayTime = None
+        self.ExecutionStartTime = None
+        self.ExecutionEndTime = None
+        self.Layer = None
+        self.SourceServiceId = None
+        self.SourceServiceType = None
+        self.TargetServiceId = None
+        self.TargetServiceType = None
+        self.AlarmType = None
+        self.CreateTime = None
 
 
     def _deserialize(self, params):
@@ -19168,6 +19732,15 @@ class TaskCanvasInfo(AbstractModel):
         self.VirtualFlag = params.get("VirtualFlag")
         self.TaskAction = params.get("TaskAction")
         self.DelayTime = params.get("DelayTime")
+        self.ExecutionStartTime = params.get("ExecutionStartTime")
+        self.ExecutionEndTime = params.get("ExecutionEndTime")
+        self.Layer = params.get("Layer")
+        self.SourceServiceId = params.get("SourceServiceId")
+        self.SourceServiceType = params.get("SourceServiceType")
+        self.TargetServiceId = params.get("TargetServiceId")
+        self.TargetServiceType = params.get("TargetServiceType")
+        self.AlarmType = params.get("AlarmType")
+        self.CreateTime = params.get("CreateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -19576,11 +20149,17 @@ class TaskInfoPage(AbstractModel):
         :type Items: list of TaskCanvasInfo
         :param TotalPage: 总页数
         :type TotalPage: int
+        :param PageCount: 页数
+        :type PageCount: int
+        :param TotalCount: 总条数
+        :type TotalCount: int
         """
         self.PageNumber = None
         self.PageSize = None
         self.Items = None
         self.TotalPage = None
+        self.PageCount = None
+        self.TotalCount = None
 
 
     def _deserialize(self, params):
@@ -19593,6 +20172,8 @@ class TaskInfoPage(AbstractModel):
                 obj._deserialize(item)
                 self.Items.append(obj)
         self.TotalPage = params.get("TotalPage")
+        self.PageCount = params.get("PageCount")
+        self.TotalCount = params.get("TotalCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -20386,6 +20967,56 @@ class UpdateInLongAgentResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class UploadContentRequest(AbstractModel):
+    """UploadContent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ScriptRequestInfo: 脚本上传信息
+        :type ScriptRequestInfo: :class:`tencentcloud.wedata.v20210820.models.ScriptRequestInfo`
+        """
+        self.ScriptRequestInfo = None
+
+
+    def _deserialize(self, params):
+        if params.get("ScriptRequestInfo") is not None:
+            self.ScriptRequestInfo = ScriptRequestInfo()
+            self.ScriptRequestInfo._deserialize(params.get("ScriptRequestInfo"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UploadContentResponse(AbstractModel):
+    """UploadContent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ScriptInfo: 脚本信息响应
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScriptInfo: :class:`tencentcloud.wedata.v20210820.models.ScriptInfoResponse`
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.ScriptInfo = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("ScriptInfo") is not None:
+            self.ScriptInfo = ScriptInfoResponse()
+            self.ScriptInfo._deserialize(params.get("ScriptInfo"))
         self.RequestId = params.get("RequestId")
 
 

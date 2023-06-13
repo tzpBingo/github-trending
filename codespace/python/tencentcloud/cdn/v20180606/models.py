@@ -1392,6 +1392,12 @@ on：开启
 off：关闭
 开启时必须且只配置一种模式，其余模式需要设置为 null
         :type Switch: str
+        :param AuthAlgorithm: 鉴权算法，取值有：
+md5：按MD5算法取hash值
+sha256：按SHA-256算法取hash值
+默认为 md5
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AuthAlgorithm: str
         :param TypeA: 时间戳防盗链模式 A 配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type TypeA: :class:`tencentcloud.cdn.v20180606.models.AuthenticationTypeA`
@@ -1406,6 +1412,7 @@ off：关闭
         :type TypeD: :class:`tencentcloud.cdn.v20180606.models.AuthenticationTypeD`
         """
         self.Switch = None
+        self.AuthAlgorithm = None
         self.TypeA = None
         self.TypeB = None
         self.TypeC = None
@@ -1414,6 +1421,7 @@ off：关闭
 
     def _deserialize(self, params):
         self.Switch = params.get("Switch")
+        self.AuthAlgorithm = params.get("AuthAlgorithm")
         if params.get("TypeA") is not None:
             self.TypeA = AuthenticationTypeA()
             self.TypeA._deserialize(params.get("TypeA"))
@@ -10913,10 +10921,11 @@ class Origin(AbstractModel):
     def __init__(self):
         r"""
         :param Origins: 主源站列表
-修改源站时，需要同时填充对应的 OriginType
+<font color=red>修改源站时，需要同时填充对应的 OriginType</font>
 注意：此字段可能返回 null，表示取不到有效值。
         :type Origins: list of str
         :param OriginType: 主源站类型
+<font color=red>当源站列表 Origins 不为空时必填</font>
 入参支持以下几种类型：
 domain：域名类型
 domainv6：域名解析V6类型
@@ -10943,8 +10952,9 @@ ftp：历史 FTP 托管源源站，现已不维护
 IPv6 功能目前尚未全量，需要先申请试用
 注意：此字段可能返回 null，表示取不到有效值。
         :type OriginType: str
-        :param ServerName: 当源站类型为cos或者第三方存储加速时,ServerName字段必填
-回主源站时 Host 头部，不填充则默认为加速域名
+        :param ServerName: 回主源站时 Host 头部
+<font color=red>当源站类型为cos或者第三方存储加速时,ServerName字段必填</font>
+不填充则默认为加速域名
 若接入的是泛域名，则回源 Host 默认为访问时的子域名
 注意：此字段可能返回 null，表示取不到有效值。
         :type ServerName: str
@@ -10959,13 +10969,14 @@ https：强制 https 回源，https 回源时仅支持源站 443 端口
 注意：此字段可能返回 null，表示取不到有效值。
         :type OriginPullProtocol: str
         :param BackupOrigins: 备源站列表
-修改备源站时，需要同时填充对应的 BackupOriginType
+<font color=red>修改备源站时，需要同时填充对应的 BackupOriginType</font>
 注意：此字段可能返回 null，表示取不到有效值。
         :type BackupOrigins: list of str
-        :param BackupOriginType: 备源站类型，支持以下类型：
+        :param BackupOriginType: 备源站类型
+<font color=red>备源站列表BackupOrigins 不为空时必填</font>
+支持以下类型：
 domain：域名类型
 ip：IP 列表作为源站
-修改 BackupOrigins 时需要同时填充对应的 BackupOriginType
 以下备源源站类型尚未全量支持，需要申请试用：
 ipv6_domain: 源站列表为多个 IPv6 地址以及域名
 ip_ipv6：源站列表为多个 IPv4 地址和IPv6 地址
@@ -10985,10 +10996,15 @@ ip_ipv6_domain：源站列表为多个 IPv4 地址IPv6 地址以及域名
         :param PathBasedOrigin: 分路径回源配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type PathBasedOrigin: list of PathBasedOriginRule
+        :param Sni: HTTPS回源SNI配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Sni: :class:`tencentcloud.cdn.v20180606.models.OriginSni`
         :param AdvanceHttps: HTTPS回源高级配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type AdvanceHttps: :class:`tencentcloud.cdn.v20180606.models.AdvanceHttps`
-        :param OriginCompany: 对象存储回源厂商，当源站类型为第三方存储源站(third_party)时必填，可选值包括以下:
+        :param OriginCompany: 对象存储回源厂商
+<font color=red>当源站类型为第三方存储源站(third_party)时必填</font>
+可选值包括以下:
 aws_s3: AWS S3
 ali_oss: 阿里云 OSS
 hw_obs: 华为 OBS
@@ -11008,6 +11024,7 @@ others: 其它厂商对象存储,仅支持兼容以AWS签名算法的对象存�
         self.BasePath = None
         self.PathRules = None
         self.PathBasedOrigin = None
+        self.Sni = None
         self.AdvanceHttps = None
         self.OriginCompany = None
 
@@ -11034,6 +11051,9 @@ others: 其它厂商对象存储,仅支持兼容以AWS签名算法的对象存�
                 obj = PathBasedOriginRule()
                 obj._deserialize(item)
                 self.PathBasedOrigin.append(obj)
+        if params.get("Sni") is not None:
+            self.Sni = OriginSni()
+            self.Sni._deserialize(params.get("Sni"))
         if params.get("AdvanceHttps") is not None:
             self.AdvanceHttps = AdvanceHttps()
             self.AdvanceHttps._deserialize(params.get("AdvanceHttps"))
@@ -11211,6 +11231,37 @@ class OriginPullTimeout(AbstractModel):
     def _deserialize(self, params):
         self.ConnectTimeout = params.get("ConnectTimeout")
         self.ReceiveTimeout = params.get("ReceiveTimeout")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class OriginSni(AbstractModel):
+    """HTTPS回源SNI
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Switch: 是否开启HTTPS回源SNI。
+开启：on，
+关闭：off
+        :type Switch: str
+        :param ServerName: 回源域名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServerName: str
+        """
+        self.Switch = None
+        self.ServerName = None
+
+
+    def _deserialize(self, params):
+        self.Switch = params.get("Switch")
+        self.ServerName = params.get("ServerName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

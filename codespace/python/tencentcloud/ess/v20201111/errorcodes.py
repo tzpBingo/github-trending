@@ -71,6 +71,12 @@ FAILEDOPERATION_REQUESTLIMITEXCEEDED = 'FailedOperation.RequestLimitExceeded'
 # 模板无资源信息。
 FAILEDOPERATION_TEMPLATEHASNORESOURCE = 'FailedOperation.TemplateHasNoResource'
 
+# 无法撤销，用户已开通自动签。
+FAILEDOPERATION_USERAUTOSIGNENABLEALREADY = 'FailedOperation.UserAutoSignEnableAlready'
+
+# 无法撤销，用户未生成开通链接。
+FAILEDOPERATION_USERAUTOSIGNENABLEURLNOTEXIST = 'FailedOperation.UserAutoSignEnableUrlNotExist'
+
 # 用户信息不匹配，请检查后重试。
 FAILEDOPERATION_USERINFONOMATCH = 'FailedOperation.UserInfoNoMatch'
 
@@ -179,6 +185,9 @@ INVALIDPARAMETER_DATAEXISTS = 'InvalidParameter.DataExists'
 # 数据不存在。
 INVALIDPARAMETER_DATANOTFOUND = 'InvalidParameter.DataNotFound'
 
+# 部门用户Id不正确
+INVALIDPARAMETER_DEPARTUSERID = 'InvalidParameter.DepartUserId'
+
 # 参数为空，请检查参数修改后重试。
 INVALIDPARAMETER_EMPTYPARAMS = 'InvalidParameter.EmptyParams'
 
@@ -263,6 +272,9 @@ INVALIDPARAMETER_MOBILE = 'InvalidParameter.Mobile'
 # 不合法的用户名称，请修改后重试。
 INVALIDPARAMETER_NAME = 'InvalidParameter.Name'
 
+# 手机号为空或者非法的手机号。
+INVALIDPARAMETER_NONSUPPORTMOBILE = 'InvalidParameter.NonsupportMobile'
+
 # 不支持的通知类型，请检查并联系客服处理。
 INVALIDPARAMETER_NOTIFYTYPE = 'InvalidParameter.NotifyType'
 
@@ -281,16 +293,19 @@ INVALIDPARAMETER_PERSONAUTOSIGNTAG = 'InvalidParameter.PersonAutoSignTag'
 # 不合法的阅读时长限制，请联系客服了解阅读时长设置规则，修改后重试。
 INVALIDPARAMETER_PREREADTIME = 'InvalidParameter.PreReadTime'
 
-# 签署二维码的有效期不合法，请联系客服了解规则，并修稿后重试。
+# 签署二维码的有效期不合法，请联系客服了解规则，并修改后重试。
 INVALIDPARAMETER_QREFFECTDAY = 'InvalidParameter.QrEffectDay'
 
-# 二维码合同的有效期不合法，请联系客服了解规则，并修稿后重试。
+# 二维码合同的有效期不合法，请联系客服了解规则，并修改后重试。
 INVALIDPARAMETER_QRFLOWEFFECTDAY = 'InvalidParameter.QrFlowEffectDay'
 
 # 不合法的资源类型，请联系客服了解，并在修改后重试。
 INVALIDPARAMETER_RESOURCETYPE = 'InvalidParameter.ResourceType'
 
-# 不合法的印章id，请检查印章id是够正确，并在修改后重试。
+# 角色ID不正确
+INVALIDPARAMETER_ROLEID = 'InvalidParameter.RoleId'
+
+# 不合法的印章id，请检查印章id是否正确，并在修改后重试。
 INVALIDPARAMETER_SEALID = 'InvalidParameter.SealId'
 
 # 参数包含有敏感词
@@ -310,6 +325,9 @@ INVALIDPARAMETER_VERIFYCHANNEL = 'InvalidParameter.VerifyChannel'
 
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
+
+# 无效的手机号
+INVALIDPARAMETERVALUE_INVALIDMOBILE = 'InvalidParameterValue.InvalidMobile'
 
 # 需要屏蔽的告警。
 INVALIDPARAMETERVALUE_MASK = 'InvalidParameterValue.Mask'

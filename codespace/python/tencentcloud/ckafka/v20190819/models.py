@@ -2218,26 +2218,59 @@ class CreateInstancePostRequest(AbstractModel):
         r"""
         :param InstanceName: 实例名称，是一个不超过 64 个字符的字符串，必须以字母为首字符，剩余部分可以包含字母、数字和横划线(-)
         :type InstanceName: str
-        :param BandWidth: 实例带宽
+        :param BandWidth: 实例内网峰值带宽。单位 MB/s。标准版需传入当前实例规格所对应的峰值带宽。注意如果创建的实例为专业版实例，峰值带宽，分区数等参数配置需要满足专业版的计费规格。
         :type BandWidth: int
-        :param VpcId: vpcId，不填默认基础网络
+        :param VpcId: 创建的实例默认接入点所在的 vpc 对应 vpcId。目前不支持创建基础网络实例，因此该参数必填
         :type VpcId: str
-        :param SubnetId: 子网id，vpc网络需要传该参数，基础网络可以不传
+        :param SubnetId: 子网id。创建实例默认接入点所在的子网对应的子网 id
         :type SubnetId: str
-        :param MsgRetentionTime: 可选。实例日志的最长保留时间，单位分钟，默认为10080（7天），最大30天，不填默认0，代表不开启日志保留时间回收策略
+        :param InstanceType: 实例规格。当创建标准版实例时必填，创建专业版实例时不需要填写。1：入门型；2：标准型；3：进阶型；4：容量型；5：高阶型1；6：高阶性2；7：高阶型3；8：高阶型4；9 ：独占型
+        :type InstanceType: int
+        :param MsgRetentionTime: 实例日志的默认最长保留时间，单位分钟。不传入该参数时默认为 1440 分钟（1天），最大30天。当 topic 显式设置消息保留时间时，以 topic 保留时间为准
         :type MsgRetentionTime: int
-        :param ZoneId: 可用区
-        :type ZoneId: int
-        :param ClusterId: 创建实例时可以选择集群Id, 该入参表示集群Id
+        :param ClusterId: 创建实例时可以选择集群Id, 该入参表示集群Id。不指定实例所在集群则不传入该参数
         :type ClusterId: int
+        :param KafkaVersion: 实例版本。目前支持 "0.10.2","1.1.1","2.4.2","2.8.1"
+        :type KafkaVersion: str
+        :param SpecificationsType: 实例类型。"standard"：标准版，"profession"：专业版
+        :type SpecificationsType: str
+        :param DiskType: 实例硬盘类型，"CLOUD_BASIC"：云硬盘，"CLOUD_SSD"：高速云硬盘。不传默认为 "CLOUD_BASIC"
+        :type DiskType: str
+        :param DiskSize: 实例硬盘大小，需要满足当前实例的计费规格
+        :type DiskSize: int
+        :param Partition: 实例最大分区数量，需要满足当前实例的计费规格
+        :type Partition: int
+        :param TopicNum: 实例最大 topic 数量，需要满足当前实例的计费规格
+        :type TopicNum: int
+        :param ZoneId: 实例所在的可用区。当创建多可用区实例时，该参数为创建的默认接入点所在子网的可用区 id
+        :type ZoneId: int
+        :param MultiZoneFlag: 当前实例是否为多可用区实例。
+        :type MultiZoneFlag: bool
+        :param ZoneIds: 当实例为多可用区实例时，多可用区 id 列表。注意参数 ZoneId 对应的多可用区需要包含在该参数数组中
+        :type ZoneIds: list of int
+        :param InstanceNum: 购买实例数量。非必填，默认值为 1。当传入该参数时，会创建多个 instanceName 加后缀区分的实例
+        :type InstanceNum: int
+        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 4Mbps 公网带宽，此处传 1
+        :type PublicNetworkMonthly: int
         """
         self.InstanceName = None
         self.BandWidth = None
         self.VpcId = None
         self.SubnetId = None
+        self.InstanceType = None
         self.MsgRetentionTime = None
-        self.ZoneId = None
         self.ClusterId = None
+        self.KafkaVersion = None
+        self.SpecificationsType = None
+        self.DiskType = None
+        self.DiskSize = None
+        self.Partition = None
+        self.TopicNum = None
+        self.ZoneId = None
+        self.MultiZoneFlag = None
+        self.ZoneIds = None
+        self.InstanceNum = None
+        self.PublicNetworkMonthly = None
 
 
     def _deserialize(self, params):
@@ -2245,9 +2278,20 @@ class CreateInstancePostRequest(AbstractModel):
         self.BandWidth = params.get("BandWidth")
         self.VpcId = params.get("VpcId")
         self.SubnetId = params.get("SubnetId")
+        self.InstanceType = params.get("InstanceType")
         self.MsgRetentionTime = params.get("MsgRetentionTime")
-        self.ZoneId = params.get("ZoneId")
         self.ClusterId = params.get("ClusterId")
+        self.KafkaVersion = params.get("KafkaVersion")
+        self.SpecificationsType = params.get("SpecificationsType")
+        self.DiskType = params.get("DiskType")
+        self.DiskSize = params.get("DiskSize")
+        self.Partition = params.get("Partition")
+        self.TopicNum = params.get("TopicNum")
+        self.ZoneId = params.get("ZoneId")
+        self.MultiZoneFlag = params.get("MultiZoneFlag")
+        self.ZoneIds = params.get("ZoneIds")
+        self.InstanceNum = params.get("InstanceNum")
+        self.PublicNetworkMonthly = params.get("PublicNetworkMonthly")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2293,19 +2337,29 @@ class CreateInstancePreData(AbstractModel):
         :param DealNames: 订单号列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type DealNames: list of str
-        :param InstanceId: 实例Id
+        :param InstanceId: 实例Id，当购买多个实例时，默认返回购买的第一个实例 id
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceId: str
+        :param DealNameInstanceIdMapping: 订单和购买实例对应映射列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DealNameInstanceIdMapping: list of DealInstanceDTO
         """
         self.FlowId = None
         self.DealNames = None
         self.InstanceId = None
+        self.DealNameInstanceIdMapping = None
 
 
     def _deserialize(self, params):
         self.FlowId = params.get("FlowId")
         self.DealNames = params.get("DealNames")
         self.InstanceId = params.get("InstanceId")
+        if params.get("DealNameInstanceIdMapping") is not None:
+            self.DealNameInstanceIdMapping = []
+            for item in params.get("DealNameInstanceIdMapping"):
+                obj = DealInstanceDTO()
+                obj._deserialize(item)
+                self.DealNameInstanceIdMapping.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2345,11 +2399,11 @@ class CreateInstancePreRequest(AbstractModel):
         :type KafkaVersion: str
         :param SpecificationsType: 实例类型: [标准版实例]填写 standard(默认), [专业版实例]填写 profession
         :type SpecificationsType: str
-        :param DiskSize: 磁盘大小,专业版不填写默认最小磁盘,填写后根据磁盘带宽分区数弹性计算
+        :param DiskSize: 磁盘大小，专业版不填写默认最小磁盘，如果跟控制台规格配比不相符，则无法创建成功
         :type DiskSize: int
-        :param BandWidth: 带宽,专业版不填写默认最小带宽,填写后根据磁盘带宽分区数弹性计算
+        :param BandWidth: 带宽，专业版不填写默认最小带宽，如果跟控制台规格配比不相符，则无法创建成功
         :type BandWidth: int
-        :param Partition: 分区大小,专业版不填写默认最小分区数,填写后根据磁盘带宽分区数弹性计算
+        :param Partition: 分区大小，专业版不填写默认最小分区数，如果跟控制台规格配比不相符，则无法创建成功
         :type Partition: int
         :param Tags: 标签
         :type Tags: list of Tag
@@ -2359,6 +2413,8 @@ class CreateInstancePreRequest(AbstractModel):
         :type MultiZoneFlag: bool
         :param ZoneIds: 可用区列表，购买多可用区实例时为必填项
         :type ZoneIds: list of int
+        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 4Mbps 公网带宽，此处传 1。默认值为 0
+        :type PublicNetworkMonthly: int
         """
         self.InstanceName = None
         self.ZoneId = None
@@ -2378,6 +2434,7 @@ class CreateInstancePreRequest(AbstractModel):
         self.DiskType = None
         self.MultiZoneFlag = None
         self.ZoneIds = None
+        self.PublicNetworkMonthly = None
 
 
     def _deserialize(self, params):
@@ -2404,6 +2461,7 @@ class CreateInstancePreRequest(AbstractModel):
         self.DiskType = params.get("DiskType")
         self.MultiZoneFlag = params.get("MultiZoneFlag")
         self.ZoneIds = params.get("ZoneIds")
+        self.PublicNetworkMonthly = params.get("PublicNetworkMonthly")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2414,7 +2472,7 @@ class CreateInstancePreRequest(AbstractModel):
 
 
 class CreateInstancePreResp(AbstractModel):
-    """创建预付费实例返回结构
+    """预付费实例相关接口返回结构
 
     """
 
@@ -2427,7 +2485,7 @@ class CreateInstancePreResp(AbstractModel):
         :param Data: 操作型返回的Data数据
 注意：此字段可能返回 null，表示取不到有效值。
         :type Data: :class:`tencentcloud.ckafka.v20190819.models.CreateInstancePreData`
-        :param DeleteRouteTimestamp: 删除是时间
+        :param DeleteRouteTimestamp: 删除时间。目前该参数字段已废弃，将会在未来被删除
 注意：此字段可能返回 null，表示取不到有效值。
         :type DeleteRouteTimestamp: str
         """
@@ -3381,6 +3439,36 @@ class DateParam(AbstractModel):
         self.Format = params.get("Format")
         self.TargetType = params.get("TargetType")
         self.TimeZone = params.get("TimeZone")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DealInstanceDTO(AbstractModel):
+    """预付费/后付费接口中，订单和 CKafka 实例映射数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param DealName: 订单流水
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DealName: str
+        :param InstanceIdList: 订单流水对应购买的 CKafka 实例 id 列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceIdList: list of str
+        """
+        self.DealName = None
+        self.InstanceIdList = None
+
+
+    def _deserialize(self, params):
+        self.DealName = params.get("DealName")
+        self.InstanceIdList = params.get("InstanceIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5783,12 +5871,16 @@ class DescribeRouteRequest(AbstractModel):
         r"""
         :param InstanceId: 实例唯一id
         :type InstanceId: str
+        :param RouteId: 路由id
+        :type RouteId: int
         """
         self.InstanceId = None
+        self.RouteId = None
 
 
     def _deserialize(self, params):
         self.InstanceId = params.get("InstanceId")
+        self.RouteId = params.get("RouteId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10342,12 +10434,19 @@ class OperateResponseData(AbstractModel):
         :param FlowId: FlowId11
 注意：此字段可能返回 null，表示取不到有效值。
         :type FlowId: int
+        :param RouteDTO: RouteIdDto
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RouteDTO: :class:`tencentcloud.ckafka.v20190819.models.RouteDTO`
         """
         self.FlowId = None
+        self.RouteDTO = None
 
 
     def _deserialize(self, params):
         self.FlowId = params.get("FlowId")
+        if params.get("RouteDTO") is not None:
+            self.RouteDTO = RouteDTO()
+            self.RouteDTO._deserialize(params.get("RouteDTO"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -10973,6 +11072,31 @@ class Route(AbstractModel):
         self.Domain = params.get("Domain")
         self.DomainPort = params.get("DomainPort")
         self.DeleteTimestamp = params.get("DeleteTimestamp")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RouteDTO(AbstractModel):
+    """RouteDTO
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RouteId: RouteId11
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RouteId: int
+        """
+        self.RouteId = None
+
+
+    def _deserialize(self, params):
+        self.RouteId = params.get("RouteId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

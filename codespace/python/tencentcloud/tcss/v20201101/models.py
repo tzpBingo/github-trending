@@ -809,7 +809,7 @@ class AccessControlRuleInfo(AbstractModel):
         r"""
         :param IsEnable: 开关,true:开启，false:禁用
         :type IsEnable: bool
-        :param ImageIds: 生效惊现id，空数组代表全部镜像
+        :param ImageIds: 生效镜像id，空数组代表全部镜像
         :type ImageIds: list of str
         :param ChildRules: 用户策略的子策略数组
         :type ChildRules: list of AccessControlChildRuleInfo
@@ -2653,6 +2653,34 @@ class ClusterCreateComponentItem(AbstractModel):
     def _deserialize(self, params):
         self.ClusterId = params.get("ClusterId")
         self.ClusterRegion = params.get("ClusterRegion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ClusterCustomParameters(AbstractModel):
+    """集群自定义参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Name: 参数名
+        :type Name: str
+        :param Values: 参数值
+        :type Values: list of str
+        """
+        self.Name = None
+        self.Values = None
+
+
+    def _deserialize(self, params):
+        self.Name = params.get("Name")
+        self.Values = params.get("Values")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -8635,12 +8663,15 @@ class DescribeAgentDaemonSetCmdRequest(AbstractModel):
         :type VpcId: str
         :param ExpireDate: 命令有效期，非腾讯云时必填
         :type ExpireDate: str
+        :param ClusterCustomParameters: 集群自定义参数
+        :type ClusterCustomParameters: list of ClusterCustomParameters
         """
         self.IsCloud = None
         self.NetType = None
         self.RegionCode = None
         self.VpcId = None
         self.ExpireDate = None
+        self.ClusterCustomParameters = None
 
 
     def _deserialize(self, params):
@@ -8649,6 +8680,12 @@ class DescribeAgentDaemonSetCmdRequest(AbstractModel):
         self.RegionCode = params.get("RegionCode")
         self.VpcId = params.get("VpcId")
         self.ExpireDate = params.get("ExpireDate")
+        if params.get("ClusterCustomParameters") is not None:
+            self.ClusterCustomParameters = []
+            for item in params.get("ClusterCustomParameters"):
+                obj = ClusterCustomParameters()
+                obj._deserialize(item)
+                self.ClusterCustomParameters.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -20712,6 +20749,93 @@ class DescribeVulLevelSummaryResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeVulRegistryImageListRequest(AbstractModel):
+    """DescribeVulRegistryImageList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param PocID: 漏洞ID
+        :type PocID: str
+        :param Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param Filters: 过滤条件。
+OnlyAffectedNewestImage bool 是否影响最新镜像
+ImageDigest 镜像Digest，支持模糊查询
+ImageId 镜像ID，支持模糊查询
+Namespace 命名空间，支持模糊查询
+ImageTag 镜像版本，支持模糊查询
+InstanceName 实例名称，支持模糊查询
+ImageName 镜像名，支持模糊查询
+ImageRepoAddress 镜像地址，支持模糊查询
+        :type Filters: list of AssetFilters
+        :param Order: 排序方式
+        :type Order: str
+        :param By: 排序字段
+        :type By: str
+        """
+        self.PocID = None
+        self.Limit = None
+        self.Offset = None
+        self.Filters = None
+        self.Order = None
+        self.By = None
+
+
+    def _deserialize(self, params):
+        self.PocID = params.get("PocID")
+        self.Limit = params.get("Limit")
+        self.Offset = params.get("Offset")
+        if params.get("Filters") is not None:
+            self.Filters = []
+            for item in params.get("Filters"):
+                obj = AssetFilters()
+                obj._deserialize(item)
+                self.Filters.append(obj)
+        self.Order = params.get("Order")
+        self.By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeVulRegistryImageListResponse(AbstractModel):
+    """DescribeVulRegistryImageList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TotalCount: 镜像总数
+        :type TotalCount: int
+        :param List: 仓库镜像列表
+        :type List: list of VulAffectedRegistryImageInfo
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.TotalCount = None
+        self.List = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.TotalCount = params.get("TotalCount")
+        if params.get("List") is not None:
+            self.List = []
+            for item in params.get("List"):
+                obj = VulAffectedRegistryImageInfo()
+                obj._deserialize(item)
+                self.List.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeVulScanAuthorizedImageSummaryRequest(AbstractModel):
     """DescribeVulScanAuthorizedImageSummary请求参数结构体
 
@@ -29409,6 +29533,63 @@ class VulAffectedImageInfo(AbstractModel):
                 obj = VulAffectedImageComponentInfo()
                 obj._deserialize(item)
                 self.ComponentList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VulAffectedRegistryImageInfo(AbstractModel):
+    """漏洞影响的仓库镜像列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ImageID: 镜像ID
+        :type ImageID: str
+        :param ImageName: 镜像名称
+        :type ImageName: str
+        :param ImageTag: 镜像版本
+        :type ImageTag: str
+        :param Namespace: 镜像命名空间
+        :type Namespace: str
+        :param ImageRepoAddress: 镜像地址
+        :type ImageRepoAddress: str
+        :param ComponentList: 组件列表
+        :type ComponentList: list of VulAffectedImageComponentInfo
+        :param IsLatestImage: 是否为镜像的最新版本
+        :type IsLatestImage: bool
+        :param ImageAssetId: 内部镜像资产ID
+        :type ImageAssetId: int
+        """
+        self.ImageID = None
+        self.ImageName = None
+        self.ImageTag = None
+        self.Namespace = None
+        self.ImageRepoAddress = None
+        self.ComponentList = None
+        self.IsLatestImage = None
+        self.ImageAssetId = None
+
+
+    def _deserialize(self, params):
+        self.ImageID = params.get("ImageID")
+        self.ImageName = params.get("ImageName")
+        self.ImageTag = params.get("ImageTag")
+        self.Namespace = params.get("Namespace")
+        self.ImageRepoAddress = params.get("ImageRepoAddress")
+        if params.get("ComponentList") is not None:
+            self.ComponentList = []
+            for item in params.get("ComponentList"):
+                obj = VulAffectedImageComponentInfo()
+                obj._deserialize(item)
+                self.ComponentList.append(obj)
+        self.IsLatestImage = params.get("IsLatestImage")
+        self.ImageAssetId = params.get("ImageAssetId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

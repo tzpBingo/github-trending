@@ -1252,15 +1252,15 @@ class DelayDistribution(AbstractModel):
 
     def __init__(self):
         r"""
-        :param Ladder: 分布阶梯，延时和Ladder值的对应关系：
-[0ms,1ms]: 1；
-[1ms,5ms]: 5；
-[5ms,10ms]: 10；
-[10ms,50ms]: 50；
-[50ms,200ms]: 200；
-[200ms,∞]: -1。
+        :param Ladder: 指延时分布阶梯，其与延时区间的对应关系如下所示。
+- 1：[0ms,1ms]。
+- 5： [1ms,5ms]。
+- 10： [5ms,10ms]。
+- 50： [10ms,50ms]。
+- 200：[50ms,200ms]。
+- -1： [200ms,∞]。
         :type Ladder: int
-        :param Size: 延时处于当前分布阶梯的命令数量，个。
+        :param Size: 延时处于当前分布阶梯的命令数量，单位：个。
         :type Size: int
         :param Updatetime: 修改时间。
         :type Updatetime: int
@@ -7134,7 +7134,7 @@ class RedisNodeInfo(AbstractModel):
         r"""
         :param NodeType: 节点类型。<ul><li>0：为主节点。</li><li>1：为副本节点。</li></ul>
         :type NodeType: int
-        :param NodeId: 主节点或者副本节点的 ID。<ul><li>该参数用于创建 Redis 实例接口[CreateInstances](https://cloud.tencent.com/document/product/239/20026) 并不需要设置，而用于变更实例配置的接口 [UpgradeInstance](https://cloud.tencent.com/document/product/239/20013) 则需要设置。</li><li>该参数可使用接口 [DescribeInstances](https://cloud.tencent.com/document/product/239/20018) 获取Integer类型的节点 ID。</li></ul>
+        :param NodeId: 主节点或者副本节点的 ID。<ul><li>该参数用于创建 Redis 实例接口[CreateInstances](https://cloud.tencent.com/document/product/239/20026) 并不需要设置，而用于变更实例配置的接口 [UpgradeInstance](https://cloud.tencent.com/document/product/239/20013) 删除副本时才需要设置。</li><li>该参数可使用接口 [DescribeInstances](https://cloud.tencent.com/document/product/239/20018) 获取Integer类型的节点 ID。</li></ul>
         :type NodeId: int
         :param ZoneId: 主节点或者副本节点的可用区 ID。
         :type ZoneId: int

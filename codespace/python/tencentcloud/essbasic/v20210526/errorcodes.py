@@ -113,6 +113,12 @@ INVALIDPARAMETER_APPLICATION = 'InvalidParameter.Application'
 # 参数错误，不合法的签署人类型，请修改后重试。
 INVALIDPARAMETER_APPROVERTYPE = 'InvalidParameter.ApproverType'
 
+# ApproverVerifyType参数值非法
+INVALIDPARAMETER_APPROVERVERIFYTYPE = 'InvalidParameter.ApproverVerifyType'
+
+# 当前仅支持指定上传授权书和法人认证授权, 请重新指定认证方式后发起
+INVALIDPARAMETER_AUTHORIZATIONTYPE = 'InvalidParameter.AuthorizationType'
+
 # 重复添加签署人。
 INVALIDPARAMETER_BIZAPPROVERALREADYEXISTS = 'InvalidParameter.BizApproverAlreadyExists'
 
@@ -250,6 +256,9 @@ INVALIDPARAMETER_SIGNCOMPONENTS = 'InvalidParameter.SignComponents'
 
 # 状态异常。
 INVALIDPARAMETER_STATUS = 'InvalidParameter.Status'
+
+# 统一社会信用代码不符合要求
+INVALIDPARAMETER_UNIFORMSOCIALCREDITCODE = 'InvalidParameter.UniformSocialCreditCode'
 
 # 参数错误，不合法的签署顺序，请检查后重试。
 INVALIDPARAMETER_UNORDERED = 'InvalidParameter.Unordered'

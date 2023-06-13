@@ -260,7 +260,9 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeAgentDealsCache(self, request):
-        """【该接口已下线，请使用升级版本DescribeAgentDealsByCache】代理商拉取缓存的全量客户订单
+        """已提供新接口并推动切换，改切口目前白名单限制所有访问，申请下线
+
+        【该接口已下线，请使用升级版本DescribeAgentDealsByCache】代理商拉取缓存的全量客户订单
 
         :param request: Request instance for DescribeAgentDealsCache.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeAgentDealsCacheRequest`
@@ -283,7 +285,9 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeAgentPayDeals(self, request):
-        """【该接口已下线，请切换使用升级版本DescribeAgentPayDealsV2】可以查询代理商代付的所有订单
+        """已提供新接口并推动切换，改切口目前白名单限制所有访问，申请下线
+
+        【该接口已下线，请切换使用升级版本DescribeAgentPayDealsV2】可以查询代理商代付的所有订单
 
         :param request: Request instance for DescribeAgentPayDeals.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeAgentPayDealsRequest`
@@ -329,7 +333,9 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeAgentSelfPayDeals(self, request):
-        """【该接口已下线，请切换使用升级版本DescribeAgentSelfPayDealsV2】可以查询代理商下指定客户的自付订单
+        """已提供新接口并推动切换，改切口目前白名单限制所有访问，申请下线
+
+        【该接口已下线，请切换使用升级版本DescribeAgentSelfPayDealsV2】可以查询代理商下指定客户的自付订单
 
         :param request: Request instance for DescribeAgentSelfPayDeals.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeAgentSelfPayDealsRequest`
@@ -375,7 +381,9 @@ class PartnersClient(AbstractClient):
 
 
     def DescribeClientBalance(self, request):
-        """【该接口将逐步下线，请切换使用升级版本DescribeClientBalanceNew】为合作伙伴提供查询客户余额能力。调用者必须是合作伙伴，只能查询自己名下客户余额.
+        """已提供新接口并推进切换，白名单禁用控制访问观察后无反馈，可以下线
+
+        【该接口将逐步下线，请切换使用升级版本DescribeClientBalanceNew】为合作伙伴提供查询客户余额能力。调用者必须是合作伙伴，只能查询自己名下客户余额.
 
         :param request: Request instance for DescribeClientBalance.
         :type request: :class:`tencentcloud.partners.v20180321.models.DescribeClientBalanceRequest`

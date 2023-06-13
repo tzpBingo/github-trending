@@ -1113,6 +1113,29 @@ class DcdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def IsolateDCDBInstance(self, request):
+        """本接口(IsolateDCDBInstance)用于隔离分布式数据库TDSQL实例（包年包月），隔离后不能通过IP和端口访问数据库。隔离的实例可在回收站中进行开机。若为欠费隔离，请尽快进行充值。
+
+        :param request: Request instance for IsolateDCDBInstance.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.IsolateDCDBInstanceRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.IsolateDCDBInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("IsolateDCDBInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.IsolateDCDBInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def IsolateDedicatedDBInstance(self, request):
         """本接口（IsolateDedicatedDBInstance）用于隔离独享云数据库实例。
 
@@ -1182,6 +1205,29 @@ class DcdbClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyAccountConfig(self, request):
+        """修改账号的一些配置，比如 max_user_connections
+
+        :param request: Request instance for ModifyAccountConfig.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.ModifyAccountConfigRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.ModifyAccountConfigResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyAccountConfig", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyAccountConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyAccountDescription(self, request):
         """本接口（ModifyAccountDescription）用于修改云数据库账号备注。
         注意：相同用户名，不同Host是不同的账号。
@@ -1212,7 +1258,7 @@ class DcdbClient(AbstractClient):
         **注意**
         - 系统保留库："mysql"，只开放["SELECT"]权限
         - 只读账号授予读写权限会报错
-        - 不传该参数表示保留现有权限，如需清除，请在复杂类型Privileges字段传空数组
+        - 不传权限参数表示保留现有权限，如需清除，请在复杂类型Privileges字段传空数组
 
         :param request: Request instance for ModifyAccountPrivileges.
         :type request: :class:`tencentcloud.dcdb.v20180411.models.ModifyAccountPrivilegesRequest`
