@@ -423,7 +423,7 @@ class EssClient(AbstractClient):
 
 
     def CreateIntegrationEmployees(self, request):
-        """创建员工,如需在此接口提醒员工实名，入参Employees的OpenId不传
+        """创建员工,此接口会发送提醒员工实名的短信
 
         :param request: Request instance for CreateIntegrationEmployees.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateIntegrationEmployeesRequest`
@@ -603,6 +603,29 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateSeal(self, request):
+        """创建电子印章
+
+        :param request: Request instance for CreateSeal.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateSealRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateSealResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateSeal", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateSealResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateSealPolicy(self, request):
         """对企业员工进行印章授权
 
@@ -741,6 +764,29 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeExtendedServiceAuthInfos(self, request):
+        """查询企业扩展服务授权信息，目前支持查询：企业静默签，企业与港澳台居民签署合同，使用手机号验证签署方身份，骑缝章，批量签署能力是否已经开通
+
+        :param request: Request instance for DescribeExtendedServiceAuthInfos.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DescribeExtendedServiceAuthInfosRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DescribeExtendedServiceAuthInfosResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeExtendedServiceAuthInfos", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeExtendedServiceAuthInfosResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeFileUrls(self, request):
         """查询文件下载URL。
         适用场景：通过传参合同流程编号，下载对应的合同PDF文件流到本地。
@@ -768,7 +814,7 @@ class EssClient(AbstractClient):
     def DescribeFlowBriefs(self, request):
         """查询流程摘要
         适用场景：可用于主动查询某个合同流程的签署状态信息。可以配合回调通知使用。
-        日调用量默认10W
+        日调用量限制：10W
 
         :param request: Request instance for DescribeFlowBriefs.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeFlowBriefsRequest`
@@ -781,6 +827,29 @@ class EssClient(AbstractClient):
             body = self.call("DescribeFlowBriefs", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeFlowBriefsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeFlowComponents(self, request):
+        """查询流程填写控件内容，可以根据流程Id查询该流程相关联的填写控件信息
+
+        :param request: Request instance for DescribeFlowComponents.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DescribeFlowComponentsRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DescribeFlowComponentsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFlowComponents", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFlowComponentsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1190,7 +1259,7 @@ class EssClient(AbstractClient):
 
 
     def UpdateIntegrationEmployees(self, request):
-        """更新员工信息(姓名，手机号，邮件)，用户实名后无法更改姓名与手机号
+        """更新员工信息(姓名，手机号，邮件、部门)，用户实名后无法更改姓名与手机号
 
         :param request: Request instance for UpdateIntegrationEmployees.
         :type request: :class:`tencentcloud.ess.v20201111.models.UpdateIntegrationEmployeesRequest`

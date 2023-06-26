@@ -213,6 +213,7 @@ class CdnClient(AbstractClient):
     def CreateVerifyRecord(self, request):
         """CreateVerifyRecord 用于生成一条子域名解析，提示客户添加到域名解析上，用于泛域名及域名取回校验归属权。
         生成的解析记录可通过 [VerifyDomainRecord](https://cloud.tencent.com/document/product/228/48117) 完成归属权校验。
+        注意：生成的解析记录有效期为24小时，超过24小时后，需重新生成。
         具体流程可参考：[使用API接口进行域名归属校验](https://cloud.tencent.com/document/product/228/61702#.E6.96.B9.E6.B3.95.E4.B8.89.EF.BC.9Aapi-.E6.8E.A5.E5.8F.A3.E6.93.8D.E4.BD.9C)
 
         :param request: Request instance for CreateVerifyRecord.
@@ -1594,6 +1595,33 @@ class CdnClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ModifyDomainConfig(self, request):
+        """ModifyDomainConfig 用于修改内容分发网络加速域名配置信息
+        注意：
+        Route 字段，使用点分隔，最后一段称为叶子节点，非叶子节点配置保持不变；
+        Value 字段，使用 json 进行序列化，其中固定 update 作为 key，配置路径值参考 https://cloud.tencent.com/document/product/228/41116 接口各配置项复杂类型，为配置路径对应复杂类型下的节点。
+        云审计相关：接口的入参可能包含密钥等敏感信息，所以此接口的入参不会上报到云审计。
+
+        :param request: Request instance for ModifyDomainConfig.
+        :type request: :class:`tencentcloud.cdn.v20180606.models.ModifyDomainConfigRequest`
+        :rtype: :class:`tencentcloud.cdn.v20180606.models.ModifyDomainConfigResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyDomainConfig", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyDomainConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ModifyPurgeFetchTaskStatus(self, request):
         """ModifyPurgeFetchTaskStatus 用于上报定时刷新预热任务执行状态
 
@@ -1901,7 +1929,7 @@ class CdnClient(AbstractClient):
 
     def VerifyDomainRecord(self, request):
         """VerifyDomainRecord 用于验证域名解析值。
-        验证域名解析记录值前，您需要通过 [CreateVerifyRecord](https://cloud.tencent.com/document/product/228/48118) 生成校验解析值。
+        验证域名解析记录值前，您需要通过 [CreateVerifyRecord](https://cloud.tencent.com/document/product/228/48118) 生成校验解析值，验证通过后，24小时有效。
         具体流程可参考：[使用API接口进行域名归属校验](https://cloud.tencent.com/document/product/228/61702#.E6.96.B9.E6.B3.95.E4.B8.89.EF.BC.9Aapi-.E6.8E.A5.E5.8F.A3.E6.93.8D.E4.BD.9C)
 
         :param request: Request instance for VerifyDomainRecord.

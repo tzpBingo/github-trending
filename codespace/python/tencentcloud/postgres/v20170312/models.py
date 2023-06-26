@@ -761,7 +761,7 @@ class CreateDBInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SpecCode: 售卖规格ID。该参数可以通过调用DescribeProductConfig的返回值中的SpecCode字段来获取。
+        :param SpecCode: 售卖规格ID。该参数可以通过调用DescribeClasses的返回值中的SpecCode字段来获取。
         :type SpecCode: str
         :param Storage: 实例容量大小，单位：GB。
         :type Storage: int
@@ -775,7 +775,7 @@ class CreateDBInstancesRequest(AbstractModel):
         :type ProjectId: int
         :param DBVersion: PostgreSQL版本。当输入该参数时，会基于此版本创建对应的最新内核版本号实例。该参数和DBMajorVersion、DBKernelVersion至少需要传递一个。
         :type DBVersion: str
-        :param InstanceChargeType: 实例计费类型。目前支持：PREPAID（预付费，即包年包月），POSTPAID_BY_HOUR（后付费，即按量计费）。
+        :param InstanceChargeType: 实例计费类型。目前支持：PREPAID（预付费，即包年包月），POSTPAID_BY_HOUR（后付费，即按量计费）。默认值：PREPAID。
         :type InstanceChargeType: str
         :param AutoVoucher: 是否自动使用代金券。1（是），0（否），默认不使用。
         :type AutoVoucher: int
@@ -895,7 +895,7 @@ class CreateInstancesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SpecCode: 售卖规格ID。该参数可以通过调用DescribeProductConfig的返回值中的SpecCode字段来获取。
+        :param SpecCode: 售卖规格ID。该参数可以通过调用DescribeClasses的返回值中的SpecCode字段来获取。
         :type SpecCode: str
         :param Storage: 实例容量大小，单位：GB。
         :type Storage: int
@@ -915,7 +915,7 @@ class CreateInstancesRequest(AbstractModel):
         :type ProjectId: int
         :param DBVersion: PostgreSQL版本。当输入该参数时，会基于此版本创建对应的最新内核版本号实例。该参数和DBMajorVersion、DBKernelVersion至少需要传递一个。
         :type DBVersion: str
-        :param InstanceChargeType: 实例计费类型。目前支持：PREPAID（预付费，即包年包月），POSTPAID_BY_HOUR（后付费，即按量计费）。
+        :param InstanceChargeType: 实例计费类型。目前支持：PREPAID（预付费，即包年包月），POSTPAID_BY_HOUR（后付费，即按量计费）。默认值：PREPAID。
         :type InstanceChargeType: str
         :param AutoVoucher: 是否自动使用代金券。1（是），0（否），默认不使用。
         :type AutoVoucher: int
@@ -965,6 +965,11 @@ defaultLocale：排序区域规则，可选参数，在初始化后不可修改�
 serverCollationName：排序规则名称，可选参数，在初始化后不可修改，默认为sql_latin1_general_cp1_ci_as，可选值如下：
 "bbf_unicode_general_ci_as", "bbf_unicode_cp1_ci_as", "bbf_unicode_CP1250_ci_as", "bbf_unicode_CP1251_ci_as", "bbf_unicode_cp1253_ci_as", "bbf_unicode_cp1254_ci_as", "bbf_unicode_cp1255_ci_as", "bbf_unicode_cp1256_ci_as", "bbf_unicode_cp1257_ci_as", "bbf_unicode_cp1258_ci_as", "bbf_unicode_cp874_ci_as", "sql_latin1_general_cp1250_ci_as", "sql_latin1_general_cp1251_ci_as", "sql_latin1_general_cp1_ci_as", "sql_latin1_general_cp1253_ci_as", "sql_latin1_general_cp1254_ci_as", "sql_latin1_general_cp1255_ci_as","sql_latin1_general_cp1256_ci_as", "sql_latin1_general_cp1257_ci_as", "sql_latin1_general_cp1258_ci_as", "chinese_prc_ci_as", "cyrillic_general_ci_as", "finnish_swedish_ci_as", "french_ci_as", "japanese_ci_as", "korean_wansung_ci_as", "latin1_general_ci_as", "modern_spanish_ci_as", "polish_ci_as", "thai_ci_as", "traditional_spanish_ci_as", "turkish_ci_as", "ukrainian_ci_as", "vietnamese_ci_as"。
         :type DBEngineConfig: str
+        :param SyncMode: 主从同步方式，可取值： 
+1、Semi-sync：半同步
+2、Async：异步 
+当前只支持Semi-sync
+        :type SyncMode: str
         """
         self.SpecCode = None
         self.Storage = None
@@ -995,6 +1000,7 @@ serverCollationName：排序规则名称，可选参数，在初始化后不可�
         self.KMSRegion = None
         self.DBEngine = None
         self.DBEngineConfig = None
+        self.SyncMode = None
 
 
     def _deserialize(self, params):
@@ -1037,6 +1043,7 @@ serverCollationName：排序规则名称，可选参数，在初始化后不可�
         self.KMSRegion = params.get("KMSRegion")
         self.DBEngine = params.get("DBEngine")
         self.DBEngineConfig = params.get("DBEngineConfig")
+        self.SyncMode = params.get("SyncMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1139,7 +1146,7 @@ class CreateReadOnlyDBInstanceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param SpecCode: 售卖规格ID。该参数可以通过调用DescribeProductConfig的返回值中的SpecCode字段来获取。
+        :param SpecCode: 售卖规格ID。该参数可以通过调用DescribeClasses的返回值中的SpecCode字段来获取。
         :type SpecCode: str
         :param Storage: 实例容量大小，单位：GB。
         :type Storage: int
@@ -1155,7 +1162,7 @@ class CreateReadOnlyDBInstanceRequest(AbstractModel):
         :type ProjectId: int
         :param DBVersion: 【废弃】不再需要指定，内核版本号与主实例保持一致
         :type DBVersion: str
-        :param InstanceChargeType: 实例计费类型。目前支持：PREPAID（预付费，即包年包月），POSTPAID_BY_HOUR（后付费，即按量计费）。如果主实例为后付费，只读实例必须也为后付费。
+        :param InstanceChargeType: 实例计费类型。目前支持：PREPAID（预付费，即包年包月），POSTPAID_BY_HOUR（后付费，即按量计费）。默认值：PREPAID。如果主实例为后付费，只读实例必须也为后付费。
         :type InstanceChargeType: str
         :param AutoVoucher: 是否自动使用代金券。1（是），0（否），默认不使用。
         :type AutoVoucher: int
@@ -2896,19 +2903,19 @@ class DescribeDBErrlogsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param DBInstanceId: 实例ID，形如postgres-5bq3wfjd
+        :param DBInstanceId: 实例ID。	
         :type DBInstanceId: str
-        :param StartTime: 查询起始时间，形如2018-01-01 00:00:00，起始时间不得小于7天以前
+        :param StartTime: 查询起始时间，形如2018-01-01 00:00:00。日志保留时间默认为7天，起始时间不能超出保留时间范围。	
         :type StartTime: str
-        :param EndTime: 查询结束时间，形如2018-01-01 00:00:00
+        :param EndTime: 查询结束时间，形如2018-01-01 00:00:00。	
         :type EndTime: str
-        :param DatabaseName: 数据库名字
+        :param DatabaseName: 数据库名字。
         :type DatabaseName: str
-        :param SearchKeys: 搜索关键字
+        :param SearchKeys: 搜索关键字。
         :type SearchKeys: list of str
-        :param Limit: 分页返回，每页返回的最大数量。取值为1-100
+        :param Limit: 每页显示数量，取值范围为1-100。默认值为50。	
         :type Limit: int
-        :param Offset: 分页返回，返回第几页的数据，从第0页开始计数
+        :param Offset: 数据偏移量，从0开始。默认值为0。	
         :type Offset: int
         """
         self.DBInstanceId = None
@@ -2944,9 +2951,9 @@ class DescribeDBErrlogsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param TotalCount: 本次调用返回了多少条数据
+        :param TotalCount: 查询到的日志数量，最大值为10000条。
         :type TotalCount: int
-        :param Details: 错误日志列表
+        :param Details: 错误日志详细信息集合。
         :type Details: list of ErrLogDetail
         :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -4784,7 +4791,7 @@ class InquiryPriceCreateDBInstancesRequest(AbstractModel):
         r"""
         :param Zone: 可用区ID。该参数可以通过调用 DescribeZones 接口的返回值中的Zone字段来获取。
         :type Zone: str
-        :param SpecCode: 规格ID。该参数可以通过调用DescribeProductConfig接口的返回值中的SpecCode字段来获取。
+        :param SpecCode: 规格ID。该参数可以通过调用DescribeClasses接口的返回值中的SpecCode字段来获取。
         :type SpecCode: str
         :param Storage: 存储容量大小，单位：GB。
         :type Storage: int

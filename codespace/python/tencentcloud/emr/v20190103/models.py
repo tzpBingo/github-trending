@@ -6201,7 +6201,7 @@ class StartStopServiceOrMonitorRequest(AbstractModel):
 <li>StopService：停止服务</li>
 <li>StartMonitor：退出维护</li>
 <li>StopMonitor：进入维护</li>
-<li>RestartService：重启服务</li>
+<li>RestartService：重启服务 如果操作类型选择重启服务 StrategyConfig操作策略则是必填项</li>
         :type OpType: str
         :param OpScope: 操作范围
         :type OpScope: :class:`tencentcloud.emr.v20190103.models.OpScope`
@@ -6300,10 +6300,10 @@ class StrategyConfig(AbstractModel):
 1:开启滚动启动
 注意：此字段可能返回 null，表示取不到有效值。
         :type RollingRestartSwitch: int
-        :param BatchSize: 滚动重启每批次的重启数量
+        :param BatchSize: 滚动重启每批次的重启数量，最大重启台数为 99999 台
 注意：此字段可能返回 null，表示取不到有效值。
         :type BatchSize: int
-        :param TimeWait: 滚动重启每批停止等待时间 ,最大重启台数为 99999 台，最大间隔为 5 分钟 单位是秒
+        :param TimeWait: 滚动重启每批停止等待时间 ,最大间隔为 5 分钟 单位是秒
 注意：此字段可能返回 null，表示取不到有效值。
         :type TimeWait: int
         :param DealOnFail: 操作失败处理策略，0:失败阻塞, 1:失败自动跳过

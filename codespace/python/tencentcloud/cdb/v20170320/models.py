@@ -2366,6 +2366,8 @@ class CreateCdbProxyAddressRequest(AbstractModel):
         :type VPort: int
         :param SecurityGroup: 安全组
         :type SecurityGroup: list of str
+        :param ConnectionPoolType: 连接池类型。可选值 transaction（事务级别连接池），connection（会话级别连接池），ConnectionPool为true时生效。
+        :type ConnectionPoolType: str
         """
         self.ProxyGroupId = None
         self.WeightMode = None
@@ -2384,6 +2386,7 @@ class CreateCdbProxyAddressRequest(AbstractModel):
         self.Vip = None
         self.VPort = None
         self.SecurityGroup = None
+        self.ConnectionPoolType = None
 
 
     def _deserialize(self, params):
@@ -2409,6 +2412,7 @@ class CreateCdbProxyAddressRequest(AbstractModel):
         self.Vip = params.get("Vip")
         self.VPort = params.get("VPort")
         self.SecurityGroup = params.get("SecurityGroup")
+        self.ConnectionPoolType = params.get("ConnectionPoolType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3121,6 +3125,55 @@ class CreateDBInstanceResponse(AbstractModel):
     def _deserialize(self, params):
         self.DealIds = params.get("DealIds")
         self.InstanceIds = params.get("InstanceIds")
+        self.RequestId = params.get("RequestId")
+
+
+class CreateDatabaseRequest(AbstractModel):
+    """CreateDatabase请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param InstanceId: 实例 ID，格式如：cdb-c1nl9rpv，与云数据库控制台页面中显示的实例 ID 相同。
+        :type InstanceId: str
+        :param DBName: 数据库名称。
+        :type DBName: str
+        :param CharacterSetName: 字符集，可选值：utf8，gbk，latin1，utf8mb4。
+        :type CharacterSetName: str
+        """
+        self.InstanceId = None
+        self.DBName = None
+        self.CharacterSetName = None
+
+
+    def _deserialize(self, params):
+        self.InstanceId = params.get("InstanceId")
+        self.DBName = params.get("DBName")
+        self.CharacterSetName = params.get("CharacterSetName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateDatabaseResponse(AbstractModel):
+    """CreateDatabase返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
         self.RequestId = params.get("RequestId")
 
 
@@ -4979,9 +5032,9 @@ class DescribeBinlogsRequest(AbstractModel):
         :type Offset: int
         :param Limit: 分页大小，默认值为20，最小值为1，最大值为100。
         :type Limit: int
-        :param MinStartTime: binlog开始时间，筛选大于等于此值，时间格式：2016-03-17 02:10:37
+        :param MinStartTime: binlog最早开始时间，时间格式：2016-03-17 02:10:37
         :type MinStartTime: str
-        :param MaxStartTime: binlog开始时间，筛选小于等于此值，时间格式：2016-03-17 02:10:37
+        :param MaxStartTime: binlog最晚开始时间，时间格式：2016-03-17 02:10:37
         :type MaxStartTime: str
         """
         self.InstanceId = None

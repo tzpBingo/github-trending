@@ -1587,6 +1587,8 @@ class CreateConfigRequest(AbstractModel):
         :type ExcludePaths: list of ExcludePathInfo
         :param UserDefineRule: 用户自定义采集规则，Json格式序列化的字符串
         :type UserDefineRule: str
+        :param AdvancedConfig: 高级采集配置
+        :type AdvancedConfig: str
         """
         self.Name = None
         self.Output = None
@@ -1595,6 +1597,7 @@ class CreateConfigRequest(AbstractModel):
         self.ExtractRule = None
         self.ExcludePaths = None
         self.UserDefineRule = None
+        self.AdvancedConfig = None
 
 
     def _deserialize(self, params):
@@ -1612,6 +1615,7 @@ class CreateConfigRequest(AbstractModel):
                 obj._deserialize(item)
                 self.ExcludePaths.append(obj)
         self.UserDefineRule = params.get("UserDefineRule")
+        self.AdvancedConfig = params.get("AdvancedConfig")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2073,7 +2077,7 @@ class CreateShipperRequest(AbstractModel):
         :type ShipperName: str
         :param Interval: 投递的时间间隔，单位 秒，默认300，范围 300-900
         :type Interval: int
-        :param MaxSize: 投递的文件的最大值，单位 MB，默认256，范围 100-256
+        :param MaxSize: 投递的文件的最大值，单位 MB，默认256，范围 5-256
         :type MaxSize: int
         :param FilterRules: 投递日志的过滤规则，匹配的日志进行投递，各rule之间是and关系，最多5个，数组为空则表示不过滤而全部投递
         :type FilterRules: list of FilterRuleInfo
@@ -6082,7 +6086,7 @@ class ModifyShipperRequest(AbstractModel):
         :type ShipperName: str
         :param Interval: 投递的时间间隔，单位 秒，默认300，范围 300-900
         :type Interval: int
-        :param MaxSize: 投递的文件的最大值，单位 MB，默认256，范围 100-256
+        :param MaxSize: 投递的文件的最大值，单位 MB，默认256，范围 5-256
         :type MaxSize: int
         :param FilterRules: 投递日志的过滤规则，匹配的日志进行投递，各rule之间是and关系，最多5个，数组为空则表示不过滤而全部投递
         :type FilterRules: list of FilterRuleInfo
@@ -6261,6 +6265,34 @@ class MonitorTime(AbstractModel):
     def _deserialize(self, params):
         self.Type = params.get("Type")
         self.Time = params.get("Time")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class MultiTopicSearchInformation(AbstractModel):
+    """多日志主题检索相关信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param TopicId: 要检索分析的日志主题ID
+        :type TopicId: str
+        :param Context: 透传上次接口返回的Context值，可获取后续更多日志，总计最多可获取1万条原始日志，过期时间1小时
+        :type Context: str
+        """
+        self.TopicId = None
+        self.Context = None
+
+
+    def _deserialize(self, params):
+        self.TopicId = params.get("TopicId")
+        self.Context = params.get("Context")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -6651,7 +6683,8 @@ class SearchLogRequest(AbstractModel):
 语句由 <a href="https://cloud.tencent.com/document/product/614/47044" target="_blank">[检索条件]</a> | <a href="https://cloud.tencent.com/document/product/614/44061" target="_blank">[SQL语句]</a>构成，无需对日志进行统计分析时，可省略其中的管道符<code> | </code>及SQL语句
 使用*或空字符串可查询所有日志
         :type Query: str
-        :param TopicId: 要检索分析的日志主题ID
+        :param TopicId: - 要检索分析的日志主题ID，仅能指定一个日志主题。
+- 如需同时检索多个日志主题，请使用Topics参数。
         :type TopicId: str
         :param Limit: 表示单次查询返回的原始日志条数，最大值为1000，获取后续日志需使用Context参数
 注意：
@@ -6683,6 +6716,10 @@ class SearchLogRequest(AbstractModel):
 0：Lucene语法，1：CQL语法。
 详细说明参见<a href="https://cloud.tencent.com/document/product/614/47044#RetrievesConditionalRules" target="_blank">检索条件语法规则</a>
         :type SyntaxRule: int
+        :param Topics: - 要检索分析的日志主题列表，最大支持20个日志主题。
+- 检索单个日志主题时请使用TopicId。
+- 不能同时使用TopicId和Topics。
+        :type Topics: list of MultiTopicSearchInformation
         """
         self.From = None
         self.To = None
@@ -6694,6 +6731,7 @@ class SearchLogRequest(AbstractModel):
         self.UseNewAnalysis = None
         self.SamplingRate = None
         self.SyntaxRule = None
+        self.Topics = None
 
 
     def _deserialize(self, params):
@@ -6707,6 +6745,12 @@ class SearchLogRequest(AbstractModel):
         self.UseNewAnalysis = params.get("UseNewAnalysis")
         self.SamplingRate = params.get("SamplingRate")
         self.SyntaxRule = params.get("SyntaxRule")
+        if params.get("Topics") is not None:
+            self.Topics = []
+            for item in params.get("Topics"):
+                obj = MultiTopicSearchInformation()
+                obj._deserialize(item)
+                self.Topics.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

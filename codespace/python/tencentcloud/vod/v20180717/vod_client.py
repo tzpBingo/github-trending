@@ -436,6 +436,29 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateQualityInspectTemplate(self, request):
+        """创建音画质检测模板。
+
+        :param request: Request instance for CreateQualityInspectTemplate.
+        :type request: :class:`tencentcloud.vod.v20180717.models.CreateQualityInspectTemplateRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.CreateQualityInspectTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateQualityInspectTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateQualityInspectTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateRebuildMediaTemplate(self, request):
         """创建音画质重生模板。
 
@@ -1015,6 +1038,29 @@ class VodClient(AbstractClient):
             body = self.call("DeleteProcedureTemplate", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteProcedureTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DeleteQualityInspectTemplate(self, request):
+        """删除音画质检测模板。
+
+        :param request: Request instance for DeleteQualityInspectTemplate.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DeleteQualityInspectTemplateRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DeleteQualityInspectTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteQualityInspectTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteQualityInspectTemplateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2008,6 +2054,29 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DescribeQualityInspectTemplates(self, request):
+        """获取音画质检测模板列表。
+
+        :param request: Request instance for DescribeQualityInspectTemplates.
+        :type request: :class:`tencentcloud.vod.v20180717.models.DescribeQualityInspectTemplatesRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.DescribeQualityInspectTemplatesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeQualityInspectTemplates", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeQualityInspectTemplatesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DescribeRebuildMediaTemplates(self, request):
         """获取音画质重生模板列表。
 
@@ -2497,6 +2566,29 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def ExtractCopyRightWatermark(self, request):
+        """提取版权水印信息。
+
+        :param request: Request instance for ExtractCopyRightWatermark.
+        :type request: :class:`tencentcloud.vod.v20180717.models.ExtractCopyRightWatermarkRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.ExtractCopyRightWatermarkResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ExtractCopyRightWatermark", params, headers=headers)
+            response = json.loads(body)
+            model = models.ExtractCopyRightWatermarkResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def ExtractTraceWatermark(self, request):
         """用于提取溯源水印。
 
@@ -2535,6 +2627,29 @@ class VodClient(AbstractClient):
             body = self.call("ForbidMediaDistribution", params, headers=headers)
             response = json.loads(body)
             model = models.ForbidMediaDistributionResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def InspectMediaQuality(self, request):
+        """对点播中的音视频媒体发起音画质检测任务。
+
+        :param request: Request instance for InspectMediaQuality.
+        :type request: :class:`tencentcloud.vod.v20180717.models.InspectMediaQualityRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.InspectMediaQualityResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("InspectMediaQuality", params, headers=headers)
+            response = json.loads(body)
+            model = models.InspectMediaQualityResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2946,6 +3061,29 @@ class VodClient(AbstractClient):
             body = self.call("ModifyPersonSample", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyPersonSampleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyQualityInspectTemplate(self, request):
+        """修改音画质检测模板。
+
+        :param request: Request instance for ModifyQualityInspectTemplate.
+        :type request: :class:`tencentcloud.vod.v20180717.models.ModifyQualityInspectTemplateRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.ModifyQualityInspectTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyQualityInspectTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyQualityInspectTemplateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

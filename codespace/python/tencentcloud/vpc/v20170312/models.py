@@ -742,7 +742,7 @@ class AllocateAddressesRequest(AbstractModel):
 <li>未开通标准账户类型白名单的用户，EIP计费方式与其绑定的实例的计费方式一致，无需传递此参数。</li></ul>
         :type InternetChargeType: str
         :param InternetMaxBandwidthOut: EIP出带宽上限，单位：Mbps。
-<ul style="margin:0"><li>已开通标准账户类型白名单的用户，可选值范围取决于EIP计费方式：<ul><li>BANDWIDTH_PACKAGE：1 Mbps 至 1000 Mbps</li>
+<ul style="margin:0"><li>已开通标准账户类型白名单的用户，可选值范围取决于EIP计费方式：<ul><li>BANDWIDTH_PACKAGE：1 Mbps 至 2000 Mbps</li>
 <li>BANDWIDTH_POSTPAID_BY_HOUR：1 Mbps 至 100 Mbps</li>
 <li>BANDWIDTH_PREPAID_BY_MONTH：1 Mbps 至 200 Mbps</li>
 <li>TRAFFIC_POSTPAID_BY_HOUR：1 Mbps 至 100 Mbps</li></ul>默认值：1 Mbps。</li>
@@ -753,6 +753,8 @@ class AllocateAddressesRequest(AbstractModel):
         :param AddressType: EIP类型。默认值：EIP。
 <ul style="margin:0"><li>已开通Anycast公网加速白名单的用户，可选值：<ul><li>AnycastEIP：加速IP，可参见 [Anycast 公网加速](https://cloud.tencent.com/document/product/644)</li></ul>注意：仅部分地域支持加速IP。</li></ul>
 <ul style="margin:0"><li>已开通精品IP白名单的用户，可选值：<ul><li>HighQualityEIP：精品IP</li></ul>注意：仅部分地域支持精品IP。</li></ul>
+</ul>
+<ul style="margin:0"><li>已开高防IP白名单的用户，可选值：<ul><li>AntiDDoSEIP：高防IP</li></ul>注意：仅部分地域支持高防IP。</li></ul>
         :type AddressType: str
         :param AnycastZone: Anycast发布域。
 <ul style="margin:0"><li>已开通Anycast公网加速白名单的用户，可选值：<ul><li>ANYCAST_ZONE_GLOBAL：全球发布域（需要额外开通Anycast全球加速白名单）</li><li>ANYCAST_ZONE_OVERSEAS：境外发布域</li><li><b>[已废弃]</b> ANYCAST_ZONE_A：发布域A（已更新为全球发布域）</li><li><b>[已废弃]</b> ANYCAST_ZONE_B：发布域B（已更新为全球发布域）</li></ul>默认值：ANYCAST_ZONE_OVERSEAS。</li></ul>
@@ -1289,11 +1291,11 @@ class AssociateDirectConnectGatewayNatGatewayRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param VpcId: 专线网关ID。
+        :param VpcId: VPC实例ID。可通过DescribeVpcs接口返回值中的VpcId获取。
         :type VpcId: str
         :param NatGatewayId: NAT网关ID。
         :type NatGatewayId: str
-        :param DirectConnectGatewayId: VPC实例ID。可通过DescribeVpcs接口返回值中的VpcId获取。
+        :param DirectConnectGatewayId: 专线网关ID。
         :type DirectConnectGatewayId: str
         """
         self.VpcId = None
@@ -19095,6 +19097,9 @@ class NatGateway(AbstractModel):
         :param RestrictState: NAT网关是否被封禁。“NORMAL”：未被封禁，“RESTRICTED”：已被封禁。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RestrictState: str
+        :param NatProductVersion: NAT网关大版本号，传统型=1，标准型=2
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NatProductVersion: int
         """
         self.NatGatewayId = None
         self.NatGatewayName = None
@@ -19115,6 +19120,7 @@ class NatGateway(AbstractModel):
         self.IsExclusive = None
         self.ExclusiveGatewayBandwidth = None
         self.RestrictState = None
+        self.NatProductVersion = None
 
 
     def _deserialize(self, params):
@@ -19157,6 +19163,7 @@ class NatGateway(AbstractModel):
         self.IsExclusive = params.get("IsExclusive")
         self.ExclusiveGatewayBandwidth = params.get("ExclusiveGatewayBandwidth")
         self.RestrictState = params.get("RestrictState")
+        self.NatProductVersion = params.get("NatProductVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -22315,9 +22322,9 @@ class SourceIpTranslationNatRule(AbstractModel):
 
     def __init__(self):
         r"""
-        :param ResourceId: 资源ID
+        :param ResourceId: 资源ID，如果ResourceType为USERDEFINED，可以为空
         :type ResourceId: str
-        :param ResourceType: 资源类型，目前包含SUBNET、NETWORKINTERFACE
+        :param ResourceType: 资源类型，目前包含SUBNET、NETWORKINTERFACE、USERDEFINED
 注意：此字段可能返回 null，表示取不到有效值。
         :type ResourceType: str
         :param PrivateIpAddress: 源IP/网段

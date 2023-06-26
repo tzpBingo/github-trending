@@ -326,6 +326,49 @@ class AddVpcCniSubnetsResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class Addon(AbstractModel):
+    """addon的具体描述
+
+    """
+
+    def __init__(self):
+        r"""
+        :param AddonName: addon名称
+        :type AddonName: str
+        :param AddonVersion: addon的版本
+        :type AddonVersion: str
+        :param RawValues: addon的参数，是一个json格式的base64转码后的字符串
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RawValues: str
+        :param Phase: addon的状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Phase: str
+        :param Reason: addon失败的原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Reason: str
+        """
+        self.AddonName = None
+        self.AddonVersion = None
+        self.RawValues = None
+        self.Phase = None
+        self.Reason = None
+
+
+    def _deserialize(self, params):
+        self.AddonName = params.get("AddonName")
+        self.AddonVersion = params.get("AddonVersion")
+        self.RawValues = params.get("RawValues")
+        self.Phase = params.get("Phase")
+        self.Reason = params.get("Reason")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AppChart(AbstractModel):
     """app所支持的chart
 
@@ -2116,12 +2159,12 @@ class CreateClusterEndpointRequest(AbstractModel):
         :type Domain: str
         :param SecurityGroup: 使用的安全组，只有外网访问需要传递（开启外网访问时必传）
         :type SecurityGroup: str
-        :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置，是一个json格式化后的字符串：{"InternetAccessible":{"InternetChargeType":"TRAFFIC_POSTPAID_BY_HOUR","InternetMaxBandwidthOut":"200"},"VipIsp":"","BandwidthPackageId":""}。
+        :param ExtensiveParameters: 创建lb参数，只有外网访问需要设置，是一个json格式化后的字符串：{"InternetAccessible":{"InternetChargeType":"TRAFFIC_POSTPAID_BY_HOUR","InternetMaxBandwidthOut":200},"VipIsp":"","BandwidthPackageId":""}。
 各个参数意义：
 InternetAccessible.InternetChargeType含义：TRAFFIC_POSTPAID_BY_HOUR按流量按小时后计费;BANDWIDTH_POSTPAID_BY_HOUR 按带宽按小时后计费;InternetAccessible.BANDWIDTH_PACKAGE 按带宽包计费。
 InternetMaxBandwidthOut含义：最大出带宽，单位Mbps，范围支持0到2048，默认值10。
-VipIsp含义：CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费(BANDWIDTH_PACKAGE)。
-BandwidthPackageId含义：带宽包ID，指定此参数时，网络计费方式（InternetAccessible.InternetChargeType）只支持按带宽包计费（BANDWIDTH_PACKAGE。
+VipIsp含义：CMCC | CTCC | CUCC，分别对应 移动 | 电信 | 联通，如果不指定本参数，则默认使用BGP。可通过 DescribeSingleIsp 接口查询一个地域所支持的Isp。如果指定运营商，则网络计费式只能使用按带宽包计费BANDWIDTH_PACKAGE。
+BandwidthPackageId含义：带宽包ID，指定此参数时，网络计费方式InternetAccessible.InternetChargeType只支持按带宽包计费BANDWIDTH_PACKAGE。
         :type ExtensiveParameters: str
         """
         self.ClusterId = None
@@ -4142,6 +4185,51 @@ class DataDisk(AbstractModel):
         
 
 
+class DeleteAddonRequest(AbstractModel):
+    """DeleteAddon请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param AddonName: addon名称
+        :type AddonName: str
+        """
+        self.ClusterId = None
+        self.AddonName = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.AddonName = params.get("AddonName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteAddonResponse(AbstractModel):
+    """DeleteAddon返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DeleteBackupStorageLocationRequest(AbstractModel):
     """DeleteBackupStorageLocation请求参数结构体
 
@@ -5409,6 +5497,113 @@ class DeleteTKEEdgeClusterResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAddonRequest(AbstractModel):
+    """DescribeAddon请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param AddonName: addon名称（不传时会返回集群下全部的addon）
+        :type AddonName: str
+        """
+        self.ClusterId = None
+        self.AddonName = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.AddonName = params.get("AddonName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAddonResponse(AbstractModel):
+    """DescribeAddon返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Addons: addon列表
+        :type Addons: list of Addon
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Addons = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        if params.get("Addons") is not None:
+            self.Addons = []
+            for item in params.get("Addons"):
+                obj = Addon()
+                obj._deserialize(item)
+                self.Addons.append(obj)
+        self.RequestId = params.get("RequestId")
+
+
+class DescribeAddonValuesRequest(AbstractModel):
+    """DescribeAddonValues请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param AddonName: addon名称
+        :type AddonName: str
+        """
+        self.ClusterId = None
+        self.AddonName = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.AddonName = params.get("AddonName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAddonValuesResponse(AbstractModel):
+    """DescribeAddonValues返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param Values: 参数列表，如果addon已安装，会使用已设置的的参数做渲染，是一个json格式的字符串
+        :type Values: str
+        :param DefaultValues: addon支持的参数列表，使用默认值，是一个json格式的字符串
+        :type DefaultValues: str
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.Values = None
+        self.DefaultValues = None
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.Values = params.get("Values")
+        self.DefaultValues = params.get("DefaultValues")
         self.RequestId = params.get("RequestId")
 
 
@@ -8127,6 +8322,29 @@ class DescribeEnableVpcCniProgressResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DescribeEncryptionStatusRequest(AbstractModel):
+    """DescribeEncryptionStatus请求参数结构体
+
+    """
+
+
+class DescribeEncryptionStatusResponse(AbstractModel):
+    """DescribeEncryptionStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DescribeExistedInstancesRequest(AbstractModel):
     """DescribeExistedInstances请求参数结构体
 
@@ -10333,6 +10551,29 @@ class DisableClusterDeletionProtectionResponse(AbstractModel):
         self.RequestId = params.get("RequestId")
 
 
+class DisableEncryptionProtectionRequest(AbstractModel):
+    """DisableEncryptionProtection请求参数结构体
+
+    """
+
+
+class DisableEncryptionProtectionResponse(AbstractModel):
+    """DisableEncryptionProtection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
 class DisableEventPersistenceRequest(AbstractModel):
     """DisableEventPersistence请求参数结构体
 
@@ -11394,6 +11635,29 @@ class EnableClusterDeletionProtectionRequest(AbstractModel):
 
 class EnableClusterDeletionProtectionResponse(AbstractModel):
     """EnableClusterDeletionProtection返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class EnableEncryptionProtectionRequest(AbstractModel):
+    """EnableEncryptionProtection请求参数结构体
+
+    """
+
+
+class EnableEncryptionProtectionResponse(AbstractModel):
+    """EnableEncryptionProtection返回参数结构体
 
     """
 
@@ -12592,6 +12856,59 @@ class ImageRegistryCredential(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class InstallAddonRequest(AbstractModel):
+    """InstallAddon请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param AddonName: addon名称
+        :type AddonName: str
+        :param AddonVersion: addon版本（不传默认安装最新版本）
+        :type AddonVersion: str
+        :param RawValues: addon的参数，是一个json格式的base64转码后的字符串（addon参数由DescribeAddonValues获取）
+        :type RawValues: str
+        """
+        self.ClusterId = None
+        self.AddonName = None
+        self.AddonVersion = None
+        self.RawValues = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.AddonName = params.get("AddonName")
+        self.AddonVersion = params.get("AddonVersion")
+        self.RawValues = params.get("RawValues")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InstallAddonResponse(AbstractModel):
+    """InstallAddon返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
 
 
 class InstallEdgeLogAgentRequest(AbstractModel):
@@ -18253,6 +18570,59 @@ class UninstallLogAgentRequest(AbstractModel):
 
 class UninstallLogAgentResponse(AbstractModel):
     """UninstallLogAgent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self.RequestId = None
+
+
+    def _deserialize(self, params):
+        self.RequestId = params.get("RequestId")
+
+
+class UpdateAddonRequest(AbstractModel):
+    """UpdateAddon请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param ClusterId: 集群ID
+        :type ClusterId: str
+        :param AddonName: addon名称
+        :type AddonName: str
+        :param AddonVersion: addon版本（不传默认不更新）
+        :type AddonVersion: str
+        :param RawValues: addon的参数，是一个json格式的base64转码后的字符串（addon参数由DescribeAddonValues获取）
+        :type RawValues: str
+        """
+        self.ClusterId = None
+        self.AddonName = None
+        self.AddonVersion = None
+        self.RawValues = None
+
+
+    def _deserialize(self, params):
+        self.ClusterId = params.get("ClusterId")
+        self.AddonName = params.get("AddonName")
+        self.AddonVersion = params.get("AddonVersion")
+        self.RawValues = params.get("RawValues")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            if name in memeber_set:
+                memeber_set.remove(name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateAddonResponse(AbstractModel):
+    """UpdateAddon返回参数结构体
 
     """
 
