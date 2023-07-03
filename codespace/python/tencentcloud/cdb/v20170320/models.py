@@ -11801,9 +11801,9 @@ class ProxyInst(AbstractModel):
         :param InstanceName: 实例名称
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceName: str
-        :param InstanceType: 实例类型
+        :param InstanceType: 实例类型：1 master 主实例; 2 ro 只读实例; 3 dr 灾备实例; 4 sdr 小灾备实例
 注意：此字段可能返回 null，表示取不到有效值。
-        :type InstanceType: str
+        :type InstanceType: int
         :param Status: 实例状态，可能的返回值：0-创建中；1-运行中；4-隔离中；5-已隔离
 注意：此字段可能返回 null，表示取不到有效值。
         :type Status: int
@@ -12319,7 +12319,7 @@ class RemoteBackupInfo(AbstractModel):
     def __init__(self):
         r"""
         :param SubBackupId: 异地备份子任务的ID
-        :type SubBackupId: list of int
+        :type SubBackupId: int
         :param Region: 异地备份所在地域
         :type Region: str
         :param Status: 备份任务状态。可能的值有 "SUCCESS": 备份成功， "FAILED": 备份失败， "RUNNING": 备份进行中。

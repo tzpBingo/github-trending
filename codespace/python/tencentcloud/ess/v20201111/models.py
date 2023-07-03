@@ -136,6 +136,8 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
 1-人脸认证 2-签署密码 3-运营商三要素(默认为1,2)
 合同签署认证方式的优先级 verifyChannel>approverSignTypes
         :type ApproverSignTypes: list of int
+        :param ApproverNeedSignReview: 当前签署方进行签署操作是否需要企业内部审批，true 则为需要。为个人签署方时则由发起方企业审核。	
+        :type ApproverNeedSignReview: bool
         """
         self.ApproverType = None
         self.ApproverName = None
@@ -154,6 +156,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         self.ApproverOption = None
         self.ApproverVerifyTypes = None
         self.ApproverSignTypes = None
+        self.ApproverNeedSignReview = None
 
 
     def _deserialize(self, params):
@@ -181,6 +184,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
             self.ApproverOption._deserialize(params.get("ApproverOption"))
         self.ApproverVerifyTypes = params.get("ApproverVerifyTypes")
         self.ApproverSignTypes = params.get("ApproverSignTypes")
+        self.ApproverNeedSignReview = params.get("ApproverNeedSignReview")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -634,11 +638,14 @@ class CcInfo(AbstractModel):
 0--可查看
 1--可查看也可下载
         :type CcPermission: int
+        :param NotifyType: 关注方通知类型：sms--短信，none--不通知
+        :type NotifyType: str
         """
         self.Mobile = None
         self.Name = None
         self.CcType = None
         self.CcPermission = None
+        self.NotifyType = None
 
 
     def _deserialize(self, params):
@@ -646,6 +653,7 @@ class CcInfo(AbstractModel):
         self.Name = params.get("Name")
         self.CcType = params.get("CcType")
         self.CcPermission = params.get("CcPermission")
+        self.NotifyType = params.get("NotifyType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -911,9 +919,13 @@ class CreateBatchCancelFlowUrlRequest(AbstractModel):
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param FlowIds: 需要执行撤回的签署流程id数组，最多100个
         :type FlowIds: list of str
+        :param Agent: 代理相关应用信息，如集团主企业代子企业操作的场景中ProxyOrganizationId必填
+
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         """
         self.Operator = None
         self.FlowIds = None
+        self.Agent = None
 
 
     def _deserialize(self, params):
@@ -921,6 +933,9 @@ class CreateBatchCancelFlowUrlRequest(AbstractModel):
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
         self.FlowIds = params.get("FlowIds")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1415,9 +1430,13 @@ class CreateFlowEvidenceReportRequest(AbstractModel):
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param FlowId: 签署流程编号
         :type FlowId: str
+        :param Agent: 代理相关应用信息，如集团主企业代子企业操作的场景中ProxyOrganizationId必填
+
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         """
         self.Operator = None
         self.FlowId = None
+        self.Agent = None
 
 
     def _deserialize(self, params):
@@ -1425,6 +1444,9 @@ class CreateFlowEvidenceReportRequest(AbstractModel):
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
         self.FlowId = params.get("FlowId")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -1478,9 +1500,12 @@ class CreateFlowRemindsRequest(AbstractModel):
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param FlowIds: 需要执行催办的签署流程id数组，最多100个
         :type FlowIds: list of str
+        :param Agent: 代理相关应用信息，如集团主企业代子企业操作的场景中ProxyOrganizationId必填
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         """
         self.Operator = None
         self.FlowIds = None
+        self.Agent = None
 
 
     def _deserialize(self, params):
@@ -1488,6 +1513,9 @@ class CreateFlowRemindsRequest(AbstractModel):
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
         self.FlowIds = params.get("FlowIds")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2306,11 +2334,14 @@ class CreateReleaseFlowRequest(AbstractModel):
 默认使用原流程的签署人列表,当解除协议的签署人与原流程的签署人不能相同时（例如原流程签署人离职了），需要指定本企业其他已实名员工来替换原流程中的原签署人，注意需要指明原签署人的编号(ReceiptId,通过DescribeFlowInfo接口获取)来代表需要替换哪一个签署人
 解除协议的签署人数量不能多于原流程的签署人数量
         :type ReleasedApprovers: list of ReleasedApprover
+        :param Deadline: 签署流程的签署截止时间。 值为unix时间戳,精确到秒,不传默认为当前时间七天后
+        :type Deadline: int
         """
         self.Operator = None
         self.NeedRelievedFlowId = None
         self.ReliveInfo = None
         self.ReleasedApprovers = None
+        self.Deadline = None
 
 
     def _deserialize(self, params):
@@ -2327,6 +2358,7 @@ class CreateReleaseFlowRequest(AbstractModel):
                 obj = ReleasedApprover()
                 obj._deserialize(item)
                 self.ReleasedApprovers.append(obj)
+        self.Deadline = params.get("Deadline")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -3381,9 +3413,13 @@ class DescribeFlowEvidenceReportRequest(AbstractModel):
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param ReportId: 出证报告编号
         :type ReportId: str
+        :param Agent: 代理相关应用信息，如集团主企业代子企业操作的场景中ProxyOrganizationId必填
+
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
         """
         self.Operator = None
         self.ReportId = None
+        self.Agent = None
 
 
     def _deserialize(self, params):
@@ -3391,6 +3427,9 @@ class DescribeFlowEvidenceReportRequest(AbstractModel):
             self.Operator = UserInfo()
             self.Operator._deserialize(params.get("Operator"))
         self.ReportId = params.get("ReportId")
+        if params.get("Agent") is not None:
+            self.Agent = Agent()
+            self.Agent._deserialize(params.get("Agent"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -4872,6 +4911,8 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
 - 发起流程时系统自动补充
 - 创建签署链接时，可以通过查询详情接口获得签署人的SignId，然后可传入此值为该签署人创建签署链接，无需再传姓名、手机号、证件号等其他信息
         :type SignId: str
+        :param ApproverNeedSignReview: 当前签署方进行签署操作是否需要企业内部审批，true 则为需要。为个人签署方时则由发起方企业审核。
+        :type ApproverNeedSignReview: bool
         """
         self.ApproverType = None
         self.OrganizationName = None
@@ -4892,6 +4933,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
         self.ApproverOption = None
         self.JumpUrl = None
         self.SignId = None
+        self.ApproverNeedSignReview = None
 
 
     def _deserialize(self, params):
@@ -4918,6 +4960,7 @@ HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)
             self.ApproverOption._deserialize(params.get("ApproverOption"))
         self.JumpUrl = params.get("JumpUrl")
         self.SignId = params.get("SignId")
+        self.ApproverNeedSignReview = params.get("ApproverNeedSignReview")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -5934,6 +5977,8 @@ class RegisterInfo(AbstractModel):
 class ReleasedApprover(AbstractModel):
     """解除协议的签署人，如不指定，默认使用待解除流程（即原流程）中的签署人。
     注意：不支持更换C端（个人身份类型）签署人，如果原流程中含有C端签署人，默认使用原流程中的该C端签署人。
+    注意：目前不支持替换C端（个人身份类型）签署人，但是可以指定C端签署人的签署方自定义控件别名，具体见参数ApproverSignRole描述。
+    注意：当指定C端签署人的签署方自定义控件别名不空时，除RelievedApproverReceiptId参数外，可以只参数ApproverSignRole。
 
     """
 
@@ -5950,11 +5995,19 @@ class ReleasedApprover(AbstractModel):
 ORGANIZATION-企业
 ENTERPRISESERVER-企业静默签
         :type ApproverType: str
+        :param ApproverSignComponentType: 签署控件类型，支持自定义企业签署方的签署控件为“印章”或“签名”
+- SIGN_SEAL-默认为印章控件类型
+- SIGN_SIGNATURE-手写签名控件类型
+        :type ApproverSignComponentType: str
+        :param ApproverSignRole: 签署方自定义控件别名，最大长度20个字符
+        :type ApproverSignRole: str
         """
         self.Name = None
         self.Mobile = None
         self.RelievedApproverReceiptId = None
         self.ApproverType = None
+        self.ApproverSignComponentType = None
+        self.ApproverSignRole = None
 
 
     def _deserialize(self, params):
@@ -5962,6 +6015,8 @@ ENTERPRISESERVER-企业静默签
         self.Mobile = params.get("Mobile")
         self.RelievedApproverReceiptId = params.get("RelievedApproverReceiptId")
         self.ApproverType = params.get("ApproverType")
+        self.ApproverSignComponentType = params.get("ApproverSignComponentType")
+        self.ApproverSignRole = params.get("ApproverSignRole")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:

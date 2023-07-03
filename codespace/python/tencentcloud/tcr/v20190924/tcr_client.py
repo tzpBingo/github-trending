@@ -141,6 +141,29 @@ class TcrClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def CreateCustomAccount(self, request):
+        """创建自定义账户
+
+        :param request: Request instance for CreateCustomAccount.
+        :type request: :class:`tencentcloud.tcr.v20190924.models.CreateCustomAccountRequest`
+        :rtype: :class:`tencentcloud.tcr.v20190924.models.CreateCustomAccountResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateCustomAccount", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateCustomAccountResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def CreateImageAccelerationService(self, request):
         """创建镜像加速服务
 
@@ -155,31 +178,6 @@ class TcrClient(AbstractClient):
             body = self.call("CreateImageAccelerationService", params, headers=headers)
             response = json.loads(body)
             model = models.CreateImageAccelerationServiceResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def CreateImageLifecyclePersonal(self, request):
-        """前端与现有逻辑均不再使用，可下线
-
-        用于在个人版中创建清理策略
-
-        :param request: Request instance for CreateImageLifecyclePersonal.
-        :type request: :class:`tencentcloud.tcr.v20190924.models.CreateImageLifecyclePersonalRequest`
-        :rtype: :class:`tencentcloud.tcr.v20190924.models.CreateImageLifecyclePersonalResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("CreateImageLifecyclePersonal", params, headers=headers)
-            response = json.loads(body)
-            model = models.CreateImageLifecyclePersonalResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -626,6 +624,29 @@ class TcrClient(AbstractClient):
                 raise TencentCloudSDKException(e.message, e.message)
 
 
+    def DeleteCustomAccount(self, request):
+        """删除自定义账号
+
+        :param request: Request instance for DeleteCustomAccount.
+        :type request: :class:`tencentcloud.tcr.v20190924.models.DeleteCustomAccountRequest`
+        :rtype: :class:`tencentcloud.tcr.v20190924.models.DeleteCustomAccountResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteCustomAccount", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteCustomAccountResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
     def DeleteImage(self, request):
         """删除指定镜像
 
@@ -686,31 +707,6 @@ class TcrClient(AbstractClient):
             body = self.call("DeleteImageLifecycleGlobalPersonal", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteImageLifecycleGlobalPersonalResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(e.message, e.message)
-
-
-    def DeleteImageLifecyclePersonal(self, request):
-        """前端与后端目前现有逻辑均不再使用，可下线
-
-        用于在个人版镜像仓库中删除仓库Tag自动清理策略
-
-        :param request: Request instance for DeleteImageLifecyclePersonal.
-        :type request: :class:`tencentcloud.tcr.v20190924.models.DeleteImageLifecyclePersonalRequest`
-        :rtype: :class:`tencentcloud.tcr.v20190924.models.DeleteImageLifecyclePersonalResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DeleteImageLifecyclePersonal", params, headers=headers)
-            response = json.loads(body)
-            model = models.DeleteImageLifecyclePersonalResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1173,6 +1169,29 @@ class TcrClient(AbstractClient):
             body = self.call("DescribeChartDownloadInfo", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeChartDownloadInfoResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def DescribeCustomAccounts(self, request):
+        """查询自定义账号
+
+        :param request: Request instance for DescribeCustomAccounts.
+        :type request: :class:`tencentcloud.tcr.v20190924.models.DescribeCustomAccountsRequest`
+        :rtype: :class:`tencentcloud.tcr.v20190924.models.DescribeCustomAccountsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCustomAccounts", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCustomAccountsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2139,6 +2158,29 @@ class TcrClient(AbstractClient):
             body = self.call("ModifyApplicationTriggerPersonal", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyApplicationTriggerPersonalResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def ModifyCustomAccount(self, request):
+        """更新自定义账户
+
+        :param request: Request instance for ModifyCustomAccount.
+        :type request: :class:`tencentcloud.tcr.v20190924.models.ModifyCustomAccountRequest`
+        :rtype: :class:`tencentcloud.tcr.v20190924.models.ModifyCustomAccountResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyCustomAccount", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyCustomAccountResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

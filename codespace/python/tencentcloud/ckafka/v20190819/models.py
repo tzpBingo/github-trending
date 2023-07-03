@@ -32,7 +32,7 @@ class Acl(AbstractModel):
         :param Principal: 用户列表，默认为User:*，表示任何user都可以访问，当前用户只能是用户列表中包含的用户
 注意：此字段可能返回 null，表示取不到有效值。
         :type Principal: str
-        :param Host: 默认为*，表示任何host都可以访问，当前ckafka不支持host为*，但是后面开源kafka的产品化会直接支持
+        :param Host: 默认\*,表示任何host都可以访问，当前ckafka不支持host为\*，但是后面开源kafka的产品化会直接支持
 注意：此字段可能返回 null，表示取不到有效值。
         :type Host: str
         :param Operation: Acl操作方式(0:UNKNOWN，1:ANY，2:ALL，3:READ，4:WRITE，5:CREATE，6:DELETE，7:ALTER，8:DESCRIBE，9:CLUSTER_ACTION，10:DESCRIBE_CONFIGS，11:ALTER_CONFIGS，12:IDEMPOTEN_WRITE)
@@ -194,7 +194,7 @@ class AclRuleInfo(AbstractModel):
         :type Operation: str
         :param PermissionType: 权限类型，(Deny，Allow)
         :type PermissionType: str
-        :param Host: 默认为*，表示任何host都可以访问，当前ckafka不支持host为*和ip网段
+        :param Host: 默认为\*，表示任何host都可以访问，当前ckafka不支持host为\* 和 ip网段
         :type Host: str
         :param Principal: 用户列表，默认为User:*，表示任何user都可以访问，当前用户只能是用户列表中包含的用户。传入格式需要带【User:】前缀。例如用户A，传入为User:A。
         :type Principal: str
@@ -2304,17 +2304,17 @@ class CreateInstancePostRequest(AbstractModel):
         :type VpcId: str
         :param SubnetId: 子网id。创建实例默认接入点所在的子网对应的子网 id
         :type SubnetId: str
-        :param InstanceType: 实例规格。当创建标准版实例时必填，创建专业版实例时不需要填写。1：入门型；2：标准型；3：进阶型；4：容量型；5：高阶型1；6：高阶性2；7：高阶型3；8：高阶型4；9 ：独占型
+        :param InstanceType: 国际站标准版实例规格。目前只有国际站标准版使用当前字段区分规格，国内站标准版使用峰值带宽区分规格。除了国际站标准版外的所有实例填写 1 即可。国际站标准版实例：入门型(general)]填写1；[标准型(standard)]填写2；[进阶型(advanced)]填写3；[容量型(capacity)]填写4；[高阶型1(specialized-1)]填写5；[高阶型2(specialized-2)]填写6；[高阶型3(specialized-3)]填写7；[高阶型4(specialized-4)]填写8。
         :type InstanceType: int
         :param MsgRetentionTime: 实例日志的默认最长保留时间，单位分钟。不传入该参数时默认为 1440 分钟（1天），最大30天。当 topic 显式设置消息保留时间时，以 topic 保留时间为准
         :type MsgRetentionTime: int
         :param ClusterId: 创建实例时可以选择集群Id, 该入参表示集群Id。不指定实例所在集群则不传入该参数
         :type ClusterId: int
-        :param KafkaVersion: 实例版本。目前支持 "0.10.2","1.1.1","2.4.2","2.8.1"
+        :param KafkaVersion: 实例版本。目前支持 "0.10.2","1.1.1","2.4.1","2.4.2","2.8.1"。"2.4.1" 与 "2.4.2" 属于同一个版本，传任意一个均可。
         :type KafkaVersion: str
         :param SpecificationsType: 实例类型。"standard"：标准版，"profession"：专业版
         :type SpecificationsType: str
-        :param DiskType: 实例硬盘类型，"CLOUD_BASIC"：云硬盘，"CLOUD_SSD"：高速云硬盘。不传默认为 "CLOUD_BASIC"
+        :param DiskType: 专业版实例磁盘类型，标准版实例不需要填写。"CLOUD_SSD"：SSD云硬盘；"CLOUD_BASIC"：高性能云硬盘。不传默认值为 "CLOUD_BASIC"
         :type DiskType: str
         :param DiskSize: 实例硬盘大小，需要满足当前实例的计费规格
         :type DiskSize: int
@@ -2330,7 +2330,7 @@ class CreateInstancePostRequest(AbstractModel):
         :type ZoneIds: list of int
         :param InstanceNum: 购买实例数量。非必填，默认值为 1。当传入该参数时，会创建多个 instanceName 加后缀区分的实例
         :type InstanceNum: int
-        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 4Mbps 公网带宽，此处传 1
+        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 6Mbps 公网带宽，此处传 3。需要保证传入参数为 3 的整数倍
         :type PublicNetworkMonthly: int
         """
         self.InstanceName = None
@@ -2493,16 +2493,15 @@ class CreateInstancePreRequest(AbstractModel):
         r"""
         :param InstanceName: 实例名称，是一个不超过 64 个字符的字符串，必须以字母为首字符，剩余部分可以包含字母、数字和横划线(-)
         :type InstanceName: str
-        :param ZoneId: 可用区，购买多可用区实例时，填写ZoneIds.N字段中的任意一个值
+        :param ZoneId: 可用区。当购买多可用区实例时，当前参数为主可用区。需要保证传入的参数和 SubnetId 所在子网属于同一个可用区
         :type ZoneId: int
         :param Period: 预付费购买时长，例如 "1m",就是一个月
         :type Period: str
-        :param InstanceType: 实例规格说明 专业版实例[所有规格]填写1.
-标准版实例 ([入门型(general)]填写1，[标准型(standard)]填写2，[进阶型(advanced)]填写3，[容量型(capacity)]填写4，[高阶型1(specialized-1)]填写5，[高阶性2(specialized-2)]填写6,[高阶型3(specialized-3)]填写7,[高阶型4(specialized-4)]填写8，[独占型(exclusive)]填写9。
+        :param InstanceType: 国际站标准版实例规格。目前只有国际站标准版使用当前字段区分规格，国内站标准版使用峰值带宽区分规格。除了国际站标准版外的所有实例填写 1 即可。国际站标准版实例：入门型(general)]填写1；[标准型(standard)]填写2；[进阶型(advanced)]填写3；[容量型(capacity)]填写4；[高阶型1(specialized-1)]填写5；[高阶型2(specialized-2)]填写6；[高阶型3(specialized-3)]填写7；[高阶型4(specialized-4)]填写8。
         :type InstanceType: int
-        :param VpcId: vpcId，不填默认基础网络
+        :param VpcId: vpcId，必填
         :type VpcId: str
-        :param SubnetId: 子网id，vpc网络需要传该参数，基础网络可以不传
+        :param SubnetId: 子网id，必填
         :type SubnetId: str
         :param MsgRetentionTime: 可选。实例日志的最长保留时间，单位分钟，默认为10080（7天），最大30天，不填默认0，代表不开启日志保留时间回收策略
         :type MsgRetentionTime: int
@@ -2510,26 +2509,28 @@ class CreateInstancePreRequest(AbstractModel):
         :type ClusterId: int
         :param RenewFlag: 预付费自动续费标记，0表示默认状态(用户未设置，即初始状态)， 1表示自动续费，2表示明确不自动续费(用户设置)
         :type RenewFlag: int
-        :param KafkaVersion: CKafka版本号[0.10.2、1.1.1、2.4.1], 默认是1.1.1
+        :param KafkaVersion: CKafka版本号[0.10.2、1.1.1、2.4.1、2.4.2、2.8.1], 默认是1.1.1。2.4.1 与 2.4.2 属于同一个版本，传任意一个均可。
         :type KafkaVersion: str
-        :param SpecificationsType: 实例类型: [标准版实例]填写 standard(默认), [专业版实例]填写 profession
+        :param SpecificationsType: 实例类型: [标准版实例]填写 "standard" (默认), [专业版实例]填写 "profession"
         :type SpecificationsType: str
-        :param DiskSize: 磁盘大小，专业版不填写默认最小磁盘，如果跟控制台规格配比不相符，则无法创建成功
+        :param DiskSize: 磁盘大小，如果跟控制台规格配比不相符，则无法创建成功
         :type DiskSize: int
-        :param BandWidth: 带宽，专业版不填写默认最小带宽，如果跟控制台规格配比不相符，则无法创建成功
+        :param BandWidth: 带宽，如果跟控制台规格配比不相符，则无法创建成功
         :type BandWidth: int
-        :param Partition: 分区大小，专业版不填写默认最小分区数，如果跟控制台规格配比不相符，则无法创建成功
+        :param Partition: 分区大小，如果跟控制台规格配比不相符，则无法创建成功
         :type Partition: int
         :param Tags: 标签
         :type Tags: list of Tag
-        :param DiskType: 磁盘类型（ssd填写CLOUD_SSD，sata填写CLOUD_BASIC）
+        :param DiskType: 专业版实例磁盘类型，标准版实例不需要填写。"CLOUD_SSD"：SSD云硬盘；"CLOUD_BASIC"：高性能云硬盘。不传默认为 "CLOUD_BASIC"
         :type DiskType: str
-        :param MultiZoneFlag: 跨可用区，zoneIds必填
+        :param MultiZoneFlag: 是否创建跨可用区实例，当前参数为 true 时，zoneIds必填
         :type MultiZoneFlag: bool
         :param ZoneIds: 可用区列表，购买多可用区实例时为必填项
         :type ZoneIds: list of int
-        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 4Mbps 公网带宽，此处传 1。默认值为 0
+        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 6Mbps 公网带宽，此处传 3。默认值为 0。需要保证传入参数为 3 的整数倍
         :type PublicNetworkMonthly: int
+        :param InstanceNum: 购买实例数量。非必填，默认值为 1。当传入该参数时，会创建多个 instanceName 加后缀区分的实例
+        :type InstanceNum: int
         """
         self.InstanceName = None
         self.ZoneId = None
@@ -2550,6 +2551,7 @@ class CreateInstancePreRequest(AbstractModel):
         self.MultiZoneFlag = None
         self.ZoneIds = None
         self.PublicNetworkMonthly = None
+        self.InstanceNum = None
 
 
     def _deserialize(self, params):
@@ -2577,6 +2579,7 @@ class CreateInstancePreRequest(AbstractModel):
         self.MultiZoneFlag = params.get("MultiZoneFlag")
         self.ZoneIds = params.get("ZoneIds")
         self.PublicNetworkMonthly = params.get("PublicNetworkMonthly")
+        self.InstanceNum = params.get("InstanceNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             if name in memeber_set:
@@ -2717,17 +2720,17 @@ class CreatePostPaidInstanceRequest(AbstractModel):
         :type VpcId: str
         :param SubnetId: 子网id。创建实例默认接入点所在的子网对应的子网 id
         :type SubnetId: str
-        :param InstanceType: 实例规格。当创建标准版实例时必填，创建专业版实例时不需要填写。1：入门型；2：标准型；3：进阶型；4：容量型；5：高阶型1；6：高阶性2；7：高阶型3；8：高阶型4；9 ：独占型
+        :param InstanceType: 国际站标准版实例规格。目前只有国际站标准版使用当前字段区分规格，国内站标准版使用峰值带宽区分规格。除了国际站标准版外的所有实例填写 1 即可。国际站标准版实例：入门型(general)]填写1；[标准型(standard)]填写2；[进阶型(advanced)]填写3；[容量型(capacity)]填写4；[高阶型1(specialized-1)]填写5；[高阶型2(specialized-2)]填写6；[高阶型3(specialized-3)]填写7；[高阶型4(specialized-4)]填写8。
         :type InstanceType: int
         :param MsgRetentionTime: 实例日志的默认最长保留时间，单位分钟。不传入该参数时默认为 1440 分钟（1天），最大30天。当 topic 显式设置消息保留时间时，以 topic 保留时间为准
         :type MsgRetentionTime: int
         :param ClusterId: 创建实例时可以选择集群Id, 该入参表示集群Id。不指定实例所在集群则不传入该参数
         :type ClusterId: int
-        :param KafkaVersion: 实例版本。目前支持 "0.10.2","1.1.1","2.4.2","2.8.1"
+        :param KafkaVersion: 实例版本。目前支持 "0.10.2","1.1.1","2.4.1","2.4.2","2.8.1"。"2.4.1" 与 "2.4.2" 属于同一个版本，传任意一个均可。
         :type KafkaVersion: str
         :param SpecificationsType: 实例类型。"standard"：标准版，"profession"：专业版
         :type SpecificationsType: str
-        :param DiskType: 实例硬盘类型，"CLOUD_BASIC"：云硬盘，"CLOUD_SSD"：高速云硬盘。不传默认为 "CLOUD_BASIC"
+        :param DiskType: 专业版实例磁盘类型，标准版实例不需要填写。"CLOUD_SSD"：SSD云硬盘；"CLOUD_BASIC"：高性能云硬盘。不传默认值为 "CLOUD_BASIC"
         :type DiskType: str
         :param BandWidth: 实例内网峰值带宽。单位 MB/s。标准版需传入当前实例规格所对应的峰值带宽。注意如果创建的实例为专业版实例，峰值带宽，分区数等参数配置需要满足专业版的计费规格。
         :type BandWidth: int
@@ -2745,7 +2748,7 @@ class CreatePostPaidInstanceRequest(AbstractModel):
         :type ZoneIds: list of int
         :param InstanceNum: 购买实例数量。非必填，默认值为 1。当传入该参数时，会创建多个 instanceName 加后缀区分的实例
         :type InstanceNum: int
-        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 4Mbps 公网带宽，此处传 1
+        :param PublicNetworkMonthly: 公网带宽大小，单位 Mbps。默认是没有加上免费 3Mbps 带宽。例如总共需要 3Mbps 公网带宽，此处传 0；总共需要 6Mbps 公网带宽，此处传 3。需要保证传入参数为 3 的整数倍
         :type PublicNetworkMonthly: int
         """
         self.InstanceName = None
@@ -5036,7 +5039,7 @@ class DescribeConsumerGroupRequest(AbstractModel):
         :type GroupName: str
         :param TopicName: 可选，用户需要查询的group中的对应的topic名称，如果指定了该参数，而group又未指定则忽略该参数。
         :type TopicName: str
-        :param Limit: 本次返回个数限制
+        :param Limit: 本次返回个数限制，最大支持50
         :type Limit: int
         :param Offset: 偏移位置
         :type Offset: int
@@ -8075,21 +8078,21 @@ class InquireCkafkaPriceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param InstanceType: 国内站标准版填写standards2, 专业版填写profession
+        :param InstanceType: 国内站标准版填写standards2, 国际站标准版填写standard，专业版填写profession
         :type InstanceType: str
         :param InstanceChargeParam: 购买/续费付费类型(购买时不填的话, 默认获取购买包年包月一个月的费用)
         :type InstanceChargeParam: :class:`tencentcloud.ckafka.v20190819.models.InstanceChargeParam`
         :param InstanceNum: 购买/续费时购买的实例数量(不填时, 默认为1个)
         :type InstanceNum: int
-        :param Bandwidth: 实例内网带宽大小, 单位MB/s (购买时必填)
+        :param Bandwidth: 实例内网带宽大小, 单位MB/s (购买时必填，专业版询价时带宽信息必填)
         :type Bandwidth: int
-        :param InquiryDiskParam: 实例的硬盘购买类型以及大小 (购买时必填)
+        :param InquiryDiskParam: 实例的硬盘购买类型以及大小 (购买时必填，专业版询价时磁盘信息必填)
         :type InquiryDiskParam: :class:`tencentcloud.ckafka.v20190819.models.InquiryDiskParam`
         :param MessageRetention: 实例消息保留时间大小, 单位小时 (购买时必填)
         :type MessageRetention: int
         :param Topic: 购买实例topic数, 单位个 (购买时必填)
         :type Topic: int
-        :param Partition: 购买实例分区数, 单位个 (购买时必填)
+        :param Partition: 购买实例分区数, 单位个 (购买时必填，专业版询价时带宽信息必填)
         :type Partition: int
         :param ZoneIds: 购买地域, 可通过查看DescribeCkafkaZone这个接口获取ZoneId
         :type ZoneIds: list of int
@@ -8794,7 +8797,7 @@ class InstanceDetail(AbstractModel):
         :type Healthy: int
         :param HealthyMessage: 实例状态信息
         :type HealthyMessage: str
-        :param CreateTime: 实例创建时间时间
+        :param CreateTime: 实例创建时间
         :type CreateTime: int
         :param ExpireTime: 实例过期时间
         :type ExpireTime: int
@@ -9869,7 +9872,7 @@ class ModifyInstanceAttributesConfig(AbstractModel):
         :type AutoCreateTopicEnable: bool
         :param DefaultNumPartitions: 可选，如果auto.create.topic.enable设置为true没有设置该值时，默认设置为3
         :type DefaultNumPartitions: int
-        :param DefaultReplicationFactor: 如歌auto.create.topic.enable设置为true没有指定该值时默认设置为2
+        :param DefaultReplicationFactor: 如果auto.create.topic.enable设置为true没有指定该值时默认设置为2
         :type DefaultReplicationFactor: int
         """
         self.AutoCreateTopicEnable = None
@@ -9907,7 +9910,7 @@ class ModifyInstanceAttributesRequest(AbstractModel):
         :type Config: :class:`tencentcloud.ckafka.v20190819.models.ModifyInstanceAttributesConfig`
         :param DynamicRetentionConfig: 动态消息保留策略配置
         :type DynamicRetentionConfig: :class:`tencentcloud.ckafka.v20190819.models.DynamicRetentionTime`
-        :param RebalanceTime: 修改升配置rebalance时间
+        :param RebalanceTime: 升配Rebalance时间
         :type RebalanceTime: int
         :param PublicNetwork: 公网带宽
         :type PublicNetwork: int
