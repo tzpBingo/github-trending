@@ -1225,6 +1225,8 @@ class CreateInstanceRequest(AbstractModel):
         :type SyncTag: bool
         :param _EnableCosMAZ: 是否开启Cos桶多AZ特性
         :type EnableCosMAZ: bool
+        :param _DeletionProtection: 是否开启实例删除保护
+        :type DeletionProtection: bool
         """
         self._RegistryName = None
         self._RegistryType = None
@@ -1233,6 +1235,7 @@ class CreateInstanceRequest(AbstractModel):
         self._RegistryChargePrepaid = None
         self._SyncTag = None
         self._EnableCosMAZ = None
+        self._DeletionProtection = None
 
     @property
     def RegistryName(self):
@@ -1290,6 +1293,14 @@ class CreateInstanceRequest(AbstractModel):
     def EnableCosMAZ(self, EnableCosMAZ):
         self._EnableCosMAZ = EnableCosMAZ
 
+    @property
+    def DeletionProtection(self):
+        return self._DeletionProtection
+
+    @DeletionProtection.setter
+    def DeletionProtection(self, DeletionProtection):
+        self._DeletionProtection = DeletionProtection
+
 
     def _deserialize(self, params):
         self._RegistryName = params.get("RegistryName")
@@ -1303,6 +1314,7 @@ class CreateInstanceRequest(AbstractModel):
             self._RegistryChargePrepaid._deserialize(params.get("RegistryChargePrepaid"))
         self._SyncTag = params.get("SyncTag")
         self._EnableCosMAZ = params.get("EnableCosMAZ")
+        self._DeletionProtection = params.get("DeletionProtection")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2281,6 +2293,189 @@ class CreateSecurityPolicyResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._RegistryId = params.get("RegistryId")
+        self._RequestId = params.get("RequestId")
+
+
+class CreateServiceAccountRequest(AbstractModel):
+    """CreateServiceAccount请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegistryId: 实例Id
+        :type RegistryId: str
+        :param _Name: 服务级账号名
+        :type Name: str
+        :param _Permissions: 策略列表
+        :type Permissions: list of Permission
+        :param _Description: 服务级账号描述
+        :type Description: str
+        :param _Duration: 有效期(单位：天)，从当前时间开始计算，优先级高于ExpiresAt
+        :type Duration: int
+        :param _ExpiresAt: 过期时间（时间戳，单位:毫秒）
+        :type ExpiresAt: int
+        :param _Disable: 是否禁用服务级账号
+        :type Disable: bool
+        """
+        self._RegistryId = None
+        self._Name = None
+        self._Permissions = None
+        self._Description = None
+        self._Duration = None
+        self._ExpiresAt = None
+        self._Disable = None
+
+    @property
+    def RegistryId(self):
+        return self._RegistryId
+
+    @RegistryId.setter
+    def RegistryId(self, RegistryId):
+        self._RegistryId = RegistryId
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def Permissions(self):
+        return self._Permissions
+
+    @Permissions.setter
+    def Permissions(self, Permissions):
+        self._Permissions = Permissions
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def Duration(self):
+        return self._Duration
+
+    @Duration.setter
+    def Duration(self, Duration):
+        self._Duration = Duration
+
+    @property
+    def ExpiresAt(self):
+        return self._ExpiresAt
+
+    @ExpiresAt.setter
+    def ExpiresAt(self, ExpiresAt):
+        self._ExpiresAt = ExpiresAt
+
+    @property
+    def Disable(self):
+        return self._Disable
+
+    @Disable.setter
+    def Disable(self, Disable):
+        self._Disable = Disable
+
+
+    def _deserialize(self, params):
+        self._RegistryId = params.get("RegistryId")
+        self._Name = params.get("Name")
+        if params.get("Permissions") is not None:
+            self._Permissions = []
+            for item in params.get("Permissions"):
+                obj = Permission()
+                obj._deserialize(item)
+                self._Permissions.append(obj)
+        self._Description = params.get("Description")
+        self._Duration = params.get("Duration")
+        self._ExpiresAt = params.get("ExpiresAt")
+        self._Disable = params.get("Disable")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateServiceAccountResponse(AbstractModel):
+    """CreateServiceAccount返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Name: 服务级账号名（会自动加上前缀tcr$）
+        :type Name: str
+        :param _Password: 服务级账号密码，仅展示一次，请注意留存
+        :type Password: str
+        :param _ExpiresAt: 服务级账号失效时间（时间戳）
+        :type ExpiresAt: int
+        :param _CreateTime: 服务级账号创建时间
+        :type CreateTime: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Name = None
+        self._Password = None
+        self._ExpiresAt = None
+        self._CreateTime = None
+        self._RequestId = None
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def Password(self):
+        return self._Password
+
+    @Password.setter
+    def Password(self, Password):
+        self._Password = Password
+
+    @property
+    def ExpiresAt(self):
+        return self._ExpiresAt
+
+    @ExpiresAt.setter
+    def ExpiresAt(self, ExpiresAt):
+        self._ExpiresAt = ExpiresAt
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Name = params.get("Name")
+        self._Password = params.get("Password")
+        self._ExpiresAt = params.get("ExpiresAt")
+        self._CreateTime = params.get("CreateTime")
         self._RequestId = params.get("RequestId")
 
 
@@ -4478,6 +4673,76 @@ class DeleteSecurityPolicyResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._RegistryId = params.get("RegistryId")
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteServiceAccountRequest(AbstractModel):
+    """DeleteServiceAccount请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegistryId: 实例Id	
+        :type RegistryId: str
+        :param _Name: 服务级账号名
+        :type Name: str
+        """
+        self._RegistryId = None
+        self._Name = None
+
+    @property
+    def RegistryId(self):
+        return self._RegistryId
+
+    @RegistryId.setter
+    def RegistryId(self, RegistryId):
+        self._RegistryId = RegistryId
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+
+    def _deserialize(self, params):
+        self._RegistryId = params.get("RegistryId")
+        self._Name = params.get("Name")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteServiceAccountResponse(AbstractModel):
+    """DeleteServiceAccount返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 
@@ -8217,6 +8482,159 @@ class DescribeSecurityPoliciesResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeServiceAccountsRequest(AbstractModel):
+    """DescribeServiceAccounts请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegistryId: 实例Id
+        :type RegistryId: str
+        :param _All: 列出所有服务级账号
+        :type All: bool
+        :param _EmbedPermission: 是否填充策略
+        :type EmbedPermission: bool
+        :param _Filters: 过滤条件
+        :type Filters: list of Filter
+        :param _Offset: 偏移量,默认0
+        :type Offset: int
+        :param _Limit: 最大输出条数，默认20，最大为100（超出最大值，调整到最大值）
+        :type Limit: int
+        """
+        self._RegistryId = None
+        self._All = None
+        self._EmbedPermission = None
+        self._Filters = None
+        self._Offset = None
+        self._Limit = None
+
+    @property
+    def RegistryId(self):
+        return self._RegistryId
+
+    @RegistryId.setter
+    def RegistryId(self, RegistryId):
+        self._RegistryId = RegistryId
+
+    @property
+    def All(self):
+        return self._All
+
+    @All.setter
+    def All(self, All):
+        self._All = All
+
+    @property
+    def EmbedPermission(self):
+        return self._EmbedPermission
+
+    @EmbedPermission.setter
+    def EmbedPermission(self, EmbedPermission):
+        self._EmbedPermission = EmbedPermission
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+
+    def _deserialize(self, params):
+        self._RegistryId = params.get("RegistryId")
+        self._All = params.get("All")
+        self._EmbedPermission = params.get("EmbedPermission")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeServiceAccountsResponse(AbstractModel):
+    """DescribeServiceAccounts返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ServiceAccounts: 服务级账号列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceAccounts: list of ServiceAccount
+        :param _TotalCount: 自定义账户数量
+        :type TotalCount: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._ServiceAccounts = None
+        self._TotalCount = None
+        self._RequestId = None
+
+    @property
+    def ServiceAccounts(self):
+        return self._ServiceAccounts
+
+    @ServiceAccounts.setter
+    def ServiceAccounts(self, ServiceAccounts):
+        self._ServiceAccounts = ServiceAccounts
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("ServiceAccounts") is not None:
+            self._ServiceAccounts = []
+            for item in params.get("ServiceAccounts"):
+                obj = ServiceAccount()
+                obj._deserialize(item)
+                self._ServiceAccounts.append(obj)
+        self._TotalCount = params.get("TotalCount")
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeTagRetentionExecutionRequest(AbstractModel):
     """DescribeTagRetentionExecution请求参数结构体
 
@@ -10608,11 +11026,17 @@ class ModifyInstanceRequest(AbstractModel):
         r"""
         :param _RegistryId: 实例ID
         :type RegistryId: str
-        :param _RegistryType: 实例的规格
+        :param _RegistryType: 实例的规格,
+基础版：basic
+标准版：standard
+高级版：premium
         :type RegistryType: str
+        :param _DeletionProtection: 实例删除保护，false为关闭
+        :type DeletionProtection: bool
         """
         self._RegistryId = None
         self._RegistryType = None
+        self._DeletionProtection = None
 
     @property
     def RegistryId(self):
@@ -10630,10 +11054,19 @@ class ModifyInstanceRequest(AbstractModel):
     def RegistryType(self, RegistryType):
         self._RegistryType = RegistryType
 
+    @property
+    def DeletionProtection(self):
+        return self._DeletionProtection
+
+    @DeletionProtection.setter
+    def DeletionProtection(self, DeletionProtection):
+        self._DeletionProtection = DeletionProtection
+
 
     def _deserialize(self, params):
         self._RegistryId = params.get("RegistryId")
         self._RegistryType = params.get("RegistryType")
+        self._DeletionProtection = params.get("DeletionProtection")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -11259,6 +11692,141 @@ class ModifySecurityPolicyResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._RegistryId = params.get("RegistryId")
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyServiceAccountRequest(AbstractModel):
+    """ModifyServiceAccount请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegistryId: 实例Id
+        :type RegistryId: str
+        :param _Name: 服务级账号名
+        :type Name: str
+        :param _Description: 服务级账号描述
+        :type Description: str
+        :param _Duration: 有效期(单位：天)，从当前时间开始计算，优先级高于ExpiresAt
+        :type Duration: int
+        :param _ExpiresAt: 过期时间（时间戳，单位:毫秒）
+        :type ExpiresAt: int
+        :param _Disable: 是否禁用服务级账号
+        :type Disable: bool
+        :param _Permissions: 策略列表
+        :type Permissions: list of Permission
+        """
+        self._RegistryId = None
+        self._Name = None
+        self._Description = None
+        self._Duration = None
+        self._ExpiresAt = None
+        self._Disable = None
+        self._Permissions = None
+
+    @property
+    def RegistryId(self):
+        return self._RegistryId
+
+    @RegistryId.setter
+    def RegistryId(self, RegistryId):
+        self._RegistryId = RegistryId
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def Duration(self):
+        return self._Duration
+
+    @Duration.setter
+    def Duration(self, Duration):
+        self._Duration = Duration
+
+    @property
+    def ExpiresAt(self):
+        return self._ExpiresAt
+
+    @ExpiresAt.setter
+    def ExpiresAt(self, ExpiresAt):
+        self._ExpiresAt = ExpiresAt
+
+    @property
+    def Disable(self):
+        return self._Disable
+
+    @Disable.setter
+    def Disable(self, Disable):
+        self._Disable = Disable
+
+    @property
+    def Permissions(self):
+        return self._Permissions
+
+    @Permissions.setter
+    def Permissions(self, Permissions):
+        self._Permissions = Permissions
+
+
+    def _deserialize(self, params):
+        self._RegistryId = params.get("RegistryId")
+        self._Name = params.get("Name")
+        self._Description = params.get("Description")
+        self._Duration = params.get("Duration")
+        self._ExpiresAt = params.get("ExpiresAt")
+        self._Disable = params.get("Disable")
+        if params.get("Permissions") is not None:
+            self._Permissions = []
+            for item in params.get("Permissions"):
+                obj = Permission()
+                obj._deserialize(item)
+                self._Permissions.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyServiceAccountResponse(AbstractModel):
+    """ModifyServiceAccount返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 
@@ -13646,6 +14214,123 @@ class SecurityPolicy(AbstractModel):
         self._Description = params.get("Description")
         self._CidrBlock = params.get("CidrBlock")
         self._PolicyVersion = params.get("PolicyVersion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ServiceAccount(AbstractModel):
+    """服务级账号
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Name: 服务级账号名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param _Description: 描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        :param _Disable: 是否禁用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Disable: bool
+        :param _ExpiresAt: 过期时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExpiresAt: int
+        :param _CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param _UpdateTime: 更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        :param _Permissions: 策略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Permissions: list of Permission
+        """
+        self._Name = None
+        self._Description = None
+        self._Disable = None
+        self._ExpiresAt = None
+        self._CreateTime = None
+        self._UpdateTime = None
+        self._Permissions = None
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def Disable(self):
+        return self._Disable
+
+    @Disable.setter
+    def Disable(self, Disable):
+        self._Disable = Disable
+
+    @property
+    def ExpiresAt(self):
+        return self._ExpiresAt
+
+    @ExpiresAt.setter
+    def ExpiresAt(self, ExpiresAt):
+        self._ExpiresAt = ExpiresAt
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def UpdateTime(self):
+        return self._UpdateTime
+
+    @UpdateTime.setter
+    def UpdateTime(self, UpdateTime):
+        self._UpdateTime = UpdateTime
+
+    @property
+    def Permissions(self):
+        return self._Permissions
+
+    @Permissions.setter
+    def Permissions(self, Permissions):
+        self._Permissions = Permissions
+
+
+    def _deserialize(self, params):
+        self._Name = params.get("Name")
+        self._Description = params.get("Description")
+        self._Disable = params.get("Disable")
+        self._ExpiresAt = params.get("ExpiresAt")
+        self._CreateTime = params.get("CreateTime")
+        self._UpdateTime = params.get("UpdateTime")
+        if params.get("Permissions") is not None:
+            self._Permissions = []
+            for item in params.get("Permissions"):
+                obj = Permission()
+                obj._deserialize(item)
+                self._Permissions.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
