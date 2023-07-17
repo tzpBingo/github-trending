@@ -8866,9 +8866,9 @@ class DescribeCloudBaseRunServerVersionResponse(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type BuildDir: str
         :param _Cpu: 请使用CPUSize
-        :type Cpu: int
+        :type Cpu: float
         :param _Mem: 请使用MemSize
-        :type Mem: int
+        :type Mem: float
         :param _MinNum: 副本最小值
         :type MinNum: int
         :param _MaxNum: 副本最大值
@@ -10178,7 +10178,7 @@ class DescribeCurveDataResponse(AbstractModel):
         :param _Time: 时间数据, 标识监控数据Values中的点是哪个时间段上报的.
         :type Time: list of int
         :param _NewValues: 有效的监控数据, 每个有效监控数据的上报时间可以从时间数组中的对应位置上获取到.
-        :type NewValues: float
+        :type NewValues: list of float
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -15157,8 +15157,10 @@ class FrequencyLimitConfig(AbstractModel):
     def __init__(self):
         r"""
         :param _LimitObject: 限额对象 "ConnectionsLimit" 或 "QPSLimit"
+注意：此字段可能返回 null，表示取不到有效值。
         :type LimitObject: str
         :param _LimitConfig: 限额配置
+注意：此字段可能返回 null，表示取不到有效值。
         :type LimitConfig: str
         """
         self._LimitObject = None
@@ -19349,6 +19351,9 @@ class WxGatewayRountItem(AbstractModel):
         :param _GatewayRoutePort: 4层端口
 注意：此字段可能返回 null，表示取不到有效值。
         :type GatewayRoutePort: int
+        :param _GatewayRouteEnvId: 路由环境ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GatewayRouteEnvId: str
         """
         self._GatewayRouteName = None
         self._GatewayRouteProtocol = None
@@ -19364,6 +19369,7 @@ class WxGatewayRountItem(AbstractModel):
         self._GatewayRoutePath = None
         self._GatewayRouteMethod = None
         self._GatewayRoutePort = None
+        self._GatewayRouteEnvId = None
 
     @property
     def GatewayRouteName(self):
@@ -19477,6 +19483,14 @@ class WxGatewayRountItem(AbstractModel):
     def GatewayRoutePort(self, GatewayRoutePort):
         self._GatewayRoutePort = GatewayRoutePort
 
+    @property
+    def GatewayRouteEnvId(self):
+        return self._GatewayRouteEnvId
+
+    @GatewayRouteEnvId.setter
+    def GatewayRouteEnvId(self, GatewayRouteEnvId):
+        self._GatewayRouteEnvId = GatewayRouteEnvId
+
 
     def _deserialize(self, params):
         self._GatewayRouteName = params.get("GatewayRouteName")
@@ -19498,6 +19512,7 @@ class WxGatewayRountItem(AbstractModel):
         self._GatewayRoutePath = params.get("GatewayRoutePath")
         self._GatewayRouteMethod = params.get("GatewayRouteMethod")
         self._GatewayRoutePort = params.get("GatewayRoutePort")
+        self._GatewayRouteEnvId = params.get("GatewayRouteEnvId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

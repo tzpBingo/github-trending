@@ -37,11 +37,11 @@ class AutoSnapshotPolicyInfo(AbstractModel):
         :type DayOfWeek: str
         :param _Hour: 快照定期备份在一天的哪一小时
         :type Hour: str
-        :param _IsActivated: 是否激活定期快照功能
+        :param _IsActivated: 是否激活定期快照功能,1代表已激活，0代表未激活
         :type IsActivated: int
         :param _NextActiveTime: 下一次触发快照时间
         :type NextActiveTime: str
-        :param _Status: 快照策略状态
+        :param _Status: 快照策略状态，1代表快照策略状态正常。这里只有一种状态
         :type Status: str
         :param _AppId: 帐号ID
         :type AppId: int
@@ -57,7 +57,7 @@ class AutoSnapshotPolicyInfo(AbstractModel):
         :param _IntervalDays: 快照定期间隔天数，1-365 天；该参数与DayOfMonth,DayOfWeek互斥
 注意：此字段可能返回 null，表示取不到有效值。
         :type IntervalDays: int
-        :param _CrossRegionsAliveDays: 跨地域复制的快照保留时间
+        :param _CrossRegionsAliveDays: 跨地域复制的快照保留时间，单位天
         :type CrossRegionsAliveDays: int
         """
         self._AutoSnapshotPolicyId = None
@@ -378,7 +378,7 @@ class AvailableType(AbstractModel):
         r"""
         :param _Protocols: 协议与售卖详情
         :type Protocols: list of AvailableProtoStatus
-        :param _Type: 存储类型。返回值中 SD 为标准型存储、HP 为性能型存储
+        :param _Type: 存储类型。返回值中 SD 为通用标准型存储， HP为通用性能型存储， TB为Turbo标准型， TP 为Turbo性能型。
         :type Type: str
         :param _Prepayment: 是否支持预付费。返回值中 true 为支持、false 为不支持
         :type Prepayment: bool
@@ -652,13 +652,13 @@ class CreateAutoSnapshotPolicyRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Hour: 快照重复时间点
+        :param _Hour: 快照重复时间点,0-23
         :type Hour: str
         :param _PolicyName: 策略名称
         :type PolicyName: str
-        :param _DayOfWeek: 快照重复日期，星期一到星期日
+        :param _DayOfWeek: 快照重复日期，星期一到星期日。 1代表星期一、7代表星期天
         :type DayOfWeek: str
-        :param _AliveDays: 快照保留时长
+        :param _AliveDays: 快照保留时长，单位天
         :type AliveDays: int
         :param _DayOfMonth: 快照按月重复，每月1-31号，选择一天，每月将在这一天自动创建快照。
         :type DayOfMonth: str
@@ -810,6 +810,12 @@ class CreateCfsFileSystemRequest(AbstractModel):
         :type CidrBlock: str
         :param _Capacity: 文件系统容量，turbo系列必填，单位为GiB。 turbo标准型单位GB，起售40TiB，即40960 GiB；扩容步长20TiB，即20480 GiB。turbo性能型起售20TiB，即20480 GiB；扩容步长10TiB，10240 GiB。
         :type Capacity: int
+        :param _SnapshotId: 文件系统快照ID
+        :type SnapshotId: str
+        :param _AutoSnapshotPolicyId: 定期快照策略ID
+        :type AutoSnapshotPolicyId: str
+        :param _EnableAutoScaleUp: 是否开启默认扩容，仅Turbo类型文件存储支持
+        :type EnableAutoScaleUp: bool
         """
         self._Zone = None
         self._NetInterface = None
@@ -825,6 +831,9 @@ class CreateCfsFileSystemRequest(AbstractModel):
         self._CcnId = None
         self._CidrBlock = None
         self._Capacity = None
+        self._SnapshotId = None
+        self._AutoSnapshotPolicyId = None
+        self._EnableAutoScaleUp = None
 
     @property
     def Zone(self):
@@ -938,6 +947,30 @@ class CreateCfsFileSystemRequest(AbstractModel):
     def Capacity(self, Capacity):
         self._Capacity = Capacity
 
+    @property
+    def SnapshotId(self):
+        return self._SnapshotId
+
+    @SnapshotId.setter
+    def SnapshotId(self, SnapshotId):
+        self._SnapshotId = SnapshotId
+
+    @property
+    def AutoSnapshotPolicyId(self):
+        return self._AutoSnapshotPolicyId
+
+    @AutoSnapshotPolicyId.setter
+    def AutoSnapshotPolicyId(self, AutoSnapshotPolicyId):
+        self._AutoSnapshotPolicyId = AutoSnapshotPolicyId
+
+    @property
+    def EnableAutoScaleUp(self):
+        return self._EnableAutoScaleUp
+
+    @EnableAutoScaleUp.setter
+    def EnableAutoScaleUp(self, EnableAutoScaleUp):
+        self._EnableAutoScaleUp = EnableAutoScaleUp
+
 
     def _deserialize(self, params):
         self._Zone = params.get("Zone")
@@ -959,6 +992,9 @@ class CreateCfsFileSystemRequest(AbstractModel):
         self._CcnId = params.get("CcnId")
         self._CidrBlock = params.get("CidrBlock")
         self._Capacity = params.get("Capacity")
+        self._SnapshotId = params.get("SnapshotId")
+        self._AutoSnapshotPolicyId = params.get("AutoSnapshotPolicyId")
+        self._EnableAutoScaleUp = params.get("EnableAutoScaleUp")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3562,7 +3598,7 @@ class DescribeUserQuotaRequest(AbstractModel):
         :type Filters: list of Filter
         :param _Offset: Offset 分页码
         :type Offset: int
-        :param _Limit: Limit 页面大小
+        :param _Limit: Limit 页面大小，可填范围为大于0的整数
         :type Limit: int
         """
         self._FileSystemId = None
@@ -3688,11 +3724,11 @@ class FileSystemByPolicy(AbstractModel):
         :type CreationToken: str
         :param _FileSystemId: 文件系统ID
         :type FileSystemId: str
-        :param _SizeByte: 文件系统大小
+        :param _SizeByte: 文件系统大小，单位Byte
         :type SizeByte: int
-        :param _StorageType: 存储类型
+        :param _StorageType: 存储类型，HP：通用性能型；SD：通用标准型；TP:turbo性能型；TB：turbo标准型；THP：吞吐型
         :type StorageType: str
-        :param _TotalSnapshotSize: 快照总大小
+        :param _TotalSnapshotSize: 快照总大小，单位GiB
         :type TotalSnapshotSize: int
         :param _CreationTime: 文件系统创建时间
         :type CreationTime: str
@@ -3896,17 +3932,17 @@ class FileSystemInfo(AbstractModel):
 - unserviced:停服中
 - upgrading:升级中
         :type LifeCycleState: str
-        :param _SizeByte: 文件系统已使用容量
+        :param _SizeByte: 文件系统已使用容量,单位Byte
         :type SizeByte: int
-        :param _SizeLimit: 文件系统最大空间限制
+        :param _SizeLimit: 文件系统最大空间限制,GiB
         :type SizeLimit: int
         :param _ZoneId: 区域 ID
         :type ZoneId: int
         :param _Zone: 区域名称
         :type Zone: str
-        :param _Protocol: 文件系统协议类型
+        :param _Protocol: 文件系统协议类型, 支持 NFS,CIFS,TURBO
         :type Protocol: str
-        :param _StorageType: 文件系统存储类型
+        :param _StorageType: 存储类型，HP：通用性能型；SD：通用标准型；TP:turbo性能型；TB：turbo标准型；THP：吞吐型
         :type StorageType: str
         :param _StorageResourcePkg: 文件系统绑定的预付费存储包
         :type StorageResourcePkg: str
@@ -3916,19 +3952,21 @@ class FileSystemInfo(AbstractModel):
         :type PGroup: :class:`tencentcloud.cfs.v20190719.models.PGroup`
         :param _FsName: 用户自定义名称
         :type FsName: str
-        :param _Encrypted: 文件系统是否加密
+        :param _Encrypted: 文件系统是否加密,true：代表加密，false：非加密
         :type Encrypted: bool
         :param _KmsKeyId: 加密所使用的密钥，可以为密钥的 ID 或者 ARN
         :type KmsKeyId: str
         :param _AppId: 应用ID
         :type AppId: int
-        :param _BandwidthLimit: 文件系统吞吐上限，吞吐上限是根据文件系统当前已使用存储量、绑定的存储资源包以及吞吐资源包一同确定
+        :param _BandwidthLimit: 文件系统吞吐上限，吞吐上限是根据文件系统当前已使用存储量、绑定的存储资源包以及吞吐资源包一同确定. 单位MiB/s
         :type BandwidthLimit: float
         :param _Capacity: 文件系统总容量
         :type Capacity: int
         :param _Tags: 文件系统标签列表
         :type Tags: list of TagInfo
         :param _TieringState: 文件系统生命周期管理状态
+NotAvailable：不可用
+Available:可用
         :type TieringState: str
         :param _TieringDetail: 分层存储详情
 注意：此字段可能返回 null，表示取不到有效值。
@@ -5082,7 +5120,7 @@ class ScaleUpFileSystemRequest(AbstractModel):
         r"""
         :param _FileSystemId: 文件系统Id
         :type FileSystemId: str
-        :param _TargetCapacity: 扩容的目标容量
+        :param _TargetCapacity: 扩容的目标容量（单位GiB）
         :type TargetCapacity: int
         """
         self._FileSystemId = None
@@ -5127,7 +5165,7 @@ class ScaleUpFileSystemResponse(AbstractModel):
         r"""
         :param _FileSystemId: 文件系统Id
         :type FileSystemId: str
-        :param _TargetCapacity: 扩容的目标容量
+        :param _TargetCapacity: 扩容的目标容量（单位GiB）
         :type TargetCapacity: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -5329,7 +5367,7 @@ class SnapshotInfo(AbstractModel):
         :type SnapshotName: str
         :param _SnapshotId: 快照ID
         :type SnapshotId: str
-        :param _Status: 快照状态
+        :param _Status: 快照状态，createing-创建中；available-运行中；deleting-删除中；rollbacking-new 创建新文件系统中；create-failed 创建失败
         :type Status: str
         :param _RegionName: 地域名称
         :type RegionName: str
@@ -5339,7 +5377,7 @@ class SnapshotInfo(AbstractModel):
         :type Size: int
         :param _AliveDay: 保留时长天
         :type AliveDay: int
-        :param _Percent: 快照进度
+        :param _Percent: 快照进度百分比，1表示1%
         :type Percent: int
         :param _AppId: 帐号ID
         :type AppId: int
@@ -5349,9 +5387,12 @@ class SnapshotInfo(AbstractModel):
         :type FsName: str
         :param _Tags: 快照标签
         :type Tags: list of TagInfo
-        :param _SnapshotType: 快照类型
+        :param _SnapshotType: 快照类型, general为通用系列快照，turbo为Turbo系列快照
 注意：此字段可能返回 null，表示取不到有效值。
         :type SnapshotType: str
+        :param _SnapshotTime: 实际快照时间，反应快照对应文件系统某个时刻的数据。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SnapshotTime: str
         """
         self._CreationTime = None
         self._SnapshotName = None
@@ -5367,6 +5408,7 @@ class SnapshotInfo(AbstractModel):
         self._FsName = None
         self._Tags = None
         self._SnapshotType = None
+        self._SnapshotTime = None
 
     @property
     def CreationTime(self):
@@ -5480,6 +5522,14 @@ class SnapshotInfo(AbstractModel):
     def SnapshotType(self, SnapshotType):
         self._SnapshotType = SnapshotType
 
+    @property
+    def SnapshotTime(self):
+        return self._SnapshotTime
+
+    @SnapshotTime.setter
+    def SnapshotTime(self, SnapshotTime):
+        self._SnapshotTime = SnapshotTime
+
 
     def _deserialize(self, params):
         self._CreationTime = params.get("CreationTime")
@@ -5501,6 +5551,7 @@ class SnapshotInfo(AbstractModel):
                 obj._deserialize(item)
                 self._Tags.append(obj)
         self._SnapshotType = params.get("SnapshotType")
+        self._SnapshotTime = params.get("SnapshotTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5519,14 +5570,22 @@ class SnapshotOperateLog(AbstractModel):
     def __init__(self):
         r"""
         :param _Action: 操作类型
+CreateCfsSnapshot：创建快照
+DeleteCfsSnapshot：删除快照
+CreateCfsFileSystem：创建文件系统
+UpdateCfsSnapshotAttribute：更新快照
         :type Action: str
         :param _ActionTime: 操作时间
         :type ActionTime: str
         :param _ActionName: 操作名称
+CreateCfsSnapshot
+DeleteCfsSnapshot
+CreateCfsFileSystem
+UpdateCfsSnapshotAttribute
         :type ActionName: str
-        :param _Operator: 操作者
+        :param _Operator: 操作者uin
         :type Operator: str
-        :param _Result: 结果
+        :param _Result: 1-任务进行中；2-任务成功；3-任务失败
         :type Result: int
         """
         self._Action = None
@@ -5903,13 +5962,13 @@ class UpdateAutoSnapshotPolicyRequest(AbstractModel):
         :type AutoSnapshotPolicyId: str
         :param _PolicyName: 快照策略名称
         :type PolicyName: str
-        :param _DayOfWeek: 快照定期备份在一星期哪一天
+        :param _DayOfWeek: 快照定期备份，按照星期一到星期日。 1代表星期一，7代表星期日
         :type DayOfWeek: str
         :param _Hour: 快照定期备份在一天的哪一小时
         :type Hour: str
         :param _AliveDays: 快照保留日期
         :type AliveDays: int
-        :param _IsActivated: 是否激活定期快照功能
+        :param _IsActivated: 是否激活定期快照功能；1代表激活，0代表未激活
         :type IsActivated: int
         :param _DayOfMonth: 定期快照在每月的第几天创建快照，该参数与DayOfWeek互斥
         :type DayOfMonth: str
@@ -6327,7 +6386,7 @@ class UpdateCfsPGroupRequest(AbstractModel):
         :type PGroupId: str
         :param _Name: 权限组名称，1-64个字符且只能为中文，字母，数字，下划线或横线
         :type Name: str
-        :param _DescInfo: 权限组描述信息，1-255个字符
+        :param _DescInfo: 权限组描述信息，1-255个字符。 Name和Descinfo不能同时为空
         :type DescInfo: str
         """
         self._PGroupId = None

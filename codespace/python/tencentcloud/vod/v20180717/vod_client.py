@@ -460,7 +460,7 @@ class VodClient(AbstractClient):
 
 
     def CreateRebuildMediaTemplate(self, request):
-        """创建音画质重生模板。
+        """创建视频重生模板。
 
         :param request: Request instance for CreateRebuildMediaTemplate.
         :type request: :class:`tencentcloud.vod.v20180717.models.CreateRebuildMediaTemplateRequest`
@@ -1071,7 +1071,7 @@ class VodClient(AbstractClient):
 
 
     def DeleteRebuildMediaTemplate(self, request):
-        """删除音画质重生模板。
+        """删除视频重生模板。
 
         :param request: Request instance for DeleteRebuildMediaTemplate.
         :type request: :class:`tencentcloud.vod.v20180717.models.DeleteRebuildMediaTemplateRequest`
@@ -2078,7 +2078,7 @@ class VodClient(AbstractClient):
 
 
     def DescribeRebuildMediaTemplates(self, request):
-        """获取音画质重生模板列表。
+        """获取视频重生模板列表。
 
         :param request: Request instance for DescribeRebuildMediaTemplates.
         :type request: :class:`tencentcloud.vod.v20180717.models.DescribeRebuildMediaTemplatesRequest`
@@ -3094,7 +3094,7 @@ class VodClient(AbstractClient):
 
 
     def ModifyRebuildMediaTemplate(self, request):
-        """修改音画质重生模板。
+        """修改视频重生模板。
 
         :param request: Request instance for ModifyRebuildMediaTemplate.
         :type request: :class:`tencentcloud.vod.v20180717.models.ModifyRebuildMediaTemplateRequest`
@@ -3615,7 +3615,7 @@ class VodClient(AbstractClient):
 
 
     def RebuildMedia(self, request):
-        """发起音画质重生
+        """发起视频重生
 
         :param request: Request instance for RebuildMedia.
         :type request: :class:`tencentcloud.vod.v20180717.models.RebuildMediaRequest`
@@ -3638,7 +3638,7 @@ class VodClient(AbstractClient):
 
 
     def RebuildMediaByTemplate(self, request):
-        """使用模板发起音画质重生。
+        """使用模板发起视频重生。
 
         :param request: Request instance for RebuildMediaByTemplate.
         :type request: :class:`tencentcloud.vod.v20180717.models.RebuildMediaByTemplateRequest`
@@ -3823,14 +3823,9 @@ class VodClient(AbstractClient):
         - 指定媒体的创建时间范围筛选媒体。
         - 指定 TRTC 应用 ID 集合筛选媒体。
         - 指定 TRTC 房间 ID 集合筛选媒体。
-        - （不推荐：应使用 Names、NamePrefixes 或 Descriptions 替代）指定单个文本 Text 对媒体文件名或描述信息进行模糊搜索。
-        - （不推荐：应使用 SourceTypes 替代）指定单个媒体文件来源 SourceType 进行搜索。
-        - （不推荐：应使用 StreamIds 替代）指定单个推流直播码 StreamId 进行搜索。
-        - （不推荐：应使用 CreateTime 替代）指定单个起始创建时间 StartTime 进行搜索。
-        - （不推荐：应使用 CreateTime 替代）指定单个结尾创建时间 EndTime 进行搜索。
+
         - 以上参数之间可以任意组合进行检索。例如：筛选创建时间在2018年12月1日12:00:00到2018年12月8日12:00:00之间、分类为电影或电视剧、带有宫斗和悬疑标签的媒体。注意，任何支持数组输入的参数，其元素之间的搜索逻辑为‘或’。所有参数之间的逻辑关系为‘与’。
 
-        - 允许对结果根据创建时间进行排序并分页返回，通过 Offset 和 Limit （见输入参数）来控制分页。
         - 允许通过 Filters 控制返回的媒体信息种类（默认返回所有信息）。可选输入包括：
             1. 基础信息（basicInfo）：包括媒体名称、分类、播放地址、封面图片等。
             2. 元信息（metaData）：包括大小、时长、视频流信息、音频流信息等。
@@ -3842,9 +3837,18 @@ class VodClient(AbstractClient):
             8. 视频打点信息（keyFrameDescInfo）：对视频设置的打点信息。
             9. 转自适应码流信息（adaptiveDynamicStreamingInfo）：包括规格、加密类型、打包格式等相关信息。
 
+        - 允许对结果根据创建时间进行排序并分页返回，通过 Offset 和 Limit （见输入参数）来控制分页。
+
         <div id="maxResultsDesc">接口返回结果数限制：</div>
         - <b><a href="#p_offset">Offset</a> 和 <a href="#p_limit">Limit</a> 两个参数影响单次分页查询结果数。特别注意：当这2个值都缺省时，本接口最多只返回10条查询结果。</b>
         - <b>最大支持返回5000条搜索结果，超出部分不再支持查询。如果搜索结果量太大，建议使用更精细的筛选条件来减少搜索结果。</b>
+
+        <br>不推荐使用的条件筛选：
+        - （不推荐：应使用 Names、NamePrefixes 或 Descriptions 替代）指定单个文本 Text 对媒体文件名或描述信息进行模糊搜索。
+        - （不推荐：应使用 SourceTypes 替代）指定单个媒体文件来源 SourceType 进行搜索。
+        - （不推荐：应使用 StreamIds 替代）指定单个推流直播码 StreamId 进行搜索。
+        - （不推荐：应使用 CreateTime 替代）指定单个起始创建时间 StartTime 进行搜索。
+        - （不推荐：应使用 CreateTime 替代）指定单个结尾创建时间 EndTime 进行搜索。
 
         :param request: Request instance for SearchMedia.
         :type request: :class:`tencentcloud.vod.v20180717.models.SearchMediaRequest`

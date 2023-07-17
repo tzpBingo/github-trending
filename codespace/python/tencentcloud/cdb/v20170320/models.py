@@ -813,14 +813,17 @@ class AnalyzeAuditLogsRequest(AbstractModel):
         :type EndTime: str
         :param _AggregationConditions: 聚合维度的排序条件。
         :type AggregationConditions: list of AggregationCondition
-        :param _AuditLogFilter: 该过滤条件下的审计日志结果集作为分析日志。
+        :param _AuditLogFilter: 已废弃。该过滤条件下的审计日志结果集作为分析日志。
         :type AuditLogFilter: :class:`tencentcloud.cdb.v20170320.models.AuditLogFilter`
+        :param _LogFilter: 该过滤条件下的审计日志结果集作为分析日志。
+        :type LogFilter: list of InstanceAuditLogFilters
         """
         self._InstanceId = None
         self._StartTime = None
         self._EndTime = None
         self._AggregationConditions = None
         self._AuditLogFilter = None
+        self._LogFilter = None
 
     @property
     def InstanceId(self):
@@ -862,6 +865,14 @@ class AnalyzeAuditLogsRequest(AbstractModel):
     def AuditLogFilter(self, AuditLogFilter):
         self._AuditLogFilter = AuditLogFilter
 
+    @property
+    def LogFilter(self):
+        return self._LogFilter
+
+    @LogFilter.setter
+    def LogFilter(self, LogFilter):
+        self._LogFilter = LogFilter
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -876,6 +887,12 @@ class AnalyzeAuditLogsRequest(AbstractModel):
         if params.get("AuditLogFilter") is not None:
             self._AuditLogFilter = AuditLogFilter()
             self._AuditLogFilter._deserialize(params.get("AuditLogFilter"))
+        if params.get("LogFilter") is not None:
+            self._LogFilter = []
+            for item in params.get("LogFilter"):
+                obj = InstanceAuditLogFilters()
+                obj._deserialize(item)
+                self._LogFilter.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1078,6 +1095,249 @@ NEQ – 不等于；
         self._Type = params.get("Type")
         self._Compare = params.get("Compare")
         self._Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AuditLog(AbstractModel):
+    """审计日志详细信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AffectRows: 影响行数。
+        :type AffectRows: int
+        :param _ErrCode: 错误码。
+        :type ErrCode: int
+        :param _SqlType: SQL 类型。
+        :type SqlType: str
+        :param _PolicyName: 审计策略名称，逐步下线。
+        :type PolicyName: str
+        :param _DBName: 数据库名称。
+        :type DBName: str
+        :param _Sql: SQL 语句。
+        :type Sql: str
+        :param _Host: 客户端地址。
+        :type Host: str
+        :param _User: 用户名。
+        :type User: str
+        :param _ExecTime: 执行时间，微秒。
+        :type ExecTime: int
+        :param _Timestamp: 时间。
+        :type Timestamp: str
+        :param _SentRows: 返回行数。
+        :type SentRows: int
+        :param _ThreadId: 线程ID。
+        :type ThreadId: int
+        :param _CheckRows: 扫描行数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CheckRows: int
+        :param _CpuTime: cpu执行时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CpuTime: float
+        :param _IoWaitTime: IO等待时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IoWaitTime: int
+        :param _LockWaitTime: 锁等待时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LockWaitTime: int
+        :param _NsTime: 开始时间，与timestamp构成一个精确到纳秒的时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NsTime: int
+        :param _TrxLivingTime: 事物持续时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TrxLivingTime: int
+        """
+        self._AffectRows = None
+        self._ErrCode = None
+        self._SqlType = None
+        self._PolicyName = None
+        self._DBName = None
+        self._Sql = None
+        self._Host = None
+        self._User = None
+        self._ExecTime = None
+        self._Timestamp = None
+        self._SentRows = None
+        self._ThreadId = None
+        self._CheckRows = None
+        self._CpuTime = None
+        self._IoWaitTime = None
+        self._LockWaitTime = None
+        self._NsTime = None
+        self._TrxLivingTime = None
+
+    @property
+    def AffectRows(self):
+        return self._AffectRows
+
+    @AffectRows.setter
+    def AffectRows(self, AffectRows):
+        self._AffectRows = AffectRows
+
+    @property
+    def ErrCode(self):
+        return self._ErrCode
+
+    @ErrCode.setter
+    def ErrCode(self, ErrCode):
+        self._ErrCode = ErrCode
+
+    @property
+    def SqlType(self):
+        return self._SqlType
+
+    @SqlType.setter
+    def SqlType(self, SqlType):
+        self._SqlType = SqlType
+
+    @property
+    def PolicyName(self):
+        return self._PolicyName
+
+    @PolicyName.setter
+    def PolicyName(self, PolicyName):
+        self._PolicyName = PolicyName
+
+    @property
+    def DBName(self):
+        return self._DBName
+
+    @DBName.setter
+    def DBName(self, DBName):
+        self._DBName = DBName
+
+    @property
+    def Sql(self):
+        return self._Sql
+
+    @Sql.setter
+    def Sql(self, Sql):
+        self._Sql = Sql
+
+    @property
+    def Host(self):
+        return self._Host
+
+    @Host.setter
+    def Host(self, Host):
+        self._Host = Host
+
+    @property
+    def User(self):
+        return self._User
+
+    @User.setter
+    def User(self, User):
+        self._User = User
+
+    @property
+    def ExecTime(self):
+        return self._ExecTime
+
+    @ExecTime.setter
+    def ExecTime(self, ExecTime):
+        self._ExecTime = ExecTime
+
+    @property
+    def Timestamp(self):
+        return self._Timestamp
+
+    @Timestamp.setter
+    def Timestamp(self, Timestamp):
+        self._Timestamp = Timestamp
+
+    @property
+    def SentRows(self):
+        return self._SentRows
+
+    @SentRows.setter
+    def SentRows(self, SentRows):
+        self._SentRows = SentRows
+
+    @property
+    def ThreadId(self):
+        return self._ThreadId
+
+    @ThreadId.setter
+    def ThreadId(self, ThreadId):
+        self._ThreadId = ThreadId
+
+    @property
+    def CheckRows(self):
+        return self._CheckRows
+
+    @CheckRows.setter
+    def CheckRows(self, CheckRows):
+        self._CheckRows = CheckRows
+
+    @property
+    def CpuTime(self):
+        return self._CpuTime
+
+    @CpuTime.setter
+    def CpuTime(self, CpuTime):
+        self._CpuTime = CpuTime
+
+    @property
+    def IoWaitTime(self):
+        return self._IoWaitTime
+
+    @IoWaitTime.setter
+    def IoWaitTime(self, IoWaitTime):
+        self._IoWaitTime = IoWaitTime
+
+    @property
+    def LockWaitTime(self):
+        return self._LockWaitTime
+
+    @LockWaitTime.setter
+    def LockWaitTime(self, LockWaitTime):
+        self._LockWaitTime = LockWaitTime
+
+    @property
+    def NsTime(self):
+        return self._NsTime
+
+    @NsTime.setter
+    def NsTime(self, NsTime):
+        self._NsTime = NsTime
+
+    @property
+    def TrxLivingTime(self):
+        return self._TrxLivingTime
+
+    @TrxLivingTime.setter
+    def TrxLivingTime(self, TrxLivingTime):
+        self._TrxLivingTime = TrxLivingTime
+
+
+    def _deserialize(self, params):
+        self._AffectRows = params.get("AffectRows")
+        self._ErrCode = params.get("ErrCode")
+        self._SqlType = params.get("SqlType")
+        self._PolicyName = params.get("PolicyName")
+        self._DBName = params.get("DBName")
+        self._Sql = params.get("Sql")
+        self._Host = params.get("Host")
+        self._User = params.get("User")
+        self._ExecTime = params.get("ExecTime")
+        self._Timestamp = params.get("Timestamp")
+        self._SentRows = params.get("SentRows")
+        self._ThreadId = params.get("ThreadId")
+        self._CheckRows = params.get("CheckRows")
+        self._CpuTime = params.get("CpuTime")
+        self._IoWaitTime = params.get("IoWaitTime")
+        self._LockWaitTime = params.get("LockWaitTime")
+        self._NsTime = params.get("NsTime")
+        self._TrxLivingTime = params.get("TrxLivingTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4174,11 +4434,11 @@ class CreateAuditLogFileRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _InstanceId: 实例 ID，格式如：cdb-c1nl9rpv 或者 cdbro-c1nl9rpv，与云数据库控制台页面中显示的实例 ID 相同。
+        :param _InstanceId: 实例 ID，与云数据库控制台页面中显示的实例 ID 相同。
         :type InstanceId: str
-        :param _StartTime: 开始时间，格式为："2017-07-12 10:29:20"。
+        :param _StartTime: 开始时间。
         :type StartTime: str
-        :param _EndTime: 结束时间，格式为："2017-07-12 10:29:20"。
+        :param _EndTime: 结束时间。
         :type EndTime: str
         :param _Order: 排序方式。支持值包括："ASC" - 升序，"DESC" - 降序。
         :type Order: str
@@ -4187,8 +4447,10 @@ class CreateAuditLogFileRequest(AbstractModel):
 "affectRows" - 影响行数；
 "execTime" - 执行时间。
         :type OrderBy: str
-        :param _Filter: 过滤条件。可按设置的过滤条件过滤日志。
+        :param _Filter: 已废弃。
         :type Filter: :class:`tencentcloud.cdb.v20170320.models.AuditLogFilter`
+        :param _LogFilter: 过滤条件。可按设置的过滤条件过滤日志。
+        :type LogFilter: list of InstanceAuditLogFilters
         """
         self._InstanceId = None
         self._StartTime = None
@@ -4196,6 +4458,7 @@ class CreateAuditLogFileRequest(AbstractModel):
         self._Order = None
         self._OrderBy = None
         self._Filter = None
+        self._LogFilter = None
 
     @property
     def InstanceId(self):
@@ -4245,6 +4508,14 @@ class CreateAuditLogFileRequest(AbstractModel):
     def Filter(self, Filter):
         self._Filter = Filter
 
+    @property
+    def LogFilter(self):
+        return self._LogFilter
+
+    @LogFilter.setter
+    def LogFilter(self, LogFilter):
+        self._LogFilter = LogFilter
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -4255,6 +4526,12 @@ class CreateAuditLogFileRequest(AbstractModel):
         if params.get("Filter") is not None:
             self._Filter = AuditLogFilter()
             self._Filter._deserialize(params.get("Filter"))
+        if params.get("LogFilter") is not None:
+            self._LogFilter = []
+            for item in params.get("LogFilter"):
+                obj = InstanceAuditLogFilters()
+                obj._deserialize(item)
+                self._LogFilter.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8546,6 +8823,186 @@ class DescribeAuditLogFilesResponse(AbstractModel):
             self._Items = []
             for item in params.get("Items"):
                 obj = AuditLogFile()
+                obj._deserialize(item)
+                self._Items.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeAuditLogsRequest(AbstractModel):
+    """DescribeAuditLogs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceId: 实例 ID。
+        :type InstanceId: str
+        :param _StartTime: 开始时间。
+        :type StartTime: str
+        :param _EndTime: 结束时间。
+        :type EndTime: str
+        :param _Limit: 分页参数，单次返回的数据条数。默认值为100，最大值为100。
+        :type Limit: int
+        :param _Offset: 分页偏移量。
+        :type Offset: int
+        :param _Order: 排序方式。支持值包括："ASC" - 升序，"DESC" - 降序。
+        :type Order: str
+        :param _OrderBy: 排序字段。支持值包括：
+"timestamp" - 时间戳；
+"affectRows" - 影响行数；
+"execTime" - 执行时间。
+        :type OrderBy: str
+        :param _LogFilter: 过滤条件。可按设置的过滤条件过滤日志。
+        :type LogFilter: list of InstanceAuditLogFilters
+        """
+        self._InstanceId = None
+        self._StartTime = None
+        self._EndTime = None
+        self._Limit = None
+        self._Offset = None
+        self._Order = None
+        self._OrderBy = None
+        self._LogFilter = None
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Order(self):
+        return self._Order
+
+    @Order.setter
+    def Order(self, Order):
+        self._Order = Order
+
+    @property
+    def OrderBy(self):
+        return self._OrderBy
+
+    @OrderBy.setter
+    def OrderBy(self, OrderBy):
+        self._OrderBy = OrderBy
+
+    @property
+    def LogFilter(self):
+        return self._LogFilter
+
+    @LogFilter.setter
+    def LogFilter(self, LogFilter):
+        self._LogFilter = LogFilter
+
+
+    def _deserialize(self, params):
+        self._InstanceId = params.get("InstanceId")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        self._Order = params.get("Order")
+        self._OrderBy = params.get("OrderBy")
+        if params.get("LogFilter") is not None:
+            self._LogFilter = []
+            for item in params.get("LogFilter"):
+                obj = InstanceAuditLogFilters()
+                obj._deserialize(item)
+                self._LogFilter.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAuditLogsResponse(AbstractModel):
+    """DescribeAuditLogs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 符合条件的审计日志条数。
+        :type TotalCount: int
+        :param _Items: 审计日志详情。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Items: list of AuditLog
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._Items = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def Items(self):
+        return self._Items
+
+    @Items.setter
+    def Items(self, Items):
+        self._Items = Items
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("Items") is not None:
+            self._Items = []
+            for item in params.get("Items"):
+                obj = AuditLog()
                 obj._deserialize(item)
                 self._Items.append(obj)
         self._RequestId = params.get("RequestId")
@@ -17004,6 +17461,88 @@ class InquiryPriceUpgradeInstancesResponse(AbstractModel):
         self._Price = params.get("Price")
         self._OriginalPrice = params.get("OriginalPrice")
         self._RequestId = params.get("RequestId")
+
+
+class InstanceAuditLogFilters(AbstractModel):
+    """审计日志搜索过滤器
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Type: 过滤项。sql 暂时不支持搜索。目前支持以下搜索条件：
+
+等于、不等于、包含、不包含：
+host - 客户端地址；
+user - 用户名；
+dbName - 数据库名称；
+
+等于、不等于：
+sqlType - SQL类型；
+errCode - 错误码；
+threadId - 线程ID；
+
+范围搜索（时间类型统一为微妙）：
+execTime - 执行时间；
+lockWaitTime - 执行时间；
+ioWaitTime - IO等待时间；
+trxLivingTime - 事物持续时间；
+cpuTime - cpu时间；
+checkRows - 扫描行数；
+affectRows - 影响行数；
+sentRows - 返回行数。
+        :type Type: str
+        :param _Compare: 过滤条件。支持以下条件：
+INC - 包含,
+EXC - 不包含,
+EQS - 等于,
+NEQ - 不等于,
+RA - 范围。
+        :type Compare: str
+        :param _Value: 过滤的值。
+        :type Value: list of str
+        """
+        self._Type = None
+        self._Compare = None
+        self._Value = None
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def Compare(self):
+        return self._Compare
+
+    @Compare.setter
+    def Compare(self, Compare):
+        self._Compare = Compare
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+
+    def _deserialize(self, params):
+        self._Type = params.get("Type")
+        self._Compare = params.get("Compare")
+        self._Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class InstanceInfo(AbstractModel):

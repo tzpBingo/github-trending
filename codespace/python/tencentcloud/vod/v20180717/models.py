@@ -7892,7 +7892,7 @@ class AiSampleFaceOperation(AbstractModel):
         :type Type: str
         :param _FaceIds: 人脸 ID 集合，当 Type为delete 时，该字段必填。
         :type FaceIds: list of str
-        :param _FaceContents: 人脸图片 [Base64](https://tools.ietf.org/html/rfc4648) 编码后的字符串集合。
+        :param _FaceContents: 人脸图片 [Base64](https://tools.ietf.org/html/rfc4648) 编码后的字符串集合，仅支持 jpeg、png 图片格式。
 <li>当 Type为add 或 reset 时，该字段必填；</li>
 <li>数组长度限制：5 张图片。</li>
 注意：图片必须是单人像正面人脸较清晰的照片，像素不低于 200*200。
@@ -14326,7 +14326,7 @@ class CreateRebuildMediaTemplateResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Definition: 音画质重生模板 ID。
+        :param _Definition: 视频重生模板 ID。
         :type Definition: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -17021,7 +17021,7 @@ class DeleteRebuildMediaTemplateRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Definition: 音画质重生模板号。
+        :param _Definition: 视频重生模板号。
         :type Definition: int
         :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
@@ -21703,7 +21703,7 @@ class DescribeRebuildMediaTemplatesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Definitions: 音画质重生模板列表。
+        :param _Definitions: 视频重生模板列表。
         :type Definitions: list of int
         :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
@@ -21788,7 +21788,7 @@ class DescribeRebuildMediaTemplatesResponse(AbstractModel):
         r"""
         :param _TotalCount: 符合过滤条件的记录总数。
         :type TotalCount: int
-        :param _RebuildMediaTemplateSet: 音画质重生模板详情列表。
+        :param _RebuildMediaTemplateSet: 视频重生模板详情列表。
         :type RebuildMediaTemplateSet: list of RebuildMediaTemplate
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -21965,7 +21965,7 @@ class DescribeReviewTemplatesRequest(AbstractModel):
         r"""
         :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
-        :param _Definitions: 审核模版唯一标识过滤条件，数组长度限制：100。
+        :param _Definitions: 审核模板唯一标识过滤条件，数组长度限制：100。
         :type Definitions: list of int
         :param _Type: 模板类型过滤条件，可选值：
 <li>Preset：系统预置模板；</li>
@@ -31420,7 +31420,10 @@ class MediaDeleteItem(AbstractModel):
 <li>OriginalFiles（删除原文件，删除后无法发起转码、微信发布等任何视频处理操作）；</li>
 <li>TranscodeFiles（删除转码文件）；</li>
 <li>AdaptiveDynamicStreamingFiles（删除转自适应码流文件）；</li>
-<li>WechatPublishFiles（删除微信发布文件）。</li>
+<li>WechatPublishFiles（删除微信发布文件）；</li>
+<li>WechatMiniProgramPublishFiles（删除微信小程序发布文件）。</li>
+<font color=red>注意：</font> <li>取值为OriginalFiles时，文件上传时携带的封面文件会被删除；</li>
+<li>取值为TranscodeFiles时，媒体处理产生的封面文件会被删除。</li>
         :type Type: str
         :param _Definition: 删除由Type参数指定的种类下的视频模板号，模板定义参见[转码模板](https://cloud.tencent.com/document/product/266/33478#.3Cspan-id-.3D-.22zm.22-.3E.3C.2Fspan.3E.E8.BD.AC.E7.A0.81.E6.A8.A1.E6.9D.BF)。
 默认值为0，表示删除参数Type指定种类下所有的视频。
@@ -37295,17 +37298,17 @@ class ModifyRebuildMediaTemplateRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Definition: 音画质重生模板号。
+        :param _Definition: 视频重生模板号。
         :type Definition: int
         :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: str
-        :param _Name: 音画质重生模板名称。
+        :param _Name: 视频重生模板名称。
         :type Name: str
-        :param _Comment: 音画质重生模板描述。
+        :param _Comment: 视频重生模板描述。
         :type Comment: str
-        :param _RebuildVideoInfo: 音画质重生视频控制信息。
+        :param _RebuildVideoInfo: 视频重生视频控制信息。
         :type RebuildVideoInfo: :class:`tencentcloud.vod.v20180717.models.RebuildVideoInfo`
-        :param _RebuildAudioInfo: 音画质重生音频控制信息。
+        :param _RebuildAudioInfo: 视频重生音频控制信息。
         :type RebuildAudioInfo: :class:`tencentcloud.vod.v20180717.models.RebuildAudioInfo`
         :param _TargetVideoInfo: 输出目标视频控制信息。
         :type TargetVideoInfo: :class:`tencentcloud.vod.v20180717.models.RebuildMediaTargetVideoStream`
@@ -44606,7 +44609,7 @@ class RebuildMediaByTemplateRequest(AbstractModel):
         r"""
         :param _FileId: 媒体文件 ID。
         :type FileId: str
-        :param _Definition: 音画质重生模板 ID。
+        :param _Definition: 视频重生模板 ID。
         :type Definition: int
         :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: str
@@ -44614,7 +44617,7 @@ class RebuildMediaByTemplateRequest(AbstractModel):
         :type StartTimeOffset: float
         :param _EndTimeOffset: 结束偏移时间，单位：秒，不填表示截取到视频末尾。
         :type EndTimeOffset: float
-        :param _OutputConfig: 音画质重生后的文件配置。
+        :param _OutputConfig: 视频重生后的文件配置。
         :type OutputConfig: :class:`tencentcloud.vod.v20180717.models.RebuildMediaOutputConfig`
         :param _SessionId: 用于去重的识别码，如果三天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
         :type SessionId: str
@@ -44747,7 +44750,7 @@ class RebuildMediaByTemplateResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TaskId: 音画质重生的任务 ID，可以通过该 ID 查询音画质重生任务的状态。
+        :param _TaskId: 视频重生的任务 ID，可以通过该 ID 查询视频重生任务的状态。
         :type TaskId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -45141,7 +45144,7 @@ class RebuildMediaResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TaskId: 音画质重生的任务 ID，可以通过该 ID 查询音画质重生任务的状态。
+        :param _TaskId: 视频重生的任务 ID，可以通过该 ID 查询视频重生任务的状态。
         :type TaskId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -49727,28 +49730,6 @@ class SearchMediaRequest(AbstractModel):
         :param _ExpireTime: 匹配过期时间在此时间段内的文件，无法检索到已过期文件。
 <li>包含所指定的头尾时间点。</li>
         :type ExpireTime: :class:`tencentcloud.vod.v20180717.models.TimeRange`
-        :param _Sort: 排序方式。
-<li>Sort.Field 可选 CreateTime 。</li>
-<li>当 Text、 Names 或 Descriptions 不为空时，Sort.Field 字段无效， 搜索结果将以匹配度排序。</li>
-        :type Sort: :class:`tencentcloud.vod.v20180717.models.SortBy`
-        :param _Offset: <div id="p_offset">分页返回的起始偏移量，默认值：0。将返回第 Offset 到第 Offset+Limit-1 条。
-<li>取值范围：Offset + Limit 不超过5000。（参见：<a href="#maxResultsDesc">接口返回结果数限制</a>）</li></div>
-        :type Offset: int
-        :param _Limit: <div id="p_limit">分页返回的记录条数，默认值：10。将返回第 Offset 到第 Offset+Limit-1 条。
-<li>取值范围：Offset + Limit 不超过5000。（参见：<a href="#maxResultsDesc">接口返回结果数限制</a>）</li></div>
-        :type Limit: int
-        :param _Filters: 指定所有媒体文件需要返回的信息，可同时指定多个信息，N 从 0 开始递增。如果未填写该字段，默认返回所有信息。选项有：
-<li>basicInfo（视频基础信息）。</li>
-<li>metaData（视频元信息）。</li>
-<li>transcodeInfo（视频转码结果信息）。</li>
-<li>animatedGraphicsInfo（视频转动图结果信息）。</li>
-<li>imageSpriteInfo（视频雪碧图信息）。</li>
-<li>snapshotByTimeOffsetInfo（视频指定时间点截图信息）。</li>
-<li>sampleSnapshotInfo（采样截图信息）。</li>
-<li>keyFrameDescInfo（打点信息）。</li>
-<li>adaptiveDynamicStreamingInfo（转自适应码流信息）。</li>
-<li>miniProgramReviewInfo（小程序审核信息）。</li>
-        :type Filters: list of str
         :param _StorageRegions: 媒体文件存储地区，如 ap-chongqing，参见[地域列表](https://cloud.tencent.com/document/product/266/9760#.E5.B7.B2.E6.94.AF.E6.8C.81.E5.9C.B0.E5.9F.9F.E5.88.97.E8.A1.A8)。
 <li>单个存储地区长度限制：20个字符。</li>
 <li>数组长度限制：20。</li>
@@ -49780,6 +49761,28 @@ class SearchMediaRequest(AbstractModel):
 <li>单个房间 ID 长度限制：64个字符；</li>
 <li>数组长度限制：10。</li>
         :type TrtcRoomIds: list of str
+        :param _Filters: 指定所有媒体文件需要返回的信息，可同时指定多个信息，N 从 0 开始递增。如果未填写该字段，默认返回所有信息。选项有：
+<li>basicInfo（视频基础信息）。</li>
+<li>metaData（视频元信息）。</li>
+<li>transcodeInfo（视频转码结果信息）。</li>
+<li>animatedGraphicsInfo（视频转动图结果信息）。</li>
+<li>imageSpriteInfo（视频雪碧图信息）。</li>
+<li>snapshotByTimeOffsetInfo（视频指定时间点截图信息）。</li>
+<li>sampleSnapshotInfo（采样截图信息）。</li>
+<li>keyFrameDescInfo（打点信息）。</li>
+<li>adaptiveDynamicStreamingInfo（转自适应码流信息）。</li>
+<li>miniProgramReviewInfo（小程序审核信息）。</li>
+        :type Filters: list of str
+        :param _Sort: 排序方式。
+<li>Sort.Field 可选 CreateTime 。</li>
+<li>当 Text、 Names 或 Descriptions 不为空时，Sort.Field 字段无效， 搜索结果将以匹配度排序。</li>
+        :type Sort: :class:`tencentcloud.vod.v20180717.models.SortBy`
+        :param _Offset: <div id="p_offset">分页返回的起始偏移量，默认值：0。将返回第 Offset 到第 Offset+Limit-1 条。
+<li>取值范围：Offset + Limit 不超过5000。（参见：<a href="#maxResultsDesc">接口返回结果数限制</a>）</li></div>
+        :type Offset: int
+        :param _Limit: <div id="p_limit">分页返回的记录条数，默认值：10。将返回第 Offset 到第 Offset+Limit-1 条。
+<li>取值范围：Offset + Limit 不超过5000。（参见：<a href="#maxResultsDesc">接口返回结果数限制</a>）</li></div>
+        :type Limit: int
         :param _Text: （不推荐：应使用 Names、NamePrefixes 或 Descriptions 替代）
 搜索文本，模糊匹配媒体文件名称或描述信息，匹配项越多，匹配度越高，排序越优先。长度限制：64个字符。
         :type Text: str
@@ -49818,10 +49821,6 @@ class SearchMediaRequest(AbstractModel):
         self._StreamIds = None
         self._CreateTime = None
         self._ExpireTime = None
-        self._Sort = None
-        self._Offset = None
-        self._Limit = None
-        self._Filters = None
         self._StorageRegions = None
         self._StorageClasses = None
         self._MediaTypes = None
@@ -49829,6 +49828,10 @@ class SearchMediaRequest(AbstractModel):
         self._ReviewResults = None
         self._TrtcSdkAppIds = None
         self._TrtcRoomIds = None
+        self._Filters = None
+        self._Sort = None
+        self._Offset = None
+        self._Limit = None
         self._Text = None
         self._SourceType = None
         self._StreamId = None
@@ -49934,38 +49937,6 @@ class SearchMediaRequest(AbstractModel):
         self._ExpireTime = ExpireTime
 
     @property
-    def Sort(self):
-        return self._Sort
-
-    @Sort.setter
-    def Sort(self, Sort):
-        self._Sort = Sort
-
-    @property
-    def Offset(self):
-        return self._Offset
-
-    @Offset.setter
-    def Offset(self, Offset):
-        self._Offset = Offset
-
-    @property
-    def Limit(self):
-        return self._Limit
-
-    @Limit.setter
-    def Limit(self, Limit):
-        self._Limit = Limit
-
-    @property
-    def Filters(self):
-        return self._Filters
-
-    @Filters.setter
-    def Filters(self, Filters):
-        self._Filters = Filters
-
-    @property
     def StorageRegions(self):
         return self._StorageRegions
 
@@ -50020,6 +49991,38 @@ class SearchMediaRequest(AbstractModel):
     @TrtcRoomIds.setter
     def TrtcRoomIds(self, TrtcRoomIds):
         self._TrtcRoomIds = TrtcRoomIds
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def Sort(self):
+        return self._Sort
+
+    @Sort.setter
+    def Sort(self, Sort):
+        self._Sort = Sort
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
 
     @property
     def Text(self):
@@ -50095,12 +50098,6 @@ class SearchMediaRequest(AbstractModel):
         if params.get("ExpireTime") is not None:
             self._ExpireTime = TimeRange()
             self._ExpireTime._deserialize(params.get("ExpireTime"))
-        if params.get("Sort") is not None:
-            self._Sort = SortBy()
-            self._Sort._deserialize(params.get("Sort"))
-        self._Offset = params.get("Offset")
-        self._Limit = params.get("Limit")
-        self._Filters = params.get("Filters")
         self._StorageRegions = params.get("StorageRegions")
         self._StorageClasses = params.get("StorageClasses")
         self._MediaTypes = params.get("MediaTypes")
@@ -50108,6 +50105,12 @@ class SearchMediaRequest(AbstractModel):
         self._ReviewResults = params.get("ReviewResults")
         self._TrtcSdkAppIds = params.get("TrtcSdkAppIds")
         self._TrtcRoomIds = params.get("TrtcRoomIds")
+        self._Filters = params.get("Filters")
+        if params.get("Sort") is not None:
+            self._Sort = SortBy()
+            self._Sort._deserialize(params.get("Sort"))
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
         self._Text = params.get("Text")
         self._SourceType = params.get("SourceType")
         self._StreamId = params.get("StreamId")

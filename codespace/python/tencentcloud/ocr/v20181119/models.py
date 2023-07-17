@@ -2962,13 +2962,11 @@ class DriverLicenseOCRResponse(AbstractModel):
         :param _RecognizeWarnCode: Code 告警码列表和释义：
 -9102  复印件告警
 -9103  翻拍件告警
--9106  ps告警
 注：告警码可以同时存在多个
         :type RecognizeWarnCode: list of int
         :param _RecognizeWarnMsg: 告警码说明：
 WARN_DRIVER_LICENSE_COPY_CARD 复印件告警
 WARN_DRIVER_LICENSE_SCREENED_CARD 翻拍件告警
-WARN_DRIVER_LICENSE_PS_CARD ps告警
 注：告警信息可以同时存在多个
         :type RecognizeWarnMsg: list of str
         :param _IssuingAuthority: 发证单位
@@ -5843,10 +5841,9 @@ class HKIDCardOCRResponse(AbstractModel):
         :param _HeadImage: 人像照片Base64后的结果
 注意：此字段可能返回 null，表示取不到有效值。
         :type HeadImage: str
-        :param _WarningCode: 多重告警码，当身份证是翻拍、复印、PS件时返回对应告警码。
+        :param _WarningCode: 多重告警码，当身份证是翻拍、复印件时返回对应告警码。
 -9102：证照复印件告警
 -9103：证照翻拍告警
--9104：证照PS告警
         :type WarningCode: list of int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -7178,7 +7175,7 @@ FailedOperation.UnKnowError：表示识别失败；
 16：全电发票
 17：医疗发票
         :type Type: int
-        :param _Polygon: 旋转后的图片四点坐标。
+        :param _Polygon: 该发票在原图片中的四点坐标。
         :type Polygon: :class:`tencentcloud.ocr.v20181119.models.Polygon`
         :param _Angle: 识别出的图片在混贴票据图片中的旋转角度。
         :type Angle: float
@@ -25212,13 +25209,11 @@ class VehicleLicenseOCRResponse(AbstractModel):
         :param _RecognizeWarnCode: Code 告警码列表和释义：
 -9102 复印件告警
 -9103 翻拍件告警
--9106 ps告警
 注：告警码可以同时存在多个
         :type RecognizeWarnCode: list of int
         :param _RecognizeWarnMsg: 告警码说明：
 WARN_DRIVER_LICENSE_COPY_CARD 复印件告警
 WARN_DRIVER_LICENSE_SCREENED_CARD 翻拍件告警
-WARN_DRIVER_LICENSE_PS_CARD ps告警
 注：告警信息可以同时存在多个
         :type RecognizeWarnMsg: list of str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。

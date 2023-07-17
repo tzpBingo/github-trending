@@ -425,7 +425,7 @@ class AddInstancesRequest(AbstractModel):
         :type OrderSource: str
         :param _DealMode: 交易模式 0-下单并支付 1-下单
         :type DealMode: int
-        :param _ParamTemplateId: 参数模版ID
+        :param _ParamTemplateId: 参数模板ID
         :type ParamTemplateId: int
         :param _InstanceParams: 参数列表，ParamTemplateId 传入时InstanceParams才有效
         :type InstanceParams: list of ModifyParamItem
@@ -841,14 +841,32 @@ class AuditLog(AbstractModel):
         :type Host: str
         :param _User: 用户名。
         :type User: str
-        :param _ExecTime: 执行时间。
+        :param _ExecTime: 执行时间，微秒。
         :type ExecTime: int
-        :param _Timestamp: 时间戳。
+        :param _Timestamp: 时间。
         :type Timestamp: str
-        :param _SentRows: 发送行数。
+        :param _SentRows: 返回行数。
         :type SentRows: int
         :param _ThreadId: 执行线程ID。
         :type ThreadId: int
+        :param _CheckRows: 扫描行数。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CheckRows: int
+        :param _CpuTime: cpu执行时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CpuTime: float
+        :param _IoWaitTime: IO等待时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IoWaitTime: int
+        :param _LockWaitTime: 锁等待时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LockWaitTime: int
+        :param _TrxLivingTime: 事物持续等待时间，微秒。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TrxLivingTime: int
+        :param _NsTime: 开始时间，与timestamp构成一个精确到纳秒的时间。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NsTime: int
         """
         self._AffectRows = None
         self._ErrCode = None
@@ -864,6 +882,12 @@ class AuditLog(AbstractModel):
         self._Timestamp = None
         self._SentRows = None
         self._ThreadId = None
+        self._CheckRows = None
+        self._CpuTime = None
+        self._IoWaitTime = None
+        self._LockWaitTime = None
+        self._TrxLivingTime = None
+        self._NsTime = None
 
     @property
     def AffectRows(self):
@@ -977,6 +1001,54 @@ class AuditLog(AbstractModel):
     def ThreadId(self, ThreadId):
         self._ThreadId = ThreadId
 
+    @property
+    def CheckRows(self):
+        return self._CheckRows
+
+    @CheckRows.setter
+    def CheckRows(self, CheckRows):
+        self._CheckRows = CheckRows
+
+    @property
+    def CpuTime(self):
+        return self._CpuTime
+
+    @CpuTime.setter
+    def CpuTime(self, CpuTime):
+        self._CpuTime = CpuTime
+
+    @property
+    def IoWaitTime(self):
+        return self._IoWaitTime
+
+    @IoWaitTime.setter
+    def IoWaitTime(self, IoWaitTime):
+        self._IoWaitTime = IoWaitTime
+
+    @property
+    def LockWaitTime(self):
+        return self._LockWaitTime
+
+    @LockWaitTime.setter
+    def LockWaitTime(self, LockWaitTime):
+        self._LockWaitTime = LockWaitTime
+
+    @property
+    def TrxLivingTime(self):
+        return self._TrxLivingTime
+
+    @TrxLivingTime.setter
+    def TrxLivingTime(self, TrxLivingTime):
+        self._TrxLivingTime = TrxLivingTime
+
+    @property
+    def NsTime(self):
+        return self._NsTime
+
+    @NsTime.setter
+    def NsTime(self, NsTime):
+        self._NsTime = NsTime
+
 
     def _deserialize(self, params):
         self._AffectRows = params.get("AffectRows")
@@ -993,6 +1065,12 @@ class AuditLog(AbstractModel):
         self._Timestamp = params.get("Timestamp")
         self._SentRows = params.get("SentRows")
         self._ThreadId = params.get("ThreadId")
+        self._CheckRows = params.get("CheckRows")
+        self._CpuTime = params.get("CpuTime")
+        self._IoWaitTime = params.get("IoWaitTime")
+        self._LockWaitTime = params.get("LockWaitTime")
+        self._TrxLivingTime = params.get("TrxLivingTime")
+        self._NsTime = params.get("NsTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2567,8 +2645,10 @@ class CreateAuditLogFileRequest(AbstractModel):
 "affectRows" - 影响行数；
 "execTime" - 执行时间。
         :type OrderBy: str
-        :param _Filter: 过滤条件。可按设置的过滤条件过滤日志。
+        :param _Filter: 已废弃。
         :type Filter: :class:`tencentcloud.cynosdb.v20190107.models.AuditLogFilter`
+        :param _LogFilter: 审计日志过滤条件
+        :type LogFilter: list of InstanceAuditLogFilter
         """
         self._InstanceId = None
         self._StartTime = None
@@ -2576,6 +2656,7 @@ class CreateAuditLogFileRequest(AbstractModel):
         self._Order = None
         self._OrderBy = None
         self._Filter = None
+        self._LogFilter = None
 
     @property
     def InstanceId(self):
@@ -2625,6 +2706,14 @@ class CreateAuditLogFileRequest(AbstractModel):
     def Filter(self, Filter):
         self._Filter = Filter
 
+    @property
+    def LogFilter(self):
+        return self._LogFilter
+
+    @LogFilter.setter
+    def LogFilter(self, LogFilter):
+        self._LogFilter = LogFilter
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -2635,6 +2724,12 @@ class CreateAuditLogFileRequest(AbstractModel):
         if params.get("Filter") is not None:
             self._Filter = AuditLogFilter()
             self._Filter._deserialize(params.get("Filter"))
+        if params.get("LogFilter") is not None:
+            self._LogFilter = []
+            for item in params.get("LogFilter"):
+                obj = InstanceAuditLogFilter()
+                obj._deserialize(item)
+                self._LogFilter.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3674,13 +3769,13 @@ class CreateParamTemplateRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TemplateName: 模版名称
+        :param _TemplateName: 模板名称
         :type TemplateName: str
         :param _EngineVersion: mysql版本号
         :type EngineVersion: str
-        :param _TemplateDescription: 模版描述
+        :param _TemplateDescription: 模板描述
         :type TemplateDescription: str
-        :param _TemplateId: 可选参数，需要复制的模版ID
+        :param _TemplateId: 可选参数，需要复制的模板ID
         :type TemplateId: int
         :param _DbMode: 数据库类型，可选值：NORMAL（默认值），SERVERLESS
         :type DbMode: str
@@ -3772,7 +3867,7 @@ class CreateParamTemplateResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TemplateId: 模版ID
+        :param _TemplateId: 模板ID
         :type TemplateId: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3819,7 +3914,7 @@ class CreateProxyEndPointRequest(AbstractModel):
         :type ConnectionPoolType: str
         :param _OpenConnectionPool: 是否开启连接池,yes-开启，no-不开启
         :type OpenConnectionPool: str
-        :param _ConnectionPoolTimeOut: 连接池阀值：单位（秒）
+        :param _ConnectionPoolTimeOut: 连接池阈值：单位（秒）
         :type ConnectionPoolTimeOut: int
         :param _SecurityGroupIds: 安全组ID数组
         :type SecurityGroupIds: list of str
@@ -4132,7 +4227,7 @@ class CreateProxyRequest(AbstractModel):
         :type ConnectionPoolType: str
         :param _OpenConnectionPool: 是否开启连接池,yes-开启，no-不开启
         :type OpenConnectionPool: str
-        :param _ConnectionPoolTimeOut: 连接池阀值：单位（秒）
+        :param _ConnectionPoolTimeOut: 连接池阈值：单位（秒）
         :type ConnectionPoolTimeOut: int
         :param _SecurityGroupIds: 安全组ID数组
         :type SecurityGroupIds: list of str
@@ -7897,7 +7992,7 @@ class DeleteParamTemplateRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TemplateId: 参数模版ID
+        :param _TemplateId: 参数模板ID
         :type TemplateId: int
         """
         self._TemplateId = None
@@ -8505,12 +8600,14 @@ class DescribeAuditLogsRequest(AbstractModel):
 "affectRows" - 影响行数；
 "execTime" - 执行时间。
         :type OrderBy: str
-        :param _Filter: 过滤条件。可按设置的过滤条件过滤日志。
+        :param _Filter: 已废弃。
         :type Filter: :class:`tencentcloud.cynosdb.v20190107.models.AuditLogFilter`
         :param _Limit: 分页参数，单次返回的数据条数。默认值为100，最大值为100。
         :type Limit: int
         :param _Offset: 分页偏移量。
         :type Offset: int
+        :param _LogFilter: 审计日志过滤条件。
+        :type LogFilter: list of InstanceAuditLogFilter
         """
         self._InstanceId = None
         self._StartTime = None
@@ -8520,6 +8617,7 @@ class DescribeAuditLogsRequest(AbstractModel):
         self._Filter = None
         self._Limit = None
         self._Offset = None
+        self._LogFilter = None
 
     @property
     def InstanceId(self):
@@ -8585,6 +8683,14 @@ class DescribeAuditLogsRequest(AbstractModel):
     def Offset(self, Offset):
         self._Offset = Offset
 
+    @property
+    def LogFilter(self):
+        return self._LogFilter
+
+    @LogFilter.setter
+    def LogFilter(self, LogFilter):
+        self._LogFilter = LogFilter
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -8597,6 +8703,12 @@ class DescribeAuditLogsRequest(AbstractModel):
             self._Filter._deserialize(params.get("Filter"))
         self._Limit = params.get("Limit")
         self._Offset = params.get("Offset")
+        if params.get("LogFilter") is not None:
+            self._LogFilter = []
+            for item in params.get("LogFilter"):
+                obj = InstanceAuditLogFilter()
+                obj._deserialize(item)
+                self._LogFilter.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -11652,9 +11764,9 @@ class DescribeParamTemplatesRequest(AbstractModel):
         r"""
         :param _EngineVersions: 数据库引擎版本号
         :type EngineVersions: list of str
-        :param _TemplateNames: 模版名称
+        :param _TemplateNames: 模板名称
         :type TemplateNames: list of str
-        :param _TemplateIds: 模版ID
+        :param _TemplateIds: 模板ID
         :type TemplateIds: list of int
         :param _DbModes: 数据库类型，可选值：NORMAL，SERVERLESS
         :type DbModes: list of str
@@ -11664,7 +11776,7 @@ class DescribeParamTemplatesRequest(AbstractModel):
         :type Limit: int
         :param _Products: 查询的模板对应的产品类型
         :type Products: list of str
-        :param _TemplateTypes: 模版类型
+        :param _TemplateTypes: 模板类型
         :type TemplateTypes: list of str
         :param _EngineTypes: 版本类型
         :type EngineTypes: list of str
@@ -14298,6 +14410,89 @@ class InquirePriceRenewResponse(AbstractModel):
         self._InstanceRealTotalPrice = params.get("InstanceRealTotalPrice")
         self._StorageRealTotalPrice = params.get("StorageRealTotalPrice")
         self._RequestId = params.get("RequestId")
+
+
+class InstanceAuditLogFilter(AbstractModel):
+    """审计日志搜索条件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Type: 过滤项。支持以下搜索条件:
+
+等于、不等于、包含、不包含：
+host - 客户端地址；
+user - 用户名；
+dbName - 数据库名称；
+
+等于、不等于：
+sqlType - SQL类型；
+errCode - 错误码；
+threadId - 线程ID；
+
+范围搜索（时间类型统一为微妙）：
+execTime - 执行时间；
+lockWaitTime - 执行时间；
+ioWaitTime - IO等待时间；
+trxLivingTime - 事物持续时间；
+cpuTime - cpu时间；
+checkRows - 扫描行数；
+affectRows - 影响行数；
+sentRows - 返回行数。
+
+        :type Type: str
+        :param _Compare: 过滤条件。支持以下选项:
+INC - 包含,
+EXC - 不包含,
+EQS - 等于,
+NEQ - 不等于,
+RA - 范围.
+        :type Compare: str
+        :param _Value: 过滤的值。
+        :type Value: list of str
+        """
+        self._Type = None
+        self._Compare = None
+        self._Value = None
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def Compare(self):
+        return self._Compare
+
+    @Compare.setter
+    def Compare(self, Compare):
+        self._Compare = Compare
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+
+    def _deserialize(self, params):
+        self._Type = params.get("Type")
+        self._Compare = params.get("Compare")
+        self._Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class InstanceAuditRule(AbstractModel):
@@ -16974,11 +17169,11 @@ class ModifyParamTemplateRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TemplateId: 模版ID
+        :param _TemplateId: 模板ID
         :type TemplateId: int
-        :param _TemplateName: 模版名
+        :param _TemplateName: 模板名
         :type TemplateName: str
-        :param _TemplateDescription: 模版描述
+        :param _TemplateDescription: 模板描述
         :type TemplateDescription: str
         :param _ParamList: 参数列表
         :type ParamList: list of ModifyParamItem
@@ -19887,7 +20082,7 @@ class PolicyRule(AbstractModel):
         r"""
         :param _Action: 策略，ACCEPT或者DROP
         :type Action: str
-        :param _CidrIp: 来源Ip或Ip段，例如192.168.0.0/16
+        :param _CidrIp: 来源IP或IP段，例如192.168.0.0/16
         :type CidrIp: str
         :param _PortRange: 端口
         :type PortRange: str
@@ -20008,7 +20203,7 @@ class ProxyConnectionPoolInfo(AbstractModel):
         :param _OpenConnectionPool: 是否开启了连接池
 注意：此字段可能返回 null，表示取不到有效值。
         :type OpenConnectionPool: str
-        :param _ConnectionPoolType: 连接池类型：SessionConnectionPool（会话级别连接池
+        :param _ConnectionPoolType: 连接池类型：SessionConnectionPool（会话级别连接池）
 注意：此字段可能返回 null，表示取不到有效值。
         :type ConnectionPoolType: str
         """
@@ -22664,7 +22859,7 @@ class SlowQueriesItem(AbstractModel):
         :type RowsExamined: int
         :param _RowsSent: 返回行数
         :type RowsSent: int
-        :param _SqlTemplate: sql模版
+        :param _SqlTemplate: sql模板
         :type SqlTemplate: str
         :param _SqlMd5: sql语句md5
         :type SqlMd5: str

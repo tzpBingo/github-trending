@@ -146,7 +146,13 @@ class EssClient(AbstractClient):
 
 
     def CreateChannelSubOrganizationModifyQrCode(self, request):
-        """生成子客编辑企业信息二维码
+        """根据产品要求，调整接口目录
+
+        新接口：ChannelCreateOrganizationModifyQrCode
+
+        老接口目前无线上流量，测试用例已下线处理
+
+        生成子客编辑企业信息二维码
 
         :param request: Request instance for CreateChannelSubOrganizationModifyQrCode.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateChannelSubOrganizationModifyQrCodeRequest`
@@ -310,6 +316,55 @@ class EssClient(AbstractClient):
             body = self.call("CreateFlowEvidenceReport", params, headers=headers)
             response = json.loads(body)
             model = models.CreateFlowEvidenceReportResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateFlowGroupByFiles(self, request):
+        """此接口（CreateFlowGroupByFiles）通过多文件创建合同组签署流程。<br/>
+        PDF资源Id 通过上传文件接口获取
+        此接口合同组中的子合同必须都是文件发起的合同
+
+        :param request: Request instance for CreateFlowGroupByFiles.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowGroupByFilesRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateFlowGroupByFilesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateFlowGroupByFiles", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateFlowGroupByFilesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(e.message, e.message)
+
+
+    def CreateFlowGroupByTemplates(self, request):
+        """此接口（CreateFlowGroupByTemplates）通过多模板创建合同组签署流程。<br/>
+        此接口合同组中的子合同必须都是模板发起的合同。 <br/>目前最大仅支持50个子合同
+
+        :param request: Request instance for CreateFlowGroupByTemplates.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateFlowGroupByTemplatesRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateFlowGroupByTemplatesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateFlowGroupByTemplates", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateFlowGroupByTemplatesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
