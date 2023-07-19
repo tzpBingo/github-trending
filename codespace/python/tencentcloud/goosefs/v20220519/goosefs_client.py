@@ -46,7 +46,76 @@ class GoosefsClient(AbstractClient):
             if isinstance(e, TencentCloudSDKException):
                 raise
             else:
-                raise TencentCloudSDKException(e.message, e.message)
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeClusterClientToken(self, request):
+        """查询GooseFS集群客户端凭证
+
+        :param request: Request instance for DescribeClusterClientToken.
+        :type request: :class:`tencentcloud.goosefs.v20220519.models.DescribeClusterClientTokenRequest`
+        :rtype: :class:`tencentcloud.goosefs.v20220519.models.DescribeClusterClientTokenResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClusterClientToken", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeClusterClientTokenResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeClusterRoleToken(self, request):
+        """查询GooseFS集群角色凭证
+
+        :param request: Request instance for DescribeClusterRoleToken.
+        :type request: :class:`tencentcloud.goosefs.v20220519.models.DescribeClusterRoleTokenRequest`
+        :rtype: :class:`tencentcloud.goosefs.v20220519.models.DescribeClusterRoleTokenResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClusterRoleToken", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeClusterRoleTokenResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeClusterRoles(self, request):
+        """查询GooseFS集群角色
+
+        :param request: Request instance for DescribeClusterRoles.
+        :type request: :class:`tencentcloud.goosefs.v20220519.models.DescribeClusterRolesRequest`
+        :rtype: :class:`tencentcloud.goosefs.v20220519.models.DescribeClusterRolesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeClusterRoles", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeClusterRolesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
     def DescribeDataRepositoryTaskStatus(self, request):
@@ -69,4 +138,4 @@ class GoosefsClient(AbstractClient):
             if isinstance(e, TencentCloudSDKException):
                 raise
             else:
-                raise TencentCloudSDKException(e.message, e.message)
+                raise TencentCloudSDKException(type(e).__name__, str(e))

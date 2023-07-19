@@ -26,6 +26,29 @@ class VrsClient(AbstractClient):
     _service = 'vrs'
 
 
+    def CancelVRSTask(self, request):
+        """声音复刻取消任务接口
+
+        :param request: Request instance for CancelVRSTask.
+        :type request: :class:`tencentcloud.vrs.v20200824.models.CancelVRSTaskRequest`
+        :rtype: :class:`tencentcloud.vrs.v20200824.models.CancelVRSTaskResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CancelVRSTask", params, headers=headers)
+            response = json.loads(body)
+            model = models.CancelVRSTaskResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateVRSTask(self, request):
         """本接口服务对提交音频进行声音复刻任务创建接口，异步返回复刻结果。
         • 请求方法为 HTTP POST , Content-Type为"application/json; charset=utf-8"
@@ -48,7 +71,7 @@ class VrsClient(AbstractClient):
             if isinstance(e, TencentCloudSDKException):
                 raise
             else:
-                raise TencentCloudSDKException(e.message, e.message)
+                raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
     def DescribeVRSTaskStatus(self, request):
@@ -75,7 +98,7 @@ class VrsClient(AbstractClient):
             if isinstance(e, TencentCloudSDKException):
                 raise
             else:
-                raise TencentCloudSDKException(e.message, e.message)
+                raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
     def DetectEnvAndSoundQuality(self, request):
@@ -100,7 +123,30 @@ class VrsClient(AbstractClient):
             if isinstance(e, TencentCloudSDKException):
                 raise
             else:
-                raise TencentCloudSDKException(e.message, e.message)
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DownloadVRSModel(self, request):
+        """下载声音复刻离线模型
+
+        :param request: Request instance for DownloadVRSModel.
+        :type request: :class:`tencentcloud.vrs.v20200824.models.DownloadVRSModelRequest`
+        :rtype: :class:`tencentcloud.vrs.v20200824.models.DownloadVRSModelResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DownloadVRSModel", params, headers=headers)
+            response = json.loads(body)
+            model = models.DownloadVRSModelResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
     def GetTrainingText(self, request):
@@ -125,4 +171,4 @@ class VrsClient(AbstractClient):
             if isinstance(e, TencentCloudSDKException):
                 raise
             else:
-                raise TencentCloudSDKException(e.message, e.message)
+                raise TencentCloudSDKException(type(e).__name__, str(e))
