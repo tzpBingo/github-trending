@@ -41,4 +41,12 @@ The programming languages now configured are:
 
 You can also manually configure the programming language you care about yourself 🤪.
 
+### How To Use
+
+```
+git clone https://github.com/tzpBingo/github-trending.git
+cd github-trending
+python scraper.py
+```
+
 > Thanks for non-commercial open source development authorization by JetBrains!
