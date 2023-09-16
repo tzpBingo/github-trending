@@ -82,6 +82,7 @@ def job():
     scrape('kotlin',filename)
     scrape('shell',filename)
     scrape('scala',filename)
+    scrape('c++',filename)
     scrape('rust',filename)    # git add commit push
     git_add_commit_push(strdate, filename)
 
