@@ -37,7 +37,7 @@ class CreateTtsTaskRequest(AbstractModel):
         :type ProjectId: int
         :param _VoiceType: 音色 ID，包括标准音色与精品音色，精品音色拟真度更高，价格不同于标准音色，请参见[购买指南](https://cloud.tencent.com/document/product/1073/34112)。完整的音色 ID 列表请参见[音色列表](https://cloud.tencent.com/document/product/1073/92668)。
         :type VoiceType: int
-        :param _PrimaryLanguage: 主语言类型：<li>1-中文（默认）</li><li>2-英文</li>
+        :param _PrimaryLanguage: 主语言类型：<li>1-中文（默认）</li><li>2-英文</li><li>3-日文</li>
         :type PrimaryLanguage: int
         :param _SampleRate: 音频采样率：<li>16000：16k（默认）</li><li>8000：8k</li>
         :type SampleRate: int
@@ -45,7 +45,9 @@ class CreateTtsTaskRequest(AbstractModel):
         :type Codec: str
         :param _CallbackUrl: 回调 URL，用户自行搭建的用于接收识别结果的服务URL。如果用户使用轮询方式获取识别结果，则无需提交该参数。[回调说明](https://cloud.tencent.com/document/product/1073/55746)
         :type CallbackUrl: str
-        :param _VoiceoverDialogueSplit: 旁白与对白文本解析，分别合成相应风格（仅适用于旁对白音色），默认 false
+        :param _EnableSubtitle: 是否开启时间戳功能，默认为false。
+        :type EnableSubtitle: bool
+        :param _VoiceoverDialogueSplit: 旁白与对白文本解析，分别合成相应风格（仅适用于旁对白音色10510000、100510000），默认 false
         :type VoiceoverDialogueSplit: bool
         """
         self._Text = None
@@ -58,6 +60,7 @@ class CreateTtsTaskRequest(AbstractModel):
         self._SampleRate = None
         self._Codec = None
         self._CallbackUrl = None
+        self._EnableSubtitle = None
         self._VoiceoverDialogueSplit = None
 
     @property
@@ -141,6 +144,14 @@ class CreateTtsTaskRequest(AbstractModel):
         self._CallbackUrl = CallbackUrl
 
     @property
+    def EnableSubtitle(self):
+        return self._EnableSubtitle
+
+    @EnableSubtitle.setter
+    def EnableSubtitle(self, EnableSubtitle):
+        self._EnableSubtitle = EnableSubtitle
+
+    @property
     def VoiceoverDialogueSplit(self):
         return self._VoiceoverDialogueSplit
 
@@ -160,6 +171,7 @@ class CreateTtsTaskRequest(AbstractModel):
         self._SampleRate = params.get("SampleRate")
         self._Codec = params.get("Codec")
         self._CallbackUrl = params.get("CallbackUrl")
+        self._EnableSubtitle = params.get("EnableSubtitle")
         self._VoiceoverDialogueSplit = params.get("VoiceoverDialogueSplit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -291,6 +303,8 @@ class DescribeTtsTaskStatusRespData(AbstractModel):
         :type StatusStr: str
         :param _ResultUrl: 合成音频COS地址（链接有效期1天）。
         :type ResultUrl: str
+        :param _Subtitles: 时间戳信息，若未开启时间戳，则返回空数组。
+        :type Subtitles: list of Subtitle
         :param _ErrorMsg: 失败原因说明。
         :type ErrorMsg: str
         """
@@ -298,6 +312,7 @@ class DescribeTtsTaskStatusRespData(AbstractModel):
         self._Status = None
         self._StatusStr = None
         self._ResultUrl = None
+        self._Subtitles = None
         self._ErrorMsg = None
 
     @property
@@ -333,6 +348,14 @@ class DescribeTtsTaskStatusRespData(AbstractModel):
         self._ResultUrl = ResultUrl
 
     @property
+    def Subtitles(self):
+        return self._Subtitles
+
+    @Subtitles.setter
+    def Subtitles(self, Subtitles):
+        self._Subtitles = Subtitles
+
+    @property
     def ErrorMsg(self):
         return self._ErrorMsg
 
@@ -346,6 +369,12 @@ class DescribeTtsTaskStatusRespData(AbstractModel):
         self._Status = params.get("Status")
         self._StatusStr = params.get("StatusStr")
         self._ResultUrl = params.get("ResultUrl")
+        if params.get("Subtitles") is not None:
+            self._Subtitles = []
+            for item in params.get("Subtitles"):
+                obj = Subtitle()
+                obj._deserialize(item)
+                self._Subtitles.append(obj)
         self._ErrorMsg = params.get("ErrorMsg")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -502,7 +531,7 @@ class TextToVoiceRequest(AbstractModel):
         :type Text: str
         :param _SessionId: 一次请求对应一个SessionId，会原样返回，建议传入类似于uuid的字符串防止重复。
         :type SessionId: str
-        :param _Volume: 音量大小，范围：[0，10]，分别对应11个等级的音量，默认为0，代表正常音量。没有静音选项。
+        :param _Volume: 音量大小，范围[0，10]，对应音量大小。默认为0，代表正常音量，值越大音量越高。
         :type Volume: float
         :param _Speed: 语速，范围：[-2，6]，分别对应不同语速：<li>-2代表0.6倍</li><li>-1代表0.8倍</li><li>0代表1.0倍（默认）</li><li>1代表1.2倍</li><li>2代表1.5倍</li><li>6代表2.5倍</li>如果需要更细化的语速，可以保留小数点后 2 位，例如0.5 1.1 1.8等。<br>参数值与实际语速转换，可参考[代码示例](https://sdk-1300466766.cos.ap-shanghai.myqcloud.com/sample/speed_sample.tar.gz)
         :type Speed: float
@@ -512,7 +541,7 @@ class TextToVoiceRequest(AbstractModel):
         :type ModelType: int
         :param _VoiceType: 音色 ID，包括标准音色与精品音色，精品音色拟真度更高，价格不同于标准音色，请参见[购买指南](https://cloud.tencent.com/document/product/1073/34112)。完整的音色 ID 列表请参见[音色列表](https://cloud.tencent.com/document/product/1073/92668)。
         :type VoiceType: int
-        :param _PrimaryLanguage: 主语言类型：<li>1-中文（默认）</li><li>2-英文</li>
+        :param _PrimaryLanguage: 主语言类型：<li>1-中文（默认）</li><li>2-英文</li><li>3-日文</li>
         :type PrimaryLanguage: int
         :param _SampleRate: 音频采样率：
 <li>24000：24k（部分音色支持，请参见[音色列表](https://cloud.tencent.com/document/product/1073/92668)）</li>
@@ -525,7 +554,7 @@ class TextToVoiceRequest(AbstractModel):
         :type EnableSubtitle: bool
         :param _SegmentRate: 断句敏感阈值，默认值为：0，取值范围：[0,1,2]。该值越大越不容易断句，模型会更倾向于仅按照标点符号断句。此参数建议不要随意调整，可能会影响合成效果。
         :type SegmentRate: int
-        :param _EmotionCategory: 控制合成音频的情感，仅支持多情感音色使用。取值: neutral(中性)、sad(悲伤)、happy(高兴)、angry(生气)、fear(恐惧)、news(新闻)、story(故事)、radio(广播)、poetry(诗歌)、call(客服)、撒娇(sajiao)、厌恶(disgusted)、震惊(amaze)、平静(peaceful)、兴奋(exciting)
+        :param _EmotionCategory: 控制合成音频的情感，仅支持多情感音色使用。取值: neutral(中性)、sad(悲伤)、happy(高兴)、angry(生气)、fear(恐惧)、news(新闻)、story(故事)、radio(广播)、poetry(诗歌)、call(客服)、撒娇(sajiao)、厌恶(disgusted)、震惊(amaze)、平静(peaceful)、兴奋(exciting)、傲娇(aojiao)、解说(jieshuo)
         :type EmotionCategory: str
         :param _EmotionIntensity: 控制合成音频情感程度，取值范围为[50,200],默认为100；只有EmotionCategory不为空时生效；
         :type EmotionIntensity: int

@@ -96,7 +96,7 @@ class AntiddosClient(AbstractClient):
 
 
     def CreateBoundIP(self, request):
-        """绑定IP到高防包实例，支持独享包、共享包；需要注意的是此接口绑定或解绑IP是异步接口，当处于绑定或解绑中时，则不允许再进行绑定或解绑，需要等待当前绑定或解绑完成。
+        """绑定IP到高防包实例，支持独享包、共享包（新版）；需要注意的是此接口绑定或解绑IP是异步接口，当处于绑定或解绑中时，则不允许再进行绑定或解绑，需要等待当前绑定或解绑完成。
 
         :param request: Request instance for CreateBoundIP.
         :type request: :class:`tencentcloud.antiddos.v20200309.models.CreateBoundIPRequest`
@@ -937,6 +937,29 @@ class AntiddosClient(AbstractClient):
             body = self.call("DescribeBizHttpStatus", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeBizHttpStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeBizMonitorTrend(self, request):
+        """获取高防IP业务监控流量曲线
+
+        :param request: Request instance for DescribeBizMonitorTrend.
+        :type request: :class:`tencentcloud.antiddos.v20200309.models.DescribeBizMonitorTrendRequest`
+        :rtype: :class:`tencentcloud.antiddos.v20200309.models.DescribeBizMonitorTrendResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBizMonitorTrend", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBizMonitorTrendResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

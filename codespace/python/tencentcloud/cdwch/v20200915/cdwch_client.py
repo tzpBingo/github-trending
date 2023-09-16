@@ -95,6 +95,75 @@ class CdwchClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DeleteBackUpData(self, request):
+        """删除备份数据
+
+        :param request: Request instance for DeleteBackUpData.
+        :type request: :class:`tencentcloud.cdwch.v20200915.models.DeleteBackUpDataRequest`
+        :rtype: :class:`tencentcloud.cdwch.v20200915.models.DeleteBackUpDataResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteBackUpData", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteBackUpDataResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeBackUpJob(self, request):
+        """查询备份任务列表
+
+        :param request: Request instance for DescribeBackUpJob.
+        :type request: :class:`tencentcloud.cdwch.v20200915.models.DescribeBackUpJobRequest`
+        :rtype: :class:`tencentcloud.cdwch.v20200915.models.DescribeBackUpJobResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBackUpJob", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBackUpJobResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeBackUpJobDetail(self, request):
+        """查询备份任务详情
+
+        :param request: Request instance for DescribeBackUpJobDetail.
+        :type request: :class:`tencentcloud.cdwch.v20200915.models.DescribeBackUpJobDetailRequest`
+        :rtype: :class:`tencentcloud.cdwch.v20200915.models.DescribeBackUpJobDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBackUpJobDetail", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBackUpJobDetailResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeBackUpSchedule(self, request):
         """查询备份策略信息
 
@@ -109,6 +178,29 @@ class CdwchClient(AbstractClient):
             body = self.call("DescribeBackUpSchedule", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeBackUpScheduleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeBackUpTables(self, request):
+        """获取可备份表信息
+
+        :param request: Request instance for DescribeBackUpTables.
+        :type request: :class:`tencentcloud.cdwch.v20200915.models.DescribeBackUpTablesRequest`
+        :rtype: :class:`tencentcloud.cdwch.v20200915.models.DescribeBackUpTablesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBackUpTables", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBackUpTablesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -395,7 +487,7 @@ class CdwchClient(AbstractClient):
 
 
     def ModifyUserNewPrivilege(self, request):
-        """针对ck账号的权限做管控（新版）
+        """针对集群账号的权限做管控（新版）
 
         :param request: Request instance for ModifyUserNewPrivilege.
         :type request: :class:`tencentcloud.cdwch.v20200915.models.ModifyUserNewPrivilegeRequest`
@@ -431,6 +523,29 @@ class CdwchClient(AbstractClient):
             body = self.call("OpenBackUp", params, headers=headers)
             response = json.loads(body)
             model = models.OpenBackUpResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def RecoverBackUpJob(self, request):
+        """备份恢复
+
+        :param request: Request instance for RecoverBackUpJob.
+        :type request: :class:`tencentcloud.cdwch.v20200915.models.RecoverBackUpJobRequest`
+        :rtype: :class:`tencentcloud.cdwch.v20200915.models.RecoverBackUpJobResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RecoverBackUpJob", params, headers=headers)
+            response = json.loads(body)
+            model = models.RecoverBackUpJobResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

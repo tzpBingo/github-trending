@@ -212,6 +212,9 @@ INVALIDPARAMETERVALUE_PARAMETEROUTRANGEERROR = 'InvalidParameterValue.ParameterO
 # 预付费类型不允许该操作。
 INVALIDPARAMETERVALUE_PREPAYPAYMODEERROR = 'InvalidParameterValue.PrePayPayModeError'
 
+# 找不到该ProjectId
+INVALIDPARAMETERVALUE_PROJECTIDNOTFOUND = 'InvalidParameterValue.ProjectIdNotFound'
+
 # 所选地域和可用区不可用。
 INVALIDPARAMETERVALUE_REGIONZONEUNAVAILABLE = 'InvalidParameterValue.RegionZoneUnavailable'
 
@@ -238,6 +241,9 @@ LIMITEXCEEDED_USERINSTANCELIMIT = 'LimitExceeded.UserInstanceLimit'
 
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
+
+# 审计规则不存在
+OPERATIONDENIED_AUDITPOLICYNOTEXISTERROR = 'OperationDenied.AuditPolicyNotExistError'
 
 # 权限校验失败。
 OPERATIONDENIED_CAMDENIEDERROR = 'OperationDenied.CamDeniedError'

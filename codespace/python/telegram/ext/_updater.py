@@ -24,6 +24,7 @@ from pathlib import Path
 from types import TracebackType
 from typing import (
     TYPE_CHECKING,
+    Any,
     AsyncContextManager,
     Callable,
     Coroutine,
@@ -36,6 +37,7 @@ from typing import (
 
 from telegram._utils.defaultvalue import DEFAULT_NONE
 from telegram._utils.logging import get_logger
+from telegram._utils.repr import build_repr_with_selected_attrs
 from telegram._utils.types import ODVInput
 from telegram.error import InvalidToken, RetryAfter, TelegramError, TimedOut
 
@@ -113,7 +115,7 @@ class Updater(AsyncContextManager["Updater"]):
         update_queue: "asyncio.Queue[object]",
     ):
         self.bot: Bot = bot
-        self.update_queue: "asyncio.Queue[object]" = update_queue
+        self.update_queue: asyncio.Queue[object] = update_queue
 
         self._last_update_id = 0
         self._running = False
@@ -121,6 +123,38 @@ class Updater(AsyncContextManager["Updater"]):
         self._httpd: Optional[WebhookServer] = None
         self.__lock = asyncio.Lock()
         self.__polling_task: Optional[asyncio.Task] = None
+        self.__polling_cleanup_cb: Optional[Callable[[], Coroutine[Any, Any, None]]] = None
+
+    async def __aenter__(self: _UpdaterType) -> _UpdaterType:  # noqa: PYI019
+        """Simple context manager which initializes the Updater."""
+        try:
+            await self.initialize()
+            return self
+        except Exception as exc:
+            await self.shutdown()
+            raise exc
+
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
+        """Shutdown the Updater from the context manager."""
+        # Make sure not to return `True` so that exceptions are not suppressed
+        # https://docs.python.org/3/reference/datamodel.html?#object.__aexit__
+        await self.shutdown()
+
+    def __repr__(self) -> str:
+        """Give a string representation of the updater in the form ``Updater[bot=...]``.
+
+        As this class doesn't implement :meth:`object.__str__`, the default implementation
+        will be used, which is equivalent to :meth:`__repr__`.
+
+        Returns:
+            :obj:`str`
+        """
+        return build_repr_with_selected_attrs(self, bot=self.bot)
 
     @property
     def running(self) -> bool:
@@ -160,26 +194,6 @@ class Updater(AsyncContextManager["Updater"]):
         await self.bot.shutdown()
         self._initialized = False
         _LOGGER.debug("Shut down of Updater complete")
-
-    async def __aenter__(self: _UpdaterType) -> _UpdaterType:
-        """Simple context manager which initializes the Updater."""
-        try:
-            await self.initialize()
-            return self
-        except Exception as exc:
-            await self.shutdown()
-            raise exc
-
-    async def __aexit__(
-        self,
-        exc_type: Optional[Type[BaseException]],
-        exc_val: Optional[BaseException],
-        exc_tb: Optional[TracebackType],
-    ) -> None:
-        """Shutdown the Updater from the context manager."""
-        # Make sure not to return `True` so that exceptions are not suppressed
-        # https://docs.python.org/3/reference/datamodel.html?#object.__aexit__
-        await self.shutdown()
 
     async def start_polling(
         self,
@@ -366,6 +380,28 @@ class Updater(AsyncContextManager["Updater"]):
             ),
             name="Updater:start_polling:polling_task",
         )
+
+        # Prepare a cleanup callback to await on _stop_polling
+        # Calling get_updates one more time with the latest `offset` parameter ensures that
+        # all updates that where put into the update queue are also marked as "read" to TG,
+        # so we do not receive them again on the next startup
+        # We define this here so that we can use the same parameters as in the polling task
+        async def _get_updates_cleanup() -> None:
+            _LOGGER.debug(
+                "Calling `get_updates` one more time to mark all fetched updates as read."
+            )
+            await self.bot.get_updates(
+                offset=self._last_update_id,
+                # We don't want to do long polling here!
+                timeout=0,
+                read_timeout=read_timeout,
+                connect_timeout=connect_timeout,
+                write_timeout=write_timeout,
+                pool_timeout=pool_timeout,
+                allowed_updates=allowed_updates,
+            )
+
+        self.__polling_cleanup_cb = _get_updates_cleanup
 
         if ready is not None:
             ready.set()
@@ -748,3 +784,12 @@ class Updater(AsyncContextManager["Updater"]):
                 # after start_polling(), but lets better be safe than sorry ...
 
             self.__polling_task = None
+
+            if self.__polling_cleanup_cb:
+                await self.__polling_cleanup_cb()
+                self.__polling_cleanup_cb = None
+            else:
+                _LOGGER.warning(
+                    "No polling cleanup callback defined. The last fetched updates may be "
+                    "fetched again on the next polling start."
+                )

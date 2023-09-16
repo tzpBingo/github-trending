@@ -298,6 +298,29 @@ class VodClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateDomainVerifyRecord(self, request):
+        """该接口用于生成一条子域名解析，提示客户添加到域名解析上，用于泛域名及域名取回校验归属权。
+
+        :param request: Request instance for CreateDomainVerifyRecord.
+        :type request: :class:`tencentcloud.vod.v20180717.models.CreateDomainVerifyRecordRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.CreateDomainVerifyRecordResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateDomainVerifyRecord", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateDomainVerifyRecordResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateEnhanceMediaTemplate(self, request):
         """创建音画质重生模板。
 
@@ -3615,7 +3638,7 @@ class VodClient(AbstractClient):
 
 
     def RebuildMedia(self, request):
-        """发起视频重生
+        """发起音画质重生
 
         :param request: Request instance for RebuildMedia.
         :type request: :class:`tencentcloud.vod.v20180717.models.RebuildMediaRequest`
@@ -3952,6 +3975,29 @@ class VodClient(AbstractClient):
             body = self.call("SplitMedia", params, headers=headers)
             response = json.loads(body)
             model = models.SplitMediaResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def VerifyDomainRecord(self, request):
+        """该接口用于验证域名解析值。
+
+        :param request: Request instance for VerifyDomainRecord.
+        :type request: :class:`tencentcloud.vod.v20180717.models.VerifyDomainRecordRequest`
+        :rtype: :class:`tencentcloud.vod.v20180717.models.VerifyDomainRecordResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("VerifyDomainRecord", params, headers=headers)
+            response = json.loads(body)
+            model = models.VerifyDomainRecordResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

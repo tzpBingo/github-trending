@@ -464,7 +464,7 @@ class TcrClient(AbstractClient):
 
 
     def CreateServiceAccount(self, request):
-        """创建自定义账户
+        """创建服务级账户
 
         :param request: Request instance for CreateServiceAccount.
         :type request: :class:`tencentcloud.tcr.v20190924.models.CreateServiceAccountRequest`
@@ -2089,6 +2089,29 @@ class TcrClient(AbstractClient):
             body = self.call("DownloadHelmChart", params, headers=headers)
             response = json.loads(body)
             model = models.DownloadHelmChartResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DuplicateImage(self, request):
+        """用于在企业版镜像仓库中复制镜像版本
+
+        :param request: Request instance for DuplicateImage.
+        :type request: :class:`tencentcloud.tcr.v20190924.models.DuplicateImageRequest`
+        :rtype: :class:`tencentcloud.tcr.v20190924.models.DuplicateImageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DuplicateImage", params, headers=headers)
+            response = json.loads(body)
+            model = models.DuplicateImageResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

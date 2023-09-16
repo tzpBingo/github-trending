@@ -3963,7 +3963,7 @@ class TcssClient(AbstractClient):
 
 
     def DescribeImageRegistryNamespaceList(self, request):
-        """查询用户镜像仓库下的项目名称列表
+        """查询用户镜像仓库下的命令空间列表
 
         :param request: Request instance for DescribeImageRegistryNamespaceList.
         :type request: :class:`tencentcloud.tcss.v20201101.models.DescribeImageRegistryNamespaceListRequest`
@@ -4827,6 +4827,52 @@ class TcssClient(AbstractClient):
             body = self.call("DescribeReverseShellWhiteLists", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeReverseShellWhiteListsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeRiskDnsEventDetail(self, request):
+        """查询恶意请求事件详情
+
+        :param request: Request instance for DescribeRiskDnsEventDetail.
+        :type request: :class:`tencentcloud.tcss.v20201101.models.DescribeRiskDnsEventDetailRequest`
+        :rtype: :class:`tencentcloud.tcss.v20201101.models.DescribeRiskDnsEventDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRiskDnsEventDetail", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRiskDnsEventDetailResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeRiskDnsList(self, request):
+        """查询恶意请求事件列表
+
+        :param request: Request instance for DescribeRiskDnsList.
+        :type request: :class:`tencentcloud.tcss.v20201101.models.DescribeRiskDnsListRequest`
+        :rtype: :class:`tencentcloud.tcss.v20201101.models.DescribeRiskDnsListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRiskDnsList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRiskDnsListResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

@@ -1453,7 +1453,7 @@ class DlcClient(AbstractClient):
 
 
     def DescribeSparkSessionBatchSqlLog(self, request):
-        """本接口（DescribeSparkSessionBatchSqlLog）用于获取SparkSQL批任务日志
+        """本接口（DescribeSparkSessionBatchSqlLog）用于查询Spark SQL批任务日志
 
         :param request: Request instance for DescribeSparkSessionBatchSqlLog.
         :type request: :class:`tencentcloud.dlc.v20210125.models.DescribeSparkSessionBatchSqlLogRequest`
@@ -1581,6 +1581,29 @@ class DlcClient(AbstractClient):
             body = self.call("DescribeTasks", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeTasksResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeUserRoles(self, request):
+        """列举用户角色信息
+
+        :param request: Request instance for DescribeUserRoles.
+        :type request: :class:`tencentcloud.dlc.v20210125.models.DescribeUserRolesRequest`
+        :rtype: :class:`tencentcloud.dlc.v20210125.models.DescribeUserRolesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeUserRoles", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeUserRolesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1949,6 +1972,29 @@ class DlcClient(AbstractClient):
             body = self.call("ModifyWorkGroup", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyWorkGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def QueryResult(self, request):
+        """获取任务结果查询
+
+        :param request: Request instance for QueryResult.
+        :type request: :class:`tencentcloud.dlc.v20210125.models.QueryResultRequest`
+        :rtype: :class:`tencentcloud.dlc.v20210125.models.QueryResultResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("QueryResult", params, headers=headers)
+            response = json.loads(body)
+            model = models.QueryResultResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

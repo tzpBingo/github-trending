@@ -1277,6 +1277,236 @@ class CFSTurbo(AbstractModel):
         
 
 
+class ChatCompletionRequest(AbstractModel):
+    """ChatCompletion请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Model: 对话的目标模型ID。
+多行业多场景大模型在线体验聊天：tj_llm_clm-v1。
+自行部署的开源大模型聊天：部署的模型服务组ID，形如ms-xxyyzz。
+        :type Model: str
+        :param _Messages: 输入对话历史。旧的对话在前，数组中最后一项应该为这次的问题。
+        :type Messages: list of Message
+        :param _Temperature: 仅当模型为自行部署的开源大模型时生效。采样随机值，默认值为1.0，取值范围[0,2]。较高的值(如0.8)将使输出更加随机，而较低的值(如0.2)将使输出更加确定。建议仅修改此参数或TopP，但不建议两者都修改。
+        :type Temperature: float
+        :param _TopP: 仅当模型为自行部署的开源大模型时生效。核采样，默认值为1，取值范围[0,1]。指的是预先设置一个概率界限 p，然后将所有可能生成的token，根据概率大小从高到低排列，依次选取。当这些选取的token的累积概率大于或等于 p 值时停止，然后从已经选取的token中进行采样，生成下一个token。例如top_p为0.1时意味着模型只考虑累积概率为10%的token。建议仅修改此参数或Temperature，不建议两者都修改。
+        :type TopP: float
+        :param _MaxTokens: 仅当模型为自行部署的开源大模型时生效。最大生成的token数目。默认为无限大。
+        :type MaxTokens: int
+        """
+        self._Model = None
+        self._Messages = None
+        self._Temperature = None
+        self._TopP = None
+        self._MaxTokens = None
+
+    @property
+    def Model(self):
+        return self._Model
+
+    @Model.setter
+    def Model(self, Model):
+        self._Model = Model
+
+    @property
+    def Messages(self):
+        return self._Messages
+
+    @Messages.setter
+    def Messages(self, Messages):
+        self._Messages = Messages
+
+    @property
+    def Temperature(self):
+        return self._Temperature
+
+    @Temperature.setter
+    def Temperature(self, Temperature):
+        self._Temperature = Temperature
+
+    @property
+    def TopP(self):
+        return self._TopP
+
+    @TopP.setter
+    def TopP(self, TopP):
+        self._TopP = TopP
+
+    @property
+    def MaxTokens(self):
+        return self._MaxTokens
+
+    @MaxTokens.setter
+    def MaxTokens(self, MaxTokens):
+        self._MaxTokens = MaxTokens
+
+
+    def _deserialize(self, params):
+        self._Model = params.get("Model")
+        if params.get("Messages") is not None:
+            self._Messages = []
+            for item in params.get("Messages"):
+                obj = Message()
+                obj._deserialize(item)
+                self._Messages.append(obj)
+        self._Temperature = params.get("Temperature")
+        self._TopP = params.get("TopP")
+        self._MaxTokens = params.get("MaxTokens")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChatCompletionResponse(AbstractModel):
+    """ChatCompletion返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Model: 部署好的服务Id
+        :type Model: str
+        :param _Choices: 本次问答的答案。
+        :type Choices: list of Choice
+        :param _Id: 会话Id。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Id: str
+        :param _Usage: token统计
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Usage: :class:`tencentcloud.tione.v20211111.models.Usage`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Model = None
+        self._Choices = None
+        self._Id = None
+        self._Usage = None
+        self._RequestId = None
+
+    @property
+    def Model(self):
+        return self._Model
+
+    @Model.setter
+    def Model(self, Model):
+        self._Model = Model
+
+    @property
+    def Choices(self):
+        return self._Choices
+
+    @Choices.setter
+    def Choices(self, Choices):
+        self._Choices = Choices
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Usage(self):
+        return self._Usage
+
+    @Usage.setter
+    def Usage(self, Usage):
+        self._Usage = Usage
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Model = params.get("Model")
+        if params.get("Choices") is not None:
+            self._Choices = []
+            for item in params.get("Choices"):
+                obj = Choice()
+                obj._deserialize(item)
+                self._Choices.append(obj)
+        self._Id = params.get("Id")
+        if params.get("Usage") is not None:
+            self._Usage = Usage()
+            self._Usage._deserialize(params.get("Usage"))
+        self._RequestId = params.get("RequestId")
+
+
+class Choice(AbstractModel):
+    """对话结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Message: 对话结果
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: :class:`tencentcloud.tione.v20211111.models.Message`
+        :param _FinishReason: 结束理由: stop, length, content_filter, null
+        :type FinishReason: str
+        :param _Index: 序号
+        :type Index: int
+        """
+        self._Message = None
+        self._FinishReason = None
+        self._Index = None
+
+    @property
+    def Message(self):
+        return self._Message
+
+    @Message.setter
+    def Message(self, Message):
+        self._Message = Message
+
+    @property
+    def FinishReason(self):
+        return self._FinishReason
+
+    @FinishReason.setter
+    def FinishReason(self, FinishReason):
+        self._FinishReason = FinishReason
+
+    @property
+    def Index(self):
+        return self._Index
+
+    @Index.setter
+    def Index(self, Index):
+        self._Index = Index
+
+
+    def _deserialize(self, params):
+        if params.get("Message") is not None:
+            self._Message = Message()
+            self._Message._deserialize(params.get("Message"))
+        self._FinishReason = params.get("FinishReason")
+        self._Index = params.get("Index")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Container(AbstractModel):
     """容器信息
 
@@ -2275,6 +2505,10 @@ HYBRID_PAID:
         :type ModelTurboEnable: bool
         :param _ServiceCategory: 服务分类
         :type ServiceCategory: str
+        :param _Command: 服务的启动命令
+        :type Command: str
+        :param _ServiceEIP: 是否开启TIONE内网访问外部
+        :type ServiceEIP: :class:`tencentcloud.tione.v20211111.models.ServiceEIP`
         """
         self._ServiceGroupId = None
         self._ServiceGroupName = None
@@ -2305,6 +2539,8 @@ HYBRID_PAID:
         self._CallbackUrl = None
         self._ModelTurboEnable = None
         self._ServiceCategory = None
+        self._Command = None
+        self._ServiceEIP = None
 
     @property
     def ServiceGroupId(self):
@@ -2538,6 +2774,22 @@ HYBRID_PAID:
     def ServiceCategory(self, ServiceCategory):
         self._ServiceCategory = ServiceCategory
 
+    @property
+    def Command(self):
+        return self._Command
+
+    @Command.setter
+    def Command(self, Command):
+        self._Command = Command
+
+    @property
+    def ServiceEIP(self):
+        return self._ServiceEIP
+
+    @ServiceEIP.setter
+    def ServiceEIP(self, ServiceEIP):
+        self._ServiceEIP = ServiceEIP
+
 
     def _deserialize(self, params):
         self._ServiceGroupId = params.get("ServiceGroupId")
@@ -2600,6 +2852,10 @@ HYBRID_PAID:
         self._CallbackUrl = params.get("CallbackUrl")
         self._ModelTurboEnable = params.get("ModelTurboEnable")
         self._ServiceCategory = params.get("ServiceCategory")
+        self._Command = params.get("Command")
+        if params.get("ServiceEIP") is not None:
+            self._ServiceEIP = ServiceEIP()
+            self._ServiceEIP._deserialize(params.get("ServiceEIP"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2647,6 +2903,450 @@ class CreateModelServiceResponse(AbstractModel):
         if params.get("Service") is not None:
             self._Service = Service()
             self._Service._deserialize(params.get("Service"))
+        self._RequestId = params.get("RequestId")
+
+
+class CreateNotebookImageRequest(AbstractModel):
+    """CreateNotebookImage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ImageInfo: 镜像信息
+        :type ImageInfo: :class:`tencentcloud.tione.v20211111.models.ImageInfo`
+        :param _NotebookId: notebook id
+        :type NotebookId: str
+        :param _Kernels: 要保存的kernel数组
+        :type Kernels: list of str
+        """
+        self._ImageInfo = None
+        self._NotebookId = None
+        self._Kernels = None
+
+    @property
+    def ImageInfo(self):
+        return self._ImageInfo
+
+    @ImageInfo.setter
+    def ImageInfo(self, ImageInfo):
+        self._ImageInfo = ImageInfo
+
+    @property
+    def NotebookId(self):
+        return self._NotebookId
+
+    @NotebookId.setter
+    def NotebookId(self, NotebookId):
+        self._NotebookId = NotebookId
+
+    @property
+    def Kernels(self):
+        return self._Kernels
+
+    @Kernels.setter
+    def Kernels(self, Kernels):
+        self._Kernels = Kernels
+
+
+    def _deserialize(self, params):
+        if params.get("ImageInfo") is not None:
+            self._ImageInfo = ImageInfo()
+            self._ImageInfo._deserialize(params.get("ImageInfo"))
+        self._NotebookId = params.get("NotebookId")
+        self._Kernels = params.get("Kernels")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateNotebookImageResponse(AbstractModel):
+    """CreateNotebookImage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class CreateNotebookRequest(AbstractModel):
+    """CreateNotebook请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Name: 名称。不超过60个字符，仅支持中英文、数字、下划线"_"、短横"-"，只能以中英文、数字开头
+        :type Name: str
+        :param _ChargeType: 计算资源付费模式 ，可选值为：
+PREPAID：预付费，即包年包月
+POSTPAID_BY_HOUR：按小时后付费
+        :type ChargeType: str
+        :param _ResourceConf: 计算资源配置
+        :type ResourceConf: :class:`tencentcloud.tione.v20211111.models.ResourceConf`
+        :param _LogEnable: 是否上报日志
+        :type LogEnable: bool
+        :param _RootAccess: 是否ROOT权限
+        :type RootAccess: bool
+        :param _AutoStopping: 是否自动停止
+        :type AutoStopping: bool
+        :param _DirectInternetAccess: 是否访问公网
+        :type DirectInternetAccess: bool
+        :param _ResourceGroupId: 资源组ID(for预付费)
+        :type ResourceGroupId: str
+        :param _VpcId: Vpc-Id
+        :type VpcId: str
+        :param _SubnetId: 子网Id
+        :type SubnetId: str
+        :param _VolumeSourceType: 存储的类型。取值包含： 
+    FREE:    预付费的免费存储
+    CLOUD_PREMIUM： 高性能云硬盘
+    CLOUD_SSD： SSD云硬盘
+    CFS:     CFS存储，包含NFS和turbo
+        :type VolumeSourceType: str
+        :param _VolumeSizeInGB: 存储卷大小，单位GB
+        :type VolumeSizeInGB: int
+        :param _VolumeSourceCFS: CFS存储的配置
+        :type VolumeSourceCFS: :class:`tencentcloud.tione.v20211111.models.CFSConfig`
+        :param _LogConfig: 日志配置
+        :type LogConfig: :class:`tencentcloud.tione.v20211111.models.LogConfig`
+        :param _LifecycleScriptId: 生命周期脚本的ID
+        :type LifecycleScriptId: str
+        :param _DefaultCodeRepoId: 默认GIT存储库的ID
+        :type DefaultCodeRepoId: str
+        :param _AdditionalCodeRepoIds: 其他GIT存储库的ID，最多3个
+        :type AdditionalCodeRepoIds: list of str
+        :param _AutomaticStopTime: 自动停止时间，单位小时
+        :type AutomaticStopTime: int
+        :param _Tags: 标签配置
+        :type Tags: list of Tag
+        :param _DataConfigs: 数据配置
+        :type DataConfigs: list of DataConfig
+        :param _ImageInfo: 镜像信息
+        :type ImageInfo: :class:`tencentcloud.tione.v20211111.models.ImageInfo`
+        :param _ImageType: 镜像类型
+        :type ImageType: str
+        :param _SSHConfig: SSH配置信息
+        :type SSHConfig: :class:`tencentcloud.tione.v20211111.models.SSHConfig`
+        """
+        self._Name = None
+        self._ChargeType = None
+        self._ResourceConf = None
+        self._LogEnable = None
+        self._RootAccess = None
+        self._AutoStopping = None
+        self._DirectInternetAccess = None
+        self._ResourceGroupId = None
+        self._VpcId = None
+        self._SubnetId = None
+        self._VolumeSourceType = None
+        self._VolumeSizeInGB = None
+        self._VolumeSourceCFS = None
+        self._LogConfig = None
+        self._LifecycleScriptId = None
+        self._DefaultCodeRepoId = None
+        self._AdditionalCodeRepoIds = None
+        self._AutomaticStopTime = None
+        self._Tags = None
+        self._DataConfigs = None
+        self._ImageInfo = None
+        self._ImageType = None
+        self._SSHConfig = None
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def ChargeType(self):
+        return self._ChargeType
+
+    @ChargeType.setter
+    def ChargeType(self, ChargeType):
+        self._ChargeType = ChargeType
+
+    @property
+    def ResourceConf(self):
+        return self._ResourceConf
+
+    @ResourceConf.setter
+    def ResourceConf(self, ResourceConf):
+        self._ResourceConf = ResourceConf
+
+    @property
+    def LogEnable(self):
+        return self._LogEnable
+
+    @LogEnable.setter
+    def LogEnable(self, LogEnable):
+        self._LogEnable = LogEnable
+
+    @property
+    def RootAccess(self):
+        return self._RootAccess
+
+    @RootAccess.setter
+    def RootAccess(self, RootAccess):
+        self._RootAccess = RootAccess
+
+    @property
+    def AutoStopping(self):
+        return self._AutoStopping
+
+    @AutoStopping.setter
+    def AutoStopping(self, AutoStopping):
+        self._AutoStopping = AutoStopping
+
+    @property
+    def DirectInternetAccess(self):
+        return self._DirectInternetAccess
+
+    @DirectInternetAccess.setter
+    def DirectInternetAccess(self, DirectInternetAccess):
+        self._DirectInternetAccess = DirectInternetAccess
+
+    @property
+    def ResourceGroupId(self):
+        return self._ResourceGroupId
+
+    @ResourceGroupId.setter
+    def ResourceGroupId(self, ResourceGroupId):
+        self._ResourceGroupId = ResourceGroupId
+
+    @property
+    def VpcId(self):
+        return self._VpcId
+
+    @VpcId.setter
+    def VpcId(self, VpcId):
+        self._VpcId = VpcId
+
+    @property
+    def SubnetId(self):
+        return self._SubnetId
+
+    @SubnetId.setter
+    def SubnetId(self, SubnetId):
+        self._SubnetId = SubnetId
+
+    @property
+    def VolumeSourceType(self):
+        return self._VolumeSourceType
+
+    @VolumeSourceType.setter
+    def VolumeSourceType(self, VolumeSourceType):
+        self._VolumeSourceType = VolumeSourceType
+
+    @property
+    def VolumeSizeInGB(self):
+        return self._VolumeSizeInGB
+
+    @VolumeSizeInGB.setter
+    def VolumeSizeInGB(self, VolumeSizeInGB):
+        self._VolumeSizeInGB = VolumeSizeInGB
+
+    @property
+    def VolumeSourceCFS(self):
+        return self._VolumeSourceCFS
+
+    @VolumeSourceCFS.setter
+    def VolumeSourceCFS(self, VolumeSourceCFS):
+        self._VolumeSourceCFS = VolumeSourceCFS
+
+    @property
+    def LogConfig(self):
+        return self._LogConfig
+
+    @LogConfig.setter
+    def LogConfig(self, LogConfig):
+        self._LogConfig = LogConfig
+
+    @property
+    def LifecycleScriptId(self):
+        return self._LifecycleScriptId
+
+    @LifecycleScriptId.setter
+    def LifecycleScriptId(self, LifecycleScriptId):
+        self._LifecycleScriptId = LifecycleScriptId
+
+    @property
+    def DefaultCodeRepoId(self):
+        return self._DefaultCodeRepoId
+
+    @DefaultCodeRepoId.setter
+    def DefaultCodeRepoId(self, DefaultCodeRepoId):
+        self._DefaultCodeRepoId = DefaultCodeRepoId
+
+    @property
+    def AdditionalCodeRepoIds(self):
+        return self._AdditionalCodeRepoIds
+
+    @AdditionalCodeRepoIds.setter
+    def AdditionalCodeRepoIds(self, AdditionalCodeRepoIds):
+        self._AdditionalCodeRepoIds = AdditionalCodeRepoIds
+
+    @property
+    def AutomaticStopTime(self):
+        return self._AutomaticStopTime
+
+    @AutomaticStopTime.setter
+    def AutomaticStopTime(self, AutomaticStopTime):
+        self._AutomaticStopTime = AutomaticStopTime
+
+    @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
+    @property
+    def DataConfigs(self):
+        return self._DataConfigs
+
+    @DataConfigs.setter
+    def DataConfigs(self, DataConfigs):
+        self._DataConfigs = DataConfigs
+
+    @property
+    def ImageInfo(self):
+        return self._ImageInfo
+
+    @ImageInfo.setter
+    def ImageInfo(self, ImageInfo):
+        self._ImageInfo = ImageInfo
+
+    @property
+    def ImageType(self):
+        return self._ImageType
+
+    @ImageType.setter
+    def ImageType(self, ImageType):
+        self._ImageType = ImageType
+
+    @property
+    def SSHConfig(self):
+        return self._SSHConfig
+
+    @SSHConfig.setter
+    def SSHConfig(self, SSHConfig):
+        self._SSHConfig = SSHConfig
+
+
+    def _deserialize(self, params):
+        self._Name = params.get("Name")
+        self._ChargeType = params.get("ChargeType")
+        if params.get("ResourceConf") is not None:
+            self._ResourceConf = ResourceConf()
+            self._ResourceConf._deserialize(params.get("ResourceConf"))
+        self._LogEnable = params.get("LogEnable")
+        self._RootAccess = params.get("RootAccess")
+        self._AutoStopping = params.get("AutoStopping")
+        self._DirectInternetAccess = params.get("DirectInternetAccess")
+        self._ResourceGroupId = params.get("ResourceGroupId")
+        self._VpcId = params.get("VpcId")
+        self._SubnetId = params.get("SubnetId")
+        self._VolumeSourceType = params.get("VolumeSourceType")
+        self._VolumeSizeInGB = params.get("VolumeSizeInGB")
+        if params.get("VolumeSourceCFS") is not None:
+            self._VolumeSourceCFS = CFSConfig()
+            self._VolumeSourceCFS._deserialize(params.get("VolumeSourceCFS"))
+        if params.get("LogConfig") is not None:
+            self._LogConfig = LogConfig()
+            self._LogConfig._deserialize(params.get("LogConfig"))
+        self._LifecycleScriptId = params.get("LifecycleScriptId")
+        self._DefaultCodeRepoId = params.get("DefaultCodeRepoId")
+        self._AdditionalCodeRepoIds = params.get("AdditionalCodeRepoIds")
+        self._AutomaticStopTime = params.get("AutomaticStopTime")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._Tags.append(obj)
+        if params.get("DataConfigs") is not None:
+            self._DataConfigs = []
+            for item in params.get("DataConfigs"):
+                obj = DataConfig()
+                obj._deserialize(item)
+                self._DataConfigs.append(obj)
+        if params.get("ImageInfo") is not None:
+            self._ImageInfo = ImageInfo()
+            self._ImageInfo._deserialize(params.get("ImageInfo"))
+        self._ImageType = params.get("ImageType")
+        if params.get("SSHConfig") is not None:
+            self._SSHConfig = SSHConfig()
+            self._SSHConfig._deserialize(params.get("SSHConfig"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateNotebookResponse(AbstractModel):
+    """CreateNotebook返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook标志
+        :type Id: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Id = None
+        self._RequestId = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
         self._RequestId = params.get("RequestId")
 
 
@@ -2763,8 +3463,6 @@ MODEL：导入新模型
 VERSION：导入新版本
 EXIST：导入现有版本
         :type ImportMethod: str
-        :param _TrainingModelCosPath: 模型来源cos目录，以/结尾
-        :type TrainingModelCosPath: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
         :param _ReasoningEnvironmentSource: 推理环境来源（SYSTEM/CUSTOM）
         :type ReasoningEnvironmentSource: str
         :param _TrainingModelName: 模型名称，不超过60个字符，仅支持中英文、数字、下划线"_"、短横"-"，只能以中英文、数字开头
@@ -2773,6 +3471,8 @@ EXIST：导入现有版本
         :type Tags: list of Tag
         :param _TrainingJobName: 训练任务名称
         :type TrainingJobName: str
+        :param _TrainingModelCosPath: 模型来源cos目录，以/结尾
+        :type TrainingModelCosPath: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
         :param _AlgorithmFramework: 算法框架 （PYTORCH/TENSORFLOW/DETECTRON2/PMML/MMDETECTION)
         :type AlgorithmFramework: str
         :param _ReasoningEnvironment: 推理环境
@@ -2817,11 +3517,11 @@ EXIST：导入现有版本
         :type IsQAT: bool
         """
         self._ImportMethod = None
-        self._TrainingModelCosPath = None
         self._ReasoningEnvironmentSource = None
         self._TrainingModelName = None
         self._Tags = None
         self._TrainingJobName = None
+        self._TrainingModelCosPath = None
         self._AlgorithmFramework = None
         self._ReasoningEnvironment = None
         self._TrainingModelIndex = None
@@ -2850,14 +3550,6 @@ EXIST：导入现有版本
     @ImportMethod.setter
     def ImportMethod(self, ImportMethod):
         self._ImportMethod = ImportMethod
-
-    @property
-    def TrainingModelCosPath(self):
-        return self._TrainingModelCosPath
-
-    @TrainingModelCosPath.setter
-    def TrainingModelCosPath(self, TrainingModelCosPath):
-        self._TrainingModelCosPath = TrainingModelCosPath
 
     @property
     def ReasoningEnvironmentSource(self):
@@ -2890,6 +3582,14 @@ EXIST：导入现有版本
     @TrainingJobName.setter
     def TrainingJobName(self, TrainingJobName):
         self._TrainingJobName = TrainingJobName
+
+    @property
+    def TrainingModelCosPath(self):
+        return self._TrainingModelCosPath
+
+    @TrainingModelCosPath.setter
+    def TrainingModelCosPath(self, TrainingModelCosPath):
+        self._TrainingModelCosPath = TrainingModelCosPath
 
     @property
     def AlgorithmFramework(self):
@@ -3054,9 +3754,6 @@ EXIST：导入现有版本
 
     def _deserialize(self, params):
         self._ImportMethod = params.get("ImportMethod")
-        if params.get("TrainingModelCosPath") is not None:
-            self._TrainingModelCosPath = CosPathInfo()
-            self._TrainingModelCosPath._deserialize(params.get("TrainingModelCosPath"))
         self._ReasoningEnvironmentSource = params.get("ReasoningEnvironmentSource")
         self._TrainingModelName = params.get("TrainingModelName")
         if params.get("Tags") is not None:
@@ -3066,6 +3763,9 @@ EXIST：导入现有版本
                 obj._deserialize(item)
                 self._Tags.append(obj)
         self._TrainingJobName = params.get("TrainingJobName")
+        if params.get("TrainingModelCosPath") is not None:
+            self._TrainingModelCosPath = CosPathInfo()
+            self._TrainingModelCosPath._deserialize(params.get("TrainingModelCosPath"))
         self._AlgorithmFramework = params.get("AlgorithmFramework")
         self._ReasoningEnvironment = params.get("ReasoningEnvironment")
         self._TrainingModelIndex = params.get("TrainingModelIndex")
@@ -3163,14 +3863,6 @@ POSTPAID_BY_HOUR 按量计费
         :type ChargeType: str
         :param _ResourceConfigInfos: 资源配置，需填写对应算力规格ID和节点数量，算力规格ID查询接口为DescribeBillingSpecsPrice，eg：[{"Role":"WORKER", "InstanceType": "TI.S.MEDIUM.POST", "InstanceNum": 1}]
         :type ResourceConfigInfos: list of ResourceConfigInfo
-        :param _CodePackagePath: COS代码包路径
-        :type CodePackagePath: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
-        :param _TrainingMode: 训练模式，通过DescribeTrainingFrameworks接口查询，eg：PS_WORKER、DDP、MPI、HOROVOD
-        :type TrainingMode: str
-        :param _Output: COS训练输出路径
-        :type Output: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
-        :param _LogEnable: 是否上报日志
-        :type LogEnable: bool
         :param _FrameworkName: 训练框架名称，通过DescribeTrainingFrameworks接口查询，eg：SPARK、PYSPARK、TENSORFLOW、PYTORCH
         :type FrameworkName: str
         :param _FrameworkVersion: 训练框架版本，通过DescribeTrainingFrameworks接口查询，eg：1.15、1.9
@@ -3183,18 +3875,26 @@ POSTPAID_BY_HOUR 按量计费
         :type Tags: list of Tag
         :param _ImageInfo: 自定义镜像信息
         :type ImageInfo: :class:`tencentcloud.tione.v20211111.models.ImageInfo`
+        :param _CodePackagePath: COS代码包路径
+        :type CodePackagePath: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
         :param _StartCmdInfo: 启动命令信息，默认为sh start.sh
         :type StartCmdInfo: :class:`tencentcloud.tione.v20211111.models.StartCmdInfo`
+        :param _TrainingMode: 训练模式，通过DescribeTrainingFrameworks接口查询，eg：PS_WORKER、DDP、MPI、HOROVOD
+        :type TrainingMode: str
         :param _DataConfigs: 数据配置，依赖DataSource字段
         :type DataConfigs: list of DataConfig
         :param _VpcId: VPC Id
         :type VpcId: str
         :param _SubnetId: 子网Id
         :type SubnetId: str
+        :param _Output: COS训练输出路径
+        :type Output: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
         :param _LogConfig: CLS日志配置
         :type LogConfig: :class:`tencentcloud.tione.v20211111.models.LogConfig`
         :param _TuningParameters: 调优参数
         :type TuningParameters: str
+        :param _LogEnable: 是否上报日志
+        :type LogEnable: bool
         :param _Remark: 备注，最多500个字
         :type Remark: str
         :param _DataSource: 数据来源，eg：DATASET、COS、CFS、HDFS
@@ -3205,22 +3905,22 @@ POSTPAID_BY_HOUR 按量计费
         self._Name = None
         self._ChargeType = None
         self._ResourceConfigInfos = None
-        self._CodePackagePath = None
-        self._TrainingMode = None
-        self._Output = None
-        self._LogEnable = None
         self._FrameworkName = None
         self._FrameworkVersion = None
         self._FrameworkEnvironment = None
         self._ResourceGroupId = None
         self._Tags = None
         self._ImageInfo = None
+        self._CodePackagePath = None
         self._StartCmdInfo = None
+        self._TrainingMode = None
         self._DataConfigs = None
         self._VpcId = None
         self._SubnetId = None
+        self._Output = None
         self._LogConfig = None
         self._TuningParameters = None
+        self._LogEnable = None
         self._Remark = None
         self._DataSource = None
         self._CallbackUrl = None
@@ -3248,38 +3948,6 @@ POSTPAID_BY_HOUR 按量计费
     @ResourceConfigInfos.setter
     def ResourceConfigInfos(self, ResourceConfigInfos):
         self._ResourceConfigInfos = ResourceConfigInfos
-
-    @property
-    def CodePackagePath(self):
-        return self._CodePackagePath
-
-    @CodePackagePath.setter
-    def CodePackagePath(self, CodePackagePath):
-        self._CodePackagePath = CodePackagePath
-
-    @property
-    def TrainingMode(self):
-        return self._TrainingMode
-
-    @TrainingMode.setter
-    def TrainingMode(self, TrainingMode):
-        self._TrainingMode = TrainingMode
-
-    @property
-    def Output(self):
-        return self._Output
-
-    @Output.setter
-    def Output(self, Output):
-        self._Output = Output
-
-    @property
-    def LogEnable(self):
-        return self._LogEnable
-
-    @LogEnable.setter
-    def LogEnable(self, LogEnable):
-        self._LogEnable = LogEnable
 
     @property
     def FrameworkName(self):
@@ -3330,12 +3998,28 @@ POSTPAID_BY_HOUR 按量计费
         self._ImageInfo = ImageInfo
 
     @property
+    def CodePackagePath(self):
+        return self._CodePackagePath
+
+    @CodePackagePath.setter
+    def CodePackagePath(self, CodePackagePath):
+        self._CodePackagePath = CodePackagePath
+
+    @property
     def StartCmdInfo(self):
         return self._StartCmdInfo
 
     @StartCmdInfo.setter
     def StartCmdInfo(self, StartCmdInfo):
         self._StartCmdInfo = StartCmdInfo
+
+    @property
+    def TrainingMode(self):
+        return self._TrainingMode
+
+    @TrainingMode.setter
+    def TrainingMode(self, TrainingMode):
+        self._TrainingMode = TrainingMode
 
     @property
     def DataConfigs(self):
@@ -3362,6 +4046,14 @@ POSTPAID_BY_HOUR 按量计费
         self._SubnetId = SubnetId
 
     @property
+    def Output(self):
+        return self._Output
+
+    @Output.setter
+    def Output(self, Output):
+        self._Output = Output
+
+    @property
     def LogConfig(self):
         return self._LogConfig
 
@@ -3376,6 +4068,14 @@ POSTPAID_BY_HOUR 按量计费
     @TuningParameters.setter
     def TuningParameters(self, TuningParameters):
         self._TuningParameters = TuningParameters
+
+    @property
+    def LogEnable(self):
+        return self._LogEnable
+
+    @LogEnable.setter
+    def LogEnable(self, LogEnable):
+        self._LogEnable = LogEnable
 
     @property
     def Remark(self):
@@ -3411,14 +4111,6 @@ POSTPAID_BY_HOUR 按量计费
                 obj = ResourceConfigInfo()
                 obj._deserialize(item)
                 self._ResourceConfigInfos.append(obj)
-        if params.get("CodePackagePath") is not None:
-            self._CodePackagePath = CosPathInfo()
-            self._CodePackagePath._deserialize(params.get("CodePackagePath"))
-        self._TrainingMode = params.get("TrainingMode")
-        if params.get("Output") is not None:
-            self._Output = CosPathInfo()
-            self._Output._deserialize(params.get("Output"))
-        self._LogEnable = params.get("LogEnable")
         self._FrameworkName = params.get("FrameworkName")
         self._FrameworkVersion = params.get("FrameworkVersion")
         self._FrameworkEnvironment = params.get("FrameworkEnvironment")
@@ -3432,9 +4124,13 @@ POSTPAID_BY_HOUR 按量计费
         if params.get("ImageInfo") is not None:
             self._ImageInfo = ImageInfo()
             self._ImageInfo._deserialize(params.get("ImageInfo"))
+        if params.get("CodePackagePath") is not None:
+            self._CodePackagePath = CosPathInfo()
+            self._CodePackagePath._deserialize(params.get("CodePackagePath"))
         if params.get("StartCmdInfo") is not None:
             self._StartCmdInfo = StartCmdInfo()
             self._StartCmdInfo._deserialize(params.get("StartCmdInfo"))
+        self._TrainingMode = params.get("TrainingMode")
         if params.get("DataConfigs") is not None:
             self._DataConfigs = []
             for item in params.get("DataConfigs"):
@@ -3443,10 +4139,14 @@ POSTPAID_BY_HOUR 按量计费
                 self._DataConfigs.append(obj)
         self._VpcId = params.get("VpcId")
         self._SubnetId = params.get("SubnetId")
+        if params.get("Output") is not None:
+            self._Output = CosPathInfo()
+            self._Output._deserialize(params.get("Output"))
         if params.get("LogConfig") is not None:
             self._LogConfig = LogConfig()
             self._LogConfig._deserialize(params.get("LogConfig"))
         self._TuningParameters = params.get("TuningParameters")
+        self._LogEnable = params.get("LogEnable")
         self._Remark = params.get("Remark")
         self._DataSource = params.get("DataSource")
         self._CallbackUrl = params.get("CallbackUrl")
@@ -5030,8 +5730,11 @@ class DeleteModelServiceRequest(AbstractModel):
         r"""
         :param _ServiceId: 服务id
         :type ServiceId: str
+        :param _ServiceCategory: 服务分类
+        :type ServiceCategory: str
         """
         self._ServiceId = None
+        self._ServiceCategory = None
 
     @property
     def ServiceId(self):
@@ -5041,9 +5744,18 @@ class DeleteModelServiceRequest(AbstractModel):
     def ServiceId(self, ServiceId):
         self._ServiceId = ServiceId
 
+    @property
+    def ServiceCategory(self):
+        return self._ServiceCategory
+
+    @ServiceCategory.setter
+    def ServiceCategory(self, ServiceCategory):
+        self._ServiceCategory = ServiceCategory
+
 
     def _deserialize(self, params):
         self._ServiceId = params.get("ServiceId")
+        self._ServiceCategory = params.get("ServiceCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5056,6 +5768,122 @@ class DeleteModelServiceRequest(AbstractModel):
 
 class DeleteModelServiceResponse(AbstractModel):
     """DeleteModelService返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteNotebookImageRecordRequest(AbstractModel):
+    """DeleteNotebookImageRecord请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RecordId: 记录id
+        :type RecordId: str
+        """
+        self._RecordId = None
+
+    @property
+    def RecordId(self):
+        return self._RecordId
+
+    @RecordId.setter
+    def RecordId(self, RecordId):
+        self._RecordId = RecordId
+
+
+    def _deserialize(self, params):
+        self._RecordId = params.get("RecordId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteNotebookImageRecordResponse(AbstractModel):
+    """DeleteNotebookImageRecord返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteNotebookRequest(AbstractModel):
+    """DeleteNotebook请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook id
+        :type Id: str
+        """
+        self._Id = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteNotebookResponse(AbstractModel):
+    """DeleteNotebook返回参数结构体
 
     """
 
@@ -6782,14 +7610,14 @@ class DescribeLogsRequest(AbstractModel):
         r"""
         :param _Service: 查询哪个服务的事件（可选值为TRAIN, NOTEBOOK, INFER）
         :type Service: str
-        :param _PodName: 查询哪个Pod的日志（支持结尾通配符*)
-        :type PodName: str
         :param _StartTime: 日志查询开始时间（RFC3339格式的时间字符串），默认值为当前时间的前一个小时
         :type StartTime: str
         :param _EndTime: 日志查询结束时间（RFC3339格式的时间字符串），默认值为当前时间
         :type EndTime: str
         :param _Limit: 日志查询条数，默认值100，最大值100
         :type Limit: int
+        :param _PodName: 查询哪个Pod的日志（支持结尾通配符*)
+        :type PodName: str
         :param _Order: 排序方向（可选值为ASC, DESC ），默认为DESC
         :type Order: str
         :param _OrderField: 按哪个字段排序（可选值为Timestamp），默认值为Timestamp
@@ -6804,10 +7632,10 @@ class DescribeLogsRequest(AbstractModel):
         :type Filters: list of Filter
         """
         self._Service = None
-        self._PodName = None
         self._StartTime = None
         self._EndTime = None
         self._Limit = None
+        self._PodName = None
         self._Order = None
         self._OrderField = None
         self._Context = None
@@ -6820,14 +7648,6 @@ class DescribeLogsRequest(AbstractModel):
     @Service.setter
     def Service(self, Service):
         self._Service = Service
-
-    @property
-    def PodName(self):
-        return self._PodName
-
-    @PodName.setter
-    def PodName(self, PodName):
-        self._PodName = PodName
 
     @property
     def StartTime(self):
@@ -6852,6 +7672,14 @@ class DescribeLogsRequest(AbstractModel):
     @Limit.setter
     def Limit(self, Limit):
         self._Limit = Limit
+
+    @property
+    def PodName(self):
+        return self._PodName
+
+    @PodName.setter
+    def PodName(self, PodName):
+        self._PodName = PodName
 
     @property
     def Order(self):
@@ -6888,10 +7716,10 @@ class DescribeLogsRequest(AbstractModel):
 
     def _deserialize(self, params):
         self._Service = params.get("Service")
-        self._PodName = params.get("PodName")
         self._StartTime = params.get("StartTime")
         self._EndTime = params.get("EndTime")
         self._Limit = params.get("Limit")
+        self._PodName = params.get("PodName")
         self._Order = params.get("Order")
         self._OrderField = params.get("OrderField")
         self._Context = params.get("Context")
@@ -7298,8 +8126,11 @@ class DescribeModelServiceCallInfoRequest(AbstractModel):
         r"""
         :param _ServiceGroupId: 服务组id
         :type ServiceGroupId: str
+        :param _ServiceCategory: 服务分类
+        :type ServiceCategory: str
         """
         self._ServiceGroupId = None
+        self._ServiceCategory = None
 
     @property
     def ServiceGroupId(self):
@@ -7309,9 +8140,18 @@ class DescribeModelServiceCallInfoRequest(AbstractModel):
     def ServiceGroupId(self, ServiceGroupId):
         self._ServiceGroupId = ServiceGroupId
 
+    @property
+    def ServiceCategory(self):
+        return self._ServiceCategory
+
+    @ServiceCategory.setter
+    def ServiceCategory(self, ServiceCategory):
+        self._ServiceCategory = ServiceCategory
+
 
     def _deserialize(self, params):
         self._ServiceGroupId = params.get("ServiceGroupId")
+        self._ServiceCategory = params.get("ServiceCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7338,12 +8178,20 @@ class DescribeModelServiceCallInfoResponse(AbstractModel):
         :param _DefaultNginxGatewayCallInfo: 默认nginx网关的调用信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type DefaultNginxGatewayCallInfo: :class:`tencentcloud.tione.v20211111.models.DefaultNginxGatewayCallInfo`
+        :param _TJCallInfo: 太极服务的调用信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TJCallInfo: :class:`tencentcloud.tione.v20211111.models.TJCallInfo`
+        :param _IntranetCallInfo: 内网调用信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IntranetCallInfo: :class:`tencentcloud.tione.v20211111.models.IntranetCallInfo`
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._ServiceCallInfo = None
         self._InferGatewayCallInfo = None
         self._DefaultNginxGatewayCallInfo = None
+        self._TJCallInfo = None
+        self._IntranetCallInfo = None
         self._RequestId = None
 
     @property
@@ -7371,6 +8219,22 @@ class DescribeModelServiceCallInfoResponse(AbstractModel):
         self._DefaultNginxGatewayCallInfo = DefaultNginxGatewayCallInfo
 
     @property
+    def TJCallInfo(self):
+        return self._TJCallInfo
+
+    @TJCallInfo.setter
+    def TJCallInfo(self, TJCallInfo):
+        self._TJCallInfo = TJCallInfo
+
+    @property
+    def IntranetCallInfo(self):
+        return self._IntranetCallInfo
+
+    @IntranetCallInfo.setter
+    def IntranetCallInfo(self, IntranetCallInfo):
+        self._IntranetCallInfo = IntranetCallInfo
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -7389,6 +8253,12 @@ class DescribeModelServiceCallInfoResponse(AbstractModel):
         if params.get("DefaultNginxGatewayCallInfo") is not None:
             self._DefaultNginxGatewayCallInfo = DefaultNginxGatewayCallInfo()
             self._DefaultNginxGatewayCallInfo._deserialize(params.get("DefaultNginxGatewayCallInfo"))
+        if params.get("TJCallInfo") is not None:
+            self._TJCallInfo = TJCallInfo()
+            self._TJCallInfo._deserialize(params.get("TJCallInfo"))
+        if params.get("IntranetCallInfo") is not None:
+            self._IntranetCallInfo = IntranetCallInfo()
+            self._IntranetCallInfo._deserialize(params.get("IntranetCallInfo"))
         self._RequestId = params.get("RequestId")
 
 
@@ -7401,8 +8271,11 @@ class DescribeModelServiceGroupRequest(AbstractModel):
         r"""
         :param _ServiceGroupId: 服务组ID
         :type ServiceGroupId: str
+        :param _ServiceCategory: 服务分类
+        :type ServiceCategory: str
         """
         self._ServiceGroupId = None
+        self._ServiceCategory = None
 
     @property
     def ServiceGroupId(self):
@@ -7412,9 +8285,18 @@ class DescribeModelServiceGroupRequest(AbstractModel):
     def ServiceGroupId(self, ServiceGroupId):
         self._ServiceGroupId = ServiceGroupId
 
+    @property
+    def ServiceCategory(self):
+        return self._ServiceCategory
+
+    @ServiceCategory.setter
+    def ServiceCategory(self, ServiceCategory):
+        self._ServiceCategory = ServiceCategory
+
 
     def _deserialize(self, params):
         self._ServiceGroupId = params.get("ServiceGroupId")
+        self._ServiceCategory = params.get("ServiceCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7485,6 +8367,8 @@ class DescribeModelServiceGroupsRequest(AbstractModel):
         :type Filters: list of Filter
         :param _TagFilters: 标签过滤参数
         :type TagFilters: list of TagFilter
+        :param _ServiceCategory: 服务分类
+        :type ServiceCategory: str
         """
         self._Offset = None
         self._Limit = None
@@ -7492,6 +8376,7 @@ class DescribeModelServiceGroupsRequest(AbstractModel):
         self._OrderField = None
         self._Filters = None
         self._TagFilters = None
+        self._ServiceCategory = None
 
     @property
     def Offset(self):
@@ -7541,6 +8426,14 @@ class DescribeModelServiceGroupsRequest(AbstractModel):
     def TagFilters(self, TagFilters):
         self._TagFilters = TagFilters
 
+    @property
+    def ServiceCategory(self):
+        return self._ServiceCategory
+
+    @ServiceCategory.setter
+    def ServiceCategory(self, ServiceCategory):
+        self._ServiceCategory = ServiceCategory
+
 
     def _deserialize(self, params):
         self._Offset = params.get("Offset")
@@ -7559,6 +8452,7 @@ class DescribeModelServiceGroupsRequest(AbstractModel):
                 obj = TagFilter()
                 obj._deserialize(item)
                 self._TagFilters.append(obj)
+        self._ServiceCategory = params.get("ServiceCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7823,8 +8717,11 @@ class DescribeModelServiceRequest(AbstractModel):
         r"""
         :param _ServiceId: 服务id
         :type ServiceId: str
+        :param _ServiceCategory: 服务分类
+        :type ServiceCategory: str
         """
         self._ServiceId = None
+        self._ServiceCategory = None
 
     @property
     def ServiceId(self):
@@ -7834,9 +8731,18 @@ class DescribeModelServiceRequest(AbstractModel):
     def ServiceId(self, ServiceId):
         self._ServiceId = ServiceId
 
+    @property
+    def ServiceCategory(self):
+        return self._ServiceCategory
+
+    @ServiceCategory.setter
+    def ServiceCategory(self, ServiceCategory):
+        self._ServiceCategory = ServiceCategory
+
 
     def _deserialize(self, params):
         self._ServiceId = params.get("ServiceId")
+        self._ServiceCategory = params.get("ServiceCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8043,6 +8949,445 @@ class DescribeModelServicesResponse(AbstractModel):
                 obj = Service()
                 obj._deserialize(item)
                 self._Services.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeNotebookImageKernelsRequest(AbstractModel):
+    """DescribeNotebookImageKernels请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _NotebookId: notebook id
+        :type NotebookId: str
+        """
+        self._NotebookId = None
+
+    @property
+    def NotebookId(self):
+        return self._NotebookId
+
+    @NotebookId.setter
+    def NotebookId(self, NotebookId):
+        self._NotebookId = NotebookId
+
+
+    def _deserialize(self, params):
+        self._NotebookId = params.get("NotebookId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeNotebookImageKernelsResponse(AbstractModel):
+    """DescribeNotebookImageKernels返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Kernels: 镜像kernel数组
+        :type Kernels: list of str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Kernels = None
+        self._RequestId = None
+
+    @property
+    def Kernels(self):
+        return self._Kernels
+
+    @Kernels.setter
+    def Kernels(self, Kernels):
+        self._Kernels = Kernels
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Kernels = params.get("Kernels")
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeNotebookImageRecordsRequest(AbstractModel):
+    """DescribeNotebookImageRecords请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _NotebookId: notebook id
+        :type NotebookId: str
+        :param _Offset: 位移值
+        :type Offset: int
+        :param _Limit: 日志限制
+        :type Limit: int
+        :param _Filters: 状态筛选
+        :type Filters: list of Filter
+        """
+        self._NotebookId = None
+        self._Offset = None
+        self._Limit = None
+        self._Filters = None
+
+    @property
+    def NotebookId(self):
+        return self._NotebookId
+
+    @NotebookId.setter
+    def NotebookId(self, NotebookId):
+        self._NotebookId = NotebookId
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+
+    def _deserialize(self, params):
+        self._NotebookId = params.get("NotebookId")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeNotebookImageRecordsResponse(AbstractModel):
+    """DescribeNotebookImageRecords返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 总条数
+        :type TotalCount: int
+        :param _NotebookImageRecords: 镜像保存记录
+        :type NotebookImageRecords: list of NotebookImageRecord
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._NotebookImageRecords = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def NotebookImageRecords(self):
+        return self._NotebookImageRecords
+
+    @NotebookImageRecords.setter
+    def NotebookImageRecords(self, NotebookImageRecords):
+        self._NotebookImageRecords = NotebookImageRecords
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("NotebookImageRecords") is not None:
+            self._NotebookImageRecords = []
+            for item in params.get("NotebookImageRecords"):
+                obj = NotebookImageRecord()
+                obj._deserialize(item)
+                self._NotebookImageRecords.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeNotebookRequest(AbstractModel):
+    """DescribeNotebook请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook id
+        :type Id: str
+        """
+        self._Id = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeNotebookResponse(AbstractModel):
+    """DescribeNotebook返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _NotebookDetail: 详情
+        :type NotebookDetail: :class:`tencentcloud.tione.v20211111.models.NotebookDetail`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._NotebookDetail = None
+        self._RequestId = None
+
+    @property
+    def NotebookDetail(self):
+        return self._NotebookDetail
+
+    @NotebookDetail.setter
+    def NotebookDetail(self, NotebookDetail):
+        self._NotebookDetail = NotebookDetail
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("NotebookDetail") is not None:
+            self._NotebookDetail = NotebookDetail()
+            self._NotebookDetail._deserialize(params.get("NotebookDetail"))
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeNotebooksRequest(AbstractModel):
+    """DescribeNotebooks请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Offset: 偏移量，默认为0
+        :type Offset: int
+        :param _Limit: 每页返回的实例数，默认为10
+        :type Limit: int
+        :param _Order: 输出列表的排列顺序。取值范围：ASC：升序排列 DESC：降序排列。默认为DESC
+        :type Order: str
+        :param _OrderField: 根据哪个字段排序，如：CreateTime、UpdateTime，默认为UpdateTime
+        :type OrderField: str
+        :param _Filters: 过滤器，eg：[{ "Name": "Id", "Values": ["nb-123456789"] }]
+
+取值范围
+Name（名称）：notebook1
+Id（notebook ID）：nb-123456789
+Status（状态）：Starting / Running / Stopped / Stopping / Failed / SubmitFailed
+ChargeType（计费类型）：PREPAID（预付费）/ POSTPAID_BY_HOUR（后付费）
+ChargeStatus（计费状态）：NOT_BILLING（未开始计费）/ BILLING（计费中）/ BILLING_STORAGE（存储计费中）/ARREARS_STOP（欠费停止）
+DefaultCodeRepoId（默认代码仓库ID）：cr-123456789
+AdditionalCodeRepoId（关联代码仓库ID）：cr-123456789
+LifecycleScriptId（生命周期ID）：ls-12312312311312
+        :type Filters: list of Filter
+        :param _TagFilters: 标签过滤器，eg：[{ "TagKey": "TagKeyA", "TagValue": ["TagValueA"] }]
+        :type TagFilters: list of TagFilter
+        """
+        self._Offset = None
+        self._Limit = None
+        self._Order = None
+        self._OrderField = None
+        self._Filters = None
+        self._TagFilters = None
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Order(self):
+        return self._Order
+
+    @Order.setter
+    def Order(self, Order):
+        self._Order = Order
+
+    @property
+    def OrderField(self):
+        return self._OrderField
+
+    @OrderField.setter
+    def OrderField(self, OrderField):
+        self._OrderField = OrderField
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def TagFilters(self):
+        return self._TagFilters
+
+    @TagFilters.setter
+    def TagFilters(self, TagFilters):
+        self._TagFilters = TagFilters
+
+
+    def _deserialize(self, params):
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        self._Order = params.get("Order")
+        self._OrderField = params.get("OrderField")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = Filter()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        if params.get("TagFilters") is not None:
+            self._TagFilters = []
+            for item in params.get("TagFilters"):
+                obj = TagFilter()
+                obj._deserialize(item)
+                self._TagFilters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeNotebooksResponse(AbstractModel):
+    """DescribeNotebooks返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _NotebookSet: 详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NotebookSet: list of NotebookSetItem
+        :param _TotalCount: 总条数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._NotebookSet = None
+        self._TotalCount = None
+        self._RequestId = None
+
+    @property
+    def NotebookSet(self):
+        return self._NotebookSet
+
+    @NotebookSet.setter
+    def NotebookSet(self, NotebookSet):
+        self._NotebookSet = NotebookSet
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("NotebookSet") is not None:
+            self._NotebookSet = []
+            for item in params.get("NotebookSet"):
+                obj = NotebookSetItem()
+                obj._deserialize(item)
+                self._NotebookSet.append(obj)
+        self._TotalCount = params.get("TotalCount")
         self._RequestId = params.get("RequestId")
 
 
@@ -9905,11 +11250,19 @@ class ImageInfo(AbstractModel):
         :param _RegistryId: TCR镜像对应的实例id
 注意：此字段可能返回 null，表示取不到有效值。
         :type RegistryId: str
+        :param _AllowSaveAllContent: 是否允许导出全部内容
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AllowSaveAllContent: bool
+        :param _ImageName: 镜像名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImageName: str
         """
         self._ImageType = None
         self._ImageUrl = None
         self._RegistryRegion = None
         self._RegistryId = None
+        self._AllowSaveAllContent = None
+        self._ImageName = None
 
     @property
     def ImageType(self):
@@ -9943,12 +11296,66 @@ class ImageInfo(AbstractModel):
     def RegistryId(self, RegistryId):
         self._RegistryId = RegistryId
 
+    @property
+    def AllowSaveAllContent(self):
+        return self._AllowSaveAllContent
+
+    @AllowSaveAllContent.setter
+    def AllowSaveAllContent(self, AllowSaveAllContent):
+        self._AllowSaveAllContent = AllowSaveAllContent
+
+    @property
+    def ImageName(self):
+        return self._ImageName
+
+    @ImageName.setter
+    def ImageName(self, ImageName):
+        self._ImageName = ImageName
+
 
     def _deserialize(self, params):
         self._ImageType = params.get("ImageType")
         self._ImageUrl = params.get("ImageUrl")
         self._RegistryRegion = params.get("RegistryRegion")
         self._RegistryId = params.get("RegistryId")
+        self._AllowSaveAllContent = params.get("AllowSaveAllContent")
+        self._ImageName = params.get("ImageName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class InferCodeInfo(AbstractModel):
+    """推理代码的信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CosPathInfo: 推理代码所在的cos详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosPathInfo: :class:`tencentcloud.tione.v20211111.models.CosPathInfo`
+        """
+        self._CosPathInfo = None
+
+    @property
+    def CosPathInfo(self):
+        return self._CosPathInfo
+
+    @CosPathInfo.setter
+    def CosPathInfo(self, CosPathInfo):
+        self._CosPathInfo = CosPathInfo
+
+
+    def _deserialize(self, params):
+        if params.get("CosPathInfo") is not None:
+            self._CosPathInfo = CosPathInfo()
+            self._CosPathInfo._deserialize(params.get("CosPathInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10168,6 +11575,79 @@ class InferTemplateGroup(AbstractModel):
         
 
 
+class IngressPrivateLinkInfo(AbstractModel):
+    """私有连接通道信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _VpcId: 用户VpcId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param _SubnetId: 用户子网ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        :param _InnerHttpAddr: 内网http调用地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InnerHttpAddr: list of str
+        :param _InnerHttpsAddr: 内网https调用地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InnerHttpsAddr: list of str
+        """
+        self._VpcId = None
+        self._SubnetId = None
+        self._InnerHttpAddr = None
+        self._InnerHttpsAddr = None
+
+    @property
+    def VpcId(self):
+        return self._VpcId
+
+    @VpcId.setter
+    def VpcId(self, VpcId):
+        self._VpcId = VpcId
+
+    @property
+    def SubnetId(self):
+        return self._SubnetId
+
+    @SubnetId.setter
+    def SubnetId(self, SubnetId):
+        self._SubnetId = SubnetId
+
+    @property
+    def InnerHttpAddr(self):
+        return self._InnerHttpAddr
+
+    @InnerHttpAddr.setter
+    def InnerHttpAddr(self, InnerHttpAddr):
+        self._InnerHttpAddr = InnerHttpAddr
+
+    @property
+    def InnerHttpsAddr(self):
+        return self._InnerHttpsAddr
+
+    @InnerHttpsAddr.setter
+    def InnerHttpsAddr(self, InnerHttpsAddr):
+        self._InnerHttpsAddr = InnerHttpsAddr
+
+
+    def _deserialize(self, params):
+        self._VpcId = params.get("VpcId")
+        self._SubnetId = params.get("SubnetId")
+        self._InnerHttpAddr = params.get("InnerHttpAddr")
+        self._InnerHttpsAddr = params.get("InnerHttpsAddr")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Instance(AbstractModel):
     """资源组节点信息
 
@@ -10334,6 +11814,60 @@ DISABLE_NOTIFY_AND_MANUAL_RENEW：手动续费(取消自动续费)且到期不�
         
 
 
+class IntranetCallInfo(AbstractModel):
+    """内网调用信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _IngressPrivateLinkInfo: 私有连接通道信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IngressPrivateLinkInfo: :class:`tencentcloud.tione.v20211111.models.IngressPrivateLinkInfo`
+        :param _ServiceEIPInfo: 共享弹性网卡信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceEIPInfo: list of ServiceEIPInfo
+        """
+        self._IngressPrivateLinkInfo = None
+        self._ServiceEIPInfo = None
+
+    @property
+    def IngressPrivateLinkInfo(self):
+        return self._IngressPrivateLinkInfo
+
+    @IngressPrivateLinkInfo.setter
+    def IngressPrivateLinkInfo(self, IngressPrivateLinkInfo):
+        self._IngressPrivateLinkInfo = IngressPrivateLinkInfo
+
+    @property
+    def ServiceEIPInfo(self):
+        return self._ServiceEIPInfo
+
+    @ServiceEIPInfo.setter
+    def ServiceEIPInfo(self, ServiceEIPInfo):
+        self._ServiceEIPInfo = ServiceEIPInfo
+
+
+    def _deserialize(self, params):
+        if params.get("IngressPrivateLinkInfo") is not None:
+            self._IngressPrivateLinkInfo = IngressPrivateLinkInfo()
+            self._IngressPrivateLinkInfo._deserialize(params.get("IngressPrivateLinkInfo"))
+        if params.get("ServiceEIPInfo") is not None:
+            self._ServiceEIPInfo = []
+            for item in params.get("ServiceEIPInfo"):
+                obj = ServiceEIPInfo()
+                obj._deserialize(item)
+                self._ServiceEIPInfo.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LogConfig(AbstractModel):
     """日志配置
 
@@ -10444,6 +11978,53 @@ class LogIdentity(AbstractModel):
         self._Message = params.get("Message")
         self._PodName = params.get("PodName")
         self._Timestamp = params.get("Timestamp")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Message(AbstractModel):
+    """对话输入内容
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Role: 角色名。支持三个角色：system、user、assistant，其中system仅开头可出现一次，也可忽略。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Role: str
+        :param _Content: 对话输入内容。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Content: str
+        """
+        self._Role = None
+        self._Content = None
+
+    @property
+    def Role(self):
+        return self._Role
+
+    @Role.setter
+    def Role(self, Role):
+        self._Role = Role
+
+    @property
+    def Content(self):
+        return self._Content
+
+    @Content.setter
+    def Content(self, Content):
+        self._Content = Content
+
+
+    def _deserialize(self, params):
+        self._Role = params.get("Role")
+        self._Content = params.get("Content")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -11392,6 +12973,10 @@ HYBRID_PAID:
         :type VolumeMount: :class:`tencentcloud.tione.v20211111.models.VolumeMount`
         :param _ModelTurboEnable: 是否开启模型的加速, 仅对StableDiffusion(动态加速)格式的模型有效。默认不开启
         :type ModelTurboEnable: bool
+        :param _Command: 服务的启动命令
+        :type Command: str
+        :param _ServiceEIP: 是否开启TIONE内网访问外部
+        :type ServiceEIP: :class:`tencentcloud.tione.v20211111.models.ServiceEIP`
         """
         self._ServiceId = None
         self._ModelInfo = None
@@ -11414,6 +12999,8 @@ HYBRID_PAID:
         self._ServiceLimit = None
         self._VolumeMount = None
         self._ModelTurboEnable = None
+        self._Command = None
+        self._ServiceEIP = None
 
     @property
     def ServiceId(self):
@@ -11583,6 +13170,22 @@ HYBRID_PAID:
     def ModelTurboEnable(self, ModelTurboEnable):
         self._ModelTurboEnable = ModelTurboEnable
 
+    @property
+    def Command(self):
+        return self._Command
+
+    @Command.setter
+    def Command(self, Command):
+        self._Command = Command
+
+    @property
+    def ServiceEIP(self):
+        return self._ServiceEIP
+
+    @ServiceEIP.setter
+    def ServiceEIP(self, ServiceEIP):
+        self._ServiceEIP = ServiceEIP
+
 
     def _deserialize(self, params):
         self._ServiceId = params.get("ServiceId")
@@ -11632,6 +13235,10 @@ HYBRID_PAID:
             self._VolumeMount = VolumeMount()
             self._VolumeMount._deserialize(params.get("VolumeMount"))
         self._ModelTurboEnable = params.get("ModelTurboEnable")
+        self._Command = params.get("Command")
+        if params.get("ServiceEIP") is not None:
+            self._ServiceEIP = ServiceEIP()
+            self._ServiceEIP._deserialize(params.get("ServiceEIP"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -11679,6 +13286,441 @@ class ModifyModelServiceResponse(AbstractModel):
         if params.get("Service") is not None:
             self._Service = Service()
             self._Service._deserialize(params.get("Service"))
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyNotebookRequest(AbstractModel):
+    """ModifyNotebook请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook id
+        :type Id: str
+        :param _Name: 名称
+        :type Name: str
+        :param _ChargeType: 计算资源付费模式 ，可选值为：
+PREPAID：预付费，即包年包月
+POSTPAID_BY_HOUR：按小时后付费
+        :type ChargeType: str
+        :param _ResourceConf: 计算资源配置
+        :type ResourceConf: :class:`tencentcloud.tione.v20211111.models.ResourceConf`
+        :param _LogEnable: 是否上报日志
+        :type LogEnable: bool
+        :param _AutoStopping: 是否自动停止
+        :type AutoStopping: bool
+        :param _DirectInternetAccess: 是否访问公网
+        :type DirectInternetAccess: bool
+        :param _RootAccess: 是否ROOT权限
+        :type RootAccess: bool
+        :param _ResourceGroupId: 资源组ID(for预付费)
+        :type ResourceGroupId: str
+        :param _VpcId: Vpc-Id
+        :type VpcId: str
+        :param _SubnetId: 子网Id
+        :type SubnetId: str
+        :param _VolumeSizeInGB: 存储卷大小，单位GB
+        :type VolumeSizeInGB: int
+        :param _VolumeSourceType: 存储的类型。取值包含： 
+    FREE:    预付费的免费存储
+    CLOUD_PREMIUM： 高性能云硬盘
+    CLOUD_SSD： SSD云硬盘
+    CFS:     CFS存储，包含NFS和turbo
+        :type VolumeSourceType: str
+        :param _VolumeSourceCFS: CFS存储的配置
+        :type VolumeSourceCFS: :class:`tencentcloud.tione.v20211111.models.CFSConfig`
+        :param _LogConfig: 日志配置
+        :type LogConfig: :class:`tencentcloud.tione.v20211111.models.LogConfig`
+        :param _LifecycleScriptId: 生命周期脚本的ID
+        :type LifecycleScriptId: str
+        :param _DefaultCodeRepoId: 默认GIT存储库的ID
+        :type DefaultCodeRepoId: str
+        :param _AdditionalCodeRepoIds: 其他GIT存储库的ID，最多3个
+        :type AdditionalCodeRepoIds: list of str
+        :param _AutomaticStopTime: 自动停止时间，单位小时
+        :type AutomaticStopTime: int
+        :param _Tags: 标签配置
+        :type Tags: list of Tag
+        :param _DataConfigs: 数据配置
+        :type DataConfigs: list of DataConfig
+        :param _ImageInfo: 镜像信息
+        :type ImageInfo: :class:`tencentcloud.tione.v20211111.models.ImageInfo`
+        :param _ImageType: 镜像类型
+        :type ImageType: str
+        :param _SSHConfig: SSH配置
+        :type SSHConfig: :class:`tencentcloud.tione.v20211111.models.SSHConfig`
+        """
+        self._Id = None
+        self._Name = None
+        self._ChargeType = None
+        self._ResourceConf = None
+        self._LogEnable = None
+        self._AutoStopping = None
+        self._DirectInternetAccess = None
+        self._RootAccess = None
+        self._ResourceGroupId = None
+        self._VpcId = None
+        self._SubnetId = None
+        self._VolumeSizeInGB = None
+        self._VolumeSourceType = None
+        self._VolumeSourceCFS = None
+        self._LogConfig = None
+        self._LifecycleScriptId = None
+        self._DefaultCodeRepoId = None
+        self._AdditionalCodeRepoIds = None
+        self._AutomaticStopTime = None
+        self._Tags = None
+        self._DataConfigs = None
+        self._ImageInfo = None
+        self._ImageType = None
+        self._SSHConfig = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def ChargeType(self):
+        return self._ChargeType
+
+    @ChargeType.setter
+    def ChargeType(self, ChargeType):
+        self._ChargeType = ChargeType
+
+    @property
+    def ResourceConf(self):
+        return self._ResourceConf
+
+    @ResourceConf.setter
+    def ResourceConf(self, ResourceConf):
+        self._ResourceConf = ResourceConf
+
+    @property
+    def LogEnable(self):
+        return self._LogEnable
+
+    @LogEnable.setter
+    def LogEnable(self, LogEnable):
+        self._LogEnable = LogEnable
+
+    @property
+    def AutoStopping(self):
+        return self._AutoStopping
+
+    @AutoStopping.setter
+    def AutoStopping(self, AutoStopping):
+        self._AutoStopping = AutoStopping
+
+    @property
+    def DirectInternetAccess(self):
+        return self._DirectInternetAccess
+
+    @DirectInternetAccess.setter
+    def DirectInternetAccess(self, DirectInternetAccess):
+        self._DirectInternetAccess = DirectInternetAccess
+
+    @property
+    def RootAccess(self):
+        return self._RootAccess
+
+    @RootAccess.setter
+    def RootAccess(self, RootAccess):
+        self._RootAccess = RootAccess
+
+    @property
+    def ResourceGroupId(self):
+        return self._ResourceGroupId
+
+    @ResourceGroupId.setter
+    def ResourceGroupId(self, ResourceGroupId):
+        self._ResourceGroupId = ResourceGroupId
+
+    @property
+    def VpcId(self):
+        return self._VpcId
+
+    @VpcId.setter
+    def VpcId(self, VpcId):
+        self._VpcId = VpcId
+
+    @property
+    def SubnetId(self):
+        return self._SubnetId
+
+    @SubnetId.setter
+    def SubnetId(self, SubnetId):
+        self._SubnetId = SubnetId
+
+    @property
+    def VolumeSizeInGB(self):
+        return self._VolumeSizeInGB
+
+    @VolumeSizeInGB.setter
+    def VolumeSizeInGB(self, VolumeSizeInGB):
+        self._VolumeSizeInGB = VolumeSizeInGB
+
+    @property
+    def VolumeSourceType(self):
+        return self._VolumeSourceType
+
+    @VolumeSourceType.setter
+    def VolumeSourceType(self, VolumeSourceType):
+        self._VolumeSourceType = VolumeSourceType
+
+    @property
+    def VolumeSourceCFS(self):
+        return self._VolumeSourceCFS
+
+    @VolumeSourceCFS.setter
+    def VolumeSourceCFS(self, VolumeSourceCFS):
+        self._VolumeSourceCFS = VolumeSourceCFS
+
+    @property
+    def LogConfig(self):
+        return self._LogConfig
+
+    @LogConfig.setter
+    def LogConfig(self, LogConfig):
+        self._LogConfig = LogConfig
+
+    @property
+    def LifecycleScriptId(self):
+        return self._LifecycleScriptId
+
+    @LifecycleScriptId.setter
+    def LifecycleScriptId(self, LifecycleScriptId):
+        self._LifecycleScriptId = LifecycleScriptId
+
+    @property
+    def DefaultCodeRepoId(self):
+        return self._DefaultCodeRepoId
+
+    @DefaultCodeRepoId.setter
+    def DefaultCodeRepoId(self, DefaultCodeRepoId):
+        self._DefaultCodeRepoId = DefaultCodeRepoId
+
+    @property
+    def AdditionalCodeRepoIds(self):
+        return self._AdditionalCodeRepoIds
+
+    @AdditionalCodeRepoIds.setter
+    def AdditionalCodeRepoIds(self, AdditionalCodeRepoIds):
+        self._AdditionalCodeRepoIds = AdditionalCodeRepoIds
+
+    @property
+    def AutomaticStopTime(self):
+        return self._AutomaticStopTime
+
+    @AutomaticStopTime.setter
+    def AutomaticStopTime(self, AutomaticStopTime):
+        self._AutomaticStopTime = AutomaticStopTime
+
+    @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
+    @property
+    def DataConfigs(self):
+        return self._DataConfigs
+
+    @DataConfigs.setter
+    def DataConfigs(self, DataConfigs):
+        self._DataConfigs = DataConfigs
+
+    @property
+    def ImageInfo(self):
+        return self._ImageInfo
+
+    @ImageInfo.setter
+    def ImageInfo(self, ImageInfo):
+        self._ImageInfo = ImageInfo
+
+    @property
+    def ImageType(self):
+        return self._ImageType
+
+    @ImageType.setter
+    def ImageType(self, ImageType):
+        self._ImageType = ImageType
+
+    @property
+    def SSHConfig(self):
+        return self._SSHConfig
+
+    @SSHConfig.setter
+    def SSHConfig(self, SSHConfig):
+        self._SSHConfig = SSHConfig
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        self._Name = params.get("Name")
+        self._ChargeType = params.get("ChargeType")
+        if params.get("ResourceConf") is not None:
+            self._ResourceConf = ResourceConf()
+            self._ResourceConf._deserialize(params.get("ResourceConf"))
+        self._LogEnable = params.get("LogEnable")
+        self._AutoStopping = params.get("AutoStopping")
+        self._DirectInternetAccess = params.get("DirectInternetAccess")
+        self._RootAccess = params.get("RootAccess")
+        self._ResourceGroupId = params.get("ResourceGroupId")
+        self._VpcId = params.get("VpcId")
+        self._SubnetId = params.get("SubnetId")
+        self._VolumeSizeInGB = params.get("VolumeSizeInGB")
+        self._VolumeSourceType = params.get("VolumeSourceType")
+        if params.get("VolumeSourceCFS") is not None:
+            self._VolumeSourceCFS = CFSConfig()
+            self._VolumeSourceCFS._deserialize(params.get("VolumeSourceCFS"))
+        if params.get("LogConfig") is not None:
+            self._LogConfig = LogConfig()
+            self._LogConfig._deserialize(params.get("LogConfig"))
+        self._LifecycleScriptId = params.get("LifecycleScriptId")
+        self._DefaultCodeRepoId = params.get("DefaultCodeRepoId")
+        self._AdditionalCodeRepoIds = params.get("AdditionalCodeRepoIds")
+        self._AutomaticStopTime = params.get("AutomaticStopTime")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._Tags.append(obj)
+        if params.get("DataConfigs") is not None:
+            self._DataConfigs = []
+            for item in params.get("DataConfigs"):
+                obj = DataConfig()
+                obj._deserialize(item)
+                self._DataConfigs.append(obj)
+        if params.get("ImageInfo") is not None:
+            self._ImageInfo = ImageInfo()
+            self._ImageInfo._deserialize(params.get("ImageInfo"))
+        self._ImageType = params.get("ImageType")
+        if params.get("SSHConfig") is not None:
+            self._SSHConfig = SSHConfig()
+            self._SSHConfig._deserialize(params.get("SSHConfig"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyNotebookResponse(AbstractModel):
+    """ModifyNotebook返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyNotebookTagsRequest(AbstractModel):
+    """ModifyNotebookTags请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: Notebook Id
+        :type Id: str
+        :param _Tags: Notebook修改标签集合
+        :type Tags: list of Tag
+        """
+        self._Id = None
+        self._Tags = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._Tags.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyNotebookTagsResponse(AbstractModel):
+    """ModifyNotebookTags返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 
@@ -11770,6 +13812,996 @@ class ModifyServiceGroupWeightsResponse(AbstractModel):
             self._ServiceGroup = ServiceGroup()
             self._ServiceGroup._deserialize(params.get("ServiceGroup"))
         self._RequestId = params.get("RequestId")
+
+
+class NotebookDetail(AbstractModel):
+    """类型NotebookDetail
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook  ID
+        :type Id: str
+        :param _Name: notebook 名称
+        :type Name: str
+        :param _LifecycleScriptId: 生命周期脚本
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LifecycleScriptId: str
+        :param _PodName: Pod-Name
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PodName: str
+        :param _UpdateTime: Update-Time
+        :type UpdateTime: str
+        :param _DirectInternetAccess: 是否访问公网
+        :type DirectInternetAccess: bool
+        :param _ResourceGroupId: 预付费专用资源组
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceGroupId: str
+        :param _Tags: 标签配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
+        :param _AutoStopping: 是否自动停止
+        :type AutoStopping: bool
+        :param _AdditionalCodeRepoIds: 其他GIT存储库，最多3个，单个
+长度不超过512字符
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AdditionalCodeRepoIds: list of str
+        :param _AutomaticStopTime: 自动停止时间，单位小时
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutomaticStopTime: int
+        :param _ResourceConf: 资源配置
+        :type ResourceConf: :class:`tencentcloud.tione.v20211111.models.ResourceConf`
+        :param _DefaultCodeRepoId: 默认GIT存储库，长度不超过512字符
+        :type DefaultCodeRepoId: str
+        :param _EndTime: 训练输出
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param _LogEnable: 是否上报日志
+        :type LogEnable: bool
+        :param _LogConfig: 日志配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogConfig: :class:`tencentcloud.tione.v20211111.models.LogConfig`
+        :param _VpcId: VPC ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param _SubnetId: 子网ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        :param _Status: 任务状态
+        :type Status: str
+        :param _RuntimeInSeconds: 运行时长
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuntimeInSeconds: int
+        :param _CreateTime: 创建时间
+        :type CreateTime: str
+        :param _StartTime: 训练开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param _ChargeStatus: 计费状态，eg：BILLING计费中，ARREARS_STOP欠费停止，NOT_BILLING不在计费中
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChargeStatus: str
+        :param _RootAccess: 是否ROOT权限
+        :type RootAccess: bool
+        :param _BillingInfos: 计贺金额信息，eg:2.00元/小时
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BillingInfos: list of str
+        :param _VolumeSizeInGB: 存储卷大小 （单位时GB，最小10GB，必须是10G的倍数）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeSizeInGB: int
+        :param _FailureReason: 失败原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailureReason: str
+        :param _ChargeType: 计算资源付费模式 (- PREPAID：预付费，即包年包月 - POSTPAID_BY_HOUR：按小时后付费)
+        :type ChargeType: str
+        :param _InstanceTypeAlias: 后付费资源规格说明
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceTypeAlias: str
+        :param _ResourceGroupName: 预付费资源组名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceGroupName: str
+        :param _VolumeSourceType: 存储的类型。取值包含： 
+    FREE:        预付费的免费存储
+    CLOUD_PREMIUM： 高性能云硬盘
+    CLOUD_SSD： SSD云硬盘
+    CFS:     CFS存储，包含NFS和turbo
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeSourceType: str
+        :param _VolumeSourceCFS: CFS存储的配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeSourceCFS: :class:`tencentcloud.tione.v20211111.models.CFSConfig`
+        :param _DataConfigs: 数据配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataConfigs: list of DataConfig
+        :param _Message: notebook 信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param _DataSource: 数据源来源，eg：WeData_HDFS
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataSource: str
+        :param _ImageInfo: 镜像信息
+        :type ImageInfo: :class:`tencentcloud.tione.v20211111.models.ImageInfo`
+        :param _ImageType: 镜像类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImageType: str
+        """
+        self._Id = None
+        self._Name = None
+        self._LifecycleScriptId = None
+        self._PodName = None
+        self._UpdateTime = None
+        self._DirectInternetAccess = None
+        self._ResourceGroupId = None
+        self._Tags = None
+        self._AutoStopping = None
+        self._AdditionalCodeRepoIds = None
+        self._AutomaticStopTime = None
+        self._ResourceConf = None
+        self._DefaultCodeRepoId = None
+        self._EndTime = None
+        self._LogEnable = None
+        self._LogConfig = None
+        self._VpcId = None
+        self._SubnetId = None
+        self._Status = None
+        self._RuntimeInSeconds = None
+        self._CreateTime = None
+        self._StartTime = None
+        self._ChargeStatus = None
+        self._RootAccess = None
+        self._BillingInfos = None
+        self._VolumeSizeInGB = None
+        self._FailureReason = None
+        self._ChargeType = None
+        self._InstanceTypeAlias = None
+        self._ResourceGroupName = None
+        self._VolumeSourceType = None
+        self._VolumeSourceCFS = None
+        self._DataConfigs = None
+        self._Message = None
+        self._DataSource = None
+        self._ImageInfo = None
+        self._ImageType = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def LifecycleScriptId(self):
+        return self._LifecycleScriptId
+
+    @LifecycleScriptId.setter
+    def LifecycleScriptId(self, LifecycleScriptId):
+        self._LifecycleScriptId = LifecycleScriptId
+
+    @property
+    def PodName(self):
+        return self._PodName
+
+    @PodName.setter
+    def PodName(self, PodName):
+        self._PodName = PodName
+
+    @property
+    def UpdateTime(self):
+        return self._UpdateTime
+
+    @UpdateTime.setter
+    def UpdateTime(self, UpdateTime):
+        self._UpdateTime = UpdateTime
+
+    @property
+    def DirectInternetAccess(self):
+        return self._DirectInternetAccess
+
+    @DirectInternetAccess.setter
+    def DirectInternetAccess(self, DirectInternetAccess):
+        self._DirectInternetAccess = DirectInternetAccess
+
+    @property
+    def ResourceGroupId(self):
+        return self._ResourceGroupId
+
+    @ResourceGroupId.setter
+    def ResourceGroupId(self, ResourceGroupId):
+        self._ResourceGroupId = ResourceGroupId
+
+    @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
+    @property
+    def AutoStopping(self):
+        return self._AutoStopping
+
+    @AutoStopping.setter
+    def AutoStopping(self, AutoStopping):
+        self._AutoStopping = AutoStopping
+
+    @property
+    def AdditionalCodeRepoIds(self):
+        return self._AdditionalCodeRepoIds
+
+    @AdditionalCodeRepoIds.setter
+    def AdditionalCodeRepoIds(self, AdditionalCodeRepoIds):
+        self._AdditionalCodeRepoIds = AdditionalCodeRepoIds
+
+    @property
+    def AutomaticStopTime(self):
+        return self._AutomaticStopTime
+
+    @AutomaticStopTime.setter
+    def AutomaticStopTime(self, AutomaticStopTime):
+        self._AutomaticStopTime = AutomaticStopTime
+
+    @property
+    def ResourceConf(self):
+        return self._ResourceConf
+
+    @ResourceConf.setter
+    def ResourceConf(self, ResourceConf):
+        self._ResourceConf = ResourceConf
+
+    @property
+    def DefaultCodeRepoId(self):
+        return self._DefaultCodeRepoId
+
+    @DefaultCodeRepoId.setter
+    def DefaultCodeRepoId(self, DefaultCodeRepoId):
+        self._DefaultCodeRepoId = DefaultCodeRepoId
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def LogEnable(self):
+        return self._LogEnable
+
+    @LogEnable.setter
+    def LogEnable(self, LogEnable):
+        self._LogEnable = LogEnable
+
+    @property
+    def LogConfig(self):
+        return self._LogConfig
+
+    @LogConfig.setter
+    def LogConfig(self, LogConfig):
+        self._LogConfig = LogConfig
+
+    @property
+    def VpcId(self):
+        return self._VpcId
+
+    @VpcId.setter
+    def VpcId(self, VpcId):
+        self._VpcId = VpcId
+
+    @property
+    def SubnetId(self):
+        return self._SubnetId
+
+    @SubnetId.setter
+    def SubnetId(self, SubnetId):
+        self._SubnetId = SubnetId
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def RuntimeInSeconds(self):
+        return self._RuntimeInSeconds
+
+    @RuntimeInSeconds.setter
+    def RuntimeInSeconds(self, RuntimeInSeconds):
+        self._RuntimeInSeconds = RuntimeInSeconds
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def ChargeStatus(self):
+        return self._ChargeStatus
+
+    @ChargeStatus.setter
+    def ChargeStatus(self, ChargeStatus):
+        self._ChargeStatus = ChargeStatus
+
+    @property
+    def RootAccess(self):
+        return self._RootAccess
+
+    @RootAccess.setter
+    def RootAccess(self, RootAccess):
+        self._RootAccess = RootAccess
+
+    @property
+    def BillingInfos(self):
+        return self._BillingInfos
+
+    @BillingInfos.setter
+    def BillingInfos(self, BillingInfos):
+        self._BillingInfos = BillingInfos
+
+    @property
+    def VolumeSizeInGB(self):
+        return self._VolumeSizeInGB
+
+    @VolumeSizeInGB.setter
+    def VolumeSizeInGB(self, VolumeSizeInGB):
+        self._VolumeSizeInGB = VolumeSizeInGB
+
+    @property
+    def FailureReason(self):
+        return self._FailureReason
+
+    @FailureReason.setter
+    def FailureReason(self, FailureReason):
+        self._FailureReason = FailureReason
+
+    @property
+    def ChargeType(self):
+        return self._ChargeType
+
+    @ChargeType.setter
+    def ChargeType(self, ChargeType):
+        self._ChargeType = ChargeType
+
+    @property
+    def InstanceTypeAlias(self):
+        return self._InstanceTypeAlias
+
+    @InstanceTypeAlias.setter
+    def InstanceTypeAlias(self, InstanceTypeAlias):
+        self._InstanceTypeAlias = InstanceTypeAlias
+
+    @property
+    def ResourceGroupName(self):
+        return self._ResourceGroupName
+
+    @ResourceGroupName.setter
+    def ResourceGroupName(self, ResourceGroupName):
+        self._ResourceGroupName = ResourceGroupName
+
+    @property
+    def VolumeSourceType(self):
+        return self._VolumeSourceType
+
+    @VolumeSourceType.setter
+    def VolumeSourceType(self, VolumeSourceType):
+        self._VolumeSourceType = VolumeSourceType
+
+    @property
+    def VolumeSourceCFS(self):
+        return self._VolumeSourceCFS
+
+    @VolumeSourceCFS.setter
+    def VolumeSourceCFS(self, VolumeSourceCFS):
+        self._VolumeSourceCFS = VolumeSourceCFS
+
+    @property
+    def DataConfigs(self):
+        return self._DataConfigs
+
+    @DataConfigs.setter
+    def DataConfigs(self, DataConfigs):
+        self._DataConfigs = DataConfigs
+
+    @property
+    def Message(self):
+        return self._Message
+
+    @Message.setter
+    def Message(self, Message):
+        self._Message = Message
+
+    @property
+    def DataSource(self):
+        return self._DataSource
+
+    @DataSource.setter
+    def DataSource(self, DataSource):
+        self._DataSource = DataSource
+
+    @property
+    def ImageInfo(self):
+        return self._ImageInfo
+
+    @ImageInfo.setter
+    def ImageInfo(self, ImageInfo):
+        self._ImageInfo = ImageInfo
+
+    @property
+    def ImageType(self):
+        return self._ImageType
+
+    @ImageType.setter
+    def ImageType(self, ImageType):
+        self._ImageType = ImageType
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        self._Name = params.get("Name")
+        self._LifecycleScriptId = params.get("LifecycleScriptId")
+        self._PodName = params.get("PodName")
+        self._UpdateTime = params.get("UpdateTime")
+        self._DirectInternetAccess = params.get("DirectInternetAccess")
+        self._ResourceGroupId = params.get("ResourceGroupId")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._Tags.append(obj)
+        self._AutoStopping = params.get("AutoStopping")
+        self._AdditionalCodeRepoIds = params.get("AdditionalCodeRepoIds")
+        self._AutomaticStopTime = params.get("AutomaticStopTime")
+        if params.get("ResourceConf") is not None:
+            self._ResourceConf = ResourceConf()
+            self._ResourceConf._deserialize(params.get("ResourceConf"))
+        self._DefaultCodeRepoId = params.get("DefaultCodeRepoId")
+        self._EndTime = params.get("EndTime")
+        self._LogEnable = params.get("LogEnable")
+        if params.get("LogConfig") is not None:
+            self._LogConfig = LogConfig()
+            self._LogConfig._deserialize(params.get("LogConfig"))
+        self._VpcId = params.get("VpcId")
+        self._SubnetId = params.get("SubnetId")
+        self._Status = params.get("Status")
+        self._RuntimeInSeconds = params.get("RuntimeInSeconds")
+        self._CreateTime = params.get("CreateTime")
+        self._StartTime = params.get("StartTime")
+        self._ChargeStatus = params.get("ChargeStatus")
+        self._RootAccess = params.get("RootAccess")
+        self._BillingInfos = params.get("BillingInfos")
+        self._VolumeSizeInGB = params.get("VolumeSizeInGB")
+        self._FailureReason = params.get("FailureReason")
+        self._ChargeType = params.get("ChargeType")
+        self._InstanceTypeAlias = params.get("InstanceTypeAlias")
+        self._ResourceGroupName = params.get("ResourceGroupName")
+        self._VolumeSourceType = params.get("VolumeSourceType")
+        if params.get("VolumeSourceCFS") is not None:
+            self._VolumeSourceCFS = CFSConfig()
+            self._VolumeSourceCFS._deserialize(params.get("VolumeSourceCFS"))
+        if params.get("DataConfigs") is not None:
+            self._DataConfigs = []
+            for item in params.get("DataConfigs"):
+                obj = DataConfig()
+                obj._deserialize(item)
+                self._DataConfigs.append(obj)
+        self._Message = params.get("Message")
+        self._DataSource = params.get("DataSource")
+        if params.get("ImageInfo") is not None:
+            self._ImageInfo = ImageInfo()
+            self._ImageInfo._deserialize(params.get("ImageInfo"))
+        self._ImageType = params.get("ImageType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NotebookImageRecord(AbstractModel):
+    """镜像保存记录
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RecordId: 保存记录ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecordId: str
+        :param _ImageUrl: 镜像地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ImageUrl: str
+        :param _Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param _CreateTime: 创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateTime: str
+        :param _Message: 状态信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param _InstanceId: 实例ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceId: str
+        :param _Kernels: kernel数组
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Kernels: list of str
+        """
+        self._RecordId = None
+        self._ImageUrl = None
+        self._Status = None
+        self._CreateTime = None
+        self._Message = None
+        self._InstanceId = None
+        self._Kernels = None
+
+    @property
+    def RecordId(self):
+        return self._RecordId
+
+    @RecordId.setter
+    def RecordId(self, RecordId):
+        self._RecordId = RecordId
+
+    @property
+    def ImageUrl(self):
+        return self._ImageUrl
+
+    @ImageUrl.setter
+    def ImageUrl(self, ImageUrl):
+        self._ImageUrl = ImageUrl
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def Message(self):
+        return self._Message
+
+    @Message.setter
+    def Message(self, Message):
+        self._Message = Message
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def Kernels(self):
+        return self._Kernels
+
+    @Kernels.setter
+    def Kernels(self, Kernels):
+        self._Kernels = Kernels
+
+
+    def _deserialize(self, params):
+        self._RecordId = params.get("RecordId")
+        self._ImageUrl = params.get("ImageUrl")
+        self._Status = params.get("Status")
+        self._CreateTime = params.get("CreateTime")
+        self._Message = params.get("Message")
+        self._InstanceId = params.get("InstanceId")
+        self._Kernels = params.get("Kernels")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NotebookSetItem(AbstractModel):
+    """Notebook列表元素
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook ID
+        :type Id: str
+        :param _Name: notebook 名称
+        :type Name: str
+        :param _ChargeType: 计费模式
+        :type ChargeType: str
+        :param _ResourceConf: 资源配置
+        :type ResourceConf: :class:`tencentcloud.tione.v20211111.models.ResourceConf`
+        :param _ResourceGroupId: 预付费资源组
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceGroupId: str
+        :param _VolumeSizeInGB: 存储卷大小
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeSizeInGB: int
+        :param _BillingInfos: 计费金额信息，eg：2.00元/小时 (for后付费)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BillingInfos: list of str
+        :param _Tags: 标签配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
+        :param _CreateTime: 创建时间
+        :type CreateTime: str
+        :param _StartTime: 启动时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param _UpdateTime: 更新时间
+        :type UpdateTime: str
+        :param _RuntimeInSeconds: 运行时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuntimeInSeconds: int
+        :param _ChargeStatus: 计费状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChargeStatus: str
+        :param _Status: 状态
+        :type Status: str
+        :param _FailureReason: 错误原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailureReason: str
+        :param _EndTime: 结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param _PodName: Pod名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PodName: str
+        :param _InstanceTypeAlias: 后付费资源规格名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceTypeAlias: str
+        :param _ResourceGroupName: 预付费资源组名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceGroupName: str
+        :param _AutoStopping: 是否自动终止
+        :type AutoStopping: bool
+        :param _AutomaticStopTime: 自动停止时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutomaticStopTime: int
+        :param _VolumeSourceType: 存储的类型。取值包含： 
+    FREE:        预付费的免费存储
+    CLOUD_PREMIUM： 高性能云硬盘
+    CLOUD_SSD： SSD云硬盘
+    CFS:     CFS存储，包含NFS和turbo
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeSourceType: str
+        :param _VolumeSourceCFS: CFS存储的配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeSourceCFS: :class:`tencentcloud.tione.v20211111.models.CFSConfig`
+        :param _Message: notebook 信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        :param _UserTypes: notebook用户类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserTypes: list of str
+        :param _SSHConfig: SSH配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SSHConfig: :class:`tencentcloud.tione.v20211111.models.SSHConfig`
+        """
+        self._Id = None
+        self._Name = None
+        self._ChargeType = None
+        self._ResourceConf = None
+        self._ResourceGroupId = None
+        self._VolumeSizeInGB = None
+        self._BillingInfos = None
+        self._Tags = None
+        self._CreateTime = None
+        self._StartTime = None
+        self._UpdateTime = None
+        self._RuntimeInSeconds = None
+        self._ChargeStatus = None
+        self._Status = None
+        self._FailureReason = None
+        self._EndTime = None
+        self._PodName = None
+        self._InstanceTypeAlias = None
+        self._ResourceGroupName = None
+        self._AutoStopping = None
+        self._AutomaticStopTime = None
+        self._VolumeSourceType = None
+        self._VolumeSourceCFS = None
+        self._Message = None
+        self._UserTypes = None
+        self._SSHConfig = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def ChargeType(self):
+        return self._ChargeType
+
+    @ChargeType.setter
+    def ChargeType(self, ChargeType):
+        self._ChargeType = ChargeType
+
+    @property
+    def ResourceConf(self):
+        return self._ResourceConf
+
+    @ResourceConf.setter
+    def ResourceConf(self, ResourceConf):
+        self._ResourceConf = ResourceConf
+
+    @property
+    def ResourceGroupId(self):
+        return self._ResourceGroupId
+
+    @ResourceGroupId.setter
+    def ResourceGroupId(self, ResourceGroupId):
+        self._ResourceGroupId = ResourceGroupId
+
+    @property
+    def VolumeSizeInGB(self):
+        return self._VolumeSizeInGB
+
+    @VolumeSizeInGB.setter
+    def VolumeSizeInGB(self, VolumeSizeInGB):
+        self._VolumeSizeInGB = VolumeSizeInGB
+
+    @property
+    def BillingInfos(self):
+        return self._BillingInfos
+
+    @BillingInfos.setter
+    def BillingInfos(self, BillingInfos):
+        self._BillingInfos = BillingInfos
+
+    @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def UpdateTime(self):
+        return self._UpdateTime
+
+    @UpdateTime.setter
+    def UpdateTime(self, UpdateTime):
+        self._UpdateTime = UpdateTime
+
+    @property
+    def RuntimeInSeconds(self):
+        return self._RuntimeInSeconds
+
+    @RuntimeInSeconds.setter
+    def RuntimeInSeconds(self, RuntimeInSeconds):
+        self._RuntimeInSeconds = RuntimeInSeconds
+
+    @property
+    def ChargeStatus(self):
+        return self._ChargeStatus
+
+    @ChargeStatus.setter
+    def ChargeStatus(self, ChargeStatus):
+        self._ChargeStatus = ChargeStatus
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def FailureReason(self):
+        return self._FailureReason
+
+    @FailureReason.setter
+    def FailureReason(self, FailureReason):
+        self._FailureReason = FailureReason
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def PodName(self):
+        return self._PodName
+
+    @PodName.setter
+    def PodName(self, PodName):
+        self._PodName = PodName
+
+    @property
+    def InstanceTypeAlias(self):
+        return self._InstanceTypeAlias
+
+    @InstanceTypeAlias.setter
+    def InstanceTypeAlias(self, InstanceTypeAlias):
+        self._InstanceTypeAlias = InstanceTypeAlias
+
+    @property
+    def ResourceGroupName(self):
+        return self._ResourceGroupName
+
+    @ResourceGroupName.setter
+    def ResourceGroupName(self, ResourceGroupName):
+        self._ResourceGroupName = ResourceGroupName
+
+    @property
+    def AutoStopping(self):
+        return self._AutoStopping
+
+    @AutoStopping.setter
+    def AutoStopping(self, AutoStopping):
+        self._AutoStopping = AutoStopping
+
+    @property
+    def AutomaticStopTime(self):
+        return self._AutomaticStopTime
+
+    @AutomaticStopTime.setter
+    def AutomaticStopTime(self, AutomaticStopTime):
+        self._AutomaticStopTime = AutomaticStopTime
+
+    @property
+    def VolumeSourceType(self):
+        return self._VolumeSourceType
+
+    @VolumeSourceType.setter
+    def VolumeSourceType(self, VolumeSourceType):
+        self._VolumeSourceType = VolumeSourceType
+
+    @property
+    def VolumeSourceCFS(self):
+        return self._VolumeSourceCFS
+
+    @VolumeSourceCFS.setter
+    def VolumeSourceCFS(self, VolumeSourceCFS):
+        self._VolumeSourceCFS = VolumeSourceCFS
+
+    @property
+    def Message(self):
+        return self._Message
+
+    @Message.setter
+    def Message(self, Message):
+        self._Message = Message
+
+    @property
+    def UserTypes(self):
+        return self._UserTypes
+
+    @UserTypes.setter
+    def UserTypes(self, UserTypes):
+        self._UserTypes = UserTypes
+
+    @property
+    def SSHConfig(self):
+        return self._SSHConfig
+
+    @SSHConfig.setter
+    def SSHConfig(self, SSHConfig):
+        self._SSHConfig = SSHConfig
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        self._Name = params.get("Name")
+        self._ChargeType = params.get("ChargeType")
+        if params.get("ResourceConf") is not None:
+            self._ResourceConf = ResourceConf()
+            self._ResourceConf._deserialize(params.get("ResourceConf"))
+        self._ResourceGroupId = params.get("ResourceGroupId")
+        self._VolumeSizeInGB = params.get("VolumeSizeInGB")
+        self._BillingInfos = params.get("BillingInfos")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._Tags.append(obj)
+        self._CreateTime = params.get("CreateTime")
+        self._StartTime = params.get("StartTime")
+        self._UpdateTime = params.get("UpdateTime")
+        self._RuntimeInSeconds = params.get("RuntimeInSeconds")
+        self._ChargeStatus = params.get("ChargeStatus")
+        self._Status = params.get("Status")
+        self._FailureReason = params.get("FailureReason")
+        self._EndTime = params.get("EndTime")
+        self._PodName = params.get("PodName")
+        self._InstanceTypeAlias = params.get("InstanceTypeAlias")
+        self._ResourceGroupName = params.get("ResourceGroupName")
+        self._AutoStopping = params.get("AutoStopping")
+        self._AutomaticStopTime = params.get("AutomaticStopTime")
+        self._VolumeSourceType = params.get("VolumeSourceType")
+        if params.get("VolumeSourceCFS") is not None:
+            self._VolumeSourceCFS = CFSConfig()
+            self._VolumeSourceCFS._deserialize(params.get("VolumeSourceCFS"))
+        self._Message = params.get("Message")
+        self._UserTypes = params.get("UserTypes")
+        if params.get("SSHConfig") is not None:
+            self._SSHConfig = SSHConfig()
+            self._SSHConfig._deserialize(params.get("SSHConfig"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class OcrLabelInfo(AbstractModel):
@@ -12084,9 +15116,25 @@ class PodInfo(AbstractModel):
         :param _IP: pod的IP
 注意：此字段可能返回 null，表示取不到有效值。
         :type IP: str
+        :param _Status: pod状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param _StartTime: pod启动时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param _EndTime: pod结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param _ResourceConfigInfo: pod资源配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceConfigInfo: :class:`tencentcloud.tione.v20211111.models.ResourceConfigInfo`
         """
         self._Name = None
         self._IP = None
+        self._Status = None
+        self._StartTime = None
+        self._EndTime = None
+        self._ResourceConfigInfo = None
 
     @property
     def Name(self):
@@ -12104,10 +15152,48 @@ class PodInfo(AbstractModel):
     def IP(self, IP):
         self._IP = IP
 
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def ResourceConfigInfo(self):
+        return self._ResourceConfigInfo
+
+    @ResourceConfigInfo.setter
+    def ResourceConfigInfo(self, ResourceConfigInfo):
+        self._ResourceConfigInfo = ResourceConfigInfo
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
         self._IP = params.get("IP")
+        self._Status = params.get("Status")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        if params.get("ResourceConfigInfo") is not None:
+            self._ResourceConfigInfo = ResourceConfigInfo()
+            self._ResourceConfigInfo._deserialize(params.get("ResourceConfigInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12252,6 +15338,108 @@ class RDMAConfig(AbstractModel):
 
     def _deserialize(self, params):
         self._Enable = params.get("Enable")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResourceConf(AbstractModel):
+    """Notebook资源参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Cpu: cpu 处理器资源, 单位为1/1000核 (for预付费)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Cpu: int
+        :param _Memory: memory 内存资源, 单位为1M (for预付费)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Memory: int
+        :param _Gpu: gpu Gpu卡资源，单位为1单位的GpuType，例如GpuType=T4时，1 Gpu = 1/100 T4卡，GpuType=vcuda时，1 Gpu = 1/100 vcuda-core (for预付费)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Gpu: int
+        :param _GpuType: GpuType 卡类型 vcuda, T4,P4,V100等 (for预付费)
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GpuType: str
+        :param _InstanceType: 计算规格 (for后付费)，可选值如下：
+TI.S.LARGE.POST: 4C8G 
+TI.S.2XLARGE16.POST:  8C16G 
+TI.S.2XLARGE32.POST:  8C32G 
+TI.S.4XLARGE32.POST:  16C32G
+TI.S.4XLARGE64.POST:  16C64G
+TI.S.6XLARGE48.POST:  24C48G
+TI.S.6XLARGE96.POST:  24C96G
+TI.S.8XLARGE64.POST:  32C64G
+TI.S.8XLARGE128.POST : 32C128G
+TI.GN10.2XLARGE40.POST: 8C40G V100*1 
+TI.GN10.5XLARGE80.POST:  18C80G V100*2 
+TI.GN10.10XLARGE160.POST :  32C160G V100*4
+TI.GN10.20XLARGE320.POST :  72C320G V100*8
+TI.GN7.8XLARGE128.POST: 32C128G T4*1 
+TI.GN7.10XLARGE160.POST: 40C160G T4*2 
+TI.GN7.20XLARGE320.POST: 80C320G T4*4
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceType: str
+        """
+        self._Cpu = None
+        self._Memory = None
+        self._Gpu = None
+        self._GpuType = None
+        self._InstanceType = None
+
+    @property
+    def Cpu(self):
+        return self._Cpu
+
+    @Cpu.setter
+    def Cpu(self, Cpu):
+        self._Cpu = Cpu
+
+    @property
+    def Memory(self):
+        return self._Memory
+
+    @Memory.setter
+    def Memory(self, Memory):
+        self._Memory = Memory
+
+    @property
+    def Gpu(self):
+        return self._Gpu
+
+    @Gpu.setter
+    def Gpu(self, Gpu):
+        self._Gpu = Gpu
+
+    @property
+    def GpuType(self):
+        return self._GpuType
+
+    @GpuType.setter
+    def GpuType(self, GpuType):
+        self._GpuType = GpuType
+
+    @property
+    def InstanceType(self):
+        return self._InstanceType
+
+    @InstanceType.setter
+    def InstanceType(self, InstanceType):
+        self._InstanceType = InstanceType
+
+
+    def _deserialize(self, params):
+        self._Cpu = params.get("Cpu")
+        self._Memory = params.get("Memory")
+        self._Gpu = params.get("Gpu")
+        self._GpuType = params.get("GpuType")
+        self._InstanceType = params.get("InstanceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -13057,6 +16245,79 @@ class RowValue(AbstractModel):
         
 
 
+class SSHConfig(AbstractModel):
+    """notebook ssh端口配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Enable: 是否开启ssh
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Enable: bool
+        :param _PublicKey: 公钥信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PublicKey: str
+        :param _Port: 端口号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Port: int
+        :param _LoginCommand: 登录命令
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LoginCommand: str
+        """
+        self._Enable = None
+        self._PublicKey = None
+        self._Port = None
+        self._LoginCommand = None
+
+    @property
+    def Enable(self):
+        return self._Enable
+
+    @Enable.setter
+    def Enable(self, Enable):
+        self._Enable = Enable
+
+    @property
+    def PublicKey(self):
+        return self._PublicKey
+
+    @PublicKey.setter
+    def PublicKey(self, PublicKey):
+        self._PublicKey = PublicKey
+
+    @property
+    def Port(self):
+        return self._Port
+
+    @Port.setter
+    def Port(self, Port):
+        self._Port = Port
+
+    @property
+    def LoginCommand(self):
+        return self._LoginCommand
+
+    @LoginCommand.setter
+    def LoginCommand(self, LoginCommand):
+        self._LoginCommand = LoginCommand
+
+
+    def _deserialize(self, params):
+        self._Enable = params.get("Enable")
+        self._PublicKey = params.get("PublicKey")
+        self._Port = params.get("Port")
+        self._LoginCommand = params.get("LoginCommand")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ScheduledAction(AbstractModel):
     """定时的事务和行为
 
@@ -13223,6 +16484,143 @@ class SegmentationInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class SendChatMessageRequest(AbstractModel):
+    """SendChatMessage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SessionId: 会话id，标识一组对话的唯一id，id变更则重置会话
+        :type SessionId: str
+        :param _Question: 问题描述
+        :type Question: str
+        :param _ModelVersion: 会话模型版本。
+多行业多场景大模型：填写 tj_llm_clm-v1。
+多行业客服大模型：填写demo_big_model_version_id。
+默认为demo_big_model_version_id，即多行业客服大模型。
+        :type ModelVersion: str
+        :param _Mode: 使用模式(仅多场景客服大模型支持)。
+通用问答：填写General。
+搜索增强问答：填写WithSearchPlugin。
+默认为General，即通用问答。
+        :type Mode: str
+        :param _SearchSource: 搜索来源。仅当Mode为WithSearchPlugin时生效。
+预置文稿库：填写Preset。自定义：填写Custom。
+        :type SearchSource: str
+        """
+        self._SessionId = None
+        self._Question = None
+        self._ModelVersion = None
+        self._Mode = None
+        self._SearchSource = None
+
+    @property
+    def SessionId(self):
+        return self._SessionId
+
+    @SessionId.setter
+    def SessionId(self, SessionId):
+        self._SessionId = SessionId
+
+    @property
+    def Question(self):
+        return self._Question
+
+    @Question.setter
+    def Question(self, Question):
+        self._Question = Question
+
+    @property
+    def ModelVersion(self):
+        return self._ModelVersion
+
+    @ModelVersion.setter
+    def ModelVersion(self, ModelVersion):
+        self._ModelVersion = ModelVersion
+
+    @property
+    def Mode(self):
+        return self._Mode
+
+    @Mode.setter
+    def Mode(self, Mode):
+        self._Mode = Mode
+
+    @property
+    def SearchSource(self):
+        return self._SearchSource
+
+    @SearchSource.setter
+    def SearchSource(self, SearchSource):
+        self._SearchSource = SearchSource
+
+
+    def _deserialize(self, params):
+        self._SessionId = params.get("SessionId")
+        self._Question = params.get("Question")
+        self._ModelVersion = params.get("ModelVersion")
+        self._Mode = params.get("Mode")
+        self._SearchSource = params.get("SearchSource")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SendChatMessageResponse(AbstractModel):
+    """SendChatMessage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Answer: 答案
+        :type Answer: str
+        :param _SessionId: 会话id,返回请求的会话id
+        :type SessionId: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Answer = None
+        self._SessionId = None
+        self._RequestId = None
+
+    @property
+    def Answer(self):
+        return self._Answer
+
+    @Answer.setter
+    def Answer(self, Answer):
+        self._Answer = Answer
+
+    @property
+    def SessionId(self):
+        return self._SessionId
+
+    @SessionId.setter
+    def SessionId(self, SessionId):
+        self._SessionId = SessionId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Answer = params.get("Answer")
+        self._SessionId = params.get("SessionId")
+        self._RequestId = params.get("RequestId")
 
 
 class Service(AbstractModel):
@@ -13753,6 +17151,126 @@ class ServiceCallInfo(AbstractModel):
         
 
 
+class ServiceEIP(AbstractModel):
+    """服务共享弹性网卡设置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _EnableEIP: 是否开启TIONE内网到外部的访问
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnableEIP: bool
+        :param _VpcId: 用户VpcId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param _SubnetId: 用户subnetId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        """
+        self._EnableEIP = None
+        self._VpcId = None
+        self._SubnetId = None
+
+    @property
+    def EnableEIP(self):
+        return self._EnableEIP
+
+    @EnableEIP.setter
+    def EnableEIP(self, EnableEIP):
+        self._EnableEIP = EnableEIP
+
+    @property
+    def VpcId(self):
+        return self._VpcId
+
+    @VpcId.setter
+    def VpcId(self, VpcId):
+        self._VpcId = VpcId
+
+    @property
+    def SubnetId(self):
+        return self._SubnetId
+
+    @SubnetId.setter
+    def SubnetId(self, SubnetId):
+        self._SubnetId = SubnetId
+
+
+    def _deserialize(self, params):
+        self._EnableEIP = params.get("EnableEIP")
+        self._VpcId = params.get("VpcId")
+        self._SubnetId = params.get("SubnetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ServiceEIPInfo(AbstractModel):
+    """共享弹性网卡信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ServiceId: 服务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceId: str
+        :param _VpcId: 用户VpcId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VpcId: str
+        :param _SubnetId: 用户子网Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubnetId: str
+        """
+        self._ServiceId = None
+        self._VpcId = None
+        self._SubnetId = None
+
+    @property
+    def ServiceId(self):
+        return self._ServiceId
+
+    @ServiceId.setter
+    def ServiceId(self, ServiceId):
+        self._ServiceId = ServiceId
+
+    @property
+    def VpcId(self):
+        return self._VpcId
+
+    @VpcId.setter
+    def VpcId(self, VpcId):
+        self._VpcId = VpcId
+
+    @property
+    def SubnetId(self):
+        return self._SubnetId
+
+    @SubnetId.setter
+    def SubnetId(self, SubnetId):
+        self._SubnetId = SubnetId
+
+
+    def _deserialize(self, params):
+        self._ServiceId = params.get("ServiceId")
+        self._VpcId = params.get("VpcId")
+        self._SubnetId = params.get("SubnetId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ServiceGroup(AbstractModel):
     """在线服务一个服务组的信息
 
@@ -14182,6 +17700,18 @@ HYBRID_PAID:
         :param _ModelTurboEnable: 是否开启模型的加速, 仅对StableDiffusion(动态加速)格式的模型有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ModelTurboEnable: bool
+        :param _VolumeMount: 挂载
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeMount: :class:`tencentcloud.tione.v20211111.models.VolumeMount`
+        :param _InferCodeInfo: 推理代码信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InferCodeInfo: :class:`tencentcloud.tione.v20211111.models.InferCodeInfo`
+        :param _Command: 服务的启动命令
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Command: str
+        :param _ServiceEIP: 开启TIONE内网访问外部设置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServiceEIP: :class:`tencentcloud.tione.v20211111.models.ServiceEIP`
         """
         self._Replicas = None
         self._ImageInfo = None
@@ -14209,6 +17739,10 @@ HYBRID_PAID:
         self._PodInfos = None
         self._ServiceLimit = None
         self._ModelTurboEnable = None
+        self._VolumeMount = None
+        self._InferCodeInfo = None
+        self._Command = None
+        self._ServiceEIP = None
 
     @property
     def Replicas(self):
@@ -14418,6 +17952,38 @@ HYBRID_PAID:
     def ModelTurboEnable(self, ModelTurboEnable):
         self._ModelTurboEnable = ModelTurboEnable
 
+    @property
+    def VolumeMount(self):
+        return self._VolumeMount
+
+    @VolumeMount.setter
+    def VolumeMount(self, VolumeMount):
+        self._VolumeMount = VolumeMount
+
+    @property
+    def InferCodeInfo(self):
+        return self._InferCodeInfo
+
+    @InferCodeInfo.setter
+    def InferCodeInfo(self, InferCodeInfo):
+        self._InferCodeInfo = InferCodeInfo
+
+    @property
+    def Command(self):
+        return self._Command
+
+    @Command.setter
+    def Command(self, Command):
+        self._Command = Command
+
+    @property
+    def ServiceEIP(self):
+        return self._ServiceEIP
+
+    @ServiceEIP.setter
+    def ServiceEIP(self, ServiceEIP):
+        self._ServiceEIP = ServiceEIP
+
 
     def _deserialize(self, params):
         self._Replicas = params.get("Replicas")
@@ -14479,6 +18045,16 @@ HYBRID_PAID:
             self._ServiceLimit = ServiceLimit()
             self._ServiceLimit._deserialize(params.get("ServiceLimit"))
         self._ModelTurboEnable = params.get("ModelTurboEnable")
+        if params.get("VolumeMount") is not None:
+            self._VolumeMount = VolumeMount()
+            self._VolumeMount._deserialize(params.get("VolumeMount"))
+        if params.get("InferCodeInfo") is not None:
+            self._InferCodeInfo = InferCodeInfo()
+            self._InferCodeInfo._deserialize(params.get("InferCodeInfo"))
+        self._Command = params.get("Command")
+        if params.get("ServiceEIP") is not None:
+            self._ServiceEIP = ServiceEIP()
+            self._ServiceEIP._deserialize(params.get("ServiceEIP"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -14551,12 +18127,28 @@ class Spec(AbstractModel):
         :type Available: bool
         :param _AvailableRegion: 当前资源售罄时，可用的区域有哪些
         :type AvailableRegion: list of str
+        :param _SpecFeatures: 当前计费项支持的特性
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SpecFeatures: list of str
+        :param _SpecType: 计费项类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SpecType: str
+        :param _GpuType: GPU类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type GpuType: str
+        :param _CategoryId: 计费项CategoryId
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CategoryId: str
         """
         self._SpecId = None
         self._SpecName = None
         self._SpecAlias = None
         self._Available = None
         self._AvailableRegion = None
+        self._SpecFeatures = None
+        self._SpecType = None
+        self._GpuType = None
+        self._CategoryId = None
 
     @property
     def SpecId(self):
@@ -14598,6 +18190,38 @@ class Spec(AbstractModel):
     def AvailableRegion(self, AvailableRegion):
         self._AvailableRegion = AvailableRegion
 
+    @property
+    def SpecFeatures(self):
+        return self._SpecFeatures
+
+    @SpecFeatures.setter
+    def SpecFeatures(self, SpecFeatures):
+        self._SpecFeatures = SpecFeatures
+
+    @property
+    def SpecType(self):
+        return self._SpecType
+
+    @SpecType.setter
+    def SpecType(self, SpecType):
+        self._SpecType = SpecType
+
+    @property
+    def GpuType(self):
+        return self._GpuType
+
+    @GpuType.setter
+    def GpuType(self, GpuType):
+        self._GpuType = GpuType
+
+    @property
+    def CategoryId(self):
+        return self._CategoryId
+
+    @CategoryId.setter
+    def CategoryId(self, CategoryId):
+        self._CategoryId = CategoryId
+
 
     def _deserialize(self, params):
         self._SpecId = params.get("SpecId")
@@ -14605,6 +18229,10 @@ class Spec(AbstractModel):
         self._SpecAlias = params.get("SpecAlias")
         self._Available = params.get("Available")
         self._AvailableRegion = params.get("AvailableRegion")
+        self._SpecFeatures = params.get("SpecFeatures")
+        self._SpecType = params.get("SpecType")
+        self._GpuType = params.get("GpuType")
+        self._CategoryId = params.get("CategoryId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -14786,6 +18414,64 @@ class StartCmdInfo(AbstractModel):
         
 
 
+class StartNotebookRequest(AbstractModel):
+    """StartNotebook请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook id
+        :type Id: str
+        """
+        self._Id = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StartNotebookResponse(AbstractModel):
+    """StartNotebook返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class StartTrainingTaskRequest(AbstractModel):
     """StartTrainingTask请求参数结构体
 
@@ -14866,12 +18552,16 @@ class StatefulSetCondition(AbstractModel):
         :param _LastTransitionTime: 上次更新的时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type LastTransitionTime: str
+        :param _LastUpdateTime: 上次更新的时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LastUpdateTime: str
         """
         self._Message = None
         self._Reason = None
         self._Status = None
         self._Type = None
         self._LastTransitionTime = None
+        self._LastUpdateTime = None
 
     @property
     def Message(self):
@@ -14913,6 +18603,14 @@ class StatefulSetCondition(AbstractModel):
     def LastTransitionTime(self, LastTransitionTime):
         self._LastTransitionTime = LastTransitionTime
 
+    @property
+    def LastUpdateTime(self):
+        return self._LastUpdateTime
+
+    @LastUpdateTime.setter
+    def LastUpdateTime(self, LastUpdateTime):
+        self._LastUpdateTime = LastUpdateTime
+
 
     def _deserialize(self, params):
         self._Message = params.get("Message")
@@ -14920,6 +18618,7 @@ class StatefulSetCondition(AbstractModel):
         self._Status = params.get("Status")
         self._Type = params.get("Type")
         self._LastTransitionTime = params.get("LastTransitionTime")
+        self._LastUpdateTime = params.get("LastUpdateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -14965,6 +18664,64 @@ class StopBatchTaskRequest(AbstractModel):
 
 class StopBatchTaskResponse(AbstractModel):
     """StopBatchTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class StopCreatingImageRequest(AbstractModel):
+    """StopCreatingImage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RecordId: 镜像保存记录ID
+        :type RecordId: str
+        """
+        self._RecordId = None
+
+    @property
+    def RecordId(self):
+        return self._RecordId
+
+    @RecordId.setter
+    def RecordId(self, RecordId):
+        self._RecordId = RecordId
+
+
+    def _deserialize(self, params):
+        self._RecordId = params.get("RecordId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StopCreatingImageResponse(AbstractModel):
+    """StopCreatingImage返回参数结构体
 
     """
 
@@ -15072,6 +18829,64 @@ class StopModelAccelerateTaskResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class StopNotebookRequest(AbstractModel):
+    """StopNotebook请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: notebook id
+        :type Id: str
+        """
+        self._Id = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StopNotebookResponse(AbstractModel):
+    """StopNotebook返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class StopTrainingTaskRequest(AbstractModel):
     """StopTrainingTask请求参数结构体
 
@@ -15128,6 +18943,66 @@ class StopTrainingTaskResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
+
+
+class TJCallInfo(AbstractModel):
+    """太极服务的调用信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _HttpAddr: 调用地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HttpAddr: str
+        :param _Token: token
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Token: str
+        :param _CallExample: 调用示例
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CallExample: str
+        """
+        self._HttpAddr = None
+        self._Token = None
+        self._CallExample = None
+
+    @property
+    def HttpAddr(self):
+        return self._HttpAddr
+
+    @HttpAddr.setter
+    def HttpAddr(self, HttpAddr):
+        self._HttpAddr = HttpAddr
+
+    @property
+    def Token(self):
+        return self._Token
+
+    @Token.setter
+    def Token(self, Token):
+        self._Token = Token
+
+    @property
+    def CallExample(self):
+        return self._CallExample
+
+    @CallExample.setter
+    def CallExample(self, CallExample):
+        self._CallExample = CallExample
+
+
+    def _deserialize(self, params):
+        self._HttpAddr = params.get("HttpAddr")
+        self._Token = params.get("Token")
+        self._CallExample = params.get("CallExample")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class Tag(AbstractModel):
@@ -17140,6 +21015,66 @@ class TrainingTaskSetItem(AbstractModel):
         
 
 
+class Usage(AbstractModel):
+    """大模型生成Token统计
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CompletionTokens: 生成的token数目
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CompletionTokens: int
+        :param _PromptTokens: 输入的token数目
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PromptTokens: int
+        :param _TotalTokens: 总共token数目
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalTokens: int
+        """
+        self._CompletionTokens = None
+        self._PromptTokens = None
+        self._TotalTokens = None
+
+    @property
+    def CompletionTokens(self):
+        return self._CompletionTokens
+
+    @CompletionTokens.setter
+    def CompletionTokens(self, CompletionTokens):
+        self._CompletionTokens = CompletionTokens
+
+    @property
+    def PromptTokens(self):
+        return self._PromptTokens
+
+    @PromptTokens.setter
+    def PromptTokens(self, PromptTokens):
+        self._PromptTokens = PromptTokens
+
+    @property
+    def TotalTokens(self):
+        return self._TotalTokens
+
+    @TotalTokens.setter
+    def TotalTokens(self, TotalTokens):
+        self._TotalTokens = TotalTokens
+
+
+    def _deserialize(self, params):
+        self._CompletionTokens = params.get("CompletionTokens")
+        self._PromptTokens = params.get("PromptTokens")
+        self._TotalTokens = params.get("TotalTokens")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class VolumeMount(AbstractModel):
     """外部挂载信息
 
@@ -17149,7 +21084,7 @@ class VolumeMount(AbstractModel):
         r"""
         :param _CFSConfig: cfs的配置信息
         :type CFSConfig: :class:`tencentcloud.tione.v20211111.models.CFSConfig`
-        :param _VolumeSourceType: 挂载源类型
+        :param _VolumeSourceType: 挂载源类型，CFS、COS，默认为CFS
         :type VolumeSourceType: str
         """
         self._CFSConfig = None
@@ -17324,10 +21259,14 @@ Stopping 停止中
 
     @property
     def StatefulSetCondition(self):
+        warnings.warn("parameter `StatefulSetCondition` is deprecated", DeprecationWarning) 
+
         return self._StatefulSetCondition
 
     @StatefulSetCondition.setter
     def StatefulSetCondition(self, StatefulSetCondition):
+        warnings.warn("parameter `StatefulSetCondition` is deprecated", DeprecationWarning) 
+
         self._StatefulSetCondition = StatefulSetCondition
 
     @property

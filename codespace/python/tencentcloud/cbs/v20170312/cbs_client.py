@@ -433,31 +433,6 @@ class CbsClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def DescribeDiskOperationLogs(self, request):
-        """接口已废弃，切换至云审计接口。见https://tapd.woa.com/pro/prong/stories/view/1010114221880719007
-
-        查询云盘操作日志功能已迁移至LookUpEvents接口（https://cloud.tencent.com/document/product/629/12359），本接口（DescribeDiskOperationLogs）即将下线，后续不再提供调用，请知悉。
-
-        :param request: Request instance for DescribeDiskOperationLogs.
-        :type request: :class:`tencentcloud.cbs.v20170312.models.DescribeDiskOperationLogsRequest`
-        :rtype: :class:`tencentcloud.cbs.v20170312.models.DescribeDiskOperationLogsResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DescribeDiskOperationLogs", params, headers=headers)
-            response = json.loads(body)
-            model = models.DescribeDiskOperationLogsResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def DescribeDiskStoragePool(self, request):
         """本接口（DescribeDiskStoragePool）查询用户的云硬盘独享集群列表。
 
@@ -526,31 +501,6 @@ class CbsClient(AbstractClient):
             body = self.call("DescribeInstancesDiskNum", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeInstancesDiskNumResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def DescribeSnapshotOperationLogs(self, request):
-        """接口已废弃，切换至云审计接口。见https://tapd.woa.com/pro/prong/stories/view/1010114221880719007
-
-        查询快照操作日志功能已迁移至LookUpEvents接口（https://cloud.tencent.com/document/product/629/12359），本接口（DescribeSnapshotOperationLogs）即将下线，后续不再提供调用，请知悉。
-
-        :param request: Request instance for DescribeSnapshotOperationLogs.
-        :type request: :class:`tencentcloud.cbs.v20170312.models.DescribeSnapshotOperationLogsRequest`
-        :rtype: :class:`tencentcloud.cbs.v20170312.models.DescribeSnapshotOperationLogsResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DescribeSnapshotOperationLogs", params, headers=headers)
-            response = json.loads(body)
-            model = models.DescribeSnapshotOperationLogsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -957,8 +907,8 @@ class CbsClient(AbstractClient):
     def ModifySnapshotAttribute(self, request):
         """本接口（ModifySnapshotAttribute）用于修改指定快照的属性。
 
-        * 当前仅支持修改快照名称及将非永久快照修改为永久快照。
-        * “快照名称”仅为方便用户自己管理之用，腾讯云并不以此名称作为提交工单或是进行快照管理操作的依据。
+        * 本接口支持修改快照名称及到期时间，以及将非永久快照修改为永久快照。
+        * “快照名称”仅为方便用户管理之用，腾讯云并不以此名称作为提交工单或是进行快照管理操作的依据。
 
         :param request: Request instance for ModifySnapshotAttribute.
         :type request: :class:`tencentcloud.cbs.v20170312.models.ModifySnapshotAttributeRequest`

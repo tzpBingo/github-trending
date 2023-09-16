@@ -616,6 +616,8 @@ class Backup(AbstractModel):
         :type DBs: list of str
         :param _Strategy: 备份策略（0-实例备份；1-多库备份）
         :type Strategy: int
+        :param _StorageStrategy: 备份存储策略 0-跟随自定义备份保留策略 1-跟随实例生命周期直到实例下线
+        :type StorageStrategy: int
         :param _BackupWay: 备份方式，0-定时备份；1-手动临时备份；2-定期备份
         :type BackupWay: int
         :param _BackupName: 备份任务名称，可自定义
@@ -641,6 +643,7 @@ class Backup(AbstractModel):
         self._Status = None
         self._DBs = None
         self._Strategy = None
+        self._StorageStrategy = None
         self._BackupWay = None
         self._BackupName = None
         self._GroupId = None
@@ -730,6 +733,14 @@ class Backup(AbstractModel):
         self._Strategy = Strategy
 
     @property
+    def StorageStrategy(self):
+        return self._StorageStrategy
+
+    @StorageStrategy.setter
+    def StorageStrategy(self, StorageStrategy):
+        self._StorageStrategy = StorageStrategy
+
+    @property
     def BackupWay(self):
         return self._BackupWay
 
@@ -797,6 +808,7 @@ class Backup(AbstractModel):
         self._Status = params.get("Status")
         self._DBs = params.get("DBs")
         self._Strategy = params.get("Strategy")
+        self._StorageStrategy = params.get("StorageStrategy")
         self._BackupWay = params.get("BackupWay")
         self._BackupName = params.get("BackupName")
         self._GroupId = params.get("GroupId")
@@ -1692,11 +1704,14 @@ class CreateBackupRequest(AbstractModel):
         :type InstanceId: str
         :param _BackupName: 备份名称，若不填则自动生成“实例ID_备份开始时间戳”
         :type BackupName: str
+        :param _StorageStrategy: 备份存储策略 0-跟随自定义备份保留策略 1-跟随实例生命周期直到实例下线，默认取值0
+        :type StorageStrategy: int
         """
         self._Strategy = None
         self._DBNames = None
         self._InstanceId = None
         self._BackupName = None
+        self._StorageStrategy = None
 
     @property
     def Strategy(self):
@@ -1730,12 +1745,21 @@ class CreateBackupRequest(AbstractModel):
     def BackupName(self, BackupName):
         self._BackupName = BackupName
 
+    @property
+    def StorageStrategy(self):
+        return self._StorageStrategy
+
+    @StorageStrategy.setter
+    def StorageStrategy(self, StorageStrategy):
+        self._StorageStrategy = StorageStrategy
+
 
     def _deserialize(self, params):
         self._Strategy = params.get("Strategy")
         self._DBNames = params.get("DBNames")
         self._InstanceId = params.get("InstanceId")
         self._BackupName = params.get("BackupName")
+        self._StorageStrategy = params.get("StorageStrategy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2859,7 +2883,7 @@ class CreateCloudReadOnlyDBInstancesRequest(AbstractModel):
         :type ReadOnlyGroupMinInGroup: int
         :param _InstanceChargeType: 付费模式，取值支持 PREPAID（预付费），POSTPAID（后付费）。
         :type InstanceChargeType: str
-        :param _GoodsNum: 本次购买几个只读实例，默认值为2。
+        :param _GoodsNum: 本次即将购买的实例数量，默认取值2。
         :type GoodsNum: int
         :param _SubnetId: VPC子网ID，形如subnet-bdoe83fa；SubnetId和VpcId需同时设置或者同时不设置
         :type SubnetId: str
@@ -4662,7 +4686,7 @@ class DBInstance(AbstractModel):
         :type Cpu: int
         :param _Version: 实例版本代号
         :type Version: str
-        :param _Type: 物理机代号
+        :param _Type: 实例类型代号："TS85"-物理机，本地SSD硬盘；"Z3"-物理机早期版本，本地SSD硬盘；"CLOUD_BASIC"-虚拟机，普通云硬盘；"CLOUD_PREMIUM"-虚拟机，高性能云硬盘；"CLOUD_SSD"-虚拟机，云SSD硬盘；"CLOUD_HSSD"-虚拟机，增强型SSD云硬盘；"CLOUD_TSSD"-虚拟机，极速型SSD云硬盘；"CLOUD_BSSD"-虚拟机，通用型SSD云硬盘
         :type Type: str
         :param _Pid: 计费ID
         :type Pid: int
@@ -4718,7 +4742,7 @@ class DBInstance(AbstractModel):
         :param _SlaveZones: 备可用区信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type SlaveZones: :class:`tencentcloud.sqlserver.v20180328.models.SlaveZones`
-        :param _Architecture: 架构标识，SINGLE-单节点 DOUBLE-双节点 TRIPLE-三节点
+        :param _Architecture: 架构标识，SINGLE-单节点 DOUBLE-双节点
 注意：此字段可能返回 null，表示取不到有效值。
         :type Architecture: str
         :param _Style: 类型标识，EXCLUSIVE-独享型，SHARED-共享型
@@ -5474,7 +5498,7 @@ class DBTDEEncrypt(AbstractModel):
         r"""
         :param _DBName: 数据库名称
         :type DBName: str
-        :param _Encryption: enable-开启加密，disable-关闭加密
+        :param _Encryption: enable-开启数据库TDE加密，disable-关闭数据库TDE加密
         :type Encryption: str
         """
         self._DBName = None
@@ -6013,6 +6037,51 @@ class DealInfo(AbstractModel):
         self._InstanceIdSet = params.get("InstanceIdSet")
         self._OwnerUin = params.get("OwnerUin")
         self._InstanceChargeType = params.get("InstanceChargeType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DealInstance(AbstractModel):
+    """订单号对应的资源ID列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceId: 实例ID
+        :type InstanceId: list of str
+        :param _DealName: 订单号
+        :type DealName: str
+        """
+        self._InstanceId = None
+        self._DealName = None
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def DealName(self):
+        return self._DealName
+
+    @DealName.setter
+    def DealName(self, DealName):
+        self._DealName = DealName
+
+
+    def _deserialize(self, params):
+        self._InstanceId = params.get("InstanceId")
+        self._DealName = params.get("DealName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7577,6 +7646,8 @@ class DescribeBackupsRequest(AbstractModel):
         :type Type: int
         :param _BackupFormat: 按照备份文件形式筛选，pkg-打包备份文件，single-单库备份文件
         :type BackupFormat: str
+        :param _StorageStrategy: 备份存储策略 0-跟随自定义备份保留策略 1-跟随实例生命周期直到实例下线，默认取值0
+        :type StorageStrategy: int
         """
         self._StartTime = None
         self._EndTime = None
@@ -7591,6 +7662,7 @@ class DescribeBackupsRequest(AbstractModel):
         self._Group = None
         self._Type = None
         self._BackupFormat = None
+        self._StorageStrategy = None
 
     @property
     def StartTime(self):
@@ -7696,6 +7768,14 @@ class DescribeBackupsRequest(AbstractModel):
     def BackupFormat(self, BackupFormat):
         self._BackupFormat = BackupFormat
 
+    @property
+    def StorageStrategy(self):
+        return self._StorageStrategy
+
+    @StorageStrategy.setter
+    def StorageStrategy(self, StorageStrategy):
+        self._StorageStrategy = StorageStrategy
+
 
     def _deserialize(self, params):
         self._StartTime = params.get("StartTime")
@@ -7711,6 +7791,7 @@ class DescribeBackupsRequest(AbstractModel):
         self._Group = params.get("Group")
         self._Type = params.get("Type")
         self._BackupFormat = params.get("BackupFormat")
+        self._StorageStrategy = params.get("StorageStrategy")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -9071,6 +9152,153 @@ class DescribeFlowStatusResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeHASwitchLogRequest(AbstractModel):
+    """DescribeHASwitchLog请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceId: 实例ID
+        :type InstanceId: str
+        :param _StartTime: 开始时间(yyyy-MM-dd HH:mm:ss)
+        :type StartTime: str
+        :param _EndTime: 结束时间(yyyy-MM-dd HH:mm:ss)
+        :type EndTime: str
+        :param _SwitchType: 切换模式 0-系统自动切换，1-手动切换，不填默认查全部。
+        :type SwitchType: int
+        :param _Limit: 分页，页大小
+        :type Limit: int
+        :param _Offset: 分页,页数
+        :type Offset: int
+        """
+        self._InstanceId = None
+        self._StartTime = None
+        self._EndTime = None
+        self._SwitchType = None
+        self._Limit = None
+        self._Offset = None
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def SwitchType(self):
+        return self._SwitchType
+
+    @SwitchType.setter
+    def SwitchType(self, SwitchType):
+        self._SwitchType = SwitchType
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+
+    def _deserialize(self, params):
+        self._InstanceId = params.get("InstanceId")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._SwitchType = params.get("SwitchType")
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeHASwitchLogResponse(AbstractModel):
+    """DescribeHASwitchLog返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 日志总数量
+        :type TotalCount: int
+        :param _SwitchLog: 主备切换日志
+        :type SwitchLog: list of SwitchLog
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._SwitchLog = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def SwitchLog(self):
+        return self._SwitchLog
+
+    @SwitchLog.setter
+    def SwitchLog(self, SwitchLog):
+        self._SwitchLog = SwitchLog
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("SwitchLog") is not None:
+            self._SwitchLog = []
+            for item in params.get("SwitchLog"):
+                obj = SwitchLog()
+                obj._deserialize(item)
+                self._SwitchLog.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeIncrementalMigrationRequest(AbstractModel):
     """DescribeIncrementalMigration请求参数结构体
 
@@ -9251,6 +9479,81 @@ class DescribeIncrementalMigrationResponse(AbstractModel):
                 obj = Migration()
                 obj._deserialize(item)
                 self._IncrementalMigrationSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeInstanceByOrdersRequest(AbstractModel):
+    """DescribeInstanceByOrders请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _DealNames: 订单号集合
+        :type DealNames: list of str
+        """
+        self._DealNames = None
+
+    @property
+    def DealNames(self):
+        return self._DealNames
+
+    @DealNames.setter
+    def DealNames(self, DealNames):
+        self._DealNames = DealNames
+
+
+    def _deserialize(self, params):
+        self._DealNames = params.get("DealNames")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeInstanceByOrdersResponse(AbstractModel):
+    """DescribeInstanceByOrders返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _DealInstance: 资源ID集合
+        :type DealInstance: list of DealInstance
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._DealInstance = None
+        self._RequestId = None
+
+    @property
+    def DealInstance(self):
+        return self._DealInstance
+
+    @DealInstance.setter
+    def DealInstance(self, DealInstance):
+        self._DealInstance = DealInstance
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("DealInstance") is not None:
+            self._DealInstance = []
+            for item in params.get("DealInstance"):
+                obj = DealInstance()
+                obj._deserialize(item)
+                self._DealInstance.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -11167,9 +11470,9 @@ class DescribeSlowlogsRequest(AbstractModel):
         r"""
         :param _InstanceId: 实例ID，形如mssql-k8voqdlz
         :type InstanceId: str
-        :param _StartTime: 查询开始时间
+        :param _StartTime: 开始时间(yyyy-MM-dd HH:mm:ss)
         :type StartTime: str
-        :param _EndTime: 查询结束时间
+        :param _EndTime: 结束时间(yyyy-MM-dd HH:mm:ss)
         :type EndTime: str
         :param _Limit: 分页返回，每页返回的数目，取值为1-100，默认值为20
         :type Limit: int
@@ -11648,9 +11951,9 @@ class DescribeXEventsRequest(AbstractModel):
         :type InstanceId: str
         :param _EventType: 事件类型，slow-慢SQL事件，blocked-阻塞事件，deadlock-死锁事件
         :type EventType: str
-        :param _StartTime: 扩展文件生成开始时间
+        :param _StartTime: 扩展文件生成开始时间(yyyy-MM-dd HH:mm:ss)
         :type StartTime: str
-        :param _EndTime: 扩展文件生成结束时间
+        :param _EndTime: 扩展文件生成结束时间(yyyy-MM-dd HH:mm:ss)
         :type EndTime: str
         :param _Offset: 分页返回，页编号，默认值为第0页
         :type Offset: int
@@ -12156,7 +12459,7 @@ class InquiryPriceCreateDBInstancesRequest(AbstractModel):
         :type DBVersion: str
         :param _Cpu: 预购买实例的CPU核心数
         :type Cpu: int
-        :param _InstanceType: 购买实例的类型 HA-高可用型(包括双机高可用，alwaysOn集群)，RO-只读副本型，SI-单节点型,cvmHA-新版高可用,cvmRO-新版只读
+        :param _InstanceType: 购买实例的类型 HA-高可用型(包括双机高可用，alwaysOn集群)，RO-只读副本型，SI-单节点型,cvmHA-虚拟机双机高可用,cvmRO-虚拟机只读
         :type InstanceType: str
         :param _MachineType: 购买实例的宿主机类型，PM-物理机, CLOUD_PREMIUM-虚拟机高性能云盘，CLOUD_SSD-虚拟机SSD云盘,
 CLOUD_HSSD-虚拟机加强型SSD云盘，CLOUD_TSSD-虚拟机极速型SSD云盘，CLOUD_BSSD-虚拟机通用型SSD云盘
@@ -15426,7 +15729,7 @@ class ModifyInstanceEncryptAttributesRequest(AbstractModel):
         r"""
         :param _InstanceId: 实例ID
         :type InstanceId: str
-        :param _CertificateAttribution: 证书归属。self-表示使用该账号自身的证书，others-表示引用其他账号的证书，默认self。
+        :param _CertificateAttribution: 证书归属。self-表示使用该账号自身的证书，others-表示引用其他账号的证书，默认取值self。
         :type CertificateAttribution: str
         :param _QuoteUin: 引用的其他主账号ID，当CertificateAttribution 为others时必填。
         :type QuoteUin: str
@@ -17593,7 +17896,7 @@ class RenewDBInstanceRequest(AbstractModel):
         :type InstanceId: str
         :param _Period: 续费多少个月，取值范围为1-48，默认为1
         :type Period: int
-        :param _AutoVoucher: 是否自动使用代金券，0-不使用；1-使用；默认不实用
+        :param _AutoVoucher: 是否自动使用代金券，0-不使用；1-使用；默认不使用
         :type AutoVoucher: int
         :param _VoucherIds: 代金券ID数组，目前只支持使用1张代金券
         :type VoucherIds: list of str
@@ -19333,6 +19636,174 @@ class StopMigrationResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class SwitchCloudInstanceHARequest(AbstractModel):
+    """SwitchCloudInstanceHA请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceId: 实例ID
+        :type InstanceId: str
+        :param _WaitSwitch: 切换执行方式，0-立刻执行，1-时间窗内执行，默认取值为0。
+        :type WaitSwitch: int
+        """
+        self._InstanceId = None
+        self._WaitSwitch = None
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def WaitSwitch(self):
+        return self._WaitSwitch
+
+    @WaitSwitch.setter
+    def WaitSwitch(self, WaitSwitch):
+        self._WaitSwitch = WaitSwitch
+
+
+    def _deserialize(self, params):
+        self._InstanceId = params.get("InstanceId")
+        self._WaitSwitch = params.get("WaitSwitch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SwitchCloudInstanceHAResponse(AbstractModel):
+    """SwitchCloudInstanceHA返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FlowId: 异步任务流程ID
+        :type FlowId: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._FlowId = None
+        self._RequestId = None
+
+    @property
+    def FlowId(self):
+        return self._FlowId
+
+    @FlowId.setter
+    def FlowId(self, FlowId):
+        self._FlowId = FlowId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._FlowId = params.get("FlowId")
+        self._RequestId = params.get("RequestId")
+
+
+class SwitchLog(AbstractModel):
+    """主备切换日志
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _EventId: 切换事件ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EventId: str
+        :param _SwitchType: 切换模式 0-系统自动切换，1-手动切换
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SwitchType: int
+        :param _StartTime: 切换开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: str
+        :param _EndTime: 切换结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param _Reason: 机器故障导致自动切换
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Reason: str
+        """
+        self._EventId = None
+        self._SwitchType = None
+        self._StartTime = None
+        self._EndTime = None
+        self._Reason = None
+
+    @property
+    def EventId(self):
+        return self._EventId
+
+    @EventId.setter
+    def EventId(self, EventId):
+        self._EventId = EventId
+
+    @property
+    def SwitchType(self):
+        return self._SwitchType
+
+    @SwitchType.setter
+    def SwitchType(self, SwitchType):
+        self._SwitchType = SwitchType
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def Reason(self):
+        return self._Reason
+
+    @Reason.setter
+    def Reason(self, Reason):
+        self._Reason = Reason
+
+
+    def _deserialize(self, params):
+        self._EventId = params.get("EventId")
+        self._SwitchType = params.get("SwitchType")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._Reason = params.get("Reason")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TDEConfigAttribute(AbstractModel):
     """TDE透明数据加密配置
 
@@ -19472,7 +19943,7 @@ class UpgradeDBInstanceRequest(AbstractModel):
         :type DBVersion: str
         :param _HAType: 升级sqlserver的高可用架构,从镜像容灾升级到always on集群容灾，仅支持2017及以上版本且支持always on高可用的实例，不支持降级到镜像方式容灾，CLUSTER-升级为always on容灾，不填则不修改高可用架构
         :type HAType: str
-        :param _MultiZones: 修改实例是否为跨可用区容灾，SameZones-修改为同可用区 MultiZones-修改为夸可用区
+        :param _MultiZones: 修改实例是否为跨可用区容灾，SameZones-修改为同可用区 MultiZones-修改为跨可用区
         :type MultiZones: str
         :param _WaitSwitch: 执行变配的方式，默认为 1。支持值包括：0 - 立刻执行，1 - 维护时间窗执行
         :type WaitSwitch: int

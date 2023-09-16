@@ -100,6 +100,69 @@ class ApiGatewayInstanceDetail(AbstractModel):
         
 
 
+class ApiGatewayInstanceList(AbstractModel):
+    """apigateway实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Region: 地域
+        :type Region: str
+        :param _InstanceList: apigateway实例详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of ApiGatewayInstanceDetail
+        :param _TotalCount: 该地域下apigateway实例总数	
+        :type TotalCount: int
+        """
+        self._Region = None
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        self._Region = params.get("Region")
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = ApiGatewayInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ApplyCertificateRequest(AbstractModel):
     """ApplyCertificate请求参数结构体
 
@@ -326,6 +389,172 @@ class ApplyCertificateResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class BindResourceRegionResult(AbstractModel):
+    """绑定资源地域结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Region: 地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
+        :param _TotalCount: 关联资源总数
+        :type TotalCount: int
+        """
+        self._Region = None
+        self._TotalCount = None
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        self._Region = params.get("Region")
+        self._TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BindResourceResult(AbstractModel):
+    """绑定资源结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceType: 资源类型：clb、cdn、waf、live、vod、ddos、tke、apigateway、tcb、teo（edgeOne）
+        :type ResourceType: str
+        :param _BindResourceRegionResult: 绑定资源地域结果
+        :type BindResourceRegionResult: list of BindResourceRegionResult
+        """
+        self._ResourceType = None
+        self._BindResourceRegionResult = None
+
+    @property
+    def ResourceType(self):
+        return self._ResourceType
+
+    @ResourceType.setter
+    def ResourceType(self, ResourceType):
+        self._ResourceType = ResourceType
+
+    @property
+    def BindResourceRegionResult(self):
+        return self._BindResourceRegionResult
+
+    @BindResourceRegionResult.setter
+    def BindResourceRegionResult(self, BindResourceRegionResult):
+        self._BindResourceRegionResult = BindResourceRegionResult
+
+
+    def _deserialize(self, params):
+        self._ResourceType = params.get("ResourceType")
+        if params.get("BindResourceRegionResult") is not None:
+            self._BindResourceRegionResult = []
+            for item in params.get("BindResourceRegionResult"):
+                obj = BindResourceRegionResult()
+                obj._deserialize(item)
+                self._BindResourceRegionResult.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CancelAuditCertificateRequest(AbstractModel):
+    """CancelAuditCertificate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CertificateId: 证书ID
+        :type CertificateId: str
+        """
+        self._CertificateId = None
+
+    @property
+    def CertificateId(self):
+        return self._CertificateId
+
+    @CertificateId.setter
+    def CertificateId(self, CertificateId):
+        self._CertificateId = CertificateId
+
+
+    def _deserialize(self, params):
+        self._CertificateId = params.get("CertificateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CancelAuditCertificateResponse(AbstractModel):
+    """CancelAuditCertificate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Result: 操作是否成功
+        :type Result: bool
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Result = None
+        self._RequestId = None
+
+    @property
+    def Result(self):
+        return self._Result
+
+    @Result.setter
+    def Result(self, Result):
+        self._Result = Result
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Result = params.get("Result")
+        self._RequestId = params.get("RequestId")
+
+
 class CancelCertificateOrderRequest(AbstractModel):
     """CancelCertificateOrder请求参数结构体
 
@@ -409,10 +638,13 @@ class CdnInstanceDetail(AbstractModel):
         :type CertId: str
         :param _Status: 域名状态
         :type Status: str
+        :param _HttpsBillingSwitch: 域名计费状态
+        :type HttpsBillingSwitch: str
         """
         self._Domain = None
         self._CertId = None
         self._Status = None
+        self._HttpsBillingSwitch = None
 
     @property
     def Domain(self):
@@ -438,11 +670,71 @@ class CdnInstanceDetail(AbstractModel):
     def Status(self, Status):
         self._Status = Status
 
+    @property
+    def HttpsBillingSwitch(self):
+        return self._HttpsBillingSwitch
+
+    @HttpsBillingSwitch.setter
+    def HttpsBillingSwitch(self, HttpsBillingSwitch):
+        self._HttpsBillingSwitch = HttpsBillingSwitch
+
 
     def _deserialize(self, params):
         self._Domain = params.get("Domain")
         self._CertId = params.get("CertId")
         self._Status = params.get("Status")
+        self._HttpsBillingSwitch = params.get("HttpsBillingSwitch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CdnInstanceList(AbstractModel):
+    """cdn实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 该地域下CDN域名总数	
+        :type TotalCount: int
+        :param _InstanceList: cdn域名详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of CdnInstanceDetail
+        """
+        self._TotalCount = None
+        self._InstanceList = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = CdnInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -525,6 +817,51 @@ class CertHostingInfo(AbstractModel):
         
 
 
+class CertTaskId(AbstractModel):
+    """证书异步任务ID
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CertId: 证书ID
+        :type CertId: str
+        :param _TaskId: 异步任务ID
+        :type TaskId: str
+        """
+        self._CertId = None
+        self._TaskId = None
+
+    @property
+    def CertId(self):
+        return self._CertId
+
+    @CertId.setter
+    def CertId(self, CertId):
+        self._CertId = CertId
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
+
+
+    def _deserialize(self, params):
+        self._CertId = params.get("CertId")
+        self._TaskId = params.get("TaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Certificate(AbstractModel):
     """CLB证书详情
 
@@ -536,9 +873,17 @@ class Certificate(AbstractModel):
         :type CertId: str
         :param _DnsNames: 证书绑定的域名
         :type DnsNames: list of str
+        :param _CertCaId: 根证书ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CertCaId: str
+        :param _SSLMode: 证书认证模式：UNIDIRECTIONAL单向认证，MUTUAL双向认证
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SSLMode: str
         """
         self._CertId = None
         self._DnsNames = None
+        self._CertCaId = None
+        self._SSLMode = None
 
     @property
     def CertId(self):
@@ -556,10 +901,28 @@ class Certificate(AbstractModel):
     def DnsNames(self, DnsNames):
         self._DnsNames = DnsNames
 
+    @property
+    def CertCaId(self):
+        return self._CertCaId
+
+    @CertCaId.setter
+    def CertCaId(self, CertCaId):
+        self._CertCaId = CertCaId
+
+    @property
+    def SSLMode(self):
+        return self._SSLMode
+
+    @SSLMode.setter
+    def SSLMode(self, SSLMode):
+        self._SSLMode = SSLMode
+
 
     def _deserialize(self, params):
         self._CertId = params.get("CertId")
         self._DnsNames = params.get("DnsNames")
+        self._CertCaId = params.get("CertCaId")
+        self._SSLMode = params.get("SSLMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -792,6 +1155,15 @@ null = 用户上传证书（没有套餐类型），
         :param _AutoRenewFlag: 是否自动续费
 注意：此字段可能返回 null，表示取不到有效值。
         :type AutoRenewFlag: int
+        :param _HostingStatus: 托管状态，0，托管中，5，资源替换中， 10， 托管完成， -1未托管 
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostingStatus: int
+        :param _HostingCompleteTime: 托管完成时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostingCompleteTime: str
+        :param _HostingRenewCertId: 托管新证书ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostingRenewCertId: str
         """
         self._OwnerUin = None
         self._ProjectId = None
@@ -831,6 +1203,9 @@ null = 用户上传证书（没有套餐类型），
         self._CACommonNames = None
         self._PreAuditInfo = None
         self._AutoRenewFlag = None
+        self._HostingStatus = None
+        self._HostingCompleteTime = None
+        self._HostingRenewCertId = None
 
     @property
     def OwnerUin(self):
@@ -1136,6 +1511,30 @@ null = 用户上传证书（没有套餐类型），
     def AutoRenewFlag(self, AutoRenewFlag):
         self._AutoRenewFlag = AutoRenewFlag
 
+    @property
+    def HostingStatus(self):
+        return self._HostingStatus
+
+    @HostingStatus.setter
+    def HostingStatus(self, HostingStatus):
+        self._HostingStatus = HostingStatus
+
+    @property
+    def HostingCompleteTime(self):
+        return self._HostingCompleteTime
+
+    @HostingCompleteTime.setter
+    def HostingCompleteTime(self, HostingCompleteTime):
+        self._HostingCompleteTime = HostingCompleteTime
+
+    @property
+    def HostingRenewCertId(self):
+        return self._HostingRenewCertId
+
+    @HostingRenewCertId.setter
+    def HostingRenewCertId(self, HostingRenewCertId):
+        self._HostingRenewCertId = HostingRenewCertId
+
 
     def _deserialize(self, params):
         self._OwnerUin = params.get("OwnerUin")
@@ -1187,6 +1586,9 @@ null = 用户上传证书（没有套餐类型），
             self._PreAuditInfo = PreAuditInfo()
             self._PreAuditInfo._deserialize(params.get("PreAuditInfo"))
         self._AutoRenewFlag = params.get("AutoRenewFlag")
+        self._HostingStatus = params.get("HostingStatus")
+        self._HostingCompleteTime = params.get("HostingCompleteTime")
+        self._HostingRenewCertId = params.get("HostingRenewCertId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1344,6 +1746,69 @@ class ClbInstanceDetail(AbstractModel):
                 obj = ClbListener()
                 obj._deserialize(item)
                 self._Listeners.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ClbInstanceList(AbstractModel):
+    """clb实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Region: 地域
+        :type Region: str
+        :param _InstanceList: clb实例详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of ClbInstanceDetail
+        :param _TotalCount: 该地域下Clb实例总数
+        :type TotalCount: int
+        """
+        self._Region = None
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        self._Region = params.get("Region")
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = ClbInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1934,6 +2399,93 @@ DISABLED:域名下线状态
         
 
 
+class CreateCertificateBindResourceSyncTaskRequest(AbstractModel):
+    """CreateCertificateBindResourceSyncTask请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CertificateIds: 证书ID列表，总数不能超过100
+        :type CertificateIds: list of str
+        :param _IsCache: 是否使用缓存， 1使用缓存，0不使用缓存； 默认为1使用缓存； 若当前证书ID存在半小时已完成的任务， 则使用缓存的情况下， 会读取半小时内离当前时间最近的查询结果
+        :type IsCache: int
+        """
+        self._CertificateIds = None
+        self._IsCache = None
+
+    @property
+    def CertificateIds(self):
+        return self._CertificateIds
+
+    @CertificateIds.setter
+    def CertificateIds(self, CertificateIds):
+        self._CertificateIds = CertificateIds
+
+    @property
+    def IsCache(self):
+        return self._IsCache
+
+    @IsCache.setter
+    def IsCache(self, IsCache):
+        self._IsCache = IsCache
+
+
+    def _deserialize(self, params):
+        self._CertificateIds = params.get("CertificateIds")
+        self._IsCache = params.get("IsCache")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateCertificateBindResourceSyncTaskResponse(AbstractModel):
+    """CreateCertificateBindResourceSyncTask返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CertTaskIds: 证书关联云资源异步任务ID列表
+        :type CertTaskIds: list of CertTaskId
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._CertTaskIds = None
+        self._RequestId = None
+
+    @property
+    def CertTaskIds(self):
+        return self._CertTaskIds
+
+    @CertTaskIds.setter
+    def CertTaskIds(self, CertTaskIds):
+        self._CertTaskIds = CertTaskIds
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("CertTaskIds") is not None:
+            self._CertTaskIds = []
+            for item in params.get("CertTaskIds"):
+                obj = CertTaskId()
+                obj._deserialize(item)
+                self._CertTaskIds.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class CreateCertificateByPackageRequest(AbstractModel):
     """CreateCertificateByPackage请求参数结构体
 
@@ -2401,6 +2953,57 @@ class DdosInstanceDetail(AbstractModel):
         
 
 
+class DdosInstanceList(AbstractModel):
+    """ddos实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 该地域下ddos域名总数	
+        :type TotalCount: int
+        :param _InstanceList: ddos实例详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of DdosInstanceDetail
+        """
+        self._TotalCount = None
+        self._InstanceList = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = DdosInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class DeleteCertificateRequest(AbstractModel):
     """DeleteCertificate请求参数结构体
 
@@ -2855,6 +3458,15 @@ class DeployRecordDetail(AbstractModel):
         :param _Port: 端口
 注意：此字段可能返回 null，表示取不到有效值。
         :type Port: int
+        :param _EnvId: TCB环境ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnvId: str
+        :param _TCBType: 部署的TCB类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TCBType: str
+        :param _Region: 部署的TCB地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: str
         """
         self._Id = None
         self._CertId = None
@@ -2874,6 +3486,9 @@ class DeployRecordDetail(AbstractModel):
         self._Namespace = None
         self._SecretName = None
         self._Port = None
+        self._EnvId = None
+        self._TCBType = None
+        self._Region = None
 
     @property
     def Id(self):
@@ -3019,6 +3634,30 @@ class DeployRecordDetail(AbstractModel):
     def Port(self, Port):
         self._Port = Port
 
+    @property
+    def EnvId(self):
+        return self._EnvId
+
+    @EnvId.setter
+    def EnvId(self, EnvId):
+        self._EnvId = EnvId
+
+    @property
+    def TCBType(self):
+        return self._TCBType
+
+    @TCBType.setter
+    def TCBType(self, TCBType):
+        self._TCBType = TCBType
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -3039,6 +3678,9 @@ class DeployRecordDetail(AbstractModel):
         self._Namespace = params.get("Namespace")
         self._SecretName = params.get("SecretName")
         self._Port = params.get("Port")
+        self._EnvId = params.get("EnvId")
+        self._TCBType = params.get("TCBType")
+        self._Region = params.get("Region")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3235,6 +3877,392 @@ class DeployedResources(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class DescribeCertificateBindResourceTaskDetailRequest(AbstractModel):
+    """DescribeCertificateBindResourceTaskDetail请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TaskId: 任务ID，根据任务ID查询绑定云资源结果
+        :type TaskId: str
+        :param _Limit: 每页展示数量， 默认10，最大值100; 分页总数为云资源地域下实例总数， 即第一页会拉群每个云资源的地域下面Limit数量实例
+        :type Limit: str
+        :param _Offset: 当前偏移量
+        :type Offset: str
+        :param _ResourceTypes: 查询资源类型的结果详情， 不传则查询所有
+        :type ResourceTypes: list of str
+        :param _Regions: 查询地域列表的数据，CLB、TKE、WAF、APIGATEWAY、TCB支持地域查询， 其他资源类型不支持
+        :type Regions: list of str
+        """
+        self._TaskId = None
+        self._Limit = None
+        self._Offset = None
+        self._ResourceTypes = None
+        self._Regions = None
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def ResourceTypes(self):
+        return self._ResourceTypes
+
+    @ResourceTypes.setter
+    def ResourceTypes(self, ResourceTypes):
+        self._ResourceTypes = ResourceTypes
+
+    @property
+    def Regions(self):
+        return self._Regions
+
+    @Regions.setter
+    def Regions(self, Regions):
+        self._Regions = Regions
+
+
+    def _deserialize(self, params):
+        self._TaskId = params.get("TaskId")
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        self._ResourceTypes = params.get("ResourceTypes")
+        self._Regions = params.get("Regions")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeCertificateBindResourceTaskDetailResponse(AbstractModel):
+    """DescribeCertificateBindResourceTaskDetail返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CLB: 关联clb资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CLB: list of ClbInstanceList
+        :param _CDN: 关联cdn资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CDN: list of CdnInstanceList
+        :param _WAF: 关联waf资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WAF: list of WafInstanceList
+        :param _DDOS: 关联ddos资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DDOS: list of DdosInstanceList
+        :param _LIVE: 关联live资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LIVE: list of LiveInstanceList
+        :param _VOD: 关联vod资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VOD: list of VODInstanceList
+        :param _TKE: 关联tke资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TKE: list of TkeInstanceList
+        :param _APIGATEWAY: 关联apigateway资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type APIGATEWAY: list of ApiGatewayInstanceList
+        :param _TCB: 关联tcb资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TCB: list of TCBInstanceList
+        :param _TEO: 关联teo资源详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TEO: list of TeoInstanceList
+        :param _Status: 关联云资源异步查询结果： 0表示查询中， 1表示查询成功。 2表示查询异常； 若状态为1，则查看BindResourceResult结果；若状态为2，则查看Error原因
+        :type Status: int
+        :param _CacheTime: 当前结果缓存时间
+        :type CacheTime: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._CLB = None
+        self._CDN = None
+        self._WAF = None
+        self._DDOS = None
+        self._LIVE = None
+        self._VOD = None
+        self._TKE = None
+        self._APIGATEWAY = None
+        self._TCB = None
+        self._TEO = None
+        self._Status = None
+        self._CacheTime = None
+        self._RequestId = None
+
+    @property
+    def CLB(self):
+        return self._CLB
+
+    @CLB.setter
+    def CLB(self, CLB):
+        self._CLB = CLB
+
+    @property
+    def CDN(self):
+        return self._CDN
+
+    @CDN.setter
+    def CDN(self, CDN):
+        self._CDN = CDN
+
+    @property
+    def WAF(self):
+        return self._WAF
+
+    @WAF.setter
+    def WAF(self, WAF):
+        self._WAF = WAF
+
+    @property
+    def DDOS(self):
+        return self._DDOS
+
+    @DDOS.setter
+    def DDOS(self, DDOS):
+        self._DDOS = DDOS
+
+    @property
+    def LIVE(self):
+        return self._LIVE
+
+    @LIVE.setter
+    def LIVE(self, LIVE):
+        self._LIVE = LIVE
+
+    @property
+    def VOD(self):
+        return self._VOD
+
+    @VOD.setter
+    def VOD(self, VOD):
+        self._VOD = VOD
+
+    @property
+    def TKE(self):
+        return self._TKE
+
+    @TKE.setter
+    def TKE(self, TKE):
+        self._TKE = TKE
+
+    @property
+    def APIGATEWAY(self):
+        return self._APIGATEWAY
+
+    @APIGATEWAY.setter
+    def APIGATEWAY(self, APIGATEWAY):
+        self._APIGATEWAY = APIGATEWAY
+
+    @property
+    def TCB(self):
+        return self._TCB
+
+    @TCB.setter
+    def TCB(self, TCB):
+        self._TCB = TCB
+
+    @property
+    def TEO(self):
+        return self._TEO
+
+    @TEO.setter
+    def TEO(self, TEO):
+        self._TEO = TEO
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def CacheTime(self):
+        return self._CacheTime
+
+    @CacheTime.setter
+    def CacheTime(self, CacheTime):
+        self._CacheTime = CacheTime
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("CLB") is not None:
+            self._CLB = []
+            for item in params.get("CLB"):
+                obj = ClbInstanceList()
+                obj._deserialize(item)
+                self._CLB.append(obj)
+        if params.get("CDN") is not None:
+            self._CDN = []
+            for item in params.get("CDN"):
+                obj = CdnInstanceList()
+                obj._deserialize(item)
+                self._CDN.append(obj)
+        if params.get("WAF") is not None:
+            self._WAF = []
+            for item in params.get("WAF"):
+                obj = WafInstanceList()
+                obj._deserialize(item)
+                self._WAF.append(obj)
+        if params.get("DDOS") is not None:
+            self._DDOS = []
+            for item in params.get("DDOS"):
+                obj = DdosInstanceList()
+                obj._deserialize(item)
+                self._DDOS.append(obj)
+        if params.get("LIVE") is not None:
+            self._LIVE = []
+            for item in params.get("LIVE"):
+                obj = LiveInstanceList()
+                obj._deserialize(item)
+                self._LIVE.append(obj)
+        if params.get("VOD") is not None:
+            self._VOD = []
+            for item in params.get("VOD"):
+                obj = VODInstanceList()
+                obj._deserialize(item)
+                self._VOD.append(obj)
+        if params.get("TKE") is not None:
+            self._TKE = []
+            for item in params.get("TKE"):
+                obj = TkeInstanceList()
+                obj._deserialize(item)
+                self._TKE.append(obj)
+        if params.get("APIGATEWAY") is not None:
+            self._APIGATEWAY = []
+            for item in params.get("APIGATEWAY"):
+                obj = ApiGatewayInstanceList()
+                obj._deserialize(item)
+                self._APIGATEWAY.append(obj)
+        if params.get("TCB") is not None:
+            self._TCB = []
+            for item in params.get("TCB"):
+                obj = TCBInstanceList()
+                obj._deserialize(item)
+                self._TCB.append(obj)
+        if params.get("TEO") is not None:
+            self._TEO = []
+            for item in params.get("TEO"):
+                obj = TeoInstanceList()
+                obj._deserialize(item)
+                self._TEO.append(obj)
+        self._Status = params.get("Status")
+        self._CacheTime = params.get("CacheTime")
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeCertificateBindResourceTaskResultRequest(AbstractModel):
+    """DescribeCertificateBindResourceTaskResult请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TaskIds: 任务ID，根据任务ID查询绑定云资源结果， 最大支持100个
+        :type TaskIds: list of str
+        """
+        self._TaskIds = None
+
+    @property
+    def TaskIds(self):
+        return self._TaskIds
+
+    @TaskIds.setter
+    def TaskIds(self, TaskIds):
+        self._TaskIds = TaskIds
+
+
+    def _deserialize(self, params):
+        self._TaskIds = params.get("TaskIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeCertificateBindResourceTaskResultResponse(AbstractModel):
+    """DescribeCertificateBindResourceTaskResult返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SyncTaskBindResourceResult: 异步任务绑定关联云资源结果列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SyncTaskBindResourceResult: list of SyncTaskBindResourceResult
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._SyncTaskBindResourceResult = None
+        self._RequestId = None
+
+    @property
+    def SyncTaskBindResourceResult(self):
+        return self._SyncTaskBindResourceResult
+
+    @SyncTaskBindResourceResult.setter
+    def SyncTaskBindResourceResult(self, SyncTaskBindResourceResult):
+        self._SyncTaskBindResourceResult = SyncTaskBindResourceResult
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("SyncTaskBindResourceResult") is not None:
+            self._SyncTaskBindResourceResult = []
+            for item in params.get("SyncTaskBindResourceResult"):
+                obj = SyncTaskBindResourceResult()
+                obj._deserialize(item)
+                self._SyncTaskBindResourceResult.append(obj)
+        self._RequestId = params.get("RequestId")
 
 
 class DescribeCertificateDetailRequest(AbstractModel):
@@ -4557,6 +5585,8 @@ class DescribeCertificatesRequest(AbstractModel):
         :type IsSM: int
         :param _FilterExpiring: 筛选证书是否即将过期，传1是筛选，0不筛选
         :type FilterExpiring: int
+        :param _Hostable: 是否可托管，可选值：1 = 可托管，0 =  不可托管。
+        :type Hostable: int
         """
         self._Offset = None
         self._Limit = None
@@ -4571,6 +5601,7 @@ class DescribeCertificatesRequest(AbstractModel):
         self._FilterSource = None
         self._IsSM = None
         self._FilterExpiring = None
+        self._Hostable = None
 
     @property
     def Offset(self):
@@ -4676,6 +5707,14 @@ class DescribeCertificatesRequest(AbstractModel):
     def FilterExpiring(self, FilterExpiring):
         self._FilterExpiring = FilterExpiring
 
+    @property
+    def Hostable(self):
+        return self._Hostable
+
+    @Hostable.setter
+    def Hostable(self, Hostable):
+        self._Hostable = Hostable
+
 
     def _deserialize(self, params):
         self._Offset = params.get("Offset")
@@ -4691,6 +5730,7 @@ class DescribeCertificatesRequest(AbstractModel):
         self._FilterSource = params.get("FilterSource")
         self._IsSM = params.get("IsSM")
         self._FilterExpiring = params.get("FilterExpiring")
+        self._Hostable = params.get("Hostable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5823,7 +6863,7 @@ class DescribeHostDeployRecordDetailRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _DeployRecordId: 待部署的证书ID
+        :param _DeployRecordId: 部署记录ID
         :type DeployRecordId: str
         :param _Offset: 分页偏移量，从0开始。
         :type Offset: int
@@ -6369,12 +7409,21 @@ class DescribeHostTeoInstanceListRequest(AbstractModel):
         :type Filters: list of Filter
         :param _OldCertificateId: 已部署的证书ID
         :type OldCertificateId: str
+        :param _Offset: 分页偏移量，从0开始。
+        :type Offset: int
+        :param _Limit: 每页数量，默认10。	
+        :type Limit: int
+        :param _AsyncCache: 是否异步
+        :type AsyncCache: int
         """
         self._CertificateId = None
         self._ResourceType = None
         self._IsCache = None
         self._Filters = None
         self._OldCertificateId = None
+        self._Offset = None
+        self._Limit = None
+        self._AsyncCache = None
 
     @property
     def CertificateId(self):
@@ -6416,6 +7465,30 @@ class DescribeHostTeoInstanceListRequest(AbstractModel):
     def OldCertificateId(self, OldCertificateId):
         self._OldCertificateId = OldCertificateId
 
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def AsyncCache(self):
+        return self._AsyncCache
+
+    @AsyncCache.setter
+    def AsyncCache(self, AsyncCache):
+        self._AsyncCache = AsyncCache
+
 
     def _deserialize(self, params):
         self._CertificateId = params.get("CertificateId")
@@ -6428,6 +7501,9 @@ class DescribeHostTeoInstanceListRequest(AbstractModel):
                 obj._deserialize(item)
                 self._Filters.append(obj)
         self._OldCertificateId = params.get("OldCertificateId")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        self._AsyncCache = params.get("AsyncCache")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6705,7 +7781,7 @@ class DescribeHostUpdateRecordDetailRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _DeployRecordId: 待部署的证书ID
+        :param _DeployRecordId: 一键更新记录ID
         :type DeployRecordId: str
         :param _Limit: 每页数量，默认10。
         :type Limit: str
@@ -8189,6 +9265,53 @@ class DvAuths(AbstractModel):
         
 
 
+class Error(AbstractModel):
+    """错误异常
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Code: 异常错误码
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Code: str
+        :param _Message: 异常错误信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Message: str
+        """
+        self._Code = None
+        self._Message = None
+
+    @property
+    def Code(self):
+        return self._Code
+
+    @Code.setter
+    def Code(self, Code):
+        self._Code = Code
+
+    @property
+    def Message(self):
+        return self._Message
+
+    @Message.setter
+    def Message(self, Message):
+        self._Message = Message
+
+
+    def _deserialize(self, params):
+        self._Code = params.get("Code")
+        self._Message = params.get("Message")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Filter(AbstractModel):
     """过滤参数列表
 
@@ -8437,6 +9560,57 @@ class LiveInstanceDetail(AbstractModel):
         self._Domain = params.get("Domain")
         self._CertId = params.get("CertId")
         self._Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LiveInstanceList(AbstractModel):
+    """live实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 该地域下live实例总数	
+        :type TotalCount: int
+        :param _InstanceList: live实例详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of LiveInstanceDetail
+        """
+        self._TotalCount = None
+        self._InstanceList = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = LiveInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8839,6 +10013,76 @@ class ModifyCertificateProjectResponse(AbstractModel):
     def _deserialize(self, params):
         self._SuccessCertificates = params.get("SuccessCertificates")
         self._FailCertificates = params.get("FailCertificates")
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyCertificateResubmitRequest(AbstractModel):
+    """ModifyCertificateResubmit请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CertificateId: 证书ID。
+        :type CertificateId: str
+        """
+        self._CertificateId = None
+
+    @property
+    def CertificateId(self):
+        return self._CertificateId
+
+    @CertificateId.setter
+    def CertificateId(self, CertificateId):
+        self._CertificateId = CertificateId
+
+
+    def _deserialize(self, params):
+        self._CertificateId = params.get("CertificateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyCertificateResubmitResponse(AbstractModel):
+    """ModifyCertificateResubmit返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CertificateId: 证书ID。
+        :type CertificateId: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._CertificateId = None
+        self._RequestId = None
+
+    @property
+    def CertificateId(self):
+        return self._CertificateId
+
+    @CertificateId.setter
+    def CertificateId(self, CertificateId):
+        self._CertificateId = CertificateId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._CertificateId = params.get("CertificateId")
         self._RequestId = params.get("RequestId")
 
 
@@ -9451,6 +10695,11 @@ class ReplaceCertificateRequest(AbstractModel):
         :type CsrkeyPassword: str
         :param _Reason: 重颁发原因。
         :type Reason: str
+        :param _CertCSREncryptAlgo: CSR加密方式，可选：RSA、ECC、SM2
+（CsrType为Online才可选）， 默认为RSA
+        :type CertCSREncryptAlgo: str
+        :param _CertCSRKeyParameter: CSR加密参数，CsrEncryptAlgo为RSA时， 可选2048、4096等默认为2048；CsrEncryptAlgo为ECC时，可选prime256v1，secp384r1等，默认为prime256v1; 
+        :type CertCSRKeyParameter: str
         """
         self._CertificateId = None
         self._ValidType = None
@@ -9458,6 +10707,8 @@ class ReplaceCertificateRequest(AbstractModel):
         self._CsrContent = None
         self._CsrkeyPassword = None
         self._Reason = None
+        self._CertCSREncryptAlgo = None
+        self._CertCSRKeyParameter = None
 
     @property
     def CertificateId(self):
@@ -9507,6 +10758,22 @@ class ReplaceCertificateRequest(AbstractModel):
     def Reason(self, Reason):
         self._Reason = Reason
 
+    @property
+    def CertCSREncryptAlgo(self):
+        return self._CertCSREncryptAlgo
+
+    @CertCSREncryptAlgo.setter
+    def CertCSREncryptAlgo(self, CertCSREncryptAlgo):
+        self._CertCSREncryptAlgo = CertCSREncryptAlgo
+
+    @property
+    def CertCSRKeyParameter(self):
+        return self._CertCSRKeyParameter
+
+    @CertCSRKeyParameter.setter
+    def CertCSRKeyParameter(self, CertCSRKeyParameter):
+        self._CertCSRKeyParameter = CertCSRKeyParameter
+
 
     def _deserialize(self, params):
         self._CertificateId = params.get("CertificateId")
@@ -9515,6 +10782,8 @@ class ReplaceCertificateRequest(AbstractModel):
         self._CsrContent = params.get("CsrContent")
         self._CsrkeyPassword = params.get("CsrkeyPassword")
         self._Reason = params.get("Reason")
+        self._CertCSREncryptAlgo = params.get("CertCSREncryptAlgo")
+        self._CertCSRKeyParameter = params.get("CertCSRKeyParameter")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10614,6 +11883,565 @@ class SubmittedData(AbstractModel):
         
 
 
+class SyncTaskBindResourceResult(AbstractModel):
+    """异步任务证书关联云资源结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TaskId: 任务ID
+        :type TaskId: str
+        :param _BindResourceResult: 关联云资源结果
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BindResourceResult: list of BindResourceResult
+        :param _Status: 关联云资源异步查询结果： 0表示查询中， 1表示查询成功。 2表示查询异常； 若状态为1，则查看BindResourceResult结果；若状态为2，则查看Error原因
+        :type Status: int
+        :param _Error: 关联云资源错误信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Error: :class:`tencentcloud.ssl.v20191205.models.Error`
+        :param _CacheTime: 当前结果缓存时间
+        :type CacheTime: str
+        """
+        self._TaskId = None
+        self._BindResourceResult = None
+        self._Status = None
+        self._Error = None
+        self._CacheTime = None
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
+
+    @property
+    def BindResourceResult(self):
+        return self._BindResourceResult
+
+    @BindResourceResult.setter
+    def BindResourceResult(self, BindResourceResult):
+        self._BindResourceResult = BindResourceResult
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def Error(self):
+        return self._Error
+
+    @Error.setter
+    def Error(self, Error):
+        self._Error = Error
+
+    @property
+    def CacheTime(self):
+        return self._CacheTime
+
+    @CacheTime.setter
+    def CacheTime(self, CacheTime):
+        self._CacheTime = CacheTime
+
+
+    def _deserialize(self, params):
+        self._TaskId = params.get("TaskId")
+        if params.get("BindResourceResult") is not None:
+            self._BindResourceResult = []
+            for item in params.get("BindResourceResult"):
+                obj = BindResourceResult()
+                obj._deserialize(item)
+                self._BindResourceResult.append(obj)
+        self._Status = params.get("Status")
+        if params.get("Error") is not None:
+            self._Error = Error()
+            self._Error._deserialize(params.get("Error"))
+        self._CacheTime = params.get("CacheTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TCBAccessInstance(AbstractModel):
+    """TCB访问服务实例
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
+        :param _Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param _UnionStatus: 统一域名状态
+
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnionStatus: int
+        :param _IsPreempted: 是否被抢占, 被抢占表示域名被其他环境绑定了，需要解绑或者重新绑定。
+
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsPreempted: bool
+        :param _ICPStatus: icp黑名单封禁状态，0-未封禁，1-封禁
+
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ICPStatus: int
+        :param _OldCertificateId: 已绑定证书ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OldCertificateId: str
+        """
+        self._Domain = None
+        self._Status = None
+        self._UnionStatus = None
+        self._IsPreempted = None
+        self._ICPStatus = None
+        self._OldCertificateId = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def UnionStatus(self):
+        return self._UnionStatus
+
+    @UnionStatus.setter
+    def UnionStatus(self, UnionStatus):
+        self._UnionStatus = UnionStatus
+
+    @property
+    def IsPreempted(self):
+        return self._IsPreempted
+
+    @IsPreempted.setter
+    def IsPreempted(self, IsPreempted):
+        self._IsPreempted = IsPreempted
+
+    @property
+    def ICPStatus(self):
+        return self._ICPStatus
+
+    @ICPStatus.setter
+    def ICPStatus(self, ICPStatus):
+        self._ICPStatus = ICPStatus
+
+    @property
+    def OldCertificateId(self):
+        return self._OldCertificateId
+
+    @OldCertificateId.setter
+    def OldCertificateId(self, OldCertificateId):
+        self._OldCertificateId = OldCertificateId
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._Status = params.get("Status")
+        self._UnionStatus = params.get("UnionStatus")
+        self._IsPreempted = params.get("IsPreempted")
+        self._ICPStatus = params.get("ICPStatus")
+        self._OldCertificateId = params.get("OldCertificateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TCBAccessService(AbstractModel):
+    """TCB访问服务列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceList: 实例列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of TCBAccessInstance
+        :param _TotalCount: 数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        """
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = TCBAccessInstance()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TCBEnvironment(AbstractModel):
+    """TCB环境
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ID: 唯一ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ID: str
+        :param _Source: 来源
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Source: str
+        :param _Name: 名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param _Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        """
+        self._ID = None
+        self._Source = None
+        self._Name = None
+        self._Status = None
+
+    @property
+    def ID(self):
+        return self._ID
+
+    @ID.setter
+    def ID(self, ID):
+        self._ID = ID
+
+    @property
+    def Source(self):
+        return self._Source
+
+    @Source.setter
+    def Source(self, Source):
+        self._Source = Source
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+
+    def _deserialize(self, params):
+        self._ID = params.get("ID")
+        self._Source = params.get("Source")
+        self._Name = params.get("Name")
+        self._Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TCBEnvironments(AbstractModel):
+    """tcb环境实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Environment: tcb环境	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Environment: :class:`tencentcloud.ssl.v20191205.models.TCBEnvironment`
+        :param _AccessService: 访问服务	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccessService: :class:`tencentcloud.ssl.v20191205.models.TCBAccessService`
+        :param _HostService: 静态托管	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostService: :class:`tencentcloud.ssl.v20191205.models.TCBHostService`
+        """
+        self._Environment = None
+        self._AccessService = None
+        self._HostService = None
+
+    @property
+    def Environment(self):
+        return self._Environment
+
+    @Environment.setter
+    def Environment(self, Environment):
+        self._Environment = Environment
+
+    @property
+    def AccessService(self):
+        return self._AccessService
+
+    @AccessService.setter
+    def AccessService(self, AccessService):
+        self._AccessService = AccessService
+
+    @property
+    def HostService(self):
+        return self._HostService
+
+    @HostService.setter
+    def HostService(self, HostService):
+        self._HostService = HostService
+
+
+    def _deserialize(self, params):
+        if params.get("Environment") is not None:
+            self._Environment = TCBEnvironment()
+            self._Environment._deserialize(params.get("Environment"))
+        if params.get("AccessService") is not None:
+            self._AccessService = TCBAccessService()
+            self._AccessService._deserialize(params.get("AccessService"))
+        if params.get("HostService") is not None:
+            self._HostService = TCBHostService()
+            self._HostService._deserialize(params.get("HostService"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TCBHostInstance(AbstractModel):
+    """TCB静态托管服务实例
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Domain: str
+        :param _Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: str
+        :param _DNSStatus: 解析状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DNSStatus: str
+        :param _OldCertificateId: 已绑定证书ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OldCertificateId: str
+        """
+        self._Domain = None
+        self._Status = None
+        self._DNSStatus = None
+        self._OldCertificateId = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def DNSStatus(self):
+        return self._DNSStatus
+
+    @DNSStatus.setter
+    def DNSStatus(self, DNSStatus):
+        self._DNSStatus = DNSStatus
+
+    @property
+    def OldCertificateId(self):
+        return self._OldCertificateId
+
+    @OldCertificateId.setter
+    def OldCertificateId(self, OldCertificateId):
+        self._OldCertificateId = OldCertificateId
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._Status = params.get("Status")
+        self._DNSStatus = params.get("DNSStatus")
+        self._OldCertificateId = params.get("OldCertificateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TCBHostService(AbstractModel):
+    """TCB静态托管服务列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceList: 实例列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of TCBHostInstance
+        :param _TotalCount: 数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TotalCount: int
+        """
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = TCBHostInstance()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TCBInstanceList(AbstractModel):
+    """tcb地域实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Region: 地域
+        :type Region: str
+        :param _Environments: tcb环境实例详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Environments: list of TCBEnvironments
+        """
+        self._Region = None
+        self._Environments = None
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def Environments(self):
+        return self._Environments
+
+    @Environments.setter
+    def Environments(self, Environments):
+        self._Environments = Environments
+
+
+    def _deserialize(self, params):
+        self._Region = params.get("Region")
+        if params.get("Environments") is not None:
+            self._Environments = []
+            for item in params.get("Environments"):
+                obj = TCBEnvironments()
+                obj._deserialize(item)
+                self._Environments.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Tags(AbstractModel):
     """标签
 
@@ -10729,6 +12557,57 @@ class TeoInstanceDetail(AbstractModel):
         
 
 
+class TeoInstanceList(AbstractModel):
+    """edgeone实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceList: edgeone实例详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of TeoInstanceDetail
+        :param _TotalCount: edgeone实例总数	
+        :type TotalCount: int
+        """
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = TeoInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TkeIngressDetail(AbstractModel):
     """tke ingress实例详情
 
@@ -10799,10 +12678,16 @@ class TkeInstanceDetail(AbstractModel):
         :type ClusterName: str
         :param _NamespaceList: 集群命名空间列表
         :type NamespaceList: list of TkeNameSpaceDetail
+        :param _ClusterType: 集群类型
+        :type ClusterType: str
+        :param _ClusterVersion: 集群版本
+        :type ClusterVersion: str
         """
         self._ClusterId = None
         self._ClusterName = None
         self._NamespaceList = None
+        self._ClusterType = None
+        self._ClusterVersion = None
 
     @property
     def ClusterId(self):
@@ -10828,6 +12713,22 @@ class TkeInstanceDetail(AbstractModel):
     def NamespaceList(self, NamespaceList):
         self._NamespaceList = NamespaceList
 
+    @property
+    def ClusterType(self):
+        return self._ClusterType
+
+    @ClusterType.setter
+    def ClusterType(self, ClusterType):
+        self._ClusterType = ClusterType
+
+    @property
+    def ClusterVersion(self):
+        return self._ClusterVersion
+
+    @ClusterVersion.setter
+    def ClusterVersion(self, ClusterVersion):
+        self._ClusterVersion = ClusterVersion
+
 
     def _deserialize(self, params):
         self._ClusterId = params.get("ClusterId")
@@ -10838,6 +12739,71 @@ class TkeInstanceDetail(AbstractModel):
                 obj = TkeNameSpaceDetail()
                 obj._deserialize(item)
                 self._NamespaceList.append(obj)
+        self._ClusterType = params.get("ClusterType")
+        self._ClusterVersion = params.get("ClusterVersion")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TkeInstanceList(AbstractModel):
+    """tke实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Region: 地域
+        :type Region: str
+        :param _InstanceList: tke实例详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of TkeInstanceDetail
+        :param _TotalCount: 该地域下tke实例总数	
+        :type TotalCount: int
+        """
+        self._Region = None
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        self._Region = params.get("Region")
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = TkeInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10984,7 +12950,7 @@ class UpdateCertificateInstanceRequest(AbstractModel):
         :type CertificateId: str
         :param _OldCertificateId: 一键更新原证书ID
         :type OldCertificateId: str
-        :param _ResourceTypes: 需要部署的资源类型
+        :param _ResourceTypes: 需要部署的资源类型，参数值可选：clb、cdn、waf、live、ddos、teo、apigateway、vod、tke、tcb
         :type ResourceTypes: list of str
         :param _Regions: 需要部署的地域列表（废弃）
         :type Regions: list of str
@@ -11023,10 +12989,14 @@ class UpdateCertificateInstanceRequest(AbstractModel):
 
     @property
     def Regions(self):
+        warnings.warn("parameter `Regions` is deprecated", DeprecationWarning) 
+
         return self._Regions
 
     @Regions.setter
     def Regions(self, Regions):
+        warnings.warn("parameter `Regions` is deprecated", DeprecationWarning) 
+
         self._Regions = Regions
 
     @property
@@ -11309,6 +13279,12 @@ class UpdateRecordDetail(AbstractModel):
         :param _SecretName: secret名称（TKE专用）
 注意：此字段可能返回 null，表示取不到有效值。
         :type SecretName: str
+        :param _EnvId: 环境ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnvId: str
+        :param _TCBType: TCB部署类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TCBType: str
         """
         self._Id = None
         self._CertId = None
@@ -11330,6 +13306,8 @@ class UpdateRecordDetail(AbstractModel):
         self._Port = None
         self._Namespace = None
         self._SecretName = None
+        self._EnvId = None
+        self._TCBType = None
 
     @property
     def Id(self):
@@ -11491,6 +13469,22 @@ class UpdateRecordDetail(AbstractModel):
     def SecretName(self, SecretName):
         self._SecretName = SecretName
 
+    @property
+    def EnvId(self):
+        return self._EnvId
+
+    @EnvId.setter
+    def EnvId(self, EnvId):
+        self._EnvId = EnvId
+
+    @property
+    def TCBType(self):
+        return self._TCBType
+
+    @TCBType.setter
+    def TCBType(self, TCBType):
+        self._TCBType = TCBType
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -11513,6 +13507,8 @@ class UpdateRecordDetail(AbstractModel):
         self._Port = params.get("Port")
         self._Namespace = params.get("Namespace")
         self._SecretName = params.get("SecretName")
+        self._EnvId = params.get("EnvId")
+        self._TCBType = params.get("TCBType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -11722,6 +13718,8 @@ class UploadCertificateRequest(AbstractModel):
         :type ProjectId: int
         :param _CertificateUse: 证书用途/证书来源。“CLB，CDN，WAF，LIVE，DDOS”
         :type CertificateUse: str
+        :param _Tags: 标签列表
+        :type Tags: list of Tags
         :param _Repeatable: 相同的证书是否允许重复上传
         :type Repeatable: bool
         """
@@ -11731,6 +13729,7 @@ class UploadCertificateRequest(AbstractModel):
         self._Alias = None
         self._ProjectId = None
         self._CertificateUse = None
+        self._Tags = None
         self._Repeatable = None
 
     @property
@@ -11782,6 +13781,14 @@ class UploadCertificateRequest(AbstractModel):
         self._CertificateUse = CertificateUse
 
     @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
+    @property
     def Repeatable(self):
         return self._Repeatable
 
@@ -11797,6 +13804,12 @@ class UploadCertificateRequest(AbstractModel):
         self._Alias = params.get("Alias")
         self._ProjectId = params.get("ProjectId")
         self._CertificateUse = params.get("CertificateUse")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tags()
+                obj._deserialize(item)
+                self._Tags.append(obj)
         self._Repeatable = params.get("Repeatable")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
@@ -12046,6 +14059,57 @@ class UploadRevokeLetterResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class VODInstanceList(AbstractModel):
+    """vod实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _InstanceList: vod实例详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of VodInstanceDetail
+        :param _TotalCount: 该地域下vod实例总数	
+        :type TotalCount: int
+        """
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = VodInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class VerifyManagerRequest(AbstractModel):
     """VerifyManager请求参数结构体
 
@@ -12151,6 +14215,128 @@ class VodInstanceDetail(AbstractModel):
     def _deserialize(self, params):
         self._Domain = params.get("Domain")
         self._CertId = params.get("CertId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class WafInstanceDetail(AbstractModel):
+    """waf实例详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+        :type Domain: str
+        :param _CertId: 证书ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CertId: str
+        :param _Keepalive: 是否保持长连接，1是，0 否
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Keepalive: int
+        """
+        self._Domain = None
+        self._CertId = None
+        self._Keepalive = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def CertId(self):
+        return self._CertId
+
+    @CertId.setter
+    def CertId(self, CertId):
+        self._CertId = CertId
+
+    @property
+    def Keepalive(self):
+        return self._Keepalive
+
+    @Keepalive.setter
+    def Keepalive(self, Keepalive):
+        self._Keepalive = Keepalive
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._CertId = params.get("CertId")
+        self._Keepalive = params.get("Keepalive")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class WafInstanceList(AbstractModel):
+    """waf实例详情 - 异步关联云资源数据结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Region: 地域
+        :type Region: str
+        :param _InstanceList: waf实例详情	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceList: list of WafInstanceDetail
+        :param _TotalCount: 该地域下waf实例总数	
+        :type TotalCount: int
+        """
+        self._Region = None
+        self._InstanceList = None
+        self._TotalCount = None
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def InstanceList(self):
+        return self._InstanceList
+
+    @InstanceList.setter
+    def InstanceList(self, InstanceList):
+        self._InstanceList = InstanceList
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+
+    def _deserialize(self, params):
+        self._Region = params.get("Region")
+        if params.get("InstanceList") is not None:
+            self._InstanceList = []
+            for item in params.get("InstanceList"):
+                obj = WafInstanceDetail()
+                obj._deserialize(item)
+                self._InstanceList.append(obj)
+        self._TotalCount = params.get("TotalCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

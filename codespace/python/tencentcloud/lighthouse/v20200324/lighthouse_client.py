@@ -55,6 +55,29 @@ class LighthouseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ApplyFirewallTemplate(self, request):
+        """本接口 (ApplyFirewallTemplate) 用于应用防火墙模板到多个实例。
+
+        :param request: Request instance for ApplyFirewallTemplate.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.ApplyFirewallTemplateRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.ApplyFirewallTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ApplyFirewallTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.ApplyFirewallTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ApplyInstanceSnapshot(self, request):
         """本接口（ApplyInstanceSnapshot）用于回滚指定实例的系统盘快照。
         <li>仅支持回滚到原系统盘。</li>
@@ -258,6 +281,52 @@ class LighthouseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateFirewallTemplate(self, request):
+        """本接口 (CreateFirewallTemplate) 用于创建防火墙模板。
+
+        :param request: Request instance for CreateFirewallTemplate.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.CreateFirewallTemplateRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.CreateFirewallTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateFirewallTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateFirewallTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def CreateFirewallTemplateRules(self, request):
+        """本接口 (CreateFirewallTemplateRules) 用于创建防火墙模板规则。
+
+        :param request: Request instance for CreateFirewallTemplateRules.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.CreateFirewallTemplateRulesRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.CreateFirewallTemplateRulesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateFirewallTemplateRules", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateFirewallTemplateRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateInstanceSnapshot(self, request):
         """本接口（CreateInstanceSnapshot）用于创建指定实例的系统盘快照。
 
@@ -397,6 +466,52 @@ class LighthouseClient(AbstractClient):
             body = self.call("DeleteFirewallRules", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteFirewallRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteFirewallTemplate(self, request):
+        """本接口 (DeleteFirewallTemplate) 用于删除防火墙模板。
+
+        :param request: Request instance for DeleteFirewallTemplate.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DeleteFirewallTemplateRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DeleteFirewallTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteFirewallTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteFirewallTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteFirewallTemplateRules(self, request):
+        """本接口 (DeleteFirewallTemplateRules) 用于删除防火墙模板规则。
+
+        :param request: Request instance for DeleteFirewallTemplateRules.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DeleteFirewallTemplateRulesRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DeleteFirewallTemplateRulesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteFirewallTemplateRules", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteFirewallTemplateRulesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -752,6 +867,98 @@ class LighthouseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeDockerActivities(self, request):
+        """查询实例内的Docker活动列表。
+
+        :param request: Request instance for DescribeDockerActivities.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerActivitiesRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerActivitiesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDockerActivities", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDockerActivitiesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeDockerContainerConfiguration(self, request):
+        """查询实例内的Docker容器配置信息
+
+        :param request: Request instance for DescribeDockerContainerConfiguration.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerContainerConfigurationRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerContainerConfigurationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDockerContainerConfiguration", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDockerContainerConfigurationResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeDockerContainerDetail(self, request):
+        """查询实例内的Docker容器详情
+
+        :param request: Request instance for DescribeDockerContainerDetail.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerContainerDetailRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerContainerDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDockerContainerDetail", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDockerContainerDetailResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeDockerContainers(self, request):
+        """查询实例内的容器列表。
+
+        :param request: Request instance for DescribeDockerContainers.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerContainersRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeDockerContainersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDockerContainers", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDockerContainersResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeFirewallRules(self, request):
         """本接口（DescribeFirewallRules）用于查询实例的防火墙规则。
 
@@ -789,6 +996,121 @@ class LighthouseClient(AbstractClient):
             body = self.call("DescribeFirewallRulesTemplate", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeFirewallRulesTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFirewallTemplateApplyRecords(self, request):
+        """本接口 (DescribeFirewallTemplateApplyRecords) 用于查询防火墙模板应用记录列表。
+
+        :param request: Request instance for DescribeFirewallTemplateApplyRecords.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateApplyRecordsRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateApplyRecordsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFirewallTemplateApplyRecords", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFirewallTemplateApplyRecordsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFirewallTemplateQuota(self, request):
+        """本接口 (DescribeFirewallTemplateQuota) 用于查询防火墙模板配额。
+
+        :param request: Request instance for DescribeFirewallTemplateQuota.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateQuotaRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateQuotaResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFirewallTemplateQuota", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFirewallTemplateQuotaResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFirewallTemplateRuleQuota(self, request):
+        """本接口 (DescribeFirewallTemplateRuleQuota) 用于查询防火墙模板规则配额。
+
+        :param request: Request instance for DescribeFirewallTemplateRuleQuota.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateRuleQuotaRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateRuleQuotaResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFirewallTemplateRuleQuota", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFirewallTemplateRuleQuotaResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFirewallTemplateRules(self, request):
+        """本接口 (DescribeFirewallTemplateRules) 用于查询防火墙模板规则列表。
+
+        :param request: Request instance for DescribeFirewallTemplateRules.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateRulesRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplateRulesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFirewallTemplateRules", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFirewallTemplateRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFirewallTemplates(self, request):
+        """本接口 (DescribeFirewallTemplates) 用于查询防火墙模板列表。
+
+        :param request: Request instance for DescribeFirewallTemplates.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplatesRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.DescribeFirewallTemplatesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFirewallTemplates", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFirewallTemplatesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1543,6 +1865,30 @@ class LighthouseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyDockerContainer(self, request):
+        """修改实例内的Docker容器，之后可以通过返回的ActivityId调用DescribeDockerActivities接口查询重建情况。
+        请注意：本接口会重新创建并运行实例内的Docker容器。
+
+        :param request: Request instance for ModifyDockerContainer.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.ModifyDockerContainerRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.ModifyDockerContainerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyDockerContainer", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyDockerContainerResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyFirewallRuleDescription(self, request):
         """本接口（ModifyFirewallRuleDescription）用于修改单条防火墙规则描述。
 
@@ -1600,6 +1946,29 @@ class LighthouseClient(AbstractClient):
             body = self.call("ModifyFirewallRules", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyFirewallRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyFirewallTemplate(self, request):
+        """本接口 (ModifyFirewallTemplate) 用于修改防火墙模板。
+
+        :param request: Request instance for ModifyFirewallTemplate.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.ModifyFirewallTemplateRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.ModifyFirewallTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyFirewallTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyFirewallTemplateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1762,6 +2131,52 @@ class LighthouseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def RemoveDockerContainers(self, request):
+        """删除实例内的Docker容器，之后可以通过返回的ActivityId调用DescribeDockerActivities接口查询删除情况。
+
+        :param request: Request instance for RemoveDockerContainers.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.RemoveDockerContainersRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.RemoveDockerContainersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RemoveDockerContainers", params, headers=headers)
+            response = json.loads(body)
+            model = models.RemoveDockerContainersResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def RenameDockerContainer(self, request):
+        """重命名实例内的Docker容器，之后可以通过返回的ActivityId调用DescribeDockerActivities接口查询重命名情况。
+
+        :param request: Request instance for RenameDockerContainer.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.RenameDockerContainerRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.RenameDockerContainerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RenameDockerContainer", params, headers=headers)
+            response = json.loads(body)
+            model = models.RenameDockerContainerResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def RenewDisks(self, request):
         """本接口(RenewDisks)用于续费一个或多个轻量应用服务器云硬盘。
 
@@ -1815,6 +2230,52 @@ class LighthouseClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ReplaceFirewallTemplateRule(self, request):
+        """本接口 (ReplaceFirewallTemplateRules) 用于替换防火墙模板规则。
+
+        :param request: Request instance for ReplaceFirewallTemplateRule.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.ReplaceFirewallTemplateRuleRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.ReplaceFirewallTemplateRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ReplaceFirewallTemplateRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ReplaceFirewallTemplateRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def RerunDockerContainer(self, request):
+        """重新创建并运行实例内的Docker容器，之后可以通过返回的ActivityId调用DescribeDockerActivities接口查询重建情况。
+
+        :param request: Request instance for RerunDockerContainer.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.RerunDockerContainerRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.RerunDockerContainerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RerunDockerContainer", params, headers=headers)
+            response = json.loads(body)
+            model = models.RerunDockerContainerResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ResetAttachCcn(self, request):
         """本接口 (ResetAttachCcn) 用于关联云联网实例申请过期时，重新申请关联操作。
 
@@ -1829,6 +2290,29 @@ class LighthouseClient(AbstractClient):
             body = self.call("ResetAttachCcn", params, headers=headers)
             response = json.loads(body)
             model = models.ResetAttachCcnResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ResetFirewallTemplateRules(self, request):
+        """本接口 (ResetFirewallTemplateRules) 用于重置防火墙模板下所有规则。
+
+        :param request: Request instance for ResetFirewallTemplateRules.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.ResetFirewallTemplateRulesRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.ResetFirewallTemplateRulesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ResetFirewallTemplateRules", params, headers=headers)
+            response = json.loads(body)
+            model = models.ResetFirewallTemplateRulesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1868,7 +2352,7 @@ class LighthouseClient(AbstractClient):
 
     def ResetInstancesPassword(self, request):
         """本接口（ResetInstancesPassword）用于将实例操作系统的密码重置为用户指定的密码。
-        * 只修改管理员帐号的密码。实例的操作系统不同，管理员帐号也会不一样（Windows 为 Administrator，Ubuntu 为 ubuntu ，其它系统为 root）。
+        * 只修改管理员账号的密码。实例的操作系统不同，管理员账号也会不一样（Windows 为 Administrator，Ubuntu 为 ubuntu ，其它系统为 root）。
         * 支持批量操作。将多个实例操作系统的密码重置为相同的密码。每次请求批量实例的上限为 100。
         * 建议对运行中的实例先手动关机，然后再进行密码重置。如实例处于运行中状态，本接口操作过程中会对实例进行关机操作，尝试正常关机失败后进行强制关机。
         * 本接口为异步接口，请求发送成功后会返回一个 RequestId，此时操作并未立即完成。实例操作结果可以通过调用 DescribeInstances 接口查询，如果实例的最新操作状态（LatestOperationState）为“SUCCESS”，则代表操作成功。
@@ -1885,6 +2369,75 @@ class LighthouseClient(AbstractClient):
             body = self.call("ResetInstancesPassword", params, headers=headers)
             response = json.loads(body)
             model = models.ResetInstancesPasswordResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def RestartDockerContainers(self, request):
+        """重启实例内的Docker容器，之后可以通过返回的ActivityId调用DescribeDockerActivities接口查询重启情况。
+
+        :param request: Request instance for RestartDockerContainers.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.RestartDockerContainersRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.RestartDockerContainersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RestartDockerContainers", params, headers=headers)
+            response = json.loads(body)
+            model = models.RestartDockerContainersResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def RunDockerContainers(self, request):
+        """创建并运行多个Docker容器，之后可以通过返回的ActivityIds调用DescribeDockerActivities接口查询创建情况。
+
+        :param request: Request instance for RunDockerContainers.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.RunDockerContainersRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.RunDockerContainersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RunDockerContainers", params, headers=headers)
+            response = json.loads(body)
+            model = models.RunDockerContainersResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def StartDockerContainers(self, request):
+        """启动实例内的Docker容器，之后可以通过返回的ActivityId调用DescribeDockerActivities接口查询启动情况。
+
+        :param request: Request instance for StartDockerContainers.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.StartDockerContainersRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.StartDockerContainersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StartDockerContainers", params, headers=headers)
+            response = json.loads(body)
+            model = models.StartDockerContainersResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1913,6 +2466,29 @@ class LighthouseClient(AbstractClient):
             body = self.call("StartInstances", params, headers=headers)
             response = json.loads(body)
             model = models.StartInstancesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def StopDockerContainers(self, request):
+        """停止实例内的Docker容器，之后可以通过返回的ActivityId调用DescribeDockerActivities接口查询停止情况。
+
+        :param request: Request instance for StopDockerContainers.
+        :type request: :class:`tencentcloud.lighthouse.v20200324.models.StopDockerContainersRequest`
+        :rtype: :class:`tencentcloud.lighthouse.v20200324.models.StopDockerContainersResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StopDockerContainers", params, headers=headers)
+            response = json.loads(body)
+            model = models.StopDockerContainersResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

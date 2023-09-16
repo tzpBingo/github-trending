@@ -988,33 +988,6 @@ class CdbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def DescribeBackupDatabases(self, request):
-        """接口已废弃，需要下线
-
-        本接口(DescribeBackupDatabases)用于查询备份文件包含的库 (已废弃)。
-        旧版本支持全量备份后，用户如果分库表下载逻辑备份文件，需要用到此接口。
-        新版本支持(CreateBackup)创建逻辑备份的时候，直接发起指定库表备份，用户直接下载该备份文件即可。
-
-        :param request: Request instance for DescribeBackupDatabases.
-        :type request: :class:`tencentcloud.cdb.v20170320.models.DescribeBackupDatabasesRequest`
-        :rtype: :class:`tencentcloud.cdb.v20170320.models.DescribeBackupDatabasesResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DescribeBackupDatabases", params, headers=headers)
-            response = json.loads(body)
-            model = models.DescribeBackupDatabasesResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def DescribeBackupDecryptionKey(self, request):
         """本接口(DescribeBackupDecryptionKey)用于查询备份文件解密密钥。
 
@@ -1199,31 +1172,6 @@ class CdbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def DescribeCDBProxy(self, request):
-        """接口已经废弃，请使用+DescribeCdbProxyInfo+进行替换。
-
-        查询数据库代理（待下线，替换接口QueryCDBProxy）
-
-        :param request: Request instance for DescribeCDBProxy.
-        :type request: :class:`tencentcloud.cdb.v20170320.models.DescribeCDBProxyRequest`
-        :rtype: :class:`tencentcloud.cdb.v20170320.models.DescribeCDBProxyResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DescribeCDBProxy", params, headers=headers)
-            response = json.loads(body)
-            model = models.DescribeCDBProxyResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def DescribeCdbProxyInfo(self, request):
         """查询数据库代理详情信息
 
@@ -1284,6 +1232,29 @@ class CdbClient(AbstractClient):
             body = self.call("DescribeCloneList", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeCloneListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeCpuExpandStrategy(self, request):
+        """通过该 API 可以查询实例的 CPU 弹性扩容策略
+
+        :param request: Request instance for DescribeCpuExpandStrategy.
+        :type request: :class:`tencentcloud.cdb.v20170320.models.DescribeCpuExpandStrategyRequest`
+        :rtype: :class:`tencentcloud.cdb.v20170320.models.DescribeCpuExpandStrategyResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCpuExpandStrategy", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCpuExpandStrategyResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1825,31 +1796,6 @@ class CdbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def DescribeProxyConnectionPoolConf(self, request):
-        """当前接口已经废弃，请使用+DescribeCdbProxyInfo+替代。
-
-        获取数据库代理连接池相关规格配置
-
-        :param request: Request instance for DescribeProxyConnectionPoolConf.
-        :type request: :class:`tencentcloud.cdb.v20170320.models.DescribeProxyConnectionPoolConfRequest`
-        :rtype: :class:`tencentcloud.cdb.v20170320.models.DescribeProxyConnectionPoolConfResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DescribeProxyConnectionPoolConf", params, headers=headers)
-            response = json.loads(body)
-            model = models.DescribeProxyConnectionPoolConfResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def DescribeProxyCustomConf(self, request):
         """查询代理规格配置
 
@@ -2036,7 +1982,7 @@ class CdbClient(AbstractClient):
 
 
     def DescribeSlowLogs(self, request):
-        """本接口(DescribeSlowLogs)用于获取云数据库实例的慢查询日志。
+        """本接口(DescribeSlowLogs)用于获取云数据库实例的慢查询日志。说明：若单次查询数据量过大，则有可能响应超时，建议缩短单次查询时间范围，如一小时，避免导致超时。
 
         :param request: Request instance for DescribeSlowLogs.
         :type request: :class:`tencentcloud.cdb.v20170320.models.DescribeSlowLogsRequest`
@@ -2546,81 +2492,6 @@ class CdbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def ModifyCDBProxyConnectionPool(self, request):
-        """当前接口已经废弃，请使用+AdjustCdbProxyAddress+进行替代。
-
-        请求该接口配置数据库连接池；支持的连接池配置请求DescribeProxyConnectionPoolConf接口获取。
-
-        :param request: Request instance for ModifyCDBProxyConnectionPool.
-        :type request: :class:`tencentcloud.cdb.v20170320.models.ModifyCDBProxyConnectionPoolRequest`
-        :rtype: :class:`tencentcloud.cdb.v20170320.models.ModifyCDBProxyConnectionPoolResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("ModifyCDBProxyConnectionPool", params, headers=headers)
-            response = json.loads(body)
-            model = models.ModifyCDBProxyConnectionPoolResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def ModifyCDBProxyDesc(self, request):
-        """当前接口已经废弃，请使用+ModifyCdbProxyAddressDesc+进行替代。
-
-        修改数据库代理描述
-
-        :param request: Request instance for ModifyCDBProxyDesc.
-        :type request: :class:`tencentcloud.cdb.v20170320.models.ModifyCDBProxyDescRequest`
-        :rtype: :class:`tencentcloud.cdb.v20170320.models.ModifyCDBProxyDescResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("ModifyCDBProxyDesc", params, headers=headers)
-            response = json.loads(body)
-            model = models.ModifyCDBProxyDescResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def ModifyCDBProxyVipVPort(self, request):
-        """当前接口已经废弃，请使用+ModifyCdbProxyAddressVipAndVPort+进行替代。
-
-        修改数据库代理VIP或端口
-
-        :param request: Request instance for ModifyCDBProxyVipVPort.
-        :type request: :class:`tencentcloud.cdb.v20170320.models.ModifyCDBProxyVipVPortRequest`
-        :rtype: :class:`tencentcloud.cdb.v20170320.models.ModifyCDBProxyVipVPortResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("ModifyCDBProxyVipVPort", params, headers=headers)
-            response = json.loads(body)
-            model = models.ModifyCDBProxyVipVPortResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def ModifyCdbProxyAddressDesc(self, request):
         """修改代理地址描述信息
 
@@ -3120,31 +2991,6 @@ class CdbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def QueryCDBProxy(self, request):
-        """当前接口已经废弃，请使用+DescribeCdbProxyInfo+进行替代。
-
-        查询代理详情
-
-        :param request: Request instance for QueryCDBProxy.
-        :type request: :class:`tencentcloud.cdb.v20170320.models.QueryCDBProxyRequest`
-        :rtype: :class:`tencentcloud.cdb.v20170320.models.QueryCDBProxyResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("QueryCDBProxy", params, headers=headers)
-            response = json.loads(body)
-            model = models.QueryCDBProxyResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def ReleaseIsolatedDBInstances(self, request):
         """本接口（ReleaseIsolatedDBInstances）用于恢复已隔离云数据库实例。
 
@@ -3287,6 +3133,29 @@ class CdbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def StartCpuExpand(self, request):
+        """通过该API，可以开启CPU弹性扩容，包括一次性的手动扩容以及自动弹性扩容。
+
+        :param request: Request instance for StartCpuExpand.
+        :type request: :class:`tencentcloud.cdb.v20170320.models.StartCpuExpandRequest`
+        :rtype: :class:`tencentcloud.cdb.v20170320.models.StartCpuExpandResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StartCpuExpand", params, headers=headers)
+            response = json.loads(body)
+            model = models.StartCpuExpandResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def StartReplication(self, request):
         """开启 RO 复制，从主实例同步数据。
 
@@ -3301,6 +3170,29 @@ class CdbClient(AbstractClient):
             body = self.call("StartReplication", params, headers=headers)
             response = json.loads(body)
             model = models.StartReplicationResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def StopCpuExpand(self, request):
+        """通过该API，可以关闭 CPU 弹性扩容。
+
+        :param request: Request instance for StopCpuExpand.
+        :type request: :class:`tencentcloud.cdb.v20170320.models.StopCpuExpandRequest`
+        :rtype: :class:`tencentcloud.cdb.v20170320.models.StopCpuExpandResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StopCpuExpand", params, headers=headers)
+            response = json.loads(body)
+            model = models.StopCpuExpandResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

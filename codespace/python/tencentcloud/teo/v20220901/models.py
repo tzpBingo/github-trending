@@ -238,7 +238,8 @@ class AclCondition(AbstractModel):
 <li>idcid：IDC 规则，仅bot自定义规则可用；</li>
 <li>sipbot：搜索引擎规则，仅bot自定义规则可用；</li>
 <li>portrait：画像分析，仅bot自定义规则可用；</li>
-<li>header_seq：请求头顺序，仅bot自定义规则可用。</li>
+<li>header_seq：请求头顺序，仅bot自定义规则可用；</li>
+<li>hdr：请求正文，仅Web防护自定义规则可用。</li>
         :type MatchFrom: str
         :param _MatchParam: 匹配字符串。当 MatchFrom 为 header 时，可以填入 header 的 key 作为参数。
         :type MatchParam: str
@@ -1605,6 +1606,9 @@ class ApplicationProxyRule(AbstractModel):
 <li>单端口，如：80。</li>
 <li>端口段：81-82，表示81，82两个端口。</li>
         :type OriginPort: str
+        :param _RuleTag: 规则标签。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RuleTag: str
         """
         self._Proto = None
         self._Port = None
@@ -1616,6 +1620,7 @@ class ApplicationProxyRule(AbstractModel):
         self._SessionPersist = None
         self._SessionPersistTime = None
         self._OriginPort = None
+        self._RuleTag = None
 
     @property
     def Proto(self):
@@ -1697,6 +1702,14 @@ class ApplicationProxyRule(AbstractModel):
     def OriginPort(self, OriginPort):
         self._OriginPort = OriginPort
 
+    @property
+    def RuleTag(self):
+        return self._RuleTag
+
+    @RuleTag.setter
+    def RuleTag(self, RuleTag):
+        self._RuleTag = RuleTag
+
 
     def _deserialize(self, params):
         self._Proto = params.get("Proto")
@@ -1709,6 +1722,7 @@ class ApplicationProxyRule(AbstractModel):
         self._SessionPersist = params.get("SessionPersist")
         self._SessionPersistTime = params.get("SessionPersistTime")
         self._OriginPort = params.get("OriginPort")
+        self._RuleTag = params.get("RuleTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2713,9 +2727,9 @@ class CheckCnameStatusRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ZoneId: 站点ID。
+        :param _ZoneId: 站点 ID。
         :type ZoneId: str
-        :param _RecordNames: 记录名称列表。
+        :param _RecordNames: 加速域名列表。
         :type RecordNames: list of str
         """
         self._ZoneId = None
@@ -2758,7 +2772,7 @@ class CheckCnameStatusResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _CnameStatus: 域名Cname状态信息列表。
+        :param _CnameStatus: 加速域名 CNAME 状态信息列表。
         :type CnameStatus: list of CnameStatus
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3485,6 +3499,8 @@ class CreateApplicationProxyRuleRequest(AbstractModel):
 <li>单端口：80；</li>
 <li>端口段：81-90，81至90端口。</li>
         :type OriginPort: str
+        :param _RuleTag: 规则标签。默认值为空字符串。
+        :type RuleTag: str
         """
         self._ZoneId = None
         self._ProxyId = None
@@ -3496,6 +3512,7 @@ class CreateApplicationProxyRuleRequest(AbstractModel):
         self._SessionPersist = None
         self._SessionPersistTime = None
         self._OriginPort = None
+        self._RuleTag = None
 
     @property
     def ZoneId(self):
@@ -3577,6 +3594,14 @@ class CreateApplicationProxyRuleRequest(AbstractModel):
     def OriginPort(self, OriginPort):
         self._OriginPort = OriginPort
 
+    @property
+    def RuleTag(self):
+        return self._RuleTag
+
+    @RuleTag.setter
+    def RuleTag(self, RuleTag):
+        self._RuleTag = RuleTag
+
 
     def _deserialize(self, params):
         self._ZoneId = params.get("ZoneId")
@@ -3589,6 +3614,7 @@ class CreateApplicationProxyRuleRequest(AbstractModel):
         self._SessionPersist = params.get("SessionPersist")
         self._SessionPersistTime = params.get("SessionPersistTime")
         self._OriginPort = params.get("OriginPort")
+        self._RuleTag = params.get("RuleTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4030,7 +4056,7 @@ class CreatePurgeTaskRequest(AbstractModel):
 <li>purge_all：站点下全部缓存刷新；</li>
 <li>purge_cache_tag：cache-tag 刷新。</li>缓存清除类型详情请查看[清除缓存](https://cloud.tencent.com/document/product/1552/70759)。
         :type Type: str
-        :param _Method: 节点缓存清除方法，仅对目录刷新类型有效，取值有：<li> invalidate：仅刷新目录下产生了更新的资源；</li><li> delete：无论目录下资源是否更新都刷新节点资源。</li>注意：使用目录刷新时，默认值： invalidate。
+        :param _Method: 节点缓存清除方法，针对目录刷新、Hostname刷新以及刷新全部缓存 类型有效，取值有：<li> invalidate：仅刷新目录下产生了更新的资源；</li><li> delete：无论目录下资源是否更新都刷新节点资源。</li>注意：使用目录刷新时，默认值： invalidate。
         :type Method: str
         :param _Targets: 要清除缓存的资源列表。每个元素格式依据清除缓存类型而定，可参考接口示例。<li>EO 默认针对内容含有非 ASCII 字符集的字符进行转义，编码规则遵循 RFC3986；</li><li>单次提交的任务数受计费套餐配额限制，请查看 [EO计费套餐](https://cloud.tencent.com/document/product/1552/77380)。</li>
         :type Targets: list of str
@@ -4366,6 +4392,102 @@ class CreateSecurityIPGroupResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._GroupId = params.get("GroupId")
+        self._RequestId = params.get("RequestId")
+
+
+class CreateSharedCNAMERequest(AbstractModel):
+    """CreateSharedCNAME请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ZoneId: 共享 CNAME 所属站点的 ID。	
+        :type ZoneId: str
+        :param _SharedCNAMEPrefix: 共享 CNAME 前缀。请输入合法的域名前缀，例如"test-api"、"test-api.com"，限制输入 50 个字符。
+共享 CNAME 完整格式为：<自定义前缀>+<zoneid中的12位随机字符串>+"share.eo.dnse[0-5].com"。例如前缀传入 example.com，EO 会为您创建共享 CNAME：example.com.sai2ig51kaa5.eo.dns2.com
+示例值：example.com
+        :type SharedCNAMEPrefix: str
+        :param _Description: 描述。可输入 1-50 个任意字符。
+        :type Description: str
+        """
+        self._ZoneId = None
+        self._SharedCNAMEPrefix = None
+        self._Description = None
+
+    @property
+    def ZoneId(self):
+        return self._ZoneId
+
+    @ZoneId.setter
+    def ZoneId(self, ZoneId):
+        self._ZoneId = ZoneId
+
+    @property
+    def SharedCNAMEPrefix(self):
+        return self._SharedCNAMEPrefix
+
+    @SharedCNAMEPrefix.setter
+    def SharedCNAMEPrefix(self, SharedCNAMEPrefix):
+        self._SharedCNAMEPrefix = SharedCNAMEPrefix
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+
+    def _deserialize(self, params):
+        self._ZoneId = params.get("ZoneId")
+        self._SharedCNAMEPrefix = params.get("SharedCNAMEPrefix")
+        self._Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateSharedCNAMEResponse(AbstractModel):
+    """CreateSharedCNAME返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SharedCNAME: 共享 CNAME。格式为：<自定义前缀>+<ZoneId中的12位随机字符串>+"share.eo.dnse[0-5].com"
+        :type SharedCNAME: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._SharedCNAME = None
+        self._RequestId = None
+
+    @property
+    def SharedCNAME(self):
+        return self._SharedCNAME
+
+    @SharedCNAME.setter
+    def SharedCNAME(self, SharedCNAME):
+        self._SharedCNAME = SharedCNAME
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._SharedCNAME = params.get("SharedCNAME")
         self._RequestId = params.get("RequestId")
 
 
@@ -5813,7 +5935,7 @@ class DescribeApplicationProxiesRequest(AbstractModel):
         :type Offset: int
         :param _Limit: 分页查询限制数目。默认值：20，最大值：1000。
         :type Limit: int
-        :param _Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：<li>proxy-id<br>   按照【<strong>代理ID</strong>】进行过滤。代理ID形如：proxy-ev2sawbwfd。<br>   类型：String<br>   必选：否</li><li>zone-id<br>   按照【<strong>站点ID</strong>】进行过滤。站点ID形如：zone-vawer2vadg。<br>   类型：String<br>   必选：否</li>
+        :param _Filters: 过滤条件，Filters.Values的上限为20。详细的过滤条件如下：<li>proxy-id<br>   按照【<strong>代理ID</strong>】进行过滤。代理ID形如：proxy-ev2sawbwfd。<br>   类型：String<br>   必选：否</li><li>zone-id<br>   按照【<strong>站点ID</strong>】进行过滤。站点ID形如：zone-vawer2vadg。<br>   类型：String<br>   必选：否</li><li>rule-tag<br>   按照【<strong>规则标签</strong>】对应用代理下的规则进行过滤。规则标签形如：rule-service-1。<br>   类型：String<br>   必选：否</li>
         :type Filters: list of Filter
         """
         self._Offset = None
@@ -9543,13 +9665,13 @@ class DownloadL4LogsRequest(AbstractModel):
         :type StartTime: str
         :param _EndTime: 结束时间。
         :type EndTime: str
-        :param _ZoneIds: 站点集合，不填默认选择全部站点。
+        :param _ZoneIds: 站点集合，此参数必填，不填默认查询为空。
         :type ZoneIds: list of str
-        :param _ProxyIds: 四层实例ID集合。
+        :param _ProxyIds: 四层实例 ID 集合。
         :type ProxyIds: list of str
-        :param _Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
+        :param _Limit: 分页查询的限制数目，默认值为 20，最大查询条目为 300。
         :type Limit: int
-        :param _Offset: 分页的偏移量，默认值为0。
+        :param _Offset: 分页的偏移量，默认值为 0。
         :type Offset: int
         """
         self._StartTime = None
@@ -9632,25 +9754,16 @@ class DownloadL4LogsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Data: 四层离线日志数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of L4OfflineLog
         :param _TotalCount: 查询结果的总条数。
         :type TotalCount: int
+        :param _Data: 四层离线日志数据列表。
+        :type Data: list of L4OfflineLog
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
-        self._Data = None
         self._TotalCount = None
+        self._Data = None
         self._RequestId = None
-
-    @property
-    def Data(self):
-        return self._Data
-
-    @Data.setter
-    def Data(self, Data):
-        self._Data = Data
 
     @property
     def TotalCount(self):
@@ -9659,6 +9772,14 @@ class DownloadL4LogsResponse(AbstractModel):
     @TotalCount.setter
     def TotalCount(self, TotalCount):
         self._TotalCount = TotalCount
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
 
     @property
     def RequestId(self):
@@ -9670,13 +9791,13 @@ class DownloadL4LogsResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
         if params.get("Data") is not None:
             self._Data = []
             for item in params.get("Data"):
                 obj = L4OfflineLog()
                 obj._deserialize(item)
                 self._Data.append(obj)
-        self._TotalCount = params.get("TotalCount")
         self._RequestId = params.get("RequestId")
 
 
@@ -9691,13 +9812,13 @@ class DownloadL7LogsRequest(AbstractModel):
         :type StartTime: str
         :param _EndTime: 结束时间。
         :type EndTime: str
-        :param _ZoneIds: 站点集合，不填默认选择全部站点。
+        :param _ZoneIds: 站点集合，此参数必填，不填默认查询为空。
         :type ZoneIds: list of str
         :param _Domains: 子域名集合，不填默认选择全部子域名。
         :type Domains: list of str
-        :param _Limit: 分页查询的限制数目，默认值为20，最大查询条目为1000。
+        :param _Limit: 分页查询的限制数目，默认值为 20，最大查询条目为 300。
         :type Limit: int
-        :param _Offset: 分页的偏移量，默认值为0。
+        :param _Offset: 分页的偏移量，默认值为 0。
         :type Offset: int
         """
         self._StartTime = None
@@ -9780,25 +9901,16 @@ class DownloadL7LogsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Data: 七层离线日志数据列表。
-注意：此字段可能返回 null，表示取不到有效值。
-        :type Data: list of L7OfflineLog
         :param _TotalCount: 查询结果的总条数。
         :type TotalCount: int
+        :param _Data: 七层离线日志数据列表。
+        :type Data: list of L7OfflineLog
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
-        self._Data = None
         self._TotalCount = None
+        self._Data = None
         self._RequestId = None
-
-    @property
-    def Data(self):
-        return self._Data
-
-    @Data.setter
-    def Data(self, Data):
-        self._Data = Data
 
     @property
     def TotalCount(self):
@@ -9807,6 +9919,14 @@ class DownloadL7LogsResponse(AbstractModel):
     @TotalCount.setter
     def TotalCount(self, TotalCount):
         self._TotalCount = TotalCount
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
 
     @property
     def RequestId(self):
@@ -9818,13 +9938,13 @@ class DownloadL7LogsResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
         if params.get("Data") is not None:
             self._Data = []
             for item in params.get("Data"):
                 obj = L7OfflineLog()
                 obj._deserialize(item)
                 self._Data.append(obj)
-        self._TotalCount = params.get("TotalCount")
         self._RequestId = params.get("RequestId")
 
 
@@ -11607,36 +11727,33 @@ class L4OfflineLog(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _LogTime: 日志打包开始时间。
-        :type LogTime: int
-        :param _ProxyId: 四层实例ID。
-注意：此字段可能返回 null，表示取不到有效值。
+        :param _ProxyId: 四层代理实例 ID。
         :type ProxyId: str
-        :param _Size: 原始大小 单位byte。
-        :type Size: int
-        :param _Url: 下载地址。
-        :type Url: str
-        :param _LogPacketName: 日志数据包名。
-        :type LogPacketName: str
-        :param _Area: 加速区域，取值有：
+        :param _Area: 日志所属区域，取值有：
 <li>mainland：中国大陆境内;</li>
 <li>overseas：全球（不含中国大陆）。</li>
         :type Area: str
+        :param _LogPacketName: 离线日志数据包名。
+        :type LogPacketName: str
+        :param _Url: 离线日志下载地址。
+        :type Url: str
+        :param _LogTime: 日志打包时间，此参数已经废弃。
+        :type LogTime: int
+        :param _LogStartTime: 日志打包开始时间。
+        :type LogStartTime: str
+        :param _LogEndTime: 日志打包结束时间。
+        :type LogEndTime: str
+        :param _Size: 日志大小，单位为 Byte。
+        :type Size: int
         """
-        self._LogTime = None
         self._ProxyId = None
-        self._Size = None
-        self._Url = None
-        self._LogPacketName = None
         self._Area = None
-
-    @property
-    def LogTime(self):
-        return self._LogTime
-
-    @LogTime.setter
-    def LogTime(self, LogTime):
-        self._LogTime = LogTime
+        self._LogPacketName = None
+        self._Url = None
+        self._LogTime = None
+        self._LogStartTime = None
+        self._LogEndTime = None
+        self._Size = None
 
     @property
     def ProxyId(self):
@@ -11647,20 +11764,12 @@ class L4OfflineLog(AbstractModel):
         self._ProxyId = ProxyId
 
     @property
-    def Size(self):
-        return self._Size
+    def Area(self):
+        return self._Area
 
-    @Size.setter
-    def Size(self, Size):
-        self._Size = Size
-
-    @property
-    def Url(self):
-        return self._Url
-
-    @Url.setter
-    def Url(self, Url):
-        self._Url = Url
+    @Area.setter
+    def Area(self, Area):
+        self._Area = Area
 
     @property
     def LogPacketName(self):
@@ -11671,21 +11780,55 @@ class L4OfflineLog(AbstractModel):
         self._LogPacketName = LogPacketName
 
     @property
-    def Area(self):
-        return self._Area
+    def Url(self):
+        return self._Url
 
-    @Area.setter
-    def Area(self, Area):
-        self._Area = Area
+    @Url.setter
+    def Url(self, Url):
+        self._Url = Url
+
+    @property
+    def LogTime(self):
+        return self._LogTime
+
+    @LogTime.setter
+    def LogTime(self, LogTime):
+        self._LogTime = LogTime
+
+    @property
+    def LogStartTime(self):
+        return self._LogStartTime
+
+    @LogStartTime.setter
+    def LogStartTime(self, LogStartTime):
+        self._LogStartTime = LogStartTime
+
+    @property
+    def LogEndTime(self):
+        return self._LogEndTime
+
+    @LogEndTime.setter
+    def LogEndTime(self, LogEndTime):
+        self._LogEndTime = LogEndTime
+
+    @property
+    def Size(self):
+        return self._Size
+
+    @Size.setter
+    def Size(self, Size):
+        self._Size = Size
 
 
     def _deserialize(self, params):
-        self._LogTime = params.get("LogTime")
         self._ProxyId = params.get("ProxyId")
-        self._Size = params.get("Size")
-        self._Url = params.get("Url")
-        self._LogPacketName = params.get("LogPacketName")
         self._Area = params.get("Area")
+        self._LogPacketName = params.get("LogPacketName")
+        self._Url = params.get("Url")
+        self._LogTime = params.get("LogTime")
+        self._LogStartTime = params.get("LogStartTime")
+        self._LogEndTime = params.get("LogEndTime")
+        self._Size = params.get("Size")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -11697,41 +11840,39 @@ class L4OfflineLog(AbstractModel):
 
 
 class L7OfflineLog(AbstractModel):
-    """离线日志详细信息
+    """七层离线日志详细信息。
 
     """
 
     def __init__(self):
         r"""
-        :param _LogTime: 日志打包开始时间。
-        :type LogTime: int
-        :param _Domain: 子域名。
+        :param _Domain: 离线日志域名。
         :type Domain: str
-        :param _Size: 原始大小，单位byte。
-        :type Size: int
-        :param _Url: 下载地址。
-        :type Url: str
-        :param _LogPacketName: 日志数据包名。
-        :type LogPacketName: str
-        :param _Area: 加速区域，取值有：
+        :param _Area: 日志所属区域，取值有：
 <li>mainland：中国大陆境内; </li>
 <li>overseas：全球（不含中国大陆）。</li>
         :type Area: str
+        :param _LogPacketName: 离线日志数据包名。	
+        :type LogPacketName: str
+        :param _Url: 离线日志下载地址。	
+        :type Url: str
+        :param _LogTime: 日志打包时间，此参数已经废弃。
+        :type LogTime: int
+        :param _LogStartTime: 日志打包开始时间。
+        :type LogStartTime: str
+        :param _LogEndTime: 日志打包结束时间。
+        :type LogEndTime: str
+        :param _Size: 日志原始大小，单位 Byte。
+        :type Size: int
         """
-        self._LogTime = None
         self._Domain = None
-        self._Size = None
-        self._Url = None
-        self._LogPacketName = None
         self._Area = None
-
-    @property
-    def LogTime(self):
-        return self._LogTime
-
-    @LogTime.setter
-    def LogTime(self, LogTime):
-        self._LogTime = LogTime
+        self._LogPacketName = None
+        self._Url = None
+        self._LogTime = None
+        self._LogStartTime = None
+        self._LogEndTime = None
+        self._Size = None
 
     @property
     def Domain(self):
@@ -11742,20 +11883,12 @@ class L7OfflineLog(AbstractModel):
         self._Domain = Domain
 
     @property
-    def Size(self):
-        return self._Size
+    def Area(self):
+        return self._Area
 
-    @Size.setter
-    def Size(self, Size):
-        self._Size = Size
-
-    @property
-    def Url(self):
-        return self._Url
-
-    @Url.setter
-    def Url(self, Url):
-        self._Url = Url
+    @Area.setter
+    def Area(self, Area):
+        self._Area = Area
 
     @property
     def LogPacketName(self):
@@ -11766,21 +11899,55 @@ class L7OfflineLog(AbstractModel):
         self._LogPacketName = LogPacketName
 
     @property
-    def Area(self):
-        return self._Area
+    def Url(self):
+        return self._Url
 
-    @Area.setter
-    def Area(self, Area):
-        self._Area = Area
+    @Url.setter
+    def Url(self, Url):
+        self._Url = Url
+
+    @property
+    def LogTime(self):
+        return self._LogTime
+
+    @LogTime.setter
+    def LogTime(self, LogTime):
+        self._LogTime = LogTime
+
+    @property
+    def LogStartTime(self):
+        return self._LogStartTime
+
+    @LogStartTime.setter
+    def LogStartTime(self, LogStartTime):
+        self._LogStartTime = LogStartTime
+
+    @property
+    def LogEndTime(self):
+        return self._LogEndTime
+
+    @LogEndTime.setter
+    def LogEndTime(self, LogEndTime):
+        self._LogEndTime = LogEndTime
+
+    @property
+    def Size(self):
+        return self._Size
+
+    @Size.setter
+    def Size(self, Size):
+        self._Size = Size
 
 
     def _deserialize(self, params):
-        self._LogTime = params.get("LogTime")
         self._Domain = params.get("Domain")
-        self._Size = params.get("Size")
-        self._Url = params.get("Url")
-        self._LogPacketName = params.get("LogPacketName")
         self._Area = params.get("Area")
+        self._LogPacketName = params.get("LogPacketName")
+        self._Url = params.get("Url")
+        self._LogTime = params.get("LogTime")
+        self._LogStartTime = params.get("LogStartTime")
+        self._LogEndTime = params.get("LogEndTime")
+        self._Size = params.get("Size")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12399,6 +12566,8 @@ class ModifyApplicationProxyRuleRequest(AbstractModel):
 <li>单端口：80；</li>
 <li>端口段：81-90，81至90端口。</li>
         :type OriginPort: str
+        :param _RuleTag: 规则标签。不填保持原有值。
+        :type RuleTag: str
         """
         self._ZoneId = None
         self._ProxyId = None
@@ -12411,6 +12580,7 @@ class ModifyApplicationProxyRuleRequest(AbstractModel):
         self._SessionPersist = None
         self._SessionPersistTime = None
         self._OriginPort = None
+        self._RuleTag = None
 
     @property
     def ZoneId(self):
@@ -12500,6 +12670,14 @@ class ModifyApplicationProxyRuleRequest(AbstractModel):
     def OriginPort(self, OriginPort):
         self._OriginPort = OriginPort
 
+    @property
+    def RuleTag(self):
+        return self._RuleTag
+
+    @RuleTag.setter
+    def RuleTag(self, RuleTag):
+        self._RuleTag = RuleTag
+
 
     def _deserialize(self, params):
         self._ZoneId = params.get("ZoneId")
@@ -12513,6 +12691,7 @@ class ModifyApplicationProxyRuleRequest(AbstractModel):
         self._SessionPersist = params.get("SessionPersist")
         self._SessionPersistTime = params.get("SessionPersistTime")
         self._OriginPort = params.get("OriginPort")
+        self._RuleTag = params.get("RuleTag")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12743,7 +12922,7 @@ class ModifyHostsCertificateRequest(AbstractModel):
         :type ServerCertInfo: list of ServerCertInfo
         :param _ApplyType: 托管类型，取值有：
 <li>apply：托管EO；</li>
-<li>none：不托管EO；</li>不填，默认取值为apply。
+<li>none：不托管EO；</li>不填，默认取值为none。
         :type ApplyType: str
         """
         self._ZoneId = None
@@ -14310,21 +14489,22 @@ class OriginInfo(AbstractModel):
     def __init__(self):
         r"""
         :param _OriginType: 源站类型，取值有：
-<li>IP_DOMAIN：IPV4、IPV6或域名类型源站；</li>
-<li>COS：COS源。</li>
-<li>ORIGIN_GROUP：源站组类型源站。</li>
-<li>AWS_S3：AWS S3对象存储源站。</li>
-<li>SPACE：Edgeone源站Space存储，Space存储不允许配置该类型源站。</li>
+<li>IP_DOMAIN：IPV4、IPV6 或域名类型源站；</li>
+<li>COS：COS 源；</li>
+<li>ORIGIN_GROUP：源站组类型源站；</li>
+<li>AWS_S3：S3兼容对象存储源站；</li>
+<li>LB: 负载均衡类型源站；</li>
+<li>SPACE：EdgeOne Shield Space 存储。</li>
         :type OriginType: str
-        :param _Origin: 源站地址，当OriginType参数指定为ORIGIN_GROUP时，该参数填写源站组ID，其他情况下填写源站地址。
+        :param _Origin: 源站地址，当 OriginType 参数指定为 ORIGIN_GROUP 时，该参数填写源站组 ID，其他情况下填写源站地址。
         :type Origin: str
-        :param _BackupOrigin: 备用源站组ID，该参数在OriginType参数指定为ORIGIN_GROUP时生效，为空表示不使用备用源站。
+        :param _BackupOrigin: 备用源站组 ID，该参数在 OriginType 参数指定为 ORIGIN_GROUP 时生效，为空表示不使用备用源站。
         :type BackupOrigin: str
-        :param _PrivateAccess: 指定是否允许访问私有对象存储源站，当源站类型OriginType=COS或AWS_S3时有效，取值有：
+        :param _PrivateAccess: 指定是否允许访问私有对象存储源站，当源站类型 OriginType=COS 或 AWS_S3 时有效，取值有：
 <li>on：使用私有鉴权；</li>
-<li>off：不使用私有鉴权。</li>不填写，默认值为：off。
+<li>off：不使用私有鉴权。</li>默认值：off。
         :type PrivateAccess: str
-        :param _PrivateParameters: 私有鉴权使用参数，当源站类型PrivateAccess=on时有效。
+        :param _PrivateParameters: 私有鉴权使用参数，当源站类型 PrivateAccess=on 时有效。
         :type PrivateParameters: list of PrivateParameter
         """
         self._OriginType = None
@@ -15525,10 +15705,7 @@ class RateLimitUserRule(AbstractModel):
         :type Period: int
         :param _RuleName: 规则名，只能以英文字符，数字，下划线组合，且不能以下划线开头。
         :type RuleName: str
-        :param _Action: 处置动作，取值有：
-<li>monitor：观察；</li>
-<li>drop：拦截；</li>
-<li>alg：JavaScript挑战。</li>
+        :param _Action: 处置动作，取值有： <li>monitor：观察；</li> <li>drop：拦截；</li> <li>alg：JavaScript挑战。</li>	
         :type Action: str
         :param _PunishTime: 惩罚时长，0-2天。
         :type PunishTime: int
@@ -15545,7 +15722,7 @@ class RateLimitUserRule(AbstractModel):
         :type AclConditions: list of AclCondition
         :param _RulePriority: 规则权重，取值范围0-100。
         :type RulePriority: int
-        :param _RuleID: 规则id。仅出参使用。
+        :param _RuleID: 规则 Id。仅出参使用。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RuleID: int
         :param _FreqFields: 过滤词，取值有：
@@ -15555,7 +15732,7 @@ class RateLimitUserRule(AbstractModel):
         :param _UpdateTime: 更新时间。
 注意：此字段可能返回 null，表示取不到有效值。
         :type UpdateTime: str
-        :param _FreqScope: 统计范围，字段为null时，代表source_to_eo。取值有：
+        :param _FreqScope: 统计范围，字段为 null 时，代表 source_to_eo。取值有：
 <li>source_to_eo：（响应）源站到EdgeOne。</li>
 <li>client_to_eo：（请求）客户端到EdgeOne；</li>
 注意：此字段可能返回 null，表示取不到有效值。
@@ -17200,7 +17377,7 @@ class ServerCertInfo(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type Alias: str
         :param _Type: 证书类型，取值有：
-<li>default：默认证书；</lil>
+<li>default：默认证书；</li>
 <li>upload：用户上传；</li>
 <li>managed：腾讯云托管。</li>
 注意：此字段可能返回 null，表示取不到有效值。

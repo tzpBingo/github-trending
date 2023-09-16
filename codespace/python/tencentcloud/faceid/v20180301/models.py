@@ -104,6 +104,8 @@ class BankCard2EVerificationResponse(AbstractModel):
   '-2': '姓名校验不通过'
   '-3': '银行卡号码有误'
   '-16': '验证中心服务繁忙'
+  '-17': '验证次数超限，请次日重试'
+
         :type Result: str
         :param _Description: 业务结果描述。
         :type Description: str
@@ -270,6 +272,7 @@ class BankCard4EVerificationResponse(AbstractModel):
 '-4': '银行卡号码有误'
 '-5': '手机号码不合法'
 '-18': '验证中心服务繁忙'
+'-19': '验证次数超限，请次日重试'
         :type Result: str
         :param _Description: 业务结果描述。
         :type Description: str
@@ -423,6 +426,7 @@ class BankCardVerificationResponse(AbstractModel):
 '-3': '身份证号码有误'
 '-4': '银行卡号码有误'
 '-17': '验证中心服务繁忙'
+'-18': '验证次数超限，请次日重试'
         :type Result: str
         :param _Description: 业务结果描述。
         :type Description: str
@@ -475,7 +479,9 @@ class ChargeDetail(AbstractModel):
         :type ReqTime: str
         :param _Seq: 一比一请求的唯一标记。
         :type Seq: str
-        :param _Idcard: 一比一时使用的、脱敏后的身份证号。
+        :param _IdCard: 一比一时使用的、脱敏后的身份证号。
+        :type IdCard: str
+        :param _Idcard: 已废弃。请使用“IdCard”字段
         :type Idcard: str
         :param _Name: 一比一时使用的、脱敏后的姓名。
         :type Name: str
@@ -492,6 +498,7 @@ class ChargeDetail(AbstractModel):
         """
         self._ReqTime = None
         self._Seq = None
+        self._IdCard = None
         self._Idcard = None
         self._Name = None
         self._Sim = None
@@ -517,11 +524,23 @@ class ChargeDetail(AbstractModel):
         self._Seq = Seq
 
     @property
+    def IdCard(self):
+        return self._IdCard
+
+    @IdCard.setter
+    def IdCard(self, IdCard):
+        self._IdCard = IdCard
+
+    @property
     def Idcard(self):
+        warnings.warn("parameter `Idcard` is deprecated", DeprecationWarning) 
+
         return self._Idcard
 
     @Idcard.setter
     def Idcard(self, Idcard):
+        warnings.warn("parameter `Idcard` is deprecated", DeprecationWarning) 
+
         self._Idcard = Idcard
 
     @property
@@ -576,6 +595,7 @@ class ChargeDetail(AbstractModel):
     def _deserialize(self, params):
         self._ReqTime = params.get("ReqTime")
         self._Seq = params.get("Seq")
+        self._IdCard = params.get("IdCard")
         self._Idcard = params.get("Idcard")
         self._Name = params.get("Name")
         self._Sim = params.get("Sim")
@@ -816,7 +836,7 @@ ImageBase64、ImageUrl二者必须提供其中之一。若都提供了，则按�
 CopyWarn，复印件告警
 BorderCheckWarn，边框和框内遮挡告警
 ReshootWarn，翻拍告警
-DetectPsWarn，PS检测告警
+DetectPsWarn，PS检测告警（疑似存在PS痕迹）
 TempIdWarn，临时身份证告警
 Quality，图片质量告警（评价图片模糊程度）
 
@@ -916,7 +936,7 @@ class CheckIdCardInformationResponse(AbstractModel):
 -9103 身份证翻拍告警，
 -9105 身份证框内遮挡告警，
 -9104 临时身份证告警，
--9106 身份证 PS 告警。
+-9106 身份证 PS 告警（疑似存在PS痕迹）。
 -8001 图片模糊告警
 多个会 |  隔开如 "-9101|-9106|-9104"
         :type Warnings: str
@@ -1359,10 +1379,12 @@ Base64编码后的图片数据大小不超过3M，仅支持jpg、png格式。请
         :type Encryption: :class:`tencentcloud.faceid.v20180301.models.Encryption`
         :param _IntentionVerifyText: 意愿核身（朗读模式）使用的文案，若未使用意愿核身（朗读模式），则该字段无需传入。默认为空，最长可接受120的字符串长度。
         :type IntentionVerifyText: str
-        :param _IntentionQuestions: 意愿核身（问答模式）使用的文案，包括：系统语音播报的文本、需要核验的标准文本。当前仅支持一个播报文本+回答文本。
+        :param _IntentionQuestions: 意愿核身语音问答模式（即语音播报+语音回答）使用的文案，包括：系统语音播报的文本、需要核验的标准文本。当前仅支持1轮问答。
         :type IntentionQuestions: list of IntentionQuestion
         :param _Config: RuleId相关配置
         :type Config: :class:`tencentcloud.faceid.v20180301.models.RuleIdConfig`
+        :param _IntentionActions: 意愿核身（点头确认模式）使用的文案，若未使用意愿核身（点头确认模式），则该字段无需传入。当前仅支持一个提示文本。
+        :type IntentionActions: list of IntentionActionConfig
         """
         self._RuleId = None
         self._TerminalType = None
@@ -1375,6 +1397,7 @@ Base64编码后的图片数据大小不超过3M，仅支持jpg、png格式。请
         self._IntentionVerifyText = None
         self._IntentionQuestions = None
         self._Config = None
+        self._IntentionActions = None
 
     @property
     def RuleId(self):
@@ -1464,6 +1487,14 @@ Base64编码后的图片数据大小不超过3M，仅支持jpg、png格式。请
     def Config(self, Config):
         self._Config = Config
 
+    @property
+    def IntentionActions(self):
+        return self._IntentionActions
+
+    @IntentionActions.setter
+    def IntentionActions(self, IntentionActions):
+        self._IntentionActions = IntentionActions
+
 
     def _deserialize(self, params):
         self._RuleId = params.get("RuleId")
@@ -1486,6 +1517,12 @@ Base64编码后的图片数据大小不超过3M，仅支持jpg、png格式。请
         if params.get("Config") is not None:
             self._Config = RuleIdConfig()
             self._Config._deserialize(params.get("Config"))
+        if params.get("IntentionActions") is not None:
+            self._IntentionActions = []
+            for item in params.get("IntentionActions"):
+                obj = IntentionActionConfig()
+                obj._deserialize(item)
+                self._IntentionActions.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1834,7 +1871,7 @@ class DetectInfoIdCardData(AbstractModel):
 -9103 身份证翻拍告警，
 -9105 身份证框内遮挡告警，
 -9104 临时身份证告警，
--9106 身份证 PS 告警，
+-9106 身份证 PS 告警（疑似存在PS痕迹），
 -9107 身份证反光告警。
 注意：此字段可能返回 null，表示取不到有效值。
         :type WarnInfos: list of int
@@ -1845,7 +1882,7 @@ class DetectInfoIdCardData(AbstractModel):
 -9103 身份证翻拍告警，
 -9105 身份证框内遮挡告警，
 -9104 临时身份证告警，
--9106 身份证 PS 告警，
+-9106 身份证 PS 告警（疑似存在PS痕迹），
 -9107 身份证反光告警。
 注意：此字段可能返回 null，表示取不到有效值。
         :type BackWarnInfos: list of int
@@ -2604,14 +2641,19 @@ class Encryption(AbstractModel):
     def __init__(self):
         r"""
         :param _EncryptList: 在使用加密服务时，填入要被加密的字段。本接口中可填入加密后的一个或多个字段
+注意：此字段可能返回 null，表示取不到有效值。
         :type EncryptList: list of str
         :param _CiphertextBlob: 有加密需求的用户，接入传入kms的CiphertextBlob，关于数据加密可查阅<a href="https://cloud.tencent.com/document/product/1007/47180">数据加密</a> 文档。
+注意：此字段可能返回 null，表示取不到有效值。
         :type CiphertextBlob: str
         :param _Iv: 有加密需求的用户，传入CBC加密的初始向量（客户自定义字符串，长度16字符）。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Iv: str
         :param _Algorithm: 加密使用的算法（支持'AES-256-CBC'、'SM4-GCM'），不传默认为'AES-256-CBC'
+注意：此字段可能返回 null，表示取不到有效值。
         :type Algorithm: str
         :param _TagList: SM4-GCM算法生成的消息摘要（校验消息完整性时使用）
+注意：此字段可能返回 null，表示取不到有效值。
         :type TagList: list of str
         """
         self._EncryptList = None
@@ -2890,12 +2932,15 @@ class GetDetectInfoEnhancedResponse(AbstractModel):
         :param _Encryption: 敏感数据加密信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Encryption: :class:`tencentcloud.faceid.v20180301.models.Encryption`
-        :param _IntentionVerifyData: 意愿核身相关信息。若未使用意愿核身功能，该字段返回值可以不处理。
+        :param _IntentionVerifyData: 意愿核身朗读模式结果信息。若未使用意愿核身功能，该字段返回值可以不处理。
 注意：此字段可能返回 null，表示取不到有效值。
         :type IntentionVerifyData: :class:`tencentcloud.faceid.v20180301.models.IntentionVerifyData`
         :param _IntentionQuestionResult: 意愿核身问答模式结果。若未使用该意愿核身功能，该字段返回值可以不处理。
 注意：此字段可能返回 null，表示取不到有效值。
         :type IntentionQuestionResult: :class:`tencentcloud.faceid.v20180301.models.IntentionQuestionResult`
+        :param _IntentionActionResult: 意愿核身点头确认模式的结果信息，若未使用该意愿核身功能，该字段返回值可以不处理。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IntentionActionResult: :class:`tencentcloud.faceid.v20180301.models.IntentionActionResult`
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -2906,6 +2951,7 @@ class GetDetectInfoEnhancedResponse(AbstractModel):
         self._Encryption = None
         self._IntentionVerifyData = None
         self._IntentionQuestionResult = None
+        self._IntentionActionResult = None
         self._RequestId = None
 
     @property
@@ -2965,6 +3011,14 @@ class GetDetectInfoEnhancedResponse(AbstractModel):
         self._IntentionQuestionResult = IntentionQuestionResult
 
     @property
+    def IntentionActionResult(self):
+        return self._IntentionActionResult
+
+    @IntentionActionResult.setter
+    def IntentionActionResult(self, IntentionActionResult):
+        self._IntentionActionResult = IntentionActionResult
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -2995,6 +3049,9 @@ class GetDetectInfoEnhancedResponse(AbstractModel):
         if params.get("IntentionQuestionResult") is not None:
             self._IntentionQuestionResult = IntentionQuestionResult()
             self._IntentionQuestionResult._deserialize(params.get("IntentionQuestionResult"))
+        if params.get("IntentionActionResult") is not None:
+            self._IntentionActionResult = IntentionActionResult()
+            self._IntentionActionResult._deserialize(params.get("IntentionActionResult"))
         self._RequestId = params.get("RequestId")
 
 
@@ -3226,6 +3283,9 @@ class GetEidResultResponse(AbstractModel):
         :param _IntentionQuestionResult: 意愿核身问答模式相关信息。若未使用意愿核身问答模式功能，该字段返回值可以不处理。
 注意：此字段可能返回 null，表示取不到有效值。
         :type IntentionQuestionResult: :class:`tencentcloud.faceid.v20180301.models.IntentionQuestionResult`
+        :param _IntentionActionResult: 意愿核身点头确认模式的结果信息，若未使用该意愿核身功能，该字段返回值可以不处理。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IntentionActionResult: :class:`tencentcloud.faceid.v20180301.models.IntentionActionResult`
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -3235,6 +3295,7 @@ class GetEidResultResponse(AbstractModel):
         self._EidInfo = None
         self._IntentionVerifyData = None
         self._IntentionQuestionResult = None
+        self._IntentionActionResult = None
         self._RequestId = None
 
     @property
@@ -3286,6 +3347,14 @@ class GetEidResultResponse(AbstractModel):
         self._IntentionQuestionResult = IntentionQuestionResult
 
     @property
+    def IntentionActionResult(self):
+        return self._IntentionActionResult
+
+    @IntentionActionResult.setter
+    def IntentionActionResult(self, IntentionActionResult):
+        self._IntentionActionResult = IntentionActionResult
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -3313,6 +3382,9 @@ class GetEidResultResponse(AbstractModel):
         if params.get("IntentionQuestionResult") is not None:
             self._IntentionQuestionResult = IntentionQuestionResult()
             self._IntentionQuestionResult._deserialize(params.get("IntentionQuestionResult"))
+        if params.get("IntentionActionResult") is not None:
+            self._IntentionActionResult = IntentionActionResult()
+            self._IntentionActionResult._deserialize(params.get("IntentionActionResult"))
         self._RequestId = params.get("RequestId")
 
 
@@ -3333,12 +3405,14 @@ class GetEidTokenConfig(AbstractModel):
         :type InputType: str
         :param _UseIntentionVerify: 是否使用意愿核身，默认不使用。注意：如开启使用，则计费标签按【意愿核身】计费标签计价；如不开启，则计费标签按【E证通】计费标签计价，价格详见：[价格说明](https://cloud.tencent.com/document/product/1007/56804)。
         :type UseIntentionVerify: bool
-        :param _IntentionMode: 意愿核身模式。枚举值：1( 朗读模式)，2（问答模式） 。默认值1
+        :param _IntentionMode: 意愿核身模式。枚举值：1( 语音朗读模式)，2（语音问答模式） ，3（点头确认模式）。默认值为1。
         :type IntentionMode: str
         :param _IntentionVerifyText: 意愿核身朗读模式使用的文案，若未使用意愿核身朗读功能，该字段无需传入。默认为空，最长可接受120的字符串长度。
         :type IntentionVerifyText: str
         :param _IntentionQuestions: 意愿核身问答模式的配置列表。当前仅支持一个问答。
         :type IntentionQuestions: list of IntentionQuestion
+        :param _IntentionActions: 意愿核身（点头确认模式）使用的文案，若未使用意愿核身（点头确认模式），则该字段无需传入。默认为空，最长可接受150的字符串长度。
+        :type IntentionActions: list of IntentionActionConfig
         :param _IntentionRecognition: 意愿核身过程中识别用户的回答意图，开启后除了IntentionQuestions的Answers列表中的标准回答会通过，近似意图的回答也会通过，默认不开启。
         :type IntentionRecognition: bool
         :param _IsSupportHMTResidentPermitOCR: 是否支持港澳台居住证识别
@@ -3349,6 +3423,7 @@ class GetEidTokenConfig(AbstractModel):
         self._IntentionMode = None
         self._IntentionVerifyText = None
         self._IntentionQuestions = None
+        self._IntentionActions = None
         self._IntentionRecognition = None
         self._IsSupportHMTResidentPermitOCR = None
 
@@ -3393,6 +3468,14 @@ class GetEidTokenConfig(AbstractModel):
         self._IntentionQuestions = IntentionQuestions
 
     @property
+    def IntentionActions(self):
+        return self._IntentionActions
+
+    @IntentionActions.setter
+    def IntentionActions(self, IntentionActions):
+        self._IntentionActions = IntentionActions
+
+    @property
     def IntentionRecognition(self):
         return self._IntentionRecognition
 
@@ -3420,6 +3503,12 @@ class GetEidTokenConfig(AbstractModel):
                 obj = IntentionQuestion()
                 obj._deserialize(item)
                 self._IntentionQuestions.append(obj)
+        if params.get("IntentionActions") is not None:
+            self._IntentionActions = []
+            for item in params.get("IntentionActions"):
+                obj = IntentionActionConfig()
+                obj._deserialize(item)
+                self._IntentionActions.append(obj)
         self._IntentionRecognition = params.get("IntentionRecognition")
         self._IsSupportHMTResidentPermitOCR = params.get("IsSupportHMTResidentPermitOCR")
         memeber_set = set(params.keys())
@@ -4619,6 +4708,170 @@ class ImageRecognitionResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class IntentionActionConfig(AbstractModel):
+    """意愿核身（点头确认模式）配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Text: 点头确认模式下，系统语音播报使用的问题文本，问题最大长度为150个字符。
+        :type Text: str
+        """
+        self._Text = None
+
+    @property
+    def Text(self):
+        return self._Text
+
+    @Text.setter
+    def Text(self, Text):
+        self._Text = Text
+
+
+    def _deserialize(self, params):
+        self._Text = params.get("Text")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IntentionActionResult(AbstractModel):
+    """意愿核身点头确认模式结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FinalResultDetailCode: 意愿核身错误码：
+0: "成功"       
+-1: "参数错误"    
+-2: "系统异常"    
+-101: "请保持人脸在框内"    
+-102: "检测到多张人脸"   
+-103: "人脸检测失败"   
+-104: "人脸检测不完整"   
+-105: "请勿遮挡眼睛"    
+-106: "请勿遮挡嘴巴"     
+-107: "请勿遮挡鼻子"     
+-201: "人脸比对相似度低"    
+-202: "人脸比对失败"    
+-301: "意愿核验不通过"   
+-800: "前端不兼容错误"    
+-801: "用户未授权摄像头和麦克风权限"   
+-802: "获取视频流失败"   
+-803: "用户主动关闭链接/异常断开链接"   
+-998: "系统数据异常"   
+-999: "系统未知错误，请联系人工核实"   
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinalResultDetailCode: int
+        :param _FinalResultMessage: 意愿核身错误信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FinalResultMessage: str
+        :param _Details: 意愿核身结果详细数据，与每段点头确认过程一一对应
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Details: list of IntentionActionResultDetail
+        """
+        self._FinalResultDetailCode = None
+        self._FinalResultMessage = None
+        self._Details = None
+
+    @property
+    def FinalResultDetailCode(self):
+        return self._FinalResultDetailCode
+
+    @FinalResultDetailCode.setter
+    def FinalResultDetailCode(self, FinalResultDetailCode):
+        self._FinalResultDetailCode = FinalResultDetailCode
+
+    @property
+    def FinalResultMessage(self):
+        return self._FinalResultMessage
+
+    @FinalResultMessage.setter
+    def FinalResultMessage(self, FinalResultMessage):
+        self._FinalResultMessage = FinalResultMessage
+
+    @property
+    def Details(self):
+        return self._Details
+
+    @Details.setter
+    def Details(self, Details):
+        self._Details = Details
+
+
+    def _deserialize(self, params):
+        self._FinalResultDetailCode = params.get("FinalResultDetailCode")
+        self._FinalResultMessage = params.get("FinalResultMessage")
+        if params.get("Details") is not None:
+            self._Details = []
+            for item in params.get("Details"):
+                obj = IntentionActionResultDetail()
+                obj._deserialize(item)
+                self._Details.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class IntentionActionResultDetail(AbstractModel):
+    """意愿核身点头确认模式结果详细数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Video: 视频base64编码（其中包含全程提示文本和点头音频，mp4格式）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Video: str
+        :param _ScreenShot: 屏幕截图base64编码列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScreenShot: list of str
+        """
+        self._Video = None
+        self._ScreenShot = None
+
+    @property
+    def Video(self):
+        return self._Video
+
+    @Video.setter
+    def Video(self, Video):
+        self._Video = Video
+
+    @property
+    def ScreenShot(self):
+        return self._ScreenShot
+
+    @ScreenShot.setter
+    def ScreenShot(self, ScreenShot):
+        self._ScreenShot = ScreenShot
+
+
+    def _deserialize(self, params):
+        self._Video = params.get("Video")
+        self._ScreenShot = params.get("ScreenShot")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class IntentionQuestion(AbstractModel):
     """意愿核身过程中播报的问题文本、用户回答的标准文本。
 
@@ -4626,9 +4879,9 @@ class IntentionQuestion(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Question: 系统播报的问题文本，问题最大长度为150个字符。
+        :param _Question: 当选择语音问答模式时，系统自动播报的问题文本，最大长度为150个字符。
         :type Question: str
-        :param _Answers: 用户答案的标准文本列表，用于识别用户回答的语音与标准文本是否一致。列表长度最大为50，单个答案长度限制10个字符。
+        :param _Answers: 当选择语音问答模式时，用于判断用户回答是否通过的标准答案列表，传入后可自动判断用户回答文本是否在标准文本列表中。列表长度最大为50，单个答案长度限制10个字符。
         :type Answers: list of str
         """
         self._Question = None
@@ -4885,10 +5138,14 @@ class IntentionVerifyData(AbstractModel):
 
     @property
     def AsrResultSimilarity(self):
+        warnings.warn("parameter `AsrResultSimilarity` is deprecated", DeprecationWarning) 
+
         return self._AsrResultSimilarity
 
     @AsrResultSimilarity.setter
     def AsrResultSimilarity(self, AsrResultSimilarity):
+        warnings.warn("parameter `AsrResultSimilarity` is deprecated", DeprecationWarning) 
+
         self._AsrResultSimilarity = AsrResultSimilarity
 
 
@@ -6813,8 +7070,13 @@ class RuleIdConfig(AbstractModel):
         r"""
         :param _IntentionRecognition: 意愿核身过程中识别用户的回答意图，开启后除了IntentionQuestions的Answers列表中的标准回答会通过，近似意图的回答也会通过，默认不开启。
         :type IntentionRecognition: bool
+        :param _IntentionType: 意愿核身类型，默认为0：
+0：问答模式，DetectAuth接口需要传入IntentionQuestions字段；
+1：点头模式，DetectAuth接口需要传入IntentionActions字段；
+        :type IntentionType: int
         """
         self._IntentionRecognition = None
+        self._IntentionType = None
 
     @property
     def IntentionRecognition(self):
@@ -6824,9 +7086,18 @@ class RuleIdConfig(AbstractModel):
     def IntentionRecognition(self, IntentionRecognition):
         self._IntentionRecognition = IntentionRecognition
 
+    @property
+    def IntentionType(self):
+        return self._IntentionType
+
+    @IntentionType.setter
+    def IntentionType(self, IntentionType):
+        self._IntentionType = IntentionType
+
 
     def _deserialize(self, params):
         self._IntentionRecognition = params.get("IntentionRecognition")
+        self._IntentionType = params.get("IntentionType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

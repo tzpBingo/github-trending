@@ -30,6 +30,9 @@ class EssbasicClient(AbstractClient):
         """指定需要批量撤销的签署流程Id，批量撤销合同
         客户指定需要撤销的签署流程Id，最多100个，超过100不处理；
 
+        可以撤回：未全部签署完成
+         不可以撤回：已全部签署完成、已拒签、已过期、已撤回、拒绝填写、已解除等合同状态。
+
         **满足撤销条件的合同会发起异步撤销流程，不满足撤销条件的合同返回失败原因。**
 
         **合同撤销成功后，会通过合同状态为 CANCEL 的回调消息通知调用方 [具体可参考回调消息](https://qian.tencent.com/developers/scenes/partner/callback_data_types#-%E5%90%88%E5%90%8C%E7%8A%B6%E6%80%81%E9%80%9A%E7%9F%A5---flowstatuschange)**
@@ -105,11 +108,37 @@ class EssbasicClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ChannelCancelUserAutoSignEnableUrl(self, request):
+        """此接口（ChannelCancelUserAutoSignEnableUrl）用来撤销发送给个人用户的自动签开通链接，撤销后对应的个人用户开通链接失效。若个人用户已经完成开通，将无法撤销。（处方单场景专用，使用此接口请与客户经理确认）
+
+        :param request: Request instance for ChannelCancelUserAutoSignEnableUrl.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCancelUserAutoSignEnableUrlRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCancelUserAutoSignEnableUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCancelUserAutoSignEnableUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCancelUserAutoSignEnableUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ChannelCreateBatchCancelFlowUrl(self, request):
         """指定需要批量撤销的签署流程Id，获取批量撤销链接 - 不建议使用此接口，可使用ChannelBatchCancelFlows
         客户指定需要撤销的签署流程Id，最多100个，超过100不处理；
         接口调用成功返回批量撤销合同的链接，通过链接跳转到电子签小程序完成批量撤销;
-        可以撤回：未全部签署完成；不可以撤回（终态）：已全部签署完成、已拒签、已过期、已撤回。
+
+        可以撤回：未全部签署完成
+         不可以撤回：已全部签署完成、已拒签、已过期、已撤回、拒绝填写、已解除等合同状态。
+
         注意:
         能撤回合同的只能是合同的发起人或者发起企业的超管、法人
 
@@ -364,6 +393,11 @@ class EssbasicClient(AbstractClient):
         - B端企业的签署方式是静默签署
         - B端企业是非首位签署
 
+        通过一码多扫二维码发起的合同，合同涉及到的回调消息可参考文档[合同发起及签署相关回调
+        ]( https://qian.tencent.com/developers/partner/callback_types_contracts_sign)
+
+        用户通过签署二维码发起合同时，因企业额度不足导致失败 会触发签署二维码相关回调,具体参考文档[签署二维码相关回调](https://qian.tencent.com/developers/partner/callback_types_commons#%E7%AD%BE%E7%BD%B2%E4%BA%8C%E7%BB%B4%E7%A0%81%E7%9B%B8%E5%85%B3%E5%9B%9E%E8%B0%83)
+
         :param request: Request instance for ChannelCreateMultiFlowSignQRCode.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateMultiFlowSignQRCodeRequest`
         :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateMultiFlowSignQRCodeResponse`
@@ -434,6 +468,29 @@ class EssbasicClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ChannelCreatePreparedPersonalEsign(self, request):
+        """本接口（ChannelCreatePreparedPersonalEsign）用于创建导入个人印章（处方单场景专用，使用此接口请与客户经理确认）。
+
+        :param request: Request instance for ChannelCreatePreparedPersonalEsign.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreatePreparedPersonalEsignRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreatePreparedPersonalEsignResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreatePreparedPersonalEsign", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCreatePreparedPersonalEsignResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ChannelCreateReleaseFlow(self, request):
         """发起解除协议，主要应用场景为：基于一份已经签署的合同，进行解除操作。
         合同发起人必须在电子签已经进行实名。
@@ -449,6 +506,33 @@ class EssbasicClient(AbstractClient):
             body = self.call("ChannelCreateReleaseFlow", params, headers=headers)
             response = json.loads(body)
             model = models.ChannelCreateReleaseFlowResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ChannelCreateRole(self, request):
+        """此接口（ChannelCreateRole）用来创建企业自定义角色。
+
+        适用场景1：创建当前企业的自定义角色，并且创建时不进行权限的设置（PermissionGroups 参数不传），角色中的权限内容可通过接口 ChannelModifyRole 完成更新。
+
+        适用场景2：创建当前企业的自定义角色，并且创建时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 ChannelDescribeRoles 的输出。
+
+        :param request: Request instance for ChannelCreateRole.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateRoleRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateRoleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreateRole", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCreateRoleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -481,6 +565,29 @@ class EssbasicClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ChannelCreateUserAutoSignEnableUrl(self, request):
+        """企业方可以通过此接口获取个人用户开启自动签的跳转链接
+
+        :param request: Request instance for ChannelCreateUserAutoSignEnableUrl.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateUserAutoSignEnableUrlRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateUserAutoSignEnableUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreateUserAutoSignEnableUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCreateUserAutoSignEnableUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ChannelCreateUserRoles(self, request):
         """通过此接口，绑定员工角色，支持以电子签userId、客户系统userId两种方式调用。
 
@@ -495,6 +602,55 @@ class EssbasicClient(AbstractClient):
             body = self.call("ChannelCreateUserRoles", params, headers=headers)
             response = json.loads(body)
             model = models.ChannelCreateUserRolesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ChannelCreateWebThemeConfig(self, request):
+        """用来创建嵌入式页面个性化主题配置（例如是否展示电子签logo、定义主题色等），该接口配合其他所有可嵌入页面接口使用
+        创建配置对当前第三方应用全局生效，如果多次调用，会以最后一次的配置为准
+
+        :param request: Request instance for ChannelCreateWebThemeConfig.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateWebThemeConfigRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateWebThemeConfigResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreateWebThemeConfig", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCreateWebThemeConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ChannelDeleteRole(self, request):
+        """此接口（ChannelDeleteRole）用来删除企业自定义角色。
+
+        注意：系统角色不可删除。
+
+        :param request: Request instance for ChannelDeleteRole.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelDeleteRoleRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelDeleteRoleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelDeleteRole", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelDeleteRoleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -574,7 +730,7 @@ class EssbasicClient(AbstractClient):
 
 
     def ChannelDescribeFlowComponents(self, request):
-        """查询流程填写控件内容，可以根据流程Id查询该流程相关联的填写控件信息
+        """查询流程填写控件内容，可以根据流程Id查询该流程相关联的填写控件信息和填写内容。 注意：使用此接口前，需要在【企业应用管理】-【应用集成】-【第三方应用管理】中开通【下载应用内全量合同文件及内容数据】功能。
 
         :param request: Request instance for ChannelDescribeFlowComponents.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelDescribeFlowComponentsRequest`
@@ -598,7 +754,7 @@ class EssbasicClient(AbstractClient):
 
     def ChannelDescribeOrganizationSeals(self, request):
         """查询子客企业电子印章，需要操作者具有管理印章权限
-        客户指定需要获取的印章数量和偏移量，数量最多100，超过100按100处理；入参InfoType控制印章是否携带授权人信息，为1则携带，为0则返回的授权人信息为空数组。接口调用成功返回印章的信息列表还有企业印章的总数。
+        客户指定需要获取的印章数量和偏移量，数量最多100，超过100按100处理；入参InfoType控制印章是否携带授权人信息，为1则携带，为0则返回的授权人信息为空数组。接口调用成功返回印章的信息列表还有企业印章的总数，只返回启用的印章。
 
         :param request: Request instance for ChannelDescribeOrganizationSeals.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelDescribeOrganizationSealsRequest`
@@ -621,7 +777,7 @@ class EssbasicClient(AbstractClient):
 
 
     def ChannelDescribeRoles(self, request):
-        """查询角色列表，支持根据类型和状态过滤角色列表
+        """分页查询企业角色列表，法人的角色是系统保留角色，不会返回，按照角色创建时间升序排列
 
         :param request: Request instance for ChannelDescribeRoles.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelDescribeRolesRequest`
@@ -643,8 +799,55 @@ class EssbasicClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ChannelDescribeUserAutoSignStatus(self, request):
+        """企业方可以通过此接口查询个人用户自动签开启状态
+
+        :param request: Request instance for ChannelDescribeUserAutoSignStatus.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelDescribeUserAutoSignStatusRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelDescribeUserAutoSignStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelDescribeUserAutoSignStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelDescribeUserAutoSignStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ChannelDisableUserAutoSign(self, request):
+        """企业方可以通过此接口关闭个人的自动签功能
+
+        :param request: Request instance for ChannelDisableUserAutoSign.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelDisableUserAutoSignRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelDisableUserAutoSignResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelDisableUserAutoSign", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelDisableUserAutoSignResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ChannelGetTaskResultApi(self, request):
-        """通过发起转换任务接口（ChannelCreateConvertTaskApi）返回的任务Id查询转换任务状态，通过本接口确认转换任务是否完成。大文件转换所需的时间可能会比较长。
+        """查询转换任务的状态。转换任务Id通过发起转换任务接口（ChannelCreateConvertTaskApi）获取。
+        注意：大文件转换所需的时间可能会比较长。
 
         :param request: Request instance for ChannelGetTaskResultApi.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelGetTaskResultApiRequest`
@@ -657,6 +860,33 @@ class EssbasicClient(AbstractClient):
             body = self.call("ChannelGetTaskResultApi", params, headers=headers)
             response = json.loads(body)
             model = models.ChannelGetTaskResultApiResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ChannelModifyRole(self, request):
+        """此接口（ChannelModifyRole）用来更新企业自定义角色。
+
+        适用场景1：更新当前企业的自定义角色的名称或描述等其他信息，更新时不进行权限的设置（PermissionGroups 参数不传）。
+
+        适用场景2：更新当前企业的自定义角色的权限信息，更新时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 ChannelDescribeRoles 的输出。
+
+        :param request: Request instance for ChannelModifyRole.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelModifyRoleRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelModifyRoleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelModifyRole", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelModifyRoleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -690,7 +920,7 @@ class EssbasicClient(AbstractClient):
 
 
     def ChannelVerifyPdf(self, request):
-        """对流程的合同文件进行验证，判断文件是否合法。
+        """对流程的合同文件进行数字签名验证，判断文件是否被篡改。
 
         :param request: Request instance for ChannelVerifyPdf.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelVerifyPdfRequest`
@@ -737,10 +967,16 @@ class EssbasicClient(AbstractClient):
 
 
     def CreateConsoleLoginUrl(self, request):
-        """此接口（CreateConsoleLoginUrl）用于创建第三方平台子客企业控制台Web/移动登录链接。登录链接是子客控制台的唯一入口。
-        若子客企业未激活，会进入企业激活流程，首次参与激活流程的经办人会成为超管。（若企业激活过程中填写信息有误，需要重置激活流程，可以换一个经办人OpenId获取新的链接进入。）
-        若子客企业已激活，使用了新的经办人OpenId进入，则会进入经办人的实名流程。
-        若子客企业、经办人均已完成认证，则会直接进入子客Web控制台。
+        """此接口（CreateConsoleLoginUrl）用于创建第三方平台子客企业控制台Web/移动登录链接。支持web控制台、电子签小程序和H5链接。登录链接是进入子客控制台的唯一入口。
+        链接访问后，会根据企业的和员工的状态（企业根据ProxyOrganizationOpenId参数，员工根据OpenId参数判断），进入不同的流程，主要情况分类如下：
+        1. 若子客企业未激活，会进入企业激活流程，首次参与激活流程的经办人会成为超管。
+        2. 若子客企业已激活，员工未激活，则会进入经办人激活流程。
+        3. 若子客企业、经办人均已完成认证，则会直接进入子客Web控制台。
+
+        如果是企业激活流程，需要注意如下情况：
+
+        1. 若在激活过程中，更换用户OpenID重新生成链接，之前的认证会被清理。因此不要在认证过程中多人同时操作，导致认证过程互相影响。
+        2. 若您认证中发现信息有误需要重新认证，可以通过更换OpenID重新生成链接的方式，来清理掉已有的流程。
 
         :param request: Request instance for CreateConsoleLoginUrl.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.CreateConsoleLoginUrlRequest`
@@ -834,6 +1070,13 @@ class EssbasicClient(AbstractClient):
         （https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html）
         其中小程序的原始Id，请联系<对接技术人员>获取，或者查看小程序信息自助获取。
         使用CreateSignUrls，设置EndPoint为APP，得到path。
+
+        其中小程序的原始Id如下，或者查看小程序信息自助获取。
+
+        | 小程序 | AppID | 原始ID |
+        | ------------ | ------------ | ------------ |
+        | 腾讯电子签（正式版） | wxa023b292fd19d41d | gh_da88f6188665 |
+        | 腾讯电子签Demo | wx371151823f6f3edf | gh_39a5d3de69fa |
 
         :param request: Request instance for CreateSignUrls.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.CreateSignUrlsRequest`
@@ -949,7 +1192,17 @@ class EssbasicClient(AbstractClient):
 
 
     def DescribeTemplates(self, request):
-        """通过此接口（DescribeTemplates）查询该第三方平台子客企业在电子签拥有的有效模板，不包括第三方平台模板
+        """通过此接口（DescribeTemplates）查询该第三方平台子客企业在电子签拥有的有效模板，不包括第三方平台模板。
+
+        > **适用场景**
+        >
+        >  该接口常用来配合“使用模板创建签署流程”接口作为前置的接口使用。
+        >  一个模板通常会包含以下结构信息
+        >- 模板基本信息
+        >- 发起方参与信息Promoter、签署参与方 Recipients，后者会在模板发起合同时用于指定参与方
+        >- 填写控件 Components
+        >- 签署控件 SignComponents
+        >- 生成模板的文件基础信息 FileInfos
 
         :param request: Request instance for DescribeTemplates.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.DescribeTemplatesRequest`
@@ -973,7 +1226,7 @@ class EssbasicClient(AbstractClient):
 
     def DescribeUsage(self, request):
         """此接口（DescribeUsage）用于获取第三方平台所有合作企业流量消耗情况。
-         注: 此接口每日限频2次，若要扩大限制次数,请提前与客服经理或邮件至e-contract@tencent.com进行联系。
+         注: 此接口每日限频50次，若要扩大限制次数,请提前与客服经理或邮件至e-contract@tencent.com进行联系。
 
         :param request: Request instance for DescribeUsage.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.DescribeUsageRequest`
@@ -1044,11 +1297,23 @@ class EssbasicClient(AbstractClient):
 
 
     def OperateChannelTemplate(self, request):
-        """此接口（OperateChannelTemplate）用于针对第三方应用平台模板库中的模板对子客企业可见性的查询和设置，不会直接分配第三方应用平台模板给子客企业。
-        1、OperateType=select时：
-        查询第三方应用平台模板库
-        2、OperateType=update或者delete时：
-        对子客企业进行模板库中模板可见性的修改、删除操作。
+        """此接口（OperateChannelTemplate）用于针对第三方应用平台模板库中的模板对子客企业可见性的查询和设置。
+
+        > **使用场景**
+        >
+        >  1：查询 OperateType=SELECT
+        > - 查询第三方应用平台模板库的可见性以及授权的子客列表。
+        >
+        >  2：修改部分子客授权 OperateType=UPDATE
+        > - 对子客企业进行模板库中模板可见性的进行修改操作。
+        >- 当模板未发布时，可以修改可见性AuthTag（part/all），当模板发布后，不可做此修改
+        > - 若模板已发布且可见性AuthTag是part，可以通过ProxyOrganizationOpenIds增加子客的授权范围。如果是自动领取的模板，增加授权范围后会自动下发。
+        >
+        >  3：取消部分子客授权 OperateType=DELETE
+        > - 对子客企业进行模板库中模板可见性的进行删除操作。
+        > - 主要对于手动领取的模板，去除授权后子客在模板库中看不到，就无法再领取了。但是已经领取过成为自有模板的不会同步删除。
+        > - 对于自动领取的模板，由于已经下发，更改授权不会影响。
+        > - 如果要同步删除子客自有模板库中的模板，请使用OperateType=UPDATE+Available参数处理。
 
         :param request: Request instance for OperateChannelTemplate.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.OperateChannelTemplateRequest`
@@ -1096,7 +1361,9 @@ class EssbasicClient(AbstractClient):
 
 
     def SyncProxyOrganization(self, request):
-        """此接口（SyncProxyOrganization）用于同步第三方平台子客企业信息，主要是子客企业的营业执照，便于子客企业开通过程中不用手动上传。若有需要调用此接口，需要在创建控制链接CreateConsoleLoginUrl之后即刻进行调用。
+        """此接口（SyncProxyOrganization）用于同步第三方平台子客企业信息，包括企业名称，企业营业执照，企业统一社会信用代码和法人姓名等，便于子客企业在企业激活过程中无需手动上传营业执照或补充企业信息。注意：
+        1. 需要在子客企业激活前调用该接口，如果您的企业已经提交企业信息或者企业已经激活，同步的企业信息将不会生效。
+        2. 如果您同时传递了营业执照信息和企业名称等信息，在认证过程中将以营业执照中的企业信息为准，请注意企业信息需要和营业执照信息对应。
 
         :param request: Request instance for SyncProxyOrganization.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.SyncProxyOrganizationRequest`

@@ -2241,7 +2241,6 @@ head：自定义请求头
 安圭拉：AI
 梵蒂冈：VA
 斯洛伐克：SK
-俄罗斯：RU
 英国：GB
 捷克共和国：CZ
 乌克兰：UA
@@ -4192,8 +4191,10 @@ class CacheConfig(AbstractModel):
         :param _HeuristicCacheTimeSwitch: 启发式自定义时间缓存配置开关，取值有：
 on：开启
 off：关闭
+注意：此字段可能返回 null，表示取不到有效值。
         :type HeuristicCacheTimeSwitch: str
         :param _HeuristicCacheTime: 单位 秒.
+注意：此字段可能返回 null，表示取不到有效值。
         :type HeuristicCacheTime: int
         """
         self._HeuristicCacheTimeSwitch = None
@@ -10607,7 +10608,7 @@ TaskId 和起始时间必须指定一项
         :type Offset: int
         :param _Limit: 分页查询限制数目，默认为 20
         :type Limit: int
-        :param _Area: 指定地区查询预热纪录
+        :param _Area: 指定地区查询预热记录
 mainland：境内
 overseas：境外
 global：全球
@@ -15628,8 +15629,10 @@ class HeuristicCache(AbstractModel):
         :param _Switch: 启发式缓存配置开关，取值有：
 on：开启
 off：关闭
+注意：此字段可能返回 null，表示取不到有效值。
         :type Switch: str
         :param _CacheConfig: 自定义启发式缓存时间配置
+注意：此字段可能返回 null，表示取不到有效值。
         :type CacheConfig: :class:`tencentcloud.cdn.v20180606.models.CacheConfig`
         """
         self._Switch = None
@@ -18384,14 +18387,12 @@ class ListTopDataRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 查询起始日期：yyyy-MM-dd HH:mm:ss
-仅支持按天粒度的数据查询，取入参中的天信息作为起始日期
-返回大于等于起始日期当天 00:00:00 点产生的数据，如 StartTime为2018-09-04 10:40:00，返回数据的起始时间为2018-09-04 00:00:00
+        :param _StartTime: 查询起始时间：yyyy-MM-dd HH:mm:ss
+仅支持按分钟粒度的数据查询，按入参抹去秒位作为起始时间，如 StartTime为2018-09-04 10:40:23，返回数据的起始时间为2018-09-04 10:40:00
 仅支持 90 天内数据查询
         :type StartTime: str
-        :param _EndTime: 查询结束日期：yyyy-MM-dd HH:mm:ss
-仅支持按天粒度的数据查询，取入参中的天信息作为结束日期
-返回小于等于结束日期当天 23:59:59 产生的数据，如EndTime为2018-09-05 22:40:00，返回数据的结束时间为2018-09-05 23:59:59
+        :param _EndTime: 查询结束时间：yyyy-MM-dd HH:mm:ss
+仅支持按天粒度的数据查询，取入参中的天信息作为结束日期 返回小于等于结束日期当天 23:59:59 产生的数据，如EndTime为2018-09-05 22:40:00，返回数据的结束时间为2018-09-05 23:59:59
 EndTime 需要大于等于 StartTime
         :type EndTime: str
         :param _Metric: 排序对象，支持以下几种形式：

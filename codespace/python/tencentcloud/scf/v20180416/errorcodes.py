@@ -182,6 +182,9 @@ FAILEDOPERATION_UPDATEFUNCTIONCONFIGURATION = 'FailedOperation.UpdateFunctionCon
 # 更新状态操作失败。
 FAILEDOPERATION_UPDATESTATUS = 'FailedOperation.UpdateStatus'
 
+# 更新触发器出错。
+FAILEDOPERATION_UPDATETRIGGER = 'FailedOperation.UpdateTrigger'
+
 # 与原状态一致，无需更改。
 FAILEDOPERATION_UPDATETRIGGERSTATUS = 'FailedOperation.UpdateTriggerStatus'
 
@@ -578,6 +581,9 @@ INVALIDPARAMETERVALUE_TRIGGERPROVISIONEDCONCURRENCYNUM = 'InvalidParameterValue.
 # Type传入错误。
 INVALIDPARAMETERVALUE_TYPE = 'InvalidParameterValue.Type'
 
+# VPC不正确。
+INVALIDPARAMETERVALUE_VPC = 'InvalidParameterValue.Vpc'
+
 # 开启cfs配置的同时必须开启vpc。
 INVALIDPARAMETERVALUE_VPCNOTSETWHENOPENCFS = 'InvalidParameterValue.VpcNotSetWhenOpenCfs'
 
@@ -821,6 +827,9 @@ RESOURCEUNAVAILABLE_INSUFFICIENTBALANCE = 'ResourceUnavailable.InsufficientBalan
 # Namespace不可用。
 RESOURCEUNAVAILABLE_NAMESPACE = 'ResourceUnavailable.Namespace'
 
+# 服务已冻结。
+RESOURCEUNAVAILABLE_SERVICESUSPENDED = 'ResourceUnavailable.ServiceSuspended'
+
 # 未授权操作。
 UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
 
@@ -869,6 +878,9 @@ UNSUPPORTEDOPERATION_ASYNCRUNENABLE = 'UnsupportedOperation.AsyncRunEnable'
 # Cdn不支持。
 UNSUPPORTEDOPERATION_CDN = 'UnsupportedOperation.Cdn'
 
+# 该函数无法复制。
+UNSUPPORTEDOPERATION_COPYFUNCTION = 'UnsupportedOperation.CopyFunction'
+
 # Cos操作不支持。
 UNSUPPORTEDOPERATION_COS = 'UnsupportedOperation.Cos'
 
@@ -886,6 +898,9 @@ UNSUPPORTEDOPERATION_REGION = 'UnsupportedOperation.Region'
 
 # Trigger操作不支持。
 UNSUPPORTEDOPERATION_TRIGGER = 'UnsupportedOperation.Trigger'
+
+# 更新函数代码失败。
+UNSUPPORTEDOPERATION_UPDATEFUNCTIONCODE = 'UnsupportedOperation.UpdateFunctionCode'
 
 # 指定的配置暂不支持，请修正后再试。
 UNSUPPORTEDOPERATION_UPDATEFUNCTIONEVENTINVOKECONFIG = 'UnsupportedOperation.UpdateFunctionEventInvokeConfig'

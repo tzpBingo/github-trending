@@ -417,6 +417,29 @@ class DbbrainClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeAlarmTemplate(self, request):
+        """通知模板查询
+
+        :param request: Request instance for DescribeAlarmTemplate.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.DescribeAlarmTemplateRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.DescribeAlarmTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAlarmTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAlarmTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeAllUserContact(self, request):
         """获取邮件发送中联系人的相关信息。
 
@@ -1153,6 +1176,29 @@ class DbbrainClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyAlarmPolicy(self, request):
+        """修改告警策略
+
+        :param request: Request instance for ModifyAlarmPolicy.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.ModifyAlarmPolicyRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.ModifyAlarmPolicyResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyAlarmPolicy", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyAlarmPolicyResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyAuditService(self, request):
         """修改审计配置相关信息，如高频存储时长等
 
@@ -1236,6 +1282,52 @@ class DbbrainClient(AbstractClient):
             body = self.call("OpenAuditService", params, headers=headers)
             response = json.loads(body)
             model = models.OpenAuditServiceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def UpdateAgentSwitch(self, request):
+        """更新agent状态（停止或重连Agent）
+
+        :param request: Request instance for UpdateAgentSwitch.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.UpdateAgentSwitchRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.UpdateAgentSwitchResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UpdateAgentSwitch", params, headers=headers)
+            response = json.loads(body)
+            model = models.UpdateAgentSwitchResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def UpdateMonitorSwitch(self, request):
+        """更新Agent实例状态（停止或重连实例）
+
+        :param request: Request instance for UpdateMonitorSwitch.
+        :type request: :class:`tencentcloud.dbbrain.v20210527.models.UpdateMonitorSwitchRequest`
+        :rtype: :class:`tencentcloud.dbbrain.v20210527.models.UpdateMonitorSwitchResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("UpdateMonitorSwitch", params, headers=headers)
+            response = json.loads(body)
+            model = models.UpdateMonitorSwitchResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

@@ -502,6 +502,7 @@ class ApiAppInfo(AbstractModel):
         :param _ApiAppId: 应用ID
         :type ApiAppId: str
         :param _ApiAppSecret: 应用SECRET
+注意:此字段可能返回null，表示取不到有效值
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApiAppSecret: str
         :param _ApiAppDesc: 应用描述
@@ -514,6 +515,7 @@ class ApiAppInfo(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type ModifiedTime: str
         :param _ApiAppKey: 应用KEY
+注意:此字段可能返回null，表示取不到有效值
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApiAppKey: str
         """
@@ -4082,7 +4084,7 @@ class CreateApiRequest(AbstractModel):
         r"""
         :param _ServiceId: API 所在的服务唯一 ID。
         :type ServiceId: str
-        :param _ServiceType: API 的后端服务类型。支持HTTP、MOCK、TSF、SCF、WEBSOCKET、TARGET（内测）。
+        :param _ServiceType: API 的后端服务类型。支持HTTP、MOCK、TSF、SCF、EB、TARGET、VPC、UPSTREAM、GRPC、COS、WEBSOCKET。
         :type ServiceType: str
         :param _ServiceTimeout: API 的后端服务超时时间，单位是秒。
         :type ServiceTimeout: int
@@ -5306,7 +5308,7 @@ class CreateServiceRequest(AbstractModel):
         :type Tags: list of Tag
         :param _InstanceId: 独享实例id
         :type InstanceId: str
-        :param _UniqVpcId: vpc属性
+        :param _UniqVpcId: vpc属性，选择VPC后不可修改，为服务选择VPC后，可对接该VPC下的后端资源
         :type UniqVpcId: str
         """
         self._ServiceName = None
@@ -5556,7 +5558,7 @@ class CreateUpstreamRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Scheme: 后端协议，取值范围：HTTP, HTTPS
+        :param _Scheme: 后端协议，取值范围：HTTP, HTTPS,gRPC，gRPCs
         :type Scheme: str
         :param _Algorithm: 负载均衡算法，取值范围：ROUND-ROBIN
         :type Algorithm: str
@@ -11038,6 +11040,9 @@ class DescribeServiceResponse(AbstractModel):
         :param _SpecialUse: 特殊用途, NULL和DEFAULT表示无特殊用途，其他用途如HTTP_DNS等
 注意：此字段可能返回 null，表示取不到有效值。
         :type SpecialUse: str
+        :param _UniqVpcId: vpc属性，存量可能为空字符串
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UniqVpcId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -11066,6 +11071,7 @@ class DescribeServiceResponse(AbstractModel):
         self._SetType = None
         self._DeploymentType = None
         self._SpecialUse = None
+        self._UniqVpcId = None
         self._RequestId = None
 
     @property
@@ -11269,6 +11275,14 @@ class DescribeServiceResponse(AbstractModel):
         self._SpecialUse = SpecialUse
 
     @property
+    def UniqVpcId(self):
+        return self._UniqVpcId
+
+    @UniqVpcId.setter
+    def UniqVpcId(self, UniqVpcId):
+        self._UniqVpcId = UniqVpcId
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -11318,6 +11332,7 @@ class DescribeServiceResponse(AbstractModel):
         self._SetType = params.get("SetType")
         self._DeploymentType = params.get("DeploymentType")
         self._SpecialUse = params.get("SpecialUse")
+        self._UniqVpcId = params.get("UniqVpcId")
         self._RequestId = params.get("RequestId")
 
 
@@ -12572,51 +12587,6 @@ class DisableApiKeyResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
-class DocumentSDK(AbstractModel):
-    """api文档下载
-
-    """
-
-    def __init__(self):
-        r"""
-        :param _DocumentURL: 生成的 document 会存放到 COS 中，此出参返回产生文件的下载链接。
-        :type DocumentURL: str
-        :param _SdkURL: 生成的 SDK 会存放到 COS 中，此出参返回产生 SDK 文件的下载链接。
-        :type SdkURL: str
-        """
-        self._DocumentURL = None
-        self._SdkURL = None
-
-    @property
-    def DocumentURL(self):
-        return self._DocumentURL
-
-    @DocumentURL.setter
-    def DocumentURL(self, DocumentURL):
-        self._DocumentURL = DocumentURL
-
-    @property
-    def SdkURL(self):
-        return self._SdkURL
-
-    @SdkURL.setter
-    def SdkURL(self, SdkURL):
-        self._SdkURL = SdkURL
-
-
-    def _deserialize(self, params):
-        self._DocumentURL = params.get("DocumentURL")
-        self._SdkURL = params.get("SdkURL")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            property_name = name[1:]
-            if property_name in memeber_set:
-                memeber_set.remove(property_name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
 class DomainSetList(AbstractModel):
     """服务自定义域名列表
 
@@ -13101,102 +13071,6 @@ class Filter(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
-
-
-class GenerateApiDocumentRequest(AbstractModel):
-    """GenerateApiDocument请求参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param _ServiceId: 待创建文档的服务唯一 ID。
-        :type ServiceId: str
-        :param _GenEnvironment: 待创建 SDK 的服务所在环境。
-        :type GenEnvironment: str
-        :param _GenLanguage: 待创建 SDK 的语言。当前只支持 Python 和 JavaScript。
-        :type GenLanguage: str
-        """
-        self._ServiceId = None
-        self._GenEnvironment = None
-        self._GenLanguage = None
-
-    @property
-    def ServiceId(self):
-        return self._ServiceId
-
-    @ServiceId.setter
-    def ServiceId(self, ServiceId):
-        self._ServiceId = ServiceId
-
-    @property
-    def GenEnvironment(self):
-        return self._GenEnvironment
-
-    @GenEnvironment.setter
-    def GenEnvironment(self, GenEnvironment):
-        self._GenEnvironment = GenEnvironment
-
-    @property
-    def GenLanguage(self):
-        return self._GenLanguage
-
-    @GenLanguage.setter
-    def GenLanguage(self, GenLanguage):
-        self._GenLanguage = GenLanguage
-
-
-    def _deserialize(self, params):
-        self._ServiceId = params.get("ServiceId")
-        self._GenEnvironment = params.get("GenEnvironment")
-        self._GenLanguage = params.get("GenLanguage")
-        memeber_set = set(params.keys())
-        for name, value in vars(self).items():
-            property_name = name[1:]
-            if property_name in memeber_set:
-                memeber_set.remove(property_name)
-        if len(memeber_set) > 0:
-            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
-        
-
-
-class GenerateApiDocumentResponse(AbstractModel):
-    """GenerateApiDocument返回参数结构体
-
-    """
-
-    def __init__(self):
-        r"""
-        :param _Result: api文档&sdk链接。
-        :type Result: :class:`tencentcloud.apigateway.v20180808.models.DocumentSDK`
-        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
-        :type RequestId: str
-        """
-        self._Result = None
-        self._RequestId = None
-
-    @property
-    def Result(self):
-        return self._Result
-
-    @Result.setter
-    def Result(self, Result):
-        self._Result = Result
-
-    @property
-    def RequestId(self):
-        return self._RequestId
-
-    @RequestId.setter
-    def RequestId(self, RequestId):
-        self._RequestId = RequestId
-
-
-    def _deserialize(self, params):
-        if params.get("Result") is not None:
-            self._Result = DocumentSDK()
-            self._Result._deserialize(params.get("Result"))
-        self._RequestId = params.get("RequestId")
 
 
 class HealthCheckConf(AbstractModel):
@@ -14007,6 +13881,18 @@ class InstanceInfo(AbstractModel):
         :type DealName: str
         :param _ResourceId: 资源ID同唯一id
         :type ResourceId: str
+        :param _OuterIpList: 公网IP列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OuterIpList: list of str
+        :param _InnerIpList: 内网IP列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InnerIpList: list of str
+        :param _InstanceChargePrepaid: 专享实例计费信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InstanceChargePrepaid: :class:`tencentcloud.apigateway.v20180808.models.InstanceChargePrepaid`
+        :param _UniqVpcId: 所属vpc
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UniqVpcId: str
         """
         self._InstanceId = None
         self._InstanceName = None
@@ -14017,6 +13903,10 @@ class InstanceInfo(AbstractModel):
         self._CreatedTime = None
         self._DealName = None
         self._ResourceId = None
+        self._OuterIpList = None
+        self._InnerIpList = None
+        self._InstanceChargePrepaid = None
+        self._UniqVpcId = None
 
     @property
     def InstanceId(self):
@@ -14090,6 +13980,38 @@ class InstanceInfo(AbstractModel):
     def ResourceId(self, ResourceId):
         self._ResourceId = ResourceId
 
+    @property
+    def OuterIpList(self):
+        return self._OuterIpList
+
+    @OuterIpList.setter
+    def OuterIpList(self, OuterIpList):
+        self._OuterIpList = OuterIpList
+
+    @property
+    def InnerIpList(self):
+        return self._InnerIpList
+
+    @InnerIpList.setter
+    def InnerIpList(self, InnerIpList):
+        self._InnerIpList = InnerIpList
+
+    @property
+    def InstanceChargePrepaid(self):
+        return self._InstanceChargePrepaid
+
+    @InstanceChargePrepaid.setter
+    def InstanceChargePrepaid(self, InstanceChargePrepaid):
+        self._InstanceChargePrepaid = InstanceChargePrepaid
+
+    @property
+    def UniqVpcId(self):
+        return self._UniqVpcId
+
+    @UniqVpcId.setter
+    def UniqVpcId(self, UniqVpcId):
+        self._UniqVpcId = UniqVpcId
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -14101,6 +14023,12 @@ class InstanceInfo(AbstractModel):
         self._CreatedTime = params.get("CreatedTime")
         self._DealName = params.get("DealName")
         self._ResourceId = params.get("ResourceId")
+        self._OuterIpList = params.get("OuterIpList")
+        self._InnerIpList = params.get("InnerIpList")
+        if params.get("InstanceChargePrepaid") is not None:
+            self._InstanceChargePrepaid = InstanceChargePrepaid()
+            self._InstanceChargePrepaid._deserialize(params.get("InstanceChargePrepaid"))
+        self._UniqVpcId = params.get("UniqVpcId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -16126,12 +16054,15 @@ class ModifyServiceRequest(AbstractModel):
         :type Protocol: str
         :param _NetTypes: 网络类型列表，用于指定支持的访问类型，INNER为内网访问，OUTER为外网访问。默认为OUTER。
         :type NetTypes: list of str
+        :param _UniqVpcId: vpc属性，选择VPC后不可修改。为服务选择VPC后，可对接该VPC下的后端资源
+        :type UniqVpcId: str
         """
         self._ServiceId = None
         self._ServiceName = None
         self._ServiceDesc = None
         self._Protocol = None
         self._NetTypes = None
+        self._UniqVpcId = None
 
     @property
     def ServiceId(self):
@@ -16173,6 +16104,14 @@ class ModifyServiceRequest(AbstractModel):
     def NetTypes(self, NetTypes):
         self._NetTypes = NetTypes
 
+    @property
+    def UniqVpcId(self):
+        return self._UniqVpcId
+
+    @UniqVpcId.setter
+    def UniqVpcId(self, UniqVpcId):
+        self._UniqVpcId = UniqVpcId
+
 
     def _deserialize(self, params):
         self._ServiceId = params.get("ServiceId")
@@ -16180,6 +16119,7 @@ class ModifyServiceRequest(AbstractModel):
         self._ServiceDesc = params.get("ServiceDesc")
         self._Protocol = params.get("Protocol")
         self._NetTypes = params.get("NetTypes")
+        self._UniqVpcId = params.get("UniqVpcId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

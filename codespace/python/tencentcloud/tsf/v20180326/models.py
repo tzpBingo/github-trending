@@ -4200,6 +4200,9 @@ class ConfigRelease(AbstractModel):
         :param _ApplicationId: 应用ID
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApplicationId: str
+        :param _ConfigCenters: 配置中心发布情况
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigCenters: list of TsfConfigCenter
         """
         self._ConfigReleaseId = None
         self._ConfigId = None
@@ -4214,6 +4217,7 @@ class ConfigRelease(AbstractModel):
         self._ClusterName = None
         self._ReleaseDesc = None
         self._ApplicationId = None
+        self._ConfigCenters = None
 
     @property
     def ConfigReleaseId(self):
@@ -4319,6 +4323,14 @@ class ConfigRelease(AbstractModel):
     def ApplicationId(self, ApplicationId):
         self._ApplicationId = ApplicationId
 
+    @property
+    def ConfigCenters(self):
+        return self._ConfigCenters
+
+    @ConfigCenters.setter
+    def ConfigCenters(self, ConfigCenters):
+        self._ConfigCenters = ConfigCenters
+
 
     def _deserialize(self, params):
         self._ConfigReleaseId = params.get("ConfigReleaseId")
@@ -4334,6 +4346,12 @@ class ConfigRelease(AbstractModel):
         self._ClusterName = params.get("ClusterName")
         self._ReleaseDesc = params.get("ReleaseDesc")
         self._ApplicationId = params.get("ApplicationId")
+        if params.get("ConfigCenters") is not None:
+            self._ConfigCenters = []
+            for item in params.get("ConfigCenters"):
+                obj = TsfConfigCenter()
+                obj._deserialize(item)
+                self._ConfigCenters.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4402,6 +4420,12 @@ class ConfigReleaseLog(AbstractModel):
         :param _RollbackFlag: 回滚标识
 注意：此字段可能返回 null，表示取不到有效值。
         :type RollbackFlag: bool
+        :param _ReleasedConfigCenter: 发布成功的配置中心
+ ALL/EXCLUSIVE/SHARE/NONE
+
+全部发布成功，独占发布成功，共享发布成功，全部发布失败
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReleasedConfigCenter: str
         """
         self._ConfigReleaseLogId = None
         self._ConfigId = None
@@ -4420,6 +4444,7 @@ class ConfigReleaseLog(AbstractModel):
         self._LastConfigName = None
         self._LastConfigVersion = None
         self._RollbackFlag = None
+        self._ReleasedConfigCenter = None
 
     @property
     def ConfigReleaseLogId(self):
@@ -4557,6 +4582,14 @@ class ConfigReleaseLog(AbstractModel):
     def RollbackFlag(self, RollbackFlag):
         self._RollbackFlag = RollbackFlag
 
+    @property
+    def ReleasedConfigCenter(self):
+        return self._ReleasedConfigCenter
+
+    @ReleasedConfigCenter.setter
+    def ReleasedConfigCenter(self, ReleasedConfigCenter):
+        self._ReleasedConfigCenter = ReleasedConfigCenter
+
 
     def _deserialize(self, params):
         self._ConfigReleaseLogId = params.get("ConfigReleaseLogId")
@@ -4576,6 +4609,7 @@ class ConfigReleaseLog(AbstractModel):
         self._LastConfigName = params.get("LastConfigName")
         self._LastConfigVersion = params.get("LastConfigVersion")
         self._RollbackFlag = params.get("RollbackFlag")
+        self._ReleasedConfigCenter = params.get("ReleasedConfigCenter")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10986,7 +11020,7 @@ class CreateUnitRuleWithDetailRespResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Result: 单元化规则 ID
+        :param _Result: 单元化规则信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type Result: :class:`tencentcloud.tsf.v20180326.models.UnitRule`
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -13782,7 +13816,7 @@ class DeployGroupRequest(AbstractModel):
         :type DeployBetaEnable: bool
         :param _DeployBatch: 滚动发布每个批次参与的实例比率
         :type DeployBatch: list of float
-        :param _DeployExeMode: 滚动发布的执行方式
+        :param _DeployExeMode: 滚动发布的执行方式，auto表示自动， manual表示手动
         :type DeployExeMode: str
         :param _DeployWaitTime: 滚动发布每个批次的时间间隔
         :type DeployWaitTime: int
@@ -13794,12 +13828,15 @@ class DeployGroupRequest(AbstractModel):
         :type IncrementalDeployment: bool
         :param _JdkName: JDK名称: konaJDK或openJDK
         :type JdkName: str
-        :param _JdkVersion: JDK版本: 8或11 (openJDK只支持8)
+        :param _JdkVersion: konaJDK版本：8、11和17
+openJDK版本：8、17
         :type JdkVersion: str
         :param _AgentProfileList: 部署agent的类型、版本
         :type AgentProfileList: list of AgentProfile
         :param _WarmupSetting: 预热参数配置
         :type WarmupSetting: :class:`tencentcloud.tsf.v20180326.models.WarmupSetting`
+        :param _EnableBatchHealthCheck: 开启分批健康检查
+        :type EnableBatchHealthCheck: bool
         """
         self._GroupId = None
         self._PkgId = None
@@ -13820,6 +13857,7 @@ class DeployGroupRequest(AbstractModel):
         self._JdkVersion = None
         self._AgentProfileList = None
         self._WarmupSetting = None
+        self._EnableBatchHealthCheck = None
 
     @property
     def GroupId(self):
@@ -13973,6 +14011,14 @@ class DeployGroupRequest(AbstractModel):
     def WarmupSetting(self, WarmupSetting):
         self._WarmupSetting = WarmupSetting
 
+    @property
+    def EnableBatchHealthCheck(self):
+        return self._EnableBatchHealthCheck
+
+    @EnableBatchHealthCheck.setter
+    def EnableBatchHealthCheck(self, EnableBatchHealthCheck):
+        self._EnableBatchHealthCheck = EnableBatchHealthCheck
+
 
     def _deserialize(self, params):
         self._GroupId = params.get("GroupId")
@@ -14003,6 +14049,7 @@ class DeployGroupRequest(AbstractModel):
         if params.get("WarmupSetting") is not None:
             self._WarmupSetting = WarmupSetting()
             self._WarmupSetting._deserialize(params.get("WarmupSetting"))
+        self._EnableBatchHealthCheck = params.get("EnableBatchHealthCheck")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -16864,7 +16911,7 @@ class DescribeCreateGatewayApiStatusRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _GroupId: 请求方法
+        :param _GroupId: 所属分组ID
         :type GroupId: str
         :param _MicroserviceId: 微服务ID
         :type MicroserviceId: str
@@ -17096,10 +17143,16 @@ class DescribeDeliveryConfigsRequest(AbstractModel):
         :type Offset: int
         :param _Limit: 搜索条数
         :type Limit: int
+        :param _ProgramIdList: 数据集idList
+        :type ProgramIdList: list of str
+        :param _ConfigIdList: ConfigIdList
+        :type ConfigIdList: list of str
         """
         self._SearchWord = None
         self._Offset = None
         self._Limit = None
+        self._ProgramIdList = None
+        self._ConfigIdList = None
 
     @property
     def SearchWord(self):
@@ -17125,11 +17178,29 @@ class DescribeDeliveryConfigsRequest(AbstractModel):
     def Limit(self, Limit):
         self._Limit = Limit
 
+    @property
+    def ProgramIdList(self):
+        return self._ProgramIdList
+
+    @ProgramIdList.setter
+    def ProgramIdList(self, ProgramIdList):
+        self._ProgramIdList = ProgramIdList
+
+    @property
+    def ConfigIdList(self):
+        return self._ConfigIdList
+
+    @ConfigIdList.setter
+    def ConfigIdList(self, ConfigIdList):
+        self._ConfigIdList = ConfigIdList
+
 
     def _deserialize(self, params):
         self._SearchWord = params.get("SearchWord")
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._ProgramIdList = params.get("ProgramIdList")
+        self._ConfigIdList = params.get("ConfigIdList")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -17836,12 +17907,15 @@ class DescribeGatewayApisRequest(AbstractModel):
         :type SearchWord: str
         :param _GatewayDeployGroupId: 部署组ID
         :type GatewayDeployGroupId: str
+        :param _ReleaseStatus: 发布状态, drafted(未发布)/released(已发布)/releasing(发布中)/failed(发布失败)
+        :type ReleaseStatus: str
         """
         self._GroupId = None
         self._Offset = None
         self._Limit = None
         self._SearchWord = None
         self._GatewayDeployGroupId = None
+        self._ReleaseStatus = None
 
     @property
     def GroupId(self):
@@ -17883,6 +17957,14 @@ class DescribeGatewayApisRequest(AbstractModel):
     def GatewayDeployGroupId(self, GatewayDeployGroupId):
         self._GatewayDeployGroupId = GatewayDeployGroupId
 
+    @property
+    def ReleaseStatus(self):
+        return self._ReleaseStatus
+
+    @ReleaseStatus.setter
+    def ReleaseStatus(self, ReleaseStatus):
+        self._ReleaseStatus = ReleaseStatus
+
 
     def _deserialize(self, params):
         self._GroupId = params.get("GroupId")
@@ -17890,6 +17972,7 @@ class DescribeGatewayApisRequest(AbstractModel):
         self._Limit = params.get("Limit")
         self._SearchWord = params.get("SearchWord")
         self._GatewayDeployGroupId = params.get("GatewayDeployGroupId")
+        self._ReleaseStatus = params.get("ReleaseStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -18974,21 +19057,21 @@ class DescribeGroupsWithPluginRequest(AbstractModel):
         r"""
         :param _PluginId: 插件ID
         :type PluginId: str
-        :param _Bound: 绑定/未绑定: true / false
-        :type Bound: bool
         :param _Offset: 翻页偏移量
         :type Offset: int
         :param _Limit: 每页记录数量
         :type Limit: int
+        :param _Bound: 绑定/未绑定: true / false
+        :type Bound: bool
         :param _SearchWord: 搜索关键字
         :type SearchWord: str
         :param _GatewayInstanceId: 网关实体ID
         :type GatewayInstanceId: str
         """
         self._PluginId = None
-        self._Bound = None
         self._Offset = None
         self._Limit = None
+        self._Bound = None
         self._SearchWord = None
         self._GatewayInstanceId = None
 
@@ -18999,14 +19082,6 @@ class DescribeGroupsWithPluginRequest(AbstractModel):
     @PluginId.setter
     def PluginId(self, PluginId):
         self._PluginId = PluginId
-
-    @property
-    def Bound(self):
-        return self._Bound
-
-    @Bound.setter
-    def Bound(self, Bound):
-        self._Bound = Bound
 
     @property
     def Offset(self):
@@ -19023,6 +19098,14 @@ class DescribeGroupsWithPluginRequest(AbstractModel):
     @Limit.setter
     def Limit(self, Limit):
         self._Limit = Limit
+
+    @property
+    def Bound(self):
+        return self._Bound
+
+    @Bound.setter
+    def Bound(self, Bound):
+        self._Bound = Bound
 
     @property
     def SearchWord(self):
@@ -19043,9 +19126,9 @@ class DescribeGroupsWithPluginRequest(AbstractModel):
 
     def _deserialize(self, params):
         self._PluginId = params.get("PluginId")
-        self._Bound = params.get("Bound")
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._Bound = params.get("Bound")
         self._SearchWord = params.get("SearchWord")
         self._GatewayInstanceId = params.get("GatewayInstanceId")
         memeber_set = set(params.keys())
@@ -21539,21 +21622,21 @@ class DescribePluginInstancesRequest(AbstractModel):
         r"""
         :param _ScopeValue: 分组或者API的ID
         :type ScopeValue: str
-        :param _Bound: 绑定: true; 未绑定: false
-        :type Bound: bool
         :param _Offset: 翻页偏移量
         :type Offset: int
         :param _Limit: 每页展示的条数
         :type Limit: int
+        :param _Bound: 绑定: true; 未绑定: false
+        :type Bound: bool
         :param _Type: 插件类型
         :type Type: str
         :param _SearchWord: 搜索关键字
         :type SearchWord: str
         """
         self._ScopeValue = None
-        self._Bound = None
         self._Offset = None
         self._Limit = None
+        self._Bound = None
         self._Type = None
         self._SearchWord = None
 
@@ -21564,14 +21647,6 @@ class DescribePluginInstancesRequest(AbstractModel):
     @ScopeValue.setter
     def ScopeValue(self, ScopeValue):
         self._ScopeValue = ScopeValue
-
-    @property
-    def Bound(self):
-        return self._Bound
-
-    @Bound.setter
-    def Bound(self, Bound):
-        self._Bound = Bound
 
     @property
     def Offset(self):
@@ -21588,6 +21663,14 @@ class DescribePluginInstancesRequest(AbstractModel):
     @Limit.setter
     def Limit(self, Limit):
         self._Limit = Limit
+
+    @property
+    def Bound(self):
+        return self._Bound
+
+    @Bound.setter
+    def Bound(self, Bound):
+        self._Bound = Bound
 
     @property
     def Type(self):
@@ -21608,9 +21691,9 @@ class DescribePluginInstancesRequest(AbstractModel):
 
     def _deserialize(self, params):
         self._ScopeValue = params.get("ScopeValue")
-        self._Bound = params.get("Bound")
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
+        self._Bound = params.get("Bound")
         self._Type = params.get("Type")
         self._SearchWord = params.get("SearchWord")
         memeber_set = set(params.keys())
@@ -25755,7 +25838,7 @@ class ExecuteTaskRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TaskId: 任务 ID。
+        :param _TaskId: 任务 ID
         :type TaskId: str
         """
         self._TaskId = None
@@ -26859,14 +26942,20 @@ class GatewayPluginBoundParam(AbstractModel):
         r"""
         :param _PluginId: 插件id
         :type PluginId: str
-        :param _ScopeType: 插件绑定到的对象类型:group/api
+        :param _ScopeType: 插件绑定到的对象类型:group/api/all
         :type ScopeType: str
         :param _ScopeValue: 插件绑定到的对象主键值，例如分组的ID/API的ID
         :type ScopeValue: str
+        :param _MicroserviceId: 创建关联的服务id，关联envoy网关时使用
+        :type MicroserviceId: str
+        :param _GatewayInstanceId: 网关id
+        :type GatewayInstanceId: str
         """
         self._PluginId = None
         self._ScopeType = None
         self._ScopeValue = None
+        self._MicroserviceId = None
+        self._GatewayInstanceId = None
 
     @property
     def PluginId(self):
@@ -26892,11 +26981,29 @@ class GatewayPluginBoundParam(AbstractModel):
     def ScopeValue(self, ScopeValue):
         self._ScopeValue = ScopeValue
 
+    @property
+    def MicroserviceId(self):
+        return self._MicroserviceId
+
+    @MicroserviceId.setter
+    def MicroserviceId(self, MicroserviceId):
+        self._MicroserviceId = MicroserviceId
+
+    @property
+    def GatewayInstanceId(self):
+        return self._GatewayInstanceId
+
+    @GatewayInstanceId.setter
+    def GatewayInstanceId(self, GatewayInstanceId):
+        self._GatewayInstanceId = GatewayInstanceId
+
 
     def _deserialize(self, params):
         self._PluginId = params.get("PluginId")
         self._ScopeType = params.get("ScopeType")
         self._ScopeValue = params.get("ScopeValue")
+        self._MicroserviceId = params.get("MicroserviceId")
+        self._GatewayInstanceId = params.get("GatewayInstanceId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -40388,6 +40495,92 @@ class TsfApiListResponse(AbstractModel):
         
 
 
+class TsfConfigCenter(AbstractModel):
+    """配置中心
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ConfigType: 配置中心类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigType: str
+        :param _ConfigCenterInstanceId: 配置中心实例id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigCenterInstanceId: str
+        :param _ConfigCenterInstanceName: 配置中心实例名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ConfigCenterInstanceName: str
+        :param _RegionId: 实例地域id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RegionId: str
+        :param _NamespaceId: 命名空间id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NamespaceId: str
+        """
+        self._ConfigType = None
+        self._ConfigCenterInstanceId = None
+        self._ConfigCenterInstanceName = None
+        self._RegionId = None
+        self._NamespaceId = None
+
+    @property
+    def ConfigType(self):
+        return self._ConfigType
+
+    @ConfigType.setter
+    def ConfigType(self, ConfigType):
+        self._ConfigType = ConfigType
+
+    @property
+    def ConfigCenterInstanceId(self):
+        return self._ConfigCenterInstanceId
+
+    @ConfigCenterInstanceId.setter
+    def ConfigCenterInstanceId(self, ConfigCenterInstanceId):
+        self._ConfigCenterInstanceId = ConfigCenterInstanceId
+
+    @property
+    def ConfigCenterInstanceName(self):
+        return self._ConfigCenterInstanceName
+
+    @ConfigCenterInstanceName.setter
+    def ConfigCenterInstanceName(self, ConfigCenterInstanceName):
+        self._ConfigCenterInstanceName = ConfigCenterInstanceName
+
+    @property
+    def RegionId(self):
+        return self._RegionId
+
+    @RegionId.setter
+    def RegionId(self, RegionId):
+        self._RegionId = RegionId
+
+    @property
+    def NamespaceId(self):
+        return self._NamespaceId
+
+    @NamespaceId.setter
+    def NamespaceId(self, NamespaceId):
+        self._NamespaceId = NamespaceId
+
+
+    def _deserialize(self, params):
+        self._ConfigType = params.get("ConfigType")
+        self._ConfigCenterInstanceId = params.get("ConfigCenterInstanceId")
+        self._ConfigCenterInstanceName = params.get("ConfigCenterInstanceName")
+        self._RegionId = params.get("RegionId")
+        self._NamespaceId = params.get("NamespaceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TsfPageApiDetailInfo(AbstractModel):
     """ApiDetailInfo 翻页对象
 
@@ -42154,7 +42347,7 @@ class UnitRuleItem(AbstractModel):
         :param _UnitRuleTagList: 规则标签列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type UnitRuleTagList: list of UnitRuleTag
-        :param _ItemIndex: 项目id
+        :param _ItemIndex: 规则项索引
 注意：此字段可能返回 null，表示取不到有效值。
         :type ItemIndex: int
         :param _CreatedTime: 创建时间
@@ -42309,7 +42502,7 @@ class UnitRuleTag(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TagType: 标签类型 : U(用户标签)
+        :param _TagType: 标签类型 : U(用户标签)/S(系统标签)
         :type TagType: str
         :param _TagField: 标签名
         :type TagField: str
@@ -42410,7 +42603,7 @@ class UpdateApiGroupRequest(AbstractModel):
         :type GroupName: str
         :param _Description: Api 分组描述
         :type Description: str
-        :param _AuthType: 鉴权类型
+        :param _AuthType: 鉴权类型。 secret： 密钥鉴权； none:无鉴权
         :type AuthType: str
         :param _GroupContext: 分组上下文
         :type GroupContext: str
@@ -43103,7 +43296,7 @@ class UpdateHealthCheckSettingsRequest(AbstractModel):
         r"""
         :param _GroupId: 部署组ID
         :type GroupId: str
-        :param _EnableHealthCheck: 是否能使健康检查
+        :param _EnableHealthCheck: 是否开启健康检查
         :type EnableHealthCheck: bool
         :param _HealthCheckSettings: 健康检查配置
         :type HealthCheckSettings: :class:`tencentcloud.tsf.v20180326.models.HealthCheckSettings`
@@ -43560,6 +43753,9 @@ class VmGroup(AbstractModel):
         :param _GatewayConfig: Envoy网关配置
 注意：此字段可能返回 null，表示取不到有效值。
         :type GatewayConfig: :class:`tencentcloud.tsf.v20180326.models.GatewayConfig`
+        :param _EnableBatchHealthCheck: 批次是否开启健康检查
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EnableBatchHealthCheck: bool
         """
         self._GroupId = None
         self._GroupName = None
@@ -43599,6 +43795,7 @@ class VmGroup(AbstractModel):
         self._AgentProfileList = None
         self._WarmupSetting = None
         self._GatewayConfig = None
+        self._EnableBatchHealthCheck = None
 
     @property
     def GroupId(self):
@@ -43904,6 +44101,14 @@ class VmGroup(AbstractModel):
     def GatewayConfig(self, GatewayConfig):
         self._GatewayConfig = GatewayConfig
 
+    @property
+    def EnableBatchHealthCheck(self):
+        return self._EnableBatchHealthCheck
+
+    @EnableBatchHealthCheck.setter
+    def EnableBatchHealthCheck(self, EnableBatchHealthCheck):
+        self._EnableBatchHealthCheck = EnableBatchHealthCheck
+
 
     def _deserialize(self, params):
         self._GroupId = params.get("GroupId")
@@ -43955,6 +44160,7 @@ class VmGroup(AbstractModel):
         if params.get("GatewayConfig") is not None:
             self._GatewayConfig = GatewayConfig()
             self._GatewayConfig._deserialize(params.get("GatewayConfig"))
+        self._EnableBatchHealthCheck = params.get("EnableBatchHealthCheck")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

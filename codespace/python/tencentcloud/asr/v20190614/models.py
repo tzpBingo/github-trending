@@ -171,7 +171,7 @@ class CreateAsrVocabRequest(AbstractModel):
         :type Name: str
         :param _Description: 热词表描述，长度在0-1000之间
         :type Description: str
-        :param _WordWeights: 词权重数组，包含全部的热词和对应的权重。每个热词的长度不大于10，权重为[1,10]之间整数，数组长度不大于128
+        :param _WordWeights: 词权重数组，包含全部的热词和对应的权重。每个热词的长度不大于10个汉字或30个英文字符，权重为[1,10]之间整数，数组长度不大于1000
         :type WordWeights: list of HotWord
         :param _WordWeightStr: 词权重文件（纯文本文件）的二进制base64编码，以行分隔，每行的格式为word|weight，即以英文符号|为分割，左边为词，右边为权重，如：你好|5。
 当用户传此参数（参数长度大于0），即以此参数解析词权重，WordWeights会被忽略
@@ -289,6 +289,8 @@ class CreateAsyncRecognitionTaskRequest(AbstractModel):
 • 16k_pt：葡萄牙语；
 • 16k_tr：土耳其语；
 • 16k_ar：阿拉伯语；
+• 16k_es：西班牙语；
+• 16k_hi：印地语；
         :type EngineType: str
         :param _Url: 语音流地址，支持rtmp、rtsp等流媒体协议，以及各类基于http协议的直播流(不支持hls, m3u8)
         :type Url: str
@@ -586,15 +588,19 @@ class CreateRecTaskRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _EngineModelType: 引擎模型类型。注意：非电话场景请务必使用16k的引擎。
-电话场景：
-• 8k_zh：中文电话通用；
-• 8k_en：英文电话通用；
+        :param _EngineModelType: 引擎模型类型
 
-非电话场景：
-• 16k_zh：中文通用；
-• 16k_zh-PY：中英粤;
-• 16k_zh_medical：中文医疗；
+电话通讯场景引擎：
+**注意：电话通讯场景，请务必使用以下8k引擎**
+• 8k_zh：中文电话通讯；
+• 8k_en：英文电话通讯；
+如您有电话通讯场景识别需求，但发现需求语种仅支持16k，可将8k音频传入下方16k引擎，亦能获取识别结果。但**16k引擎并非基于电话通讯数据训练，无法承诺此种调用方式的识别效果，需由您自行验证识别结果是否可用**
+
+通用场景引擎：
+**注意：除电话通讯场景以外的其它识别场景，请务必使用以下16k引擎**
+• 16k_zh：中文普通话通用引擎，支持中文普通话和少量英语，使用丰富的中文普通话语料训练，覆盖场景广泛，适用于除电话通讯外的所有中文普通话识别场景；
+• 16k_zh-PY：中英粤混合引擎，使用一个引擎同时识别中文普通话、英语、粤语三个语言;
+• 16k_zh_dialect：中文普通话+多方言混合引擎，除普通话外支持23种方言（上海话、四川话、武汉话、贵阳话、昆明话、西安话、郑州话、太原话、兰州话、银川话、西宁话、南京话、合肥话、南昌话、长沙话、苏州话、杭州话、济南话、天津话、石家庄话、黑龙江话、吉林话、辽宁话）；
 • 16k_en：英语；
 • 16k_yue：粤语；
 • 16k_ja：日语；
@@ -607,73 +613,153 @@ class CreateRecTaskRequest(AbstractModel):
 • 16k_pt：葡萄牙语；
 • 16k_tr：土耳其语；
 • 16k_ar：阿拉伯语；
-• 16k_zh_dialect：多方言，支持23种方言（上海话、四川话、武汉话、贵阳话、昆明话、西安话、郑州话、太原话、兰州话、银川话、西宁话、南京话、合肥话、南昌话、长沙话、苏州话、杭州话、济南话、天津话、石家庄话、黑龙江话、吉林话、辽宁话）；
+• 16k_es：西班牙语；
+• 16k_hi：印地语；
+• 16k_zh_medical：中文医疗引擎
         :type EngineModelType: str
-        :param _ChannelNum: 识别声道数。1：单声道（非电话场景，直接选择单声道即可，忽略音频声道数）；2：双声道（仅支持8k_zh电话场景，双声道应分别对应通话双方）。注意：双声道的电话音频已物理分离说话人，无需再开启说话人分离功能。
+        :param _ChannelNum: 识别声道数
+1：单声道（16k音频仅支持单声道，**请勿**设置为双声道）；
+2：双声道（仅支持8k电话音频，且双声道应分别为通话双方）
+
+注意：
+• 16k音频：仅支持单声道识别，**需设置ChannelNum=1**；
+• 8k电话音频：支持单声道、双声道识别，**建议设置ChannelNum=2，即双声道**。双声道能够物理区分说话人、避免说话双方重叠产生的识别错误，能达到最好的说话人分离效果和识别效果。设置双声道后，将自动区分说话人，因此**无需再开启说话人分离功能**，相关参数（**SpeakerDiarization、SpeakerNumber**）使用默认值即可
         :type ChannelNum: int
-        :param _ResTextFormat: 识别结果返回形式。0： 识别结果文本(含分段时间戳)； 1：词级别粒度的[详细识别结果](https://cloud.tencent.com/document/api/1093/37824#SentenceDetail)(不含标点，含语速值)；2：词级别粒度的详细识别结果（包含标点、语速值）；3: 标点符号分段，包含每段时间戳，特别适用于字幕场景（包含词级时间、标点、语速值）。4：【增值付费功能】对识别结果按照语义分段，并展示词级别粒度的详细识别结果，仅支持8k_zh、16k_zh引擎，需购买对应资源包使用（注意：如果账号后付费功能开启并使用此功能，将[自动计费](https://cloud.tencent.com/document/product/1093/35686)）
+        :param _ResTextFormat: 识别结果返回样式
+0：基础识别结果（仅包含有效人声时间戳，无词粒度的[详细识别结果](https://cloud.tencent.com/document/api/1093/37824#SentenceDetail)）；
+1：基础识别结果之上，增加词粒度的[详细识别结果](https://cloud.tencent.com/document/api/1093/37824#SentenceDetail)（包含词级别时间戳、语速值，**不含标点**）；
+2：基础识别结果之上，增加词粒度的[详细识别结果](https://cloud.tencent.com/document/api/1093/37824#SentenceDetail)（包含词级别时间戳、语速值和标点）；
+3：基础识别结果之上，增加词粒度的[详细识别结果](https://cloud.tencent.com/document/api/1093/37824#SentenceDetail)（包含词级别时间戳、语速值和标点），且识别结果按标点符号分段，**适用字幕场景**；
+4：**【增值付费功能】**基础识别结果之上，增加词粒度的[详细识别结果](https://cloud.tencent.com/document/api/1093/37824#SentenceDetail)（包含词级别时间戳、语速值和标点），且识别结果按nlp语义分段，**适用会议、庭审记录转写等场景**，仅支持8k_zh/16k_zh引擎
+
+注意：如果传入参数值4，需确保账号已购买[语义分段资源包](https://cloud.tencent.com/document/product/1093/35686#97ae4aa0-29a0-4066-9f07-ccaf8856a16b)，或账号开启后付费；**若当前账号已开启后付费功能，并传入参数值4，将[自动计费](https://cloud.tencent.com/document/product/1093/35686#d912167d-ffd5-41a9-8b1c-2e89845a6852)）**
         :type ResTextFormat: int
-        :param _SourceType: 语音数据来源。0：语音 URL；1：语音数据（post body）。
+        :param _SourceType: 语音数据来源
+0：语音 URL；
+1：语音数据（post body）
         :type SourceType: int
-        :param _SpeakerDiarization: 是否开启说话人分离，0：不开启，1：开启(仅支持8k_zh/16k_zh，ChannelNum=1时可用)，默认值为 0。
-注意：8k电话场景建议使用双声道来区分通话双方，设置ChannelNum=2即可，不用开启说话人分离，如果设置了ChannelNum=1，后台会先转码成单声道，说话人分离结果可能产生偏差。
-        :type SpeakerDiarization: int
-        :param _SpeakerNumber: 说话人分离人数（需配合开启说话人分离使用），取值范围：0-10，0代表自动分离（目前仅支持≤6个人），1-10代表指定说话人数分离。默认值为 0。
-注：此功能结果仅供参考，请根据您的需要谨慎使用。
-        :type SpeakerNumber: int
-        :param _CallbackUrl: 回调 URL，用户自行搭建的用于接收识别结果的服务URL。如果用户使用轮询方式获取识别结果，则无需提交该参数。回调格式&内容详见：[录音识别回调说明](https://cloud.tencent.com/document/product/1093/52632)
-        :type CallbackUrl: str
-        :param _Url: 语音的URL地址，需要公网环境浏览器可下载。当 SourceType 值为 0 时须填写该字段，为 1 时不需要填写。注意：请确保录音文件时长在5个小时之内，否则可能识别失败。请保证文件的下载速度，否则可能下载失败。
-        :type Url: str
-        :param _Data: 语音数据base64编码，当SourceType 值为1时必须填写，为0可不写。音频数据要小于5MB。
+        :param _Data: 语音数据base64编码
+**当 SourceType 值为 1 时须填写该字段，为 0 时不需要填写**
+
+注意：音频数据要小于5MB（含）
         :type Data: str
-        :param _DataLen: 数据长度，非必填（此数据长度为数据未进行base64编码时的数据长度）。
+        :param _DataLen: 数据长度（此数据长度为数据未进行base64编码时的长度）
         :type DataLen: int
-        :param _ConvertNumMode: 是否进行阿拉伯数字智能转换（目前支持中文普通话引擎）。0：不转换，直接输出中文数字，1：根据场景智能转换为阿拉伯数字，3: 打开数学相关数字转换。默认值为 1。
-        :type ConvertNumMode: int
-        :param _FilterDirty: 是否过滤脏词（目前支持中文普通话引擎）。0：不过滤脏词；1：过滤脏词；2：将脏词替换为 * 。默认值为 0。
-        :type FilterDirty: int
-        :param _HotwordId: 热词表id。如不设置该参数，自动生效默认热词表；如设置了该参数，那么将生效对应的热词表。
+        :param _Url: 语音URL的地址（需要公网环境浏览器可下载）
+**当 SourceType 值为 0 时须填写该字段，为 1 时不需要填写**
+
+注意：
+1. 请确保录音文件时长在5个小时（含）之内，否则可能识别失败；
+2. 请保证文件的下载速度，否则可能下载失败
+        :type Url: str
+        :param _CallbackUrl: 回调 URL
+用户自行搭建的用于接收识别结果的服务URL
+回调格式和内容详见：[录音识别回调说明](https://cloud.tencent.com/document/product/1093/52632)
+
+注意：
+如果用户使用轮询方式获取识别结果，则无需提交该参数
+        :type CallbackUrl: str
+        :param _SpeakerDiarization: 是否开启说话人分离
+0：不开启；
+1：开启（仅支持以下引擎：8k_zh/16k_zh/16k_ms/16k_en/16k_id，且ChannelNum=1时可用）；
+默认值为 0
+
+注意：
+8k双声道电话音频请按 **ChannelNum 识别声道数** 的参数描述使用默认值
+        :type SpeakerDiarization: int
+        :param _SpeakerNumber: 说话人分离人数
+**需配合开启说话人分离使用，不开启无效**，取值范围：0-10
+0：自动分离（最多分离出20个人）；
+1-10：指定人数分离；
+默认值为 0
+        :type SpeakerNumber: int
+        :param _HotwordId: 热词表id
+如不设置该参数，将自动生效默认热词表；
+如设置该参数，将生效对应id的热词表；
+点击这里查看[热词表配置方法](https://cloud.tencent.com/document/product/1093/40996)
         :type HotwordId: str
-        :param _CustomizationId: 自学习模型 id。如设置了该参数，将生效对应的自学习模型。
-        :type CustomizationId: str
-        :param _Extra: 附加参数(该参数无意义，忽略即可)
-        :type Extra: str
-        :param _FilterPunc: 是否过滤标点符号（目前支持中文普通话引擎）。 0：不过滤，1：过滤句末标点，2：过滤所有标点。默认值为 0。
-        :type FilterPunc: int
-        :param _FilterModal: 是否过滤语气词（目前支持中文普通话引擎）。0：不过滤语气词；1：部分过滤；2：严格过滤 。默认值为 0。
-        :type FilterModal: int
-        :param _EmotionalEnergy: 情绪能量值，取值为音量分贝值/10。取值范围：[1,10]。值越高情绪越强烈。0:不开启，1:开启
-        :type EmotionalEnergy: int
-        :param _ReinforceHotword: 热词增强功能。1:开启后（仅支持8k_zh,16k_zh），将开启同音替换功能，同音字、词在热词中配置。举例：热词配置“蜜制”并开启增强功能后，与“蜜制”同拼音（mizhi）的“秘制”的识别结果会被强制替换成“蜜制”。因此建议客户根据自己的实际情况开启该功能。
+        :param _ReinforceHotword: 热词增强功能（目前仅支持8k_zh/16k_zh引擎）
+1：开启热词增强功能
+
+注意：热词增强功能开启后，将对传入的热词表id开启同音替换功能，可以在这里查看[热词表配置方法](https://cloud.tencent.com/document/product/1093/40996)。效果举例：在热词表中配置“蜜制”一词，并开启增强功能，与“蜜制”（mìzhì）同音同调的“秘制”（mìzhì）的识别结果会被强制替换成“蜜制”。**建议客户根据实际的业务需求开启该功能**
         :type ReinforceHotword: int
-        :param _SentenceMaxLength: 单标点最多字数，取值范围：[6，40]。默认为0，不开启该功能。该参数可用于字幕生成场景，控制单行字幕最大字数（设置ResTextFormat为3，解析返回的ResultDetail列表，通过结构中FinalSentence获取单个标点断句结果）。
-        :type SentenceMaxLength: int
-        :param _EmotionRecognition: 情绪识别能力(目前支持16k_zh) 默认为0，不开启。 1：开启情绪识别但是不会在文本展示“情绪标签”， 2：开启情绪识别并且在文本展示“情绪标签”。（该功能需要设置ResTextFormat 大于0）
-注意：本功能为增值服务，购买对应套餐包后，将参数设置为1或2时方可按对应方式生效，并消耗套餐包对应资源。参数设置为0时无需购买套餐包，也不会消耗对应资源。
+        :param _CustomizationId: 自学习定制模型 id
+如设置了该参数，将生效对应id的自学习定制模型；
+点击这里查看[自学习定制模型配置方法](https://cloud.tencent.com/document/product/1093/38416)
+        :type CustomizationId: str
+        :param _EmotionRecognition: **【增值付费功能】**情绪识别能力（目前仅支持16k_zh）
+0：不开启；
+1：开启情绪识别，但不在文本展示情绪标签；
+2：开启情绪识别，并且在文本展示情绪标签（**该功能需要设置ResTextFormat 大于0**）
+默认值为0
+支持的情绪分类为：高兴、伤心、愤怒
+
+注意：
+1. **本功能为增值服务**，需将参数设置为1或2时方可按对应方式生效；
+2. 如果传入参数值1或2，需确保账号已购买[情绪识别资源包](https://cloud.tencent.com/document/product/1093/35686#97ae4aa0-29a0-4066-9f07-ccaf8856a16b)，或账号开启后付费；**若当前账号已开启后付费功能，并传入参数值1或2，将[自动计费](https://cloud.tencent.com/document/product/1093/35686#d912167d-ffd5-41a9-8b1c-2e89845a6852)）**；
+3. 参数设置为0时，无需购买资源包，也不会消耗情绪识别对应资源
         :type EmotionRecognition: int
+        :param _EmotionalEnergy: 情绪能量值
+取值为音量分贝值/10，取值范围：[1,10]，值越高情绪越强烈
+0：不开启；
+1：开启；
+默认值为0
+        :type EmotionalEnergy: int
+        :param _ConvertNumMode: 阿拉伯数字智能转换（目前仅支持8k_zh/16k_zh引擎）
+0：不转换，直接输出中文数字；
+1：根据场景智能转换为阿拉伯数字；
+3：打开数学相关数字转换（如：阿尔法转写为α）；
+默认值为 1
+        :type ConvertNumMode: int
+        :param _FilterDirty: 脏词过滤（目前仅支持8k_zh/16k_zh引擎）
+0：不过滤脏词；
+1：过滤脏词；
+2：将脏词替换为 * ；
+默认值为 0
+        :type FilterDirty: int
+        :param _FilterPunc: 标点符号过滤（目前仅支持8k_zh/16k_zh引擎）
+0：不过滤标点；
+1：过滤句末标点；
+2：过滤所有标点；
+默认值为 0
+        :type FilterPunc: int
+        :param _FilterModal: 语气词过滤（目前仅支持8k_zh/16k_zh引擎）
+0：不过滤语气词；
+1：过滤部分语气词；
+2：严格过滤语气词；
+默认值为 0
+        :type FilterModal: int
+        :param _SentenceMaxLength: 单标点最多字数
+**可控制单行字幕最大字数，适用于字幕生成场景**，取值范围：[6，40]
+0：不开启该功能；
+默认值为0
+
+注意：需设置ResTextFormat为3，解析返回的ResultDetail列表，通过结构中FinalSentence获取单个标点断句结果
+        :type SentenceMaxLength: int
+        :param _Extra: 附加参数**（该参数无意义，忽略即可）**
+        :type Extra: str
         """
         self._EngineModelType = None
         self._ChannelNum = None
         self._ResTextFormat = None
         self._SourceType = None
-        self._SpeakerDiarization = None
-        self._SpeakerNumber = None
-        self._CallbackUrl = None
-        self._Url = None
         self._Data = None
         self._DataLen = None
+        self._Url = None
+        self._CallbackUrl = None
+        self._SpeakerDiarization = None
+        self._SpeakerNumber = None
+        self._HotwordId = None
+        self._ReinforceHotword = None
+        self._CustomizationId = None
+        self._EmotionRecognition = None
+        self._EmotionalEnergy = None
         self._ConvertNumMode = None
         self._FilterDirty = None
-        self._HotwordId = None
-        self._CustomizationId = None
-        self._Extra = None
         self._FilterPunc = None
         self._FilterModal = None
-        self._EmotionalEnergy = None
-        self._ReinforceHotword = None
         self._SentenceMaxLength = None
-        self._EmotionRecognition = None
+        self._Extra = None
 
     @property
     def EngineModelType(self):
@@ -708,6 +794,38 @@ class CreateRecTaskRequest(AbstractModel):
         self._SourceType = SourceType
 
     @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def DataLen(self):
+        return self._DataLen
+
+    @DataLen.setter
+    def DataLen(self, DataLen):
+        self._DataLen = DataLen
+
+    @property
+    def Url(self):
+        return self._Url
+
+    @Url.setter
+    def Url(self, Url):
+        self._Url = Url
+
+    @property
+    def CallbackUrl(self):
+        return self._CallbackUrl
+
+    @CallbackUrl.setter
+    def CallbackUrl(self, CallbackUrl):
+        self._CallbackUrl = CallbackUrl
+
+    @property
     def SpeakerDiarization(self):
         return self._SpeakerDiarization
 
@@ -724,36 +842,44 @@ class CreateRecTaskRequest(AbstractModel):
         self._SpeakerNumber = SpeakerNumber
 
     @property
-    def CallbackUrl(self):
-        return self._CallbackUrl
+    def HotwordId(self):
+        return self._HotwordId
 
-    @CallbackUrl.setter
-    def CallbackUrl(self, CallbackUrl):
-        self._CallbackUrl = CallbackUrl
-
-    @property
-    def Url(self):
-        return self._Url
-
-    @Url.setter
-    def Url(self, Url):
-        self._Url = Url
+    @HotwordId.setter
+    def HotwordId(self, HotwordId):
+        self._HotwordId = HotwordId
 
     @property
-    def Data(self):
-        return self._Data
+    def ReinforceHotword(self):
+        return self._ReinforceHotword
 
-    @Data.setter
-    def Data(self, Data):
-        self._Data = Data
+    @ReinforceHotword.setter
+    def ReinforceHotword(self, ReinforceHotword):
+        self._ReinforceHotword = ReinforceHotword
 
     @property
-    def DataLen(self):
-        return self._DataLen
+    def CustomizationId(self):
+        return self._CustomizationId
 
-    @DataLen.setter
-    def DataLen(self, DataLen):
-        self._DataLen = DataLen
+    @CustomizationId.setter
+    def CustomizationId(self, CustomizationId):
+        self._CustomizationId = CustomizationId
+
+    @property
+    def EmotionRecognition(self):
+        return self._EmotionRecognition
+
+    @EmotionRecognition.setter
+    def EmotionRecognition(self, EmotionRecognition):
+        self._EmotionRecognition = EmotionRecognition
+
+    @property
+    def EmotionalEnergy(self):
+        return self._EmotionalEnergy
+
+    @EmotionalEnergy.setter
+    def EmotionalEnergy(self, EmotionalEnergy):
+        self._EmotionalEnergy = EmotionalEnergy
 
     @property
     def ConvertNumMode(self):
@@ -772,30 +898,6 @@ class CreateRecTaskRequest(AbstractModel):
         self._FilterDirty = FilterDirty
 
     @property
-    def HotwordId(self):
-        return self._HotwordId
-
-    @HotwordId.setter
-    def HotwordId(self, HotwordId):
-        self._HotwordId = HotwordId
-
-    @property
-    def CustomizationId(self):
-        return self._CustomizationId
-
-    @CustomizationId.setter
-    def CustomizationId(self, CustomizationId):
-        self._CustomizationId = CustomizationId
-
-    @property
-    def Extra(self):
-        return self._Extra
-
-    @Extra.setter
-    def Extra(self, Extra):
-        self._Extra = Extra
-
-    @property
     def FilterPunc(self):
         return self._FilterPunc
 
@@ -812,22 +914,6 @@ class CreateRecTaskRequest(AbstractModel):
         self._FilterModal = FilterModal
 
     @property
-    def EmotionalEnergy(self):
-        return self._EmotionalEnergy
-
-    @EmotionalEnergy.setter
-    def EmotionalEnergy(self, EmotionalEnergy):
-        self._EmotionalEnergy = EmotionalEnergy
-
-    @property
-    def ReinforceHotword(self):
-        return self._ReinforceHotword
-
-    @ReinforceHotword.setter
-    def ReinforceHotword(self, ReinforceHotword):
-        self._ReinforceHotword = ReinforceHotword
-
-    @property
     def SentenceMaxLength(self):
         return self._SentenceMaxLength
 
@@ -836,12 +922,12 @@ class CreateRecTaskRequest(AbstractModel):
         self._SentenceMaxLength = SentenceMaxLength
 
     @property
-    def EmotionRecognition(self):
-        return self._EmotionRecognition
+    def Extra(self):
+        return self._Extra
 
-    @EmotionRecognition.setter
-    def EmotionRecognition(self, EmotionRecognition):
-        self._EmotionRecognition = EmotionRecognition
+    @Extra.setter
+    def Extra(self, Extra):
+        self._Extra = Extra
 
 
     def _deserialize(self, params):
@@ -849,23 +935,23 @@ class CreateRecTaskRequest(AbstractModel):
         self._ChannelNum = params.get("ChannelNum")
         self._ResTextFormat = params.get("ResTextFormat")
         self._SourceType = params.get("SourceType")
-        self._SpeakerDiarization = params.get("SpeakerDiarization")
-        self._SpeakerNumber = params.get("SpeakerNumber")
-        self._CallbackUrl = params.get("CallbackUrl")
-        self._Url = params.get("Url")
         self._Data = params.get("Data")
         self._DataLen = params.get("DataLen")
+        self._Url = params.get("Url")
+        self._CallbackUrl = params.get("CallbackUrl")
+        self._SpeakerDiarization = params.get("SpeakerDiarization")
+        self._SpeakerNumber = params.get("SpeakerNumber")
+        self._HotwordId = params.get("HotwordId")
+        self._ReinforceHotword = params.get("ReinforceHotword")
+        self._CustomizationId = params.get("CustomizationId")
+        self._EmotionRecognition = params.get("EmotionRecognition")
+        self._EmotionalEnergy = params.get("EmotionalEnergy")
         self._ConvertNumMode = params.get("ConvertNumMode")
         self._FilterDirty = params.get("FilterDirty")
-        self._HotwordId = params.get("HotwordId")
-        self._CustomizationId = params.get("CustomizationId")
-        self._Extra = params.get("Extra")
         self._FilterPunc = params.get("FilterPunc")
         self._FilterModal = params.get("FilterModal")
-        self._EmotionalEnergy = params.get("EmotionalEnergy")
-        self._ReinforceHotword = params.get("ReinforceHotword")
         self._SentenceMaxLength = params.get("SentenceMaxLength")
-        self._EmotionRecognition = params.get("EmotionRecognition")
+        self._Extra = params.get("Extra")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1752,8 +1838,10 @@ class HotWord(AbstractModel):
     def __init__(self):
         r"""
         :param _Word: 热词
+注意：此字段可能返回 null，表示取不到有效值。
         :type Word: str
         :param _Weight: 权重
+注意：此字段可能返回 null，表示取不到有效值。
         :type Weight: int
         """
         self._Word = None
@@ -2286,6 +2374,8 @@ class SentenceRecognitionRequest(AbstractModel):
 • 16k_pt：葡萄牙语；
 • 16k_tr：土耳其语；
 • 16k_ar：阿拉伯语；
+• 16k_es：西班牙语；
+• 16k_hi：印地语；
 • 16k_zh_dialect：多方言，支持23种方言（上海话、四川话、武汉话、贵阳话、昆明话、西安话、郑州话、太原话、兰州话、银川话、西宁话、南京话、合肥话、南昌话、长沙话、苏州话、杭州话、济南话、天津话、石家庄话、黑龙江话、吉林话、辽宁话）；
         :type EngSerViceType: str
         :param _SourceType: 语音数据来源。0：语音 URL；1：语音数据（post body）。
@@ -2318,10 +2408,15 @@ class SentenceRecognitionRequest(AbstractModel):
         :type HotwordId: str
         :param _CustomizationId: 自学习模型 id。如设置了该参数，将生效对应的自学习模型。
         :type CustomizationId: str
-        :param _ReinforceHotword: 热词增强功能。1:开启后（仅支持8k_zh,16k_zh），将开启同音替换功能，同音字、词在热词中配置。举例：热词配置“蜜制”并开启增强功能后，与“蜜制”同拼音（mizhi）的“秘制”、“蜜汁”的识别结果会被强制替换成“蜜制”。因此建议客户根据自己的实际情况开启该功能。
+        :param _ReinforceHotword: 热词增强功能。1:开启后（仅支持8k_zh,16k_zh），将开启同音替换功能，同音字、词在热词中配置。举例：热词配置“蜜制”并开启增强功能后，与“蜜制”同拼音（mizhi）的“秘制”的识别结果会被强制替换成“蜜制”。因此建议客户根据自己的实际情况开启该功能。
         :type ReinforceHotword: int
-        :param _HotwordList: 临时热词：用于提升识别准确率，临时热词规则：“热词|权重”，热词不超过30个字符（最多10个汉字），权重1-10，最多传入128个热词。举例："腾讯云|10,语音识别|5,ASR|10"。
-“临时热词”和“热词id”的区别：热词id需要先在控制台或通过接口创建热词表，得到热词表id后才可以使用热词功能，本字段可以在每次请求时直接传入热词使用，但每次请求后云端不会保留相关的热词数据，需要客户自行维护相关数据
+        :param _HotwordList: 临时热词表，该参数用于提升热词识别准确率。
+单个热词规则："热词|权重"，不超过30个字符（最多10个汉字），权重1-10；
+临时热词表限制：多个热词用英文逗号分割，最多128个热词，参数示例："腾讯云|10,语音识别|5,ASR|10"；
+参数 hotword_list 与 hotword_id 区别：
+hotword_id：需要先在控制台或接口创建热词表，获得对应hotword_id传入参数来使用热词功能；
+hotword_list：每次请求时直接传入临时热词表来使用热词功能，云端不保留临时热词表；
+注意：如果同时传入了 hotword_id 和 hotword_list，会优先使用 hotword_list。
         :type HotwordList: str
         :param _InputSampleRate: 支持pcm格式的8k音频在与引擎采样率不匹配的情况下升采样到16k后识别，能有效提升识别准确率。仅支持：8000。如：传入 8000 ，则pcm音频采样率为8k，当引擎选用16k_zh， 那么该8k采样率的pcm音频可以在16k_zh引擎下正常识别。 注：此参数仅适用于pcm格式音频，不传入值将维持默认状态，即默认调用的引擎采样率等于pcm音频采样率。
         :type InputSampleRate: int
@@ -2976,7 +3071,7 @@ class UpdateAsrVocabRequest(AbstractModel):
         :type VocabId: str
         :param _Name: 热词表名称，长度在1-255之间
         :type Name: str
-        :param _WordWeights: 词权重数组，包含全部的热词和对应的权重。每个热词的长度不大于10，权重为[1,10]之间整数，数组长度不大于128
+        :param _WordWeights: 词权重数组，包含全部的热词和对应的权重。每个热词的长度不大于10个汉字或30个英文字符，权重为[1,10]之间整数，数组长度不大于1000
         :type WordWeights: list of HotWord
         :param _WordWeightStr: 词权重文件（纯文本文件）的二进制base64编码，以行分隔，每行的格式为word|weight，即以英文符号|为分割，左边为词，右边为权重，如：你好|5。
 当用户传此参数（参数长度大于0），即以此参数解析词权重，WordWeights会被忽略
@@ -3257,6 +3352,85 @@ class VoicePrintBaseData(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class VoicePrintCountData(AbstractModel):
+    """统计返回注册数量结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Total: 总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        """
+        self._Total = None
+
+    @property
+    def Total(self):
+        return self._Total
+
+    @Total.setter
+    def Total(self, Total):
+        self._Total = Total
+
+
+    def _deserialize(self, params):
+        self._Total = params.get("Total")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VoicePrintCountRequest(AbstractModel):
+    """VoicePrintCount请求参数结构体
+
+    """
+
+
+class VoicePrintCountResponse(AbstractModel):
+    """VoicePrintCount返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: 统计数据
+        :type Data: :class:`tencentcloud.asr.v20190614.models.VoicePrintCountData`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = VoicePrintCountData()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
 
 
 class VoicePrintDeleteRequest(AbstractModel):

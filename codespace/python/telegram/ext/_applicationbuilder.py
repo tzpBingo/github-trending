@@ -171,42 +171,42 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         self._read_timeout: ODVInput[float] = DEFAULT_NONE
         self._write_timeout: ODVInput[float] = DEFAULT_NONE
         self._pool_timeout: ODVInput[float] = DEFAULT_NONE
-        self._request: DVInput["BaseRequest"] = DEFAULT_NONE
+        self._request: DVInput[BaseRequest] = DEFAULT_NONE
         self._get_updates_connection_pool_size: DVInput[int] = DEFAULT_NONE
         self._get_updates_proxy_url: DVInput[str] = DEFAULT_NONE
         self._get_updates_connect_timeout: ODVInput[float] = DEFAULT_NONE
         self._get_updates_read_timeout: ODVInput[float] = DEFAULT_NONE
         self._get_updates_write_timeout: ODVInput[float] = DEFAULT_NONE
         self._get_updates_pool_timeout: ODVInput[float] = DEFAULT_NONE
-        self._get_updates_request: DVInput["BaseRequest"] = DEFAULT_NONE
+        self._get_updates_request: DVInput[BaseRequest] = DEFAULT_NONE
         self._get_updates_http_version: DVInput[str] = DefaultValue("1.1")
         self._private_key: ODVInput[bytes] = DEFAULT_NONE
         self._private_key_password: ODVInput[bytes] = DEFAULT_NONE
-        self._defaults: ODVInput["Defaults"] = DEFAULT_NONE
+        self._defaults: ODVInput[Defaults] = DEFAULT_NONE
         self._arbitrary_callback_data: Union[DefaultValue[bool], int] = DEFAULT_FALSE
         self._local_mode: DVType[bool] = DEFAULT_FALSE
         self._bot: DVInput[Bot] = DEFAULT_NONE
         self._update_queue: DVType[Queue] = DefaultValue(Queue())
 
         try:
-            self._job_queue: ODVInput["JobQueue"] = DefaultValue(JobQueue())
+            self._job_queue: ODVInput[JobQueue] = DefaultValue(JobQueue())
         except RuntimeError as exc:
             if "PTB must be installed via" not in str(exc):
                 raise exc
             self._job_queue = DEFAULT_NONE
 
-        self._persistence: ODVInput["BasePersistence"] = DEFAULT_NONE
+        self._persistence: ODVInput[BasePersistence] = DEFAULT_NONE
         self._context_types: DVType[ContextTypes] = DefaultValue(ContextTypes())
         self._application_class: DVType[Type[Application]] = DefaultValue(Application)
         self._application_kwargs: Dict[str, object] = {}
-        self._update_processor: "BaseUpdateProcessor" = SimpleUpdateProcessor(
+        self._update_processor: BaseUpdateProcessor = SimpleUpdateProcessor(
             max_concurrent_updates=1
         )
         self._updater: ODVInput[Updater] = DEFAULT_NONE
         self._post_init: Optional[Callable[[Application], Coroutine[Any, Any, None]]] = None
         self._post_shutdown: Optional[Callable[[Application], Coroutine[Any, Any, None]]] = None
         self._post_stop: Optional[Callable[[Application], Coroutine[Any, Any, None]]] = None
-        self._rate_limiter: ODVInput["BaseRateLimiter"] = DEFAULT_NONE
+        self._rate_limiter: ODVInput[BaseRateLimiter] = DEFAULT_NONE
         self._http_version: DVInput[str] = DefaultValue("1.1")
 
     def _build_request(self, get_updates: bool) -> BaseRequest:
@@ -473,6 +473,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
         .. include:: inclusions/pool_size_tip.rst
 
+        .. seealso:: :meth:`get_updates_connection_pool_size`
+
         Args:
             connection_pool_size (:obj:`int`): The size of the connection pool.
 
@@ -486,6 +488,9 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
     def proxy_url(self: BuilderType, proxy_url: str) -> BuilderType:
         """Sets the proxy for the :paramref:`~telegram.request.HTTPXRequest.proxy_url`
         parameter of :attr:`telegram.Bot.request`. Defaults to :obj:`None`.
+
+
+        .. seealso:: :meth:`get_updates_proxy_url`
 
         Args:
             proxy_url (:obj:`str`): The URL to the proxy server. See
@@ -503,6 +508,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         :paramref:`~telegram.request.HTTPXRequest.connect_timeout` parameter of
         :attr:`telegram.Bot.request`. Defaults to ``5.0``.
 
+        .. seealso:: :meth:`get_updates_connect_timeout`
+
         Args:
             connect_timeout (:obj:`float`): See
                 :paramref:`telegram.request.HTTPXRequest.connect_timeout` for more information.
@@ -519,6 +526,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         :paramref:`~telegram.request.HTTPXRequest.read_timeout` parameter of
         :attr:`telegram.Bot.request`. Defaults to ``5.0``.
 
+        .. seealso:: :meth:`get_updates_read_timeout`
+
         Args:
             read_timeout (:obj:`float`): See
                 :paramref:`telegram.request.HTTPXRequest.read_timeout` for more information.
@@ -534,6 +543,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets the write operation timeout for the
         :paramref:`~telegram.request.HTTPXRequest.write_timeout` parameter of
         :attr:`telegram.Bot.request`. Defaults to ``5.0``.
+
+        .. seealso:: :meth:`get_updates_write_timeout`
 
         Args:
             write_timeout (:obj:`float`): See
@@ -552,6 +563,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         :attr:`telegram.Bot.request`. Defaults to ``1.0``.
 
         .. include:: inclusions/pool_size_tip.rst
+
+        .. seealso:: :meth:`get_updates_pool_timeout`
 
         Args:
             pool_timeout (:obj:`float`): See
@@ -592,8 +605,11 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
             Reset the default version to 1.1.
 
         Args:
-            http_version (:obj:`str`): Pass ``"2"`` if you'd like to use HTTP/2 for making
-                requests to Telegram. Defaults to ``"1.1"``, in which case HTTP/1.1 is used.
+            http_version (:obj:`str`): Pass ``"2"`` or ``"2.0"`` if you'd like to use HTTP/2 for
+                making requests to Telegram. Defaults to ``"1.1"``, in which case HTTP/1.1 is used.
+
+                .. versionchanged:: 20.5
+                    Accept ``"2"`` as a valid value.
 
         Returns:
             :class:`ApplicationBuilder`: The same builder with the updated argument.
@@ -626,6 +642,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         :paramref:`telegram.request.HTTPXRequest.connection_pool_size` parameter which is used
         for the :meth:`telegram.Bot.get_updates` request. Defaults to ``1``.
 
+        .. seealso:: :meth:`connection_pool_size`
+
         Args:
             get_updates_connection_pool_size (:obj:`int`): The size of the connection pool.
 
@@ -639,6 +657,9 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
     def get_updates_proxy_url(self: BuilderType, get_updates_proxy_url: str) -> BuilderType:
         """Sets the proxy for the :paramref:`telegram.request.HTTPXRequest.proxy_url`
         parameter which is used for :meth:`telegram.Bot.get_updates`. Defaults to :obj:`None`.
+
+
+        .. seealso:: :meth:`proxy_url`
 
         Args:
             get_updates_proxy_url (:obj:`str`): The URL to the proxy server. See
@@ -658,6 +679,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         :paramref:`telegram.request.HTTPXRequest.connect_timeout` parameter which is used for
         the :meth:`telegram.Bot.get_updates` request. Defaults to ``5.0``.
 
+        .. seealso:: :meth:`connect_timeout`
+
         Args:
             get_updates_connect_timeout (:obj:`float`): See
                 :paramref:`telegram.request.HTTPXRequest.connect_timeout` for more information.
@@ -675,6 +698,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets the waiting timeout for the
         :paramref:`telegram.request.HTTPXRequest.read_timeout` parameter which is used for the
         :meth:`telegram.Bot.get_updates` request. Defaults to ``5.0``.
+
+        .. seealso:: :meth:`read_timeout`
 
         Args:
             get_updates_read_timeout (:obj:`float`): See
@@ -694,6 +719,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         :paramref:`telegram.request.HTTPXRequest.write_timeout` parameter which is used for
         the :meth:`telegram.Bot.get_updates` request. Defaults to ``5.0``.
 
+        .. seealso:: :meth:`write_timeout`
+
         Args:
             get_updates_write_timeout (:obj:`float`): See
                 :paramref:`telegram.request.HTTPXRequest.write_timeout` for more information.
@@ -711,6 +738,8 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
         """Sets the connection pool's connection freeing timeout for the
         :paramref:`~telegram.request.HTTPXRequest.pool_timeout` parameter which is used for the
         :meth:`telegram.Bot.get_updates` request. Defaults to ``1.0``.
+
+        .. seealso:: :meth:`pool_timeout`
 
         Args:
             get_updates_pool_timeout (:obj:`float`): See
@@ -751,8 +780,12 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
             Reset the default version to 1.1.
 
         Args:
-            get_updates_http_version (:obj:`str`): Pass ``"2"`` if you'd like to use HTTP/2 for
-                making requests to Telegram. Defaults to ``"1.1"``, in which case HTTP/1.1 is used.
+            get_updates_http_version (:obj:`str`): Pass ``"2"`` or ``"2.0"`` if you'd like to use
+                HTTP/2 for making requests to Telegram. Defaults to ``"1.1"``, in which case
+                HTTP/1.1 is used.
+
+                .. versionchanged:: 20.5
+                    Accept ``"2"`` as a valid value.
 
         Returns:
             :class:`ApplicationBuilder`: The same builder with the updated argument.
@@ -1092,6 +1125,9 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
 
                 application = Application.builder().token("TOKEN").post_init(post_init).build()
 
+        Note:
+            |post_methods_note|
+
         .. seealso:: :meth:`post_stop`, :meth:`post_shutdown`
 
         Args:
@@ -1129,6 +1165,9 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
                                         .token("TOKEN")
                                         .post_shutdown(post_shutdown)
                                         .build()
+
+        Note:
+            |post_methods_note|
 
         .. seealso:: :meth:`post_init`, :meth:`post_stop`
 
@@ -1169,6 +1208,9 @@ class ApplicationBuilder(Generic[BT, CCT, UD, CD, BD, JQ]):
                                         .token("TOKEN")
                                         .post_stop(post_stop)
                                         .build()
+
+        Note:
+            |post_methods_note|
 
         .. seealso:: :meth:`post_init`, :meth:`post_shutdown`
 

@@ -36,7 +36,7 @@ class AddDelayLiveStreamRequest(AbstractModel):
         :param _ExpireTime: 延播设置的过期时间。UTC 格式，例如：2018-11-29T19:00:00Z。
 注意：
 1. 默认7天后过期，且最长支持7天内生效。
-2. 北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+2. 北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#I)。
         :type ExpireTime: str
         """
         self._AppName = None
@@ -543,7 +543,7 @@ class BandwidthInfo(AbstractModel):
         :param _Time: 返回格式：
 使用UTC格式时间，
 例如：2019-01-08T10:00:00Z。
-注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
 根据粒度会有不同程度的缩减。
         :type Time: str
         :param _Bandwidth: 带宽。
@@ -1072,7 +1072,11 @@ class CallbackEventInfo(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _EventTime: 事件时间
+        :param _EventTime: 事件时间。
+接口返回支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)
+2）yyyy-MM-dd HH:mm:ss：使用此格式时，默认代表北京时间。
+接口返回的时间格式和查询请求传入的时间格式一致。
         :type EventTime: str
         :param _EventType: 事件类型
         :type EventType: int
@@ -1080,7 +1084,11 @@ class CallbackEventInfo(AbstractModel):
         :type Request: str
         :param _Response: 回调响应
         :type Response: str
-        :param _ResponseTime: 客户接口响应时间
+        :param _ResponseTime: 客户接口响应时间。
+接口返回支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)
+2）yyyy-MM-dd HH:mm:ss：使用此格式时，默认代表北京时间。
+接口返回的时间格式和查询请求传入的时间格式一致。
         :type ResponseTime: str
         :param _ResultCode: 回调结果
         :type ResultCode: int
@@ -1671,10 +1679,13 @@ class CommonMixInputParam(AbstractModel):
         :type LayoutParams: :class:`tencentcloud.live.v20180801.models.CommonMixLayoutParams`
         :param _CropParams: 输入流裁剪参数。
         :type CropParams: :class:`tencentcloud.live.v20180801.models.CommonMixCropParams`
+        :param _PortraitSegmentParams: 抠图参数。
+        :type PortraitSegmentParams: :class:`tencentcloud.live.v20180801.models.MixPortraitSegmentParams`
         """
         self._InputStreamName = None
         self._LayoutParams = None
         self._CropParams = None
+        self._PortraitSegmentParams = None
 
     @property
     def InputStreamName(self):
@@ -1700,6 +1711,14 @@ class CommonMixInputParam(AbstractModel):
     def CropParams(self, CropParams):
         self._CropParams = CropParams
 
+    @property
+    def PortraitSegmentParams(self):
+        return self._PortraitSegmentParams
+
+    @PortraitSegmentParams.setter
+    def PortraitSegmentParams(self, PortraitSegmentParams):
+        self._PortraitSegmentParams = PortraitSegmentParams
+
 
     def _deserialize(self, params):
         self._InputStreamName = params.get("InputStreamName")
@@ -1709,6 +1728,9 @@ class CommonMixInputParam(AbstractModel):
         if params.get("CropParams") is not None:
             self._CropParams = CommonMixCropParams()
             self._CropParams._deserialize(params.get("CropParams"))
+        if params.get("PortraitSegmentParams") is not None:
+            self._PortraitSegmentParams = MixPortraitSegmentParams()
+            self._PortraitSegmentParams._deserialize(params.get("PortraitSegmentParams"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1767,9 +1789,9 @@ class CommonMixLayoutParams(AbstractModel):
         :type LocationY: float
         :param _Color: 当InputType为3(画布)时，该值表示画布的颜色。
 常用的颜色有：
-红色：0xcc0033。
-黄色：0xcc9900。
-绿色：0xcccc33。
+红色：0xCC0033。
+黄色：0xCC9900。
+绿色：0xCCCC33。
 蓝色：0x99CCFF。
 黑色：0x000000。
 白色：0xFFFFFF。
@@ -2717,6 +2739,7 @@ SourceType 为点播（PullVodPushLive）可以填多个，上限30个。
 4. 视频编码格式仅支持: H264, H265。
 5. 音频编码格式仅支持: AAC。
 6. 点播源请使用小文件，尽量时长保持在1小时内，较大文件打开和续播耗时较久，耗时超过15秒会有无法正常转推风险。
+7. 避免使用低频存储的文件，该类文件因低频存储，拉取时容易出现慢速，影响拉转推质量。
         :type SourceUrls: list of str
         :param _DomainName: 推流域名。
 将拉取过来的流推到该域名。
@@ -3398,6 +3421,7 @@ class CreateLiveRecordTemplateRequest(AbstractModel):
         :param _Mp3Param: Mp3录制参数，开启Mp3录制时设置。
         :type Mp3Param: :class:`tencentcloud.live.v20180801.models.RecordParam`
         :param _RemoveWatermark: 是否去除水印，类型为慢直播时此参数无效。
+如果为false，则录制水印流或转码流；如果为true，则录制原始流。
         :type RemoveWatermark: bool
         :param _FlvSpecialParam: FLV 录制特殊参数。
         :type FlvSpecialParam: :class:`tencentcloud.live.v20180801.models.FlvSpecialParam`
@@ -5356,7 +5380,7 @@ class DayStreamPlayInfo(AbstractModel):
     def __init__(self):
         r"""
         :param _Time: 数据时间点，接口返回支持两种时间格式：
-1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见ISO日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
 2）yyyy-MM-dd HH:mm:ss：使用此格式时，默认代表北京时间。
 接口返回的时间格式和查询请求传入的时间格式一致。
         :type Time: str
@@ -7436,11 +7460,11 @@ class DescribeCallbackRecordsListRequest(AbstractModel):
     def __init__(self):
         r"""
         :param _StartTime: 起始时间点，接口查询支持两种时间格式：
-1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)
 2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
         :param _EndTime: 结束时间点，接口查询支持两种时间格式：
-1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)
 2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
 
 查询的起始和结束时间跨度不支持超过1天。仅支持查询最近14天的数据。
@@ -7856,6 +7880,66 @@ class DescribeDeliverBandwidthListResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeDeliverLogDownListRequest(AbstractModel):
+    """DescribeDeliverLogDownList请求参数结构体
+
+    """
+
+
+class DescribeDeliverLogDownListResponse(AbstractModel):
+    """DescribeDeliverLogDownList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LogInfoList: 日志信息列表。
+        :type LogInfoList: list of PushLogInfo
+        :param _TotalNum: 总条数。
+        :type TotalNum: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._LogInfoList = None
+        self._TotalNum = None
+        self._RequestId = None
+
+    @property
+    def LogInfoList(self):
+        return self._LogInfoList
+
+    @LogInfoList.setter
+    def LogInfoList(self, LogInfoList):
+        self._LogInfoList = LogInfoList
+
+    @property
+    def TotalNum(self):
+        return self._TotalNum
+
+    @TotalNum.setter
+    def TotalNum(self, TotalNum):
+        self._TotalNum = TotalNum
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("LogInfoList") is not None:
+            self._LogInfoList = []
+            for item in params.get("LogInfoList"):
+                obj = PushLogInfo()
+                obj._deserialize(item)
+                self._LogInfoList.append(obj)
+        self._TotalNum = params.get("TotalNum")
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeGroupProIspPlayInfoListRequest(AbstractModel):
     """DescribeGroupProIspPlayInfoList请求参数结构体
 
@@ -7863,9 +7947,15 @@ class DescribeGroupProIspPlayInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 起始时间点，格式为yyyy-mm-dd HH:MM:SS。
+        :param _StartTime: 起始时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
-        :param _EndTime: 结束时间点，格式为yyyy-mm-dd HH:MM:SS
+        :param _EndTime: 结束时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
 时间跨度在（0,3小时]，支持最近1个月数据查询。
         :type EndTime: str
         :param _PlayDomains: 播放域名，默认为不填，表示求总体数据。
@@ -7999,12 +8089,15 @@ class DescribeHttpStatusInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 起始时间，北京时间，
-格式：yyyy-mm-dd HH:MM:SS。
+        :param _StartTime: 起始时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
-        :param _EndTime: 结束时间，北京时间，
-格式：yyyy-mm-dd HH:MM:SS。
-注：最大时间跨度支持1天，支持最近3个月的数据查询。
+        :param _EndTime: 结束时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type EndTime: str
         :param _PlayDomains: 播放域名列表。
         :type PlayDomains: list of str
@@ -11456,13 +11549,13 @@ class DescribeLiveTimeShiftBillInfoListRequest(AbstractModel):
 
 使用 UTC 格式时间，
 例如：2019-01-08T10:00:00Z。
-注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
         :param _EndTime: UTC结束时间，支持最近三个月的查询，查询时间最长跨度为一个月。
 
 使用 UTC 格式时间，
 例如：2019-01-08T10:00:00Z。
-注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type EndTime: str
         :param _PushDomains: 推流域名列表，若不传递此参数，则表示查询总体数据。
         :type PushDomains: list of str
@@ -12066,14 +12159,13 @@ class DescribeLiveTranscodeTotalInfoRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 结束时间点，接口查询支持两种时间格式：
-1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
+        :param _StartTime: 开始时间，支持最近三个月的数据查询，起始时间和结束时间跨度不能超过三个月。接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)
 2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type StartTime: str
-        :param _EndTime: 结束时间，
-使用UTC格式时间，
-例如：2019-01-08T10:00:00Z。
-注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+        :param _EndTime: 结束时间，支持最近三个月的数据查询，起始时间和结束时间跨度不能超过三个月。接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
         :type EndTime: str
         :param _PushDomains: 推流域名列表，若不填，表示查询所有域名总体数据。
 指定域名时返回1小时粒度数据。
@@ -12697,11 +12789,15 @@ class DescribePlayErrorCodeDetailInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 起始时间，北京时间，
-格式：yyyy-mm-dd HH:MM:SS。
+        :param _StartTime: 起始时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
-        :param _EndTime: 结束时间，北京时间，
-格式：yyyy-mm-dd HH:MM:SS。
+        :param _EndTime: 结束时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
 注：EndTime 和 StartTime 只支持最近1天的数据查询。
         :type EndTime: str
         :param _Granularity: 查询粒度：
@@ -13135,11 +13231,15 @@ class DescribeProIspPlaySumInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 起始时间，北京时间，
-格式：yyyy-mm-dd HH:MM:SS。
+        :param _StartTime: 起始时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
-        :param _EndTime: 结束时间，北京时间，
-格式：yyyy-mm-dd HH:MM:SS。
+        :param _EndTime: 结束时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
 注：EndTime 和 StartTime 只支持最近1天的数据查询。
         :type EndTime: str
         :param _StatType: 统计的类型，可选值：”Province”(省份)，”Isp”(运营商)，“CountryOrArea”(国家或地区)。
@@ -13393,11 +13493,15 @@ class DescribeProvinceIspPlayInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 起始时间点，当前使用北京时间，
-例：2019-02-21 10:00:00。
+        :param _StartTime: 起始时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
-        :param _EndTime: 结束时间点，当前使用北京时间，
-例：2019-02-21 12:00:00。
+        :param _EndTime: 结束时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
 注：EndTime 和 StartTime 只支持最近1天的数据查询。
         :type EndTime: str
         :param _Granularity: 支持如下粒度：
@@ -14642,9 +14746,16 @@ class DescribeStreamPushInfoListRequest(AbstractModel):
         r"""
         :param _StreamName: 流名称。
         :type StreamName: str
-        :param _StartTime: 起始时间点，北京时间，格式为yyyy-mm-dd HH:MM:SS。
+        :param _StartTime: 起始时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
-        :param _EndTime: 结束时间点，北京时间，格式为yyyy-mm-dd HH:MM:SS，支持查询最近7天数据，建议查询时间跨度在3小时之内。
+        :param _EndTime: 结束时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
+支持查询最近7天数据，建议查询时间跨度在3小时之内。
         :type EndTime: str
         :param _PushDomain: 推流域名。
         :type PushDomain: str
@@ -15072,9 +15183,15 @@ class DescribeTopClientIpSumInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 起始时间点，格式为yyyy-mm-dd HH:MM:SS。
+        :param _StartTime: 起始时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
         :type StartTime: str
-        :param _EndTime: 结束时间点，格式为yyyy-mm-dd HH:MM:SS
+        :param _EndTime: 结束时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO,-%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
 时间跨度在[0,4小时]，支持最近1天数据查询。
         :type EndTime: str
         :param _PlayDomains: 播放域名，默认为不填，表示求总体数据。
@@ -16509,7 +16626,7 @@ class ForbidLiveStreamRequest(AbstractModel):
         :param _ResumeTime: 恢复流的时间。UTC 格式，例如：2018-11-29T19:00:00Z。
 注意：
 1. 默认禁推7天，且最长支持禁推90天。
-2. 北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+2. 北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#I)。
         :type ResumeTime: str
         :param _Reason: 禁推原因。
 注明：请务必填写禁推原因，防止误操作。
@@ -16843,7 +16960,10 @@ class HttpCodeValue(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Time: 时间，格式：yyyy-mm-dd HH:MM:SS。
+        :param _Time: 时间，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type Time: str
         :param _Numbers: 次数。
         :type Numbers: int
@@ -16901,7 +17021,9 @@ class HttpStatusData(AbstractModel):
     def __init__(self):
         r"""
         :param _Time: 数据时间点，
-格式：yyyy-mm-dd HH:MM:SS。
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type Time: str
         :param _HttpStatusInfoList: 播放状态码详细信息。
         :type HttpStatusInfoList: list of HttpStatusInfo
@@ -17949,6 +18071,47 @@ class MPSResult(AbstractModel):
         
 
 
+class MixPortraitSegmentParams(AbstractModel):
+    """混流抠图参数
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Color: 抠图背景颜色，
+常用的颜色有：
+红色：0xcc0033。
+黄色：0xcc9900。
+绿色：0xcccc33。
+蓝色：0x99CCFF。
+黑色：0x000000。
+白色：0xFFFFFF。
+灰色：0x999999。
+        :type Color: str
+        """
+        self._Color = None
+
+    @property
+    def Color(self):
+        return self._Color
+
+    @Color.setter
+    def Color(self, Color):
+        self._Color = Color
+
+
+    def _deserialize(self, params):
+        self._Color = params.get("Color")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ModifyLiveCallbackTemplateRequest(AbstractModel):
     """ModifyLiveCallbackTemplate请求参数结构体
 
@@ -18715,7 +18878,7 @@ SourceType为点播（PullVodPushLive）可以填多个，上限30个。
         :param _StartTime: 开始时间。
 使用UTC格式时间，
 例如：2019-01-08T10:00:00Z。
-注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#I)。
         :type StartTime: str
         :param _EndTime: 结束时间，注意：
 1. 结束时间必须大于开始时间；
@@ -18723,7 +18886,7 @@ SourceType为点播（PullVodPushLive）可以填多个，上限30个。
 3. 结束时间 和 开始时间 间隔必须小于七天。
 使用UTC格式时间，
 例如：2019-01-08T10:00:00Z。
-注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#I)。
         :type EndTime: str
         :param _VodLoopTimes: 点播拉流转推循环次数。
 -1：无限循环，直到任务结束。
@@ -22118,6 +22281,77 @@ class PushDataInfo(AbstractModel):
         
 
 
+class PushLogInfo(AbstractModel):
+    """推流域名日志信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _LogName: 日志名称。
+        :type LogName: str
+        :param _LogUrl: 日志下载地址。
+        :type LogUrl: str
+        :param _LogTime: 日志时间。UTC 格式，例如：2018-11-29T19:00:00Z。
+注意：
+1. 北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type LogTime: str
+        :param _FileSize: 文件大小，单位字节。
+        :type FileSize: int
+        """
+        self._LogName = None
+        self._LogUrl = None
+        self._LogTime = None
+        self._FileSize = None
+
+    @property
+    def LogName(self):
+        return self._LogName
+
+    @LogName.setter
+    def LogName(self, LogName):
+        self._LogName = LogName
+
+    @property
+    def LogUrl(self):
+        return self._LogUrl
+
+    @LogUrl.setter
+    def LogUrl(self, LogUrl):
+        self._LogUrl = LogUrl
+
+    @property
+    def LogTime(self):
+        return self._LogTime
+
+    @LogTime.setter
+    def LogTime(self, LogTime):
+        self._LogTime = LogTime
+
+    @property
+    def FileSize(self):
+        return self._FileSize
+
+    @FileSize.setter
+    def FileSize(self, FileSize):
+        self._FileSize = FileSize
+
+
+    def _deserialize(self, params):
+        self._LogName = params.get("LogName")
+        self._LogUrl = params.get("LogUrl")
+        self._LogTime = params.get("LogTime")
+        self._FileSize = params.get("FileSize")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class PushQualityData(AbstractModel):
     """某条流的推流质量详情数据。
 
@@ -22125,7 +22359,9 @@ class PushQualityData(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Time: 数据时间，格式: %Y-%m-%d %H:%M:%S.%ms，精确到毫秒级。
+        :param _Time: 数据时间，使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type Time: str
         :param _PushDomain: 推流域名。
         :type PushDomain: str

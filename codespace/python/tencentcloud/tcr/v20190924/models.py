@@ -8493,7 +8493,7 @@ class DescribeServiceAccountsRequest(AbstractModel):
         :type RegistryId: str
         :param _All: 列出所有服务级账号
         :type All: bool
-        :param _EmbedPermission: 是否填充策略
+        :param _EmbedPermission: 是否填充权限信息
         :type EmbedPermission: bool
         :param _Filters: 过滤条件
         :type Filters: list of Filter
@@ -8590,7 +8590,7 @@ class DescribeServiceAccountsResponse(AbstractModel):
         :param _ServiceAccounts: 服务级账号列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type ServiceAccounts: list of ServiceAccount
-        :param _TotalCount: 自定义账户数量
+        :param _TotalCount: 服务级账户数量
         :type TotalCount: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -9623,6 +9623,148 @@ class DuplicateImagePersonalResponse(AbstractModel):
         if params.get("Data") is not None:
             self._Data = DupImageTagResp()
             self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
+class DuplicateImageRequest(AbstractModel):
+    """DuplicateImage请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RegistryId: 实例id
+        :type RegistryId: str
+        :param _SourceNamespace: 源命名空间名称
+        :type SourceNamespace: str
+        :param _SourceRepo: 源镜像仓库名称
+        :type SourceRepo: str
+        :param _SourceReference: 源镜像tag或digest值，目前仅支持tag
+        :type SourceReference: str
+        :param _DestinationTag: 目标镜像版本
+        :type DestinationTag: str
+        :param _DestinationNamespace: 目标命名空间，不填默认与源一致
+        :type DestinationNamespace: str
+        :param _DestinationRepo: 目标镜像仓库，不填默认与源一致
+        :type DestinationRepo: str
+        :param _Override: 是否覆盖
+        :type Override: bool
+        """
+        self._RegistryId = None
+        self._SourceNamespace = None
+        self._SourceRepo = None
+        self._SourceReference = None
+        self._DestinationTag = None
+        self._DestinationNamespace = None
+        self._DestinationRepo = None
+        self._Override = None
+
+    @property
+    def RegistryId(self):
+        return self._RegistryId
+
+    @RegistryId.setter
+    def RegistryId(self, RegistryId):
+        self._RegistryId = RegistryId
+
+    @property
+    def SourceNamespace(self):
+        return self._SourceNamespace
+
+    @SourceNamespace.setter
+    def SourceNamespace(self, SourceNamespace):
+        self._SourceNamespace = SourceNamespace
+
+    @property
+    def SourceRepo(self):
+        return self._SourceRepo
+
+    @SourceRepo.setter
+    def SourceRepo(self, SourceRepo):
+        self._SourceRepo = SourceRepo
+
+    @property
+    def SourceReference(self):
+        return self._SourceReference
+
+    @SourceReference.setter
+    def SourceReference(self, SourceReference):
+        self._SourceReference = SourceReference
+
+    @property
+    def DestinationTag(self):
+        return self._DestinationTag
+
+    @DestinationTag.setter
+    def DestinationTag(self, DestinationTag):
+        self._DestinationTag = DestinationTag
+
+    @property
+    def DestinationNamespace(self):
+        return self._DestinationNamespace
+
+    @DestinationNamespace.setter
+    def DestinationNamespace(self, DestinationNamespace):
+        self._DestinationNamespace = DestinationNamespace
+
+    @property
+    def DestinationRepo(self):
+        return self._DestinationRepo
+
+    @DestinationRepo.setter
+    def DestinationRepo(self, DestinationRepo):
+        self._DestinationRepo = DestinationRepo
+
+    @property
+    def Override(self):
+        return self._Override
+
+    @Override.setter
+    def Override(self, Override):
+        self._Override = Override
+
+
+    def _deserialize(self, params):
+        self._RegistryId = params.get("RegistryId")
+        self._SourceNamespace = params.get("SourceNamespace")
+        self._SourceRepo = params.get("SourceRepo")
+        self._SourceReference = params.get("SourceReference")
+        self._DestinationTag = params.get("DestinationTag")
+        self._DestinationNamespace = params.get("DestinationNamespace")
+        self._DestinationRepo = params.get("DestinationRepo")
+        self._Override = params.get("Override")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DuplicateImageResponse(AbstractModel):
+    """DuplicateImage返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 
@@ -12311,7 +12453,7 @@ class Permission(AbstractModel):
         :param _Resource: 资源路径，目前仅支持Namespace
 注意：此字段可能返回 null，表示取不到有效值。
         :type Resource: str
-        :param _Actions: 动作，目前仅支持：tcr:PushRepository、tcr:PullRepository
+        :param _Actions: 动作，目前仅支持：tcr:PushRepository、tcr:PullRepository、tcr:CreateRepository、tcr:CreateHelmChart、tcr:DescribeHelmCharts
 注意：此字段可能返回 null，表示取不到有效值。
         :type Actions: list of str
         """
@@ -12506,6 +12648,8 @@ class Registry(AbstractModel):
         :param _RenewFlag: 预付费续费标识，0表示手动续费，1表示自动续费，2不续费并且不通知
 注意：此字段可能返回 null，表示取不到有效值。
         :type RenewFlag: int
+        :param _DeletionProtection: 是否开启实例删除保护，false表示不开启
+        :type DeletionProtection: bool
         """
         self._RegistryId = None
         self._RegistryName = None
@@ -12522,6 +12666,7 @@ class Registry(AbstractModel):
         self._ExpiredAt = None
         self._PayMod = None
         self._RenewFlag = None
+        self._DeletionProtection = None
 
     @property
     def RegistryId(self):
@@ -12643,6 +12788,14 @@ class Registry(AbstractModel):
     def RenewFlag(self, RenewFlag):
         self._RenewFlag = RenewFlag
 
+    @property
+    def DeletionProtection(self):
+        return self._DeletionProtection
+
+    @DeletionProtection.setter
+    def DeletionProtection(self, DeletionProtection):
+        self._DeletionProtection = DeletionProtection
+
 
     def _deserialize(self, params):
         self._RegistryId = params.get("RegistryId")
@@ -12662,6 +12815,7 @@ class Registry(AbstractModel):
         self._ExpiredAt = params.get("ExpiredAt")
         self._PayMod = params.get("PayMod")
         self._RenewFlag = params.get("RenewFlag")
+        self._DeletionProtection = params.get("DeletionProtection")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -14349,8 +14503,10 @@ class Tag(AbstractModel):
     def __init__(self):
         r"""
         :param _Key: 云标签的key
+注意：此字段可能返回 null，表示取不到有效值。
         :type Key: str
         :param _Value: 云标签的值
+注意：此字段可能返回 null，表示取不到有效值。
         :type Value: str
         """
         self._Key = None

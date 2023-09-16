@@ -4249,9 +4249,12 @@ class AiRecognitionTaskObjectResultItem(AbstractModel):
         :type Name: str
         :param _SegmentSet: 物体出现的片段列表。
         :type SegmentSet: list of AiRecognitionTaskObjectSeqmentItem
+        :param _RecognitionSegmentSet: 物体出现的片段列表。
+        :type RecognitionSegmentSet: list of AiRecognitionTaskObjectSegmentItem
         """
         self._Name = None
         self._SegmentSet = None
+        self._RecognitionSegmentSet = None
 
     @property
     def Name(self):
@@ -4263,11 +4266,23 @@ class AiRecognitionTaskObjectResultItem(AbstractModel):
 
     @property
     def SegmentSet(self):
+        warnings.warn("parameter `SegmentSet` is deprecated", DeprecationWarning) 
+
         return self._SegmentSet
 
     @SegmentSet.setter
     def SegmentSet(self, SegmentSet):
+        warnings.warn("parameter `SegmentSet` is deprecated", DeprecationWarning) 
+
         self._SegmentSet = SegmentSet
+
+    @property
+    def RecognitionSegmentSet(self):
+        return self._RecognitionSegmentSet
+
+    @RecognitionSegmentSet.setter
+    def RecognitionSegmentSet(self, RecognitionSegmentSet):
+        self._RecognitionSegmentSet = RecognitionSegmentSet
 
 
     def _deserialize(self, params):
@@ -4278,6 +4293,12 @@ class AiRecognitionTaskObjectResultItem(AbstractModel):
                 obj = AiRecognitionTaskObjectSeqmentItem()
                 obj._deserialize(item)
                 self._SegmentSet.append(obj)
+        if params.get("RecognitionSegmentSet") is not None:
+            self._RecognitionSegmentSet = []
+            for item in params.get("RecognitionSegmentSet"):
+                obj = AiRecognitionTaskObjectSegmentItem()
+                obj._deserialize(item)
+                self._RecognitionSegmentSet.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4341,6 +4362,75 @@ class AiRecognitionTaskObjectResultOutput(AbstractModel):
                 self._ResultSet.append(obj)
         self._ResultSetFileUrl = params.get("ResultSetFileUrl")
         self._ResultSetFileUrlExpireTime = params.get("ResultSetFileUrlExpireTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AiRecognitionTaskObjectSegmentItem(AbstractModel):
+    """物体识别结果片段。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StartTimeOffset: 识别片段起始的偏移时间，单位：秒。
+        :type StartTimeOffset: float
+        :param _EndTimeOffset: 识别片段终止的偏移时间，单位：秒。
+        :type EndTimeOffset: float
+        :param _Confidence: 识别片段置信度。取值：0~100。
+        :type Confidence: float
+        :param _AreaCoordSet: 识别结果的区域坐标。数组包含 4 个元素 [x1,y1,x2,y2]，依次表示区域左上点、右下点的横纵坐标。
+        :type AreaCoordSet: list of int
+        """
+        self._StartTimeOffset = None
+        self._EndTimeOffset = None
+        self._Confidence = None
+        self._AreaCoordSet = None
+
+    @property
+    def StartTimeOffset(self):
+        return self._StartTimeOffset
+
+    @StartTimeOffset.setter
+    def StartTimeOffset(self, StartTimeOffset):
+        self._StartTimeOffset = StartTimeOffset
+
+    @property
+    def EndTimeOffset(self):
+        return self._EndTimeOffset
+
+    @EndTimeOffset.setter
+    def EndTimeOffset(self, EndTimeOffset):
+        self._EndTimeOffset = EndTimeOffset
+
+    @property
+    def Confidence(self):
+        return self._Confidence
+
+    @Confidence.setter
+    def Confidence(self, Confidence):
+        self._Confidence = Confidence
+
+    @property
+    def AreaCoordSet(self):
+        return self._AreaCoordSet
+
+    @AreaCoordSet.setter
+    def AreaCoordSet(self, AreaCoordSet):
+        self._AreaCoordSet = AreaCoordSet
+
+
+    def _deserialize(self, params):
+        self._StartTimeOffset = params.get("StartTimeOffset")
+        self._EndTimeOffset = params.get("EndTimeOffset")
+        self._Confidence = params.get("Confidence")
+        self._AreaCoordSet = params.get("AreaCoordSet")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12181,7 +12271,7 @@ class CreateAdaptiveDynamicStreamingTemplateRequest(AbstractModel):
 <li>SimpleAES</li>
 <li>Widevine</li>
 <li>FairPlay</li>
-如果取值为空字符串，代表不对视频做 DRM 保护。
+默认值为空字符串，如果取值为空字符串，代表不对视频做 DRM 保护。
         :type DrmType: str
         :param _DrmKeyProvider: DRM 的密钥提供商，取值范围：
 <li>SDMC：华曦达；</li>
@@ -12826,6 +12916,65 @@ class CreateContentReviewTemplateResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateDomainVerifyRecordRequest(AbstractModel):
+    """CreateDomainVerifyRecord请求参数结构体
+
+    """
+
+
+class CreateDomainVerifyRecordResponse(AbstractModel):
+    """CreateDomainVerifyRecord返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _DNSVerifyInfo: DNS解析信息
+        :type DNSVerifyInfo: :class:`tencentcloud.vod.v20180717.models.DNSVerifyInfo`
+        :param _FileVerifyInfo: 文件验证信息
+        :type FileVerifyInfo: :class:`tencentcloud.vod.v20180717.models.FileVerifyInfo`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._DNSVerifyInfo = None
+        self._FileVerifyInfo = None
+        self._RequestId = None
+
+    @property
+    def DNSVerifyInfo(self):
+        return self._DNSVerifyInfo
+
+    @DNSVerifyInfo.setter
+    def DNSVerifyInfo(self, DNSVerifyInfo):
+        self._DNSVerifyInfo = DNSVerifyInfo
+
+    @property
+    def FileVerifyInfo(self):
+        return self._FileVerifyInfo
+
+    @FileVerifyInfo.setter
+    def FileVerifyInfo(self, FileVerifyInfo):
+        self._FileVerifyInfo = FileVerifyInfo
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("DNSVerifyInfo") is not None:
+            self._DNSVerifyInfo = DNSVerifyInfo()
+            self._DNSVerifyInfo._deserialize(params.get("DNSVerifyInfo"))
+        if params.get("FileVerifyInfo") is not None:
+            self._FileVerifyInfo = FileVerifyInfo()
+            self._FileVerifyInfo._deserialize(params.get("FileVerifyInfo"))
+        self._RequestId = params.get("RequestId")
+
+
 class CreateEnhanceMediaTemplateRequest(AbstractModel):
     """CreateEnhanceMediaTemplate请求参数结构体
 
@@ -13400,8 +13549,10 @@ class CreateImageSpriteTemplateRequest(AbstractModel):
 <li>当 SampleType 为 Time 时，指定采样间隔的时间，单位为秒。</li>
         :type SampleInterval: int
         :param _RowCount: 雪碧图中小图的行数。
+注意：小图的行数会影响最终大图的高度，大图的高度最大为15000像素，其中大图的高度为小图行数与小图高度的乘积。
         :type RowCount: int
         :param _ColumnCount: 雪碧图中小图的列数。
+注意：小图的列数会影响最终大图的宽度，大图的宽度最大为15000像素，其中大图的宽度为小图列数与小图宽度的乘积。
         :type ColumnCount: int
         :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
         :type SubAppId: int
@@ -13420,6 +13571,7 @@ class CreateImageSpriteTemplateRequest(AbstractModel):
 <li>当 Width 非 0，Height 为 0，则 Height 按比例缩放；</li>
 <li>当 Width、Height 均非 0，则分辨率按用户指定。</li>
 默认值：0。
+注意：小图的宽度会影响最终大图的宽度，大图的宽度最大为15000像素，其中大图的宽度为小图列数与小图宽度的乘积。
         :type Width: int
         :param _Height: 雪碧图中小图的高度（或短边）的最大值，取值范围：0 和 [128, 4096]，单位：px。
 <li>当 Width、Height 均为 0，则分辨率同源；</li>
@@ -13427,6 +13579,7 @@ class CreateImageSpriteTemplateRequest(AbstractModel):
 <li>当 Width 非 0，Height 为 0，则 Height 按比例缩放；</li>
 <li>当 Width、Height 均非 0，则分辨率按用户指定。</li>
 默认值：0。
+注意：小图的高度会影响最终大图的高度，大图的高度最大为15000像素，其中大图的高度为小图行数与小图高度的乘积。
         :type Height: int
         :param _ResolutionAdaptive: 分辨率自适应，可选值：
 <li>open：开启，此时，Width 代表视频的长边，Height 表示视频的短边；</li>
@@ -13949,10 +14102,10 @@ class CreateQualityInspectTemplateRequest(AbstractModel):
         :type MosaicConfigure: :class:`tencentcloud.vod.v20180717.models.MosaicConfigureInfo`
         :param _QRCodeConfigure: 视频画面二维码检测的控制参数。
         :type QRCodeConfigure: :class:`tencentcloud.vod.v20180717.models.QRCodeConfigureInfo`
-        :param _QualityEvaluationConfigure: 视频画面质量评价的控制参数。
-        :type QualityEvaluationConfigure: :class:`tencentcloud.vod.v20180717.models.QualityEvaluationConfigureInfo`
         :param _VoiceConfigure: 音频（静音、低音、爆音）检测的控制参数。
         :type VoiceConfigure: :class:`tencentcloud.vod.v20180717.models.VoiceConfigureInfo`
+        :param _QualityEvaluationConfigure: 视频画面质量评价的控制参数。
+        :type QualityEvaluationConfigure: :class:`tencentcloud.vod.v20180717.models.QualityEvaluationConfigureInfo`
         """
         self._SubAppId = None
         self._Name = None
@@ -13966,8 +14119,8 @@ class CreateQualityInspectTemplateRequest(AbstractModel):
         self._NoiseConfigure = None
         self._MosaicConfigure = None
         self._QRCodeConfigure = None
-        self._QualityEvaluationConfigure = None
         self._VoiceConfigure = None
+        self._QualityEvaluationConfigure = None
 
     @property
     def SubAppId(self):
@@ -14066,20 +14219,20 @@ class CreateQualityInspectTemplateRequest(AbstractModel):
         self._QRCodeConfigure = QRCodeConfigure
 
     @property
-    def QualityEvaluationConfigure(self):
-        return self._QualityEvaluationConfigure
-
-    @QualityEvaluationConfigure.setter
-    def QualityEvaluationConfigure(self, QualityEvaluationConfigure):
-        self._QualityEvaluationConfigure = QualityEvaluationConfigure
-
-    @property
     def VoiceConfigure(self):
         return self._VoiceConfigure
 
     @VoiceConfigure.setter
     def VoiceConfigure(self, VoiceConfigure):
         self._VoiceConfigure = VoiceConfigure
+
+    @property
+    def QualityEvaluationConfigure(self):
+        return self._QualityEvaluationConfigure
+
+    @QualityEvaluationConfigure.setter
+    def QualityEvaluationConfigure(self, QualityEvaluationConfigure):
+        self._QualityEvaluationConfigure = QualityEvaluationConfigure
 
 
     def _deserialize(self, params):
@@ -14111,12 +14264,12 @@ class CreateQualityInspectTemplateRequest(AbstractModel):
         if params.get("QRCodeConfigure") is not None:
             self._QRCodeConfigure = QRCodeConfigureInfo()
             self._QRCodeConfigure._deserialize(params.get("QRCodeConfigure"))
-        if params.get("QualityEvaluationConfigure") is not None:
-            self._QualityEvaluationConfigure = QualityEvaluationConfigureInfo()
-            self._QualityEvaluationConfigure._deserialize(params.get("QualityEvaluationConfigure"))
         if params.get("VoiceConfigure") is not None:
             self._VoiceConfigure = VoiceConfigureInfo()
             self._VoiceConfigure._deserialize(params.get("VoiceConfigure"))
+        if params.get("QualityEvaluationConfigure") is not None:
+            self._QualityEvaluationConfigure = QualityEvaluationConfigureInfo()
+            self._QualityEvaluationConfigure._deserialize(params.get("QualityEvaluationConfigure"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -15566,18 +15719,18 @@ class CreateVodDomainRequest(AbstractModel):
         r"""
         :param _Domain: 需要接入点播的加速域名。注意：不支持填写泛域名。
         :type Domain: str
-        :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
-        :type SubAppId: int
         :param _AccelerateArea: 需要开启 CDN 加速的区域：
 <li>Chinese Mainland：中国境内（不包含港澳台）。</li>
 <li>Outside Chinese Mainland: 中国境外。</li>
 <li>Global: 全球范围。</li>
 如果没有设置 AccelerateArea， 点播会根据用户在腾讯云设置的地域信息自动开通中国境内或者中国境外的 CDN 加速。开启中国境内加速的域名，需要先[备案域名](/document/product/243/18905)。
         :type AccelerateArea: str
+        :param _SubAppId: <b>点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。</b>
+        :type SubAppId: int
         """
         self._Domain = None
-        self._SubAppId = None
         self._AccelerateArea = None
+        self._SubAppId = None
 
     @property
     def Domain(self):
@@ -15588,14 +15741,6 @@ class CreateVodDomainRequest(AbstractModel):
         self._Domain = Domain
 
     @property
-    def SubAppId(self):
-        return self._SubAppId
-
-    @SubAppId.setter
-    def SubAppId(self, SubAppId):
-        self._SubAppId = SubAppId
-
-    @property
     def AccelerateArea(self):
         return self._AccelerateArea
 
@@ -15603,11 +15748,19 @@ class CreateVodDomainRequest(AbstractModel):
     def AccelerateArea(self, AccelerateArea):
         self._AccelerateArea = AccelerateArea
 
+    @property
+    def SubAppId(self):
+        return self._SubAppId
+
+    @SubAppId.setter
+    def SubAppId(self, SubAppId):
+        self._SubAppId = SubAppId
+
 
     def _deserialize(self, params):
         self._Domain = params.get("Domain")
-        self._SubAppId = params.get("SubAppId")
         self._AccelerateArea = params.get("AccelerateArea")
+        self._SubAppId = params.get("SubAppId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -15946,6 +16099,63 @@ class CreateWordSamplesResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
+
+
+class DNSVerifyInfo(AbstractModel):
+    """DNS解析验证信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SubDomain: 子解析。
+        :type SubDomain: str
+        :param _Record: 解析值。
+        :type Record: str
+        :param _RecordType: 解析类型。
+        :type RecordType: str
+        """
+        self._SubDomain = None
+        self._Record = None
+        self._RecordType = None
+
+    @property
+    def SubDomain(self):
+        return self._SubDomain
+
+    @SubDomain.setter
+    def SubDomain(self, SubDomain):
+        self._SubDomain = SubDomain
+
+    @property
+    def Record(self):
+        return self._Record
+
+    @Record.setter
+    def Record(self, Record):
+        self._Record = Record
+
+    @property
+    def RecordType(self):
+        return self._RecordType
+
+    @RecordType.setter
+    def RecordType(self, RecordType):
+        self._RecordType = RecordType
+
+
+    def _deserialize(self, params):
+        self._SubDomain = params.get("SubDomain")
+        self._Record = params.get("Record")
+        self._RecordType = params.get("RecordType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DailyPlayStatInfo(AbstractModel):
@@ -21112,6 +21322,12 @@ class DescribeMediaProcessUsageDataRequest(AbstractModel):
 <li> ExtractTraceWatermark: 提取水印</li>
 <li> AddTraceWatermark: 添加水印</li>
 <li> RebuildMedia: 音画质重生</li>
+<li> QualityInspect: 音画质检测</li>
+<li> VideoHighlight: 视频智能集锦</li>
+<li> VideoTag: 视频智能标签</li>
+<li> VideoClassification:  视频智能分类</li>
+<li> VideoCover: 视频智能封面</li>
+<li> VideoSegment: 视频智能拆条</li>
 <li>Transcode: 转码，包含普通转码、极速高清和视频编辑（不推荐使用）</li>
         :type Type: str
         """
@@ -27534,6 +27750,64 @@ class FileUploadTask(AbstractModel):
         
 
 
+class FileVerifyInfo(AbstractModel):
+    """文件验证信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FileVerifyUrl: 文件验证 URL 指引。
+        :type FileVerifyUrl: str
+        :param _FileVerifyDomains: 文件校验域名列表。
+        :type FileVerifyDomains: list of str
+        :param _FileVerifyName: 文件校验文件名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FileVerifyName: str
+        """
+        self._FileVerifyUrl = None
+        self._FileVerifyDomains = None
+        self._FileVerifyName = None
+
+    @property
+    def FileVerifyUrl(self):
+        return self._FileVerifyUrl
+
+    @FileVerifyUrl.setter
+    def FileVerifyUrl(self, FileVerifyUrl):
+        self._FileVerifyUrl = FileVerifyUrl
+
+    @property
+    def FileVerifyDomains(self):
+        return self._FileVerifyDomains
+
+    @FileVerifyDomains.setter
+    def FileVerifyDomains(self, FileVerifyDomains):
+        self._FileVerifyDomains = FileVerifyDomains
+
+    @property
+    def FileVerifyName(self):
+        return self._FileVerifyName
+
+    @FileVerifyName.setter
+    def FileVerifyName(self, FileVerifyName):
+        self._FileVerifyName = FileVerifyName
+
+
+    def _deserialize(self, params):
+        self._FileVerifyUrl = params.get("FileVerifyUrl")
+        self._FileVerifyDomains = params.get("FileVerifyDomains")
+        self._FileVerifyName = params.get("FileVerifyName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ForbidMediaDistributionRequest(AbstractModel):
     """ForbidMediaDistribution请求参数结构体
 
@@ -29816,6 +30090,63 @@ class LiveRealTimeClipStreamInfo(AbstractModel):
     def _deserialize(self, params):
         self._Type = params.get("Type")
         self._TemplateId = params.get("TemplateId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LiveRecordInfo(AbstractModel):
+    """直播录制信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StreamId: 直播录制流 ID。
+        :type StreamId: str
+        :param _RecordStartTime: 录制起始时间，使用  [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type RecordStartTime: str
+        :param _RecordEndTime: 录制结束时间，使用  [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。
+        :type RecordEndTime: str
+        """
+        self._StreamId = None
+        self._RecordStartTime = None
+        self._RecordEndTime = None
+
+    @property
+    def StreamId(self):
+        return self._StreamId
+
+    @StreamId.setter
+    def StreamId(self, StreamId):
+        self._StreamId = StreamId
+
+    @property
+    def RecordStartTime(self):
+        return self._RecordStartTime
+
+    @RecordStartTime.setter
+    def RecordStartTime(self, RecordStartTime):
+        self._RecordStartTime = RecordStartTime
+
+    @property
+    def RecordEndTime(self):
+        return self._RecordEndTime
+
+    @RecordEndTime.setter
+    def RecordEndTime(self, RecordEndTime):
+        self._RecordEndTime = RecordEndTime
+
+
+    def _deserialize(self, params):
+        self._StreamId = params.get("StreamId")
+        self._RecordStartTime = params.get("RecordStartTime")
+        self._RecordEndTime = params.get("RecordEndTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -33874,18 +34205,27 @@ class MediaSourceData(AbstractModel):
 <li>Record：来自录制。如直播录制、直播时移录制等。</li>
 <li>Upload：来自上传。如拉取上传、服务端上传、客户端 UGC 上传等。</li>
 <li>VideoProcessing：来自视频处理。如视频拼接、视频剪辑等。</li>
+<li>TrtcRecord：来自TRTC 伴生录制。</li>
 <li>WebPageRecord：来自全景录制。</li>
 <li>Unknown：未知来源。</li>
         :type SourceType: str
-        :param _SourceContext: 用户创建文件时透传的字段
+        :param _SourceContext: 用户创建文件时透传的字段。
         :type SourceContext: str
-        :param _TrtcRecordInfo: TRTC 伴生录制信息。
+        :param _LiveRecordInfo: 直播录制信息，当文件来源为 Record 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LiveRecordInfo: :class:`tencentcloud.vod.v20180717.models.LiveRecordInfo`
+        :param _TrtcRecordInfo: TRTC 伴生录制信息，当文件来源为 TrtcRecord 时有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type TrtcRecordInfo: :class:`tencentcloud.vod.v20180717.models.TrtcRecordInfo`
+        :param _WebPageRecordInfo: 全景录制信息，当文件来源为 WebPageRecord 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WebPageRecordInfo: :class:`tencentcloud.vod.v20180717.models.WebPageRecordInfo`
         """
         self._SourceType = None
         self._SourceContext = None
+        self._LiveRecordInfo = None
         self._TrtcRecordInfo = None
+        self._WebPageRecordInfo = None
 
     @property
     def SourceType(self):
@@ -33904,6 +34244,14 @@ class MediaSourceData(AbstractModel):
         self._SourceContext = SourceContext
 
     @property
+    def LiveRecordInfo(self):
+        return self._LiveRecordInfo
+
+    @LiveRecordInfo.setter
+    def LiveRecordInfo(self, LiveRecordInfo):
+        self._LiveRecordInfo = LiveRecordInfo
+
+    @property
     def TrtcRecordInfo(self):
         return self._TrtcRecordInfo
 
@@ -33911,13 +34259,27 @@ class MediaSourceData(AbstractModel):
     def TrtcRecordInfo(self, TrtcRecordInfo):
         self._TrtcRecordInfo = TrtcRecordInfo
 
+    @property
+    def WebPageRecordInfo(self):
+        return self._WebPageRecordInfo
+
+    @WebPageRecordInfo.setter
+    def WebPageRecordInfo(self, WebPageRecordInfo):
+        self._WebPageRecordInfo = WebPageRecordInfo
+
 
     def _deserialize(self, params):
         self._SourceType = params.get("SourceType")
         self._SourceContext = params.get("SourceContext")
+        if params.get("LiveRecordInfo") is not None:
+            self._LiveRecordInfo = LiveRecordInfo()
+            self._LiveRecordInfo._deserialize(params.get("LiveRecordInfo"))
         if params.get("TrtcRecordInfo") is not None:
             self._TrtcRecordInfo = TrtcRecordInfo()
             self._TrtcRecordInfo._deserialize(params.get("TrtcRecordInfo"))
+        if params.get("WebPageRecordInfo") is not None:
+            self._WebPageRecordInfo = WebPageRecordInfo()
+            self._WebPageRecordInfo._deserialize(params.get("WebPageRecordInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -34427,6 +34789,7 @@ class MediaTranscodeItem(AbstractModel):
         :param _Url: 转码后的视频文件地址。
         :type Url: str
         :param _Definition: 转码规格 ID，参见[转码参数模板](https://cloud.tencent.com/document/product/266/33476)。
+<font color=red>注意：取值 0 表示原始文件。</font> 
         :type Definition: int
         :param _Bitrate: 视频流码率平均值与音频流码率平均值之和， 单位：bps。
         :type Bitrate: int
@@ -34619,9 +34982,12 @@ class MediaTransitionItem(AbstractModel):
         :type Duration: float
         :param _Transitions: 转场操作列表。图像转场操作和音频转场操作各自最多支持一个。
         :type Transitions: list of TransitionOpertion
+        :param _MediaTransitions: 转场操作列表。图像转场操作和音频转场操作各自最多支持一个。
+        :type MediaTransitions: list of TransitionOperation
         """
         self._Duration = None
         self._Transitions = None
+        self._MediaTransitions = None
 
     @property
     def Duration(self):
@@ -34633,11 +34999,23 @@ class MediaTransitionItem(AbstractModel):
 
     @property
     def Transitions(self):
+        warnings.warn("parameter `Transitions` is deprecated", DeprecationWarning) 
+
         return self._Transitions
 
     @Transitions.setter
     def Transitions(self, Transitions):
+        warnings.warn("parameter `Transitions` is deprecated", DeprecationWarning) 
+
         self._Transitions = Transitions
+
+    @property
+    def MediaTransitions(self):
+        return self._MediaTransitions
+
+    @MediaTransitions.setter
+    def MediaTransitions(self, MediaTransitions):
+        self._MediaTransitions = MediaTransitions
 
 
     def _deserialize(self, params):
@@ -34648,6 +35026,12 @@ class MediaTransitionItem(AbstractModel):
                 obj = TransitionOpertion()
                 obj._deserialize(item)
                 self._Transitions.append(obj)
+        if params.get("MediaTransitions") is not None:
+            self._MediaTransitions = []
+            for item in params.get("MediaTransitions"):
+                obj = TransitionOperation()
+                obj._deserialize(item)
+                self._MediaTransitions.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -36778,7 +37162,7 @@ class ModifyMediaStorageClassRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _FileIds: 媒体文件唯一标识列表。
+        :param _FileIds: 媒体文件唯一标识列表，最大长度：100。
         :type FileIds: list of str
         :param _StorageClass: 目标存储类型。可选值有：
 <li> STANDARD：标准存储。</li>
@@ -37078,10 +37462,10 @@ class ModifyQualityInspectTemplateRequest(AbstractModel):
         :type MosaicConfigure: :class:`tencentcloud.vod.v20180717.models.MosaicConfigureInfoForUpdate`
         :param _QRCodeConfigure: 视频画面二维码检测的控制参数。
         :type QRCodeConfigure: :class:`tencentcloud.vod.v20180717.models.QRCodeConfigureInfoForUpdate`
-        :param _QualityEvaluationConfigure: 视频画面质量评价的控制参数。
-        :type QualityEvaluationConfigure: :class:`tencentcloud.vod.v20180717.models.QualityEvaluationConfigureInfoForUpdate`
         :param _VoiceConfigure: 音频（静音、低音、爆音）检测的控制参数。
         :type VoiceConfigure: :class:`tencentcloud.vod.v20180717.models.VoiceConfigureInfoForUpdate`
+        :param _QualityEvaluationConfigure: 视频画面质量评价的控制参数。
+        :type QualityEvaluationConfigure: :class:`tencentcloud.vod.v20180717.models.QualityEvaluationConfigureInfoForUpdate`
         """
         self._Definition = None
         self._SubAppId = None
@@ -37096,8 +37480,8 @@ class ModifyQualityInspectTemplateRequest(AbstractModel):
         self._NoiseConfigure = None
         self._MosaicConfigure = None
         self._QRCodeConfigure = None
-        self._QualityEvaluationConfigure = None
         self._VoiceConfigure = None
+        self._QualityEvaluationConfigure = None
 
     @property
     def Definition(self):
@@ -37204,20 +37588,20 @@ class ModifyQualityInspectTemplateRequest(AbstractModel):
         self._QRCodeConfigure = QRCodeConfigure
 
     @property
-    def QualityEvaluationConfigure(self):
-        return self._QualityEvaluationConfigure
-
-    @QualityEvaluationConfigure.setter
-    def QualityEvaluationConfigure(self, QualityEvaluationConfigure):
-        self._QualityEvaluationConfigure = QualityEvaluationConfigure
-
-    @property
     def VoiceConfigure(self):
         return self._VoiceConfigure
 
     @VoiceConfigure.setter
     def VoiceConfigure(self, VoiceConfigure):
         self._VoiceConfigure = VoiceConfigure
+
+    @property
+    def QualityEvaluationConfigure(self):
+        return self._QualityEvaluationConfigure
+
+    @QualityEvaluationConfigure.setter
+    def QualityEvaluationConfigure(self, QualityEvaluationConfigure):
+        self._QualityEvaluationConfigure = QualityEvaluationConfigure
 
 
     def _deserialize(self, params):
@@ -37250,12 +37634,12 @@ class ModifyQualityInspectTemplateRequest(AbstractModel):
         if params.get("QRCodeConfigure") is not None:
             self._QRCodeConfigure = QRCodeConfigureInfoForUpdate()
             self._QRCodeConfigure._deserialize(params.get("QRCodeConfigure"))
-        if params.get("QualityEvaluationConfigure") is not None:
-            self._QualityEvaluationConfigure = QualityEvaluationConfigureInfoForUpdate()
-            self._QualityEvaluationConfigure._deserialize(params.get("QualityEvaluationConfigure"))
         if params.get("VoiceConfigure") is not None:
             self._VoiceConfigure = VoiceConfigureInfoForUpdate()
             self._VoiceConfigure._deserialize(params.get("VoiceConfigure"))
+        if params.get("QualityEvaluationConfigure") is not None:
+            self._QualityEvaluationConfigure = QualityEvaluationConfigureInfoForUpdate()
+            self._QualityEvaluationConfigure._deserialize(params.get("QualityEvaluationConfigure"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -42045,7 +42429,7 @@ class ProcessMediaByProcedureRequest(AbstractModel):
         :type TasksNotifyMode: str
         :param _SessionContext: 来源上下文，用于透传用户请求信息，任务流状态变更回调将返回该字段值，最长 1000 个字符。
         :type SessionContext: str
-        :param _SessionId: 用于去重的识别码，如果三天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
+        :param _SessionId: 用于去重的识别码，如果 7 天内曾有过相同的识别码的请求，则本次的请求会返回错误。最长 50 个字符，不带或者带空字符串表示不做去重。
         :type SessionId: str
         :param _ExtInfo: 保留字段，特殊用途时使用。
         :type ExtInfo: str
@@ -42605,6 +42989,8 @@ class ProductInstance(AbstractModel):
         :type BindStatus: int
         :param _ProductInstanceResourceSet: 预付费资源包实例中包含的资源包列表。
         :type ProductInstanceResourceSet: list of ProductInstanceRecource
+        :param _ResourceSet: 预付费资源包实例中包含的资源包列表。
+        :type ResourceSet: list of ProductInstanceResource
         :param _ProductInstanceStatus: 资源包实例的状态，取值有：
 <li>Effective：生效，可用于计费抵扣。</li>
 <li>Isolated：隔离，不可用于计费抵扣。</li>
@@ -42627,6 +43013,7 @@ class ProductInstance(AbstractModel):
         self._LastConsumeDate = None
         self._BindStatus = None
         self._ProductInstanceResourceSet = None
+        self._ResourceSet = None
         self._ProductInstanceStatus = None
         self._RefundStatus = None
         self._RenewStatus = None
@@ -42681,11 +43068,23 @@ class ProductInstance(AbstractModel):
 
     @property
     def ProductInstanceResourceSet(self):
+        warnings.warn("parameter `ProductInstanceResourceSet` is deprecated", DeprecationWarning) 
+
         return self._ProductInstanceResourceSet
 
     @ProductInstanceResourceSet.setter
     def ProductInstanceResourceSet(self, ProductInstanceResourceSet):
+        warnings.warn("parameter `ProductInstanceResourceSet` is deprecated", DeprecationWarning) 
+
         self._ProductInstanceResourceSet = ProductInstanceResourceSet
+
+    @property
+    def ResourceSet(self):
+        return self._ResourceSet
+
+    @ResourceSet.setter
+    def ResourceSet(self, ResourceSet):
+        self._ResourceSet = ResourceSet
 
     @property
     def ProductInstanceStatus(self):
@@ -42725,6 +43124,12 @@ class ProductInstance(AbstractModel):
                 obj = ProductInstanceRecource()
                 obj._deserialize(item)
                 self._ProductInstanceResourceSet.append(obj)
+        if params.get("ResourceSet") is not None:
+            self._ResourceSet = []
+            for item in params.get("ResourceSet"):
+                obj = ProductInstanceResource()
+                obj._deserialize(item)
+                self._ResourceSet.append(obj)
         self._ProductInstanceStatus = params.get("ProductInstanceStatus")
         self._RefundStatus = params.get("RefundStatus")
         self._RenewStatus = params.get("RenewStatus")
@@ -42751,6 +43156,7 @@ class ProductInstanceRecource(AbstractModel):
 <li>Transcode：普通转码资源包。</li>
 <li>TESHD：极速高清转码资源包。</li>
 <li>Review：音视频审核转码资源包。</li>
+<li>MediaProcess：媒体处理时长资源包。</li>
         :type ResourceType: str
         :param _Amount: 资源包额度。
 <li>音视频存储资源包，单位为字节。</li>
@@ -42758,6 +43164,7 @@ class ProductInstanceRecource(AbstractModel):
 <li>音视频审核资源包，单位为秒。</li>
 <li>音视频极速高清资源包，单位为秒。</li>
 <li>音视频加速资源包，单位为字节。</li>
+<li>媒体处理时长资源包，单位为秒。</li>
         :type Amount: int
         :param _Left: 资源包余量。
 <li>音视频存储资源包，单位为字节。</li>
@@ -42765,6 +43172,82 @@ class ProductInstanceRecource(AbstractModel):
 <li>音视频审核资源包，单位为秒。</li>
 <li>音视频极速高清资源包，单位为秒。</li>
 <li>音视频加速资源包，单位为字节。</li>
+<li>媒体处理时长资源包，单位为秒。</li>
+        :type Left: int
+        """
+        self._ResourceType = None
+        self._Amount = None
+        self._Left = None
+
+    @property
+    def ResourceType(self):
+        return self._ResourceType
+
+    @ResourceType.setter
+    def ResourceType(self, ResourceType):
+        self._ResourceType = ResourceType
+
+    @property
+    def Amount(self):
+        return self._Amount
+
+    @Amount.setter
+    def Amount(self, Amount):
+        self._Amount = Amount
+
+    @property
+    def Left(self):
+        return self._Left
+
+    @Left.setter
+    def Left(self, Left):
+        self._Left = Left
+
+
+    def _deserialize(self, params):
+        self._ResourceType = params.get("ResourceType")
+        self._Amount = params.get("Amount")
+        self._Left = params.get("Left")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ProductInstanceResource(AbstractModel):
+    """资源包中包含的资源。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceType: 资源类型。
+<li>Storage：存储资源包。</li>
+<li>Traffic：流量资源包。</li>
+<li>Transcode：普通转码资源包。</li>
+<li>TESHD：极速高清转码资源包。</li>
+<li>Review：音视频审核转码资源包。</li>
+<li>MediaProcess：媒体处理时长资源包。</li>
+        :type ResourceType: str
+        :param _Amount: 资源包额度。
+<li>音视频存储资源包，单位为字节。</li>
+<li>音视频转码资源包，单位为秒。</li>
+<li>音视频审核资源包，单位为秒。</li>
+<li>音视频极速高清资源包，单位为秒。</li>
+<li>音视频加速资源包，单位为字节。</li>
+<li>媒体处理时长资源包，单位为秒。</li>
+        :type Amount: int
+        :param _Left: 资源包余量。
+<li>音视频存储资源包，单位为字节。</li>
+<li>音视频转码资源包，单位为秒。</li>
+<li>音视频审核资源包，单位为秒。</li>
+<li>音视频极速高清资源包，单位为秒。</li>
+<li>音视频加速资源包，单位为字节。</li>
+<li>媒体处理时长资源包，单位为秒。</li>
         :type Left: int
         """
         self._ResourceType = None
@@ -43880,13 +44363,6 @@ class QualityInspectItem(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Confidence: 置信度，取值范围：[0, 100]。
-<font color=red>注意：</font> 仅当 Type 取值为下列之一时，本字段取值有效：
-<li>Mosaic：马赛克；</li>
-<li>QRCode：二维码；</li>
-<li>AppletCode：小程序码；</li>
-<li>BarCode：条形码。</li>
-        :type Confidence: int
         :param _StartTimeOffset: 异常片段起始的偏移时间，单位：秒。
         :type StartTimeOffset: float
         :param _EndTimeOffset: 异常片段终止的偏移时间，单位：秒。
@@ -43899,19 +44375,18 @@ class QualityInspectItem(AbstractModel):
 <li>AppletCode：小程序码；</li>
 <li>BarCode：条形码。</li>
         :type AreaCoordSet: list of int
+        :param _Confidence: 置信度，取值范围：[0, 100]。
+<font color=red>注意：</font> 仅当 Type 取值为下列之一时，本字段取值有效：
+<li>Mosaic：马赛克；</li>
+<li>QRCode：二维码；</li>
+<li>AppletCode：小程序码；</li>
+<li>BarCode：条形码。</li>
+        :type Confidence: int
         """
-        self._Confidence = None
         self._StartTimeOffset = None
         self._EndTimeOffset = None
         self._AreaCoordSet = None
-
-    @property
-    def Confidence(self):
-        return self._Confidence
-
-    @Confidence.setter
-    def Confidence(self, Confidence):
-        self._Confidence = Confidence
+        self._Confidence = None
 
     @property
     def StartTimeOffset(self):
@@ -43937,12 +44412,20 @@ class QualityInspectItem(AbstractModel):
     def AreaCoordSet(self, AreaCoordSet):
         self._AreaCoordSet = AreaCoordSet
 
+    @property
+    def Confidence(self):
+        return self._Confidence
+
+    @Confidence.setter
+    def Confidence(self, Confidence):
+        self._Confidence = Confidence
+
 
     def _deserialize(self, params):
-        self._Confidence = params.get("Confidence")
         self._StartTimeOffset = params.get("StartTimeOffset")
         self._EndTimeOffset = params.get("EndTimeOffset")
         self._AreaCoordSet = params.get("AreaCoordSet")
+        self._Confidence = params.get("Confidence")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -45144,7 +45627,7 @@ class RebuildMediaResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TaskId: 视频重生的任务 ID，可以通过该 ID 查询视频重生任务的状态。
+        :param _TaskId: 音画质重生的任务 ID，可以通过该 ID 查询音画质重生任务的状态。
         :type TaskId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -47720,9 +48203,11 @@ class RestoreMediaRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _FileIds: 媒体文件唯一标识列表。
+        :param _FileIds: 媒体文件唯一标识列表，最大长度：100。
         :type FileIds: list of str
-        :param _RestoreDay: 解冻出的临时媒体文件的可访问持续时长，单位为“天”。
+        :param _SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
+        :type SubAppId: int
+        :param _RestoreDay: 解冻出的临时媒体文件的可访问持续时长，必须大于0，单位为“天”。
         :type RestoreDay: int
         :param _RestoreTier: 解冻模式。当媒体文件当前的存储类型为归档存储时，有以下取值：
 <li>极速模式：Expedited，解冻任务在5分钟后完成。</li>
@@ -47732,13 +48217,11 @@ class RestoreMediaRequest(AbstractModel):
 <li>标准模式：Standard，解冻任务在24小时后完成。</li>
 <li>批量模式：Bulk，解冻任务在48小时后完成。</li>
         :type RestoreTier: str
-        :param _SubAppId: 点播[子应用](/document/product/266/14574) ID。如果要访问子应用中的资源，则将该字段填写为子应用 ID；否则无需填写该字段。
-        :type SubAppId: int
         """
         self._FileIds = None
+        self._SubAppId = None
         self._RestoreDay = None
         self._RestoreTier = None
-        self._SubAppId = None
 
     @property
     def FileIds(self):
@@ -47747,6 +48230,14 @@ class RestoreMediaRequest(AbstractModel):
     @FileIds.setter
     def FileIds(self, FileIds):
         self._FileIds = FileIds
+
+    @property
+    def SubAppId(self):
+        return self._SubAppId
+
+    @SubAppId.setter
+    def SubAppId(self, SubAppId):
+        self._SubAppId = SubAppId
 
     @property
     def RestoreDay(self):
@@ -47764,20 +48255,12 @@ class RestoreMediaRequest(AbstractModel):
     def RestoreTier(self, RestoreTier):
         self._RestoreTier = RestoreTier
 
-    @property
-    def SubAppId(self):
-        return self._SubAppId
-
-    @SubAppId.setter
-    def SubAppId(self, SubAppId):
-        self._SubAppId = SubAppId
-
 
     def _deserialize(self, params):
         self._FileIds = params.get("FileIds")
+        self._SubAppId = params.get("SubAppId")
         self._RestoreDay = params.get("RestoreDay")
         self._RestoreTier = params.get("RestoreTier")
-        self._SubAppId = params.get("SubAppId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -47938,7 +48421,7 @@ class ReviewAudioVideoRequest(AbstractModel):
 不填或填空数组时，默认为审核 Media。
         :type ReviewContents: list of str
         :param _Definition: 审核模板 ID，默认值为 10。取值范围：
-<li>10：预置模板，支持检测的违规标签包括色情（Porn）、暴力（Terror）和不适宜的信息（Polity）。</li>
+<li>10：[预置模板](https://cloud.tencent.com/document/product/266/33476#.E9.A2.84.E7.BD.AE.E9.9F.B3.E8.A7.86.E9.A2.91.E5.AE.A1.E6.A0.B8.E6.A8.A1.E6.9D.BF.5B.5D(id.3Averify))，支持检测的违规标签包括色情（Porn）、暴力（Terror）、不适宜的信息（Polity）和娇喘（Moan）。</li>
         :type Definition: int
         :param _TasksPriority: 任务流的优先级，数值越大优先级越高，取值范围是 -10 到 10，不填代表 0。
         :type TasksPriority: int
@@ -49244,7 +49727,7 @@ class RoundPlayInfo(AbstractModel):
 
 
 class RoundPlayListItemInfo(AbstractModel):
-    """加权轮播媒体文件信息
+    """轮播媒体文件信息
 
     """
 
@@ -52800,6 +53283,7 @@ class TaskStatData(AbstractModel):
 <li> ExtractTraceWatermark: 提取水印</li>
 <li> AddTraceWatermark: 添加水印</li>
 <li> RebuildMedia: 音画质重生</li>
+<li> QualityInspect: 音画质检测</li>
 <li>Transcode: 转码，包含普通转码、极速高清和视频编辑（不推荐使用）</li>
         :type TaskType: str
         :param _Summary: 任务数统计数据概览，用量单位为秒。
@@ -54277,6 +54761,85 @@ class TranscodeTemplate(AbstractModel):
         
 
 
+class TransitionOperation(AbstractModel):
+    """转场操作
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Type: 转场类型，取值有：
+<ul>
+<li>图像的转场操作，用于两个视频片段图像间的转场处理：
+<ul>
+<li>ImageFadeInFadeOut：图像淡入淡出。 </li>
+<li>BowTieHorizontal：水平蝴蝶结。 </li>
+<li>BowTieVertical：垂直蝴蝶结。 </li>
+<li>ButterflyWaveScrawler：晃动。 </li>
+<li>Cannabisleaf：枫叶。 </li>
+<li>Circle：弧形收放。 </li>
+<li>CircleCrop：圆环聚拢。 </li>
+<li>Circleopen：椭圆聚拢。 </li>
+<li>Crosswarp：横向翘曲。 </li>
+<li>Cube：立方体。 </li>
+<li>DoomScreenTransition：幕布。 </li>
+<li>Doorway：门廊。 </li>
+<li>Dreamy：波浪。 </li>
+<li>DreamyZoom：水平聚拢。 </li>
+<li>FilmBurn：火烧云。 </li>
+<li>GlitchMemories：抖动。 </li>
+<li>Heart：心形。 </li>
+<li>InvertedPageCurl：翻页。 </li>
+<li>Luma：腐蚀。 </li>
+<li>Mosaic：九宫格。 </li>
+<li>Pinwheel：风车。 </li>
+<li>PolarFunction：椭圆扩散。 </li>
+<li>PolkaDotsCurtain：弧形扩散。 </li>
+<li>Radial：雷达扫描 </li>
+<li>RotateScaleFade：上下收放。 </li>
+<li>Squeeze：上下聚拢。 </li>
+<li>Swap：放大切换。 </li>
+<li>Swirl：螺旋。 </li>
+<li>UndulatingBurnOutSwirl：水流蔓延。 </li>
+<li>Windowblinds：百叶窗。 </li>
+<li>WipeDown：向下收起。 </li>
+<li>WipeLeft：向左收起。 </li>
+<li>WipeRight：向右收起。 </li>
+<li>WipeUp：向上收起。 </li>
+<li>ZoomInCircles：水波纹。 </li>
+</ul>
+</li>
+<li>音频的转场操作，用于两个音频片段间的转场处理：
+<ul>
+<li>AudioFadeInFadeOut：声音淡入淡出。 </li>
+</ul>
+</li>
+</ul>
+        :type Type: str
+        """
+        self._Type = None
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+
+    def _deserialize(self, params):
+        self._Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TransitionOpertion(AbstractModel):
     """转场操作
 
@@ -55032,6 +55595,92 @@ class UserDefineOcrTextReviewTemplateInfoForUpdate(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class VerifyDomainRecordRequest(AbstractModel):
+    """VerifyDomainRecord请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 需要接入点播的加速域名。
+        :type Domain: str
+        :param _VerifyType: 验证方式：
+<li>dns：DNS 解析验证；</li>
+<li>fIle：文件验证。</li>
+
+默认值：dns。
+        :type VerifyType: str
+        """
+        self._Domain = None
+        self._VerifyType = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def VerifyType(self):
+        return self._VerifyType
+
+    @VerifyType.setter
+    def VerifyType(self, VerifyType):
+        self._VerifyType = VerifyType
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._VerifyType = params.get("VerifyType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VerifyDomainRecordResponse(AbstractModel):
+    """VerifyDomainRecord返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Result: 是否验证成功。
+        :type Result: bool
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Result = None
+        self._RequestId = None
+
+    @property
+    def Result(self):
+        return self._Result
+
+    @Result.setter
+    def Result(self, Result):
+        self._Result = Result
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Result = params.get("Result")
+        self._RequestId = params.get("RequestId")
 
 
 class VideoDenoiseInfo(AbstractModel):
@@ -56185,6 +56834,51 @@ class WeChatMiniProgramPublishResponse(AbstractModel):
     def _deserialize(self, params):
         self._TaskId = params.get("TaskId")
         self._RequestId = params.get("RequestId")
+
+
+class WebPageRecordInfo(AbstractModel):
+    """全景录制信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RecordUrl: 全景录制地址。
+        :type RecordUrl: str
+        :param _RecordTaskId: 全景录制任务 ID。
+        :type RecordTaskId: str
+        """
+        self._RecordUrl = None
+        self._RecordTaskId = None
+
+    @property
+    def RecordUrl(self):
+        return self._RecordUrl
+
+    @RecordUrl.setter
+    def RecordUrl(self, RecordUrl):
+        self._RecordUrl = RecordUrl
+
+    @property
+    def RecordTaskId(self):
+        return self._RecordTaskId
+
+    @RecordTaskId.setter
+    def RecordTaskId(self, RecordTaskId):
+        self._RecordTaskId = RecordTaskId
+
+
+    def _deserialize(self, params):
+        self._RecordUrl = params.get("RecordUrl")
+        self._RecordTaskId = params.get("RecordTaskId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class WechatMiniProgramPublishTask(AbstractModel):

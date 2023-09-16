@@ -419,6 +419,9 @@ INVALIDPARAMETERVALUE_INVALIDIMAGESTATE = 'InvalidParameterValue.InvalidImageSta
 # 该实例配置来自免费升配活动，暂不支持3个月内进行降配。
 INVALIDPARAMETERVALUE_INVALIDINSTANCESOURCE = 'InvalidParameterValue.InvalidInstanceSource'
 
+# 指定机型不支持包销付费模式。
+INVALIDPARAMETERVALUE_INVALIDINSTANCETYPEUNDERWRITE = 'InvalidParameterValue.InvalidInstanceTypeUnderwrite'
+
 # IP地址不符合规范
 INVALIDPARAMETERVALUE_INVALIDIPFORMAT = 'InvalidParameterValue.InvalidIpFormat'
 
@@ -599,6 +602,9 @@ LIMITEXCEEDED_DISASTERRECOVERGROUP = 'LimitExceeded.DisasterRecoverGroup'
 # 特定实例包含的某个ENI的EIP数量已超过目标实例类型的EIP允许的最大值，请删除部分EIP后重试。
 LIMITEXCEEDED_EIPNUMLIMIT = 'LimitExceeded.EipNumLimit'
 
+# 网卡数量超过实例上限。
+LIMITEXCEEDED_ENILIMITINSTANCETYPE = 'LimitExceeded.EniLimitInstanceType'
+
 # 特定实例当前ENI数量已超过目标实例类型的ENI允许的最大值，需删除部分ENI后重试。
 LIMITEXCEEDED_ENINUMLIMIT = 'LimitExceeded.EniNumLimit'
 
@@ -631,6 +637,9 @@ LIMITEXCEEDED_PREHEATIMAGESNAPSHOTOUTOFQUOTA = 'LimitExceeded.PreheatImageSnapsh
 
 # 预付费实例已购买数量已达到最大配额，请提升配额后重试。
 LIMITEXCEEDED_PREPAYQUOTA = 'LimitExceeded.PrepayQuota'
+
+# 包销付费实例已购买数量已达到最大配额。
+LIMITEXCEEDED_PREPAYUNDERWRITEQUOTA = 'LimitExceeded.PrepayUnderwriteQuota'
 
 # 安全组限额不足
 LIMITEXCEEDED_SINGLEUSGQUOTA = 'LimitExceeded.SingleUSGQuota'
@@ -722,11 +731,17 @@ RESOURCENOTFOUND_INVALIDPLACEMENTSET = 'ResourceNotFound.InvalidPlacementSet'
 # 可用区不支持此机型。
 RESOURCENOTFOUND_INVALIDZONEINSTANCETYPE = 'ResourceNotFound.InvalidZoneInstanceType'
 
+# 指定密钥对不存在。
+RESOURCENOTFOUND_KEYPAIRNOTFOUND = 'ResourceNotFound.KeyPairNotFound'
+
 # 无可用的缺省类型的CBS资源。
 RESOURCENOTFOUND_NODEFAULTCBS = 'ResourceNotFound.NoDefaultCbs'
 
 # 无可用的缺省类型的CBS资源。
 RESOURCENOTFOUND_NODEFAULTCBSWITHREASON = 'ResourceNotFound.NoDefaultCbsWithReason'
+
+# 资源不可用。
+RESOURCEUNAVAILABLE = 'ResourceUnavailable'
 
 # 该可用区不售卖此机型
 RESOURCEUNAVAILABLE_INSTANCETYPE = 'ResourceUnavailable.InstanceType'
@@ -794,6 +809,9 @@ UNSUPPORTEDOPERATION_HETEROGENEOUSCHANGEINSTANCEFAMILY = 'UnsupportedOperation.H
 # 不支持未开启休眠功能的实例。
 UNSUPPORTEDOPERATION_HIBERNATIONFORNORMALINSTANCE = 'UnsupportedOperation.HibernationForNormalInstance'
 
+# 当前的镜像不支持休眠。
+UNSUPPORTEDOPERATION_HIBERNATIONOSVERSION = 'UnsupportedOperation.HibernationOsVersion'
+
 # IPv6实例不支持VPC迁移
 UNSUPPORTEDOPERATION_IPV6NOTSUPPORTVPCMIGRATE = 'UnsupportedOperation.IPv6NotSupportVpcMigrate'
 
@@ -811,6 +829,9 @@ UNSUPPORTEDOPERATION_INSTANCEMIXEDZONETYPE = 'UnsupportedOperation.InstanceMixed
 
 # 请求不支持操作系统为`Xserver windows2012cndatacenterx86_64`的实例`ins-xxxxxx` 。
 UNSUPPORTEDOPERATION_INSTANCEOSWINDOWS = 'UnsupportedOperation.InstanceOsWindows'
+
+# 当前实例为重装系统失败状态，不支持此操作；推荐您再次重装系统，也可以销毁/退还实例或提交工单
+UNSUPPORTEDOPERATION_INSTANCEREINSTALLFAILED = 'UnsupportedOperation.InstanceReinstallFailed'
 
 # 该子机处于封禁状态，请联系相关人员处理。
 UNSUPPORTEDOPERATION_INSTANCESTATEBANNING = 'UnsupportedOperation.InstanceStateBanning'
@@ -995,8 +1016,14 @@ UNSUPPORTEDOPERATION_STOPPEDMODESTOPCHARGINGSAMEFAMILY = 'UnsupportedOperation.S
 # 请求不支持该类型系统盘。
 UNSUPPORTEDOPERATION_SYSTEMDISKTYPE = 'UnsupportedOperation.SystemDiskType'
 
+# 包月转包销，不支持包销折扣高于现有包年包月折扣。
+UNSUPPORTEDOPERATION_UNDERWRITEDISCOUNTGREATERTHANPREPAIDDISCOUNT = 'UnsupportedOperation.UnderwriteDiscountGreaterThanPrepaidDiscount'
+
 # 该机型为包销机型，RenewFlag的值只允许设置为NOTIFY_AND_AUTO_RENEW。
 UNSUPPORTEDOPERATION_UNDERWRITINGINSTANCETYPEONLYSUPPORTAUTORENEW = 'UnsupportedOperation.UnderwritingInstanceTypeOnlySupportAutoRenew'
+
+# 当前实例不允许变配到非ARM机型。
+UNSUPPORTEDOPERATION_UNSUPPORTEDARMCHANGEINSTANCEFAMILY = 'UnsupportedOperation.UnsupportedARMChangeInstanceFamily'
 
 # 指定机型不支持跨机型调整配置。
 UNSUPPORTEDOPERATION_UNSUPPORTEDCHANGEINSTANCEFAMILY = 'UnsupportedOperation.UnsupportedChangeInstanceFamily'

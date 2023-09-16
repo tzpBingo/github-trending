@@ -495,7 +495,7 @@ class AuthorizationInfo(AbstractModel):
         :param _Authorizee: 被授权者实体。
         :type Authorizee: :class:`tencentcloud.cme.v20191029.models.Entity`
         :param _PermissionSet: 详细授权值。 取值有：
-<li>R：可读，可以浏览素材，但不能使用该素材（将其添加到 Project），或复制到自己的媒资库中</li>
+<li>R：可读，可以浏览素材，但不能使用该素材（将其添加到 Project），或复制到自己的媒资库中。</li>
 <li>X：可用，可以使用该素材（将其添加到 Project），但不能将其复制到自己的媒资库中，意味着被授权者无法将该资源进一步扩散给其他个人或团队。</li>
 <li>C：可复制，既可以使用该素材（将其添加到 Project），也可以将其复制到自己的媒资库中。</li>
 <li>W：可修改、删除媒资。</li>
@@ -8167,8 +8167,11 @@ class MediaCastOutputMediaSetting(AbstractModel):
         r"""
         :param _VideoSetting: 视频配置。
         :type VideoSetting: :class:`tencentcloud.cme.v20191029.models.MediaCastVideoSetting`
+        :param _FollowSourceInfo: 视频配置是否和第一个输入源的视频配置相同，默认值：false。如果 FollowSourceInfo 的值为 true，忽略 VideoSetting 参数。
+        :type FollowSourceInfo: bool
         """
         self._VideoSetting = None
+        self._FollowSourceInfo = None
 
     @property
     def VideoSetting(self):
@@ -8178,11 +8181,20 @@ class MediaCastOutputMediaSetting(AbstractModel):
     def VideoSetting(self, VideoSetting):
         self._VideoSetting = VideoSetting
 
+    @property
+    def FollowSourceInfo(self):
+        return self._FollowSourceInfo
+
+    @FollowSourceInfo.setter
+    def FollowSourceInfo(self, FollowSourceInfo):
+        self._FollowSourceInfo = FollowSourceInfo
+
 
     def _deserialize(self, params):
         if params.get("VideoSetting") is not None:
             self._VideoSetting = MediaCastVideoSetting()
             self._VideoSetting._deserialize(params.get("VideoSetting"))
+        self._FollowSourceInfo = params.get("FollowSourceInfo")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8373,6 +8385,8 @@ class MediaCastProjectInfo(AbstractModel):
         :type StartTime: str
         :param _StopTime: 项目结束时间。采用 [ISO 日期格式](https://cloud.tencent.com/document/product/266/11732#I)。如果项目还在运行中，该字段为空。
         :type StopTime: str
+        :param _Duration: 推流时长，单位：秒。项目结束后，返回上次项目运行时的推流时长。如果项目是 Working 状态，返回的时长是0。
+        :type Duration: float
         """
         self._Status = None
         self._SourceInfos = None
@@ -8381,6 +8395,7 @@ class MediaCastProjectInfo(AbstractModel):
         self._PlaySetting = None
         self._StartTime = None
         self._StopTime = None
+        self._Duration = None
 
     @property
     def Status(self):
@@ -8438,6 +8453,14 @@ class MediaCastProjectInfo(AbstractModel):
     def StopTime(self, StopTime):
         self._StopTime = StopTime
 
+    @property
+    def Duration(self):
+        return self._Duration
+
+    @Duration.setter
+    def Duration(self, Duration):
+        self._Duration = Duration
+
 
     def _deserialize(self, params):
         self._Status = params.get("Status")
@@ -8461,6 +8484,7 @@ class MediaCastProjectInfo(AbstractModel):
             self._PlaySetting._deserialize(params.get("PlaySetting"))
         self._StartTime = params.get("StartTime")
         self._StopTime = params.get("StopTime")
+        self._Duration = params.get("Duration")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

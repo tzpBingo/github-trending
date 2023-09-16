@@ -1191,10 +1191,20 @@ class CreateScanUserRequest(AbstractModel):
         :param _BizId: 应用ID，登录控制台 - 服务管理创建应用得到的AppID
         :type BizId: int
         :param _UserId: 需要新增送检的用户号。示例：1234
+(若UserId不填，则UserIdString必填；两者选其一；两者都填以UserIdString为准)
         :type UserId: int
+        :param _UserIdString: 需要新增送检的用户号。示例："1234"
+(若UserIdString不填，则UserId必填；两者选其一；两者都填以UserIdString为准)
+        :type UserIdString: str
+        :param _ExpirationTime: 当前用户送检过期时间，单位：秒。
+若参数不为0，则在过期时间之后，用户不会被送检。
+若参数为0，则送检配置不会自动失效。 
+        :type ExpirationTime: int
         """
         self._BizId = None
         self._UserId = None
+        self._UserIdString = None
+        self._ExpirationTime = None
 
     @property
     def BizId(self):
@@ -1212,10 +1222,28 @@ class CreateScanUserRequest(AbstractModel):
     def UserId(self, UserId):
         self._UserId = UserId
 
+    @property
+    def UserIdString(self):
+        return self._UserIdString
+
+    @UserIdString.setter
+    def UserIdString(self, UserIdString):
+        self._UserIdString = UserIdString
+
+    @property
+    def ExpirationTime(self):
+        return self._ExpirationTime
+
+    @ExpirationTime.setter
+    def ExpirationTime(self, ExpirationTime):
+        self._ExpirationTime = ExpirationTime
+
 
     def _deserialize(self, params):
         self._BizId = params.get("BizId")
         self._UserId = params.get("UserId")
+        self._UserIdString = params.get("UserIdString")
+        self._ExpirationTime = params.get("ExpirationTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1601,10 +1629,15 @@ class DeleteScanUserRequest(AbstractModel):
         :param _BizId: 应用ID，登录控制台 - 服务管理创建应用得到的AppID
         :type BizId: int
         :param _UserId: 需要删除送检的用户号。示例：1234
+(若UserId不填，则UserIdString必填；两者选其一；两者都填以UserIdString为准)
         :type UserId: int
+        :param _UserIdString: 需要删除送检的用户号。示例："1234"
+(若UserIdString不填，则UserId必填；两者选其一；两者都填以UserIdString为准)
+        :type UserIdString: str
         """
         self._BizId = None
         self._UserId = None
+        self._UserIdString = None
 
     @property
     def BizId(self):
@@ -1622,10 +1655,19 @@ class DeleteScanUserRequest(AbstractModel):
     def UserId(self, UserId):
         self._UserId = UserId
 
+    @property
+    def UserIdString(self):
+        return self._UserIdString
+
+    @UserIdString.setter
+    def UserIdString(self, UserIdString):
+        self._UserIdString = UserIdString
+
 
     def _deserialize(self, params):
         self._BizId = params.get("BizId")
         self._UserId = params.get("UserId")
+        self._UserIdString = params.get("UserIdString")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5144,7 +5186,7 @@ class UpdateScanRoomsRequest(AbstractModel):
         :type BizId: int
         :param _RoomIdString: 需要送检的所有房间号。多个房间号之间用","分隔。示例："0001,0002,0003"
         :type RoomIdString: str
-        :param _RoomIdRegex: 符合此正则表达式规则的房间号将被送检。示例：["^6.*"] 表示所有以6开头的房间号将被送检
+        :param _RoomIdRegex: 符合此正则表达式规则的房间号将被送检。示例：^6.*（表示所有以6开头的房间号将被送检）
         :type RoomIdRegex: list of str
         """
         self._BizId = None

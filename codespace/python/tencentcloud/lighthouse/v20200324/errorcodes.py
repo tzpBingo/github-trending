@@ -59,6 +59,12 @@ FAILEDOPERATION_DESCRIBERESOURCESRETURNABLEERROR = 'FailedOperation.DescribeReso
 # 销毁资源失败，请稍后重新操作。
 FAILEDOPERATION_DESTROYRESOURCESFAILED = 'FailedOperation.DestroyResourcesFailed'
 
+# 容器列表过长。
+FAILEDOPERATION_DOCKERCONTAINERSLISTTOOLARGE = 'FailedOperation.DockerContainersListTooLarge'
+
+# 指定Docker环境操作失败, 请检查Docker环境。
+FAILEDOPERATION_DOCKEROPERATIONFAILED = 'FailedOperation.DockerOperationFailed'
+
 # 对防火墙规则的操作失败。
 FAILEDOPERATION_FIREWALLRULESOPERATIONFAILED = 'FailedOperation.FirewallRulesOperationFailed'
 
@@ -67,6 +73,9 @@ FAILEDOPERATION_IMPORTKEYPAIRFAILED = 'FailedOperation.ImportKeyPairFailed'
 
 # 对实例的操作失败。
 FAILEDOPERATION_INSTANCEOPERATIONFAILED = 'FailedOperation.InstanceOperationFailed'
+
+# 账户余额不足, 请及时充值。
+FAILEDOPERATION_INSUFFICIENTBALANCE = 'FailedOperation.InsufficientBalance'
 
 # 命令无法找到。
 FAILEDOPERATION_INVALIDCOMMANDNOTFOUND = 'FailedOperation.InvalidCommandNotFound'
@@ -88,6 +97,9 @@ FAILEDOPERATION_REQUESTERROR = 'FailedOperation.RequestError'
 
 # 快照操作失败。
 FAILEDOPERATION_SNAPSHOTOPERATIONFAILED = 'FailedOperation.SnapshotOperationFailed'
+
+# TAT命令未完成。
+FAILEDOPERATION_TATINVOCATIONNOTFINISHED = 'FailedOperation.TATInvocationNotFinished'
 
 # 调用计费网关服务失败，请稍后重新操作。
 FAILEDOPERATION_TRADECALLBILLINGGATEWAYFAILED = 'FailedOperation.TradeCallBillingGatewayFailed'
@@ -239,6 +251,12 @@ INVALIDPARAMETERVALUE_DUPLICATEPARAMETERVALUE = 'InvalidParameterValue.Duplicate
 # 参数值非法，不允许包含重复的值。
 INVALIDPARAMETERVALUE_DUPLICATED = 'InvalidParameterValue.Duplicated'
 
+# 防火墙模板规则已存在
+INVALIDPARAMETERVALUE_DUPLICATEDFIREWALLTEMPLATERULE = 'InvalidParameterValue.DuplicatedFirewallTemplateRule'
+
+# 列值不正确。
+INVALIDPARAMETERVALUE_FIELDSCOMPARE = 'InvalidParameterValue.FieldsCompare'
+
 # 防火墙规则描述长度超出限制。
 INVALIDPARAMETERVALUE_FIREWALLRULEDESCRIPTIONTOOLONG = 'InvalidParameterValue.FirewallRuleDescriptionTooLong'
 
@@ -350,6 +368,9 @@ INVALIDPARAMETERVALUE_SNAPSHOTIDMALFORMED = 'InvalidParameterValue.SnapshotIdMal
 # 参数值非法，快照名称超过允许的最大长度。
 INVALIDPARAMETERVALUE_SNAPSHOTNAMETOOLONG = 'InvalidParameterValue.SnapshotNameTooLong'
 
+# 参数值非法，大于有效值。
+INVALIDPARAMETERVALUE_TOOLARGE = 'InvalidParameterValue.TooLarge'
+
 # 参数取值过长，超过最大长度。
 INVALIDPARAMETERVALUE_TOOLONG = 'InvalidParameterValue.TooLong'
 
@@ -373,6 +394,9 @@ LIMITEXCEEDED_DISKQUOTALIMITEXCEEDED = 'LimitExceeded.DiskQuotaLimitExceeded'
 
 # 超过防火墙规则配额。
 LIMITEXCEEDED_FIREWALLRULESLIMITEXCEEDED = 'LimitExceeded.FirewallRulesLimitExceeded'
+
+# 防火墙模板规则超出配额
+LIMITEXCEEDED_FIREWALLTEMPLATERULEQUOTALIMITEXCEEDED = 'LimitExceeded.FirewallTemplateRuleQuotaLimitExceeded'
 
 # 超过实例配额。
 LIMITEXCEEDED_INSTANCEQUOTALIMITEXCEEDED = 'LimitExceeded.InstanceQuotaLimitExceeded'
@@ -467,6 +491,9 @@ RESOURCENOTFOUND_FIREWALLNOTFOUND = 'ResourceNotFound.FirewallNotFound'
 # 防火墙规则不存在。
 RESOURCENOTFOUND_FIREWALLRULESNOTFOUND = 'ResourceNotFound.FirewallRulesNotFound'
 
+# 防火墙模板不存在
+RESOURCENOTFOUND_FIREWALLTEMPLATENOTFOUND = 'ResourceNotFound.FirewallTemplateNotFound'
+
 # 实例不存在挂载的数据盘。
 RESOURCENOTFOUND_INSTANCEDATADISKNOTFOUND = 'ResourceNotFound.InstanceDataDiskNotFound'
 
@@ -478,6 +505,9 @@ RESOURCENOTFOUND_INSTANCENOTFOUND = 'ResourceNotFound.InstanceNotFound'
 
 # 密钥对 ID 不存在。
 RESOURCENOTFOUND_KEYIDNOTFOUND = 'ResourceNotFound.KeyIdNotFound'
+
+# 密钥对不存在。
+RESOURCENOTFOUND_KEYPAIRNOTFOUND = 'ResourceNotFound.KeyPairNotFound'
 
 # 自定义镜像不存在。
 RESOURCENOTFOUND_PRIVATEBLUEPRINTNOTFOUND = 'ResourceNotFound.PrivateBlueprintNotFound'
@@ -497,17 +527,38 @@ RESOURCENOTFOUND_SNAPSHOTNOTFOUND = 'ResourceNotFound.SnapshotNotFound'
 # 资源不可用。
 RESOURCEUNAVAILABLE = 'ResourceUnavailable'
 
+# 指定实例镜像不符合要求。
+RESOURCEUNAVAILABLE_BLUEPRINTINVALID = 'ResourceUnavailable.BlueprintInvalid'
+
 # 镜像资源不可用。
 RESOURCEUNAVAILABLE_BLUEPRINTUNAVAILABLE = 'ResourceUnavailable.BlueprintUnavailable'
 
 # 套餐不可用。
 RESOURCEUNAVAILABLE_BUNDLEUNAVAILABLE = 'ResourceUnavailable.BundleUnavailable'
 
+# 不能应用该防火墙模板
+RESOURCEUNAVAILABLE_CANNOTAPPLYEMPTYFIREWALLTEMPLATE = 'ResourceUnavailable.CannotApplyEmptyFirewallTemplate'
+
+# Docker资源不可用。
+RESOURCEUNAVAILABLE_DOCKERUNAVAILABLE = 'ResourceUnavailable.DockerUnavailable'
+
+# TAT agent不可用。
+RESOURCEUNAVAILABLE_TATAGENTUNAVAILABLE = 'ResourceUnavailable.TATAgentUnavailable'
+
+# TAT 服务错误。
+RESOURCEUNAVAILABLE_TATSERVICEERROR = 'ResourceUnavailable.TATServiceError'
+
 # 套餐无可用配置。
 RESOURCESSOLDOUT_PURCHASESOURCEHASNOBUNDLECONFIGS = 'ResourcesSoldOut.PurchaseSourceHasNoBundleConfigs'
 
 # 套餐无可用配置。
 RESOURCESSOLDOUT_ZONESHASNOBUNDLECONFIGS = 'ResourcesSoldOut.ZonesHasNoBundleConfigs'
+
+# 未授权操作。
+UNAUTHORIZEDOPERATION = 'UnauthorizedOperation'
+
+# 无效 Token。
+UNAUTHORIZEDOPERATION_INVALIDTOKEN = 'UnauthorizedOperation.InvalidToken'
 
 # MFA 已过期。
 UNAUTHORIZEDOPERATION_MFAEXPIRED = 'UnauthorizedOperation.MFAExpired'
@@ -517,6 +568,9 @@ UNAUTHORIZEDOPERATION_MFANOTFOUND = 'UnauthorizedOperation.MFANotFound'
 
 # 无权限。
 UNAUTHORIZEDOPERATION_NOPERMISSION = 'UnauthorizedOperation.NoPermission'
+
+# 无权限进行此操作，请求中token不合法。
+UNAUTHORIZEDOPERATION_TOKENINVALID = 'UnauthorizedOperation.TokenInvalid'
 
 # 未知参数错误。
 UNKNOWNPARAMETER = 'UnknownParameter'
@@ -598,6 +652,9 @@ UNSUPPORTEDOPERATION_LATESTOPERATIONUNFINISHED = 'UnsupportedOperation.LatestOpe
 
 # 共享镜像不支持此操作。
 UNSUPPORTEDOPERATION_NOTSUPPORTSHAREDBLUEPRINT = 'UnsupportedOperation.NotSupportSharedBlueprint'
+
+# 此接口已下线。
+UNSUPPORTEDOPERATION_OPERATIONOFFLINE = 'UnsupportedOperation.OperationOffline'
 
 # 计费资源中心删除资源失败。
 UNSUPPORTEDOPERATION_POSTDESTROYRESOURCEFAILED = 'UnsupportedOperation.PostDestroyResourceFailed'

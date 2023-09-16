@@ -50,7 +50,7 @@ class CccClient(AbstractClient):
 
 
     def BindStaffSkillGroupList(self, request):
-        """绑定坐席所属技能组
+        """绑定座席所属技能组
 
         :param request: Request instance for BindStaffSkillGroupList.
         :type request: :class:`tencentcloud.ccc.v20200210.models.BindStaffSkillGroupListRequest`
@@ -63,6 +63,29 @@ class CccClient(AbstractClient):
             body = self.call("BindStaffSkillGroupList", params, headers=headers)
             response = json.loads(body)
             model = models.BindStaffSkillGroupListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def CreateAdminURL(self, request):
+        """创建管理端访问链接
+
+        :param request: Request instance for CreateAdminURL.
+        :type request: :class:`tencentcloud.ccc.v20200210.models.CreateAdminURLRequest`
+        :rtype: :class:`tencentcloud.ccc.v20200210.models.CreateAdminURLResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateAdminURL", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateAdminURLResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

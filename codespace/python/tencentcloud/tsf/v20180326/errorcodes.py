@@ -743,6 +743,9 @@ INVALIDPARAMETERVALUE_DEPLOYGROUPNOTEXISTS = 'InvalidParameterValue.DeployGroupN
 # 文件配置项已经发布。
 INVALIDPARAMETERVALUE_FILECONFIGALREADYRELEASED = 'InvalidParameterValue.FileConfigAlreadyReleased'
 
+# 文件配置项编码方式不支持。
+INVALIDPARAMETERVALUE_FILECONFIGCODEUNSUPPORTED = 'InvalidParameterValue.FileConfigCodeUnsupported'
+
 # 文件配置项已存在。
 INVALIDPARAMETERVALUE_FILECONFIGEXISTS = 'InvalidParameterValue.FileConfigExists'
 
@@ -757,6 +760,9 @@ INVALIDPARAMETERVALUE_FILECONFIGFILENAMEINVALID = 'InvalidParameterValue.FileCon
 
 # 文件配置项文件路径不合规。
 INVALIDPARAMETERVALUE_FILECONFIGFILEPATHINVALID = 'InvalidParameterValue.FileConfigFilePathInvalid'
+
+# 文件配置项固定字段不可变更。
+INVALIDPARAMETERVALUE_FILECONFIGFIXEDFIELDUNCHANGEABLE = 'InvalidParameterValue.FileConfigFixedFieldUnchangeable'
 
 # 文件配置项名称不合规。
 INVALIDPARAMETERVALUE_FILECONFIGNAMEINVALID = 'InvalidParameterValue.FileConfigNameInvalid'
@@ -1024,6 +1030,9 @@ MISSINGPARAMETER_INSTANCEIMPORTMODENULL = 'MissingParameter.InstanceImportModeNu
 
 # 命名空间ID不能为空。
 MISSINGPARAMETER_NAMESPACEIDREQUIRED = 'MissingParameter.NamespaceIdRequired'
+
+# 命名空间名称未填写。
+MISSINGPARAMETER_NAMESPACENAMEREQUIRED = 'MissingParameter.NamespaceNameRequired'
 
 # %s缺失。
 MISSINGPARAMETER_REQUIREDPARAMETERMISSING = 'MissingParameter.RequiredParameterMissing'

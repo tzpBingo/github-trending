@@ -10441,6 +10441,9 @@ class BashRule(AbstractModel):
         :param _DealOldEvents: 是否处理之前的事件 0: 不处理 1:处理
 注意：此字段可能返回 null，表示取不到有效值。
         :type DealOldEvents: int
+        :param _Description: 规则描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
         """
         self._Id = None
         self._Uuid = None
@@ -10457,6 +10460,7 @@ class BashRule(AbstractModel):
         self._Uuids = None
         self._White = None
         self._DealOldEvents = None
+        self._Description = None
 
     @property
     def Id(self):
@@ -10500,10 +10504,14 @@ class BashRule(AbstractModel):
 
     @property
     def Decription(self):
+        warnings.warn("parameter `Decription` is deprecated", DeprecationWarning) 
+
         return self._Decription
 
     @Decription.setter
     def Decription(self, Decription):
+        warnings.warn("parameter `Decription` is deprecated", DeprecationWarning) 
+
         self._Decription = Decription
 
     @property
@@ -10578,6 +10586,14 @@ class BashRule(AbstractModel):
     def DealOldEvents(self, DealOldEvents):
         self._DealOldEvents = DealOldEvents
 
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -10595,6 +10611,7 @@ class BashRule(AbstractModel):
         self._Uuids = params.get("Uuids")
         self._White = params.get("White")
         self._DealOldEvents = params.get("DealOldEvents")
+        self._Description = params.get("Description")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -26202,7 +26219,9 @@ class DescribeLicenseBindListRequest(AbstractModel):
         :type LicenseType: int
         :param _ResourceId: 资源ID
         :type ResourceId: str
-        :param _Filters: <li>Keywords 机器别名/公私IP 模糊查询</li>
+        :param _Filters: <li>InstanceID、IP、
+
+MachineName 模糊查询</li>
         :type Filters: list of Filters
         :param _Limit: 限制条数,默认10.
         :type Limit: int
@@ -28265,10 +28284,16 @@ class DescribeMaliciousRequestWhiteListRequest(AbstractModel):
 
 <li>Domain  - String - 基线名称</li>
         :type Filters: list of Filters
+        :param _Order: 排序方式 [asc:升序|desc:降序]
+        :type Order: str
+        :param _By: 排序字段
+        :type By: str
         """
         self._Limit = None
         self._Offset = None
         self._Filters = None
+        self._Order = None
+        self._By = None
 
     @property
     def Limit(self):
@@ -28294,6 +28319,22 @@ class DescribeMaliciousRequestWhiteListRequest(AbstractModel):
     def Filters(self, Filters):
         self._Filters = Filters
 
+    @property
+    def Order(self):
+        return self._Order
+
+    @Order.setter
+    def Order(self, Order):
+        self._Order = Order
+
+    @property
+    def By(self):
+        return self._By
+
+    @By.setter
+    def By(self, By):
+        self._By = By
+
 
     def _deserialize(self, params):
         self._Limit = params.get("Limit")
@@ -28304,6 +28345,8 @@ class DescribeMaliciousRequestWhiteListRequest(AbstractModel):
                 obj = Filters()
                 obj._deserialize(item)
                 self._Filters.append(obj)
+        self._Order = params.get("Order")
+        self._By = params.get("By")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -41387,6 +41430,9 @@ class LicenseDetail(AbstractModel):
         :param _Tags: 平台标签
 注意：此字段可能返回 null，表示取不到有效值。
         :type Tags: list of Tags
+        :param _FreezeNum: 冻结数,当为0时 为未冻结,非0 则表示冻结授权数额
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FreezeNum: int
         """
         self._LicenseId = None
         self._LicenseType = None
@@ -41403,6 +41449,7 @@ class LicenseDetail(AbstractModel):
         self._SourceType = None
         self._Alias = None
         self._Tags = None
+        self._FreezeNum = None
 
     @property
     def LicenseId(self):
@@ -41524,6 +41571,14 @@ class LicenseDetail(AbstractModel):
     def Tags(self, Tags):
         self._Tags = Tags
 
+    @property
+    def FreezeNum(self):
+        return self._FreezeNum
+
+    @FreezeNum.setter
+    def FreezeNum(self, FreezeNum):
+        self._FreezeNum = FreezeNum
+
 
     def _deserialize(self, params):
         self._LicenseId = params.get("LicenseId")
@@ -41546,6 +41601,7 @@ class LicenseDetail(AbstractModel):
                 obj = Tags()
                 obj._deserialize(item)
                 self._Tags.append(obj)
+        self._FreezeNum = params.get("FreezeNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

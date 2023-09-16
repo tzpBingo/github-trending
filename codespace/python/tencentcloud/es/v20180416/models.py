@@ -449,7 +449,7 @@ class CreateIndexRequest(AbstractModel):
         :type IndexType: str
         :param _IndexName: 创建的索引名
         :type IndexName: str
-        :param _IndexMetaJson: 创建的索引元数据JSON，如mappings、settings
+        :param _IndexMetaJson: 【必填】创建的索引元数据JSON，如mappings、settings
         :type IndexMetaJson: str
         :param _Username: 集群访问用户名
         :type Username: str
@@ -586,7 +586,7 @@ class CreateInstanceRequest(AbstractModel):
 节点规格<li>ES.S1.SMALL2：1核2G</li><li>ES.S1.MEDIUM4：2核4G</li><li>ES.S1.MEDIUM8：2核8G</li><li>ES.S1.LARGE16：4核16G</li><li>ES.S1.2XLARGE32：8核32G</li><li>ES.S1.4XLARGE32：16核32G</li><li>ES.S1.4XLARGE64：16核64G</li>
         :type NodeType: str
         :param _DiskType: 已废弃请使用NodeInfoList
-节点磁盘类型<li>CLOUD_SSD：SSD云硬盘</li><li>CLOUD_PREMIUM：高硬能云硬盘</li>默认值CLOUD_SSD
+节点磁盘类型<li>CLOUD_SSD：SSD云硬盘</li><li>CLOUD_PREMIUM：高性能云硬盘</li>默认值CLOUD_SSD
         :type DiskType: str
         :param _DiskSize: 已废弃请使用NodeInfoList
 节点磁盘容量（单位GB）
@@ -637,6 +637,8 @@ class CreateInstanceRequest(AbstractModel):
         :type DiskEnhance: int
         :param _EnableDiagnose: 是否开启智能巡检
         :type EnableDiagnose: bool
+        :param _CdcId: cdcId，使用cdc子网时传递
+        :type CdcId: str
         """
         self._Zone = None
         self._EsVersion = None
@@ -672,6 +674,7 @@ class CreateInstanceRequest(AbstractModel):
         self._EnableHybridStorage = None
         self._DiskEnhance = None
         self._EnableDiagnose = None
+        self._CdcId = None
 
     @property
     def Zone(self):
@@ -945,6 +948,14 @@ class CreateInstanceRequest(AbstractModel):
     def EnableDiagnose(self, EnableDiagnose):
         self._EnableDiagnose = EnableDiagnose
 
+    @property
+    def CdcId(self):
+        return self._CdcId
+
+    @CdcId.setter
+    def CdcId(self, CdcId):
+        self._CdcId = CdcId
+
 
     def _deserialize(self, params):
         self._Zone = params.get("Zone")
@@ -1000,6 +1011,7 @@ class CreateInstanceRequest(AbstractModel):
         self._EnableHybridStorage = params.get("EnableHybridStorage")
         self._DiskEnhance = params.get("DiskEnhance")
         self._EnableDiagnose = params.get("EnableDiagnose")
+        self._CdcId = params.get("CdcId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1670,7 +1682,7 @@ class DescribeIndexListRequest(AbstractModel):
         :type OrderBy: str
         :param _IndexStatusList: 过滤索引状态
         :type IndexStatusList: list of str
-        :param _Order: 排序顺序，支持asc、desc
+        :param _Order: 排序顺序，支持asc、desc，默认为desc 数据格式"asc","desc"
         :type Order: str
         """
         self._IndexType = None
@@ -3525,7 +3537,7 @@ class EsDictionaryInfo(AbstractModel):
 
 
 class EsPublicAcl(AbstractModel):
-    """ES公网访问访问控制信息
+    """ES公网访问控制信息
 
     """
 
@@ -4356,6 +4368,12 @@ RENEW_FLAG_DEFAULT：不自动续费
         :param _KibanaAlteringPublicAccess: Kibana的altering外网告警策略<li>OPEN：开启</li><li>CLOSE：关闭
 注意：此字段可能返回 null，表示取不到有效值。
         :type KibanaAlteringPublicAccess: str
+        :param _HasKernelUpgrade: 本月是否有内核可以更新：false-无，true-有
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HasKernelUpgrade: bool
+        :param _CdcId: cdcId，使用cdc子网时传递
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CdcId: str
         """
         self._InstanceId = None
         self._InstanceName = None
@@ -4438,6 +4456,8 @@ RENEW_FLAG_DEFAULT：不自动续费
         self._EnableHybridStorage = None
         self._ProcessPercent = None
         self._KibanaAlteringPublicAccess = None
+        self._HasKernelUpgrade = None
+        self._CdcId = None
 
     @property
     def InstanceId(self):
@@ -5087,6 +5107,22 @@ RENEW_FLAG_DEFAULT：不自动续费
     def KibanaAlteringPublicAccess(self, KibanaAlteringPublicAccess):
         self._KibanaAlteringPublicAccess = KibanaAlteringPublicAccess
 
+    @property
+    def HasKernelUpgrade(self):
+        return self._HasKernelUpgrade
+
+    @HasKernelUpgrade.setter
+    def HasKernelUpgrade(self, HasKernelUpgrade):
+        self._HasKernelUpgrade = HasKernelUpgrade
+
+    @property
+    def CdcId(self):
+        return self._CdcId
+
+    @CdcId.setter
+    def CdcId(self, CdcId):
+        self._CdcId = CdcId
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -5211,6 +5247,8 @@ RENEW_FLAG_DEFAULT：不自动续费
         self._EnableHybridStorage = params.get("EnableHybridStorage")
         self._ProcessPercent = params.get("ProcessPercent")
         self._KibanaAlteringPublicAccess = params.get("KibanaAlteringPublicAccess")
+        self._HasKernelUpgrade = params.get("HasKernelUpgrade")
+        self._CdcId = params.get("CdcId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7045,6 +7083,9 @@ class Operation(AbstractModel):
         :type Tasks: list of TaskDetail
         :param _Progress: 操作进度
         :type Progress: float
+        :param _SubAccountUin: 操作者Uin
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SubAccountUin: str
         """
         self._Id = None
         self._StartTime = None
@@ -7053,6 +7094,7 @@ class Operation(AbstractModel):
         self._Result = None
         self._Tasks = None
         self._Progress = None
+        self._SubAccountUin = None
 
     @property
     def Id(self):
@@ -7110,6 +7152,14 @@ class Operation(AbstractModel):
     def Progress(self, Progress):
         self._Progress = Progress
 
+    @property
+    def SubAccountUin(self):
+        return self._SubAccountUin
+
+    @SubAccountUin.setter
+    def SubAccountUin(self, SubAccountUin):
+        self._SubAccountUin = SubAccountUin
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -7126,6 +7176,7 @@ class Operation(AbstractModel):
                 obj._deserialize(item)
                 self._Tasks.append(obj)
         self._Progress = params.get("Progress")
+        self._SubAccountUin = params.get("SubAccountUin")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7444,6 +7495,82 @@ class OptionalWebServiceInfo(AbstractModel):
         self._PublicAccess = params.get("PublicAccess")
         self._PrivateAccess = params.get("PrivateAccess")
         self._Version = params.get("Version")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ProcessDetail(AbstractModel):
+    """任务进度详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Completed: 已完成数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Completed: int
+        :param _Remain: 剩余数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Remain: int
+        :param _Total: 总数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        :param _TaskType: 任务类型：
+60：重启型任务
+70：分片迁移型任务
+80：节点变配任务
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskType: int
+        """
+        self._Completed = None
+        self._Remain = None
+        self._Total = None
+        self._TaskType = None
+
+    @property
+    def Completed(self):
+        return self._Completed
+
+    @Completed.setter
+    def Completed(self, Completed):
+        self._Completed = Completed
+
+    @property
+    def Remain(self):
+        return self._Remain
+
+    @Remain.setter
+    def Remain(self, Remain):
+        self._Remain = Remain
+
+    @property
+    def Total(self):
+        return self._Total
+
+    @Total.setter
+    def Total(self, Total):
+        self._Total = Total
+
+    @property
+    def TaskType(self):
+        return self._TaskType
+
+    @TaskType.setter
+    def TaskType(self, TaskType):
+        self._TaskType = TaskType
+
+
+    def _deserialize(self, params):
+        self._Completed = params.get("Completed")
+        self._Remain = params.get("Remain")
+        self._Total = params.get("Total")
+        self._TaskType = params.get("TaskType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8174,12 +8301,16 @@ class TaskDetail(AbstractModel):
         :param _ElapsedTime: 任务花费时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type ElapsedTime: int
+        :param _ProcessInfo: 任务进度详情
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ProcessInfo: :class:`tencentcloud.es.v20180416.models.ProcessDetail`
         """
         self._Name = None
         self._Progress = None
         self._FinishTime = None
         self._SubTasks = None
         self._ElapsedTime = None
+        self._ProcessInfo = None
 
     @property
     def Name(self):
@@ -8221,6 +8352,14 @@ class TaskDetail(AbstractModel):
     def ElapsedTime(self, ElapsedTime):
         self._ElapsedTime = ElapsedTime
 
+    @property
+    def ProcessInfo(self):
+        return self._ProcessInfo
+
+    @ProcessInfo.setter
+    def ProcessInfo(self, ProcessInfo):
+        self._ProcessInfo = ProcessInfo
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -8233,6 +8372,9 @@ class TaskDetail(AbstractModel):
                 obj._deserialize(item)
                 self._SubTasks.append(obj)
         self._ElapsedTime = params.get("ElapsedTime")
+        if params.get("ProcessInfo") is not None:
+            self._ProcessInfo = ProcessDetail()
+            self._ProcessInfo._deserialize(params.get("ProcessInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8254,7 +8396,7 @@ class UpdateDiagnoseSettingsRequest(AbstractModel):
         :type InstanceId: str
         :param _Status: 0：开启智能运维；-1：关闭智能运维
         :type Status: int
-        :param _CronTime: 智能运维每天定时巡检时间
+        :param _CronTime: 智能运维每天定时巡检时间，时间格式为HH:00:00，例如15:00:00
         :type CronTime: str
         """
         self._InstanceId = None
@@ -8334,13 +8476,13 @@ class UpdateDictionariesRequest(AbstractModel):
         r"""
         :param _InstanceId: ES实例ID
         :type InstanceId: str
-        :param _IkMainDicts: IK分词主词典COS地址
+        :param _IkMainDicts: 安装时填IK分词主词典COS地址，删除时填词典名如test.dic
         :type IkMainDicts: list of str
-        :param _IkStopwords: IK分词停用词词典COS地址
+        :param _IkStopwords: 安装时填IK分词停用词词典COS地址，删除时填词典名如test.dic
         :type IkStopwords: list of str
-        :param _Synonym: 同义词词典COS地址
+        :param _Synonym: 安装时填同义词词典COS地址，删除时填词典名如test.dic
         :type Synonym: list of str
-        :param _QQDict: QQ分词词典COS地址
+        :param _QQDict: 安装时填QQ分词词典COS地址，删除时填词典名如test.dic
         :type QQDict: list of str
         :param _UpdateType: 0：安装；1：删除。默认值0
         :type UpdateType: int
@@ -9604,7 +9746,7 @@ class UpgradeInstanceRequest(AbstractModel):
         r"""
         :param _InstanceId: 实例ID
         :type InstanceId: str
-        :param _EsVersion: 目标ES版本，支持：”6.4.3“, "6.8.2"，"7.5.1"
+        :param _EsVersion: 目标ES版本，支持：”6.4.3“, "6.8.2"，"7.5.1", "7.10.1", "7.14.2"
         :type EsVersion: str
         :param _CheckOnly: 是否只做升级检查，默认值为false
         :type CheckOnly: bool
@@ -9752,7 +9894,7 @@ class UpgradeLicenseRequest(AbstractModel):
         :type AutoVoucher: int
         :param _VoucherIds: 代金券ID列表（目前仅支持指定一张代金券）
         :type VoucherIds: list of str
-        :param _BasicSecurityType: 6.8（及以上版本）基础版是否开启xpack security认证<li>1：不开启</li><li>2：开启</li>
+        :param _BasicSecurityType: 6.8（及以上版本）基础版是否开启xpack security认证<li>1：不开启</li><li>2：开启</li><li>不传参时会默认维持原状，传参时需注意只能由不开启变为开启，无法由开启变为不开启</li>
         :type BasicSecurityType: int
         :param _ForceRestart: 是否强制重启<li>true强制重启</li><li>false不强制重启</li> 默认值false
         :type ForceRestart: bool

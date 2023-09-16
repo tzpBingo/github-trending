@@ -116,11 +116,17 @@ INVALIDPARAMETER_GROUPUSERFULL = 'InvalidParameter.GroupUserFull'
 # 身份提供商名称已经使用。
 INVALIDPARAMETER_IDENTITYNAMEINUSE = 'InvalidParameter.IdentityNameInUse'
 
+# 接口不存在。
+INVALIDPARAMETER_INTERFACENOTEXIST = 'InvalidParameter.InterfaceNotExist'
+
 # Keyword字段不合法。
 INVALIDPARAMETER_KEYWORDERROR = 'InvalidParameter.KeywordError'
 
 # 多因子Token验证失败。
 INVALIDPARAMETER_MFATOKENERROR = 'InvalidParameter.MFATokenError'
+
+# 名字或者id号错误。
+INVALIDPARAMETER_NAMEORIDCARDERROR = 'InvalidParameter.NameOrIdCardError'
 
 # CAM不支持策略文档中所指定的资源类型。
 INVALIDPARAMETER_NOTSUPPORTPRODUCT = 'InvalidParameter.NotSupportProduct'
@@ -169,6 +175,9 @@ INVALIDPARAMETER_PRINCIPALQCSNOTEXIST = 'InvalidParameter.PrincipalQcsNotExist'
 
 # PrincipalService不存在。
 INVALIDPARAMETER_PRINCIPALSERVICENOTEXIST = 'InvalidParameter.PrincipalServiceNotExist'
+
+# 消息接收人超出限制。
+INVALIDPARAMETER_RECEIVEROVERLIMIT = 'InvalidParameter.ReceiverOverLimit'
 
 # 策略语法中资源内容不正确。
 INVALIDPARAMETER_RESOURCECONTENTERROR = 'InvalidParameter.ResourceContentError'
@@ -221,7 +230,7 @@ INVALIDPARAMETER_SERVICETYPEERROR = 'InvalidParameter.ServiceTypeError'
 # 策略文档的Statement字段不合法。
 INVALIDPARAMETER_STATEMENTERROR = 'InvalidParameter.StatementError'
 
-# 子帐号数量达到上限。
+# 子账号数量达到上限。
 INVALIDPARAMETER_SUBUSERFULL = 'InvalidParameter.SubUserFull'
 
 # 子用户名称重复。
@@ -241,6 +250,9 @@ INVALIDPARAMETER_USERGROUPFULL = 'InvalidParameter.UserGroupFull'
 
 # 用户名不合法。
 INVALIDPARAMETER_USERNAMEILLEGAL = 'InvalidParameter.UserNameIllegal'
+
+# 用户未实名。
+INVALIDPARAMETER_USERNOTAUTH = 'InvalidParameter.UserNotAuth'
 
 # 用户对象不存在。
 INVALIDPARAMETER_USERNOTEXIST = 'InvalidParameter.UserNotExist'
@@ -265,6 +277,9 @@ INVALIDPARAMETERVALUE_NAMEERROR = 'InvalidParameterValue.NameError'
 
 # 身份提供商已达到上限。
 LIMITEXCEEDED_IDENTITYFULL = 'LimitExceeded.IdentityFull'
+
+# 请求超出限制。
+LIMITEXCEEDED_UIN = 'LimitExceeded.Uin'
 
 # 每个账号最多支持两个AccessKey。
 OPERATIONDENIED_ACCESSKEYOVERLIMIT = 'OperationDenied.AccessKeyOverLimit'

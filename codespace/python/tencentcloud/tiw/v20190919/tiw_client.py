@@ -73,7 +73,9 @@ class TiwClient(AbstractClient):
 
 
     def CreateOfflineRecord(self, request):
-        """创建课后录制任务
+        """课后录制服务已下线
+
+        创建课后录制任务
 
         :param request: Request instance for CreateOfflineRecord.
         :type request: :class:`tencentcloud.tiw.v20190919.models.CreateOfflineRecordRequest`
@@ -303,7 +305,9 @@ class TiwClient(AbstractClient):
 
 
     def DescribeOfflineRecord(self, request):
-        """查询课后录制任务的进度与录制结果等相关信息
+        """课后录制服务已下线
+
+        查询课后录制任务的进度与录制结果等相关信息
 
         :param request: Request instance for DescribeOfflineRecord.
         :type request: :class:`tencentcloud.tiw.v20190919.models.DescribeOfflineRecordRequest`
@@ -326,7 +330,9 @@ class TiwClient(AbstractClient):
 
 
     def DescribeOfflineRecordCallback(self, request):
-        """查询课后录制回调地址
+        """课后录制服务已下线
+
+        查询课后录制回调地址
 
         :param request: Request instance for DescribeOfflineRecordCallback.
         :type request: :class:`tencentcloud.tiw.v20190919.models.DescribeOfflineRecordCallbackRequest`
@@ -642,6 +648,29 @@ class TiwClient(AbstractClient):
             body = self.call("DescribeTranscode", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeTranscodeResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeTranscodeByUrl(self, request):
+        """通过文档URL查询转码任务，返回最近一次的转码任务状态
+
+        :param request: Request instance for DescribeTranscodeByUrl.
+        :type request: :class:`tencentcloud.tiw.v20190919.models.DescribeTranscodeByUrlRequest`
+        :rtype: :class:`tencentcloud.tiw.v20190919.models.DescribeTranscodeByUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTranscodeByUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeTranscodeByUrlResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1112,7 +1141,9 @@ class TiwClient(AbstractClient):
 
 
     def SetOfflineRecordCallback(self, request):
-        """设置课后录制回调地址
+        """课后录制服务已下线
+
+        设置课后录制回调地址
 
         :param request: Request instance for SetOfflineRecordCallback.
         :type request: :class:`tencentcloud.tiw.v20190919.models.SetOfflineRecordCallbackRequest`

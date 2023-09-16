@@ -394,6 +394,29 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateRocketMQVipInstance(self, request):
+        """创建RocketMQ专享实例
+
+        :param request: Request instance for CreateRocketMQVipInstance.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateRocketMQVipInstanceRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.CreateRocketMQVipInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateRocketMQVipInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateRocketMQVipInstanceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateRole(self, request):
         """创建角色
 
@@ -753,6 +776,29 @@ class TdmqClient(AbstractClient):
             body = self.call("DeleteRocketMQTopic", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteRocketMQTopicResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteRocketMQVipInstance(self, request):
+        """删除RocketMQ专享实例
+
+        :param request: Request instance for DeleteRocketMQVipInstance.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DeleteRocketMQVipInstanceRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DeleteRocketMQVipInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteRocketMQVipInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteRocketMQVipInstanceResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1544,6 +1590,29 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeRocketMQMsgTrace(self, request):
+        """查询消息轨迹
+
+        :param request: Request instance for DescribeRocketMQMsgTrace.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQMsgTraceRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQMsgTraceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRocketMQMsgTrace", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRocketMQMsgTraceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeRocketMQNamespaces(self, request):
         """获取RocketMQ命名空间列表
 
@@ -1558,6 +1627,29 @@ class TdmqClient(AbstractClient):
             body = self.call("DescribeRocketMQNamespaces", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeRocketMQNamespacesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeRocketMQTopicMsgs(self, request):
+        """rocketmq 消息查询
+
+        :param request: Request instance for DescribeRocketMQTopicMsgs.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQTopicMsgsRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQTopicMsgsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRocketMQTopicMsgs", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRocketMQTopicMsgsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

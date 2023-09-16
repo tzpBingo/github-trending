@@ -26,6 +26,9 @@ FAILEDOPERATION_AGENOTACHIEVENORMALLEGAL = 'FailedOperation.AgeNotAchieveNormalL
 # 鉴权失败。
 FAILEDOPERATION_AUTHFAIL = 'FailedOperation.AuthFail'
 
+# 当选择“企业实名认证（信任第三方认证源）”时，请先使用“同步企业信息”接口，同步企业名称、统一社会信用代码、法人姓名。
+FAILEDOPERATION_ERRNOTSYNCPROXYORGANIZATION = 'FailedOperation.ErrNotSyncProxyOrganization'
+
 # 存在同名印章。
 FAILEDOPERATION_EXISTSAMESEALNAME = 'FailedOperation.ExistSameSealName'
 
@@ -52,6 +55,12 @@ FAILEDOPERATION_QRCODETEMPLATEID = 'FailedOperation.QrCodeTemplateId'
 
 # 员工已实名。
 FAILEDOPERATION_STAFFALREADYVERIFY = 'FailedOperation.StaffAlreadyVerify'
+
+# 无法撤销，用户已开通自动签。
+FAILEDOPERATION_USERAUTOSIGNENABLEALREADY = 'FailedOperation.UserAutoSignEnableAlready'
+
+# 无法撤销，用户未生成开通链接。
+FAILEDOPERATION_USERAUTOSIGNENABLEURLNOTEXIST = 'FailedOperation.UserAutoSignEnableUrlNotExist'
 
 # 内部错误。
 INTERNALERROR = 'InternalError'
@@ -116,7 +125,7 @@ INVALIDPARAMETER_APPROVERTYPE = 'InvalidParameter.ApproverType'
 # ApproverVerifyType参数值非法
 INVALIDPARAMETER_APPROVERVERIFYTYPE = 'InvalidParameter.ApproverVerifyType'
 
-# 当前仅支持指定上传授权书和法人认证授权, 请重新指定认证方式后发起
+# 不合法的授权方式, 请重新指定授权方式后发起
 INVALIDPARAMETER_AUTHORIZATIONTYPE = 'InvalidParameter.AuthorizationType'
 
 # 重复添加签署人。
@@ -127,6 +136,9 @@ INVALIDPARAMETER_BUSINESSLICENSE = 'InvalidParameter.BusinessLicense'
 
 # 撤销理由填写格式错误。
 INVALIDPARAMETER_CANCELREASON = 'InvalidParameter.CancelReason'
+
+# 证件号码错误。
+INVALIDPARAMETER_CARDNUMBER = 'InvalidParameter.CardNumber'
 
 # 证件类型错误。
 INVALIDPARAMETER_CARDTYPE = 'InvalidParameter.CardType'
@@ -353,6 +365,9 @@ MISSINGPARAMETER_USEROPENID = 'MissingParameter.UserOpenId'
 # 操作被拒绝。
 OPERATIONDENIED = 'OperationDenied'
 
+# 参与人信息有重复
+OPERATIONDENIED_APPROVERREPEAT = 'OperationDenied.ApproverRepeat'
+
 # 不支持的可见性标识。
 OPERATIONDENIED_AUTHTAG = 'OperationDenied.AuthTag'
 
@@ -367,6 +382,9 @@ OPERATIONDENIED_DOWNLOADMORETHANONE = 'OperationDenied.DownLoadMoreThanOne'
 
 # 无资源访问权限。
 OPERATIONDENIED_ERRNORESOURCEACCESS = 'OperationDenied.ErrNoResourceAccess'
+
+# 第三方应用平台未开通“平台子客企业实名认证（信任第三方认证源）”能力
+OPERATIONDENIED_ERRNOTOPENWEAKAUTHORIZATION = 'OperationDenied.ErrNotOpenWeakAuthorization'
 
 # 文件已删除。
 OPERATIONDENIED_FILEDELETED = 'OperationDenied.FileDeleted'
@@ -403,6 +421,9 @@ OPERATIONDENIED_NOQUOTA = 'OperationDenied.NoQuota'
 
 # 不属于企业超管或者法人。
 OPERATIONDENIED_NOTBELONGSUPERADMINORLEGALPERSON = 'OperationDenied.NotBelongSuperAdminOrLegalPerson'
+
+# 不支持的企业类型
+OPERATIONDENIED_NOTSUPPORTORGTYPE = 'OperationDenied.NotSupportOrgType'
 
 # 操作类型不支持。
 OPERATIONDENIED_OPERATETYPE = 'OperationDenied.OperateType'

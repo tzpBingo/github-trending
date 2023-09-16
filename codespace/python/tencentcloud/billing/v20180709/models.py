@@ -265,9 +265,18 @@ class BillDetail(AbstractModel):
         :type RegionId: str
         :param _ProjectId: 项目ID
         :type ProjectId: int
-        :param _PriceInfo: 价格属性
+        :param _PriceInfo: 价格属性：该组件除单价、时长外的其他影响折扣定价的属性信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type PriceInfo: list of str
+        :param _AssociatedOrder: 关联交易单据ID：和本笔交易关联单据 ID，如，冲销订单，记录原订单、重结订单，退费单记录对应的原购买订单号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AssociatedOrder: :class:`tencentcloud.billing.v20180709.models.BillDetailAssociatedOrder`
+        :param _Formula: 计算说明：特殊交易类型计费结算的详细计算说明，如退费及变配
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Formula: str
+        :param _FormulaUrl: 计费规则：各产品详细的计费规则官网说明链接
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FormulaUrl: str
         """
         self._BusinessCodeName = None
         self._ProductCodeName = None
@@ -294,6 +303,9 @@ class BillDetail(AbstractModel):
         self._RegionId = None
         self._ProjectId = None
         self._PriceInfo = None
+        self._AssociatedOrder = None
+        self._Formula = None
+        self._FormulaUrl = None
 
     @property
     def BusinessCodeName(self):
@@ -495,6 +507,30 @@ class BillDetail(AbstractModel):
     def PriceInfo(self, PriceInfo):
         self._PriceInfo = PriceInfo
 
+    @property
+    def AssociatedOrder(self):
+        return self._AssociatedOrder
+
+    @AssociatedOrder.setter
+    def AssociatedOrder(self, AssociatedOrder):
+        self._AssociatedOrder = AssociatedOrder
+
+    @property
+    def Formula(self):
+        return self._Formula
+
+    @Formula.setter
+    def Formula(self, Formula):
+        self._Formula = Formula
+
+    @property
+    def FormulaUrl(self):
+        return self._FormulaUrl
+
+    @FormulaUrl.setter
+    def FormulaUrl(self, FormulaUrl):
+        self._FormulaUrl = FormulaUrl
+
 
     def _deserialize(self, params):
         self._BusinessCodeName = params.get("BusinessCodeName")
@@ -532,6 +568,110 @@ class BillDetail(AbstractModel):
         self._RegionId = params.get("RegionId")
         self._ProjectId = params.get("ProjectId")
         self._PriceInfo = params.get("PriceInfo")
+        if params.get("AssociatedOrder") is not None:
+            self._AssociatedOrder = BillDetailAssociatedOrder()
+            self._AssociatedOrder._deserialize(params.get("AssociatedOrder"))
+        self._Formula = params.get("Formula")
+        self._FormulaUrl = params.get("FormulaUrl")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BillDetailAssociatedOrder(AbstractModel):
+    """明细账单关联单据信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PrepayPurchase: 新购订单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrepayPurchase: str
+        :param _PrepayRenew: 续费订单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrepayRenew: str
+        :param _PrepayModifyUp: 升配订单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrepayModifyUp: str
+        :param _ReverseOrder: 冲销订单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ReverseOrder: str
+        :param _NewOrder: 优惠调整后订单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NewOrder: str
+        :param _Original: 优惠调整前订单
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Original: str
+        """
+        self._PrepayPurchase = None
+        self._PrepayRenew = None
+        self._PrepayModifyUp = None
+        self._ReverseOrder = None
+        self._NewOrder = None
+        self._Original = None
+
+    @property
+    def PrepayPurchase(self):
+        return self._PrepayPurchase
+
+    @PrepayPurchase.setter
+    def PrepayPurchase(self, PrepayPurchase):
+        self._PrepayPurchase = PrepayPurchase
+
+    @property
+    def PrepayRenew(self):
+        return self._PrepayRenew
+
+    @PrepayRenew.setter
+    def PrepayRenew(self, PrepayRenew):
+        self._PrepayRenew = PrepayRenew
+
+    @property
+    def PrepayModifyUp(self):
+        return self._PrepayModifyUp
+
+    @PrepayModifyUp.setter
+    def PrepayModifyUp(self, PrepayModifyUp):
+        self._PrepayModifyUp = PrepayModifyUp
+
+    @property
+    def ReverseOrder(self):
+        return self._ReverseOrder
+
+    @ReverseOrder.setter
+    def ReverseOrder(self, ReverseOrder):
+        self._ReverseOrder = ReverseOrder
+
+    @property
+    def NewOrder(self):
+        return self._NewOrder
+
+    @NewOrder.setter
+    def NewOrder(self, NewOrder):
+        self._NewOrder = NewOrder
+
+    @property
+    def Original(self):
+        return self._Original
+
+    @Original.setter
+    def Original(self, Original):
+        self._Original = Original
+
+
+    def _deserialize(self, params):
+        self._PrepayPurchase = params.get("PrepayPurchase")
+        self._PrepayRenew = params.get("PrepayRenew")
+        self._PrepayModifyUp = params.get("PrepayModifyUp")
+        self._ReverseOrder = params.get("ReverseOrder")
+        self._NewOrder = params.get("NewOrder")
+        self._Original = params.get("Original")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -620,6 +760,9 @@ class BillDetailComponent(AbstractModel):
         :param _BlendedDiscount: 混合折扣率：综合各类折扣抵扣信息后的最终折扣率，混合折扣率 = 优惠后总价 / 组件原价
 注意：此字段可能返回 null，表示取不到有效值。
         :type BlendedDiscount: str
+        :param _ComponentConfig: 配置描述：资源配置规格信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ComponentConfig: list of BillDetailComponentConfig
         """
         self._ComponentCodeName = None
         self._ItemCodeName = None
@@ -650,6 +793,7 @@ class BillDetailComponent(AbstractModel):
         self._SPDeduction = None
         self._OriginalCostWithSP = None
         self._BlendedDiscount = None
+        self._ComponentConfig = None
 
     @property
     def ComponentCodeName(self):
@@ -891,6 +1035,14 @@ class BillDetailComponent(AbstractModel):
     def BlendedDiscount(self, BlendedDiscount):
         self._BlendedDiscount = BlendedDiscount
 
+    @property
+    def ComponentConfig(self):
+        return self._ComponentConfig
+
+    @ComponentConfig.setter
+    def ComponentConfig(self, ComponentConfig):
+        self._ComponentConfig = ComponentConfig
+
 
     def _deserialize(self, params):
         self._ComponentCodeName = params.get("ComponentCodeName")
@@ -922,6 +1074,59 @@ class BillDetailComponent(AbstractModel):
         self._SPDeduction = params.get("SPDeduction")
         self._OriginalCostWithSP = params.get("OriginalCostWithSP")
         self._BlendedDiscount = params.get("BlendedDiscount")
+        if params.get("ComponentConfig") is not None:
+            self._ComponentConfig = []
+            for item in params.get("ComponentConfig"):
+                obj = BillDetailComponentConfig()
+                obj._deserialize(item)
+                self._ComponentConfig.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BillDetailComponentConfig(AbstractModel):
+    """明细账单配置描述结构
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Name: 配置描述名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param _Value: 配置描述值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Value: str
+        """
+        self._Name = None
+        self._Value = None
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+
+    def _deserialize(self, params):
+        self._Name = params.get("Name")
+        self._Value = params.get("Value")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3704,6 +3909,64 @@ class CostDetail(AbstractModel):
         
 
 
+class CreateAllocationTagRequest(AbstractModel):
+    """CreateAllocationTag请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TagKey: 用户分账标签键
+        :type TagKey: list of str
+        """
+        self._TagKey = None
+
+    @property
+    def TagKey(self):
+        return self._TagKey
+
+    @TagKey.setter
+    def TagKey(self, TagKey):
+        self._TagKey = TagKey
+
+
+    def _deserialize(self, params):
+        self._TagKey = params.get("TagKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateAllocationTagResponse(AbstractModel):
+    """CreateAllocationTag返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class Deal(AbstractModel):
     """订单数据对象
 
@@ -4061,6 +4324,64 @@ postMoveIn 按量计费迁入资源
         
 
 
+class DeleteAllocationTagRequest(AbstractModel):
+    """DeleteAllocationTag请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TagKey: 用户分账标签键
+        :type TagKey: list of str
+        """
+        self._TagKey = None
+
+    @property
+    def TagKey(self):
+        return self._TagKey
+
+    @TagKey.setter
+    def TagKey(self, TagKey):
+        self._TagKey = TagKey
+
+
+    def _deserialize(self, params):
+        self._TagKey = params.get("TagKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteAllocationTagResponse(AbstractModel):
+    """DeleteAllocationTag返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeAccountBalanceRequest(AbstractModel):
     """DescribeAccountBalance请求参数结构体
 
@@ -4263,16 +4584,16 @@ class DescribeBillDetailRequest(AbstractModel):
         :type PeriodType: str
         :param _Month: 月份，格式为yyyy-mm，Month和BeginTime&EndTime必传一个，如果有传BeginTime&EndTime则Month字段无效。不能早于开通账单2.0的月份，最多可拉取18个月内的数据。
         :type Month: str
-        :param _BeginTime: 周期开始时间，格式为yyyy-mm-dd hh:ii:ss，Month和BeginTime&EndTime必传一个，如果有该字段则Month字段无效。BeginTime和EndTime必须一起传。不能早于开通账单2.0的月份，最多可拉取18个月内的数据。(不支持跨月查询)
+        :param _BeginTime: 周期开始时间，格式为yyyy-mm-dd hh:ii:ss，Month和BeginTime&EndTime必传一个，如果有该字段则Month字段无效。BeginTime和EndTime必须一起传，且为相同月份，不支持跨月查询，查询结果是整月数据。不能早于开通账单2.0的月份，最多可拉取18个月内的数据。
         :type BeginTime: str
-        :param _EndTime: 周期结束时间，格式为yyyy-mm-dd hh:ii:ss，Month和BeginTime&EndTime必传一个，如果有该字段则Month字段无效。BeginTime和EndTime必须一起传。不能早于开通账单2.0的月份，最多可拉取18个月内的数据。（不支持跨月查询）
+        :param _EndTime: 周期结束时间，格式为yyyy-mm-dd hh:ii:ss，Month和BeginTime&EndTime必传一个，如果有该字段则Month字段无效。BeginTime和EndTime必须一起传，且为相同月份，不支持跨月查询，查询结果是整月数据。不能早于开通账单2.0的月份，最多可拉取18个月内的数据。
         :type EndTime: str
         :param _NeedRecordNum: 是否需要访问列表的总记录数，用于前端分页
 1-表示需要， 0-表示不需要
         :type NeedRecordNum: int
         :param _ProductCode: 已废弃参数，未开放
         :type ProductCode: str
-        :param _PayMode: 付费模式 prePay/postPay
+        :param _PayMode: 付费模式 prePay(表示包年包月)/postPay(表示按时按量)
         :type PayMode: str
         :param _ResourceId: 查询指定资源信息
         :type ResourceId: str
@@ -4906,6 +5227,11 @@ class DescribeBillResourceSummaryRequest(AbstractModel):
         :type BusinessCode: str
         :param _PayerUin: 支付者的账号 ID（账号 ID 是用户在腾讯云的唯一账号标识），默认查询本账号账单，如集团管理账号需查询成员账号自付的账单，该字段需入参成员账号UIN
         :type PayerUin: str
+        :param _TagKey: 分账标签键，用户自定义（支持2021-01以后账单查询）
+        :type TagKey: str
+        :param _TagValue: 分账标签值，该参数为空表示该标签键下未设置标签值的记录
+（支持2021-01以后账单查询）
+        :type TagValue: str
         """
         self._Offset = None
         self._Limit = None
@@ -4917,6 +5243,8 @@ class DescribeBillResourceSummaryRequest(AbstractModel):
         self._PayMode = None
         self._BusinessCode = None
         self._PayerUin = None
+        self._TagKey = None
+        self._TagValue = None
 
     @property
     def Offset(self):
@@ -4998,6 +5326,22 @@ class DescribeBillResourceSummaryRequest(AbstractModel):
     def PayerUin(self, PayerUin):
         self._PayerUin = PayerUin
 
+    @property
+    def TagKey(self):
+        return self._TagKey
+
+    @TagKey.setter
+    def TagKey(self, TagKey):
+        self._TagKey = TagKey
+
+    @property
+    def TagValue(self):
+        return self._TagValue
+
+    @TagValue.setter
+    def TagValue(self, TagValue):
+        self._TagValue = TagValue
+
 
     def _deserialize(self, params):
         self._Offset = params.get("Offset")
@@ -5010,6 +5354,8 @@ class DescribeBillResourceSummaryRequest(AbstractModel):
         self._PayMode = params.get("PayMode")
         self._BusinessCode = params.get("BusinessCode")
         self._PayerUin = params.get("PayerUin")
+        self._TagKey = params.get("TagKey")
+        self._TagValue = params.get("TagValue")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7206,6 +7552,141 @@ class DescribeDosageDetailByDateResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeTagListRequest(AbstractModel):
+    """DescribeTagList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Limit: 分页偏移量，Offset=0表示第一页，如果Limit=100，则Offset=100表示第二页，Offset=200表示第三页，依次类推
+        :type Limit: int
+        :param _Offset: 数量，最大值为1000
+        :type Offset: int
+        :param _TagKey: 分账标签键，用作模糊搜索
+        :type TagKey: str
+        :param _Status: 标签类型，枚举值：0普通标签，1分账标签，用作筛选，不传获取全部标签键
+        :type Status: int
+        :param _OrderType: 排序方式，枚举值：asc排升序，desc排降序
+        :type OrderType: str
+        """
+        self._Limit = None
+        self._Offset = None
+        self._TagKey = None
+        self._Status = None
+        self._OrderType = None
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def TagKey(self):
+        return self._TagKey
+
+    @TagKey.setter
+    def TagKey(self, TagKey):
+        self._TagKey = TagKey
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def OrderType(self):
+        return self._OrderType
+
+    @OrderType.setter
+    def OrderType(self, OrderType):
+        self._OrderType = OrderType
+
+
+    def _deserialize(self, params):
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        self._TagKey = params.get("TagKey")
+        self._Status = params.get("Status")
+        self._OrderType = params.get("OrderType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTagListResponse(AbstractModel):
+    """DescribeTagList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RecordNum: 总记录数
+        :type RecordNum: int
+        :param _Data: 标签信息
+        :type Data: list of TagDataInfo
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RecordNum = None
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def RecordNum(self):
+        return self._RecordNum
+
+    @RecordNum.setter
+    def RecordNum(self, RecordNum):
+        self._RecordNum = RecordNum
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RecordNum = params.get("RecordNum")
+        if params.get("Data") is not None:
+            self._Data = []
+            for item in params.get("Data"):
+                obj = TagDataInfo()
+                obj._deserialize(item)
+                self._Data.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeVoucherInfoRequest(AbstractModel):
     """DescribeVoucherInfo请求参数结构体
 
@@ -8542,6 +9023,64 @@ class SummaryTotal(AbstractModel):
     def _deserialize(self, params):
         self._RealTotalCost = params.get("RealTotalCost")
         self._TotalCost = params.get("TotalCost")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TagDataInfo(AbstractModel):
+    """标签信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TagKey: 分账标签键
+        :type TagKey: str
+        :param _Status: 标签类型，0普通标签，1分账标签
+        :type Status: int
+        :param _UpdateTime: 设置分账标签时间，普通标签不返回
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdateTime: str
+        """
+        self._TagKey = None
+        self._Status = None
+        self._UpdateTime = None
+
+    @property
+    def TagKey(self):
+        return self._TagKey
+
+    @TagKey.setter
+    def TagKey(self, TagKey):
+        self._TagKey = TagKey
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def UpdateTime(self):
+        return self._UpdateTime
+
+    @UpdateTime.setter
+    def UpdateTime(self, UpdateTime):
+        self._UpdateTime = UpdateTime
+
+
+    def _deserialize(self, params):
+        self._TagKey = params.get("TagKey")
+        self._Status = params.get("Status")
+        self._UpdateTime = params.get("UpdateTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

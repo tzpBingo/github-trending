@@ -3939,6 +3939,8 @@ class CreateSubnetRequest(AbstractModel):
         :type EcmRegion: str
         :param _Tags: 指定绑定的标签列表，例如：[{"Key": "city", "Value": "shanghai"}]
         :type Tags: list of Tag
+        :param _IPv6CidrBlock: IPv6 CIDR
+        :type IPv6CidrBlock: str
         """
         self._VpcId = None
         self._SubnetName = None
@@ -3946,6 +3948,7 @@ class CreateSubnetRequest(AbstractModel):
         self._Zone = None
         self._EcmRegion = None
         self._Tags = None
+        self._IPv6CidrBlock = None
 
     @property
     def VpcId(self):
@@ -3995,6 +3998,14 @@ class CreateSubnetRequest(AbstractModel):
     def Tags(self, Tags):
         self._Tags = Tags
 
+    @property
+    def IPv6CidrBlock(self):
+        return self._IPv6CidrBlock
+
+    @IPv6CidrBlock.setter
+    def IPv6CidrBlock(self, IPv6CidrBlock):
+        self._IPv6CidrBlock = IPv6CidrBlock
+
 
     def _deserialize(self, params):
         self._VpcId = params.get("VpcId")
@@ -4008,6 +4019,7 @@ class CreateSubnetRequest(AbstractModel):
                 obj = Tag()
                 obj._deserialize(item)
                 self._Tags.append(obj)
+        self._IPv6CidrBlock = params.get("IPv6CidrBlock")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4080,6 +4092,8 @@ class CreateVpcRequest(AbstractModel):
         :type Tags: list of Tag
         :param _Description: 描述信息
         :type Description: str
+        :param _ISPTypes: 网络运营商类型 取值范围:'CMCC'-中国移动, 'CTCC'-中国电信, 'CUCC'-中国联调	
+        :type ISPTypes: list of ISPTypeItem
         """
         self._VpcName = None
         self._CidrBlock = None
@@ -4089,6 +4103,7 @@ class CreateVpcRequest(AbstractModel):
         self._DomainName = None
         self._Tags = None
         self._Description = None
+        self._ISPTypes = None
 
     @property
     def VpcName(self):
@@ -4154,6 +4169,14 @@ class CreateVpcRequest(AbstractModel):
     def Description(self, Description):
         self._Description = Description
 
+    @property
+    def ISPTypes(self):
+        return self._ISPTypes
+
+    @ISPTypes.setter
+    def ISPTypes(self, ISPTypes):
+        self._ISPTypes = ISPTypes
+
 
     def _deserialize(self, params):
         self._VpcName = params.get("VpcName")
@@ -4169,6 +4192,12 @@ class CreateVpcRequest(AbstractModel):
                 obj._deserialize(item)
                 self._Tags.append(obj)
         self._Description = params.get("Description")
+        if params.get("ISPTypes") is not None:
+            self._ISPTypes = []
+            for item in params.get("ISPTypes"):
+                obj = ISPTypeItem()
+                obj._deserialize(item)
+                self._ISPTypes.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6170,7 +6199,7 @@ class DescribeImageRequest(AbstractModel):
         :param _Filters: 过滤条件，每次请求的Filters的上限为10，详细的过滤条件如下：
 image-id - String - 是否必填： 否 - （过滤条件）按照镜像ID进行过滤
 image-type - String - 是否必填： 否 - （过滤条件）按照镜像类型进行过滤。取值范围：
-PRIVATE_IMAGE: 私有镜像 (本帐户创建的镜像) 
+PRIVATE_IMAGE: 私有镜像 (本账户创建的镜像) 
 PUBLIC_IMAGE: 公共镜像 (腾讯云官方镜像)
 instance-type -String - 是否必填: 否 - (过滤条件) 按机型过滤支持的镜像
 image-name - String - 是否必填：否 - (过滤条件) 按镜像的名称模糊匹配，只能提供一个值
@@ -19960,7 +19989,7 @@ class ResetInstancesRequest(AbstractModel):
         :type ImageId: str
         :param _Password: 密码设置，若未指定，则后续将以站内信的形式通知密码。
         :type Password: str
-        :param _EnhancedService: 是否开启云监控和云镜服务，未指定时默认开启。
+        :param _EnhancedService: 是否开启腾讯云可观测平台和主机安全服务，未指定时默认开启。
         :type EnhancedService: :class:`tencentcloud.ecm.v20190719.models.EnhancedService`
         :param _KeepData: 是否保留数据盘数据，取值"true"/"false"。默认为"true"
         :type KeepData: str
@@ -23872,7 +23901,7 @@ class ZoneInstanceCountISP(AbstractModel):
 CTCC：中国电信
 CUCC：中国联通
 CMCC：中国移动
-多个运营商用英文分号连接";"，例如："CMCC;CUCC;CTCC"。多运营商需要开通白名单，请直接联系腾讯云客服。
+CMCC;CUCC;CTCC：三网；三网需要开通白名单，请直接联系腾讯云客服。
         :type ISP: str
         :param _VpcId: 指定私有网络编号，SubnetId与VpcId必须同时指定或不指定
         :type VpcId: str
@@ -23880,8 +23909,11 @@ CMCC：中国移动
         :type SubnetId: str
         :param _PrivateIpAddresses: 指定主网卡内网IP。条件：SubnetId与VpcId必须同时指定，并且IP数量与InstanceCount相同，多IP主机副网卡内网IP在相同子网内通过DHCP获取。
         :type PrivateIpAddresses: list of str
-        :param _Ipv6AddressCount: 为弹性网卡指定随机生成的IPv6地址数量，目前数量不能大于1。
+        :param _Ipv6AddressCount: 为弹性网卡指定随机生成的IPv6地址数量，单网情况下是1，单网需要ISP 只能为单网运营商，三网情况3
         :type Ipv6AddressCount: int
+        :param _Ipv6SubnetIds: 指定创建三网ipv6地址，使用的subnet数组，只创建ipv4不创建ipv6和单网ipv6子网依然使用SubnetId字段；
+该数组必须且仅支持传入三个不同的子网，并且这三个子网各自分配了电信、联通、移动三个运营商的其中一个IPV6 CIDR网段
+        :type Ipv6SubnetIds: list of str
         """
         self._Zone = None
         self._InstanceCount = None
@@ -23890,6 +23922,7 @@ CMCC：中国移动
         self._SubnetId = None
         self._PrivateIpAddresses = None
         self._Ipv6AddressCount = None
+        self._Ipv6SubnetIds = None
 
     @property
     def Zone(self):
@@ -23947,6 +23980,14 @@ CMCC：中国移动
     def Ipv6AddressCount(self, Ipv6AddressCount):
         self._Ipv6AddressCount = Ipv6AddressCount
 
+    @property
+    def Ipv6SubnetIds(self):
+        return self._Ipv6SubnetIds
+
+    @Ipv6SubnetIds.setter
+    def Ipv6SubnetIds(self, Ipv6SubnetIds):
+        self._Ipv6SubnetIds = Ipv6SubnetIds
+
 
     def _deserialize(self, params):
         self._Zone = params.get("Zone")
@@ -23956,6 +23997,7 @@ CMCC：中国移动
         self._SubnetId = params.get("SubnetId")
         self._PrivateIpAddresses = params.get("PrivateIpAddresses")
         self._Ipv6AddressCount = params.get("Ipv6AddressCount")
+        self._Ipv6SubnetIds = params.get("Ipv6SubnetIds")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

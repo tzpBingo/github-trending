@@ -749,7 +749,7 @@ class ApigatewayClient(AbstractClient):
 
 
     def DescribeApiApp(self, request):
-        """本接口（DescribeApiApp）用于根据应用ID搜索应用。
+        """本接口（DescribeApiApp）用于根据应用ID搜索应用。此接口已下线，如需使用功能请使用DescribeApiAppsStatus接口。
 
         :param request: Request instance for DescribeApiApp.
         :type request: :class:`tencentcloud.apigateway.v20180808.models.DescribeApiAppRequest`
@@ -1669,31 +1669,6 @@ class ApigatewayClient(AbstractClient):
             body = self.call("EnableApiKey", params, headers=headers)
             response = json.loads(body)
             model = models.EnableApiKeyResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def GenerateApiDocument(self, request):
-        """接口已废弃
-
-        本接口（GenerateApiDocument）用于自动生成 API 文档和 SDK，一个服务的一个环境生成一份文档和 SDK。
-
-        :param request: Request instance for GenerateApiDocument.
-        :type request: :class:`tencentcloud.apigateway.v20180808.models.GenerateApiDocumentRequest`
-        :rtype: :class:`tencentcloud.apigateway.v20180808.models.GenerateApiDocumentResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("GenerateApiDocument", params, headers=headers)
-            response = json.loads(body)
-            model = models.GenerateApiDocumentResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

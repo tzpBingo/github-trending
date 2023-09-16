@@ -1436,9 +1436,12 @@ class CreateNamespaceRequest(AbstractModel):
         :type Namespace: str
         :param _Description: 命名空间描述
         :type Description: str
+        :param _ResourceEnv: 资源池配置
+        :type ResourceEnv: :class:`tencentcloud.scf.v20180416.models.NamespaceResourceEnv`
         """
         self._Namespace = None
         self._Description = None
+        self._ResourceEnv = None
 
     @property
     def Namespace(self):
@@ -1456,10 +1459,21 @@ class CreateNamespaceRequest(AbstractModel):
     def Description(self, Description):
         self._Description = Description
 
+    @property
+    def ResourceEnv(self):
+        return self._ResourceEnv
+
+    @ResourceEnv.setter
+    def ResourceEnv(self, ResourceEnv):
+        self._ResourceEnv = ResourceEnv
+
 
     def _deserialize(self, params):
         self._Namespace = params.get("Namespace")
         self._Description = params.get("Description")
+        if params.get("ResourceEnv") is not None:
+            self._ResourceEnv = NamespaceResourceEnv()
+            self._ResourceEnv._deserialize(params.get("ResourceEnv"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5342,6 +5356,137 @@ class InvokeResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class K8SLabel(AbstractModel):
+    """k8s label
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Key: label的名称
+        :type Key: str
+        :param _Value: label的值
+        :type Value: str
+        """
+        self._Key = None
+        self._Value = None
+
+    @property
+    def Key(self):
+        return self._Key
+
+    @Key.setter
+    def Key(self, Key):
+        self._Key = Key
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+
+    def _deserialize(self, params):
+        self._Key = params.get("Key")
+        self._Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class K8SToleration(AbstractModel):
+    """Kubernetes污点容忍，使用时请注意您的Kubernetes版本所支持的字段情况。
+    可参考 https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Key: 匹配的污点名
+        :type Key: str
+        :param _Operator: 匹配方式，默认值为: Equal
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Operator: str
+        :param _Effect: 执行策略
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Effect: str
+        :param _Value: 匹配的污点值，当Operator为Equal时必填
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Value: str
+        :param _TolerationSeconds: 当污点不被容忍时，Pod还能在节点上运行多久
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TolerationSeconds: int
+        """
+        self._Key = None
+        self._Operator = None
+        self._Effect = None
+        self._Value = None
+        self._TolerationSeconds = None
+
+    @property
+    def Key(self):
+        return self._Key
+
+    @Key.setter
+    def Key(self, Key):
+        self._Key = Key
+
+    @property
+    def Operator(self):
+        return self._Operator
+
+    @Operator.setter
+    def Operator(self, Operator):
+        self._Operator = Operator
+
+    @property
+    def Effect(self):
+        return self._Effect
+
+    @Effect.setter
+    def Effect(self, Effect):
+        self._Effect = Effect
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+    @property
+    def TolerationSeconds(self):
+        return self._TolerationSeconds
+
+    @TolerationSeconds.setter
+    def TolerationSeconds(self, TolerationSeconds):
+        self._TolerationSeconds = TolerationSeconds
+
+
+    def _deserialize(self, params):
+        self._Key = params.get("Key")
+        self._Operator = params.get("Operator")
+        self._Effect = params.get("Effect")
+        self._Value = params.get("Value")
+        self._TolerationSeconds = params.get("TolerationSeconds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LayerVersionInfo(AbstractModel):
     """层版本信息
 
@@ -7096,6 +7241,177 @@ class NamespaceLimit(AbstractModel):
         self._RetryNumLimit = params.get("RetryNumLimit")
         self._MinMsgTTL = params.get("MinMsgTTL")
         self._MaxMsgTTL = params.get("MaxMsgTTL")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NamespaceResourceEnv(AbstractModel):
+    """命名空间资源池配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TKE: 基于TKE集群的资源池
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TKE: :class:`tencentcloud.scf.v20180416.models.NamespaceResourceEnvTKE`
+        """
+        self._TKE = None
+
+    @property
+    def TKE(self):
+        return self._TKE
+
+    @TKE.setter
+    def TKE(self, TKE):
+        self._TKE = TKE
+
+
+    def _deserialize(self, params):
+        if params.get("TKE") is not None:
+            self._TKE = NamespaceResourceEnvTKE()
+            self._TKE._deserialize(params.get("TKE"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class NamespaceResourceEnvTKE(AbstractModel):
+    """基于TKE的资源池选项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ClusterID: 集群ID
+        :type ClusterID: str
+        :param _SubnetID: 子网ID
+        :type SubnetID: str
+        :param _Namespace: 命名空间
+        :type Namespace: str
+        :param _DataPath: 数据存储地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DataPath: str
+        :param _NodeSelector: node选择器
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NodeSelector: list of K8SLabel
+        :param _Tolerations: 污点容忍
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tolerations: list of K8SToleration
+        :param _Port: scf组件将占用的节点端口起始号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Port: int
+        :param _PodTemplatePatch: yaml格式的pod patch内容，例如
+metadata:
+  labels:
+    key: value
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PodTemplatePatch: str
+        """
+        self._ClusterID = None
+        self._SubnetID = None
+        self._Namespace = None
+        self._DataPath = None
+        self._NodeSelector = None
+        self._Tolerations = None
+        self._Port = None
+        self._PodTemplatePatch = None
+
+    @property
+    def ClusterID(self):
+        return self._ClusterID
+
+    @ClusterID.setter
+    def ClusterID(self, ClusterID):
+        self._ClusterID = ClusterID
+
+    @property
+    def SubnetID(self):
+        return self._SubnetID
+
+    @SubnetID.setter
+    def SubnetID(self, SubnetID):
+        self._SubnetID = SubnetID
+
+    @property
+    def Namespace(self):
+        return self._Namespace
+
+    @Namespace.setter
+    def Namespace(self, Namespace):
+        self._Namespace = Namespace
+
+    @property
+    def DataPath(self):
+        return self._DataPath
+
+    @DataPath.setter
+    def DataPath(self, DataPath):
+        self._DataPath = DataPath
+
+    @property
+    def NodeSelector(self):
+        return self._NodeSelector
+
+    @NodeSelector.setter
+    def NodeSelector(self, NodeSelector):
+        self._NodeSelector = NodeSelector
+
+    @property
+    def Tolerations(self):
+        return self._Tolerations
+
+    @Tolerations.setter
+    def Tolerations(self, Tolerations):
+        self._Tolerations = Tolerations
+
+    @property
+    def Port(self):
+        return self._Port
+
+    @Port.setter
+    def Port(self, Port):
+        self._Port = Port
+
+    @property
+    def PodTemplatePatch(self):
+        return self._PodTemplatePatch
+
+    @PodTemplatePatch.setter
+    def PodTemplatePatch(self, PodTemplatePatch):
+        self._PodTemplatePatch = PodTemplatePatch
+
+
+    def _deserialize(self, params):
+        self._ClusterID = params.get("ClusterID")
+        self._SubnetID = params.get("SubnetID")
+        self._Namespace = params.get("Namespace")
+        self._DataPath = params.get("DataPath")
+        if params.get("NodeSelector") is not None:
+            self._NodeSelector = []
+            for item in params.get("NodeSelector"):
+                obj = K8SLabel()
+                obj._deserialize(item)
+                self._NodeSelector.append(obj)
+        if params.get("Tolerations") is not None:
+            self._Tolerations = []
+            for item in params.get("Tolerations"):
+                obj = K8SToleration()
+                obj._deserialize(item)
+                self._Tolerations.append(obj)
+        self._Port = params.get("Port")
+        self._PodTemplatePatch = params.get("PodTemplatePatch")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -9923,6 +10239,160 @@ class UpdateNamespaceRequest(AbstractModel):
 
 class UpdateNamespaceResponse(AbstractModel):
     """UpdateNamespace返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class UpdateTriggerRequest(AbstractModel):
+    """UpdateTrigger请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FunctionName: 函数名称
+        :type FunctionName: str
+        :param _TriggerName: 触发器名称
+        :type TriggerName: str
+        :param _Type: 触发器类型
+        :type Type: str
+        :param _Enable: 触发器开启或关闭，传参为OPEN为开启，CLOSE为关闭
+        :type Enable: str
+        :param _Qualifier: 函数的版本，默认为 $LATEST，建议填写 [$DEFAULT](https://cloud.tencent.com/document/product/583/36149#.E9.BB.98.E8.AE.A4.E5.88.AB.E5.90.8D)方便后续进行版本的灰度发布。
+        :type Qualifier: str
+        :param _Namespace: 函数的命名空间
+        :type Namespace: str
+        :param _TriggerDesc: TriggerDesc参数
+        :type TriggerDesc: str
+        :param _Description: 触发器描述
+        :type Description: str
+        :param _CustomArgument: 用户附加信息
+        :type CustomArgument: str
+        """
+        self._FunctionName = None
+        self._TriggerName = None
+        self._Type = None
+        self._Enable = None
+        self._Qualifier = None
+        self._Namespace = None
+        self._TriggerDesc = None
+        self._Description = None
+        self._CustomArgument = None
+
+    @property
+    def FunctionName(self):
+        return self._FunctionName
+
+    @FunctionName.setter
+    def FunctionName(self, FunctionName):
+        self._FunctionName = FunctionName
+
+    @property
+    def TriggerName(self):
+        return self._TriggerName
+
+    @TriggerName.setter
+    def TriggerName(self, TriggerName):
+        self._TriggerName = TriggerName
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def Enable(self):
+        return self._Enable
+
+    @Enable.setter
+    def Enable(self, Enable):
+        self._Enable = Enable
+
+    @property
+    def Qualifier(self):
+        return self._Qualifier
+
+    @Qualifier.setter
+    def Qualifier(self, Qualifier):
+        self._Qualifier = Qualifier
+
+    @property
+    def Namespace(self):
+        return self._Namespace
+
+    @Namespace.setter
+    def Namespace(self, Namespace):
+        self._Namespace = Namespace
+
+    @property
+    def TriggerDesc(self):
+        return self._TriggerDesc
+
+    @TriggerDesc.setter
+    def TriggerDesc(self, TriggerDesc):
+        self._TriggerDesc = TriggerDesc
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def CustomArgument(self):
+        return self._CustomArgument
+
+    @CustomArgument.setter
+    def CustomArgument(self, CustomArgument):
+        self._CustomArgument = CustomArgument
+
+
+    def _deserialize(self, params):
+        self._FunctionName = params.get("FunctionName")
+        self._TriggerName = params.get("TriggerName")
+        self._Type = params.get("Type")
+        self._Enable = params.get("Enable")
+        self._Qualifier = params.get("Qualifier")
+        self._Namespace = params.get("Namespace")
+        self._TriggerDesc = params.get("TriggerDesc")
+        self._Description = params.get("Description")
+        self._CustomArgument = params.get("CustomArgument")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UpdateTriggerResponse(AbstractModel):
+    """UpdateTrigger返回参数结构体
 
     """
 

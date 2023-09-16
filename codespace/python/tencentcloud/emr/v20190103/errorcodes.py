@@ -119,6 +119,9 @@ INVALIDPARAMETER_DISPLAYSTRATEGYNOTMATCH = 'InvalidParameter.DisplayStrategyNotM
 # 参数错误。
 INVALIDPARAMETER_HALESSMASTERCOUNT = 'InvalidParameter.HALessMasterCount'
 
+# impala查询参数异常。
+INVALIDPARAMETER_IMPALAQUERYEXCEPTION = 'InvalidParameter.ImpalaQueryException'
+
 # Common节点数量无效。
 INVALIDPARAMETER_INCORRECTCOMMONCOUNT = 'InvalidParameter.IncorrectCommonCount'
 
@@ -403,6 +406,9 @@ RESOURCESSOLDOUT_CBSSOLDOUT = 'ResourcesSoldOut.CbsSoldOut'
 
 # 云服务器已售罄。
 RESOURCESSOLDOUT_CVMSOLDOUT = 'ResourcesSoldOut.CvmSoldOut'
+
+# appid不一致。
+UNAUTHORIZEDOPERATION_APPIDMISMATCHED = 'UnauthorizedOperation.AppIdMismatched'
 
 # 校验账号操作无权限。
 UNAUTHORIZEDOPERATION_CHECKCAMAUTH = 'UnauthorizedOperation.CheckCamAuth'

@@ -1535,7 +1535,7 @@ class ImportTableFileRequest(AbstractModel):
         :type Name: str
         :param _CosUri: 表格文件Cos对象路径。
         :type CosUri: str
-        :param _DataType: 表格文件中每列的数据类型，支持的类型包括：Int、String、File、Array[File]
+        :param _DataType: 表格文件中每列的数据类型，支持的类型包括：Int、Float、String、File、Boolean、Array[Int]、Array[Float]、Array[String]、Array[File]、Array[Boolean]
         :type DataType: list of str
         :param _Description: 表格描述。
         :type Description: str
@@ -2074,6 +2074,8 @@ class RunApplicationRequest(AbstractModel):
         :type TableId: str
         :param _TableRowUuids: 批量投递表格行UUID。不填表示表格全部行。
         :type TableRowUuids: list of str
+        :param _ApplicationVersionId: 应用版本ID。不填表示使用当前最新版本。
+        :type ApplicationVersionId: str
         """
         self._ApplicationId = None
         self._ProjectId = None
@@ -2085,6 +2087,7 @@ class RunApplicationRequest(AbstractModel):
         self._Description = None
         self._TableId = None
         self._TableRowUuids = None
+        self._ApplicationVersionId = None
 
     @property
     def ApplicationId(self):
@@ -2166,6 +2169,14 @@ class RunApplicationRequest(AbstractModel):
     def TableRowUuids(self, TableRowUuids):
         self._TableRowUuids = TableRowUuids
 
+    @property
+    def ApplicationVersionId(self):
+        return self._ApplicationVersionId
+
+    @ApplicationVersionId.setter
+    def ApplicationVersionId(self, ApplicationVersionId):
+        self._ApplicationVersionId = ApplicationVersionId
+
 
     def _deserialize(self, params):
         self._ApplicationId = params.get("ApplicationId")
@@ -2180,6 +2191,7 @@ class RunApplicationRequest(AbstractModel):
         self._Description = params.get("Description")
         self._TableId = params.get("TableId")
         self._TableRowUuids = params.get("TableRowUuids")
+        self._ApplicationVersionId = params.get("ApplicationVersionId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

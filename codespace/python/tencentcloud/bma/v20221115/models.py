@@ -817,10 +817,13 @@ class CreateBPWhiteListRequest(AbstractModel):
         :type WhiteListType: int
         :param _WhiteLists: 白名单名称
         :type WhiteLists: list of str
+        :param _Remark: 白名单备注
+        :type Remark: str
         """
         self._CompanyId = None
         self._WhiteListType = None
         self._WhiteLists = None
+        self._Remark = None
 
     @property
     def CompanyId(self):
@@ -846,11 +849,20 @@ class CreateBPWhiteListRequest(AbstractModel):
     def WhiteLists(self, WhiteLists):
         self._WhiteLists = WhiteLists
 
+    @property
+    def Remark(self):
+        return self._Remark
+
+    @Remark.setter
+    def Remark(self, Remark):
+        self._Remark = Remark
+
 
     def _deserialize(self, params):
         self._CompanyId = params.get("CompanyId")
         self._WhiteListType = params.get("WhiteListType")
         self._WhiteLists = params.get("WhiteLists")
+        self._Remark = params.get("Remark")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1606,10 +1618,10 @@ class FakeURLData(AbstractModel):
         :param _Heat: 热度
 注意：此字段可能返回 null，表示取不到有效值。
         :type Heat: int
-        :param _BlockStatus: 协助处置状态：0-未处置 1-处置中 2-处置成功 3-处置失败
+        :param _BlockStatus: 拦截处置状态：0-未处置 1-处置中 2-处置成功 3-处置失败
 注意：此字段可能返回 null，表示取不到有效值。
         :type BlockStatus: int
-        :param _BlockNote: 协助处置状态说明
+        :param _BlockNote: 拦截处置状态说明
 注意：此字段可能返回 null，表示取不到有效值。
         :type BlockNote: str
         :param _OfflineStatus: 关停状态：0-未关停 1-关停中 2-关停成功 3-关停失败 4-重复上架
@@ -1654,6 +1666,9 @@ class FakeURLData(AbstractModel):
         :param _AccountStatus: 账户资源状态：0-不可用 1-可用
 注意：此字段可能返回 null，表示取不到有效值。
         :type AccountStatus: int
+        :param _AuditStatus: 审核状态：0-未审核 1-审核中 2-审核成功 3-审核失败
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AuditStatus: int
         """
         self._FakeURLId = None
         self._BrandName = None
@@ -1677,6 +1692,7 @@ class FakeURLData(AbstractModel):
         self._CertificationStatus = None
         self._Snapshot = None
         self._AccountStatus = None
+        self._AuditStatus = None
 
     @property
     def FakeURLId(self):
@@ -1854,6 +1870,14 @@ class FakeURLData(AbstractModel):
     def AccountStatus(self, AccountStatus):
         self._AccountStatus = AccountStatus
 
+    @property
+    def AuditStatus(self):
+        return self._AuditStatus
+
+    @AuditStatus.setter
+    def AuditStatus(self, AuditStatus):
+        self._AuditStatus = AuditStatus
+
 
     def _deserialize(self, params):
         self._FakeURLId = params.get("FakeURLId")
@@ -1878,6 +1902,7 @@ class FakeURLData(AbstractModel):
         self._CertificationStatus = params.get("CertificationStatus")
         self._Snapshot = params.get("Snapshot")
         self._AccountStatus = params.get("AccountStatus")
+        self._AuditStatus = params.get("AuditStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2201,6 +2226,9 @@ class WhiteListData(AbstractModel):
         :param _WhiteList: 白名单
 注意：此字段可能返回 null，表示取不到有效值。
         :type WhiteList: str
+        :param _Remark: 白名单备注
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Remark: str
         :param _InsertTime: 新增时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type InsertTime: str
@@ -2210,6 +2238,7 @@ class WhiteListData(AbstractModel):
         self._BrandName = None
         self._AssetsType = None
         self._WhiteList = None
+        self._Remark = None
         self._InsertTime = None
 
     @property
@@ -2253,6 +2282,14 @@ class WhiteListData(AbstractModel):
         self._WhiteList = WhiteList
 
     @property
+    def Remark(self):
+        return self._Remark
+
+    @Remark.setter
+    def Remark(self, Remark):
+        self._Remark = Remark
+
+    @property
     def InsertTime(self):
         return self._InsertTime
 
@@ -2267,6 +2304,7 @@ class WhiteListData(AbstractModel):
         self._BrandName = params.get("BrandName")
         self._AssetsType = params.get("AssetsType")
         self._WhiteList = params.get("WhiteList")
+        self._Remark = params.get("Remark")
         self._InsertTime = params.get("InsertTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():

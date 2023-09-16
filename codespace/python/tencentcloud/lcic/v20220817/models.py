@@ -1265,6 +1265,12 @@ class CreateDocumentRequest(AbstractModel):
         :type DocumentType: str
         :param _DocumentSize: 文档大小，单位 字节
         :type DocumentSize: int
+        :param _AutoHandleUnsupportedElement: 是否对不支持元素开启自动处理的功能。默认关闭。
+自动处理的元素如下：
+1. 墨迹：移除不支持的墨迹（例如WPS墨迹）
+2. 自动翻页：移除PPT上所有自动翻页设置，并设置为单击鼠标翻页
+3. 已损坏音视频：移除PPT上对损坏音视频的引用
+        :type AutoHandleUnsupportedElement: bool
         """
         self._SdkAppId = None
         self._DocumentUrl = None
@@ -1274,6 +1280,7 @@ class CreateDocumentRequest(AbstractModel):
         self._Permission = None
         self._DocumentType = None
         self._DocumentSize = None
+        self._AutoHandleUnsupportedElement = None
 
     @property
     def SdkAppId(self):
@@ -1339,6 +1346,14 @@ class CreateDocumentRequest(AbstractModel):
     def DocumentSize(self, DocumentSize):
         self._DocumentSize = DocumentSize
 
+    @property
+    def AutoHandleUnsupportedElement(self):
+        return self._AutoHandleUnsupportedElement
+
+    @AutoHandleUnsupportedElement.setter
+    def AutoHandleUnsupportedElement(self, AutoHandleUnsupportedElement):
+        self._AutoHandleUnsupportedElement = AutoHandleUnsupportedElement
+
 
     def _deserialize(self, params):
         self._SdkAppId = params.get("SdkAppId")
@@ -1349,6 +1364,7 @@ class CreateDocumentRequest(AbstractModel):
         self._Permission = params.get("Permission")
         self._DocumentType = params.get("DocumentType")
         self._DocumentSize = params.get("DocumentSize")
+        self._AutoHandleUnsupportedElement = params.get("AutoHandleUnsupportedElement")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1659,7 +1675,7 @@ video 纯视频
         :type RTCAudienceNumber: int
         :param _AudienceType: 观看类型。互动观看 （默认）
         :type AudienceType: int
-        :param _RecordLayout: 录制布局。录制模板枚举值参考：https://cloud.tencent.com/document/product/1639/89744
+        :param _RecordLayout: 录制模板。录制模板枚举值参考：https://cloud.tencent.com/document/product/1639/89744
         :type RecordLayout: int
         :param _GroupId: 房间绑定的群组ID,非空时限制组成员进入
         :type GroupId: str
@@ -1673,6 +1689,12 @@ video 纯视频
         :type InteractionMode: int
         :param _VideoOrientation: 横竖屏。0：横屏开播（默认值）; 1：竖屏开播，当前仅支持移动端的纯视频类型
         :type VideoOrientation: int
+        :param _IsGradingRequiredPostClass: 开启课后评分。 0：不开启(默认)  1：开启
+        :type IsGradingRequiredPostClass: int
+        :param _RoomType: 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+        :type RoomType: int
+        :param _EndDelayTime: 拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
+        :type EndDelayTime: int
         """
         self._Name = None
         self._StartTime = None
@@ -1694,6 +1716,9 @@ video 纯视频
         self._EnableDirectControl = None
         self._InteractionMode = None
         self._VideoOrientation = None
+        self._IsGradingRequiredPostClass = None
+        self._RoomType = None
+        self._EndDelayTime = None
 
     @property
     def Name(self):
@@ -1855,6 +1880,30 @@ video 纯视频
     def VideoOrientation(self, VideoOrientation):
         self._VideoOrientation = VideoOrientation
 
+    @property
+    def IsGradingRequiredPostClass(self):
+        return self._IsGradingRequiredPostClass
+
+    @IsGradingRequiredPostClass.setter
+    def IsGradingRequiredPostClass(self, IsGradingRequiredPostClass):
+        self._IsGradingRequiredPostClass = IsGradingRequiredPostClass
+
+    @property
+    def RoomType(self):
+        return self._RoomType
+
+    @RoomType.setter
+    def RoomType(self, RoomType):
+        self._RoomType = RoomType
+
+    @property
+    def EndDelayTime(self):
+        return self._EndDelayTime
+
+    @EndDelayTime.setter
+    def EndDelayTime(self, EndDelayTime):
+        self._EndDelayTime = EndDelayTime
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -1877,6 +1926,9 @@ video 纯视频
         self._EnableDirectControl = params.get("EnableDirectControl")
         self._InteractionMode = params.get("InteractionMode")
         self._VideoOrientation = params.get("VideoOrientation")
+        self._IsGradingRequiredPostClass = params.get("IsGradingRequiredPostClass")
+        self._RoomType = params.get("RoomType")
+        self._EndDelayTime = params.get("EndDelayTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2450,6 +2502,64 @@ class DeleteSupervisorRequest(AbstractModel):
 
 class DeleteSupervisorResponse(AbstractModel):
     """DeleteSupervisor返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteUserRequest(AbstractModel):
+    """DeleteUser请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _UserId: 待删除用户的ID
+        :type UserId: str
+        """
+        self._UserId = None
+
+    @property
+    def UserId(self):
+        return self._UserId
+
+    @UserId.setter
+    def UserId(self, UserId):
+        self._UserId = UserId
+
+
+    def _deserialize(self, params):
+        self._UserId = params.get("UserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteUserResponse(AbstractModel):
+    """DeleteUser返回参数结构体
 
     """
 
@@ -3967,6 +4077,8 @@ class DescribeRoomResponse(AbstractModel):
         :type TeacherId: str
         :param _SdkAppId: 低代码互动课堂的SdkAppId。
         :type SdkAppId: int
+        :param _AudienceType: 观看类型。互动观看 （默认）	
+        :type AudienceType: int
         :param _Resolution: 分辨率。可以有如下取值：
 1 标清
 2 高清
@@ -4011,6 +4123,14 @@ video 纯视频
         :type InteractionMode: int
         :param _VideoOrientation: 横竖屏。0：横屏开播（默认值）; 1：竖屏开播，当前仅支持移动端的纯视频类型
         :type VideoOrientation: int
+        :param _IsGradingRequiredPostClass: 开启课后评分。 0：不开启(默认)  1：开启
+        :type IsGradingRequiredPostClass: int
+        :param _RoomType: 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+        :type RoomType: int
+        :param _VideoDuration: 录制时长
+        :type VideoDuration: int
+        :param _EndDelayTime: 拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
+        :type EndDelayTime: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4019,6 +4139,7 @@ video 纯视频
         self._EndTime = None
         self._TeacherId = None
         self._SdkAppId = None
+        self._AudienceType = None
         self._Resolution = None
         self._MaxMicNumber = None
         self._AutoMic = None
@@ -4032,6 +4153,10 @@ video 纯视频
         self._EnableDirectControl = None
         self._InteractionMode = None
         self._VideoOrientation = None
+        self._IsGradingRequiredPostClass = None
+        self._RoomType = None
+        self._VideoDuration = None
+        self._EndDelayTime = None
         self._RequestId = None
 
     @property
@@ -4073,6 +4198,14 @@ video 纯视频
     @SdkAppId.setter
     def SdkAppId(self, SdkAppId):
         self._SdkAppId = SdkAppId
+
+    @property
+    def AudienceType(self):
+        return self._AudienceType
+
+    @AudienceType.setter
+    def AudienceType(self, AudienceType):
+        self._AudienceType = AudienceType
 
     @property
     def Resolution(self):
@@ -4179,6 +4312,38 @@ video 纯视频
         self._VideoOrientation = VideoOrientation
 
     @property
+    def IsGradingRequiredPostClass(self):
+        return self._IsGradingRequiredPostClass
+
+    @IsGradingRequiredPostClass.setter
+    def IsGradingRequiredPostClass(self, IsGradingRequiredPostClass):
+        self._IsGradingRequiredPostClass = IsGradingRequiredPostClass
+
+    @property
+    def RoomType(self):
+        return self._RoomType
+
+    @RoomType.setter
+    def RoomType(self, RoomType):
+        self._RoomType = RoomType
+
+    @property
+    def VideoDuration(self):
+        return self._VideoDuration
+
+    @VideoDuration.setter
+    def VideoDuration(self, VideoDuration):
+        self._VideoDuration = VideoDuration
+
+    @property
+    def EndDelayTime(self):
+        return self._EndDelayTime
+
+    @EndDelayTime.setter
+    def EndDelayTime(self, EndDelayTime):
+        self._EndDelayTime = EndDelayTime
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -4193,6 +4358,7 @@ video 纯视频
         self._EndTime = params.get("EndTime")
         self._TeacherId = params.get("TeacherId")
         self._SdkAppId = params.get("SdkAppId")
+        self._AudienceType = params.get("AudienceType")
         self._Resolution = params.get("Resolution")
         self._MaxMicNumber = params.get("MaxMicNumber")
         self._AutoMic = params.get("AutoMic")
@@ -4206,6 +4372,10 @@ video 纯视频
         self._EnableDirectControl = params.get("EnableDirectControl")
         self._InteractionMode = params.get("InteractionMode")
         self._VideoOrientation = params.get("VideoOrientation")
+        self._IsGradingRequiredPostClass = params.get("IsGradingRequiredPostClass")
+        self._RoomType = params.get("RoomType")
+        self._VideoDuration = params.get("VideoDuration")
+        self._EndDelayTime = params.get("EndDelayTime")
         self._RequestId = params.get("RequestId")
 
 
@@ -4685,6 +4855,9 @@ class DescribeUserResponse(AbstractModel):
         :type Name: str
         :param _Avatar: 用户头像Url。
         :type Avatar: str
+        :param _OriginId: 用户在客户系统的Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -4692,6 +4865,7 @@ class DescribeUserResponse(AbstractModel):
         self._UserId = None
         self._Name = None
         self._Avatar = None
+        self._OriginId = None
         self._RequestId = None
 
     @property
@@ -4727,6 +4901,14 @@ class DescribeUserResponse(AbstractModel):
         self._Avatar = Avatar
 
     @property
+    def OriginId(self):
+        return self._OriginId
+
+    @OriginId.setter
+    def OriginId(self, OriginId):
+        self._OriginId = OriginId
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -4740,6 +4922,7 @@ class DescribeUserResponse(AbstractModel):
         self._UserId = params.get("UserId")
         self._Name = params.get("Name")
         self._Avatar = params.get("Avatar")
+        self._OriginId = params.get("OriginId")
         self._RequestId = params.get("RequestId")
 
 
@@ -4804,6 +4987,9 @@ class DocumentInfo(AbstractModel):
         :param _Cover: 封面，仅转码的课件会生成封面
 注意：此字段可能返回 null，表示取不到有效值。
         :type Cover: str
+        :param _Preview: 课件预览地址
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Preview: str
         """
         self._DocumentId = None
         self._DocumentUrl = None
@@ -4823,6 +5009,7 @@ class DocumentInfo(AbstractModel):
         self._Width = None
         self._Height = None
         self._Cover = None
+        self._Preview = None
 
     @property
     def DocumentId(self):
@@ -4968,6 +5155,14 @@ class DocumentInfo(AbstractModel):
     def Cover(self, Cover):
         self._Cover = Cover
 
+    @property
+    def Preview(self):
+        return self._Preview
+
+    @Preview.setter
+    def Preview(self, Preview):
+        self._Preview = Preview
+
 
     def _deserialize(self, params):
         self._DocumentId = params.get("DocumentId")
@@ -4988,6 +5183,7 @@ class DocumentInfo(AbstractModel):
         self._Width = params.get("Width")
         self._Height = params.get("Height")
         self._Cover = params.get("Cover")
+        self._Preview = params.get("Preview")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5069,9 +5265,25 @@ class EventDataInfo(AbstractModel):
         :param _UserId: 事件发生的用户。
 注意：此字段可能返回 null，表示取不到有效值。
         :type UserId: str
+        :param _Device: 用户设备类型。0: Unknown; 1: Windows; 2: macOS; 3: Android; 4: iOS; 5: Web; 6: Mobile webpage; 7: Weixin Mini Program.
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Device: int
+        :param _Duration: 录制时长。单位：秒
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Duration: int
+        :param _RecordSize: 录制文件大小
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecordSize: int
+        :param _RecordUrl: 录制url
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecordUrl: str
         """
         self._RoomId = None
         self._UserId = None
+        self._Device = None
+        self._Duration = None
+        self._RecordSize = None
+        self._RecordUrl = None
 
     @property
     def RoomId(self):
@@ -5089,10 +5301,46 @@ class EventDataInfo(AbstractModel):
     def UserId(self, UserId):
         self._UserId = UserId
 
+    @property
+    def Device(self):
+        return self._Device
+
+    @Device.setter
+    def Device(self, Device):
+        self._Device = Device
+
+    @property
+    def Duration(self):
+        return self._Duration
+
+    @Duration.setter
+    def Duration(self, Duration):
+        self._Duration = Duration
+
+    @property
+    def RecordSize(self):
+        return self._RecordSize
+
+    @RecordSize.setter
+    def RecordSize(self, RecordSize):
+        self._RecordSize = RecordSize
+
+    @property
+    def RecordUrl(self):
+        return self._RecordUrl
+
+    @RecordUrl.setter
+    def RecordUrl(self, RecordUrl):
+        self._RecordUrl = RecordUrl
+
 
     def _deserialize(self, params):
         self._RoomId = params.get("RoomId")
         self._UserId = params.get("UserId")
+        self._Device = params.get("Device")
+        self._Duration = params.get("Duration")
+        self._RecordSize = params.get("RecordSize")
+        self._RecordUrl = params.get("RecordUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5114,8 +5362,8 @@ class EventInfo(AbstractModel):
         :type Timestamp: int
         :param _EventType: 事件类型,有以下值:
 RoomStart:房间开始 RoomEnd:房间结束 MemberJoin:成员加入 MemberQuit:成员退出 RecordFinish:录制结束
-Camera0n: 摄像头打开
-Camera0ff: 摄像头关闭
+CameraOn: 摄像头打开
+CameraOff: 摄像头关闭
 MicOn: 麦克风打开
 MicOff: 麦克风关闭
 ScreenOn: 屏幕共享打开
@@ -5193,6 +5441,14 @@ RoomEnd:房间结束
 MemberJoin:成员加入
 MemberQuit:成员退出
 RecordFinish:录制结束
+CameraOn: 摄像头打开
+CameraOff: 摄像头关闭
+MicOn: 麦克风打开
+MicOff: 麦克风关闭
+ScreenOn: 屏幕共享打开
+ScreenOff: 屏幕共享关闭
+VisibleOn: 页面可见
+VisibleOff: 页面不可见
         :type Keyword: str
         """
         self._RoomId = None
@@ -6759,6 +7015,14 @@ video 纯视频
         :type InteractionMode: int
         :param _VideoOrientation: 横竖屏。0：横屏开播（默认值）; 1：竖屏开播，当前仅支持移动端的纯视频类型
         :type VideoOrientation: int
+        :param _IsGradingRequiredPostClass: 开启课后评分。 0：不开启(默认)  1：开启
+        :type IsGradingRequiredPostClass: int
+        :param _RoomType: 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+        :type RoomType: int
+        :param _RecordLayout: 录制模板。仅可修改还未开始的房间。录制模板枚举值参考：https://cloud.tencent.com/document/product/1639/89744
+        :type RecordLayout: int
+        :param _EndDelayTime: 拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
+        :type EndDelayTime: int
         """
         self._RoomId = None
         self._SdkAppId = None
@@ -6777,6 +7041,10 @@ video 纯视频
         self._EnableDirectControl = None
         self._InteractionMode = None
         self._VideoOrientation = None
+        self._IsGradingRequiredPostClass = None
+        self._RoomType = None
+        self._RecordLayout = None
+        self._EndDelayTime = None
 
     @property
     def RoomId(self):
@@ -6914,6 +7182,38 @@ video 纯视频
     def VideoOrientation(self, VideoOrientation):
         self._VideoOrientation = VideoOrientation
 
+    @property
+    def IsGradingRequiredPostClass(self):
+        return self._IsGradingRequiredPostClass
+
+    @IsGradingRequiredPostClass.setter
+    def IsGradingRequiredPostClass(self, IsGradingRequiredPostClass):
+        self._IsGradingRequiredPostClass = IsGradingRequiredPostClass
+
+    @property
+    def RoomType(self):
+        return self._RoomType
+
+    @RoomType.setter
+    def RoomType(self, RoomType):
+        self._RoomType = RoomType
+
+    @property
+    def RecordLayout(self):
+        return self._RecordLayout
+
+    @RecordLayout.setter
+    def RecordLayout(self, RecordLayout):
+        self._RecordLayout = RecordLayout
+
+    @property
+    def EndDelayTime(self):
+        return self._EndDelayTime
+
+    @EndDelayTime.setter
+    def EndDelayTime(self, EndDelayTime):
+        self._EndDelayTime = EndDelayTime
+
 
     def _deserialize(self, params):
         self._RoomId = params.get("RoomId")
@@ -6933,6 +7233,10 @@ video 纯视频
         self._EnableDirectControl = params.get("EnableDirectControl")
         self._InteractionMode = params.get("InteractionMode")
         self._VideoOrientation = params.get("VideoOrientation")
+        self._IsGradingRequiredPostClass = params.get("IsGradingRequiredPostClass")
+        self._RoomType = params.get("RoomType")
+        self._RecordLayout = params.get("RecordLayout")
+        self._EndDelayTime = params.get("EndDelayTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7300,6 +7604,12 @@ class RoomInfo(AbstractModel):
         :type InteractionMode: int
         :param _VideoOrientation: 横竖屏。0：横屏开播（默认值）; 1：竖屏开播，当前仅支持移动端的纯视频类型
         :type VideoOrientation: int
+        :param _IsGradingRequiredPostClass: 开启课后评分。 0：不开启(默认)  1：开启
+        :type IsGradingRequiredPostClass: int
+        :param _RoomType: 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+        :type RoomType: int
+        :param _EndDelayTime: 拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
+        :type EndDelayTime: int
         """
         self._Name = None
         self._StartTime = None
@@ -7320,6 +7630,9 @@ class RoomInfo(AbstractModel):
         self._EnableDirectControl = None
         self._InteractionMode = None
         self._VideoOrientation = None
+        self._IsGradingRequiredPostClass = None
+        self._RoomType = None
+        self._EndDelayTime = None
 
     @property
     def Name(self):
@@ -7473,6 +7786,30 @@ class RoomInfo(AbstractModel):
     def VideoOrientation(self, VideoOrientation):
         self._VideoOrientation = VideoOrientation
 
+    @property
+    def IsGradingRequiredPostClass(self):
+        return self._IsGradingRequiredPostClass
+
+    @IsGradingRequiredPostClass.setter
+    def IsGradingRequiredPostClass(self, IsGradingRequiredPostClass):
+        self._IsGradingRequiredPostClass = IsGradingRequiredPostClass
+
+    @property
+    def RoomType(self):
+        return self._RoomType
+
+    @RoomType.setter
+    def RoomType(self, RoomType):
+        self._RoomType = RoomType
+
+    @property
+    def EndDelayTime(self):
+        return self._EndDelayTime
+
+    @EndDelayTime.setter
+    def EndDelayTime(self, EndDelayTime):
+        self._EndDelayTime = EndDelayTime
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -7494,6 +7831,9 @@ class RoomInfo(AbstractModel):
         self._EnableDirectControl = params.get("EnableDirectControl")
         self._InteractionMode = params.get("InteractionMode")
         self._VideoOrientation = params.get("VideoOrientation")
+        self._IsGradingRequiredPostClass = params.get("IsGradingRequiredPostClass")
+        self._RoomType = params.get("RoomType")
+        self._EndDelayTime = params.get("EndDelayTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7546,7 +7886,7 @@ class RoomItem(AbstractModel):
         :param _RecordUrl: 录制地址（协议为https)。仅在房间结束后存在。
 注意：此字段可能返回 null，表示取不到有效值。
         :type RecordUrl: str
-        :param _MaxMicNumber: 最高房间内人数（包括老师），0表示不限制，默认为0
+        :param _MaxMicNumber: 最高房间内人数（不包括老师），0表示不限制，默认为0
 注意：此字段可能返回 null，表示取不到有效值。
         :type MaxMicNumber: int
         :param _EnableDirectControl: 打开学生麦克风/摄像头的授权开关 
@@ -7558,6 +7898,15 @@ class RoomItem(AbstractModel):
         :param _VideoOrientation: 横竖屏。0：横屏开播（默认值）; 1：竖屏开播，当前仅支持移动端的纯视频类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type VideoOrientation: int
+        :param _IsGradingRequiredPostClass: 开启课后评分。 0：不开启(默认)  1：开启
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsGradingRequiredPostClass: int
+        :param _RoomType: 房间类型。0:小班课（默认值）；1:大班课；2:1V1（后续扩展）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoomType: int
+        :param _EndDelayTime: 拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndDelayTime: int
         """
         self._Name = None
         self._RoomId = None
@@ -7574,6 +7923,9 @@ class RoomItem(AbstractModel):
         self._EnableDirectControl = None
         self._InteractionMode = None
         self._VideoOrientation = None
+        self._IsGradingRequiredPostClass = None
+        self._RoomType = None
+        self._EndDelayTime = None
 
     @property
     def Name(self):
@@ -7695,6 +8047,30 @@ class RoomItem(AbstractModel):
     def VideoOrientation(self, VideoOrientation):
         self._VideoOrientation = VideoOrientation
 
+    @property
+    def IsGradingRequiredPostClass(self):
+        return self._IsGradingRequiredPostClass
+
+    @IsGradingRequiredPostClass.setter
+    def IsGradingRequiredPostClass(self, IsGradingRequiredPostClass):
+        self._IsGradingRequiredPostClass = IsGradingRequiredPostClass
+
+    @property
+    def RoomType(self):
+        return self._RoomType
+
+    @RoomType.setter
+    def RoomType(self, RoomType):
+        self._RoomType = RoomType
+
+    @property
+    def EndDelayTime(self):
+        return self._EndDelayTime
+
+    @EndDelayTime.setter
+    def EndDelayTime(self, EndDelayTime):
+        self._EndDelayTime = EndDelayTime
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -7712,6 +8088,9 @@ class RoomItem(AbstractModel):
         self._EnableDirectControl = params.get("EnableDirectControl")
         self._InteractionMode = params.get("InteractionMode")
         self._VideoOrientation = params.get("VideoOrientation")
+        self._IsGradingRequiredPostClass = params.get("IsGradingRequiredPostClass")
+        self._RoomType = params.get("RoomType")
+        self._EndDelayTime = params.get("EndDelayTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8212,11 +8591,15 @@ class UserInfo(AbstractModel):
         :param _Avatar: 用户头像Url。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Avatar: str
+        :param _OriginId: 用户在客户系统的Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OriginId: str
         """
         self._SdkAppId = None
         self._UserId = None
         self._Name = None
         self._Avatar = None
+        self._OriginId = None
 
     @property
     def SdkAppId(self):
@@ -8250,12 +8633,21 @@ class UserInfo(AbstractModel):
     def Avatar(self, Avatar):
         self._Avatar = Avatar
 
+    @property
+    def OriginId(self):
+        return self._OriginId
+
+    @OriginId.setter
+    def OriginId(self, OriginId):
+        self._OriginId = OriginId
+
 
     def _deserialize(self, params):
         self._SdkAppId = params.get("SdkAppId")
         self._UserId = params.get("UserId")
         self._Name = params.get("Name")
         self._Avatar = params.get("Avatar")
+        self._OriginId = params.get("OriginId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

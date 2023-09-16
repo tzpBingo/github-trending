@@ -440,6 +440,29 @@ class IotvideoClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DeleteCloudStorageEvent(self, request):
+        """删除云存事件
+
+        :param request: Request instance for DeleteCloudStorageEvent.
+        :type request: :class:`tencentcloud.iotvideo.v20211125.models.DeleteCloudStorageEventRequest`
+        :rtype: :class:`tencentcloud.iotvideo.v20211125.models.DeleteCloudStorageEventResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteCloudStorageEvent", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteCloudStorageEventResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DeleteDevice(self, request):
         """删除设备
 
@@ -854,6 +877,29 @@ class IotvideoClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeCloudStorageOrder(self, request):
+        """查询云存服务详情
+
+        :param request: Request instance for DescribeCloudStorageOrder.
+        :type request: :class:`tencentcloud.iotvideo.v20211125.models.DescribeCloudStorageOrderRequest`
+        :rtype: :class:`tencentcloud.iotvideo.v20211125.models.DescribeCloudStorageOrderResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeCloudStorageOrder", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeCloudStorageOrderResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeCloudStoragePackageConsumeDetails(self, request):
         """获取云存套餐包消耗详细记录
 
@@ -1167,6 +1213,29 @@ class IotvideoClient(AbstractClient):
             body = self.call("DescribeDeviceEventHistory", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeDeviceEventHistoryResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeDevicePackages(self, request):
+        """根据设备信息拉取有效套餐列表
+
+        :param request: Request instance for DescribeDevicePackages.
+        :type request: :class:`tencentcloud.iotvideo.v20211125.models.DescribeDevicePackagesRequest`
+        :rtype: :class:`tencentcloud.iotvideo.v20211125.models.DescribeDevicePackagesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDevicePackages", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDevicePackagesResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2064,6 +2133,29 @@ class IotvideoClient(AbstractClient):
             body = self.call("ResetCloudStorage", params, headers=headers)
             response = json.loads(body)
             model = models.ResetCloudStorageResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ResetCloudStorageEvent(self, request):
+        """重置云存事件
+
+        :param request: Request instance for ResetCloudStorageEvent.
+        :type request: :class:`tencentcloud.iotvideo.v20211125.models.ResetCloudStorageEventRequest`
+        :rtype: :class:`tencentcloud.iotvideo.v20211125.models.ResetCloudStorageEventResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ResetCloudStorageEvent", params, headers=headers)
+            response = json.loads(body)
+            model = models.ResetCloudStorageEventResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

@@ -3472,7 +3472,7 @@ class DescribeHiveQueriesRequest(AbstractModel):
         :type InstanceId: str
         :param _StartTime: 起始时间秒
         :type StartTime: int
-        :param _EndTime: 结束时间秒，EndTime-StartTime不得超过31天秒数31*24*3600
+        :param _EndTime: 结束时间秒，EndTime-StartTime不得超过1天秒数86400
         :type EndTime: int
         :param _Offset: 分页起始偏移，从0开始
         :type Offset: int
@@ -3607,7 +3607,7 @@ class DescribeImpalaQueriesRequest(AbstractModel):
         :type InstanceId: str
         :param _StartTime: 起始时间秒
         :type StartTime: int
-        :param _EndTime: 结束时间秒，EndTime-StartTime不得超过31天秒数31243600
+        :param _EndTime: 结束时间秒，EndTime-StartTime不得超过1天秒数86400
         :type EndTime: int
         :param _Offset: 分页起始偏移，从0开始
         :type Offset: int
@@ -4516,7 +4516,7 @@ class DescribeYarnApplicationsRequest(AbstractModel):
         :type InstanceId: str
         :param _StartTime: 起始时间秒
         :type StartTime: int
-        :param _EndTime: 结束时间秒，EndTime-StartTime不得超过31天秒数31243600
+        :param _EndTime: 结束时间秒，EndTime-StartTime不得超过1天秒数86400
         :type EndTime: int
         :param _Offset: 分页起始偏移，从0开始
         :type Offset: int
@@ -6310,7 +6310,7 @@ class InquirePriceRenewEmrRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TimeSpan: 实例续费的时长。需要结合TimeUnit一起使用。1表示续费1一个月
+        :param _TimeSpan: 实例续费的时长。需要结合TimeUnit一起使用。1表示续费一个月
         :type TimeSpan: int
         :param _InstanceId: 待续费集群ID列表。
         :type InstanceId: str
@@ -8224,6 +8224,252 @@ class ModifyResourceSchedulerResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ModifyResourceTags(AbstractModel):
+    """强制修改标签
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceId: 集群id 或者 cvm id
+        :type ResourceId: str
+        :param _Resource: 资源6段式表达式
+        :type Resource: str
+        :param _ResourcePrefix: 资源前缀
+        :type ResourcePrefix: str
+        :param _ResourceRegion: ap-beijing
+        :type ResourceRegion: str
+        :param _ServiceType: emr
+        :type ServiceType: str
+        :param _DeleteTags: 删除的标签列表
+        :type DeleteTags: list of Tag
+        :param _AddTags: 添加的标签列表
+        :type AddTags: list of Tag
+        :param _ModifyTags: 修改的标签列表
+        :type ModifyTags: list of Tag
+        """
+        self._ResourceId = None
+        self._Resource = None
+        self._ResourcePrefix = None
+        self._ResourceRegion = None
+        self._ServiceType = None
+        self._DeleteTags = None
+        self._AddTags = None
+        self._ModifyTags = None
+
+    @property
+    def ResourceId(self):
+        return self._ResourceId
+
+    @ResourceId.setter
+    def ResourceId(self, ResourceId):
+        self._ResourceId = ResourceId
+
+    @property
+    def Resource(self):
+        return self._Resource
+
+    @Resource.setter
+    def Resource(self, Resource):
+        self._Resource = Resource
+
+    @property
+    def ResourcePrefix(self):
+        return self._ResourcePrefix
+
+    @ResourcePrefix.setter
+    def ResourcePrefix(self, ResourcePrefix):
+        self._ResourcePrefix = ResourcePrefix
+
+    @property
+    def ResourceRegion(self):
+        return self._ResourceRegion
+
+    @ResourceRegion.setter
+    def ResourceRegion(self, ResourceRegion):
+        self._ResourceRegion = ResourceRegion
+
+    @property
+    def ServiceType(self):
+        return self._ServiceType
+
+    @ServiceType.setter
+    def ServiceType(self, ServiceType):
+        self._ServiceType = ServiceType
+
+    @property
+    def DeleteTags(self):
+        return self._DeleteTags
+
+    @DeleteTags.setter
+    def DeleteTags(self, DeleteTags):
+        self._DeleteTags = DeleteTags
+
+    @property
+    def AddTags(self):
+        return self._AddTags
+
+    @AddTags.setter
+    def AddTags(self, AddTags):
+        self._AddTags = AddTags
+
+    @property
+    def ModifyTags(self):
+        return self._ModifyTags
+
+    @ModifyTags.setter
+    def ModifyTags(self, ModifyTags):
+        self._ModifyTags = ModifyTags
+
+
+    def _deserialize(self, params):
+        self._ResourceId = params.get("ResourceId")
+        self._Resource = params.get("Resource")
+        self._ResourcePrefix = params.get("ResourcePrefix")
+        self._ResourceRegion = params.get("ResourceRegion")
+        self._ServiceType = params.get("ServiceType")
+        if params.get("DeleteTags") is not None:
+            self._DeleteTags = []
+            for item in params.get("DeleteTags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._DeleteTags.append(obj)
+        if params.get("AddTags") is not None:
+            self._AddTags = []
+            for item in params.get("AddTags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._AddTags.append(obj)
+        if params.get("ModifyTags") is not None:
+            self._ModifyTags = []
+            for item in params.get("ModifyTags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._ModifyTags.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyResourcesTagsRequest(AbstractModel):
+    """ModifyResourcesTags请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ModifyType: 标签类型，取值Cluster或者Node
+        :type ModifyType: str
+        :param _ModifyResourceTagsInfoList: 标签信息
+        :type ModifyResourceTagsInfoList: list of ModifyResourceTags
+        """
+        self._ModifyType = None
+        self._ModifyResourceTagsInfoList = None
+
+    @property
+    def ModifyType(self):
+        return self._ModifyType
+
+    @ModifyType.setter
+    def ModifyType(self, ModifyType):
+        self._ModifyType = ModifyType
+
+    @property
+    def ModifyResourceTagsInfoList(self):
+        return self._ModifyResourceTagsInfoList
+
+    @ModifyResourceTagsInfoList.setter
+    def ModifyResourceTagsInfoList(self, ModifyResourceTagsInfoList):
+        self._ModifyResourceTagsInfoList = ModifyResourceTagsInfoList
+
+
+    def _deserialize(self, params):
+        self._ModifyType = params.get("ModifyType")
+        if params.get("ModifyResourceTagsInfoList") is not None:
+            self._ModifyResourceTagsInfoList = []
+            for item in params.get("ModifyResourceTagsInfoList"):
+                obj = ModifyResourceTags()
+                obj._deserialize(item)
+                self._ModifyResourceTagsInfoList.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyResourcesTagsResponse(AbstractModel):
+    """ModifyResourcesTags返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SuccessList: 成功的资源id列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SuccessList: list of str
+        :param _FailList: 失败的资源id列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailList: list of str
+        :param _PartSuccessList: 部分成功的资源id列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PartSuccessList: list of str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._SuccessList = None
+        self._FailList = None
+        self._PartSuccessList = None
+        self._RequestId = None
+
+    @property
+    def SuccessList(self):
+        return self._SuccessList
+
+    @SuccessList.setter
+    def SuccessList(self, SuccessList):
+        self._SuccessList = SuccessList
+
+    @property
+    def FailList(self):
+        return self._FailList
+
+    @FailList.setter
+    def FailList(self, FailList):
+        self._FailList = FailList
+
+    @property
+    def PartSuccessList(self):
+        return self._PartSuccessList
+
+    @PartSuccessList.setter
+    def PartSuccessList(self, PartSuccessList):
+        self._PartSuccessList = PartSuccessList
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._SuccessList = params.get("SuccessList")
+        self._FailList = params.get("FailList")
+        self._PartSuccessList = params.get("PartSuccessList")
+        self._RequestId = params.get("RequestId")
+
+
 class MultiDisk(AbstractModel):
     """多云盘参数
 
@@ -8757,6 +9003,9 @@ class NodeHardwareInfo(AbstractModel):
         :param _TradeVersion: 0表示老计费，1表示新计费
 注意：此字段可能返回 null，表示取不到有效值。
         :type TradeVersion: int
+        :param _ServicesStatus: 各组件状态，Zookeeper:STARTED,ResourceManager:STARTED，STARTED已启动，STOPED已停止
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ServicesStatus: str
         """
         self._AppId = None
         self._SerialNo = None
@@ -8808,6 +9057,7 @@ class NodeHardwareInfo(AbstractModel):
         self._ServiceClient = None
         self._DisableApiTermination = None
         self._TradeVersion = None
+        self._ServicesStatus = None
 
     @property
     def AppId(self):
@@ -9209,6 +9459,14 @@ class NodeHardwareInfo(AbstractModel):
     def TradeVersion(self, TradeVersion):
         self._TradeVersion = TradeVersion
 
+    @property
+    def ServicesStatus(self):
+        return self._ServicesStatus
+
+    @ServicesStatus.setter
+    def ServicesStatus(self, ServicesStatus):
+        self._ServicesStatus = ServicesStatus
+
 
     def _deserialize(self, params):
         self._AppId = params.get("AppId")
@@ -9275,6 +9533,7 @@ class NodeHardwareInfo(AbstractModel):
         self._ServiceClient = params.get("ServiceClient")
         self._DisableApiTermination = params.get("DisableApiTermination")
         self._TradeVersion = params.get("TradeVersion")
+        self._ServicesStatus = params.get("ServicesStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

@@ -32,6 +32,9 @@ FAILEDOPERATION_UNSUPPORTEDOPERATIONTYPE = 'FailedOperation.UnSupportedOperation
 # 检查运行时失败。
 INTERNALERROR_CHECKRUNTIMEFAILED = 'InternalError.CheckRuntimeFailed'
 
+# connector不存在。
+INTERNALERROR_CONNECTORNOTEXIST = 'InternalError.ConnectorNotExist'
+
 # 获取运行时应用数量失败。
 INTERNALERROR_COUNTRUNTIMEINSTANCESFAILED = 'InternalError.CountRuntimeInstancesFailed'
 
@@ -58,6 +61,12 @@ INVALIDPARAMETERVALUE_NOTSUPPORTEDACTIONFORPUBLICRUNTIME = 'InvalidParameterValu
 
 # 不支持的Zone。
 INVALIDPARAMETERVALUE_PILOTZONENOTSUPPORTED = 'InvalidParameterValue.PilotZoneNotSupported'
+
+# 应用和实例不匹配。
+INVALIDPARAMETERVALUE_PROJECTANDINSTANCENOTMATCH = 'InvalidParameterValue.ProjectAndInstanceNotMatch'
+
+# 应用实例ID不存在。
+INVALIDPARAMETERVALUE_PROJECTINSTANCENOTFOUND = 'InvalidParameterValue.ProjectInstanceNotFound'
 
 # 运行时已删除。
 INVALIDPARAMETERVALUE_RUNTIMEALREADYDELETED = 'InvalidParameterValue.RuntimeAlreadyDeleted'

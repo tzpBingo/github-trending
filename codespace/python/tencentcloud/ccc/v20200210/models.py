@@ -353,14 +353,17 @@ class BindStaffSkillGroupListRequest(AbstractModel):
         r"""
         :param _SdkAppId: 应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
         :type SdkAppId: int
-        :param _StaffEmail: 坐席邮箱
+        :param _StaffEmail: 座席邮箱
         :type StaffEmail: str
         :param _SkillGroupList: 绑定技能组列表
         :type SkillGroupList: list of int
+        :param _StaffSkillGroupList: 绑定技能组列表(必填)
+        :type StaffSkillGroupList: list of StaffSkillGroupList
         """
         self._SdkAppId = None
         self._StaffEmail = None
         self._SkillGroupList = None
+        self._StaffSkillGroupList = None
 
     @property
     def SdkAppId(self):
@@ -380,17 +383,35 @@ class BindStaffSkillGroupListRequest(AbstractModel):
 
     @property
     def SkillGroupList(self):
+        warnings.warn("parameter `SkillGroupList` is deprecated", DeprecationWarning) 
+
         return self._SkillGroupList
 
     @SkillGroupList.setter
     def SkillGroupList(self, SkillGroupList):
+        warnings.warn("parameter `SkillGroupList` is deprecated", DeprecationWarning) 
+
         self._SkillGroupList = SkillGroupList
+
+    @property
+    def StaffSkillGroupList(self):
+        return self._StaffSkillGroupList
+
+    @StaffSkillGroupList.setter
+    def StaffSkillGroupList(self, StaffSkillGroupList):
+        self._StaffSkillGroupList = StaffSkillGroupList
 
 
     def _deserialize(self, params):
         self._SdkAppId = params.get("SdkAppId")
         self._StaffEmail = params.get("StaffEmail")
         self._SkillGroupList = params.get("SkillGroupList")
+        if params.get("StaffSkillGroupList") is not None:
+            self._StaffSkillGroupList = []
+            for item in params.get("StaffSkillGroupList"):
+                obj = StaffSkillGroupList()
+                obj._deserialize(item)
+                self._StaffSkillGroupList.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -880,6 +901,88 @@ class CarrierPrivilegeNumberApplicant(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class CreateAdminURLRequest(AbstractModel):
+    """CreateAdminURL请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SdkAppId: 应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
+        :type SdkAppId: int
+        :param _SeatUserId: 管理员账号
+        :type SeatUserId: str
+        """
+        self._SdkAppId = None
+        self._SeatUserId = None
+
+    @property
+    def SdkAppId(self):
+        return self._SdkAppId
+
+    @SdkAppId.setter
+    def SdkAppId(self, SdkAppId):
+        self._SdkAppId = SdkAppId
+
+    @property
+    def SeatUserId(self):
+        return self._SeatUserId
+
+    @SeatUserId.setter
+    def SeatUserId(self, SeatUserId):
+        self._SeatUserId = SeatUserId
+
+
+    def _deserialize(self, params):
+        self._SdkAppId = params.get("SdkAppId")
+        self._SeatUserId = params.get("SeatUserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateAdminURLResponse(AbstractModel):
+    """CreateAdminURL返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _URL: 登录链接
+        :type URL: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._URL = None
+        self._RequestId = None
+
+    @property
+    def URL(self):
+        return self._URL
+
+    @URL.setter
+    def URL(self, URL):
+        self._URL = URL
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._URL = params.get("URL")
+        self._RequestId = params.get("RequestId")
 
 
 class CreateAutoCalloutTaskRequest(AbstractModel):
@@ -1566,9 +1669,12 @@ class CreateSDKLoginTokenRequest(AbstractModel):
         :type SdkAppId: int
         :param _SeatUserId: 座席账号。
         :type SeatUserId: str
+        :param _OnlyOnce: 生成的token是否一次性校验
+        :type OnlyOnce: bool
         """
         self._SdkAppId = None
         self._SeatUserId = None
+        self._OnlyOnce = None
 
     @property
     def SdkAppId(self):
@@ -1586,10 +1692,19 @@ class CreateSDKLoginTokenRequest(AbstractModel):
     def SeatUserId(self, SeatUserId):
         self._SeatUserId = SeatUserId
 
+    @property
+    def OnlyOnce(self):
+        return self._OnlyOnce
+
+    @OnlyOnce.setter
+    def OnlyOnce(self, OnlyOnce):
+        self._OnlyOnce = OnlyOnce
+
 
     def _deserialize(self, params):
         self._SdkAppId = params.get("SdkAppId")
         self._SeatUserId = params.get("SeatUserId")
+        self._OnlyOnce = params.get("OnlyOnce")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1775,11 +1890,11 @@ class CreateUserSigRequest(AbstractModel):
         r"""
         :param _SdkAppId: 应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
         :type SdkAppId: int
-        :param _Uid: 用户 ID
+        :param _Uid: 用户 ID，该值必须与 ClientData 字段中 Uid 的值一致
         :type Uid: str
         :param _ExpiredTime: 有效期，单位秒，不超过 1 小时
         :type ExpiredTime: int
-        :param _ClientData: 用户签名数据
+        :param _ClientData: 用户签名数据，必填字段，为标准 JSON 格式
         :type ClientData: str
         """
         self._SdkAppId = None
@@ -6362,12 +6477,16 @@ class SdkAppIdBuyInfo(AbstractModel):
         :type StaffBuyList: list of StaffBuyInfo
         :param _PhoneNumBuyList: 号码购买列表
         :type PhoneNumBuyList: list of PhoneNumBuyInfo
+        :param _SipBuyNum: 办公电话购买数（还在有效期内）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SipBuyNum: int
         """
         self._SdkAppId = None
         self._Name = None
         self._StaffBuyNum = None
         self._StaffBuyList = None
         self._PhoneNumBuyList = None
+        self._SipBuyNum = None
 
     @property
     def SdkAppId(self):
@@ -6409,6 +6528,14 @@ class SdkAppIdBuyInfo(AbstractModel):
     def PhoneNumBuyList(self, PhoneNumBuyList):
         self._PhoneNumBuyList = PhoneNumBuyList
 
+    @property
+    def SipBuyNum(self):
+        return self._SipBuyNum
+
+    @SipBuyNum.setter
+    def SipBuyNum(self, SipBuyNum):
+        self._SipBuyNum = SipBuyNum
+
 
     def _deserialize(self, params):
         self._SdkAppId = params.get("SdkAppId")
@@ -6426,6 +6553,7 @@ class SdkAppIdBuyInfo(AbstractModel):
                 obj = PhoneNumBuyInfo()
                 obj._deserialize(item)
                 self._PhoneNumBuyList.append(obj)
+        self._SipBuyNum = params.get("SipBuyNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7002,10 +7130,14 @@ class StaffBuyInfo(AbstractModel):
         :type BuyTime: int
         :param _EndTime: 截止时间戳
         :type EndTime: int
+        :param _SipNum: 购买办公电话数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SipNum: int
         """
         self._Num = None
         self._BuyTime = None
         self._EndTime = None
+        self._SipNum = None
 
     @property
     def Num(self):
@@ -7031,11 +7163,20 @@ class StaffBuyInfo(AbstractModel):
     def EndTime(self, EndTime):
         self._EndTime = EndTime
 
+    @property
+    def SipNum(self):
+        return self._SipNum
+
+    @SipNum.setter
+    def SipNum(self, SipNum):
+        self._SipNum = SipNum
+
 
     def _deserialize(self, params):
         self._Num = params.get("Num")
         self._BuyTime = params.get("BuyTime")
         self._EndTime = params.get("EndTime")
+        self._SipNum = params.get("SipNum")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7152,6 +7293,51 @@ class StaffInfo(AbstractModel):
                 obj._deserialize(item)
                 self._SkillGroupList.append(obj)
         self._LastModifyTimestamp = params.get("LastModifyTimestamp")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StaffSkillGroupList(AbstractModel):
+    """座席绑定技能组列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SkillGroupId: 技能组ID
+        :type SkillGroupId: int
+        :param _Priority: 座席在技能组中的优先级（1为最高，5最低，默认3）
+        :type Priority: int
+        """
+        self._SkillGroupId = None
+        self._Priority = None
+
+    @property
+    def SkillGroupId(self):
+        return self._SkillGroupId
+
+    @SkillGroupId.setter
+    def SkillGroupId(self, SkillGroupId):
+        self._SkillGroupId = SkillGroupId
+
+    @property
+    def Priority(self):
+        return self._Priority
+
+    @Priority.setter
+    def Priority(self, Priority):
+        self._Priority = Priority
+
+
+    def _deserialize(self, params):
+        self._SkillGroupId = params.get("SkillGroupId")
+        self._Priority = params.get("Priority")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

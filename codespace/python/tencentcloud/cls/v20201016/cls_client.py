@@ -395,7 +395,7 @@ class ClsClient(AbstractClient):
 
 
     def CreateScheduledSql(self, request):
-        """本接口用于创建ScheduledSql任务
+        """本接口用于创建定时SQL分析任务
 
         :param request: Request instance for CreateScheduledSql.
         :type request: :class:`tencentcloud.cls.v20201016.models.CreateScheduledSqlRequest`
@@ -762,6 +762,29 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DeleteScheduledSql(self, request):
+        """本接口用于删除定时SQL分析任务
+
+        :param request: Request instance for DeleteScheduledSql.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DeleteScheduledSqlRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DeleteScheduledSqlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteScheduledSql", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteScheduledSqlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DeleteShipper(self, request):
         """删除投递COS任务
 
@@ -992,6 +1015,29 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeDashboards(self, request):
+        """本接口用于获取仪表盘
+
+        :param request: Request instance for DescribeDashboards.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeDashboardsRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeDashboardsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeDashboards", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeDashboardsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeDataTransformInfo(self, request):
         """本接口用于获取数据加工任务列表基本信息
 
@@ -1061,6 +1107,29 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeKafkaConsumer(self, request):
+        """获取Kafka协议消费信息
+
+        :param request: Request instance for DescribeKafkaConsumer.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeKafkaConsumerRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeKafkaConsumerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeKafkaConsumer", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeKafkaConsumerResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeKafkaRecharges(self, request):
         """本接口用于获取Kafka数据订阅任务
 
@@ -1075,6 +1144,29 @@ class ClsClient(AbstractClient):
             body = self.call("DescribeKafkaRecharges", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeKafkaRechargesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeKafkaUser(self, request):
+        """本接口用于获取kafka用户信息
+
+        :param request: Request instance for DescribeKafkaUser.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeKafkaUserRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeKafkaUserResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeKafkaUser", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeKafkaUserResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1236,6 +1328,29 @@ class ClsClient(AbstractClient):
             body = self.call("DescribePartitions", params, headers=headers)
             response = json.loads(body)
             model = models.DescribePartitionsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeScheduledSqlInfo(self, request):
+        """本接口用于获取定时SQL分析任务列表
+
+        :param request: Request instance for DescribeScheduledSqlInfo.
+        :type request: :class:`tencentcloud.cls.v20201016.models.DescribeScheduledSqlInfoRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.DescribeScheduledSqlInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeScheduledSqlInfo", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeScheduledSqlInfoResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1544,6 +1659,29 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyKafkaConsumer(self, request):
+        """修改Kafka协议消费信息
+
+        :param request: Request instance for ModifyKafkaConsumer.
+        :type request: :class:`tencentcloud.cls.v20201016.models.ModifyKafkaConsumerRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.ModifyKafkaConsumerResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyKafkaConsumer", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyKafkaConsumerResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyKafkaRecharge(self, request):
         """本接口用于修改Kafka数据订阅任务
 
@@ -1604,6 +1742,29 @@ class ClsClient(AbstractClient):
             body = self.call("ModifyMachineGroup", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyMachineGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyScheduledSql(self, request):
+        """本接口用于修改定时SQL分析任务
+
+        :param request: Request instance for ModifyScheduledSql.
+        :type request: :class:`tencentcloud.cls.v20201016.models.ModifyScheduledSqlRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.ModifyScheduledSqlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyScheduledSql", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyScheduledSqlResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1728,8 +1889,33 @@ class ClsClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def SearchCosRechargeInfo(self, request):
+        """本接口用于预览cos导入信息
+
+        :param request: Request instance for SearchCosRechargeInfo.
+        :type request: :class:`tencentcloud.cls.v20201016.models.SearchCosRechargeInfoRequest`
+        :rtype: :class:`tencentcloud.cls.v20201016.models.SearchCosRechargeInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("SearchCosRechargeInfo", params, headers=headers)
+            response = json.loads(body)
+            model = models.SearchCosRechargeInfoResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def SearchLog(self, request):
         """本接口用于检索分析日志, 该接口除受默认接口请求频率限制外，针对单个日志主题，查询并发数不能超过15。
+
+        API返回数据包最大49MB，建议启用 gzip 压缩（HTTP Request Header Accept-Encoding:gzip）。
 
         :param request: Request instance for SearchLog.
         :type request: :class:`tencentcloud.cls.v20201016.models.SearchLogRequest`

@@ -81,6 +81,9 @@ class CvmClient(AbstractClient):
     def AssociateSecurityGroups(self, request):
         """本接口 (AssociateSecurityGroups) 用于绑定安全组到指定实例。
         * 实例操作结果可以通过调用 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728#.E7.A4.BA.E4.BE.8B3-.E6.9F.A5.E8.AF.A2.E5.AE.9E.E4.BE.8B.E7.9A.84.E6.9C.80.E6.96.B0.E6.93.8D.E4.BD.9C.E6.83.85.E5.86.B5) 接口查询，如果实例的最新操作状态(LatestOperationState)为“SUCCESS”，则代表操作成功。
+        <dx-alert infotype="explain" title="">
+        多个安全组绑定至实例后，将以绑定顺序作为优先级顺序依次匹配执行。如需调整安全组优先级，请参见 [调整安全组优先级](https://cloud.tencent.com/document/product/213/42842)。
+        </dx-alert>
 
         :param request: Request instance for AssociateSecurityGroups.
         :type request: :class:`tencentcloud.cvm.v20170312.models.AssociateSecurityGroupsRequest`
@@ -345,7 +348,7 @@ class CvmClient(AbstractClient):
         """本接口（DeleteImages）用于删除一个或多个镜像。
 
         * 当[镜像状态](https://cloud.tencent.com/document/product/213/15753#Image)为`创建中`和`使用中`时, 不允许删除。镜像状态可以通过[DescribeImages](https://cloud.tencent.com/document/api/213/9418)获取。
-        * 每个地域最多只支持创建10个自定义镜像，删除镜像可以释放账户的配额。
+        * 每个地域最多只支持创建50个自定义镜像，删除镜像可以释放账户的配额。
         * 当镜像正在被其它账户分享时，不允许删除。
 
         :param request: Request instance for DeleteImages.
@@ -605,7 +608,7 @@ class CvmClient(AbstractClient):
 
 
     def DescribeImageQuota(self, request):
-        """本接口(DescribeImageQuota)用于查询用户帐号的镜像配额。
+        """本接口(DescribeImageQuota)用于查询用户账号的镜像配额。
 
         :param request: Request instance for DescribeImageQuota.
         :type request: :class:`tencentcloud.cvm.v20170312.models.DescribeImageQuotaRequest`
@@ -1670,12 +1673,12 @@ class CvmClient(AbstractClient):
 
 
     def ModifyImageSharePermission(self, request):
-        """本接口（ModifyImageSharePermission）用于修改镜像分享信息。
+        """本接口（ModifyImageSharePermission）用于修改镜像共享信息。
 
-        * 分享镜像后，被分享账户可以通过该镜像创建实例。
+        * 共享镜像后，被共享账户可以通过该镜像创建实例。
         * 每个自定义镜像最多可共享给50个账户。
-        * 分享镜像无法更改名称，描述，仅可用于创建实例。
-        * 只支持分享到对方账户相同地域。
+        * 共享镜像无法更改名称，描述，仅可用于创建实例。
+        * 只支持共享到对方账户相同地域。
 
         :param request: Request instance for ModifyImageSharePermission.
         :type request: :class:`tencentcloud.cvm.v20170312.models.ModifyImageSharePermissionRequest`
@@ -1734,6 +1737,7 @@ class CvmClient(AbstractClient):
         * 支持批量操作。每次请求批量实例的上限为100。
         * 修改关联安全组时，子机原来关联的安全组会被解绑。
         * 实例操作结果可以通过调用 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728#.E7.A4.BA.E4.BE.8B3-.E6.9F.A5.E8.AF.A2.E5.AE.9E.E4.BE.8B.E7.9A.84.E6.9C.80.E6.96.B0.E6.93.8D.E4.BD.9C.E6.83.85.E5.86.B5) 接口查询，如果实例的最新操作状态(LatestOperationState)为“SUCCESS”，则代表操作成功。
+        * 修改主机名后实例会立即重启，重启后新的主机名生效。
 
         :param request: Request instance for ModifyInstancesAttribute.
         :type request: :class:`tencentcloud.cvm.v20170312.models.ModifyInstancesAttributeRequest`
@@ -2181,7 +2185,7 @@ class CvmClient(AbstractClient):
     def ResetInstancesPassword(self, request):
         """本接口 (ResetInstancesPassword) 用于将实例操作系统的密码重置为用户指定的密码。
 
-        *如果是修改系统管理云密码：实例的操作系统不同，管理员帐号也会不一样(`Windows`为`Administrator`，`Ubuntu`为`ubuntu`，其它系统为`root`)。
+        *如果是修改系统管理云密码：实例的操作系统不同，管理员账号也会不一样(`Windows`为`Administrator`，`Ubuntu`为`ubuntu`，其它系统为`root`)。
         * 重置处于运行中状态的实例密码，需要设置关机参数`ForceStop`为`TRUE`。如果没有显式指定强制关机参数，则只有处于关机状态的实例才允许执行重置密码操作。
         * 支持批量操作。将多个实例操作系统的密码重置为相同的密码。每次请求批量实例的上限为100。
         * 实例操作结果可以通过调用 [DescribeInstances](https://cloud.tencent.com/document/api/213/15728#.E7.A4.BA.E4.BE.8B3-.E6.9F.A5.E8.AF.A2.E5.AE.9E.E4.BE.8B.E7.9A.84.E6.9C.80.E6.96.B0.E6.93.8D.E4.BD.9C.E6.83.85.E5.86.B5) 接口查询，如果实例的最新操作状态(LatestOperationState)为“SUCCESS”，则代表操作成功。
@@ -2353,7 +2357,7 @@ class CvmClient(AbstractClient):
 
         * 该接口每次调用只支持同步一个镜像。
         * 该接口支持多个同步地域。
-        * 单个帐号在每个地域最多支持存在10个自定义镜像。
+        * 单个账号在每个地域最多支持存在50个自定义镜像。
 
         :param request: Request instance for SyncImages.
         :type request: :class:`tencentcloud.cvm.v20170312.models.SyncImagesRequest`

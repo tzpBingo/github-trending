@@ -71,6 +71,9 @@ FAILEDOPERATION_JOBNOTEXIST = 'FailedOperation.JobNotExist'
 # 任务已停止处理，请重新提交任务。
 FAILEDOPERATION_JOBSTOPPROCESSING = 'FailedOperation.JobStopProcessing'
 
+# FailedOperation.ParameterValueError
+FAILEDOPERATION_PARAMETERVALUEERROR = 'FailedOperation.ParameterValueError'
+
 # 整个请求体太大（通常主要是图片）。
 FAILEDOPERATION_REQUESTENTITYTOOLARGE = 'FailedOperation.RequestEntityTooLarge'
 
@@ -128,13 +131,13 @@ INVALIDPARAMETERVALUE_URLILLEGAL = 'InvalidParameterValue.UrlIllegal'
 # 资源正在发货中。
 RESOURCEUNAVAILABLE_DELIVERING = 'ResourceUnavailable.Delivering'
 
-# 帐号已被冻结。
+# 账号已被冻结。
 RESOURCEUNAVAILABLE_FREEZE = 'ResourceUnavailable.Freeze'
 
 # 获取认证信息失败。
 RESOURCEUNAVAILABLE_GETAUTHINFOERROR = 'ResourceUnavailable.GetAuthInfoError'
 
-# 帐号已欠费。
+# 账号已欠费。
 RESOURCEUNAVAILABLE_INARREARS = 'ResourceUnavailable.InArrears'
 
 # 余额不足。
@@ -149,13 +152,13 @@ RESOURCEUNAVAILABLE_NOTREADY = 'ResourceUnavailable.NotReady'
 # 资源已被回收。
 RESOURCEUNAVAILABLE_RECOVER = 'ResourceUnavailable.Recover'
 
-# 帐号已停服。
+# 账号已停服。
 RESOURCEUNAVAILABLE_STOPUSING = 'ResourceUnavailable.StopUsing'
 
 # 计费状态未知。
 RESOURCEUNAVAILABLE_UNKNOWNSTATUS = 'ResourceUnavailable.UnknownStatus'
 
-# 帐号已欠费。
+# 账号已欠费。
 RESOURCESSOLDOUT_CHARGESTATUSEXCEPTION = 'ResourcesSoldOut.ChargeStatusException'
 
 # 未知方法名。

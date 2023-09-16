@@ -907,6 +907,12 @@ class AdaptiveDynamicStreamingTaskInput(AbstractModel):
         :type SubStreamObjectName: str
         :param _SegmentObjectName: 转自适应码流（仅 HLS）后，分片文件的输出路径，只能为相对路径。如果不填，则默认为相对路径：`{inputName}_adaptiveDynamicStreaming_{definition}_{subStreamNumber}_{segmentNumber}.{format}`。
         :type SegmentObjectName: str
+        :param _AddOnSubtitles: 要插入的字幕文件。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AddOnSubtitles: list of AddOnSubtitle
+        :param _DrmInfo: Drm信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DrmInfo: :class:`tencentcloud.mps.v20190612.models.DrmInfo`
         """
         self._Definition = None
         self._WatermarkSet = None
@@ -914,6 +920,8 @@ class AdaptiveDynamicStreamingTaskInput(AbstractModel):
         self._OutputObjectPath = None
         self._SubStreamObjectName = None
         self._SegmentObjectName = None
+        self._AddOnSubtitles = None
+        self._DrmInfo = None
 
     @property
     def Definition(self):
@@ -963,6 +971,22 @@ class AdaptiveDynamicStreamingTaskInput(AbstractModel):
     def SegmentObjectName(self, SegmentObjectName):
         self._SegmentObjectName = SegmentObjectName
 
+    @property
+    def AddOnSubtitles(self):
+        return self._AddOnSubtitles
+
+    @AddOnSubtitles.setter
+    def AddOnSubtitles(self, AddOnSubtitles):
+        self._AddOnSubtitles = AddOnSubtitles
+
+    @property
+    def DrmInfo(self):
+        return self._DrmInfo
+
+    @DrmInfo.setter
+    def DrmInfo(self, DrmInfo):
+        self._DrmInfo = DrmInfo
+
 
     def _deserialize(self, params):
         self._Definition = params.get("Definition")
@@ -978,6 +1002,15 @@ class AdaptiveDynamicStreamingTaskInput(AbstractModel):
         self._OutputObjectPath = params.get("OutputObjectPath")
         self._SubStreamObjectName = params.get("SubStreamObjectName")
         self._SegmentObjectName = params.get("SegmentObjectName")
+        if params.get("AddOnSubtitles") is not None:
+            self._AddOnSubtitles = []
+            for item in params.get("AddOnSubtitles"):
+                obj = AddOnSubtitle()
+                obj._deserialize(item)
+                self._AddOnSubtitles.append(obj)
+        if params.get("DrmInfo") is not None:
+            self._DrmInfo = DrmInfo()
+            self._DrmInfo._deserialize(params.get("DrmInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1209,6 +1242,58 @@ class AdaptiveStreamTemplate(AbstractModel):
             self._Audio._deserialize(params.get("Audio"))
         self._RemoveAudio = params.get("RemoveAudio")
         self._RemoveVideo = params.get("RemoveVideo")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AddOnSubtitle(AbstractModel):
+    """外挂字幕。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Type: 插入形式，可选值：
+<li>subtitle-stream：插入字幕轨道</li>
+<li>close-caption-708：CEA-708字幕编码到SEI帧</li>
+<li>close-caption-608：CEA-608字幕编码到SEI帧</li>
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param _Subtitle: 字幕文件。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Subtitle: :class:`tencentcloud.mps.v20190612.models.MediaInputInfo`
+        """
+        self._Type = None
+        self._Subtitle = None
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def Subtitle(self):
+        return self._Subtitle
+
+    @Subtitle.setter
+    def Subtitle(self, Subtitle):
+        self._Subtitle = Subtitle
+
+
+    def _deserialize(self, params):
+        self._Type = params.get("Type")
+        if params.get("Subtitle") is not None:
+            self._Subtitle = MediaInputInfo()
+            self._Subtitle._deserialize(params.get("Subtitle"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7539,6 +7624,243 @@ class AsrWordsConfigureInfoForUpdate(AbstractModel):
         
 
 
+class AudioBeautifyConfig(AbstractModel):
+    """音量美化配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Switch: 能力配置开关，可选值：
+<li>ON：开启；</li>
+<li>OFF：关闭。</li>
+默认值：ON。
+        :type Switch: str
+        :param _Types: 类型，可多选，可选值：
+<li>declick：杂音去除</li>
+<li>deesser：齿音压制</li>
+默认值：declick。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Types: list of str
+        """
+        self._Switch = None
+        self._Types = None
+
+    @property
+    def Switch(self):
+        return self._Switch
+
+    @Switch.setter
+    def Switch(self, Switch):
+        self._Switch = Switch
+
+    @property
+    def Types(self):
+        return self._Types
+
+    @Types.setter
+    def Types(self, Types):
+        self._Types = Types
+
+
+    def _deserialize(self, params):
+        self._Switch = params.get("Switch")
+        self._Types = params.get("Types")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AudioDenoiseConfig(AbstractModel):
+    """音频降噪配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Switch: 能力配置开关，可选值：
+<li>ON：开启；</li>
+<li>OFF：关闭。</li>
+默认值：ON。
+        :type Switch: str
+        """
+        self._Switch = None
+
+    @property
+    def Switch(self):
+        return self._Switch
+
+    @Switch.setter
+    def Switch(self, Switch):
+        self._Switch = Switch
+
+
+    def _deserialize(self, params):
+        self._Switch = params.get("Switch")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AudioEnhanceConfig(AbstractModel):
+    """音频增强配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Denoise: 音频降噪配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Denoise: :class:`tencentcloud.mps.v20190612.models.AudioDenoiseConfig`
+        :param _Separate: 音频分离配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Separate: :class:`tencentcloud.mps.v20190612.models.AudioSeparateConfig`
+        :param _VolumeBalance: 音量均衡配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type VolumeBalance: :class:`tencentcloud.mps.v20190612.models.VolumeBalanceConfig`
+        :param _Beautify: 音频美化配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Beautify: :class:`tencentcloud.mps.v20190612.models.AudioBeautifyConfig`
+        """
+        self._Denoise = None
+        self._Separate = None
+        self._VolumeBalance = None
+        self._Beautify = None
+
+    @property
+    def Denoise(self):
+        return self._Denoise
+
+    @Denoise.setter
+    def Denoise(self, Denoise):
+        self._Denoise = Denoise
+
+    @property
+    def Separate(self):
+        return self._Separate
+
+    @Separate.setter
+    def Separate(self, Separate):
+        self._Separate = Separate
+
+    @property
+    def VolumeBalance(self):
+        return self._VolumeBalance
+
+    @VolumeBalance.setter
+    def VolumeBalance(self, VolumeBalance):
+        self._VolumeBalance = VolumeBalance
+
+    @property
+    def Beautify(self):
+        return self._Beautify
+
+    @Beautify.setter
+    def Beautify(self, Beautify):
+        self._Beautify = Beautify
+
+
+    def _deserialize(self, params):
+        if params.get("Denoise") is not None:
+            self._Denoise = AudioDenoiseConfig()
+            self._Denoise._deserialize(params.get("Denoise"))
+        if params.get("Separate") is not None:
+            self._Separate = AudioSeparateConfig()
+            self._Separate._deserialize(params.get("Separate"))
+        if params.get("VolumeBalance") is not None:
+            self._VolumeBalance = VolumeBalanceConfig()
+            self._VolumeBalance._deserialize(params.get("VolumeBalance"))
+        if params.get("Beautify") is not None:
+            self._Beautify = AudioBeautifyConfig()
+            self._Beautify._deserialize(params.get("Beautify"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AudioSeparateConfig(AbstractModel):
+    """音频分离配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Switch: 能力配置开关，可选值：
+<li>ON：开启；</li>
+<li>OFF：关闭。</li>
+默认值：ON。
+        :type Switch: str
+        :param _Type: 场景类型，可选值：
+<li>normal：人声背景声场景</li>
+<li>music：演唱伴奏场景</li>
+默认值：normal。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param _Track: 输出音轨，可选值：
+<li>vocal：输出人声</li>
+<li>background：应用场景为normal时输出背景声，应用场景为music时输出伴奏</li>
+默认值：vocal。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Track: str
+        """
+        self._Switch = None
+        self._Type = None
+        self._Track = None
+
+    @property
+    def Switch(self):
+        return self._Switch
+
+    @Switch.setter
+    def Switch(self, Switch):
+        self._Switch = Switch
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def Track(self):
+        return self._Track
+
+    @Track.setter
+    def Track(self, Track):
+        self._Track = Track
+
+
+    def _deserialize(self, params):
+        self._Switch = params.get("Switch")
+        self._Type = params.get("Type")
+        self._Track = params.get("Track")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AudioTemplateInfo(AbstractModel):
     """音频流配置参数
 
@@ -7655,22 +7977,27 @@ class AudioTemplateInfoForUpdate(AbstractModel):
 当外层参数 Container 为 hls 时，可选值为：
 <li>libfdk_aac；</li>
 <li>libmp3lame。</li>
+注意：此字段可能返回 null，表示取不到有效值。
         :type Codec: str
         :param _Bitrate: 音频流的码率，取值范围：0 和 [26, 256]，单位：kbps。 当取值为 0，表示音频码率和原始音频保持一致。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Bitrate: int
         :param _SampleRate: 音频流的采样率，可选值：
 <li>32000</li>
 <li>44100</li>
 <li>48000</li>
 单位：Hz。
+注意：此字段可能返回 null，表示取不到有效值。
         :type SampleRate: int
         :param _AudioChannel: 音频通道方式，可选值：
 <li>1：单通道</li>
 <li>2：双通道</li>
 <li>6：立体声</li>
 当媒体的封装格式是音频格式时（flac，ogg，mp3，m4a）时，声道数不允许设为立体声。
+注意：此字段可能返回 null，表示取不到有效值。
         :type AudioChannel: int
         :param _StreamSelects: 指定输出要保留的音频轨道。默认是全部保留源的。
+注意：此字段可能返回 null，表示取不到有效值。
         :type StreamSelects: list of int
         """
         self._Codec = None
@@ -18886,6 +19213,56 @@ class DisableWorkflowResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DrmInfo(AbstractModel):
+    """Drm 加密信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Type: 加密类型：
+<li> simpleaes: aes-128 加密</li>
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param _SimpleAesDrm: SimpleAes 加密信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SimpleAesDrm: :class:`tencentcloud.mps.v20190612.models.SimpleAesDrm`
+        """
+        self._Type = None
+        self._SimpleAesDrm = None
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def SimpleAesDrm(self):
+        return self._SimpleAesDrm
+
+    @SimpleAesDrm.setter
+    def SimpleAesDrm(self, SimpleAesDrm):
+        self._SimpleAesDrm = SimpleAesDrm
+
+
+    def _deserialize(self, params):
+        self._Type = params.get("Type")
+        if params.get("SimpleAesDrm") is not None:
+            self._SimpleAesDrm = SimpleAesDrm()
+            self._SimpleAesDrm._deserialize(params.get("SimpleAesDrm"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class EditMediaFileInfo(AbstractModel):
     """编辑点播视频文件信息
 
@@ -19483,8 +19860,12 @@ class EnhanceConfig(AbstractModel):
         :param _VideoEnhance: 视频增强配置。
 注意：此字段可能返回 null，表示取不到有效值。
         :type VideoEnhance: :class:`tencentcloud.mps.v20190612.models.VideoEnhanceConfig`
+        :param _AudioEnhance: 音频增强配置。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AudioEnhance: :class:`tencentcloud.mps.v20190612.models.AudioEnhanceConfig`
         """
         self._VideoEnhance = None
+        self._AudioEnhance = None
 
     @property
     def VideoEnhance(self):
@@ -19494,11 +19875,22 @@ class EnhanceConfig(AbstractModel):
     def VideoEnhance(self, VideoEnhance):
         self._VideoEnhance = VideoEnhance
 
+    @property
+    def AudioEnhance(self):
+        return self._AudioEnhance
+
+    @AudioEnhance.setter
+    def AudioEnhance(self, AudioEnhance):
+        self._AudioEnhance = AudioEnhance
+
 
     def _deserialize(self, params):
         if params.get("VideoEnhance") is not None:
             self._VideoEnhance = VideoEnhanceConfig()
             self._VideoEnhance._deserialize(params.get("VideoEnhance"))
+        if params.get("AudioEnhance") is not None:
+            self._AudioEnhance = AudioEnhanceConfig()
+            self._AudioEnhance._deserialize(params.get("AudioEnhance"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -22196,6 +22588,7 @@ class LiveStreamAiRecognitionResultItem(AbstractModel):
 <li>AsrFullTextRecognition：语音全文识别，</li>
 <li>OcrFullTextRecognition：文本全文识别。</li>
 <li>TransTextRecognition：语音翻译。</li>
+<li>TagRecognition：精彩打点。</li>
         :type Type: str
         :param _FaceRecognitionResultSet: 人脸识别结果，当 Type 为
 FaceRecognition 时有效。
@@ -22214,6 +22607,9 @@ OcrFullTextRecognition 时有效。
         :type OcrFullTextRecognitionResultSet: list of LiveStreamOcrFullTextRecognitionResult
         :param _TransTextRecognitionResultSet: 翻译结果，当Type 为 TransTextRecognition 时有效。
         :type TransTextRecognitionResultSet: list of LiveStreamTransTextRecognitionResult
+        :param _TagRecognitionResultSet: 打点结果，当Type 为 TagRecognition 时有效。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TagRecognitionResultSet: list of LiveStreamTagRecognitionResult
         """
         self._Type = None
         self._FaceRecognitionResultSet = None
@@ -22222,6 +22618,7 @@ OcrFullTextRecognition 时有效。
         self._AsrFullTextRecognitionResultSet = None
         self._OcrFullTextRecognitionResultSet = None
         self._TransTextRecognitionResultSet = None
+        self._TagRecognitionResultSet = None
 
     @property
     def Type(self):
@@ -22279,6 +22676,14 @@ OcrFullTextRecognition 时有效。
     def TransTextRecognitionResultSet(self, TransTextRecognitionResultSet):
         self._TransTextRecognitionResultSet = TransTextRecognitionResultSet
 
+    @property
+    def TagRecognitionResultSet(self):
+        return self._TagRecognitionResultSet
+
+    @TagRecognitionResultSet.setter
+    def TagRecognitionResultSet(self, TagRecognitionResultSet):
+        self._TagRecognitionResultSet = TagRecognitionResultSet
+
 
     def _deserialize(self, params):
         self._Type = params.get("Type")
@@ -22318,6 +22723,12 @@ OcrFullTextRecognition 时有效。
                 obj = LiveStreamTransTextRecognitionResult()
                 obj._deserialize(item)
                 self._TransTextRecognitionResultSet.append(obj)
+        if params.get("TagRecognitionResultSet") is not None:
+            self._TagRecognitionResultSet = []
+            for item in params.get("TagRecognitionResultSet"):
+                obj = LiveStreamTagRecognitionResult()
+                obj._deserialize(item)
+                self._TagRecognitionResultSet.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -23486,6 +23897,75 @@ class LiveStreamProcessTask(AbstractModel):
         self._ErrCode = params.get("ErrCode")
         self._Message = params.get("Message")
         self._Url = params.get("Url")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class LiveStreamTagRecognitionResult(AbstractModel):
+    """直播 AI 打点识别结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: 打点事件。
+        :type Id: str
+        :param _StartPtsTime: 识别片段起始的 PTS 时间，单位：秒。
+        :type StartPtsTime: float
+        :param _EndPtsTime: 识别片段终止的 PTS 时间，单位：秒。
+        :type EndPtsTime: float
+        :param _Confidence: 识别片段置信度。取值：0~100。
+        :type Confidence: float
+        """
+        self._Id = None
+        self._StartPtsTime = None
+        self._EndPtsTime = None
+        self._Confidence = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def StartPtsTime(self):
+        return self._StartPtsTime
+
+    @StartPtsTime.setter
+    def StartPtsTime(self, StartPtsTime):
+        self._StartPtsTime = StartPtsTime
+
+    @property
+    def EndPtsTime(self):
+        return self._EndPtsTime
+
+    @EndPtsTime.setter
+    def EndPtsTime(self, EndPtsTime):
+        self._EndPtsTime = EndPtsTime
+
+    @property
+    def Confidence(self):
+        return self._Confidence
+
+    @Confidence.setter
+    def Confidence(self, Confidence):
+        self._Confidence = Confidence
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        self._StartPtsTime = params.get("StartPtsTime")
+        self._EndPtsTime = params.get("EndPtsTime")
+        self._Confidence = params.get("Confidence")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -29952,12 +30432,20 @@ class OverrideTranscodeParameter(AbstractModel):
         :param _AudioTemplate: 音频流配置参数。
         :type AudioTemplate: :class:`tencentcloud.mps.v20190612.models.AudioTemplateInfoForUpdate`
         :param _TEHDConfig: 极速高清转码参数。
+注意：此字段可能返回 null，表示取不到有效值。
         :type TEHDConfig: :class:`tencentcloud.mps.v20190612.models.TEHDConfigForUpdate`
         :param _SubtitleTemplate: 字幕流配置参数。
+注意：此字段可能返回 null，表示取不到有效值。
         :type SubtitleTemplate: :class:`tencentcloud.mps.v20190612.models.SubtitleTemplate`
         :param _AddonAudioStream: 外挂音轨参数。
 注意：此字段可能返回 null，表示取不到有效值。
         :type AddonAudioStream: list of MediaInputInfo
+        :param _StdExtInfo: 转码扩展字段。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StdExtInfo: str
+        :param _AddOnSubtitles: 要插入的字幕文件。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AddOnSubtitles: list of AddOnSubtitle
         """
         self._Container = None
         self._RemoveVideo = None
@@ -29967,6 +30455,8 @@ class OverrideTranscodeParameter(AbstractModel):
         self._TEHDConfig = None
         self._SubtitleTemplate = None
         self._AddonAudioStream = None
+        self._StdExtInfo = None
+        self._AddOnSubtitles = None
 
     @property
     def Container(self):
@@ -30032,6 +30522,22 @@ class OverrideTranscodeParameter(AbstractModel):
     def AddonAudioStream(self, AddonAudioStream):
         self._AddonAudioStream = AddonAudioStream
 
+    @property
+    def StdExtInfo(self):
+        return self._StdExtInfo
+
+    @StdExtInfo.setter
+    def StdExtInfo(self, StdExtInfo):
+        self._StdExtInfo = StdExtInfo
+
+    @property
+    def AddOnSubtitles(self):
+        return self._AddOnSubtitles
+
+    @AddOnSubtitles.setter
+    def AddOnSubtitles(self, AddOnSubtitles):
+        self._AddOnSubtitles = AddOnSubtitles
+
 
     def _deserialize(self, params):
         self._Container = params.get("Container")
@@ -30055,6 +30561,13 @@ class OverrideTranscodeParameter(AbstractModel):
                 obj = MediaInputInfo()
                 obj._deserialize(item)
                 self._AddonAudioStream.append(obj)
+        self._StdExtInfo = params.get("StdExtInfo")
+        if params.get("AddOnSubtitles") is not None:
+            self._AddOnSubtitles = []
+            for item in params.get("AddOnSubtitles"):
+                obj = AddOnSubtitle()
+                obj._deserialize(item)
+                self._AddOnSubtitles.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -33240,17 +33753,22 @@ class S3InputInfo(AbstractModel):
     def __init__(self):
         r"""
         :param _S3Bucket: S3 bucket。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3Bucket: str
         :param _S3Region: S3 bucket 对应的区域，目前支持：  
 us-east-1  
 eu-west-3
 
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3Region: str
         :param _S3Object: S3 bucket 中的媒体资源路径。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3Object: str
         :param _S3SecretId: AWS 内网访问 媒体资源的秘钥id。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3SecretId: str
         :param _S3SecretKey: AWS 内网访问 媒体资源的秘钥key。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3SecretKey: str
         """
         self._S3Bucket = None
@@ -33324,12 +33842,16 @@ class S3OutputStorage(AbstractModel):
     def __init__(self):
         r"""
         :param _S3Bucket: S3 bucket。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3Bucket: str
         :param _S3Region: S3 bucket 对应的区域。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3Region: str
         :param _S3SecretId: AWS 内网上传 媒体资源的秘钥id。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3SecretId: str
         :param _S3SecretKey: AWS 内网上传 媒体资源的秘钥key。
+注意：此字段可能返回 null，表示取不到有效值。
         :type S3SecretKey: str
         """
         self._S3Bucket = None
@@ -34740,6 +35262,66 @@ class SharpEnhanceConfig(AbstractModel):
         
 
 
+class SimpleAesDrm(AbstractModel):
+    """SimpleAes 加密信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Uri: 请求解密秘钥uri地址。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Uri: str
+        :param _Key: 加密key(32字节字符串)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Key: str
+        :param _Vector: 加密初始化向量(32字节字符串)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Vector: str
+        """
+        self._Uri = None
+        self._Key = None
+        self._Vector = None
+
+    @property
+    def Uri(self):
+        return self._Uri
+
+    @Uri.setter
+    def Uri(self, Uri):
+        self._Uri = Uri
+
+    @property
+    def Key(self):
+        return self._Key
+
+    @Key.setter
+    def Key(self, Key):
+        self._Key = Key
+
+    @property
+    def Vector(self):
+        return self._Vector
+
+    @Vector.setter
+    def Vector(self, Vector):
+        self._Vector = Vector
+
+
+    def _deserialize(self, params):
+        self._Uri = params.get("Uri")
+        self._Key = params.get("Key")
+        self._Vector = params.get("Vector")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class SnapshotByTimeOffsetTaskInput(AbstractModel):
     """对视频按指定时间点截图任务输入参数类型
 
@@ -35193,8 +35775,10 @@ class SubtitleTemplate(AbstractModel):
     def __init__(self):
         r"""
         :param _Path: 要压制到视频中的字幕文件地址。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Path: str
         :param _StreamIndex: 指定要压制到视频中的字幕轨道，如果有指定Path，则Path 优先级更高。Path 和 StreamIndex 至少指定一个。
+注意：此字段可能返回 null，表示取不到有效值。
         :type StreamIndex: int
         :param _FontType: 字体类型，
 <li>hei.ttf：黑体</li>
@@ -35202,15 +35786,19 @@ class SubtitleTemplate(AbstractModel):
 <li>simkai.ttf：楷体</li>
 <li>arial.ttf：仅支持英文</li>
 默认hei.ttf
+注意：此字段可能返回 null，表示取不到有效值。
         :type FontType: str
         :param _FontSize: 字体大小，格式：Npx，N 为数值，不指定则以字幕文件中为准。
+注意：此字段可能返回 null，表示取不到有效值。
         :type FontSize: str
         :param _FontColor: 字体颜色，格式：0xRRGGBB，默认值：0xFFFFFF（白色）
+注意：此字段可能返回 null，表示取不到有效值。
         :type FontColor: str
         :param _FontAlpha: 文字透明度，取值范围：(0, 1]
 <li>0：完全透明</li>
 <li>1：完全不透明</li>
 默认值：1。
+注意：此字段可能返回 null，表示取不到有效值。
         :type FontAlpha: float
         """
         self._Path = None
@@ -35535,8 +36123,10 @@ class TEHDConfigForUpdate(AbstractModel):
 <li>TEHD-100：极速高清-100（视频极速高清）。</li>
 <li>TEHD-200：极速高清-200（音频极速高清）。</li>
 不填代表不修改。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Type: str
         :param _MaxVideoBitrate: 视频码率上限，不填代表不修改。
+注意：此字段可能返回 null，表示取不到有效值。
         :type MaxVideoBitrate: int
         """
         self._Type = None
@@ -37821,7 +38411,7 @@ class VideoTemplateInfo(AbstractModel):
 注意：目前 H.265 编码必须指定分辨率，并且需要在 640*480 以内。
 注意：av1 编码容器目前只支持 mp4 。
         :type Codec: str
-        :param _Fps: 视频帧率，取值范围：[0, 100]，单位：Hz。
+        :param _Fps: 视频帧率，取值范围：[0, 120]，单位：Hz。
 当取值为 0，表示帧率和原始视频保持一致。
 注意：自适应码率时取值范围是 [0, 60]
         :type Fps: int
@@ -37980,41 +38570,51 @@ class VideoTemplateInfoForUpdate(AbstractModel):
 <li>av1：AOMedia Video 1 编码</li>
 注意：目前 H.265 编码必须指定分辨率，并且需要在 640*480 以内。
 注意：av1 编码容器目前只支持 mp4 。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Codec: str
-        :param _Fps: 视频帧率，取值范围：[0, 100]，单位：Hz。
+        :param _Fps: 视频帧率，取值范围：[0, 120]，单位：Hz。
 当取值为 0，表示帧率和原始视频保持一致。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Fps: int
         :param _Bitrate: 视频流的码率，取值范围：0 和 [128, 35000]，单位：kbps。
 当取值为 0，表示视频码率和原始视频保持一致。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Bitrate: int
         :param _ResolutionAdaptive: 分辨率自适应，可选值：
 <li>open：开启，此时，Width 代表视频的长边，Height 表示视频的短边；</li>
 <li>close：关闭，此时，Width 代表视频的宽度，Height 表示视频的高度。</li>
 注意：自适应模式时，Width不能小于Height。
+注意：此字段可能返回 null，表示取不到有效值。
         :type ResolutionAdaptive: str
         :param _Width: 视频流宽度（或长边）的最大值，取值范围：0 和 [128, 4096]，单位：px。
 <li>当 Width、Height 均为 0，则分辨率同源；</li>
 <li>当 Width 为 0，Height 非 0，则 Width 按比例缩放；</li>
 <li>当 Width 非 0，Height 为 0，则 Height 按比例缩放；</li>
 <li>当 Width、Height 均非 0，则分辨率按用户指定。</li>
+注意：此字段可能返回 null，表示取不到有效值。
         :type Width: int
         :param _Height: 视频流高度（或短边）的最大值，取值范围：0 和 [128, 4096]，单位：px。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Height: int
         :param _Gop: 关键帧 I 帧之间的间隔，取值范围：0 和 [1, 100000]，单位：帧数。当填 0 时，系统将自动设置 gop 长度。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Gop: int
         :param _FillType: 填充方式，当视频流配置宽高参数与原始视频的宽高比不一致时，对转码的处理方式，即为“填充”。可选填充方式：
 <li> stretch：拉伸，对每一帧进行拉伸，填满整个画面，可能导致转码后的视频被“压扁“或者“拉长“；</li>
 <li>black：留黑，保持视频宽高比不变，边缘剩余部分使用黑色填充。</li>
 <li>white：留白，保持视频宽高比不变，边缘剩余部分使用白色填充。</li>
 <li>gauss：高斯模糊，保持视频宽高比不变，边缘剩余部分使用高斯模糊填充。</li>
+注意：此字段可能返回 null，表示取不到有效值。
         :type FillType: str
         :param _Vcrf: 视频恒定码率控制因子。取值范围为[0, 51]，填0表示禁用该参数。
 如果没有特殊需求，不建议指定该参数。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Vcrf: int
         :param _ContentAdaptStream: 内容自适应编码。可选值：
 <li>0：不开启</li>
 <li>1：开启</li>
 默认值: 0.   当开启该参数时，将会自适应生成多个不同分辨率，不同码率的码流， 其中VideoTemplate的宽和高为多个码流中的最大分辨率，VideoTemplate中的码率为多个码流中的最高码率， VideoTemplate中的vcrf为多个码流中的最高质量。 当不设置分辨率、码率和vcrf时， ContentAdaptStream 参数生成的最高分辨率为视频源的分辨率，视频质量为接近vmaf95分。 若要开启该参数或了解计费细节, 请联系您的腾讯云商务。
+注意：此字段可能返回 null，表示取不到有效值。
         :type ContentAdaptStream: int
         """
         self._Codec = None
@@ -38120,6 +38720,58 @@ class VideoTemplateInfoForUpdate(AbstractModel):
         self._FillType = params.get("FillType")
         self._Vcrf = params.get("Vcrf")
         self._ContentAdaptStream = params.get("ContentAdaptStream")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VolumeBalanceConfig(AbstractModel):
+    """音量均衡配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Switch: 能力配置开关，可选值：
+<li>ON：开启；</li>
+<li>OFF：关闭。</li>
+默认值：ON。
+        :type Switch: str
+        :param _Type: 类型，可选值：
+<li>loudNorm：响度标准化</li>
+<li>gainControl：减小突变</li>
+默认值：loudNorm。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        """
+        self._Switch = None
+        self._Type = None
+
+    @property
+    def Switch(self):
+        return self._Switch
+
+    @Switch.setter
+    def Switch(self, Switch):
+        self._Switch = Switch
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+
+    def _deserialize(self, params):
+        self._Switch = params.get("Switch")
+        self._Type = params.get("Type")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

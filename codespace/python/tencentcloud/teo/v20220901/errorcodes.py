@@ -29,6 +29,9 @@ FAILEDOPERATION_INSUFFICIENTACCOUNTBALANCE = 'FailedOperation.InsufficientAccoun
 # 站点状态不正确。
 FAILEDOPERATION_INVALIDZONESTATUS = 'FailedOperation.InvalidZoneStatus'
 
+# 操作失败。
+FAILEDOPERATION_MODIFYFAILED = 'FailedOperation.ModifyFailed'
+
 # 内部错误。
 INTERNALERROR = 'InternalError'
 
@@ -128,6 +131,9 @@ INVALIDPARAMETER_ERRINVALIDACTIONPARAMNAME = 'InvalidParameter.ErrInvalidActionP
 # 非法操作-非法参数-参数值数量超出限制。
 INVALIDPARAMETER_ERRINVALIDACTIONPARAMTOOMANYVALUES = 'InvalidParameter.ErrInvalidActionParamTooManyValues'
 
+# 非法操作-非法参数-无效参数值。
+INVALIDPARAMETER_ERRINVALIDACTIONPARAMVALUE = 'InvalidParameter.ErrInvalidActionParamValue'
+
 # 非法操作-非法类型。
 INVALIDPARAMETER_ERRINVALIDACTIONTYPE = 'InvalidParameter.ErrInvalidActionType'
 
@@ -166,6 +172,9 @@ INVALIDPARAMETER_ERRINVALIDCONDITIONVALUETOOMANYWILDCARD = 'InvalidParameter.Err
 
 # 非法条件-非法参数值-参数值数量为0。
 INVALIDPARAMETER_ERRINVALIDCONDITIONVALUEZEROLENGTH = 'InvalidParameter.ErrInvalidConditionValueZeroLength'
+
+# 修改源站操作不支持ELSE。
+INVALIDPARAMETER_ERRINVALIDELSEWHENMODIFYORIGINACTIONCONFIGURED = 'InvalidParameter.ErrInvalidElseWhenModifyOriginActionConfigured'
 
 # 开启 Grpc 协议支持需要同时开启 HTTP/2 协议支持。
 INVALIDPARAMETER_GRPCREQUIREHTTP2 = 'InvalidParameter.GrpcRequireHttp2'
@@ -208,6 +217,9 @@ INVALIDPARAMETER_INVALIDCACHECONFIGFOLLOWORIGIN = 'InvalidParameter.InvalidCache
 
 # 无效的缓存键。
 INVALIDPARAMETER_INVALIDCACHEKEY = 'InvalidParameter.InvalidCacheKey'
+
+# 无效的自定义Cache Key Cookie无效。
+INVALIDPARAMETER_INVALIDCACHEKEYCOOKIE = 'InvalidParameter.InvalidCacheKeyCookie'
 
 # 无效的缓存键忽略大小写。
 INVALIDPARAMETER_INVALIDCACHEKEYIGNORECASE = 'InvalidParameter.InvalidCacheKeyIgnoreCase'
@@ -335,6 +347,9 @@ INVALIDPARAMETER_INVALIDSTANDARDDEBUGEXPIRETIMELIMIT = 'InvalidParameter.Invalid
 # 无效的回源请求参数设置-无效查询字符串值。
 INVALIDPARAMETER_INVALIDUPSTREAMREQUESTQUERYSTRINGVALUE = 'InvalidParameter.InvalidUpstreamRequestQueryStringValue'
 
+# 无效的URL重写。
+INVALIDPARAMETER_INVALIDURLREDIRECT = 'InvalidParameter.InvalidUrlRedirect'
+
 # URL重写的目标HOST无效。
 INVALIDPARAMETER_INVALIDURLREDIRECTHOST = 'InvalidParameter.InvalidUrlRedirectHost'
 
@@ -352,6 +367,12 @@ INVALIDPARAMETER_LENGTHEXCEEDSLIMIT = 'InvalidParameter.LengthExceedsLimit'
 
 # 不支持智能路由
 INVALIDPARAMETER_MULTIPLYLAYERNOTSUPPORTSMARTROUTING = 'InvalidParameter.MultiplyLayerNotSupportSmartRouting'
+
+# 操作配置存在不支持的预设变量。
+INVALIDPARAMETER_NOTSUPPORTTHISPRESET = 'InvalidParameter.NotSupportThisPreset'
+
+# 域名处于直接回源架构，需要保持智能加速功能的开启。
+INVALIDPARAMETER_OCDIRECTORIGINREQUIRESSMARTROUTING = 'InvalidParameter.OCDirectOriginRequiresSmartRouting'
 
 # 源站是内网IP。
 INVALIDPARAMETER_ORIGINISINNERIP = 'InvalidParameter.OriginIsInnerIp'
@@ -389,6 +410,9 @@ INVALIDPARAMETER_UPLOADURL = 'InvalidParameter.UploadUrl'
 # 站点已被绑定。
 INVALIDPARAMETER_ZONEHASBEENBOUND = 'InvalidParameter.ZoneHasBeenBound'
 
+# 站点升级中，暂不支持进行变更操作，请稍后再试。
+INVALIDPARAMETER_ZONEISGRAYPUBLISHING = 'InvalidParameter.ZoneIsGrayPublishing'
+
 # 站点不存在。
 INVALIDPARAMETER_ZONENOTFOUND = 'InvalidParameter.ZoneNotFound'
 
@@ -416,8 +440,23 @@ INVALIDPARAMETERVALUE_INVALIDDNSCONTENT = 'InvalidParameterValue.InvalidDNSConte
 # DNS 记录名称错误。
 INVALIDPARAMETERVALUE_INVALIDDNSNAME = 'InvalidParameterValue.InvalidDNSName'
 
+# 加速域名名称不合法，加速域名应该由数字、英文字母、连词符组成，且连词符不能位于开头和结尾处。
+INVALIDPARAMETERVALUE_INVALIDDOMAINNAME = 'InvalidParameterValue.InvalidDomainName'
+
 # 加速域名状态不符合要求。
 INVALIDPARAMETERVALUE_INVALIDDOMAINSTATUS = 'InvalidParameterValue.InvalidDomainStatus'
+
+# DNS 代理域名源站错误。
+INVALIDPARAMETERVALUE_INVALIDPROXYORIGIN = 'InvalidParameterValue.InvalidProxyOrigin'
+
+# 不支持接入泛域名 CNAME
+INVALIDPARAMETERVALUE_NOTALLOWEDWILDCARDSHAREDCNAME = 'InvalidParameterValue.NotAllowedWildcardSharedCNAME'
+
+# 指定的源站组不存在。
+INVALIDPARAMETERVALUE_ORIGINGROUPNOTEXISTS = 'InvalidParameterValue.OriginGroupNotExists'
+
+# 请输入合法的共享 CNAME 前缀，最大支持50个字符。
+INVALIDPARAMETERVALUE_SHAREDCNAMEPREFIXNOTMATCH = 'InvalidParameterValue.SharedCNAMEPrefixNotMatch'
 
 # 该同名站点标识已被占用，请重新输入。
 INVALIDPARAMETERVALUE_ZONESAMEASNAME = 'InvalidParameterValue.ZoneSameAsName'
@@ -449,6 +488,9 @@ OPERATIONDENIED_ACCELERATEMAINLANDDISABLE = 'OperationDenied.AccelerateMainlandD
 # 中国大陆加速与IPv6冲突，不能同时配置。
 OPERATIONDENIED_ACCELERATEMAINLANDIPV6CONFLICT = 'OperationDenied.AccelerateMainlandIpv6Conflict'
 
+# 配置已被锁定，请解除配置锁定之后在重试。
+OPERATIONDENIED_CONFIGLOCKED = 'OperationDenied.ConfigLocked'
+
 # 站点停用未完毕，请稍后再试。
 OPERATIONDENIED_DISABLEZONENOTCOMPLETED = 'OperationDenied.DisableZoneNotCompleted'
 
@@ -460,6 +502,9 @@ OPERATIONDENIED_DOMAINISBLOCKED = 'OperationDenied.DomainIsBlocked'
 
 # 域名尚未备案。
 OPERATIONDENIED_DOMAINNOICP = 'OperationDenied.DomainNoICP'
+
+# 站点下有域名时不允许修改服务区域。
+OPERATIONDENIED_DOMAINNUMBERISNOTZERO = 'OperationDenied.DomainNumberIsNotZero'
 
 # 站点处于停用状态，请开启后重试。
 OPERATIONDENIED_ERRZONEISALREADYPAUSED = 'OperationDenied.ErrZoneIsAlreadyPaused'
@@ -496,6 +541,15 @@ OPERATIONDENIED_RECORDISFORBIDDEN = 'OperationDenied.RecordIsForbidden'
 
 # 当前有互相排斥的请求操作并行发起，请稍后重试。
 OPERATIONDENIED_RESOURCELOCKEDTEMPORARY = 'OperationDenied.ResourceLockedTemporary'
+
+# 绑定在共享 CNAME 中的域名不允许变更 中国大陆网络优化（国际加速）访问，如果您需要单独变更，请先将域名从共享 CNAME 中解绑。
+OPERATIONDENIED_SHAREDCNAMEUNSUPPORTEDACCELERATEMAINLAND = 'OperationDenied.SharedCNAMEUnsupportedAccelerateMainland'
+
+# 绑定在共享 CNAME 中的域名不允许变更 IPv6 访问，如果您需要单独变更，请先将域名从共享 CNAME 中解绑。
+OPERATIONDENIED_SHAREDCNAMEUNSUPPORTEDIPV6 = 'OperationDenied.SharedCNAMEUnsupportedIPv6'
+
+# 共享CNAME已被其他站点绑定，请先解绑才能删除站点
+OPERATIONDENIED_ZONEISBINDINGSHAREDCNAME = 'OperationDenied.ZoneIsBindingSharedCNAME'
 
 # 资源被占用。
 RESOURCEINUSE = 'ResourceInUse'
@@ -571,6 +625,9 @@ RESOURCEUNAVAILABLE_DOMAINNOTFOUND = 'ResourceUnavailable.DomainNotFound'
 
 # 域名不存在或未开启代理。
 RESOURCEUNAVAILABLE_HOSTNOTFOUND = 'ResourceUnavailable.HostNotFound'
+
+# 该共享 CNAME 已被占用，请重新输入。
+RESOURCEUNAVAILABLE_SHAREDCNAMEALREADYEXISTS = 'ResourceUnavailable.SharedCNAMEAlreadyExists'
 
 # 站点不存在或不属于该账号。
 RESOURCEUNAVAILABLE_ZONENOTFOUND = 'ResourceUnavailable.ZoneNotFound'

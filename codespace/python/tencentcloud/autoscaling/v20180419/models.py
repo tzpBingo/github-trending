@@ -7706,6 +7706,8 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
         :type IPv6InternetAccessible: :class:`tencentcloud.autoscaling.v20180419.models.IPv6InternetAccessible`
         :param _DisasterRecoverGroupIds: 置放群组id，仅支持指定一个。
         :type DisasterRecoverGroupIds: list of str
+        :param _LoginSettings: 实例登录设置，包括密码、密钥或保持镜像的原始登录设置。<br>请注意，指定新的登录设置会覆盖原有登录设置。例如，如果您之前使用密码登录，使用该参数将登录设置修改为密钥，则原有密码被清除。
+        :type LoginSettings: :class:`tencentcloud.autoscaling.v20180419.models.LoginSettings`
         """
         self._LaunchConfigurationId = None
         self._ImageId = None
@@ -7728,6 +7730,7 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
         self._HpcClusterId = None
         self._IPv6InternetAccessible = None
         self._DisasterRecoverGroupIds = None
+        self._LoginSettings = None
 
     @property
     def LaunchConfigurationId(self):
@@ -7897,6 +7900,14 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
     def DisasterRecoverGroupIds(self, DisasterRecoverGroupIds):
         self._DisasterRecoverGroupIds = DisasterRecoverGroupIds
 
+    @property
+    def LoginSettings(self):
+        return self._LoginSettings
+
+    @LoginSettings.setter
+    def LoginSettings(self, LoginSettings):
+        self._LoginSettings = LoginSettings
+
 
     def _deserialize(self, params):
         self._LaunchConfigurationId = params.get("LaunchConfigurationId")
@@ -7941,6 +7952,9 @@ InstanceType 指定单一实例类型，通过设置 InstanceTypes可以指定�
             self._IPv6InternetAccessible = IPv6InternetAccessible()
             self._IPv6InternetAccessible._deserialize(params.get("IPv6InternetAccessible"))
         self._DisasterRecoverGroupIds = params.get("DisasterRecoverGroupIds")
+        if params.get("LoginSettings") is not None:
+            self._LoginSettings = LoginSettings()
+            self._LoginSettings._deserialize(params.get("LoginSettings"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10219,7 +10233,7 @@ class UpgradeLaunchConfigurationRequest(AbstractModel):
         :type InstanceTypesCheckPolicy: str
         :param _InternetAccessible: 公网带宽相关信息设置。若不指定该参数，则默认公网带宽为0Mbps。
         :type InternetAccessible: :class:`tencentcloud.autoscaling.v20180419.models.InternetAccessible`
-        :param _LoginSettings: 实例登录设置。通过该参数可以设置实例的登录方式密码、密钥或保持镜像的原始登录设置。默认情况下会随机生成密码，并以站内信方式知会到用户。
+        :param _LoginSettings: 该参数已失效，请勿使用。升级启动配置接口无法修改或覆盖 LoginSettings 参数，升级后 LoginSettings 不会发生变化。
         :type LoginSettings: :class:`tencentcloud.autoscaling.v20180419.models.LoginSettings`
         :param _ProjectId: 实例所属项目ID。不填为默认项目。
         :type ProjectId: int

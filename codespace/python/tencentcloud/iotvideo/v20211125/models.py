@@ -2260,12 +2260,18 @@ lye1y30d：低功耗事件30天年套餐。
         :type Override: int
         :param _PackageQueue: 套餐列表顺序：PackageQueue=front会立即使用新购买的套餐，新购套餐结束后，列表中下一个未过期的套餐继续生效；PackageQueue=end会等设备当前所有已购买套餐过期后才会生效新购套餐。与Override参数不能同时使用。
         :type PackageQueue: str
+        :param _OrderId: 订单id
+        :type OrderId: str
+        :param _ChannelId: 通道ID
+        :type ChannelId: int
         """
         self._ProductId = None
         self._DeviceName = None
         self._PackageId = None
         self._Override = None
         self._PackageQueue = None
+        self._OrderId = None
+        self._ChannelId = None
 
     @property
     def ProductId(self):
@@ -2307,6 +2313,22 @@ lye1y30d：低功耗事件30天年套餐。
     def PackageQueue(self, PackageQueue):
         self._PackageQueue = PackageQueue
 
+    @property
+    def OrderId(self):
+        return self._OrderId
+
+    @OrderId.setter
+    def OrderId(self, OrderId):
+        self._OrderId = OrderId
+
+    @property
+    def ChannelId(self):
+        return self._ChannelId
+
+    @ChannelId.setter
+    def ChannelId(self, ChannelId):
+        self._ChannelId = ChannelId
+
 
     def _deserialize(self, params):
         self._ProductId = params.get("ProductId")
@@ -2314,6 +2336,8 @@ lye1y30d：低功耗事件30天年套餐。
         self._PackageId = params.get("PackageId")
         self._Override = params.get("Override")
         self._PackageQueue = params.get("PackageQueue")
+        self._OrderId = params.get("OrderId")
+        self._ChannelId = params.get("ChannelId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3109,6 +3133,124 @@ class DataForward(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class DeleteCloudStorageEventRequest(AbstractModel):
+    """DeleteCloudStorageEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ProductId: 产品ID
+        :type ProductId: str
+        :param _DeviceName: 设备名称
+        :type DeviceName: str
+        :param _EventId: 事件id
+        :type EventId: str
+        :param _StartTime: 开始时间，unix时间
+        :type StartTime: int
+        :param _EndTime: 结束时间，unix时间
+        :type EndTime: int
+        :param _UserId: 用户ID
+        :type UserId: str
+        """
+        self._ProductId = None
+        self._DeviceName = None
+        self._EventId = None
+        self._StartTime = None
+        self._EndTime = None
+        self._UserId = None
+
+    @property
+    def ProductId(self):
+        return self._ProductId
+
+    @ProductId.setter
+    def ProductId(self, ProductId):
+        self._ProductId = ProductId
+
+    @property
+    def DeviceName(self):
+        return self._DeviceName
+
+    @DeviceName.setter
+    def DeviceName(self, DeviceName):
+        self._DeviceName = DeviceName
+
+    @property
+    def EventId(self):
+        return self._EventId
+
+    @EventId.setter
+    def EventId(self, EventId):
+        self._EventId = EventId
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def UserId(self):
+        return self._UserId
+
+    @UserId.setter
+    def UserId(self, UserId):
+        self._UserId = UserId
+
+
+    def _deserialize(self, params):
+        self._ProductId = params.get("ProductId")
+        self._DeviceName = params.get("DeviceName")
+        self._EventId = params.get("EventId")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._UserId = params.get("UserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteCloudStorageEventResponse(AbstractModel):
+    """DeleteCloudStorageEvent返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
 
 
 class DeleteDeviceRequest(AbstractModel):
@@ -4633,10 +4775,13 @@ class DescribeCloudStorageDateRequest(AbstractModel):
         :type DeviceName: str
         :param _UserId: 用户ID
         :type UserId: str
+        :param _ChannelId: 通道ID
+        :type ChannelId: int
         """
         self._ProductId = None
         self._DeviceName = None
         self._UserId = None
+        self._ChannelId = None
 
     @property
     def ProductId(self):
@@ -4662,11 +4807,20 @@ class DescribeCloudStorageDateRequest(AbstractModel):
     def UserId(self, UserId):
         self._UserId = UserId
 
+    @property
+    def ChannelId(self):
+        return self._ChannelId
+
+    @ChannelId.setter
+    def ChannelId(self, ChannelId):
+        self._ChannelId = ChannelId
+
 
     def _deserialize(self, params):
         self._ProductId = params.get("ProductId")
         self._DeviceName = params.get("DeviceName")
         self._UserId = params.get("UserId")
+        self._ChannelId = params.get("ChannelId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4930,6 +5084,118 @@ class DescribeCloudStorageEventsResponse(AbstractModel):
         self._Listover = params.get("Listover")
         self._Total = params.get("Total")
         self._VideoURL = params.get("VideoURL")
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeCloudStorageOrderRequest(AbstractModel):
+    """DescribeCloudStorageOrder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _OrderId: 订单id
+        :type OrderId: str
+        """
+        self._OrderId = None
+
+    @property
+    def OrderId(self):
+        return self._OrderId
+
+    @OrderId.setter
+    def OrderId(self, OrderId):
+        self._OrderId = OrderId
+
+
+    def _deserialize(self, params):
+        self._OrderId = params.get("OrderId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeCloudStorageOrderResponse(AbstractModel):
+    """DescribeCloudStorageOrder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StartTime: 云存套餐开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StartTime: int
+        :param _ExpireTime: 云存套餐过期时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExpireTime: int
+        :param _PackageId: 套餐id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PackageId: str
+        :param _Status: 套餐状态
+0：等待生效
+1: 已过期
+2:生效
+        :type Status: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._StartTime = None
+        self._ExpireTime = None
+        self._PackageId = None
+        self._Status = None
+        self._RequestId = None
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def ExpireTime(self):
+        return self._ExpireTime
+
+    @ExpireTime.setter
+    def ExpireTime(self, ExpireTime):
+        self._ExpireTime = ExpireTime
+
+    @property
+    def PackageId(self):
+        return self._PackageId
+
+    @PackageId.setter
+    def PackageId(self, PackageId):
+        self._PackageId = PackageId
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._StartTime = params.get("StartTime")
+        self._ExpireTime = params.get("ExpireTime")
+        self._PackageId = params.get("PackageId")
+        self._Status = params.get("Status")
         self._RequestId = params.get("RequestId")
 
 
@@ -5405,10 +5671,13 @@ class DescribeCloudStorageThumbnailResponse(AbstractModel):
         r"""
         :param _ThumbnailURL: 缩略图访问地址
         :type ThumbnailURL: str
+        :param _ExpireTime: 缩略图访问地址的过期时间
+        :type ExpireTime: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._ThumbnailURL = None
+        self._ExpireTime = None
         self._RequestId = None
 
     @property
@@ -5418,6 +5687,14 @@ class DescribeCloudStorageThumbnailResponse(AbstractModel):
     @ThumbnailURL.setter
     def ThumbnailURL(self, ThumbnailURL):
         self._ThumbnailURL = ThumbnailURL
+
+    @property
+    def ExpireTime(self):
+        return self._ExpireTime
+
+    @ExpireTime.setter
+    def ExpireTime(self, ExpireTime):
+        self._ExpireTime = ExpireTime
 
     @property
     def RequestId(self):
@@ -5430,6 +5707,7 @@ class DescribeCloudStorageThumbnailResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._ThumbnailURL = params.get("ThumbnailURL")
+        self._ExpireTime = params.get("ExpireTime")
         self._RequestId = params.get("RequestId")
 
 
@@ -5452,6 +5730,8 @@ class DescribeCloudStorageTimeRequest(AbstractModel):
         :type EndTime: int
         :param _UserId: 用户ID
         :type UserId: str
+        :param _ChannelId: 通道ID
+        :type ChannelId: int
         """
         self._ProductId = None
         self._DeviceName = None
@@ -5459,6 +5739,7 @@ class DescribeCloudStorageTimeRequest(AbstractModel):
         self._StartTime = None
         self._EndTime = None
         self._UserId = None
+        self._ChannelId = None
 
     @property
     def ProductId(self):
@@ -5508,6 +5789,14 @@ class DescribeCloudStorageTimeRequest(AbstractModel):
     def UserId(self, UserId):
         self._UserId = UserId
 
+    @property
+    def ChannelId(self):
+        return self._ChannelId
+
+    @ChannelId.setter
+    def ChannelId(self, ChannelId):
+        self._ChannelId = ChannelId
+
 
     def _deserialize(self, params):
         self._ProductId = params.get("ProductId")
@@ -5516,6 +5805,7 @@ class DescribeCloudStorageTimeRequest(AbstractModel):
         self._StartTime = params.get("StartTime")
         self._EndTime = params.get("EndTime")
         self._UserId = params.get("UserId")
+        self._ChannelId = params.get("ChannelId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6712,6 +7002,130 @@ class DescribeDeviceEventHistoryResponse(AbstractModel):
                 obj = EventHistoryItem()
                 obj._deserialize(item)
                 self._EventHistory.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeDevicePackagesRequest(AbstractModel):
+    """DescribeDevicePackages请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ProductId: 产品ID
+        :type ProductId: str
+        :param _DeviceName: 设备名称
+        :type DeviceName: str
+        :param _Limit: 分页拉取数量
+        :type Limit: int
+        :param _Offset: 分页拉取偏移
+        :type Offset: int
+        """
+        self._ProductId = None
+        self._DeviceName = None
+        self._Limit = None
+        self._Offset = None
+
+    @property
+    def ProductId(self):
+        return self._ProductId
+
+    @ProductId.setter
+    def ProductId(self, ProductId):
+        self._ProductId = ProductId
+
+    @property
+    def DeviceName(self):
+        return self._DeviceName
+
+    @DeviceName.setter
+    def DeviceName(self, DeviceName):
+        self._DeviceName = DeviceName
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+
+    def _deserialize(self, params):
+        self._ProductId = params.get("ProductId")
+        self._DeviceName = params.get("DeviceName")
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDevicePackagesResponse(AbstractModel):
+    """DescribeDevicePackages返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 有效云存套餐数量
+        :type TotalCount: int
+        :param _Packages: 有效云存套餐列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Packages: list of PackageInfo
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._Packages = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def Packages(self):
+        return self._Packages
+
+    @Packages.setter
+    def Packages(self, Packages):
+        self._Packages = Packages
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("Packages") is not None:
+            self._Packages = []
+            for item in params.get("Packages"):
+                obj = PackageInfo()
+                obj._deserialize(item)
+                self._Packages.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -11862,6 +12276,128 @@ class PackageConsumeTask(AbstractModel):
         
 
 
+class PackageInfo(AbstractModel):
+    """结构体（PackageInfo）记录了设备拥有的有效套餐信息，包括云存开启状态、云存类型、云存回看时长、云存套餐过期时间
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Status: 云存开启状态，0为未开启，2为正在生效，1为已过期
+注：这里只返回状态为0的数据
+        :type Status: int
+        :param _CSType: 云存类型，1为全时云存，2为事件云存
+        :type CSType: int
+        :param _CSShiftDuration: 云存回看时长
+        :type CSShiftDuration: int
+        :param _CSExpiredTime: 云存套餐过期时间
+        :type CSExpiredTime: int
+        :param _CreatedAt: 云存套餐创建时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreatedAt: int
+        :param _UpdatedAt: 云存套餐更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpdatedAt: int
+        :param _PackageId: 套餐id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PackageId: str
+        :param _OrderId: 订单id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OrderId: str
+        """
+        self._Status = None
+        self._CSType = None
+        self._CSShiftDuration = None
+        self._CSExpiredTime = None
+        self._CreatedAt = None
+        self._UpdatedAt = None
+        self._PackageId = None
+        self._OrderId = None
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def CSType(self):
+        return self._CSType
+
+    @CSType.setter
+    def CSType(self, CSType):
+        self._CSType = CSType
+
+    @property
+    def CSShiftDuration(self):
+        return self._CSShiftDuration
+
+    @CSShiftDuration.setter
+    def CSShiftDuration(self, CSShiftDuration):
+        self._CSShiftDuration = CSShiftDuration
+
+    @property
+    def CSExpiredTime(self):
+        return self._CSExpiredTime
+
+    @CSExpiredTime.setter
+    def CSExpiredTime(self, CSExpiredTime):
+        self._CSExpiredTime = CSExpiredTime
+
+    @property
+    def CreatedAt(self):
+        return self._CreatedAt
+
+    @CreatedAt.setter
+    def CreatedAt(self, CreatedAt):
+        self._CreatedAt = CreatedAt
+
+    @property
+    def UpdatedAt(self):
+        return self._UpdatedAt
+
+    @UpdatedAt.setter
+    def UpdatedAt(self, UpdatedAt):
+        self._UpdatedAt = UpdatedAt
+
+    @property
+    def PackageId(self):
+        return self._PackageId
+
+    @PackageId.setter
+    def PackageId(self, PackageId):
+        self._PackageId = PackageId
+
+    @property
+    def OrderId(self):
+        return self._OrderId
+
+    @OrderId.setter
+    def OrderId(self, OrderId):
+        self._OrderId = OrderId
+
+
+    def _deserialize(self, params):
+        self._Status = params.get("Status")
+        self._CSType = params.get("CSType")
+        self._CSShiftDuration = params.get("CSShiftDuration")
+        self._CSExpiredTime = params.get("CSExpiredTime")
+        self._CreatedAt = params.get("CreatedAt")
+        self._UpdatedAt = params.get("UpdatedAt")
+        self._PackageId = params.get("PackageId")
+        self._OrderId = params.get("OrderId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ProductModelDefinition(AbstractModel):
     """产品模型定义
 
@@ -12242,6 +12778,88 @@ class ReportAliveDeviceRequest(AbstractModel):
 
 class ReportAliveDeviceResponse(AbstractModel):
     """ReportAliveDevice返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ResetCloudStorageEventRequest(AbstractModel):
+    """ResetCloudStorageEvent请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ProductId: 产品ID
+        :type ProductId: str
+        :param _DeviceName: 设备名称
+        :type DeviceName: str
+        :param _UserId: 用户ID
+        :type UserId: str
+        """
+        self._ProductId = None
+        self._DeviceName = None
+        self._UserId = None
+
+    @property
+    def ProductId(self):
+        return self._ProductId
+
+    @ProductId.setter
+    def ProductId(self, ProductId):
+        self._ProductId = ProductId
+
+    @property
+    def DeviceName(self):
+        return self._DeviceName
+
+    @DeviceName.setter
+    def DeviceName(self, DeviceName):
+        self._DeviceName = DeviceName
+
+    @property
+    def UserId(self):
+        return self._UserId
+
+    @UserId.setter
+    def UserId(self, UserId):
+        self._UserId = UserId
+
+
+    def _deserialize(self, params):
+        self._ProductId = params.get("ProductId")
+        self._DeviceName = params.get("DeviceName")
+        self._UserId = params.get("UserId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResetCloudStorageEventResponse(AbstractModel):
+    """ResetCloudStorageEvent返回参数结构体
 
     """
 

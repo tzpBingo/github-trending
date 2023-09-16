@@ -2296,6 +2296,8 @@ class AddAssetImageRegistryRegistryDetailRequest(AbstractModel):
         :type SpeedLimit: int
         :param _Insecure: 安全模式（证书校验）：0（默认） 非安全模式（跳过证书校验）：1
         :type Insecure: int
+        :param _ConnDetectConfig: 联通性检测的记录ID
+        :type ConnDetectConfig: list of ConnDetectConfig
         """
         self._Name = None
         self._Username = None
@@ -2307,6 +2309,7 @@ class AddAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self._RegistryRegion = None
         self._SpeedLimit = None
         self._Insecure = None
+        self._ConnDetectConfig = None
 
     @property
     def Name(self):
@@ -2388,6 +2391,14 @@ class AddAssetImageRegistryRegistryDetailRequest(AbstractModel):
     def Insecure(self, Insecure):
         self._Insecure = Insecure
 
+    @property
+    def ConnDetectConfig(self):
+        return self._ConnDetectConfig
+
+    @ConnDetectConfig.setter
+    def ConnDetectConfig(self, ConnDetectConfig):
+        self._ConnDetectConfig = ConnDetectConfig
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -2400,6 +2411,12 @@ class AddAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self._RegistryRegion = params.get("RegistryRegion")
         self._SpeedLimit = params.get("SpeedLimit")
         self._Insecure = params.get("Insecure")
+        if params.get("ConnDetectConfig") is not None:
+            self._ConnDetectConfig = []
+            for item in params.get("ConnDetectConfig"):
+                obj = ConnDetectConfig()
+                obj._deserialize(item)
+                self._ConnDetectConfig.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -5327,6 +5344,21 @@ class ClusterInfoItem(AbstractModel):
         :type CheckStatus: str
         :param _TaskCreateTime: 任务创建时间,检查时间
         :type TaskCreateTime: str
+        :param _AccessedStatus: 接入状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccessedStatus: str
+        :param _AccessedSubStatus: 接入失败原因
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AccessedSubStatus: str
+        :param _NodeCount: 节点总数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NodeCount: int
+        :param _OffLineNodeCount: 离线节点数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OffLineNodeCount: int
+        :param _UnInstallAgentNodeCount: 未安装agent节点数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UnInstallAgentNodeCount: int
         """
         self._ClusterId = None
         self._ClusterName = None
@@ -5348,6 +5380,11 @@ class ClusterInfoItem(AbstractModel):
         self._CheckFailReason = None
         self._CheckStatus = None
         self._TaskCreateTime = None
+        self._AccessedStatus = None
+        self._AccessedSubStatus = None
+        self._NodeCount = None
+        self._OffLineNodeCount = None
+        self._UnInstallAgentNodeCount = None
 
     @property
     def ClusterId(self):
@@ -5509,6 +5546,46 @@ class ClusterInfoItem(AbstractModel):
     def TaskCreateTime(self, TaskCreateTime):
         self._TaskCreateTime = TaskCreateTime
 
+    @property
+    def AccessedStatus(self):
+        return self._AccessedStatus
+
+    @AccessedStatus.setter
+    def AccessedStatus(self, AccessedStatus):
+        self._AccessedStatus = AccessedStatus
+
+    @property
+    def AccessedSubStatus(self):
+        return self._AccessedSubStatus
+
+    @AccessedSubStatus.setter
+    def AccessedSubStatus(self, AccessedSubStatus):
+        self._AccessedSubStatus = AccessedSubStatus
+
+    @property
+    def NodeCount(self):
+        return self._NodeCount
+
+    @NodeCount.setter
+    def NodeCount(self, NodeCount):
+        self._NodeCount = NodeCount
+
+    @property
+    def OffLineNodeCount(self):
+        return self._OffLineNodeCount
+
+    @OffLineNodeCount.setter
+    def OffLineNodeCount(self, OffLineNodeCount):
+        self._OffLineNodeCount = OffLineNodeCount
+
+    @property
+    def UnInstallAgentNodeCount(self):
+        return self._UnInstallAgentNodeCount
+
+    @UnInstallAgentNodeCount.setter
+    def UnInstallAgentNodeCount(self, UnInstallAgentNodeCount):
+        self._UnInstallAgentNodeCount = UnInstallAgentNodeCount
+
 
     def _deserialize(self, params):
         self._ClusterId = params.get("ClusterId")
@@ -5531,6 +5608,11 @@ class ClusterInfoItem(AbstractModel):
         self._CheckFailReason = params.get("CheckFailReason")
         self._CheckStatus = params.get("CheckStatus")
         self._TaskCreateTime = params.get("TaskCreateTime")
+        self._AccessedStatus = params.get("AccessedStatus")
+        self._AccessedSubStatus = params.get("AccessedSubStatus")
+        self._NodeCount = params.get("NodeCount")
+        self._OffLineNodeCount = params.get("OffLineNodeCount")
+        self._UnInstallAgentNodeCount = params.get("UnInstallAgentNodeCount")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7986,6 +8068,51 @@ class ConfirmNetworkFirewallPolicyResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ConnDetectConfig(AbstractModel):
+    """联通性检测配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Quuid: 主机quuid
+        :type Quuid: str
+        :param _Uuid: 主机uuid
+        :type Uuid: str
+        """
+        self._Quuid = None
+        self._Uuid = None
+
+    @property
+    def Quuid(self):
+        return self._Quuid
+
+    @Quuid.setter
+    def Quuid(self, Quuid):
+        self._Quuid = Quuid
+
+    @property
+    def Uuid(self):
+        return self._Uuid
+
+    @Uuid.setter
+    def Uuid(self, Uuid):
+        self._Uuid = Uuid
+
+
+    def _deserialize(self, params):
+        self._Quuid = params.get("Quuid")
+        self._Uuid = params.get("Uuid")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ContainerInfo(AbstractModel):
     """容器列表集合
 
@@ -8055,6 +8182,13 @@ class ContainerInfo(AbstractModel):
         :type PodCpu: int
         :param _PodMem: 所属Pod的内存
         :type PodMem: int
+        :param _ClusterName: 集群名称
+        :type ClusterName: str
+        :param _ClusterID: 集群ID
+        :type ClusterID: str
+        :param _PodUid: pod uid
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PodUid: str
         """
         self._ContainerID = None
         self._ContainerName = None
@@ -8083,6 +8217,9 @@ class ContainerInfo(AbstractModel):
         self._NodeUniqueID = None
         self._PodCpu = None
         self._PodMem = None
+        self._ClusterName = None
+        self._ClusterID = None
+        self._PodUid = None
 
     @property
     def ContainerID(self):
@@ -8300,6 +8437,30 @@ class ContainerInfo(AbstractModel):
     def PodMem(self, PodMem):
         self._PodMem = PodMem
 
+    @property
+    def ClusterName(self):
+        return self._ClusterName
+
+    @ClusterName.setter
+    def ClusterName(self, ClusterName):
+        self._ClusterName = ClusterName
+
+    @property
+    def ClusterID(self):
+        return self._ClusterID
+
+    @ClusterID.setter
+    def ClusterID(self, ClusterID):
+        self._ClusterID = ClusterID
+
+    @property
+    def PodUid(self):
+        return self._PodUid
+
+    @PodUid.setter
+    def PodUid(self, PodUid):
+        self._PodUid = PodUid
+
 
     def _deserialize(self, params):
         self._ContainerID = params.get("ContainerID")
@@ -8329,6 +8490,9 @@ class ContainerInfo(AbstractModel):
         self._NodeUniqueID = params.get("NodeUniqueID")
         self._PodCpu = params.get("PodCpu")
         self._PodMem = params.get("PodMem")
+        self._ClusterName = params.get("ClusterName")
+        self._ClusterID = params.get("ClusterID")
+        self._PodUid = params.get("PodUid")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8806,7 +8970,7 @@ class CreateAssetImageRegistryScanTaskOneKeyRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _All: 是否扫描全部镜像
+        :param _All: 是否扫描全部镜像(废弃)
         :type All: bool
         :param _Images: 扫描的镜像列表
         :type Images: list of ImageInfo
@@ -8814,18 +8978,40 @@ class CreateAssetImageRegistryScanTaskOneKeyRequest(AbstractModel):
         :type ScanType: list of str
         :param _Id: 扫描的镜像列表Id
         :type Id: list of int non-negative
+        :param _IsLatest: 是否最新镜像
+        :type IsLatest: bool
+        :param _ScanScope: 扫描范围 0全部镜像，1自选镜像，2推荐扫描镜像
+        :type ScanScope: int
+        :param _RegistryType: 仓库类型
+        :type RegistryType: list of str
+        :param _Namespace: 命名空间
+        :type Namespace: list of str
+        :param _ContainerRunning: 是否存在运行中的容器
+        :type ContainerRunning: bool
+        :param _Timeout: 任务超时时长单位s
+        :type Timeout: int
         """
         self._All = None
         self._Images = None
         self._ScanType = None
         self._Id = None
+        self._IsLatest = None
+        self._ScanScope = None
+        self._RegistryType = None
+        self._Namespace = None
+        self._ContainerRunning = None
+        self._Timeout = None
 
     @property
     def All(self):
+        warnings.warn("parameter `All` is deprecated", DeprecationWarning) 
+
         return self._All
 
     @All.setter
     def All(self, All):
+        warnings.warn("parameter `All` is deprecated", DeprecationWarning) 
+
         self._All = All
 
     @property
@@ -8852,6 +9038,54 @@ class CreateAssetImageRegistryScanTaskOneKeyRequest(AbstractModel):
     def Id(self, Id):
         self._Id = Id
 
+    @property
+    def IsLatest(self):
+        return self._IsLatest
+
+    @IsLatest.setter
+    def IsLatest(self, IsLatest):
+        self._IsLatest = IsLatest
+
+    @property
+    def ScanScope(self):
+        return self._ScanScope
+
+    @ScanScope.setter
+    def ScanScope(self, ScanScope):
+        self._ScanScope = ScanScope
+
+    @property
+    def RegistryType(self):
+        return self._RegistryType
+
+    @RegistryType.setter
+    def RegistryType(self, RegistryType):
+        self._RegistryType = RegistryType
+
+    @property
+    def Namespace(self):
+        return self._Namespace
+
+    @Namespace.setter
+    def Namespace(self, Namespace):
+        self._Namespace = Namespace
+
+    @property
+    def ContainerRunning(self):
+        return self._ContainerRunning
+
+    @ContainerRunning.setter
+    def ContainerRunning(self, ContainerRunning):
+        self._ContainerRunning = ContainerRunning
+
+    @property
+    def Timeout(self):
+        return self._Timeout
+
+    @Timeout.setter
+    def Timeout(self, Timeout):
+        self._Timeout = Timeout
+
 
     def _deserialize(self, params):
         self._All = params.get("All")
@@ -8863,6 +9097,12 @@ class CreateAssetImageRegistryScanTaskOneKeyRequest(AbstractModel):
                 self._Images.append(obj)
         self._ScanType = params.get("ScanType")
         self._Id = params.get("Id")
+        self._IsLatest = params.get("IsLatest")
+        self._ScanScope = params.get("ScanScope")
+        self._RegistryType = params.get("RegistryType")
+        self._Namespace = params.get("Namespace")
+        self._ContainerRunning = params.get("ContainerRunning")
+        self._Timeout = params.get("Timeout")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8880,10 +9120,21 @@ class CreateAssetImageRegistryScanTaskOneKeyResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _TaskID: 扫描任务id
+        :type TaskID: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._TaskID = None
         self._RequestId = None
+
+    @property
+    def TaskID(self):
+        return self._TaskID
+
+    @TaskID.setter
+    def TaskID(self, TaskID):
+        self._TaskID = TaskID
 
     @property
     def RequestId(self):
@@ -8895,6 +9146,7 @@ class CreateAssetImageRegistryScanTaskOneKeyResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._TaskID = params.get("TaskID")
         self._RequestId = params.get("RequestId")
 
 
@@ -9020,10 +9272,21 @@ class CreateAssetImageRegistryScanTaskResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _TaskID: 返回的任务ID
+        :type TaskID: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._TaskID = None
         self._RequestId = None
+
+    @property
+    def TaskID(self):
+        return self._TaskID
+
+    @TaskID.setter
+    def TaskID(self, TaskID):
+        self._TaskID = TaskID
 
     @property
     def RequestId(self):
@@ -9035,6 +9298,7 @@ class CreateAssetImageRegistryScanTaskResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._TaskID = params.get("TaskID")
         self._RequestId = params.get("RequestId")
 
 
@@ -9598,11 +9862,15 @@ class CreateClusterCheckTaskResponse(AbstractModel):
         :type TaskId: int
         :param _CreateResult: 创建检查任务的结果，"Succ"为成功，其他的为失败原因
         :type CreateResult: str
+        :param _NewTaskID: 返回创建的集群新任务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NewTaskID: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._TaskId = None
         self._CreateResult = None
+        self._NewTaskID = None
         self._RequestId = None
 
     @property
@@ -9622,6 +9890,14 @@ class CreateClusterCheckTaskResponse(AbstractModel):
         self._CreateResult = CreateResult
 
     @property
+    def NewTaskID(self):
+        return self._NewTaskID
+
+    @NewTaskID.setter
+    def NewTaskID(self, NewTaskID):
+        self._NewTaskID = NewTaskID
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -9633,6 +9909,7 @@ class CreateClusterCheckTaskResponse(AbstractModel):
     def _deserialize(self, params):
         self._TaskId = params.get("TaskId")
         self._CreateResult = params.get("CreateResult")
+        self._NewTaskID = params.get("NewTaskID")
         self._RequestId = params.get("RequestId")
 
 
@@ -18004,6 +18281,12 @@ class DescribeAssetHostDetailResponse(AbstractModel):
         :type Project: :class:`tencentcloud.tcss.v20201101.models.ProjectInfo`
         :param _Tags: 标签
         :type Tags: list of TagInfo
+        :param _ClusterID: 集群ID
+        :type ClusterID: str
+        :param _ClusterName: 集群名称
+        :type ClusterName: str
+        :param _ClusterAccessedStatus: 集群接入状态
+        :type ClusterAccessedStatus: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -18033,6 +18316,9 @@ class DescribeAssetHostDetailResponse(AbstractModel):
         self._RegionID = None
         self._Project = None
         self._Tags = None
+        self._ClusterID = None
+        self._ClusterName = None
+        self._ClusterAccessedStatus = None
         self._RequestId = None
 
     @property
@@ -18244,6 +18530,30 @@ class DescribeAssetHostDetailResponse(AbstractModel):
         self._Tags = Tags
 
     @property
+    def ClusterID(self):
+        return self._ClusterID
+
+    @ClusterID.setter
+    def ClusterID(self, ClusterID):
+        self._ClusterID = ClusterID
+
+    @property
+    def ClusterName(self):
+        return self._ClusterName
+
+    @ClusterName.setter
+    def ClusterName(self, ClusterName):
+        self._ClusterName = ClusterName
+
+    @property
+    def ClusterAccessedStatus(self):
+        return self._ClusterAccessedStatus
+
+    @ClusterAccessedStatus.setter
+    def ClusterAccessedStatus(self, ClusterAccessedStatus):
+        self._ClusterAccessedStatus = ClusterAccessedStatus
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -18286,6 +18596,9 @@ class DescribeAssetHostDetailResponse(AbstractModel):
                 obj = TagInfo()
                 obj._deserialize(item)
                 self._Tags.append(obj)
+        self._ClusterID = params.get("ClusterID")
+        self._ClusterName = params.get("ClusterName")
+        self._ClusterAccessedStatus = params.get("ClusterAccessedStatus")
         self._RequestId = params.get("RequestId")
 
 
@@ -19576,6 +19889,9 @@ class DescribeAssetImageRegistryDetailResponse(AbstractModel):
         :param _ImageCreateTime: 镜像创建的时间
 注意：此字段可能返回 null，表示取不到有效值。
         :type ImageCreateTime: str
+        :param _SensitiveInfoCnt: 敏感信息数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SensitiveInfoCnt: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -19611,6 +19927,7 @@ class DescribeAssetImageRegistryDetailResponse(AbstractModel):
         self._ImageId = None
         self._RegistryRegion = None
         self._ImageCreateTime = None
+        self._SensitiveInfoCnt = None
         self._RequestId = None
 
     @property
@@ -19695,10 +20012,14 @@ class DescribeAssetImageRegistryDetailResponse(AbstractModel):
 
     @property
     def SentiveInfoCnt(self):
+        warnings.warn("parameter `SentiveInfoCnt` is deprecated", DeprecationWarning) 
+
         return self._SentiveInfoCnt
 
     @SentiveInfoCnt.setter
     def SentiveInfoCnt(self, SentiveInfoCnt):
+        warnings.warn("parameter `SentiveInfoCnt` is deprecated", DeprecationWarning) 
+
         self._SentiveInfoCnt = SentiveInfoCnt
 
     @property
@@ -19870,6 +20191,14 @@ class DescribeAssetImageRegistryDetailResponse(AbstractModel):
         self._ImageCreateTime = ImageCreateTime
 
     @property
+    def SensitiveInfoCnt(self):
+        return self._SensitiveInfoCnt
+
+    @SensitiveInfoCnt.setter
+    def SensitiveInfoCnt(self, SensitiveInfoCnt):
+        self._SensitiveInfoCnt = SensitiveInfoCnt
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -19911,6 +20240,7 @@ class DescribeAssetImageRegistryDetailResponse(AbstractModel):
         self._ImageId = params.get("ImageId")
         self._RegistryRegion = params.get("RegistryRegion")
         self._ImageCreateTime = params.get("ImageCreateTime")
+        self._SensitiveInfoCnt = params.get("SensitiveInfoCnt")
         self._RequestId = params.get("RequestId")
 
 
@@ -20082,6 +20412,8 @@ IsAuthorized是否授权，取值全部all，未授权0，已授权1
         :type Order: str
         :param _OnlyShowLatest: 是否仅展示各repository最新的镜像, 默认为false
         :type OnlyShowLatest: bool
+        :param _IsRunning: 是否仅展示运行中容器镜像
+        :type IsRunning: bool
         """
         self._Limit = None
         self._Offset = None
@@ -20089,6 +20421,7 @@ IsAuthorized是否授权，取值全部all，未授权0，已授权1
         self._By = None
         self._Order = None
         self._OnlyShowLatest = None
+        self._IsRunning = None
 
     @property
     def Limit(self):
@@ -20138,6 +20471,14 @@ IsAuthorized是否授权，取值全部all，未授权0，已授权1
     def OnlyShowLatest(self, OnlyShowLatest):
         self._OnlyShowLatest = OnlyShowLatest
 
+    @property
+    def IsRunning(self):
+        return self._IsRunning
+
+    @IsRunning.setter
+    def IsRunning(self, IsRunning):
+        self._IsRunning = IsRunning
+
 
     def _deserialize(self, params):
         self._Limit = params.get("Limit")
@@ -20151,6 +20492,7 @@ IsAuthorized是否授权，取值全部all，未授权0，已授权1
         self._By = params.get("By")
         self._Order = params.get("Order")
         self._OnlyShowLatest = params.get("OnlyShowLatest")
+        self._IsRunning = params.get("IsRunning")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -20270,7 +20612,7 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         :param _RegistryVersion: 仓库版本
 注意：此字段可能返回 null，表示取不到有效值。
         :type RegistryVersion: str
-        :param _NetType: 网络类型，列表：public（公网）
+        :param _NetType: 网络类型，列表：public（公网）,private（私网）
         :type NetType: str
         :param _RegistryRegion: 区域，列表:default（默认）
 注意：此字段可能返回 null，表示取不到有效值。
@@ -20281,6 +20623,10 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         :param _Insecure: 安全模式（证书校验）：0（默认） 非安全模式（跳过证书校验）：1
 注意：此字段可能返回 null，表示取不到有效值。
         :type Insecure: int
+        :param _ConnDetectDetail: 联通性检测结果详情
+        :type ConnDetectDetail: list of RegistryConnDetectResult
+        :param _InstanceID: tcr情况下instance_id
+        :type InstanceID: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -20294,6 +20640,8 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         self._RegistryRegion = None
         self._SpeedLimit = None
         self._Insecure = None
+        self._ConnDetectDetail = None
+        self._InstanceID = None
         self._RequestId = None
 
     @property
@@ -20377,6 +20725,22 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         self._Insecure = Insecure
 
     @property
+    def ConnDetectDetail(self):
+        return self._ConnDetectDetail
+
+    @ConnDetectDetail.setter
+    def ConnDetectDetail(self, ConnDetectDetail):
+        self._ConnDetectDetail = ConnDetectDetail
+
+    @property
+    def InstanceID(self):
+        return self._InstanceID
+
+    @InstanceID.setter
+    def InstanceID(self, InstanceID):
+        self._InstanceID = InstanceID
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -20396,6 +20760,13 @@ class DescribeAssetImageRegistryRegistryDetailResponse(AbstractModel):
         self._RegistryRegion = params.get("RegistryRegion")
         self._SpeedLimit = params.get("SpeedLimit")
         self._Insecure = params.get("Insecure")
+        if params.get("ConnDetectDetail") is not None:
+            self._ConnDetectDetail = []
+            for item in params.get("ConnDetectDetail"):
+                obj = RegistryConnDetectResult()
+                obj._deserialize(item)
+                self._ConnDetectDetail.append(obj)
+        self._InstanceID = params.get("InstanceID")
         self._RequestId = params.get("RequestId")
 
 
@@ -20753,10 +21124,13 @@ class DescribeAssetImageRegistryScanStatusOneKeyRequest(AbstractModel):
         :type All: bool
         :param _Id: 需要获取进度的镜像列表Id
         :type Id: list of int non-negative
+        :param _TaskID: 获取进度的任务ID
+        :type TaskID: int
         """
         self._Images = None
         self._All = None
         self._Id = None
+        self._TaskID = None
 
     @property
     def Images(self):
@@ -20782,6 +21156,14 @@ class DescribeAssetImageRegistryScanStatusOneKeyRequest(AbstractModel):
     def Id(self, Id):
         self._Id = Id
 
+    @property
+    def TaskID(self):
+        return self._TaskID
+
+    @TaskID.setter
+    def TaskID(self, TaskID):
+        self._TaskID = TaskID
+
 
     def _deserialize(self, params):
         if params.get("Images") is not None:
@@ -20792,6 +21174,7 @@ class DescribeAssetImageRegistryScanStatusOneKeyRequest(AbstractModel):
                 self._Images.append(obj)
         self._All = params.get("All")
         self._Id = params.get("Id")
+        self._TaskID = params.get("TaskID")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -20934,6 +21317,38 @@ class DescribeAssetImageRegistrySummaryRequest(AbstractModel):
     """DescribeAssetImageRegistrySummary请求参数结构体
 
     """
+
+    def __init__(self):
+        r"""
+        :param _Filters: 过滤字段
+        :type Filters: list of AssetFilters
+        """
+        self._Filters = None
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = AssetFilters()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DescribeAssetImageRegistrySummaryResponse(AbstractModel):
@@ -24156,6 +24571,15 @@ class DescribeClusterSummaryResponse(AbstractModel):
         :type NotImportedClusterCount: int
         :param _ServerlessClusterCount: eks集群数量
         :type ServerlessClusterCount: int
+        :param _TkeClusterCount: TKE集群数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TkeClusterCount: int
+        :param _UserCreateTencentClusterCount: 用户自建腾讯云集群数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserCreateTencentClusterCount: int
+        :param _UserCreateHybridClusterCount: 用户自建集群混合云数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UserCreateHybridClusterCount: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -24171,6 +24595,9 @@ class DescribeClusterSummaryResponse(AbstractModel):
         self._FailedClusterCount = None
         self._NotImportedClusterCount = None
         self._ServerlessClusterCount = None
+        self._TkeClusterCount = None
+        self._UserCreateTencentClusterCount = None
+        self._UserCreateHybridClusterCount = None
         self._RequestId = None
 
     @property
@@ -24270,6 +24697,30 @@ class DescribeClusterSummaryResponse(AbstractModel):
         self._ServerlessClusterCount = ServerlessClusterCount
 
     @property
+    def TkeClusterCount(self):
+        return self._TkeClusterCount
+
+    @TkeClusterCount.setter
+    def TkeClusterCount(self, TkeClusterCount):
+        self._TkeClusterCount = TkeClusterCount
+
+    @property
+    def UserCreateTencentClusterCount(self):
+        return self._UserCreateTencentClusterCount
+
+    @UserCreateTencentClusterCount.setter
+    def UserCreateTencentClusterCount(self, UserCreateTencentClusterCount):
+        self._UserCreateTencentClusterCount = UserCreateTencentClusterCount
+
+    @property
+    def UserCreateHybridClusterCount(self):
+        return self._UserCreateHybridClusterCount
+
+    @UserCreateHybridClusterCount.setter
+    def UserCreateHybridClusterCount(self, UserCreateHybridClusterCount):
+        self._UserCreateHybridClusterCount = UserCreateHybridClusterCount
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -24291,6 +24742,9 @@ class DescribeClusterSummaryResponse(AbstractModel):
         self._FailedClusterCount = params.get("FailedClusterCount")
         self._NotImportedClusterCount = params.get("NotImportedClusterCount")
         self._ServerlessClusterCount = params.get("ServerlessClusterCount")
+        self._TkeClusterCount = params.get("TkeClusterCount")
+        self._UserCreateTencentClusterCount = params.get("UserCreateTencentClusterCount")
+        self._UserCreateHybridClusterCount = params.get("UserCreateHybridClusterCount")
         self._RequestId = params.get("RequestId")
 
 
@@ -27982,15 +28436,18 @@ class DescribeImageRegistryNamespaceListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _TotalCount: 可返回的项目空间的总量。
+        :param _TotalCount: 可返回的命令空间的总量。
         :type TotalCount: int
-        :param _NamespaceList: 返回的项目空间列表
+        :param _NamespaceList: 返回的命令空间列表
         :type NamespaceList: list of str
+        :param _NamespaceDetail: 返回的命令空间详细信息列表
+        :type NamespaceDetail: list of NamespaceInfo
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._TotalCount = None
         self._NamespaceList = None
+        self._NamespaceDetail = None
         self._RequestId = None
 
     @property
@@ -28010,6 +28467,14 @@ class DescribeImageRegistryNamespaceListResponse(AbstractModel):
         self._NamespaceList = NamespaceList
 
     @property
+    def NamespaceDetail(self):
+        return self._NamespaceDetail
+
+    @NamespaceDetail.setter
+    def NamespaceDetail(self, NamespaceDetail):
+        self._NamespaceDetail = NamespaceDetail
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -28021,6 +28486,12 @@ class DescribeImageRegistryNamespaceListResponse(AbstractModel):
     def _deserialize(self, params):
         self._TotalCount = params.get("TotalCount")
         self._NamespaceList = params.get("NamespaceList")
+        if params.get("NamespaceDetail") is not None:
+            self._NamespaceDetail = []
+            for item in params.get("NamespaceDetail"):
+                obj = NamespaceInfo()
+                obj._deserialize(item)
+                self._NamespaceDetail.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -28058,6 +28529,17 @@ class DescribeImageRegistryTimingScanTaskResponse(AbstractModel):
         :param _Latest: 是否扫描最新版本镜像
 注意：此字段可能返回 null，表示取不到有效值。
         :type Latest: bool
+        :param _ScanEndTime: 扫描结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ScanEndTime: str
+        :param _RegistryType: 仓库类型 tcr,ccr,harbor	
+        :type RegistryType: list of str
+        :param _ContainerRunning: 是否存在运行中的容器	
+        :type ContainerRunning: bool
+        :param _ScanScope: 扫描范围 0全部镜像，1自选镜像，2推荐扫描镜像
+        :type ScanScope: int
+        :param _Namespace: 命名空间
+        :type Namespace: list of str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -28069,6 +28551,11 @@ class DescribeImageRegistryTimingScanTaskResponse(AbstractModel):
         self._Images = None
         self._Id = None
         self._Latest = None
+        self._ScanEndTime = None
+        self._RegistryType = None
+        self._ContainerRunning = None
+        self._ScanScope = None
+        self._Namespace = None
         self._RequestId = None
 
     @property
@@ -28105,10 +28592,14 @@ class DescribeImageRegistryTimingScanTaskResponse(AbstractModel):
 
     @property
     def All(self):
+        warnings.warn("parameter `All` is deprecated", DeprecationWarning) 
+
         return self._All
 
     @All.setter
     def All(self, All):
+        warnings.warn("parameter `All` is deprecated", DeprecationWarning) 
+
         self._All = All
 
     @property
@@ -28136,6 +28627,46 @@ class DescribeImageRegistryTimingScanTaskResponse(AbstractModel):
         self._Latest = Latest
 
     @property
+    def ScanEndTime(self):
+        return self._ScanEndTime
+
+    @ScanEndTime.setter
+    def ScanEndTime(self, ScanEndTime):
+        self._ScanEndTime = ScanEndTime
+
+    @property
+    def RegistryType(self):
+        return self._RegistryType
+
+    @RegistryType.setter
+    def RegistryType(self, RegistryType):
+        self._RegistryType = RegistryType
+
+    @property
+    def ContainerRunning(self):
+        return self._ContainerRunning
+
+    @ContainerRunning.setter
+    def ContainerRunning(self, ContainerRunning):
+        self._ContainerRunning = ContainerRunning
+
+    @property
+    def ScanScope(self):
+        return self._ScanScope
+
+    @ScanScope.setter
+    def ScanScope(self, ScanScope):
+        self._ScanScope = ScanScope
+
+    @property
+    def Namespace(self):
+        return self._Namespace
+
+    @Namespace.setter
+    def Namespace(self, Namespace):
+        self._Namespace = Namespace
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -28158,6 +28689,11 @@ class DescribeImageRegistryTimingScanTaskResponse(AbstractModel):
                 self._Images.append(obj)
         self._Id = params.get("Id")
         self._Latest = params.get("Latest")
+        self._ScanEndTime = params.get("ScanEndTime")
+        self._RegistryType = params.get("RegistryType")
+        self._ContainerRunning = params.get("ContainerRunning")
+        self._ScanScope = params.get("ScanScope")
+        self._Namespace = params.get("Namespace")
         self._RequestId = params.get("RequestId")
 
 
@@ -31470,8 +32006,11 @@ class DescribeRefreshTaskRequest(AbstractModel):
         r"""
         :param _TaskId: 任务ID
         :type TaskId: int
+        :param _NewTaskID: 新任务ID
+        :type NewTaskID: str
         """
         self._TaskId = None
+        self._NewTaskID = None
 
     @property
     def TaskId(self):
@@ -31481,9 +32020,18 @@ class DescribeRefreshTaskRequest(AbstractModel):
     def TaskId(self, TaskId):
         self._TaskId = TaskId
 
+    @property
+    def NewTaskID(self):
+        return self._NewTaskID
+
+    @NewTaskID.setter
+    def NewTaskID(self, NewTaskID):
+        self._NewTaskID = NewTaskID
+
 
     def _deserialize(self, params):
         self._TaskId = params.get("TaskId")
+        self._NewTaskID = params.get("NewTaskID")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -32159,6 +32707,895 @@ class DescribeReverseShellWhiteListsResponse(AbstractModel):
                 obj = ReverseShellWhiteListBaseInfo()
                 obj._deserialize(item)
                 self._WhiteListSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeRiskDnsEventDetailRequest(AbstractModel):
+    """DescribeRiskDnsEventDetail请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _EventID: 事件ID
+        :type EventID: int
+        """
+        self._EventID = None
+
+    @property
+    def EventID(self):
+        return self._EventID
+
+    @EventID.setter
+    def EventID(self, EventID):
+        self._EventID = EventID
+
+
+    def _deserialize(self, params):
+        self._EventID = params.get("EventID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRiskDnsEventDetailResponse(AbstractModel):
+    """DescribeRiskDnsEventDetail返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _EventID: 事件ID
+        :type EventID: int
+        :param _EventType: 事件类型，恶意域名请求：DOMAIN，恶意IP请求：IP
+        :type EventType: str
+        :param _EventCount: 恶意请求次数
+        :type EventCount: int
+        :param _FoundTime: 首次发现时间
+        :type FoundTime: str
+        :param _LatestFoundTime: 最近生成时间
+        :type LatestFoundTime: str
+        :param _ContainerID: 容器ID
+        :type ContainerID: str
+        :param _ContainerName: 容器名称
+        :type ContainerName: str
+        :param _ContainerNetStatus: 隔离状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type ContainerNetStatus: str
+        :param _ContainerStatus: 容器状态
+正在运行: RUNNING
+暂停: PAUSED
+停止: STOPPED
+已经创建: CREATED
+已经销毁: DESTROYED
+正在重启中: RESTARTING
+迁移中: REMOVING
+        :type ContainerStatus: str
+        :param _ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+"NODE_DESTROYED"      //节点已销毁
+"CONTAINER_EXITED"    //容器已退出
+"CONTAINER_DESTROYED" //容器已销毁
+"SHARED_HOST"         // 容器与主机共享网络
+"RESOURCE_LIMIT"      //隔离操作资源超限
+"UNKNOW"              // 原因未知
+        :type ContainerNetSubStatus: str
+        :param _ContainerIsolateOperationSrc: 容器隔离操作来源
+        :type ContainerIsolateOperationSrc: str
+        :param _ImageID: 镜像ID
+        :type ImageID: str
+        :param _ImageName: 镜像名称
+        :type ImageName: str
+        :param _HostName: 主机名称
+        :type HostName: str
+        :param _HostIP: 内网IP
+        :type HostIP: str
+        :param _PublicIP: 外网IP
+        :type PublicIP: str
+        :param _PodName: 节点名称
+        :type PodName: str
+        :param _Description: 事件描述
+        :type Description: str
+        :param _Solution: 解决方案
+        :type Solution: str
+        :param _Reference: 参考链接
+        :type Reference: list of str
+        :param _Address: 恶意域名或IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Address: str
+        :param _City: 恶意IP所属城市
+注意：此字段可能返回 null，表示取不到有效值。
+        :type City: str
+        :param _MatchRuleType: 命中规则类型
+SYSTEM：系统规则
+ USER：用户自定义
+        :type MatchRuleType: str
+        :param _FeatureLabel: 标签特征
+        :type FeatureLabel: str
+        :param _ProcessAuthority: 进程权限
+        :type ProcessAuthority: str
+        :param _ProcessMd5: 进程md5
+        :type ProcessMd5: str
+        :param _ProcessStartUser: 进程启动用户
+        :type ProcessStartUser: str
+        :param _ProcessUserGroup: 进程用户组
+        :type ProcessUserGroup: str
+        :param _ProcessPath: 进程路径
+        :type ProcessPath: str
+        :param _ProcessTree: 进程树
+        :type ProcessTree: str
+        :param _ProcessParam: 进程命令行参数
+        :type ProcessParam: str
+        :param _ParentProcessStartUser: 父进程启动用户
+        :type ParentProcessStartUser: str
+        :param _ParentProcessUserGroup: 父进程用户组
+        :type ParentProcessUserGroup: str
+        :param _ParentProcessPath: 父进程路径
+        :type ParentProcessPath: str
+        :param _ParentProcessParam: 父进程命令行参数
+        :type ParentProcessParam: str
+        :param _AncestorProcessStartUser: 祖先进程启动用户
+        :type AncestorProcessStartUser: str
+        :param _AncestorProcessUserGroup: 祖先进程用户组
+        :type AncestorProcessUserGroup: str
+        :param _AncestorProcessPath: 祖先进程路径
+        :type AncestorProcessPath: str
+        :param _AncestorProcessParam: 祖先进程命令行参数
+        :type AncestorProcessParam: str
+        :param _HostID: 主机ID
+        :type HostID: str
+        :param _EventStatus: 事件状态
+EVENT_UNDEAL： 待处理
+EVENT_DEALED：已处理
+EVENT_IGNORE： 已忽略
+EVENT_ADD_WHITE：已加白
+        :type EventStatus: str
+        :param _OperationTime: 操作时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OperationTime: str
+        :param _Remark: 备注
+        :type Remark: str
+        :param _NodeType: 节点类型
+        :type NodeType: str
+        :param _NodeName: 节点名称
+        :type NodeName: str
+        :param _NodeSubNetID: 节点子网ID
+        :type NodeSubNetID: str
+        :param _NodeSubNetName: 节点子网名称
+        :type NodeSubNetName: str
+        :param _NodeSubNetCIDR: 节点子网网段
+        :type NodeSubNetCIDR: str
+        :param _ClusterID: 集群ID
+        :type ClusterID: str
+        :param _PodIP: podip
+        :type PodIP: str
+        :param _PodStatus: pod状态
+        :type PodStatus: str
+        :param _NodeUniqueID: 节点唯一id
+        :type NodeUniqueID: str
+        :param _NodeID: 节点ID名称
+        :type NodeID: str
+        :param _ClusterName: 集群名称
+        :type ClusterName: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._EventID = None
+        self._EventType = None
+        self._EventCount = None
+        self._FoundTime = None
+        self._LatestFoundTime = None
+        self._ContainerID = None
+        self._ContainerName = None
+        self._ContainerNetStatus = None
+        self._ContainerStatus = None
+        self._ContainerNetSubStatus = None
+        self._ContainerIsolateOperationSrc = None
+        self._ImageID = None
+        self._ImageName = None
+        self._HostName = None
+        self._HostIP = None
+        self._PublicIP = None
+        self._PodName = None
+        self._Description = None
+        self._Solution = None
+        self._Reference = None
+        self._Address = None
+        self._City = None
+        self._MatchRuleType = None
+        self._FeatureLabel = None
+        self._ProcessAuthority = None
+        self._ProcessMd5 = None
+        self._ProcessStartUser = None
+        self._ProcessUserGroup = None
+        self._ProcessPath = None
+        self._ProcessTree = None
+        self._ProcessParam = None
+        self._ParentProcessStartUser = None
+        self._ParentProcessUserGroup = None
+        self._ParentProcessPath = None
+        self._ParentProcessParam = None
+        self._AncestorProcessStartUser = None
+        self._AncestorProcessUserGroup = None
+        self._AncestorProcessPath = None
+        self._AncestorProcessParam = None
+        self._HostID = None
+        self._EventStatus = None
+        self._OperationTime = None
+        self._Remark = None
+        self._NodeType = None
+        self._NodeName = None
+        self._NodeSubNetID = None
+        self._NodeSubNetName = None
+        self._NodeSubNetCIDR = None
+        self._ClusterID = None
+        self._PodIP = None
+        self._PodStatus = None
+        self._NodeUniqueID = None
+        self._NodeID = None
+        self._ClusterName = None
+        self._RequestId = None
+
+    @property
+    def EventID(self):
+        return self._EventID
+
+    @EventID.setter
+    def EventID(self, EventID):
+        self._EventID = EventID
+
+    @property
+    def EventType(self):
+        return self._EventType
+
+    @EventType.setter
+    def EventType(self, EventType):
+        self._EventType = EventType
+
+    @property
+    def EventCount(self):
+        return self._EventCount
+
+    @EventCount.setter
+    def EventCount(self, EventCount):
+        self._EventCount = EventCount
+
+    @property
+    def FoundTime(self):
+        return self._FoundTime
+
+    @FoundTime.setter
+    def FoundTime(self, FoundTime):
+        self._FoundTime = FoundTime
+
+    @property
+    def LatestFoundTime(self):
+        return self._LatestFoundTime
+
+    @LatestFoundTime.setter
+    def LatestFoundTime(self, LatestFoundTime):
+        self._LatestFoundTime = LatestFoundTime
+
+    @property
+    def ContainerID(self):
+        return self._ContainerID
+
+    @ContainerID.setter
+    def ContainerID(self, ContainerID):
+        self._ContainerID = ContainerID
+
+    @property
+    def ContainerName(self):
+        return self._ContainerName
+
+    @ContainerName.setter
+    def ContainerName(self, ContainerName):
+        self._ContainerName = ContainerName
+
+    @property
+    def ContainerNetStatus(self):
+        return self._ContainerNetStatus
+
+    @ContainerNetStatus.setter
+    def ContainerNetStatus(self, ContainerNetStatus):
+        self._ContainerNetStatus = ContainerNetStatus
+
+    @property
+    def ContainerStatus(self):
+        return self._ContainerStatus
+
+    @ContainerStatus.setter
+    def ContainerStatus(self, ContainerStatus):
+        self._ContainerStatus = ContainerStatus
+
+    @property
+    def ContainerNetSubStatus(self):
+        return self._ContainerNetSubStatus
+
+    @ContainerNetSubStatus.setter
+    def ContainerNetSubStatus(self, ContainerNetSubStatus):
+        self._ContainerNetSubStatus = ContainerNetSubStatus
+
+    @property
+    def ContainerIsolateOperationSrc(self):
+        return self._ContainerIsolateOperationSrc
+
+    @ContainerIsolateOperationSrc.setter
+    def ContainerIsolateOperationSrc(self, ContainerIsolateOperationSrc):
+        self._ContainerIsolateOperationSrc = ContainerIsolateOperationSrc
+
+    @property
+    def ImageID(self):
+        return self._ImageID
+
+    @ImageID.setter
+    def ImageID(self, ImageID):
+        self._ImageID = ImageID
+
+    @property
+    def ImageName(self):
+        return self._ImageName
+
+    @ImageName.setter
+    def ImageName(self, ImageName):
+        self._ImageName = ImageName
+
+    @property
+    def HostName(self):
+        return self._HostName
+
+    @HostName.setter
+    def HostName(self, HostName):
+        self._HostName = HostName
+
+    @property
+    def HostIP(self):
+        return self._HostIP
+
+    @HostIP.setter
+    def HostIP(self, HostIP):
+        self._HostIP = HostIP
+
+    @property
+    def PublicIP(self):
+        return self._PublicIP
+
+    @PublicIP.setter
+    def PublicIP(self, PublicIP):
+        self._PublicIP = PublicIP
+
+    @property
+    def PodName(self):
+        return self._PodName
+
+    @PodName.setter
+    def PodName(self, PodName):
+        self._PodName = PodName
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def Solution(self):
+        return self._Solution
+
+    @Solution.setter
+    def Solution(self, Solution):
+        self._Solution = Solution
+
+    @property
+    def Reference(self):
+        return self._Reference
+
+    @Reference.setter
+    def Reference(self, Reference):
+        self._Reference = Reference
+
+    @property
+    def Address(self):
+        return self._Address
+
+    @Address.setter
+    def Address(self, Address):
+        self._Address = Address
+
+    @property
+    def City(self):
+        return self._City
+
+    @City.setter
+    def City(self, City):
+        self._City = City
+
+    @property
+    def MatchRuleType(self):
+        return self._MatchRuleType
+
+    @MatchRuleType.setter
+    def MatchRuleType(self, MatchRuleType):
+        self._MatchRuleType = MatchRuleType
+
+    @property
+    def FeatureLabel(self):
+        return self._FeatureLabel
+
+    @FeatureLabel.setter
+    def FeatureLabel(self, FeatureLabel):
+        self._FeatureLabel = FeatureLabel
+
+    @property
+    def ProcessAuthority(self):
+        return self._ProcessAuthority
+
+    @ProcessAuthority.setter
+    def ProcessAuthority(self, ProcessAuthority):
+        self._ProcessAuthority = ProcessAuthority
+
+    @property
+    def ProcessMd5(self):
+        return self._ProcessMd5
+
+    @ProcessMd5.setter
+    def ProcessMd5(self, ProcessMd5):
+        self._ProcessMd5 = ProcessMd5
+
+    @property
+    def ProcessStartUser(self):
+        return self._ProcessStartUser
+
+    @ProcessStartUser.setter
+    def ProcessStartUser(self, ProcessStartUser):
+        self._ProcessStartUser = ProcessStartUser
+
+    @property
+    def ProcessUserGroup(self):
+        return self._ProcessUserGroup
+
+    @ProcessUserGroup.setter
+    def ProcessUserGroup(self, ProcessUserGroup):
+        self._ProcessUserGroup = ProcessUserGroup
+
+    @property
+    def ProcessPath(self):
+        return self._ProcessPath
+
+    @ProcessPath.setter
+    def ProcessPath(self, ProcessPath):
+        self._ProcessPath = ProcessPath
+
+    @property
+    def ProcessTree(self):
+        return self._ProcessTree
+
+    @ProcessTree.setter
+    def ProcessTree(self, ProcessTree):
+        self._ProcessTree = ProcessTree
+
+    @property
+    def ProcessParam(self):
+        return self._ProcessParam
+
+    @ProcessParam.setter
+    def ProcessParam(self, ProcessParam):
+        self._ProcessParam = ProcessParam
+
+    @property
+    def ParentProcessStartUser(self):
+        return self._ParentProcessStartUser
+
+    @ParentProcessStartUser.setter
+    def ParentProcessStartUser(self, ParentProcessStartUser):
+        self._ParentProcessStartUser = ParentProcessStartUser
+
+    @property
+    def ParentProcessUserGroup(self):
+        return self._ParentProcessUserGroup
+
+    @ParentProcessUserGroup.setter
+    def ParentProcessUserGroup(self, ParentProcessUserGroup):
+        self._ParentProcessUserGroup = ParentProcessUserGroup
+
+    @property
+    def ParentProcessPath(self):
+        return self._ParentProcessPath
+
+    @ParentProcessPath.setter
+    def ParentProcessPath(self, ParentProcessPath):
+        self._ParentProcessPath = ParentProcessPath
+
+    @property
+    def ParentProcessParam(self):
+        return self._ParentProcessParam
+
+    @ParentProcessParam.setter
+    def ParentProcessParam(self, ParentProcessParam):
+        self._ParentProcessParam = ParentProcessParam
+
+    @property
+    def AncestorProcessStartUser(self):
+        return self._AncestorProcessStartUser
+
+    @AncestorProcessStartUser.setter
+    def AncestorProcessStartUser(self, AncestorProcessStartUser):
+        self._AncestorProcessStartUser = AncestorProcessStartUser
+
+    @property
+    def AncestorProcessUserGroup(self):
+        return self._AncestorProcessUserGroup
+
+    @AncestorProcessUserGroup.setter
+    def AncestorProcessUserGroup(self, AncestorProcessUserGroup):
+        self._AncestorProcessUserGroup = AncestorProcessUserGroup
+
+    @property
+    def AncestorProcessPath(self):
+        return self._AncestorProcessPath
+
+    @AncestorProcessPath.setter
+    def AncestorProcessPath(self, AncestorProcessPath):
+        self._AncestorProcessPath = AncestorProcessPath
+
+    @property
+    def AncestorProcessParam(self):
+        return self._AncestorProcessParam
+
+    @AncestorProcessParam.setter
+    def AncestorProcessParam(self, AncestorProcessParam):
+        self._AncestorProcessParam = AncestorProcessParam
+
+    @property
+    def HostID(self):
+        return self._HostID
+
+    @HostID.setter
+    def HostID(self, HostID):
+        self._HostID = HostID
+
+    @property
+    def EventStatus(self):
+        return self._EventStatus
+
+    @EventStatus.setter
+    def EventStatus(self, EventStatus):
+        self._EventStatus = EventStatus
+
+    @property
+    def OperationTime(self):
+        return self._OperationTime
+
+    @OperationTime.setter
+    def OperationTime(self, OperationTime):
+        self._OperationTime = OperationTime
+
+    @property
+    def Remark(self):
+        return self._Remark
+
+    @Remark.setter
+    def Remark(self, Remark):
+        self._Remark = Remark
+
+    @property
+    def NodeType(self):
+        return self._NodeType
+
+    @NodeType.setter
+    def NodeType(self, NodeType):
+        self._NodeType = NodeType
+
+    @property
+    def NodeName(self):
+        return self._NodeName
+
+    @NodeName.setter
+    def NodeName(self, NodeName):
+        self._NodeName = NodeName
+
+    @property
+    def NodeSubNetID(self):
+        return self._NodeSubNetID
+
+    @NodeSubNetID.setter
+    def NodeSubNetID(self, NodeSubNetID):
+        self._NodeSubNetID = NodeSubNetID
+
+    @property
+    def NodeSubNetName(self):
+        return self._NodeSubNetName
+
+    @NodeSubNetName.setter
+    def NodeSubNetName(self, NodeSubNetName):
+        self._NodeSubNetName = NodeSubNetName
+
+    @property
+    def NodeSubNetCIDR(self):
+        return self._NodeSubNetCIDR
+
+    @NodeSubNetCIDR.setter
+    def NodeSubNetCIDR(self, NodeSubNetCIDR):
+        self._NodeSubNetCIDR = NodeSubNetCIDR
+
+    @property
+    def ClusterID(self):
+        return self._ClusterID
+
+    @ClusterID.setter
+    def ClusterID(self, ClusterID):
+        self._ClusterID = ClusterID
+
+    @property
+    def PodIP(self):
+        return self._PodIP
+
+    @PodIP.setter
+    def PodIP(self, PodIP):
+        self._PodIP = PodIP
+
+    @property
+    def PodStatus(self):
+        return self._PodStatus
+
+    @PodStatus.setter
+    def PodStatus(self, PodStatus):
+        self._PodStatus = PodStatus
+
+    @property
+    def NodeUniqueID(self):
+        return self._NodeUniqueID
+
+    @NodeUniqueID.setter
+    def NodeUniqueID(self, NodeUniqueID):
+        self._NodeUniqueID = NodeUniqueID
+
+    @property
+    def NodeID(self):
+        return self._NodeID
+
+    @NodeID.setter
+    def NodeID(self, NodeID):
+        self._NodeID = NodeID
+
+    @property
+    def ClusterName(self):
+        return self._ClusterName
+
+    @ClusterName.setter
+    def ClusterName(self, ClusterName):
+        self._ClusterName = ClusterName
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._EventID = params.get("EventID")
+        self._EventType = params.get("EventType")
+        self._EventCount = params.get("EventCount")
+        self._FoundTime = params.get("FoundTime")
+        self._LatestFoundTime = params.get("LatestFoundTime")
+        self._ContainerID = params.get("ContainerID")
+        self._ContainerName = params.get("ContainerName")
+        self._ContainerNetStatus = params.get("ContainerNetStatus")
+        self._ContainerStatus = params.get("ContainerStatus")
+        self._ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self._ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
+        self._ImageID = params.get("ImageID")
+        self._ImageName = params.get("ImageName")
+        self._HostName = params.get("HostName")
+        self._HostIP = params.get("HostIP")
+        self._PublicIP = params.get("PublicIP")
+        self._PodName = params.get("PodName")
+        self._Description = params.get("Description")
+        self._Solution = params.get("Solution")
+        self._Reference = params.get("Reference")
+        self._Address = params.get("Address")
+        self._City = params.get("City")
+        self._MatchRuleType = params.get("MatchRuleType")
+        self._FeatureLabel = params.get("FeatureLabel")
+        self._ProcessAuthority = params.get("ProcessAuthority")
+        self._ProcessMd5 = params.get("ProcessMd5")
+        self._ProcessStartUser = params.get("ProcessStartUser")
+        self._ProcessUserGroup = params.get("ProcessUserGroup")
+        self._ProcessPath = params.get("ProcessPath")
+        self._ProcessTree = params.get("ProcessTree")
+        self._ProcessParam = params.get("ProcessParam")
+        self._ParentProcessStartUser = params.get("ParentProcessStartUser")
+        self._ParentProcessUserGroup = params.get("ParentProcessUserGroup")
+        self._ParentProcessPath = params.get("ParentProcessPath")
+        self._ParentProcessParam = params.get("ParentProcessParam")
+        self._AncestorProcessStartUser = params.get("AncestorProcessStartUser")
+        self._AncestorProcessUserGroup = params.get("AncestorProcessUserGroup")
+        self._AncestorProcessPath = params.get("AncestorProcessPath")
+        self._AncestorProcessParam = params.get("AncestorProcessParam")
+        self._HostID = params.get("HostID")
+        self._EventStatus = params.get("EventStatus")
+        self._OperationTime = params.get("OperationTime")
+        self._Remark = params.get("Remark")
+        self._NodeType = params.get("NodeType")
+        self._NodeName = params.get("NodeName")
+        self._NodeSubNetID = params.get("NodeSubNetID")
+        self._NodeSubNetName = params.get("NodeSubNetName")
+        self._NodeSubNetCIDR = params.get("NodeSubNetCIDR")
+        self._ClusterID = params.get("ClusterID")
+        self._PodIP = params.get("PodIP")
+        self._PodStatus = params.get("PodStatus")
+        self._NodeUniqueID = params.get("NodeUniqueID")
+        self._NodeID = params.get("NodeID")
+        self._ClusterName = params.get("ClusterName")
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeRiskDnsListRequest(AbstractModel):
+    """DescribeRiskDnsList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Limit: 需要返回的数量，默认为10，最大值为100
+        :type Limit: int
+        :param _Offset: 偏移量，默认为0。
+        :type Offset: int
+        :param _Filters: 过滤条件。
+<li>EventStatus- String - 是否必填：否 - 事件状态，待处理：EVENT_UNDEAL，EVENT_DEALED：已处理，已忽略：EVENT_IGNORE， EVENT_ADD_WHITE：已加白</li>
+<li>ContainerStatus- String - 是否必填：否 - 容器运行状态筛选，已创建：CREATED,正常运行：RUNNING, 暂定运行：PAUSED, 停止运行：	STOPPED，重启中：RESTARTING, 迁移中：REMOVING, 销毁：DESTROYED </li>
+<li>ContainerNetStatus- String -是否必填: 否 -  容器网络状态筛选 未隔离：NORMAL，已隔离：ISOLATED，隔离失败：ISOLATE_FAILED，解除隔离失败：RESTORE_FAILED，解除隔离中：RESTORING，隔离中：ISOLATING</li>
+<li>EventType - String -是否必填: 否 -  事件类型，恶意域名请求：DOMAIN，恶意IP请求：IP</li>
+<li>TimeRange- String -是否必填: 否 -  时间范围，第一个值表示开始时间，第二个值表示结束时间 </li>
+<li>RiskDns- string - 是否必填：否 - 恶意域名。</li>
+<li>RiskIP- string - 是否必填：否 - 恶意IP。</li>
+<li>ContainerName- string - 是否必填：否 - 容器名称。</li>
+<li>ContainerID- string - 是否必填：否 - 容器ID。</li>
+<li>ImageName- string - 是否必填：否 - 镜像名称。</li>
+<li>ImageID- string - 是否必填：否 - 镜像ID。</li>
+<li>HostName- string - 是否必填：否 - 主机名称。</li>
+<li>HostIP- string - 是否必填：否 - 内网IP。</li>
+<li>PublicIP- string - 是否必填：否 - 外网IP。</li>
+        :type Filters: list of RunTimeFilters
+        :param _Order: 排序方式：asc/desc
+        :type Order: str
+        :param _By: 排序字段：告警数量：EventCount，最近生成时间：LatestFoundTime
+        :type By: str
+        """
+        self._Limit = None
+        self._Offset = None
+        self._Filters = None
+        self._Order = None
+        self._By = None
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def Order(self):
+        return self._Order
+
+    @Order.setter
+    def Order(self, Order):
+        self._Order = Order
+
+    @property
+    def By(self):
+        return self._By
+
+    @By.setter
+    def By(self, By):
+        self._By = By
+
+
+    def _deserialize(self, params):
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = RunTimeFilters()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        self._Order = params.get("Order")
+        self._By = params.get("By")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeRiskDnsListResponse(AbstractModel):
+    """DescribeRiskDnsList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _List: 恶意请求事件列表
+        :type List: list of RiskDnsEventInfo
+        :param _TotalCount: 总数量
+        :type TotalCount: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._List = None
+        self._TotalCount = None
+        self._RequestId = None
+
+    @property
+    def List(self):
+        return self._List
+
+    @List.setter
+    def List(self, List):
+        self._List = List
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("List") is not None:
+            self._List = []
+            for item in params.get("List"):
+                obj = RiskDnsEventInfo()
+                obj._deserialize(item)
+                self._List.append(obj)
+        self._TotalCount = params.get("TotalCount")
         self._RequestId = params.get("RequestId")
 
 
@@ -35064,11 +36501,15 @@ class DescribeUnfinishRefreshTaskResponse(AbstractModel):
         :type TaskId: int
         :param _TaskStatus: 任务状态，为Task_New,Task_Running,Task_Finish,Task_Error,Task_NoExist.Task_New,Task_Running表示有任务存在，不允许新下发
         :type TaskStatus: str
+        :param _NewTaskID: 新任务ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NewTaskID: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._TaskId = None
         self._TaskStatus = None
+        self._NewTaskID = None
         self._RequestId = None
 
     @property
@@ -35088,6 +36529,14 @@ class DescribeUnfinishRefreshTaskResponse(AbstractModel):
         self._TaskStatus = TaskStatus
 
     @property
+    def NewTaskID(self):
+        return self._NewTaskID
+
+    @NewTaskID.setter
+    def NewTaskID(self, NewTaskID):
+        self._NewTaskID = NewTaskID
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -35099,6 +36548,7 @@ class DescribeUnfinishRefreshTaskResponse(AbstractModel):
     def _deserialize(self, params):
         self._TaskId = params.get("TaskId")
         self._TaskStatus = params.get("TaskStatus")
+        self._NewTaskID = params.get("NewTaskID")
         self._RequestId = params.get("RequestId")
 
 
@@ -42203,6 +43653,10 @@ class HostInfo(AbstractModel):
         :type Tags: list of TagInfo
         :param _ClusterID: 集群id
         :type ClusterID: str
+        :param _ClusterName: 集群名称
+        :type ClusterName: str
+        :param _ClusterAccessedStatus: 集群接入状态
+        :type ClusterAccessedStatus: str
         """
         self._HostID = None
         self._HostIP = None
@@ -42222,6 +43676,8 @@ class HostInfo(AbstractModel):
         self._Project = None
         self._Tags = None
         self._ClusterID = None
+        self._ClusterName = None
+        self._ClusterAccessedStatus = None
 
     @property
     def HostID(self):
@@ -42367,6 +43823,22 @@ class HostInfo(AbstractModel):
     def ClusterID(self, ClusterID):
         self._ClusterID = ClusterID
 
+    @property
+    def ClusterName(self):
+        return self._ClusterName
+
+    @ClusterName.setter
+    def ClusterName(self, ClusterName):
+        self._ClusterName = ClusterName
+
+    @property
+    def ClusterAccessedStatus(self):
+        return self._ClusterAccessedStatus
+
+    @ClusterAccessedStatus.setter
+    def ClusterAccessedStatus(self, ClusterAccessedStatus):
+        self._ClusterAccessedStatus = ClusterAccessedStatus
+
 
     def _deserialize(self, params):
         self._HostID = params.get("HostID")
@@ -42394,6 +43866,8 @@ class HostInfo(AbstractModel):
                 obj._deserialize(item)
                 self._Tags.append(obj)
         self._ClusterID = params.get("ClusterID")
+        self._ClusterName = params.get("ClusterName")
+        self._ClusterAccessedStatus = params.get("ClusterAccessedStatus")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -43056,6 +44530,25 @@ class ImageRepoInfo(AbstractModel):
         :param _IsLatestImage: 是否为镜像的最新版本
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsLatestImage: bool
+        :param _LowLevelVulCnt: low级别漏洞个数
+        :type LowLevelVulCnt: int
+        :param _MediumLevelVulCnt: medium级别漏洞个数
+        :type MediumLevelVulCnt: int
+        :param _HighLevelVulCnt: high级别漏洞个数
+        :type HighLevelVulCnt: int
+        :param _CriticalLevelVulCnt: critical级别漏洞个数
+        :type CriticalLevelVulCnt: int
+        :param _ContainerCnt: 关联容器数
+        :type ContainerCnt: int
+        :param _ComponentCnt: 组件数
+        :type ComponentCnt: int
+        :param _IsRunning: 是否运行中
+        :type IsRunning: bool
+        :param _HasNeedFixVul: 是否存在必修漏洞
+        :type HasNeedFixVul: bool
+        :param _SensitiveInfoCnt: 敏感信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SensitiveInfoCnt: int
         """
         self._ImageDigest = None
         self._ImageRepoAddress = None
@@ -43091,6 +44584,15 @@ class ImageRepoInfo(AbstractModel):
         self._ImageId = None
         self._ImageCreateTime = None
         self._IsLatestImage = None
+        self._LowLevelVulCnt = None
+        self._MediumLevelVulCnt = None
+        self._HighLevelVulCnt = None
+        self._CriticalLevelVulCnt = None
+        self._ContainerCnt = None
+        self._ComponentCnt = None
+        self._IsRunning = None
+        self._HasNeedFixVul = None
+        self._SensitiveInfoCnt = None
 
     @property
     def ImageDigest(self):
@@ -43182,10 +44684,14 @@ class ImageRepoInfo(AbstractModel):
 
     @property
     def SentiveInfoCnt(self):
+        warnings.warn("parameter `SentiveInfoCnt` is deprecated", DeprecationWarning) 
+
         return self._SentiveInfoCnt
 
     @SentiveInfoCnt.setter
     def SentiveInfoCnt(self, SentiveInfoCnt):
+        warnings.warn("parameter `SentiveInfoCnt` is deprecated", DeprecationWarning) 
+
         self._SentiveInfoCnt = SentiveInfoCnt
 
     @property
@@ -43364,6 +44870,78 @@ class ImageRepoInfo(AbstractModel):
     def IsLatestImage(self, IsLatestImage):
         self._IsLatestImage = IsLatestImage
 
+    @property
+    def LowLevelVulCnt(self):
+        return self._LowLevelVulCnt
+
+    @LowLevelVulCnt.setter
+    def LowLevelVulCnt(self, LowLevelVulCnt):
+        self._LowLevelVulCnt = LowLevelVulCnt
+
+    @property
+    def MediumLevelVulCnt(self):
+        return self._MediumLevelVulCnt
+
+    @MediumLevelVulCnt.setter
+    def MediumLevelVulCnt(self, MediumLevelVulCnt):
+        self._MediumLevelVulCnt = MediumLevelVulCnt
+
+    @property
+    def HighLevelVulCnt(self):
+        return self._HighLevelVulCnt
+
+    @HighLevelVulCnt.setter
+    def HighLevelVulCnt(self, HighLevelVulCnt):
+        self._HighLevelVulCnt = HighLevelVulCnt
+
+    @property
+    def CriticalLevelVulCnt(self):
+        return self._CriticalLevelVulCnt
+
+    @CriticalLevelVulCnt.setter
+    def CriticalLevelVulCnt(self, CriticalLevelVulCnt):
+        self._CriticalLevelVulCnt = CriticalLevelVulCnt
+
+    @property
+    def ContainerCnt(self):
+        return self._ContainerCnt
+
+    @ContainerCnt.setter
+    def ContainerCnt(self, ContainerCnt):
+        self._ContainerCnt = ContainerCnt
+
+    @property
+    def ComponentCnt(self):
+        return self._ComponentCnt
+
+    @ComponentCnt.setter
+    def ComponentCnt(self, ComponentCnt):
+        self._ComponentCnt = ComponentCnt
+
+    @property
+    def IsRunning(self):
+        return self._IsRunning
+
+    @IsRunning.setter
+    def IsRunning(self, IsRunning):
+        self._IsRunning = IsRunning
+
+    @property
+    def HasNeedFixVul(self):
+        return self._HasNeedFixVul
+
+    @HasNeedFixVul.setter
+    def HasNeedFixVul(self, HasNeedFixVul):
+        self._HasNeedFixVul = HasNeedFixVul
+
+    @property
+    def SensitiveInfoCnt(self):
+        return self._SensitiveInfoCnt
+
+    @SensitiveInfoCnt.setter
+    def SensitiveInfoCnt(self, SensitiveInfoCnt):
+        self._SensitiveInfoCnt = SensitiveInfoCnt
+
 
     def _deserialize(self, params):
         self._ImageDigest = params.get("ImageDigest")
@@ -43400,6 +44978,15 @@ class ImageRepoInfo(AbstractModel):
         self._ImageId = params.get("ImageId")
         self._ImageCreateTime = params.get("ImageCreateTime")
         self._IsLatestImage = params.get("IsLatestImage")
+        self._LowLevelVulCnt = params.get("LowLevelVulCnt")
+        self._MediumLevelVulCnt = params.get("MediumLevelVulCnt")
+        self._HighLevelVulCnt = params.get("HighLevelVulCnt")
+        self._CriticalLevelVulCnt = params.get("CriticalLevelVulCnt")
+        self._ContainerCnt = params.get("ContainerCnt")
+        self._ComponentCnt = params.get("ComponentCnt")
+        self._IsRunning = params.get("IsRunning")
+        self._HasNeedFixVul = params.get("HasNeedFixVul")
+        self._SensitiveInfoCnt = params.get("SensitiveInfoCnt")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -44147,6 +45734,9 @@ class ImageVul(AbstractModel):
         :param _Version: 组件版本
 注意：此字段可能返回 null，表示取不到有效值。
         :type Version: str
+        :param _AttackLevel: 攻击热度 0-3
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttackLevel: int
         """
         self._CVEID = None
         self._POCID = None
@@ -44167,6 +45757,7 @@ class ImageVul(AbstractModel):
         self._Tag = None
         self._Component = None
         self._Version = None
+        self._AttackLevel = None
 
     @property
     def CVEID(self):
@@ -44320,6 +45911,14 @@ class ImageVul(AbstractModel):
     def Version(self, Version):
         self._Version = Version
 
+    @property
+    def AttackLevel(self):
+        return self._AttackLevel
+
+    @AttackLevel.setter
+    def AttackLevel(self, AttackLevel):
+        self._AttackLevel = AttackLevel
+
 
     def _deserialize(self, params):
         self._CVEID = params.get("CVEID")
@@ -44346,6 +45945,7 @@ class ImageVul(AbstractModel):
         self._Tag = params.get("Tag")
         self._Component = params.get("Component")
         self._Version = params.get("Version")
+        self._AttackLevel = params.get("AttackLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -46260,10 +47860,13 @@ class ModifyAssetImageRegistryScanStopOneKeyRequest(AbstractModel):
         :type Images: list of ImageInfo
         :param _Id: 扫描的镜像列表Id
         :type Id: list of int non-negative
+        :param _TaskID: 停止的任务ID
+        :type TaskID: int
         """
         self._All = None
         self._Images = None
         self._Id = None
+        self._TaskID = None
 
     @property
     def All(self):
@@ -46289,6 +47892,14 @@ class ModifyAssetImageRegistryScanStopOneKeyRequest(AbstractModel):
     def Id(self, Id):
         self._Id = Id
 
+    @property
+    def TaskID(self):
+        return self._TaskID
+
+    @TaskID.setter
+    def TaskID(self, TaskID):
+        self._TaskID = TaskID
+
 
     def _deserialize(self, params):
         self._All = params.get("All")
@@ -46299,6 +47910,7 @@ class ModifyAssetImageRegistryScanStopOneKeyRequest(AbstractModel):
                 obj._deserialize(item)
                 self._Images.append(obj)
         self._Id = params.get("Id")
+        self._TaskID = params.get("TaskID")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -46353,6 +47965,8 @@ class ModifyAssetImageRegistryScanStopRequest(AbstractModel):
         :type ExcludeImageList: list of int non-negative
         :param _OnlyScanLatest: 是否仅扫描各repository最新版本的镜像
         :type OnlyScanLatest: bool
+        :param _TaskID: 停止的任务ID
+        :type TaskID: int
         """
         self._All = None
         self._Images = None
@@ -46360,6 +47974,7 @@ class ModifyAssetImageRegistryScanStopRequest(AbstractModel):
         self._Filters = None
         self._ExcludeImageList = None
         self._OnlyScanLatest = None
+        self._TaskID = None
 
     @property
     def All(self):
@@ -46409,6 +48024,14 @@ class ModifyAssetImageRegistryScanStopRequest(AbstractModel):
     def OnlyScanLatest(self, OnlyScanLatest):
         self._OnlyScanLatest = OnlyScanLatest
 
+    @property
+    def TaskID(self):
+        return self._TaskID
+
+    @TaskID.setter
+    def TaskID(self, TaskID):
+        self._TaskID = TaskID
+
 
     def _deserialize(self, params):
         self._All = params.get("All")
@@ -46427,6 +48050,7 @@ class ModifyAssetImageRegistryScanStopRequest(AbstractModel):
                 self._Filters.append(obj)
         self._ExcludeImageList = params.get("ExcludeImageList")
         self._OnlyScanLatest = params.get("OnlyScanLatest")
+        self._TaskID = params.get("TaskID")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -49044,6 +50668,75 @@ class ModifyVulDefenceSettingResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class NamespaceInfo(AbstractModel):
+    """返回的命名空间列表信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Namespace: 命名空间名称
+        :type Namespace: str
+        :param _RegistryCnt: 包含仓库数
+        :type RegistryCnt: int
+        :param _ImageCnt: 包含镜像数
+        :type ImageCnt: int
+        :param _RiskImageCnt: 包含风险镜像数
+        :type RiskImageCnt: int
+        """
+        self._Namespace = None
+        self._RegistryCnt = None
+        self._ImageCnt = None
+        self._RiskImageCnt = None
+
+    @property
+    def Namespace(self):
+        return self._Namespace
+
+    @Namespace.setter
+    def Namespace(self, Namespace):
+        self._Namespace = Namespace
+
+    @property
+    def RegistryCnt(self):
+        return self._RegistryCnt
+
+    @RegistryCnt.setter
+    def RegistryCnt(self, RegistryCnt):
+        self._RegistryCnt = RegistryCnt
+
+    @property
+    def ImageCnt(self):
+        return self._ImageCnt
+
+    @ImageCnt.setter
+    def ImageCnt(self, ImageCnt):
+        self._ImageCnt = ImageCnt
+
+    @property
+    def RiskImageCnt(self):
+        return self._RiskImageCnt
+
+    @RiskImageCnt.setter
+    def RiskImageCnt(self, RiskImageCnt):
+        self._RiskImageCnt = RiskImageCnt
+
+
+    def _deserialize(self, params):
+        self._Namespace = params.get("Namespace")
+        self._RegistryCnt = params.get("RegistryCnt")
+        self._ImageCnt = params.get("ImageCnt")
+        self._RiskImageCnt = params.get("RiskImageCnt")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class NetworkAuditRecord(AbstractModel):
     """网络集群资产审计返回结构体
 
@@ -50958,6 +52651,99 @@ class RegionInfo(AbstractModel):
         
 
 
+class RegistryConnDetectResult(AbstractModel):
+    """镜像仓库联通性检测结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Quuid: 联通性检测的主机quuid 或者 backend
+        :type Quuid: str
+        :param _Uuid: 联通性检测的主机uuid 或者 backend
+        :type Uuid: str
+        :param _ConnDetectStatus: 检测结果状态
+        :type ConnDetectStatus: str
+        :param _ConnDetectMessage: 检测结果信息
+        :type ConnDetectMessage: str
+        :param _Solution: 失败的解决方案
+        :type Solution: str
+        :param _FailReason: 失败原因
+        :type FailReason: str
+        """
+        self._Quuid = None
+        self._Uuid = None
+        self._ConnDetectStatus = None
+        self._ConnDetectMessage = None
+        self._Solution = None
+        self._FailReason = None
+
+    @property
+    def Quuid(self):
+        return self._Quuid
+
+    @Quuid.setter
+    def Quuid(self, Quuid):
+        self._Quuid = Quuid
+
+    @property
+    def Uuid(self):
+        return self._Uuid
+
+    @Uuid.setter
+    def Uuid(self, Uuid):
+        self._Uuid = Uuid
+
+    @property
+    def ConnDetectStatus(self):
+        return self._ConnDetectStatus
+
+    @ConnDetectStatus.setter
+    def ConnDetectStatus(self, ConnDetectStatus):
+        self._ConnDetectStatus = ConnDetectStatus
+
+    @property
+    def ConnDetectMessage(self):
+        return self._ConnDetectMessage
+
+    @ConnDetectMessage.setter
+    def ConnDetectMessage(self, ConnDetectMessage):
+        self._ConnDetectMessage = ConnDetectMessage
+
+    @property
+    def Solution(self):
+        return self._Solution
+
+    @Solution.setter
+    def Solution(self, Solution):
+        self._Solution = Solution
+
+    @property
+    def FailReason(self):
+        return self._FailReason
+
+    @FailReason.setter
+    def FailReason(self, FailReason):
+        self._FailReason = FailReason
+
+
+    def _deserialize(self, params):
+        self._Quuid = params.get("Quuid")
+        self._Uuid = params.get("Uuid")
+        self._ConnDetectStatus = params.get("ConnDetectStatus")
+        self._ConnDetectMessage = params.get("ConnDetectMessage")
+        self._Solution = params.get("Solution")
+        self._FailReason = params.get("FailReason")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RemoveAssetImageRegistryRegistryDetailRequest(AbstractModel):
     """RemoveAssetImageRegistryRegistryDetail请求参数结构体
 
@@ -51723,6 +53509,411 @@ class ReverseShellWhiteListInfo(AbstractModel):
         self._ProcessName = params.get("ProcessName")
         self._ImageIds = params.get("ImageIds")
         self._Id = params.get("Id")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class RiskDnsEventInfo(AbstractModel):
+    """恶意请求事件信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _EventID: 事件ID
+        :type EventID: int
+        :param _EventType: 事件类型，恶意域名请求：DOMAIN，恶意IP请求：IP
+        :type EventType: str
+        :param _Address: 恶意请求域名/IP
+        :type Address: str
+        :param _ContainerID: 容器ID
+        :type ContainerID: str
+        :param _ContainerName: 容器名称
+        :type ContainerName: str
+        :param _ContainerNetStatus: 隔离状态
+未隔离  	NORMAL
+已隔离		ISOLATED
+隔离中		ISOLATING
+隔离失败	ISOLATE_FAILED
+解除隔离中  RESTORING
+解除隔离失败 RESTORE_FAILED
+        :type ContainerNetStatus: str
+        :param _ContainerStatus: 容器状态
+正在运行: RUNNING
+暂停: PAUSED
+停止: STOPPED
+已经创建: CREATED
+已经销毁: DESTROYED
+正在重启中: RESTARTING
+迁移中: REMOVING
+        :type ContainerStatus: str
+        :param _ContainerNetSubStatus: 容器子状态
+"AGENT_OFFLINE"       //Agent离线
+"NODE_DESTROYED"      //节点已销毁
+"CONTAINER_EXITED"    //容器已退出
+"CONTAINER_DESTROYED" //容器已销毁
+"SHARED_HOST"         // 容器与主机共享网络
+"RESOURCE_LIMIT"      //隔离操作资源超限
+"UNKNOW"              // 原因未知
+        :type ContainerNetSubStatus: str
+        :param _ContainerIsolateOperationSrc: 容器隔离操作来源
+        :type ContainerIsolateOperationSrc: str
+        :param _ImageID: 镜像ID
+        :type ImageID: str
+        :param _ImageName: 镜像名称
+        :type ImageName: str
+        :param _FoundTime: 首次发现时间
+        :type FoundTime: str
+        :param _LatestFoundTime: 最近生成时间
+        :type LatestFoundTime: str
+        :param _EventStatus: 事件状态
+EVENT_UNDEAL： 待处理
+EVENT_DEALED：已处理
+EVENT_IGNORE： 已忽略
+EVENT_ADD_WHITE：已加白
+        :type EventStatus: str
+        :param _EventCount: 恶意请求次数
+        :type EventCount: int
+        :param _Description: 事件描述
+        :type Description: str
+        :param _Solution: 解决方案
+        :type Solution: str
+        :param _City: 恶意IP所属城市
+        :type City: str
+        :param _HostName: 主机名称
+        :type HostName: str
+        :param _HostID: 主机ID
+        :type HostID: str
+        :param _HostIP: 内网IP
+        :type HostIP: str
+        :param _PublicIP: 外网IP
+        :type PublicIP: str
+        :param _NodeType: 节点类型：NORMAL普通节点、SUPER超级节点
+        :type NodeType: str
+        :param _NodeName: 节点名称
+        :type NodeName: str
+        :param _PodIP: pod ip
+        :type PodIP: str
+        :param _PodName: pod 名称
+        :type PodName: str
+        :param _ClusterID: 集群ID
+        :type ClusterID: str
+        :param _NodeID: 节点id
+        :type NodeID: str
+        :param _NodeUniqueID: 节点唯一id
+        :type NodeUniqueID: str
+        :param _ClusterName: 集群名称
+        :type ClusterName: str
+        """
+        self._EventID = None
+        self._EventType = None
+        self._Address = None
+        self._ContainerID = None
+        self._ContainerName = None
+        self._ContainerNetStatus = None
+        self._ContainerStatus = None
+        self._ContainerNetSubStatus = None
+        self._ContainerIsolateOperationSrc = None
+        self._ImageID = None
+        self._ImageName = None
+        self._FoundTime = None
+        self._LatestFoundTime = None
+        self._EventStatus = None
+        self._EventCount = None
+        self._Description = None
+        self._Solution = None
+        self._City = None
+        self._HostName = None
+        self._HostID = None
+        self._HostIP = None
+        self._PublicIP = None
+        self._NodeType = None
+        self._NodeName = None
+        self._PodIP = None
+        self._PodName = None
+        self._ClusterID = None
+        self._NodeID = None
+        self._NodeUniqueID = None
+        self._ClusterName = None
+
+    @property
+    def EventID(self):
+        return self._EventID
+
+    @EventID.setter
+    def EventID(self, EventID):
+        self._EventID = EventID
+
+    @property
+    def EventType(self):
+        return self._EventType
+
+    @EventType.setter
+    def EventType(self, EventType):
+        self._EventType = EventType
+
+    @property
+    def Address(self):
+        return self._Address
+
+    @Address.setter
+    def Address(self, Address):
+        self._Address = Address
+
+    @property
+    def ContainerID(self):
+        return self._ContainerID
+
+    @ContainerID.setter
+    def ContainerID(self, ContainerID):
+        self._ContainerID = ContainerID
+
+    @property
+    def ContainerName(self):
+        return self._ContainerName
+
+    @ContainerName.setter
+    def ContainerName(self, ContainerName):
+        self._ContainerName = ContainerName
+
+    @property
+    def ContainerNetStatus(self):
+        return self._ContainerNetStatus
+
+    @ContainerNetStatus.setter
+    def ContainerNetStatus(self, ContainerNetStatus):
+        self._ContainerNetStatus = ContainerNetStatus
+
+    @property
+    def ContainerStatus(self):
+        return self._ContainerStatus
+
+    @ContainerStatus.setter
+    def ContainerStatus(self, ContainerStatus):
+        self._ContainerStatus = ContainerStatus
+
+    @property
+    def ContainerNetSubStatus(self):
+        return self._ContainerNetSubStatus
+
+    @ContainerNetSubStatus.setter
+    def ContainerNetSubStatus(self, ContainerNetSubStatus):
+        self._ContainerNetSubStatus = ContainerNetSubStatus
+
+    @property
+    def ContainerIsolateOperationSrc(self):
+        return self._ContainerIsolateOperationSrc
+
+    @ContainerIsolateOperationSrc.setter
+    def ContainerIsolateOperationSrc(self, ContainerIsolateOperationSrc):
+        self._ContainerIsolateOperationSrc = ContainerIsolateOperationSrc
+
+    @property
+    def ImageID(self):
+        return self._ImageID
+
+    @ImageID.setter
+    def ImageID(self, ImageID):
+        self._ImageID = ImageID
+
+    @property
+    def ImageName(self):
+        return self._ImageName
+
+    @ImageName.setter
+    def ImageName(self, ImageName):
+        self._ImageName = ImageName
+
+    @property
+    def FoundTime(self):
+        return self._FoundTime
+
+    @FoundTime.setter
+    def FoundTime(self, FoundTime):
+        self._FoundTime = FoundTime
+
+    @property
+    def LatestFoundTime(self):
+        return self._LatestFoundTime
+
+    @LatestFoundTime.setter
+    def LatestFoundTime(self, LatestFoundTime):
+        self._LatestFoundTime = LatestFoundTime
+
+    @property
+    def EventStatus(self):
+        return self._EventStatus
+
+    @EventStatus.setter
+    def EventStatus(self, EventStatus):
+        self._EventStatus = EventStatus
+
+    @property
+    def EventCount(self):
+        return self._EventCount
+
+    @EventCount.setter
+    def EventCount(self, EventCount):
+        self._EventCount = EventCount
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def Solution(self):
+        return self._Solution
+
+    @Solution.setter
+    def Solution(self, Solution):
+        self._Solution = Solution
+
+    @property
+    def City(self):
+        return self._City
+
+    @City.setter
+    def City(self, City):
+        self._City = City
+
+    @property
+    def HostName(self):
+        return self._HostName
+
+    @HostName.setter
+    def HostName(self, HostName):
+        self._HostName = HostName
+
+    @property
+    def HostID(self):
+        return self._HostID
+
+    @HostID.setter
+    def HostID(self, HostID):
+        self._HostID = HostID
+
+    @property
+    def HostIP(self):
+        return self._HostIP
+
+    @HostIP.setter
+    def HostIP(self, HostIP):
+        self._HostIP = HostIP
+
+    @property
+    def PublicIP(self):
+        return self._PublicIP
+
+    @PublicIP.setter
+    def PublicIP(self, PublicIP):
+        self._PublicIP = PublicIP
+
+    @property
+    def NodeType(self):
+        return self._NodeType
+
+    @NodeType.setter
+    def NodeType(self, NodeType):
+        self._NodeType = NodeType
+
+    @property
+    def NodeName(self):
+        return self._NodeName
+
+    @NodeName.setter
+    def NodeName(self, NodeName):
+        self._NodeName = NodeName
+
+    @property
+    def PodIP(self):
+        return self._PodIP
+
+    @PodIP.setter
+    def PodIP(self, PodIP):
+        self._PodIP = PodIP
+
+    @property
+    def PodName(self):
+        return self._PodName
+
+    @PodName.setter
+    def PodName(self, PodName):
+        self._PodName = PodName
+
+    @property
+    def ClusterID(self):
+        return self._ClusterID
+
+    @ClusterID.setter
+    def ClusterID(self, ClusterID):
+        self._ClusterID = ClusterID
+
+    @property
+    def NodeID(self):
+        return self._NodeID
+
+    @NodeID.setter
+    def NodeID(self, NodeID):
+        self._NodeID = NodeID
+
+    @property
+    def NodeUniqueID(self):
+        return self._NodeUniqueID
+
+    @NodeUniqueID.setter
+    def NodeUniqueID(self, NodeUniqueID):
+        self._NodeUniqueID = NodeUniqueID
+
+    @property
+    def ClusterName(self):
+        return self._ClusterName
+
+    @ClusterName.setter
+    def ClusterName(self, ClusterName):
+        self._ClusterName = ClusterName
+
+
+    def _deserialize(self, params):
+        self._EventID = params.get("EventID")
+        self._EventType = params.get("EventType")
+        self._Address = params.get("Address")
+        self._ContainerID = params.get("ContainerID")
+        self._ContainerName = params.get("ContainerName")
+        self._ContainerNetStatus = params.get("ContainerNetStatus")
+        self._ContainerStatus = params.get("ContainerStatus")
+        self._ContainerNetSubStatus = params.get("ContainerNetSubStatus")
+        self._ContainerIsolateOperationSrc = params.get("ContainerIsolateOperationSrc")
+        self._ImageID = params.get("ImageID")
+        self._ImageName = params.get("ImageName")
+        self._FoundTime = params.get("FoundTime")
+        self._LatestFoundTime = params.get("LatestFoundTime")
+        self._EventStatus = params.get("EventStatus")
+        self._EventCount = params.get("EventCount")
+        self._Description = params.get("Description")
+        self._Solution = params.get("Solution")
+        self._City = params.get("City")
+        self._HostName = params.get("HostName")
+        self._HostID = params.get("HostID")
+        self._HostIP = params.get("HostIP")
+        self._PublicIP = params.get("PublicIP")
+        self._NodeType = params.get("NodeType")
+        self._NodeName = params.get("NodeName")
+        self._PodIP = params.get("PodIP")
+        self._PodName = params.get("PodName")
+        self._ClusterID = params.get("ClusterID")
+        self._NodeID = params.get("NodeID")
+        self._NodeUniqueID = params.get("NodeUniqueID")
+        self._ClusterName = params.get("ClusterName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -54542,7 +56733,7 @@ class SoftQuotaDayInfo(AbstractModel):
         r"""
         :param _PayTime: 扣费时间
         :type PayTime: str
-        :param _CoresCnt: 计费核数
+        :param _CoresCnt: 计费核数(已废弃)
         :type CoresCnt: int
         """
         self._PayTime = None
@@ -55366,6 +57557,8 @@ class UpdateAssetImageRegistryRegistryDetailRequest(AbstractModel):
         :type SpeedLimit: int
         :param _Insecure: 安全模式（证书校验）：0（默认） 非安全模式（跳过证书校验）：1
         :type Insecure: int
+        :param _ConnDetectConfig: 联通性检测的配置
+        :type ConnDetectConfig: list of ConnDetectConfig
         """
         self._Name = None
         self._Username = None
@@ -55377,6 +57570,7 @@ class UpdateAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self._RegistryRegion = None
         self._SpeedLimit = None
         self._Insecure = None
+        self._ConnDetectConfig = None
 
     @property
     def Name(self):
@@ -55458,6 +57652,14 @@ class UpdateAssetImageRegistryRegistryDetailRequest(AbstractModel):
     def Insecure(self, Insecure):
         self._Insecure = Insecure
 
+    @property
+    def ConnDetectConfig(self):
+        return self._ConnDetectConfig
+
+    @ConnDetectConfig.setter
+    def ConnDetectConfig(self, ConnDetectConfig):
+        self._ConnDetectConfig = ConnDetectConfig
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -55470,6 +57672,12 @@ class UpdateAssetImageRegistryRegistryDetailRequest(AbstractModel):
         self._RegistryRegion = params.get("RegistryRegion")
         self._SpeedLimit = params.get("SpeedLimit")
         self._Insecure = params.get("Insecure")
+        if params.get("ConnDetectConfig") is not None:
+            self._ConnDetectConfig = []
+            for item in params.get("ConnDetectConfig"):
+                obj = ConnDetectConfig()
+                obj._deserialize(item)
+                self._ConnDetectConfig.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -55567,6 +57775,16 @@ class UpdateImageRegistryTimingScanTaskRequest(AbstractModel):
         :type Id: list of int non-negative
         :param _Latest: 是否扫描最新版本
         :type Latest: bool
+        :param _ContainerRunning: 是否存在运行中的容器
+        :type ContainerRunning: bool
+        :param _ScanEndTime: 扫描结束时间
+        :type ScanEndTime: str
+        :param _ScanScope: 扫描范围 0全部镜像，1自选镜像，2推荐扫描镜像
+        :type ScanScope: int
+        :param _RegistryType: 仓库类型 tcr,ccr,harbor
+        :type RegistryType: list of str
+        :param _Namespace: 命名空间
+        :type Namespace: list of str
         """
         self._ScanPeriod = None
         self._Enable = None
@@ -55576,6 +57794,11 @@ class UpdateImageRegistryTimingScanTaskRequest(AbstractModel):
         self._All = None
         self._Id = None
         self._Latest = None
+        self._ContainerRunning = None
+        self._ScanEndTime = None
+        self._ScanScope = None
+        self._RegistryType = None
+        self._Namespace = None
 
     @property
     def ScanPeriod(self):
@@ -55619,10 +57842,14 @@ class UpdateImageRegistryTimingScanTaskRequest(AbstractModel):
 
     @property
     def All(self):
+        warnings.warn("parameter `All` is deprecated", DeprecationWarning) 
+
         return self._All
 
     @All.setter
     def All(self, All):
+        warnings.warn("parameter `All` is deprecated", DeprecationWarning) 
+
         self._All = All
 
     @property
@@ -55641,6 +57868,46 @@ class UpdateImageRegistryTimingScanTaskRequest(AbstractModel):
     def Latest(self, Latest):
         self._Latest = Latest
 
+    @property
+    def ContainerRunning(self):
+        return self._ContainerRunning
+
+    @ContainerRunning.setter
+    def ContainerRunning(self, ContainerRunning):
+        self._ContainerRunning = ContainerRunning
+
+    @property
+    def ScanEndTime(self):
+        return self._ScanEndTime
+
+    @ScanEndTime.setter
+    def ScanEndTime(self, ScanEndTime):
+        self._ScanEndTime = ScanEndTime
+
+    @property
+    def ScanScope(self):
+        return self._ScanScope
+
+    @ScanScope.setter
+    def ScanScope(self, ScanScope):
+        self._ScanScope = ScanScope
+
+    @property
+    def RegistryType(self):
+        return self._RegistryType
+
+    @RegistryType.setter
+    def RegistryType(self, RegistryType):
+        self._RegistryType = RegistryType
+
+    @property
+    def Namespace(self):
+        return self._Namespace
+
+    @Namespace.setter
+    def Namespace(self, Namespace):
+        self._Namespace = Namespace
+
 
     def _deserialize(self, params):
         self._ScanPeriod = params.get("ScanPeriod")
@@ -55656,6 +57923,11 @@ class UpdateImageRegistryTimingScanTaskRequest(AbstractModel):
         self._All = params.get("All")
         self._Id = params.get("Id")
         self._Latest = params.get("Latest")
+        self._ContainerRunning = params.get("ContainerRunning")
+        self._ScanEndTime = params.get("ScanEndTime")
+        self._ScanScope = params.get("ScanScope")
+        self._RegistryType = params.get("RegistryType")
+        self._Namespace = params.get("Namespace")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

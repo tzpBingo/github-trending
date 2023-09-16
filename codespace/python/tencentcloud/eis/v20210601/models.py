@@ -46,6 +46,9 @@ class AbstractRuntimeMC(AbstractModel):
         :param _Deployed: 是否已在当前环境发布
 注意：此字段可能返回 null，表示取不到有效值。
         :type Deployed: bool
+        :param _MatchExtensions: 环境扩展组件是否满足应用要求：0=true, 1=false 表示该应用需要扩展组件0(cdc)以及1(java)，但是独立环境有cdc无java，不满足发布要求
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MatchExtensions: str
         """
         self._RuntimeId = None
         self._DisplayName = None
@@ -57,6 +60,7 @@ class AbstractRuntimeMC(AbstractModel):
         self._ExpiredAt = None
         self._RuntimeClass = None
         self._Deployed = None
+        self._MatchExtensions = None
 
     @property
     def RuntimeId(self):
@@ -138,6 +142,14 @@ class AbstractRuntimeMC(AbstractModel):
     def Deployed(self, Deployed):
         self._Deployed = Deployed
 
+    @property
+    def MatchExtensions(self):
+        return self._MatchExtensions
+
+    @MatchExtensions.setter
+    def MatchExtensions(self, MatchExtensions):
+        self._MatchExtensions = MatchExtensions
+
 
     def _deserialize(self, params):
         self._RuntimeId = params.get("RuntimeId")
@@ -150,6 +162,7 @@ class AbstractRuntimeMC(AbstractModel):
         self._ExpiredAt = params.get("ExpiredAt")
         self._RuntimeClass = params.get("RuntimeClass")
         self._Deployed = params.get("Deployed")
+        self._MatchExtensions = params.get("MatchExtensions")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -277,6 +290,8 @@ class GetRuntimeResourceMonitorMetricMCRequest(AbstractModel):
         :type Interval: int
         :param _RuntimeClass: 环境运行类型：0:运行时类型、1:api类型
         :type RuntimeClass: int
+        :param _AggregationType: 资源指标聚合类型：0: 环境维度 1:执行引擎维度 2:datatwaypy维度 3.datawayjava维度
+        :type AggregationType: int
         """
         self._RuntimeId = None
         self._StartTime = None
@@ -285,6 +300,7 @@ class GetRuntimeResourceMonitorMetricMCRequest(AbstractModel):
         self._RateType = None
         self._Interval = None
         self._RuntimeClass = None
+        self._AggregationType = None
 
     @property
     def RuntimeId(self):
@@ -342,6 +358,14 @@ class GetRuntimeResourceMonitorMetricMCRequest(AbstractModel):
     def RuntimeClass(self, RuntimeClass):
         self._RuntimeClass = RuntimeClass
 
+    @property
+    def AggregationType(self):
+        return self._AggregationType
+
+    @AggregationType.setter
+    def AggregationType(self, AggregationType):
+        self._AggregationType = AggregationType
+
 
     def _deserialize(self, params):
         self._RuntimeId = params.get("RuntimeId")
@@ -351,6 +375,7 @@ class GetRuntimeResourceMonitorMetricMCRequest(AbstractModel):
         self._RateType = params.get("RateType")
         self._Interval = params.get("Interval")
         self._RuntimeClass = params.get("RuntimeClass")
+        self._AggregationType = params.get("AggregationType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -428,10 +453,13 @@ class ListDeployableRuntimesMCRequest(AbstractModel):
         :type InstanceId: int
         :param _PlanType: 版本类型 0-pro 1-lite
         :type PlanType: int
+        :param _RuntimeClass: 0：应用集成，1：API，2：ETL
+        :type RuntimeClass: int
         """
         self._ProjectId = None
         self._InstanceId = None
         self._PlanType = None
+        self._RuntimeClass = None
 
     @property
     def ProjectId(self):
@@ -457,11 +485,20 @@ class ListDeployableRuntimesMCRequest(AbstractModel):
     def PlanType(self, PlanType):
         self._PlanType = PlanType
 
+    @property
+    def RuntimeClass(self):
+        return self._RuntimeClass
+
+    @RuntimeClass.setter
+    def RuntimeClass(self, RuntimeClass):
+        self._RuntimeClass = RuntimeClass
+
 
     def _deserialize(self, params):
         self._ProjectId = params.get("ProjectId")
         self._InstanceId = params.get("InstanceId")
         self._PlanType = params.get("PlanType")
+        self._RuntimeClass = params.get("RuntimeClass")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -542,6 +579,10 @@ class ListRuntimeDeployedInstancesMCRequest(AbstractModel):
 0: 运行中
 2: 已停止
         :type Status: int
+        :param _RuntimeClass: 0: 应用集成
+1: API管理
+2: ETL
+        :type RuntimeClass: int
         """
         self._RuntimeId = None
         self._Limit = None
@@ -552,6 +593,7 @@ class ListRuntimeDeployedInstancesMCRequest(AbstractModel):
         self._ApiVersion = None
         self._GroupId = None
         self._Status = None
+        self._RuntimeClass = None
 
     @property
     def RuntimeId(self):
@@ -625,6 +667,14 @@ class ListRuntimeDeployedInstancesMCRequest(AbstractModel):
     def Status(self, Status):
         self._Status = Status
 
+    @property
+    def RuntimeClass(self):
+        return self._RuntimeClass
+
+    @RuntimeClass.setter
+    def RuntimeClass(self, RuntimeClass):
+        self._RuntimeClass = RuntimeClass
+
 
     def _deserialize(self, params):
         self._RuntimeId = params.get("RuntimeId")
@@ -636,6 +686,7 @@ class ListRuntimeDeployedInstancesMCRequest(AbstractModel):
         self._ApiVersion = params.get("ApiVersion")
         self._GroupId = params.get("GroupId")
         self._Status = params.get("Status")
+        self._RuntimeClass = params.get("RuntimeClass")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1006,7 +1057,7 @@ class RuntimeExtensionMC(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Type: 扩展组件类型：0:cdc
+        :param _Type: 扩展组件类型：0:cdc 1:dataway-java
         :type Type: int
         :param _Size: 部署规格vcore数
         :type Size: float
@@ -1159,7 +1210,7 @@ class RuntimeMC(AbstractModel):
         :param _RuntimeType: 环境类型：0: sandbox, 1:shared, 2:private 3: trial
 注意：此字段可能返回 null，表示取不到有效值。
         :type RuntimeType: int
-        :param _RuntimeClass: 环境运行类型：0:运行时类型、1:api类型
+        :param _RuntimeClass: 环境运行类型：0:运行时类型、1:api类型、2:etl环境
 注意：此字段可能返回 null，表示取不到有效值。
         :type RuntimeClass: int
         :param _BandwidthOutUsed: 已使用出带宽 Mbps

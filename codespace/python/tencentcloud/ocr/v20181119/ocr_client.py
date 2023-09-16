@@ -177,7 +177,7 @@ class OcrClient(AbstractClient):
 
 
     def BusinessCardOCR(self, request):
-        """本接口支持名片各字段的自动定位与识别，包含姓名、电话、手机号、邮箱、公司、部门、职位、网址、地址、QQ、微信、MSN等。
+        """本接口支持中英文名片各字段的自动定位与识别，包含姓名、电话、手机号、邮箱、公司、部门、职位、网址、地址、QQ、微信、MSN等。
 
         默认接口请求频率限制：10次/秒。
 
@@ -254,7 +254,7 @@ class OcrClient(AbstractClient):
     def CreateAIFormTask(self, request):
         """本接口可创建智能表单录入任务，支持多个识别图片和PDF的URL上传，返回含有识别内容的操作页面URL。
 
-        智能表单录入产品提供高准确率的表单识别技术和人工核对工具，支持自定义字段，将识别结果自动填入到自定义条目中，并提供人工操作工具，完成整个表单识别过程。适用性强，可对票据、合同、货单等文件的识别，适用于金融、货代、保险、档案等领域。本产品免费公测中，您可以点击demo（超连接：https://ocr.smartform.cloud.tencent.com/）试用，如需购买请与商务团队联系。
+        智能表单录入产品提供高准确率的表单识别技术和人工核对工具，支持自定义字段，将识别结果自动填入到自定义条目中，并提供人工操作工具，完成整个表单识别过程。适用性强，可对票据、合同、货单等文件的识别，适用于金融、货代、保险、档案等领域。本产品免费公测中，您可以点击demo（超链接：https://ocr.smartform.cloud.tencent.com/）试用，如需购买请与商务团队联系。
 
         :param request: Request instance for CreateAIFormTask.
         :type request: :class:`tencentcloud.ocr.v20181119.models.CreateAIFormTaskRequest`
@@ -841,7 +841,7 @@ class OcrClient(AbstractClient):
 
 
     def GetTaskState(self, request):
-        """支持查询智能表单录入任务的状态。本产品免费公测中，您可以点击demo（超连接：https://ocr.smartform.cloud.tencent.com/）试用，如需购买请与商务团队联系。
+        """支持查询智能表单录入任务的状态。本产品免费公测中，您可以点击demo（超链接：https://ocr.smartform.cloud.tencent.com/）试用，如需购买请与商务团队联系。
 
         :param request: Request instance for GetTaskState.
         :type request: :class:`tencentcloud.ocr.v20181119.models.GetTaskStateRequest`
@@ -935,7 +935,9 @@ class OcrClient(AbstractClient):
                 </tr>
                 <tr>
                   <td rowspan="9">告警功能</td>
-                  <td>身份证有效日期不合法告警</td>
+                  <td>身份证有效日期不合法，即有效日期不符合5年、10年、20年、长期期限
+
+        </td>
                 </tr>
                 <tr>
                   <td>身份证边框不完整告警</td>
@@ -1357,33 +1359,6 @@ class OcrClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def QueryBarCode(self, request):
-        """库源服务调整，该接口在2023年6月1日将正式下线。
-
-        本接口支持条形码备案信息查询，返回条形码查询结果的相关信息，包括产品名称、产品英文名称、品牌名称、规格型号、宽度、高度、深度、关键字、产品描述、厂家名称、厂家地址、企业社会信用代码13个字段信息。
-
-        产品优势：直联中国物品编码中心，查询结果更加准确、可靠。
-
-        :param request: Request instance for QueryBarCode.
-        :type request: :class:`tencentcloud.ocr.v20181119.models.QueryBarCodeRequest`
-        :rtype: :class:`tencentcloud.ocr.v20181119.models.QueryBarCodeResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("QueryBarCode", params, headers=headers)
-            response = json.loads(body)
-            model = models.QueryBarCodeResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def QuotaInvoiceOCR(self, request):
         """本接口支持定额发票的发票号码、发票代码、金额(大小写)、发票消费类型、地区及是否有公司印章等关键字段的识别。
 
@@ -1477,6 +1452,11 @@ class OcrClient(AbstractClient):
                 <tr>
                   <td> VatElectronicInvoiceToll</td>
                   <td> 增值税电子普通发票(通行费)</td>
+                  <td> 3 </td>
+                </tr>
+                <tr>
+                  <td> VatSalesList</td>
+                  <td> 增值税销货清单</td>
                   <td> 3 </td>
                 </tr>
                 <tr>
@@ -1810,7 +1790,7 @@ class OcrClient(AbstractClient):
 
 
     def RecognizeTableAccurateOCR(self, request):
-        """本接口支持中英文图片/PDF内常规表格、无线表格、多表格的检测和识别，返回每个单元格的文字内容，支持旋转的表格图片识别，且支持将识别结果保存为 Excel 格式。识别效果比表格识别V2更好，覆盖场景更加广泛，对表格难例场景，如无线表格、嵌套表格（有线表格中包含无线表格）的识别效果均优于表格识别V2。点击[立即体验](https://cloud.tencent.com/product/smart-ocr)。
+        """本接口支持中英文图片/PDF内常规表格、无线表格、多表格的检测和识别，返回每个单元格的文字内容，支持旋转的表格图片识别，且支持将识别结果保存为 Excel 格式。识别效果比表格识别V2更好，覆盖场景更加广泛，对表格难例场景，如无线表格、嵌套表格（有线表格中包含无线表格）的识别效果均优于表格识别V2。点击[立即体验](https://cloud.tencent.com/act/event/ocrdemo)。
 
         默认接口请求频率限制：2次/秒。
 
@@ -2211,7 +2191,7 @@ class OcrClient(AbstractClient):
 
 
     def VatInvoiceOCR(self, request):
-        """本接口支持增值税专用发票、增值税普通发票、增值税电子专票、增值税电子普票、电子发票（普通发票）、电子发票（增值税专用发票）德全字段的内容检测和识别，包括发票代码、发票号码、打印发票代码、打印发票号码、开票日期、合计金额、校验码、税率、合计税额、价税合计、购买方识别号、复核、销售方识别号、开票人、密码区1、密码区2、密码区3、密码区4、发票名称、购买方名称、销售方名称、服务名称、备注、规格型号、数量、单价、金额、税额、收款人等字段，点击[立即试用](https://cloud.tencent.com/product/ocr)。
+        """本接口支持增值税专用发票、增值税普通发票、增值税电子专票、增值税电子普票、电子发票（普通发票）、电子发票（增值税专用发票）全字段的内容检测和识别，包括发票代码、发票号码、打印发票代码、打印发票号码、开票日期、合计金额、校验码、税率、合计税额、价税合计、购买方识别号、复核、销售方识别号、开票人、密码区1、密码区2、密码区3、密码区4、发票名称、购买方名称、销售方名称、服务名称、备注、规格型号、数量、单价、金额、税额、收款人等字段，点击[立即试用](https://cloud.tencent.com/product/ocr)。
 
         默认接口请求频率限制：10次/秒。
 
@@ -2366,89 +2346,8 @@ class OcrClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def VerifyBasicBizLicense(self, request):
-        """库源服务调整，该接口在2023年6月1日将正式下线。
-
-        本接口支持营业执照信息的识别与准确性核验。
-
-        您可以通过输入营业执照注册号或营业执照图片（若两者都输入则只用注册号做查询）进行核验，接口返回查询到的工商照面信息，并比对要校验的字段与查询结果的一致性。查询到工商信息包括：统一社会信用代码、经营期限、法人姓名、经营状态、经营业务范围、注册资本等。
-
-        :param request: Request instance for VerifyBasicBizLicense.
-        :type request: :class:`tencentcloud.ocr.v20181119.models.VerifyBasicBizLicenseRequest`
-        :rtype: :class:`tencentcloud.ocr.v20181119.models.VerifyBasicBizLicenseResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("VerifyBasicBizLicense", params, headers=headers)
-            response = json.loads(body)
-            model = models.VerifyBasicBizLicenseResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def VerifyBizLicense(self, request):
-        """库源服务调整，该接口在2023年6月1日将正式下线。
-
-        本接口支持营业执照信息的识别与准确性核验，返回的真实工商照面信息比营业执照识别及核验（基础版）接口更详细。
-
-        您可以输入营业执照注册号或营业执照图片（若两者都输入则只用注册号做查询），接口返回查询到的工商照面信息，并比对要校验的字段与查询结果的一致性。
-
-        查询到工商信息包括：统一社会信用代码、组织机构代码、经营期限、法人姓名、经营状态、经营业务范围及方式、注册资金、注册币种、登记机关、开业日期、企业（机构）类型、注销日期、吊销日期、许可经营项目、一般经营项目、核准时间、省、地级市、区/县、住所所在行政区划代码、行业门类代码、行业门类名称、国民经济行业代码、国民经济行业名称、经营（业务）范围等。
-
-        :param request: Request instance for VerifyBizLicense.
-        :type request: :class:`tencentcloud.ocr.v20181119.models.VerifyBizLicenseRequest`
-        :rtype: :class:`tencentcloud.ocr.v20181119.models.VerifyBizLicenseResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("VerifyBizLicense", params, headers=headers)
-            response = json.loads(body)
-            model = models.VerifyBizLicenseResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def VerifyEnterpriseFourFactors(self, request):
-        """库源服务调整，该接口在2023年6月1日将正式下线。
-
-        此接口基于企业四要素授权“姓名、证件号码、企业标识、企业全称”，验证企业信息是否一致。
-
-        :param request: Request instance for VerifyEnterpriseFourFactors.
-        :type request: :class:`tencentcloud.ocr.v20181119.models.VerifyEnterpriseFourFactorsRequest`
-        :rtype: :class:`tencentcloud.ocr.v20181119.models.VerifyEnterpriseFourFactorsResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("VerifyEnterpriseFourFactors", params, headers=headers)
-            response = json.loads(body)
-            model = models.VerifyEnterpriseFourFactorsResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def VerifyOfdVatInvoiceOCR(self, request):
-        """本接口支持OFD格式的增值税电子普通发票和增值税电子专用发票的识别，返回发票代码、发票号码、开票日期、验证码、机器编号、密码区，购买方和销售方信息，包括名称、纳税人识别号、地址电话、开户行及账号，以及价税合计、开票人、收款人、复核人、税额、不含税金额等字段信息。
+        """本接口支持OFD格式的 增值税电子普通发票、增值税电子专用发票、电子发票（普通发票）、电子发票（增值税专用发票）识别，返回发票代码、发票号码、开票日期、验证码、机器编号、密码区，购买方和销售方信息，包括名称、纳税人识别号、地址电话、开户行及账号，以及价税合计、开票人、收款人、复核人、税额、不含税金额等字段信息。
 
         :param request: Request instance for VerifyOfdVatInvoiceOCR.
         :type request: :class:`tencentcloud.ocr.v20181119.models.VerifyOfdVatInvoiceOCRRequest`

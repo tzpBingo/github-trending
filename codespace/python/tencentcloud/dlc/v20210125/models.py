@@ -1877,6 +1877,53 @@ class CommonMetrics(AbstractModel):
         
 
 
+class CosPermission(AbstractModel):
+    """cos权限描述
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CosPath: cos路径
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosPath: str
+        :param _Permissions: 权限【"read","write"】
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Permissions: list of str
+        """
+        self._CosPath = None
+        self._Permissions = None
+
+    @property
+    def CosPath(self):
+        return self._CosPath
+
+    @CosPath.setter
+    def CosPath(self, CosPath):
+        self._CosPath = CosPath
+
+    @property
+    def Permissions(self):
+        return self._Permissions
+
+    @Permissions.setter
+    def Permissions(self, Permissions):
+        self._Permissions = Permissions
+
+
+    def _deserialize(self, params):
+        self._CosPath = params.get("CosPath")
+        self._Permissions = params.get("Permissions")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CreateDMSDatabaseRequest(AbstractModel):
     """CreateDMSDatabase请求参数结构体
 
@@ -3147,6 +3194,8 @@ class CreateNotebookSessionRequest(AbstractModel):
         :type ExecutorMaxNumbers: int
         :param _SparkImage: 指定spark版本名称，当前任务使用该spark镜像运行
         :type SparkImage: str
+        :param _IsInherit: 是否继承集群的资源类配置：0：自定义（默认），1：继承集群；
+        :type IsInherit: int
         """
         self._Name = None
         self._Kind = None
@@ -3163,6 +3212,7 @@ class CreateNotebookSessionRequest(AbstractModel):
         self._TimeoutInSecond = None
         self._ExecutorMaxNumbers = None
         self._SparkImage = None
+        self._IsInherit = None
 
     @property
     def Name(self):
@@ -3284,6 +3334,14 @@ class CreateNotebookSessionRequest(AbstractModel):
     def SparkImage(self, SparkImage):
         self._SparkImage = SparkImage
 
+    @property
+    def IsInherit(self):
+        return self._IsInherit
+
+    @IsInherit.setter
+    def IsInherit(self, IsInherit):
+        self._IsInherit = IsInherit
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -3306,6 +3364,7 @@ class CreateNotebookSessionRequest(AbstractModel):
         self._TimeoutInSecond = params.get("TimeoutInSecond")
         self._ExecutorMaxNumbers = params.get("ExecutorMaxNumbers")
         self._SparkImage = params.get("SparkImage")
+        self._IsInherit = params.get("IsInherit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4300,6 +4359,8 @@ class CreateSparkSessionBatchSQLRequest(AbstractModel):
 2.dlc.role.arn：用户配置的roleArn鉴权策略配置信息，可以用过该字段设置；
 3.dlc.sql.set.config：用户配置的集群配置信息，可以用过该字段设置；
         :type Arguments: list of KVPair
+        :param _IsInherit: 是否继承集群的资源类配置：0：自定义（默认），1：继承集群；
+        :type IsInherit: int
         """
         self._DataEngineName = None
         self._ExecuteSQL = None
@@ -4311,6 +4372,7 @@ class CreateSparkSessionBatchSQLRequest(AbstractModel):
         self._SessionId = None
         self._SessionName = None
         self._Arguments = None
+        self._IsInherit = None
 
     @property
     def DataEngineName(self):
@@ -4392,6 +4454,14 @@ class CreateSparkSessionBatchSQLRequest(AbstractModel):
     def Arguments(self, Arguments):
         self._Arguments = Arguments
 
+    @property
+    def IsInherit(self):
+        return self._IsInherit
+
+    @IsInherit.setter
+    def IsInherit(self, IsInherit):
+        self._IsInherit = IsInherit
+
 
     def _deserialize(self, params):
         self._DataEngineName = params.get("DataEngineName")
@@ -4409,6 +4479,7 @@ class CreateSparkSessionBatchSQLRequest(AbstractModel):
                 obj = KVPair()
                 obj._deserialize(item)
                 self._Arguments.append(obj)
+        self._IsInherit = params.get("IsInherit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -10454,7 +10525,7 @@ class DescribeSparkSessionBatchSqlLogResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _State: 状态：0：初始化、1：成功、2：失败、3：取消、4：异常；
+        :param _State: 状态：0：运行中、1：成功、2：失败、3：取消、4：超时；
         :type State: int
         :param _LogSet: 日志信息列表
 注意：此字段可能返回 null，表示取不到有效值。
@@ -11146,6 +11217,141 @@ class DescribeTasksResponse(AbstractModel):
         if params.get("TasksOverview") is not None:
             self._TasksOverview = TasksOverview()
             self._TasksOverview._deserialize(params.get("TasksOverview"))
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeUserRolesRequest(AbstractModel):
+    """DescribeUserRoles请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Limit: 列举的数量限制
+        :type Limit: int
+        :param _Offset: 列举的偏移位置
+        :type Offset: int
+        :param _Fuzzy: 按照arn模糊列举
+        :type Fuzzy: str
+        :param _SortBy: 返回结果按照该字段排序
+        :type SortBy: str
+        :param _Sorting: 正序或者倒序，例如：desc
+        :type Sorting: str
+        """
+        self._Limit = None
+        self._Offset = None
+        self._Fuzzy = None
+        self._SortBy = None
+        self._Sorting = None
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Fuzzy(self):
+        return self._Fuzzy
+
+    @Fuzzy.setter
+    def Fuzzy(self, Fuzzy):
+        self._Fuzzy = Fuzzy
+
+    @property
+    def SortBy(self):
+        return self._SortBy
+
+    @SortBy.setter
+    def SortBy(self, SortBy):
+        self._SortBy = SortBy
+
+    @property
+    def Sorting(self):
+        return self._Sorting
+
+    @Sorting.setter
+    def Sorting(self, Sorting):
+        self._Sorting = Sorting
+
+
+    def _deserialize(self, params):
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        self._Fuzzy = params.get("Fuzzy")
+        self._SortBy = params.get("SortBy")
+        self._Sorting = params.get("Sorting")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeUserRolesResponse(AbstractModel):
+    """DescribeUserRoles返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Total: 符合列举条件的总数量
+        :type Total: int
+        :param _UserRoles: 用户角色信息
+        :type UserRoles: list of UserRole
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Total = None
+        self._UserRoles = None
+        self._RequestId = None
+
+    @property
+    def Total(self):
+        return self._Total
+
+    @Total.setter
+    def Total(self, Total):
+        self._Total = Total
+
+    @property
+    def UserRoles(self):
+        return self._UserRoles
+
+    @UserRoles.setter
+    def UserRoles(self, UserRoles):
+        self._UserRoles = UserRoles
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Total = params.get("Total")
+        if params.get("UserRoles") is not None:
+            self._UserRoles = []
+            for item in params.get("UserRoles"):
+                obj = UserRole()
+                obj._deserialize(item)
+                self._UserRoles.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -14983,6 +15189,130 @@ class Property(AbstractModel):
         
 
 
+class QueryResultRequest(AbstractModel):
+    """QueryResult请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TaskId: 任务ID
+        :type TaskId: str
+        :param _NextToken: lastReadFile为上一次读取的文件，lastReadOffset为上一次读取到的位置
+        :type NextToken: str
+        """
+        self._TaskId = None
+        self._NextToken = None
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
+
+    @property
+    def NextToken(self):
+        return self._NextToken
+
+    @NextToken.setter
+    def NextToken(self, NextToken):
+        self._NextToken = NextToken
+
+
+    def _deserialize(self, params):
+        self._TaskId = params.get("TaskId")
+        self._NextToken = params.get("NextToken")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryResultResponse(AbstractModel):
+    """QueryResult返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TaskId: 任务Id
+        :type TaskId: str
+        :param _ResultSet: 结果数据
+        :type ResultSet: str
+        :param _ResultSchema: schema
+        :type ResultSchema: list of Column
+        :param _NextToken: 分页信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NextToken: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TaskId = None
+        self._ResultSet = None
+        self._ResultSchema = None
+        self._NextToken = None
+        self._RequestId = None
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
+
+    @property
+    def ResultSet(self):
+        return self._ResultSet
+
+    @ResultSet.setter
+    def ResultSet(self, ResultSet):
+        self._ResultSet = ResultSet
+
+    @property
+    def ResultSchema(self):
+        return self._ResultSchema
+
+    @ResultSchema.setter
+    def ResultSchema(self, ResultSchema):
+        self._ResultSchema = ResultSchema
+
+    @property
+    def NextToken(self):
+        return self._NextToken
+
+    @NextToken.setter
+    def NextToken(self, NextToken):
+        self._NextToken = NextToken
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TaskId = params.get("TaskId")
+        self._ResultSet = params.get("ResultSet")
+        if params.get("ResultSchema") is not None:
+            self._ResultSchema = []
+            for item in params.get("ResultSchema"):
+                obj = Column()
+                obj._deserialize(item)
+                self._ResultSchema.append(obj)
+        self._NextToken = params.get("NextToken")
+        self._RequestId = params.get("RequestId")
+
+
 class ReportHeartbeatMetaDataRequest(AbstractModel):
     """ReportHeartbeatMetaData请求参数结构体
 
@@ -15390,6 +15720,9 @@ class SparkJobInfo(AbstractModel):
         :param _IsInherit: 任务资源配置是否继承集群模板，0（默认）不继承，1：继承
 注意：此字段可能返回 null，表示取不到有效值。
         :type IsInherit: int
+        :param _IsSessionStarted: 是否使用session脚本的sql运行任务：false：否，true：是
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsSessionStarted: bool
         """
         self._JobId = None
         self._JobName = None
@@ -15431,6 +15764,7 @@ class SparkJobInfo(AbstractModel):
         self._DataEngineClusterType = None
         self._DataEngineImageVersion = None
         self._IsInherit = None
+        self._IsSessionStarted = None
 
     @property
     def JobId(self):
@@ -15752,6 +16086,14 @@ class SparkJobInfo(AbstractModel):
     def IsInherit(self, IsInherit):
         self._IsInherit = IsInherit
 
+    @property
+    def IsSessionStarted(self):
+        return self._IsSessionStarted
+
+    @IsSessionStarted.setter
+    def IsSessionStarted(self, IsSessionStarted):
+        self._IsSessionStarted = IsSessionStarted
+
 
     def _deserialize(self, params):
         self._JobId = params.get("JobId")
@@ -15796,6 +16138,7 @@ class SparkJobInfo(AbstractModel):
         self._DataEngineClusterType = params.get("DataEngineClusterType")
         self._DataEngineImageVersion = params.get("DataEngineImageVersion")
         self._IsInherit = params.get("IsInherit")
+        self._IsSessionStarted = params.get("IsSessionStarted")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -17689,7 +18032,7 @@ class TaskResultInfo(AbstractModel):
         :type SQL: str
         :param _SQLType: 执行任务的类型，现在分为DDL、DML、DQL
         :type SQLType: str
-        :param _State: 任务当前的状态，0：初始化 1：任务运行中 2：任务执行成功 -1：任务执行失败 -3：用户手动终止。只有任务执行成功的情况下，才会返回任务执行的结果
+        :param _State: 任务当前的状态，0：初始化 1：任务运行中 2：任务执行成功  3：数据写入中 4：排队中 -1：任务执行失败 -3：用户手动终止 。只有任务执行成功的情况下，才会返回任务执行的结果
         :type State: int
         :param _DataAmount: 扫描的数据量，单位byte
         :type DataAmount: int
@@ -18598,6 +18941,156 @@ class UserMessage(AbstractModel):
         self._Creator = params.get("Creator")
         self._CreateTime = params.get("CreateTime")
         self._UserAlias = params.get("UserAlias")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UserRole(AbstractModel):
+    """用户角色
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RoleId: 角色ID
+        :type RoleId: int
+        :param _AppId: 用户app ID
+        :type AppId: str
+        :param _Uin: 用户ID
+        :type Uin: str
+        :param _Arn: 角色权限
+        :type Arn: str
+        :param _ModifyTime: 最近修改时间戳
+        :type ModifyTime: int
+        :param _Desc: 角色描述信息
+        :type Desc: str
+        :param _RoleName: 角色名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RoleName: str
+        :param _Creator: 创建者UIN
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Creator: str
+        :param _CosPermissionList: cos授权路径列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CosPermissionList: list of CosPermission
+        :param _PermissionJson: cam策略json
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PermissionJson: str
+        """
+        self._RoleId = None
+        self._AppId = None
+        self._Uin = None
+        self._Arn = None
+        self._ModifyTime = None
+        self._Desc = None
+        self._RoleName = None
+        self._Creator = None
+        self._CosPermissionList = None
+        self._PermissionJson = None
+
+    @property
+    def RoleId(self):
+        return self._RoleId
+
+    @RoleId.setter
+    def RoleId(self, RoleId):
+        self._RoleId = RoleId
+
+    @property
+    def AppId(self):
+        return self._AppId
+
+    @AppId.setter
+    def AppId(self, AppId):
+        self._AppId = AppId
+
+    @property
+    def Uin(self):
+        return self._Uin
+
+    @Uin.setter
+    def Uin(self, Uin):
+        self._Uin = Uin
+
+    @property
+    def Arn(self):
+        return self._Arn
+
+    @Arn.setter
+    def Arn(self, Arn):
+        self._Arn = Arn
+
+    @property
+    def ModifyTime(self):
+        return self._ModifyTime
+
+    @ModifyTime.setter
+    def ModifyTime(self, ModifyTime):
+        self._ModifyTime = ModifyTime
+
+    @property
+    def Desc(self):
+        return self._Desc
+
+    @Desc.setter
+    def Desc(self, Desc):
+        self._Desc = Desc
+
+    @property
+    def RoleName(self):
+        return self._RoleName
+
+    @RoleName.setter
+    def RoleName(self, RoleName):
+        self._RoleName = RoleName
+
+    @property
+    def Creator(self):
+        return self._Creator
+
+    @Creator.setter
+    def Creator(self, Creator):
+        self._Creator = Creator
+
+    @property
+    def CosPermissionList(self):
+        return self._CosPermissionList
+
+    @CosPermissionList.setter
+    def CosPermissionList(self, CosPermissionList):
+        self._CosPermissionList = CosPermissionList
+
+    @property
+    def PermissionJson(self):
+        return self._PermissionJson
+
+    @PermissionJson.setter
+    def PermissionJson(self, PermissionJson):
+        self._PermissionJson = PermissionJson
+
+
+    def _deserialize(self, params):
+        self._RoleId = params.get("RoleId")
+        self._AppId = params.get("AppId")
+        self._Uin = params.get("Uin")
+        self._Arn = params.get("Arn")
+        self._ModifyTime = params.get("ModifyTime")
+        self._Desc = params.get("Desc")
+        self._RoleName = params.get("RoleName")
+        self._Creator = params.get("Creator")
+        if params.get("CosPermissionList") is not None:
+            self._CosPermissionList = []
+            for item in params.get("CosPermissionList"):
+                obj = CosPermission()
+                obj._deserialize(item)
+                self._CosPermissionList.append(obj)
+        self._PermissionJson = params.get("PermissionJson")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

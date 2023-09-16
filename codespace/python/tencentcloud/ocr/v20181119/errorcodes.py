@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-# 帐号已欠费。
+# 账号已欠费。
 FAILEDOPERATION_ARREARSERROR = 'FailedOperation.ArrearsError'
 
 # 身份证CardSide类型错误
@@ -22,9 +22,6 @@ FAILEDOPERATION_CARDSIDEERROR = 'FailedOperation.CardSideError'
 
 # 今日次数达到限制。
 FAILEDOPERATION_COUNTLIMITERROR = 'FailedOperation.CountLimitError'
-
-# 数据源查询失败。
-FAILEDOPERATION_DATASOURCEQUERYFAILED = 'FailedOperation.DataSourceQueryFailed'
 
 # 数据库异常。
 FAILEDOPERATION_DBERROR = 'FailedOperation.DbError'
@@ -41,7 +38,7 @@ FAILEDOPERATION_EMPTYIMAGEERROR = 'FailedOperation.EmptyImageError'
 # 引擎识别超时。
 FAILEDOPERATION_ENGINERECOGNIZETIMEOUT = 'FailedOperation.EngineRecognizeTimeout'
 
-# 身份证信息不合法（身份证号、姓名字段校验非法等）。
+# 第二代身份证信息不合法或缺失（身份证号、姓名字段校验非法等）
 FAILEDOPERATION_IDCARDINFOILLEGAL = 'FailedOperation.IdCardInfoIllegal'
 
 # 图片分辨率过小或身份证在原图中的占比过小
@@ -59,7 +56,7 @@ FAILEDOPERATION_IMAGEDECODEFAILED = 'FailedOperation.ImageDecodeFailed'
 # 照片未检测到名片。
 FAILEDOPERATION_IMAGENOBUSINESSCARD = 'FailedOperation.ImageNoBusinessCard'
 
-# 图片中未检测到身份证。
+# 图片中未检测到第二代身份证或临时身份证。
 FAILEDOPERATION_IMAGENOIDCARD = 'FailedOperation.ImageNoIdCard'
 
 # 非指定卡类别图片
@@ -68,7 +65,7 @@ FAILEDOPERATION_IMAGENOSPECIFIEDCARD = 'FailedOperation.ImageNoSpecifiedCard'
 # 图片中未检测到文本。
 FAILEDOPERATION_IMAGENOTEXT = 'FailedOperation.ImageNoText'
 
-# 图片尺寸过大，请参考输出参数中关于图片大小限制的说明。
+# 图片尺寸过大，请参考输入参数中关于图片大小限制的说明。
 FAILEDOPERATION_IMAGESIZETOOLARGE = 'FailedOperation.ImageSizeTooLarge'
 
 # 发票数据不一致。温馨提示：新版发票核验接口功能更完整，请尽快切换，如已切换请忽略。
@@ -77,7 +74,7 @@ FAILEDOPERATION_INVOICEMISMATCH = 'FailedOperation.InvoiceMismatch'
 # 输入的Language不支持。
 FAILEDOPERATION_LANGUAGENOTSUPPORT = 'FailedOperation.LanguageNotSupport'
 
-# 照片中存在多张卡。
+# 图片中存在两张及以上同面卡证，请上传卡证单面图片或一正一反双面图片。
 FAILEDOPERATION_MULTICARDERROR = 'FailedOperation.MultiCardError'
 
 # 非银行卡。
@@ -98,9 +95,6 @@ FAILEDOPERATION_NOPASSPORT = 'FailedOperation.NoPassport'
 # OCR识别失败。
 FAILEDOPERATION_OCRFAILED = 'FailedOperation.OcrFailed'
 
-# 查询无记录。
-FAILEDOPERATION_QUERYNORECORD = 'FailedOperation.QueryNoRecord'
-
 # 未知错误。
 FAILEDOPERATION_UNKNOWERROR = 'FailedOperation.UnKnowError'
 
@@ -118,9 +112,6 @@ INVALIDPARAMETER_CONFIGFORMATERROR = 'InvalidParameter.ConfigFormatError'
 
 # 图片解码失败。
 INVALIDPARAMETER_ENGINEIMAGEDECODEFAILED = 'InvalidParameter.EngineImageDecodeFailed'
-
-# 无效的GTIN。
-INVALIDPARAMETER_INVALIDGTINERROR = 'InvalidParameter.InvalidGTINError'
 
 # 任务创建失败，文件URL非法。
 INVALIDPARAMETERVALUE_FILEURLILLEGALERROR = 'InvalidParameterValue.FileUrlIllegalError'
@@ -154,6 +145,12 @@ RESOURCENOTFOUND_NOINVOICE = 'ResourceNotFound.NoInvoice'
 
 # 不支持当天发票查询。
 RESOURCENOTFOUND_NOTSUPPORTCURRENTINVOICEQUERY = 'ResourceNotFound.NotSupportCurrentInvoiceQuery'
+
+# 帐号已欠费。
+RESOURCEUNAVAILABLE_INARREARS = 'ResourceUnavailable.InArrears'
+
+# 账号资源包耗尽。
+RESOURCEUNAVAILABLE_RESOURCEPACKAGERUNOUT = 'ResourceUnavailable.ResourcePackageRunOut'
 
 # 税务局网络异常，请稍后访问。
 RESOURCEUNAVAILABLE_TAXNETWORKERROR = 'ResourceUnavailable.TaxNetworkError'

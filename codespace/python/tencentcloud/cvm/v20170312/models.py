@@ -7015,6 +7015,9 @@ class HostItem(AbstractModel):
         :param _CageId: 专用宿主机所属的围笼ID。该字段仅对金融专区围笼内的专用宿主机有效。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CageId: str
+        :param _Tags: 专用宿主机关联的标签列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Tags: list of Tag
         """
         self._Placement = None
         self._HostId = None
@@ -7029,6 +7032,7 @@ class HostItem(AbstractModel):
         self._HostIp = None
         self._HostResource = None
         self._CageId = None
+        self._Tags = None
 
     @property
     def Placement(self):
@@ -7134,6 +7138,14 @@ class HostItem(AbstractModel):
     def CageId(self, CageId):
         self._CageId = CageId
 
+    @property
+    def Tags(self):
+        return self._Tags
+
+    @Tags.setter
+    def Tags(self, Tags):
+        self._Tags = Tags
+
 
     def _deserialize(self, params):
         if params.get("Placement") is not None:
@@ -7153,6 +7165,12 @@ class HostItem(AbstractModel):
             self._HostResource = HostResource()
             self._HostResource._deserialize(params.get("HostResource"))
         self._CageId = params.get("CageId")
+        if params.get("Tags") is not None:
+            self._Tags = []
+            for item in params.get("Tags"):
+                obj = Tag()
+                obj._deserialize(item)
+                self._Tags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7223,6 +7241,9 @@ class HostResource(AbstractModel):
         :type GpuTotal: int
         :param _GpuAvailable: 专用宿主机实例可用GPU卡数
         :type GpuAvailable: int
+        :param _ExclusiveOwner: CDH owner
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ExclusiveOwner: str
         """
         self._CpuTotal = None
         self._CpuAvailable = None
@@ -7233,6 +7254,7 @@ class HostResource(AbstractModel):
         self._DiskType = None
         self._GpuTotal = None
         self._GpuAvailable = None
+        self._ExclusiveOwner = None
 
     @property
     def CpuTotal(self):
@@ -7306,6 +7328,14 @@ class HostResource(AbstractModel):
     def GpuAvailable(self, GpuAvailable):
         self._GpuAvailable = GpuAvailable
 
+    @property
+    def ExclusiveOwner(self):
+        return self._ExclusiveOwner
+
+    @ExclusiveOwner.setter
+    def ExclusiveOwner(self, ExclusiveOwner):
+        self._ExclusiveOwner = ExclusiveOwner
+
 
     def _deserialize(self, params):
         self._CpuTotal = params.get("CpuTotal")
@@ -7317,6 +7347,7 @@ class HostResource(AbstractModel):
         self._DiskType = params.get("DiskType")
         self._GpuTotal = params.get("GpuTotal")
         self._GpuAvailable = params.get("GpuAvailable")
+        self._ExclusiveOwner = params.get("ExclusiveOwner")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12418,9 +12449,9 @@ class ModifyImageSharePermissionRequest(AbstractModel):
         r"""
         :param _ImageId: 镜像ID，形如`img-gvbnzy6f`。镜像Id可以通过如下方式获取：<br><li>通过[DescribeImages](https://cloud.tencent.com/document/api/213/15715)接口返回的`ImageId`获取。<br><li>通过[镜像控制台](https://console.cloud.tencent.com/cvm/image)获取。 <br>镜像ID必须指定为状态为`NORMAL`的镜像。镜像状态请参考[镜像数据表](https://cloud.tencent.com/document/product/213/15753#Image)。
         :type ImageId: str
-        :param _AccountIds: 接收分享镜像的账号Id列表，array型参数的格式可以参考[API简介](/document/api/213/568)。帐号ID不同于QQ号，查询用户帐号ID请查看[帐号信息](https://console.cloud.tencent.com/developer)中的帐号ID栏。
+        :param _AccountIds: 接收共享镜像的账号Id列表，array型参数的格式可以参考[API简介](/document/api/213/568)。账号ID不同于QQ号，查询用户账号ID请查看[账号信息](https://console.cloud.tencent.com/developer)中的账号ID栏。
         :type AccountIds: list of str
-        :param _Permission: 操作，包括 `SHARE`，`CANCEL`。其中`SHARE`代表分享操作，`CANCEL`代表取消分享操作。
+        :param _Permission: 操作，包括 `SHARE`，`CANCEL`。其中`SHARE`代表共享操作，`CANCEL`代表取消共享操作。
         :type Permission: str
         """
         self._ImageId = None
@@ -12596,7 +12627,7 @@ class ModifyInstancesAttributeRequest(AbstractModel):
         :type SecurityGroups: list of str
         :param _CamRoleName: 给实例绑定用户角色，传空值为解绑操作
         :type CamRoleName: str
-        :param _HostName: 实例的主机名。<br><li>点号（.）和短横线（-）不能作为 HostName 的首尾字符，不能连续使用。<br><li>Windows 实例：主机名字符长度为[2, 15]，允许字母（不限制大小写）、数字和短横线（-）组成，不支持点号（.），不能全是数字。<br><li>其他类型（Linux 等）实例：主机名字符长度为[2, 60]，允许支持多个点号，点之间为一段，每段允许字母（不限制大小写）、数字和短横线（-）组成。
+        :param _HostName: 实例的主机名。<br><li>点号（.）和短横线（-）不能作为 HostName 的首尾字符，不能连续使用。<br><li>Windows 实例：主机名字符长度为[2, 15]，允许字母（不限制大小写）、数字和短横线（-）组成，不支持点号（.），不能全是数字。<br><li>其他类型（Linux 等）实例：主机名字符长度为[2, 60]，允许支持多个点号，点之间为一段，每段允许字母（不限制大小写）、数字和短横线（-）组成。<br> 注意点：修改主机名后实例会立即重启，重启后新的主机名生效。
         :type HostName: str
         :param _DisableApiTermination: 实例销毁保护标志，表示是否允许通过api接口删除实例。取值范围：<br><li>TRUE：表示开启实例保护，不允许通过api接口删除实例<br><li>FALSE：表示关闭实例保护，允许通过api接口删除实例<br><br>默认取值：FALSE。
         :type DisableApiTermination: bool
@@ -13336,15 +13367,12 @@ class Placement(AbstractModel):
         :type ProjectId: int
         :param _HostIds: 实例所属的专用宿主机ID列表，仅用于入参。如果您有购买专用宿主机并且指定了该参数，则您购买的实例就会随机的部署在这些专用宿主机上。
         :type HostIds: list of str
-        :param _HostIps: 指定母机IP生产子机
-        :type HostIps: list of str
         :param _HostId: 实例所属的专用宿主机ID，仅用于出参。
         :type HostId: str
         """
         self._Zone = None
         self._ProjectId = None
         self._HostIds = None
-        self._HostIps = None
         self._HostId = None
 
     @property
@@ -13372,14 +13400,6 @@ class Placement(AbstractModel):
         self._HostIds = HostIds
 
     @property
-    def HostIps(self):
-        return self._HostIps
-
-    @HostIps.setter
-    def HostIps(self, HostIps):
-        self._HostIps = HostIps
-
-    @property
     def HostId(self):
         return self._HostId
 
@@ -13392,7 +13412,6 @@ class Placement(AbstractModel):
         self._Zone = params.get("Zone")
         self._ProjectId = params.get("ProjectId")
         self._HostIds = params.get("HostIds")
-        self._HostIps = params.get("HostIps")
         self._HostId = params.get("HostId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():

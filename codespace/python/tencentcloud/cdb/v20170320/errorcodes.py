@@ -80,11 +80,17 @@ FAILEDOPERATION_GETPRIVILEGEERROR = 'FailedOperation.GetPrivilegeError'
 # 查询失败。
 FAILEDOPERATION_INSTANCEQUERYERROR = 'FailedOperation.InstanceQueryError'
 
+# 实例任务冲突错误。
+FAILEDOPERATION_INSTANCETASKCONFLICTERROR = 'FailedOperation.InstanceTaskConflictError'
+
 # json序列化失败。
 FAILEDOPERATION_JSONMARSHALERROR = 'FailedOperation.JsonMarshalError'
 
 # json反序列化失败。
 FAILEDOPERATION_JSONUNMARSHALERROR = 'FailedOperation.JsonUnmarshalError'
+
+# 检查到改动前后策略一致，无改动点。
+FAILEDOPERATION_NOTCHANGESTRATEGY = 'FailedOperation.NotChangeStrategy'
 
 # 不是延迟复制RO。
 FAILEDOPERATION_NOTDELAYRO = 'FailedOperation.NotDelayRo'
@@ -104,11 +110,17 @@ FAILEDOPERATION_QUERYAUDITTASKFAILERROR = 'FailedOperation.QueryAuditTaskFailErr
 # 查询日志失败。
 FAILEDOPERATION_QUERYLOGERROR = 'FailedOperation.QueryLogError'
 
+# 高可用版服务跨区调用反序列化失败。
+FAILEDOPERATION_REMOTECALLUNMARSHALERROR = 'FailedOperation.RemoteCallUnmarshalError'
+
 # 代理创建中或则已存在，请勿重复创建。
 FAILEDOPERATION_REPEATCREATEPROXYERROR = 'FailedOperation.RepeatCreateProxyError'
 
 # 后台请求服务异常，请您联系客服解决。
 FAILEDOPERATION_RESPONSEVALUEERROR = 'FailedOperation.ResponseValueError'
+
+# 查询日志结果集超出限制，请缩小查询范围。
+FAILEDOPERATION_RESULTSETOVERLIMIT = 'FailedOperation.ResultSetOverLimit'
 
 # 操作发起失败，请稍后重试。如果操作持续不成功，请您联系客服进行处理。
 FAILEDOPERATION_STARTFLOWERROR = 'FailedOperation.StartFlowError'
@@ -205,6 +217,9 @@ INTERNALERROR_FTPERROR = 'InternalError.FtpError'
 
 # Http请求异常。
 INTERNALERROR_HTTPERROR = 'InternalError.HttpError'
+
+# 请求失败。
+INTERNALERROR_HTTPREQUESTERROR = 'InternalError.HttpRequestError'
 
 # 导入失败。
 INTERNALERROR_IMPORTERROR = 'InternalError.ImportError'
@@ -559,6 +574,9 @@ UNAUTHORIZEDOPERATION_NOTENOUGHPRIVILEGES = 'UnauthorizedOperation.NotEnoughPriv
 
 # 操作不支持。
 UNSUPPORTEDOPERATION = 'UnsupportedOperation'
+
+# 非强隔离实例不支持当前操作。
+UNSUPPORTEDOPERATION_NOTSUPPORTNORMALINSTANCE = 'UnsupportedOperation.NotSupportNormalInstance'
 
 # 权限不支持。
 UNSUPPORTEDOPERATION_PRIVILEGESUNSUPPORTEDERROR = 'UnsupportedOperation.PrivilegesUnsupportedError'

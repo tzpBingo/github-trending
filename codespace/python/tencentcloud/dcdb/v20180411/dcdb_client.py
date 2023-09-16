@@ -857,6 +857,29 @@ class DcdbClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeLogFileRetentionPeriod(self, request):
+        """本接口(DescribeLogFileRetentionPeriod)用于查看数据库备份日志的备份天数的设置情况。
+
+        :param request: Request instance for DescribeLogFileRetentionPeriod.
+        :type request: :class:`tencentcloud.dcdb.v20180411.models.DescribeLogFileRetentionPeriodRequest`
+        :rtype: :class:`tencentcloud.dcdb.v20180411.models.DescribeLogFileRetentionPeriodResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeLogFileRetentionPeriod", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeLogFileRetentionPeriodResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeOrders(self, request):
         """本接口（DescribeOrders）用于查询分布式数据库订单信息。传入订单ID来查询订单关联的分布式数据库实例，和对应的任务流程ID。
 
@@ -940,31 +963,6 @@ class DcdbClient(AbstractClient):
             body = self.call("DescribeShardSpec", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeShardSpecResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def DescribeSqlLogs(self, request):
-        """已废弃接口
-
-        本接口（DescribeSqlLogs）用于获取实例SQL日志。
-
-        :param request: Request instance for DescribeSqlLogs.
-        :type request: :class:`tencentcloud.dcdb.v20180411.models.DescribeSqlLogsRequest`
-        :rtype: :class:`tencentcloud.dcdb.v20180411.models.DescribeSqlLogsResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("DescribeSqlLogs", params, headers=headers)
-            response = json.loads(body)
-            model = models.DescribeSqlLogsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

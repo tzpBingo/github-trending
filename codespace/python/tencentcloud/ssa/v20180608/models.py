@@ -68,6 +68,45 @@ class AggregationObj(AbstractModel):
         
 
 
+class AlarmInfoRsp(AbstractModel):
+    """用户威胁告警信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AttackEvent: 近7天威胁告警
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AttackEvent: list of AttackEvent
+        """
+        self._AttackEvent = None
+
+    @property
+    def AttackEvent(self):
+        return self._AttackEvent
+
+    @AttackEvent.setter
+    def AttackEvent(self, AttackEvent):
+        self._AttackEvent = AttackEvent
+
+
+    def _deserialize(self, params):
+        if params.get("AttackEvent") is not None:
+            self._AttackEvent = []
+            for item in params.get("AttackEvent"):
+                obj = AttackEvent()
+                obj._deserialize(item)
+                self._AttackEvent.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AlertDetail(AbstractModel):
     """告警详情
 
@@ -1909,6 +1948,131 @@ class AssetTypeStatistic(AbstractModel):
         
 
 
+class AttackEvent(AbstractModel):
+    """攻击事件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SsaSrcIp: 来源ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaSrcIp: str
+        :param _SsaDstIp: 目标ip
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaDstIp: str
+        :param _SsaDstProvince: 目标省份
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaDstProvince: str
+        :param _SsaDstCity: 目标城市
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaDstCity: str
+        :param _SsaDstCountry: 目标国家
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaDstCountry: str
+        :param _SsaSrcProvince: 来源省份
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaSrcProvince: str
+        :param _SsaSrcCountry: 来源国家
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaSrcCountry: str
+        :param _SsaSrcCity: 来源城市
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SsaSrcCity: str
+        """
+        self._SsaSrcIp = None
+        self._SsaDstIp = None
+        self._SsaDstProvince = None
+        self._SsaDstCity = None
+        self._SsaDstCountry = None
+        self._SsaSrcProvince = None
+        self._SsaSrcCountry = None
+        self._SsaSrcCity = None
+
+    @property
+    def SsaSrcIp(self):
+        return self._SsaSrcIp
+
+    @SsaSrcIp.setter
+    def SsaSrcIp(self, SsaSrcIp):
+        self._SsaSrcIp = SsaSrcIp
+
+    @property
+    def SsaDstIp(self):
+        return self._SsaDstIp
+
+    @SsaDstIp.setter
+    def SsaDstIp(self, SsaDstIp):
+        self._SsaDstIp = SsaDstIp
+
+    @property
+    def SsaDstProvince(self):
+        return self._SsaDstProvince
+
+    @SsaDstProvince.setter
+    def SsaDstProvince(self, SsaDstProvince):
+        self._SsaDstProvince = SsaDstProvince
+
+    @property
+    def SsaDstCity(self):
+        return self._SsaDstCity
+
+    @SsaDstCity.setter
+    def SsaDstCity(self, SsaDstCity):
+        self._SsaDstCity = SsaDstCity
+
+    @property
+    def SsaDstCountry(self):
+        return self._SsaDstCountry
+
+    @SsaDstCountry.setter
+    def SsaDstCountry(self, SsaDstCountry):
+        self._SsaDstCountry = SsaDstCountry
+
+    @property
+    def SsaSrcProvince(self):
+        return self._SsaSrcProvince
+
+    @SsaSrcProvince.setter
+    def SsaSrcProvince(self, SsaSrcProvince):
+        self._SsaSrcProvince = SsaSrcProvince
+
+    @property
+    def SsaSrcCountry(self):
+        return self._SsaSrcCountry
+
+    @SsaSrcCountry.setter
+    def SsaSrcCountry(self, SsaSrcCountry):
+        self._SsaSrcCountry = SsaSrcCountry
+
+    @property
+    def SsaSrcCity(self):
+        return self._SsaSrcCity
+
+    @SsaSrcCity.setter
+    def SsaSrcCity(self, SsaSrcCity):
+        self._SsaSrcCity = SsaSrcCity
+
+
+    def _deserialize(self, params):
+        self._SsaSrcIp = params.get("SsaSrcIp")
+        self._SsaDstIp = params.get("SsaDstIp")
+        self._SsaDstProvince = params.get("SsaDstProvince")
+        self._SsaDstCity = params.get("SsaDstCity")
+        self._SsaDstCountry = params.get("SsaDstCountry")
+        self._SsaSrcProvince = params.get("SsaSrcProvince")
+        self._SsaSrcCountry = params.get("SsaSrcCountry")
+        self._SsaSrcCity = params.get("SsaSrcCity")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class Bucket(AbstractModel):
     """es聚合数据类型
 
@@ -2635,7 +2799,7 @@ class ConcernInfo(AbstractModel):
         :param _ConcernType: 关注点类型
 注意：此字段可能返回 null，表示取不到有效值。
         :type ConcernType: int
-        :param _EntityType: 实体类型
+        :param _EntityType: 实体类型 1: 非云上IP，2: 云上IP，3: 域名，4: IP，5: 文件，6: 进程
 注意：此字段可能返回 null，表示取不到有效值。
         :type EntityType: int
         :param _Concern: 关注点
@@ -4215,6 +4379,91 @@ class DataEvent(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class DescribeAlarmStatRequest(AbstractModel):
+    """DescribeAlarmStat请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StartTime: 开始时间
+        :type StartTime: str
+        :param _EndTime: 结束时间
+        :type EndTime: str
+        """
+        self._StartTime = None
+        self._EndTime = None
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+
+    def _deserialize(self, params):
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAlarmStatResponse(AbstractModel):
+    """DescribeAlarmStat返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: 威胁告警信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.ssa.v20180608.models.AlarmInfoRsp`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = AlarmInfoRsp()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
 
 
 class DescribeAssetDetailListRequest(AbstractModel):
@@ -6144,7 +6393,7 @@ class DescribeSocAlertListRequest(AbstractModel):
         :type Filter: list of QueryFilter
         :param _Sorter: 排序参数
         :type Sorter: list of QuerySort
-        :param _ExportFlag: 是否导出
+        :param _ExportFlag: 是否导出；默认为否，如量级超过1000，则使用单独的导出接口
         :type ExportFlag: bool
         """
         self._PageSize = None
@@ -7079,7 +7328,7 @@ class DescribeVulListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Params: 查询过滤参数
+        :param _Params: 查询过滤参数:(json序列化的结果）
         :type Params: str
         """
         self._Params = None
@@ -8773,6 +9022,219 @@ class SaDivulgeDataQueryPubResponse(AbstractModel):
             self._Data = SaDivulgeDataQueryPubList()
             self._Data._deserialize(params.get("Data"))
         self._RequestId = params.get("RequestId")
+
+
+class SaDivulgeScanRuleMutateRequest(AbstractModel):
+    """SaDivulgeScanRuleMutate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: Id
+        :type Id: str
+        :param _DivulgeSoure: DivulgeSoure
+        :type DivulgeSoure: str
+        :param _DivulgeSoureUrl: DivulgeSoureUrl
+        :type DivulgeSoureUrl: str
+        :param _RuleName: RuleName
+        :type RuleName: str
+        :param _RuleWord: RuleWord
+        :type RuleWord: str
+        :param _ScanStatus: ScanStatus
+        :type ScanStatus: str
+        :param _DivulgeType: DivulgeType
+        :type DivulgeType: str
+        :param _RepairAdvice: RepairAdvice
+        :type RepairAdvice: str
+        """
+        self._Id = None
+        self._DivulgeSoure = None
+        self._DivulgeSoureUrl = None
+        self._RuleName = None
+        self._RuleWord = None
+        self._ScanStatus = None
+        self._DivulgeType = None
+        self._RepairAdvice = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def DivulgeSoure(self):
+        return self._DivulgeSoure
+
+    @DivulgeSoure.setter
+    def DivulgeSoure(self, DivulgeSoure):
+        self._DivulgeSoure = DivulgeSoure
+
+    @property
+    def DivulgeSoureUrl(self):
+        return self._DivulgeSoureUrl
+
+    @DivulgeSoureUrl.setter
+    def DivulgeSoureUrl(self, DivulgeSoureUrl):
+        self._DivulgeSoureUrl = DivulgeSoureUrl
+
+    @property
+    def RuleName(self):
+        return self._RuleName
+
+    @RuleName.setter
+    def RuleName(self, RuleName):
+        self._RuleName = RuleName
+
+    @property
+    def RuleWord(self):
+        return self._RuleWord
+
+    @RuleWord.setter
+    def RuleWord(self, RuleWord):
+        self._RuleWord = RuleWord
+
+    @property
+    def ScanStatus(self):
+        return self._ScanStatus
+
+    @ScanStatus.setter
+    def ScanStatus(self, ScanStatus):
+        self._ScanStatus = ScanStatus
+
+    @property
+    def DivulgeType(self):
+        return self._DivulgeType
+
+    @DivulgeType.setter
+    def DivulgeType(self, DivulgeType):
+        self._DivulgeType = DivulgeType
+
+    @property
+    def RepairAdvice(self):
+        return self._RepairAdvice
+
+    @RepairAdvice.setter
+    def RepairAdvice(self, RepairAdvice):
+        self._RepairAdvice = RepairAdvice
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        self._DivulgeSoure = params.get("DivulgeSoure")
+        self._DivulgeSoureUrl = params.get("DivulgeSoureUrl")
+        self._RuleName = params.get("RuleName")
+        self._RuleWord = params.get("RuleWord")
+        self._ScanStatus = params.get("ScanStatus")
+        self._DivulgeType = params.get("DivulgeType")
+        self._RepairAdvice = params.get("RepairAdvice")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SaDivulgeScanRuleMutateResponse(AbstractModel):
+    """SaDivulgeScanRuleMutate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: Data
+        :type Data: :class:`tencentcloud.ssa.v20180608.models.SaDivulgeScanRuleSetList`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = SaDivulgeScanRuleSetList()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
+class SaDivulgeScanRuleSetList(AbstractModel):
+    """设置_泄露监测产品监测扫描规则策略
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Value: Value
+        :type Value: str
+        :param _Code: Code
+        :type Code: int
+        :param _Message: Message
+        :type Message: str
+        """
+        self._Value = None
+        self._Code = None
+        self._Message = None
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+    @property
+    def Code(self):
+        return self._Code
+
+    @Code.setter
+    def Code(self, Code):
+        self._Code = Code
+
+    @property
+    def Message(self):
+        return self._Message
+
+    @Message.setter
+    def Message(self, Message):
+        self._Message = Message
+
+
+    def _deserialize(self, params):
+        self._Value = params.get("Value")
+        self._Code = params.get("Code")
+        self._Message = params.get("Message")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class SaEventPubRequest(AbstractModel):

@@ -66,9 +66,9 @@ class ShippingOption(TelegramObject):
     ):
         super().__init__(api_kwargs=api_kwargs)
 
-        self.id: str = id  # pylint: disable=invalid-name
+        self.id: str = id
         self.title: str = title
-        self.prices: Tuple["LabeledPrice", ...] = parse_sequence_arg(prices)
+        self.prices: Tuple[LabeledPrice, ...] = parse_sequence_arg(prices)
 
         self._id_attrs = (self.id,)
 

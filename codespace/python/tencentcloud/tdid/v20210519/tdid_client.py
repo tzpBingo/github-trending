@@ -26,31 +26,6 @@ class TdidClient(AbstractClient):
     _service = 'tdid'
 
 
-    def AddLabel(self, request):
-        """下线已有内测接口，待上线正式版本的接口
-
-        DID添加标签
-
-        :param request: Request instance for AddLabel.
-        :type request: :class:`tencentcloud.tdid.v20210519.models.AddLabelRequest`
-        :rtype: :class:`tencentcloud.tdid.v20210519.models.AddLabelResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("AddLabel", params, headers=headers)
-            response = json.loads(body)
-            model = models.AddLabelResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def CheckChain(self, request):
         """该接口不再使用
 
@@ -201,31 +176,6 @@ class TdidClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def GetAgencyTDid(self, request):
-        """该接口已废弃
-
-        本机构DID详情
-
-        :param request: Request instance for GetAgencyTDid.
-        :type request: :class:`tencentcloud.tdid.v20210519.models.GetAgencyTDidRequest`
-        :rtype: :class:`tencentcloud.tdid.v20210519.models.GetAgencyTDidResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("GetAgencyTDid", params, headers=headers)
-            response = json.loads(body)
-            model = models.GetAgencyTDidResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def GetAuthorityIssuer(self, request):
         """该接口不再使用
 
@@ -251,56 +201,6 @@ class TdidClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
-    def GetConsortiumClusterList(self, request):
-        """下线已有内测接口，待上线正式版本的接口
-
-        获取联盟bcos网络列表
-
-        :param request: Request instance for GetConsortiumClusterList.
-        :type request: :class:`tencentcloud.tdid.v20210519.models.GetConsortiumClusterListRequest`
-        :rtype: :class:`tencentcloud.tdid.v20210519.models.GetConsortiumClusterListResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("GetConsortiumClusterList", params, headers=headers)
-            response = json.loads(body)
-            model = models.GetConsortiumClusterListResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def GetConsortiumList(self, request):
-        """下线已有内测接口，待上线正式版本的接口
-
-        获取联盟列表
-
-        :param request: Request instance for GetConsortiumList.
-        :type request: :class:`tencentcloud.tdid.v20210519.models.GetConsortiumListRequest`
-        :rtype: :class:`tencentcloud.tdid.v20210519.models.GetConsortiumListResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("GetConsortiumList", params, headers=headers)
-            response = json.loads(body)
-            model = models.GetConsortiumListResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
     def GetCptInfo(self, request):
         """该接口不再使用
 
@@ -317,31 +217,6 @@ class TdidClient(AbstractClient):
             body = self.call("GetCptInfo", params, headers=headers)
             response = json.loads(body)
             model = models.GetCptInfoResponse()
-            model._deserialize(response["Response"])
-            return model
-        except Exception as e:
-            if isinstance(e, TencentCloudSDKException):
-                raise
-            else:
-                raise TencentCloudSDKException(type(e).__name__, str(e))
-
-
-    def GetCredentialCptRank(self, request):
-        """下线已有内测接口，待上线正式版本的接口
-
-        凭证颁发按机构排行
-
-        :param request: Request instance for GetCredentialCptRank.
-        :type request: :class:`tencentcloud.tdid.v20210519.models.GetCredentialCptRankRequest`
-        :rtype: :class:`tencentcloud.tdid.v20210519.models.GetCredentialCptRankResponse`
-
-        """
-        try:
-            params = request._serialize()
-            headers = request.headers
-            body = self.call("GetCredentialCptRank", params, headers=headers)
-            response = json.loads(body)
-            model = models.GetCredentialCptRankResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

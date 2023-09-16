@@ -49,6 +49,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def AddAclRule(self, request):
+        """添加互联网边界访问控制规则
+
+        :param request: Request instance for AddAclRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.AddAclRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.AddAclRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AddAclRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.AddAclRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def AddEnterpriseSecurityGroupRules(self, request):
         """创建新企业安全组规则
 
@@ -95,6 +118,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def AddVpcAcRule(self, request):
+        """添加VPC内网间规则
+
+        :param request: Request instance for AddVpcAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.AddVpcAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.AddVpcAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("AddVpcAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.AddVpcAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateAcRules(self, request):
         """创建访问控制规则
 
@@ -132,6 +178,29 @@ class CfwClient(AbstractClient):
             body = self.call("CreateAddressTemplate", params, headers=headers)
             response = json.loads(body)
             model = models.CreateAddressTemplateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def CreateBlockIgnoreRuleList(self, request):
+        """批量添加入侵防御封禁列表、放通列表规则
+
+        :param request: Request instance for CreateBlockIgnoreRuleList.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.CreateBlockIgnoreRuleListRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.CreateBlockIgnoreRuleListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateBlockIgnoreRuleList", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateBlockIgnoreRuleListResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -256,6 +325,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateVpcFwGroup(self, request):
+        """创建VPC间防火墙(防火墙组)
+
+        :param request: Request instance for CreateVpcFwGroup.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.CreateVpcFwGroupRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.CreateVpcFwGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateVpcFwGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateVpcFwGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DeleteAcRule(self, request):
         """删除规则
 
@@ -316,6 +408,29 @@ class CfwClient(AbstractClient):
             body = self.call("DeleteAllAccessControlRule", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteAllAccessControlRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteBlockIgnoreRuleList(self, request):
+        """批量删除入侵防御封禁列表、放通列表规则
+
+        :param request: Request instance for DeleteBlockIgnoreRuleList.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DeleteBlockIgnoreRuleListRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DeleteBlockIgnoreRuleListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteBlockIgnoreRuleList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteBlockIgnoreRuleListResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -394,6 +509,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DeleteVpcFwGroup(self, request):
+        """删除防火墙(组)，或者删除其中实例
+
+        :param request: Request instance for DeleteVpcFwGroup.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DeleteVpcFwGroupRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DeleteVpcFwGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteVpcFwGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteVpcFwGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DeleteVpcInstance(self, request):
         """删除防火墙实例
 
@@ -431,6 +569,75 @@ class CfwClient(AbstractClient):
             body = self.call("DescribeAcLists", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeAcListsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeAclRule(self, request):
+        """查询互联网边界访问控制列表
+
+        :param request: Request instance for DescribeAclRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeAclRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeAclRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAclRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAclRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeAddressTemplateList(self, request):
+        """查询地址模板列表
+
+        :param request: Request instance for DescribeAddressTemplateList.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeAddressTemplateListRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeAddressTemplateListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAddressTemplateList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAddressTemplateListResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeAssetSync(self, request):
+        """资产同步状态查询
+
+        :param request: Request instance for DescribeAssetSync.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeAssetSyncRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeAssetSyncResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAssetSync", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAssetSyncResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -615,6 +822,75 @@ class CfwClient(AbstractClient):
             body = self.call("DescribeEnterpriseSecurityGroupRule", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeEnterpriseSecurityGroupRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFwEdgeIps(self, request):
+        """串行防火墙IP开关列表
+
+        :param request: Request instance for DescribeFwEdgeIps.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeFwEdgeIpsRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeFwEdgeIpsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFwEdgeIps", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFwEdgeIpsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFwGroupInstanceInfo(self, request):
+        """获取租户所有VPC防火墙(组)及VPC防火墙实例卡片信息
+
+        :param request: Request instance for DescribeFwGroupInstanceInfo.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeFwGroupInstanceInfoRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeFwGroupInstanceInfoResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFwGroupInstanceInfo", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFwGroupInstanceInfoResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeFwSyncStatus(self, request):
+        """获取防火墙同步状态，一般在执行同步操作后查询
+
+        :param request: Request instance for DescribeFwSyncStatus.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeFwSyncStatusRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeFwSyncStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeFwSyncStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeFwSyncStatusResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -822,6 +1098,29 @@ class CfwClient(AbstractClient):
             body = self.call("DescribeNatFwVpcDnsLst", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeNatFwVpcDnsLstResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeNatSwitchList(self, request):
+        """查询NAT边界防火墙开关列表
+
+        :param request: Request instance for DescribeNatSwitchList.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeNatSwitchListRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeNatSwitchListResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNatSwitchList", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNatSwitchListResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1061,6 +1360,52 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeVpcAcRule(self, request):
+        """查询内网间访问控制列表
+
+        :param request: Request instance for DescribeVpcAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeVpcAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeVpcAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeVpcAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeVpcAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeVpcFwGroupSwitch(self, request):
+        """VPC防火墙(组)开关列表
+
+        :param request: Request instance for DescribeVpcFwGroupSwitch.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.DescribeVpcFwGroupSwitchRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.DescribeVpcFwGroupSwitchResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeVpcFwGroupSwitch", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeVpcFwGroupSwitchResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ExpandCfwVertical(self, request):
         """防火墙垂直扩容
 
@@ -1098,6 +1443,52 @@ class CfwClient(AbstractClient):
             body = self.call("ModifyAcRule", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyAclRule(self, request):
+        """修改互联网边界访问控制规则
+
+        :param request: Request instance for ModifyAclRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyAclRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyAclRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyAclRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyAclRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyAddressTemplate(self, request):
+        """修改地址模板
+
+        :param request: Request instance for ModifyAddressTemplate.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyAddressTemplateRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyAddressTemplateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyAddressTemplate", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyAddressTemplateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1199,6 +1590,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyAssetSync(self, request):
+        """资产同步
+
+        :param request: Request instance for ModifyAssetSync.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyAssetSyncRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyAssetSyncResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyAssetSync", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyAssetSyncResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyBlockIgnoreList(self, request):
         """支持对封禁列表、放通列表如下操作：
         批量增加封禁IP、放通IP/域名
@@ -1225,6 +1639,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyBlockIgnoreRule(self, request):
+        """编辑单条入侵防御封禁列表、放通列表规则
+
+        :param request: Request instance for ModifyBlockIgnoreRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyBlockIgnoreRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyBlockIgnoreRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyBlockIgnoreRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyBlockIgnoreRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyBlockTop(self, request):
         """ModifyBlockTop取消置顶接口
 
@@ -1239,6 +1676,53 @@ class CfwClient(AbstractClient):
             body = self.call("ModifyBlockTop", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyBlockTopResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyEWRuleStatus(self, request):
+        """启用停用VPC间规则或Nat边界规则
+        VPC间规则需指定EdgeId。Nat边界规则需指定地域Region与Direction。
+
+        :param request: Request instance for ModifyEWRuleStatus.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyEWRuleStatusRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyEWRuleStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyEWRuleStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyEWRuleStatusResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyEdgeIpSwitch(self, request):
+        """修改边界防火墙开关(旁路、串行)
+
+        :param request: Request instance for ModifyEdgeIpSwitch.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyEdgeIpSwitchRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyEdgeIpSwitchResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyEdgeIpSwitch", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyEdgeIpSwitchResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1285,6 +1769,29 @@ class CfwClient(AbstractClient):
             body = self.call("ModifyEnterpriseSecurityGroupRule", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyEnterpriseSecurityGroupRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyFwGroupSwitch(self, request):
+        """修改防火墙(组)开关(支持单点模式、多点模式、全互通模式)
+
+        :param request: Request instance for ModifyFwGroupSwitch.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyFwGroupSwitchRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyFwGroupSwitchResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyFwGroupSwitch", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyFwGroupSwitchResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1377,6 +1884,29 @@ class CfwClient(AbstractClient):
             body = self.call("ModifyNatFwVpcDnsSwitch", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyNatFwVpcDnsSwitchResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyNatInstance(self, request):
+        """编辑NAT防火墙
+
+        :param request: Request instance for ModifyNatInstance.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyNatInstanceRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyNatInstanceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyNatInstance", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyNatInstanceResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1548,6 +2078,29 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifySequenceAclRules(self, request):
+        """互联网边界规则快速排序
+
+        :param request: Request instance for ModifySequenceAclRules.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifySequenceAclRulesRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifySequenceAclRulesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifySequenceAclRules", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifySequenceAclRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifySequenceRules(self, request):
         """修改规则执行顺序
 
@@ -1617,6 +2170,75 @@ class CfwClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyVpcAcRule(self, request):
+        """修改内网间访问控制规则
+
+        :param request: Request instance for ModifyVpcAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyVpcAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyVpcAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyVpcAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyVpcAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyVpcFwGroup(self, request):
+        """编辑VPC间防火墙(防火墙组)
+
+        :param request: Request instance for ModifyVpcFwGroup.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyVpcFwGroupRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyVpcFwGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyVpcFwGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyVpcFwGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyVpcFwSequenceRules(self, request):
+        """vpc间规则快速排序
+
+        :param request: Request instance for ModifyVpcFwSequenceRules.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.ModifyVpcFwSequenceRulesRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.ModifyVpcFwSequenceRulesResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyVpcFwSequenceRules", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyVpcFwSequenceRulesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def RemoveAcRule(self, request):
         """删除互联网边界规则
 
@@ -1631,6 +2253,29 @@ class CfwClient(AbstractClient):
             body = self.call("RemoveAcRule", params, headers=headers)
             response = json.loads(body)
             model = models.RemoveAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def RemoveAclRule(self, request):
+        """删除互联网边界访问控制规则
+
+        :param request: Request instance for RemoveAclRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.RemoveAclRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.RemoveAclRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RemoveAclRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.RemoveAclRuleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1677,6 +2322,29 @@ class CfwClient(AbstractClient):
             body = self.call("RemoveNatAcRule", params, headers=headers)
             response = json.loads(body)
             model = models.RemoveNatAcRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def RemoveVpcAcRule(self, request):
+        """删除VPC间规则
+
+        :param request: Request instance for RemoveVpcAcRule.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.RemoveVpcAcRuleRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.RemoveVpcAcRuleResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("RemoveVpcAcRule", params, headers=headers)
+            response = json.loads(body)
+            model = models.RemoveVpcAcRuleResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1746,6 +2414,29 @@ class CfwClient(AbstractClient):
             body = self.call("StopSecurityGroupRuleDispatch", params, headers=headers)
             response = json.loads(body)
             model = models.StopSecurityGroupRuleDispatchResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def SyncFwOperate(self, request):
+        """同步防火墙操作，包括同步防火墙路由（若vpc，专线网关等增加了Cidr，需要手动同步一下路由使之在防火墙上生效）等。
+
+        :param request: Request instance for SyncFwOperate.
+        :type request: :class:`tencentcloud.cfw.v20190904.models.SyncFwOperateRequest`
+        :rtype: :class:`tencentcloud.cfw.v20190904.models.SyncFwOperateResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("SyncFwOperate", params, headers=headers)
+            response = json.loads(body)
+            model = models.SyncFwOperateResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

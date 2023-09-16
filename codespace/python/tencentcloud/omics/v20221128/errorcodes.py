@@ -20,11 +20,29 @@ AUTHFAILURE = 'AuthFailure'
 # 操作失败。
 FAILEDOPERATION = 'FailedOperation'
 
+# 表格表头重复
+FAILEDOPERATION_DUPLICATETABLEHEADER = 'FailedOperation.DuplicateTableHeader'
+
+# 表格表头为空
+FAILEDOPERATION_EMPTYTABLEHEADER = 'FailedOperation.EmptyTableHeader'
+
+# 表格表头错误
+FAILEDOPERATION_INVALIDTABLEHEADER = 'FailedOperation.InvalidTableHeader'
+
+# 表格行数错误
+FAILEDOPERATION_INVALIDTABLELENGTH = 'FailedOperation.InvalidTableLength'
+
 # 重试次数超过上限
 FAILEDOPERATION_RETRYLIMITEXCEEDED = 'FailedOperation.RetryLimitExceeded'
 
 # 状态不支持
 FAILEDOPERATION_STATUSNOTSUPPORTED = 'FailedOperation.StatusNotSupported'
+
+# 表格数据与类型不匹配
+FAILEDOPERATION_TABLEDATATYPEMISMATCH = 'FailedOperation.TableDataTypeMismatch'
+
+# 版本未发布
+FAILEDOPERATION_VERSIONNOTRELEASED = 'FailedOperation.VersionNotReleased'
 
 # 内部错误。
 INTERNALERROR = 'InternalError'
@@ -34,9 +52,6 @@ INVALIDPARAMETER = 'InvalidParameter'
 
 # 参数取值错误。
 INVALIDPARAMETERVALUE = 'InvalidParameterValue'
-
-# 表格列重复
-INVALIDPARAMETERVALUE_DUPLICATEHEADER = 'InvalidParameterValue.DuplicateHeader'
 
 # 名称重复
 INVALIDPARAMETERVALUE_DUPLICATENAME = 'InvalidParameterValue.DuplicateName'
@@ -59,29 +74,23 @@ INVALIDPARAMETERVALUE_INVALIDCSVFORMAT = 'InvalidParameterValue.InvalidCsvFormat
 # 描述错误
 INVALIDPARAMETERVALUE_INVALIDDESCRIPTION = 'InvalidParameterValue.InvalidDescription'
 
-# 表格列错误
-INVALIDPARAMETERVALUE_INVALIDHEADER = 'InvalidParameterValue.InvalidHeader'
-
 # 输入JSON格式错误
 INVALIDPARAMETERVALUE_INVALIDINPUTJSONFORMAT = 'InvalidParameterValue.InvalidInputJsonFormat'
+
+# 输入占位符错误
+INVALIDPARAMETERVALUE_INVALIDINPUTPLACEHOLDER = 'InvalidParameterValue.InvalidInputPlaceholder'
 
 # 名称错误
 INVALIDPARAMETERVALUE_INVALIDNAME = 'InvalidParameterValue.InvalidName'
 
-# 无法找到对应的占位符
-INVALIDPARAMETERVALUE_INVALIDPLACEHOLDER = 'InvalidParameterValue.InvalidPlaceholder'
-
 # 运行参数错误
 INVALIDPARAMETERVALUE_INVALIDRUNOPTION = 'InvalidParameterValue.InvalidRunOption'
 
-# 表格行错误
-INVALIDPARAMETERVALUE_INVALIDTABLEROW = 'InvalidParameterValue.InvalidTableRow'
+# 表格数据与类型长度不匹配
+INVALIDPARAMETERVALUE_TABLEDATATYPELENGTHMISMATCH = 'InvalidParameterValue.TableDataTypeLengthMismatch'
 
-# 长度超过限制
-INVALIDPARAMETERVALUE_LENGTHLIMITEXCEEDED = 'InvalidParameterValue.LengthLimitExceeded'
-
-# 数据类型不支持
-INVALIDPARAMETERVALUE_UNSUPPORTEDDATATYPE = 'InvalidParameterValue.UnsupportedDataType'
+# 表格数据类型不支持
+INVALIDPARAMETERVALUE_UNSUPPORTEDTABLEDATATYPE = 'InvalidParameterValue.UnsupportedTableDataType'
 
 # 超过配额限制。
 LIMITEXCEEDED = 'LimitExceeded'
@@ -100,6 +109,9 @@ RESOURCENOTFOUND = 'ResourceNotFound'
 
 # 应用不存在
 RESOURCENOTFOUND_APPLICATIONNOTEXIST = 'ResourceNotFound.ApplicationNotExist'
+
+# 应用版本不存在
+RESOURCENOTFOUND_APPLICATIONVERSIONNOTEXIST = 'ResourceNotFound.ApplicationVersionNotExist'
 
 # 存储桶不存在
 RESOURCENOTFOUND_COSBUCKETNOTEXIST = 'ResourceNotFound.CosBucketNotExist'

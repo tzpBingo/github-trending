@@ -2123,6 +2123,117 @@ class DescribeScaleInfoResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeTRTCMarketQualityDataRequest(AbstractModel):
+    """DescribeTRTCMarketQualityData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SdkAppId: 用户SdkAppId（如：1400xxxxxx）
+        :type SdkAppId: str
+        :param _StartTime: 查询开始时间，格式为YYYY-MM-DD。（查询时间范围根据监控仪表盘功能版本而定，【基础版】可查近30天，【进阶版】可查近60天）
+        :type StartTime: str
+        :param _EndTime: 查询结束时间，格式为YYYY-MM-DD。
+        :type EndTime: str
+        :param _Period: 返回数据的粒度，支持设为以下值：
+d：按天。此时返回查询时间范围内 UTC 时间为零点的数据。
+h：按小时。此时返回查询时间范围内 UTC 时间为整小时的数据。
+        :type Period: str
+        """
+        self._SdkAppId = None
+        self._StartTime = None
+        self._EndTime = None
+        self._Period = None
+
+    @property
+    def SdkAppId(self):
+        return self._SdkAppId
+
+    @SdkAppId.setter
+    def SdkAppId(self, SdkAppId):
+        self._SdkAppId = SdkAppId
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def Period(self):
+        return self._Period
+
+    @Period.setter
+    def Period(self, Period):
+        self._Period = Period
+
+
+    def _deserialize(self, params):
+        self._SdkAppId = params.get("SdkAppId")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._Period = params.get("Period")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCMarketQualityDataResponse(AbstractModel):
+    """DescribeTRTCMarketQualityData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResult`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = TRTCDataResult()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeTRTCMarketQualityMetricDataRequest(AbstractModel):
     """DescribeTRTCMarketQualityMetricData请求参数结构体
 
@@ -2230,6 +2341,117 @@ class DescribeTRTCMarketQualityMetricDataResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Data") is not None:
             self._Data = TRTCDataResp()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeTRTCMarketScaleDataRequest(AbstractModel):
+    """DescribeTRTCMarketScaleData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SdkAppId: 用户SdkAppId
+        :type SdkAppId: str
+        :param _StartTime: 查询开始时间，格式为YYYY-MM-DD。（查询时间范围根据监控仪表盘功能版本而定，【基础版】可查近30天，【进阶版】可查近60天）
+        :type StartTime: str
+        :param _EndTime: 查询结束时间，格式为YYYY-MM-DD。
+        :type EndTime: str
+        :param _Period: 返回数据的粒度，支持设为以下值：
+d：按天。此时返回查询时间范围内 UTC 时间为零点的数据。
+h：按小时。此时返回查询时间范围内 UTC 时间为整小时的数据。
+        :type Period: str
+        """
+        self._SdkAppId = None
+        self._StartTime = None
+        self._EndTime = None
+        self._Period = None
+
+    @property
+    def SdkAppId(self):
+        return self._SdkAppId
+
+    @SdkAppId.setter
+    def SdkAppId(self, SdkAppId):
+        self._SdkAppId = SdkAppId
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def Period(self):
+        return self._Period
+
+    @Period.setter
+    def Period(self, Period):
+        self._Period = Period
+
+
+    def _deserialize(self, params):
+        self._SdkAppId = params.get("SdkAppId")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._Period = params.get("Period")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCMarketScaleDataResponse(AbstractModel):
+    """DescribeTRTCMarketScaleData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResult`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = TRTCDataResult()
             self._Data._deserialize(params.get("Data"))
         self._RequestId = params.get("RequestId")
 
@@ -2345,6 +2567,115 @@ class DescribeTRTCMarketScaleMetricDataResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeTRTCRealTimeQualityDataRequest(AbstractModel):
+    """DescribeTRTCRealTimeQualityData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SdkAppId: 用户SdkAppId（如：1400xxxxxx）
+        :type SdkAppId: str
+        :param _StartTime: 开始时间，unix时间戳，单位：秒（查询时间范围根据监控仪表盘功能版本而定，基础版可查近3小时，进阶版可查近12小时）
+        :type StartTime: int
+        :param _EndTime: 结束时间，unix时间戳，单位：秒
+        :type EndTime: int
+        :param _RoomId: 房间ID
+        :type RoomId: str
+        """
+        self._SdkAppId = None
+        self._StartTime = None
+        self._EndTime = None
+        self._RoomId = None
+
+    @property
+    def SdkAppId(self):
+        return self._SdkAppId
+
+    @SdkAppId.setter
+    def SdkAppId(self, SdkAppId):
+        self._SdkAppId = SdkAppId
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def RoomId(self):
+        return self._RoomId
+
+    @RoomId.setter
+    def RoomId(self, RoomId):
+        self._RoomId = RoomId
+
+
+    def _deserialize(self, params):
+        self._SdkAppId = params.get("SdkAppId")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._RoomId = params.get("RoomId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCRealTimeQualityDataResponse(AbstractModel):
+    """DescribeTRTCRealTimeQualityData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResult`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = TRTCDataResult()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeTRTCRealTimeQualityMetricDataRequest(AbstractModel):
     """DescribeTRTCRealTimeQualityMetricData请求参数结构体
 
@@ -2450,6 +2781,115 @@ class DescribeTRTCRealTimeQualityMetricDataResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Data") is not None:
             self._Data = TRTCDataResp()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeTRTCRealTimeScaleDataRequest(AbstractModel):
+    """DescribeTRTCRealTimeScaleData请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SdkAppId: 用户SdkAppId（如：1400xxxxxx）
+        :type SdkAppId: str
+        :param _StartTime: 开始时间，unix时间戳，单位：秒（查询时间范围根据监控仪表盘功能版本而定，基础版可查近3小时，进阶版可查近12小时）
+        :type StartTime: int
+        :param _EndTime: 结束时间，unix时间戳，单位：秒
+        :type EndTime: int
+        :param _RoomId: 房间ID
+        :type RoomId: str
+        """
+        self._SdkAppId = None
+        self._StartTime = None
+        self._EndTime = None
+        self._RoomId = None
+
+    @property
+    def SdkAppId(self):
+        return self._SdkAppId
+
+    @SdkAppId.setter
+    def SdkAppId(self, SdkAppId):
+        self._SdkAppId = SdkAppId
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def RoomId(self):
+        return self._RoomId
+
+    @RoomId.setter
+    def RoomId(self, RoomId):
+        self._RoomId = RoomId
+
+
+    def _deserialize(self, params):
+        self._SdkAppId = params.get("SdkAppId")
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._RoomId = params.get("RoomId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTRTCRealTimeScaleDataResponse(AbstractModel):
+    """DescribeTRTCRealTimeScaleData返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: TRTC监控数据出参
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: :class:`tencentcloud.trtc.v20190722.models.TRTCDataResult`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = TRTCDataResult()
             self._Data._deserialize(params.get("Data"))
         self._RequestId = params.get("RequestId")
 
@@ -2727,7 +3167,7 @@ class DescribeTrtcRoomUsageResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Data: 房间维度用量数据，csv文件格式。
+        :param _Data: 房间维度用量数据，csv文件格式，单位：秒。
         :type Data: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -3305,7 +3745,8 @@ class DismissRoomByStrRoomIdRequest(AbstractModel):
         r"""
         :param _SdkAppId: TRTC的SDKAppId。
         :type SdkAppId: int
-        :param _RoomId: 房间号。
+        :param _RoomId: 字符串类型房间号。
+本接口仅支持解散字符串类型房间号，如需解散数字类型房间号，请使用：DismissRoom
         :type RoomId: str
         """
         self._SdkAppId = None
@@ -3375,7 +3816,7 @@ class DismissRoomRequest(AbstractModel):
         r"""
         :param _SdkAppId: TRTC的SDKAppId。
         :type SdkAppId: int
-        :param _RoomId: 房间号。
+        :param _RoomId: 数字房间号。本接口仅支持解散数字类型房间号，如需解散字符串类型房间号，请使用DismissRoomByStrRoomId。
         :type RoomId: int
         """
         self._SdkAppId = None
@@ -4168,7 +4609,7 @@ class McuLayout(AbstractModel):
         :type LocationY: int
         :param _ZOrder: 子画面在输出时的层级，不填默认为0。
         :type ZOrder: int
-        :param _RenderMode: 子画面在输出时的显示模式：0为裁剪，1为缩放，2为缩放并显示黑底。不填默认为0。
+        :param _RenderMode: 子画面在输出时的显示模式：0为裁剪，1为缩放并显示背景，2为缩放并显示黑底。不填默认为0。
         :type RenderMode: int
         :param _BackGroundColor: 【此参数配置无效，暂不支持】子画面的背景颜色，常用的颜色有：
 红色：0xcc0033。
@@ -4183,6 +4624,8 @@ class McuLayout(AbstractModel):
         :type BackgroundImageUrl: str
         :param _CustomCrop: 客户自定义裁剪，针对原始输入流裁剪
         :type CustomCrop: :class:`tencentcloud.trtc.v20190722.models.McuCustomCrop`
+        :param _BackgroundRenderMode: 子背景图在输出时的显示模式：0为裁剪，1为缩放并显示背景，2为缩放并显示黑底，3为变比例伸缩。不填默认为3。
+        :type BackgroundRenderMode: int
         """
         self._UserMediaStream = None
         self._ImageWidth = None
@@ -4194,6 +4637,7 @@ class McuLayout(AbstractModel):
         self._BackGroundColor = None
         self._BackgroundImageUrl = None
         self._CustomCrop = None
+        self._BackgroundRenderMode = None
 
     @property
     def UserMediaStream(self):
@@ -4275,6 +4719,14 @@ class McuLayout(AbstractModel):
     def CustomCrop(self, CustomCrop):
         self._CustomCrop = CustomCrop
 
+    @property
+    def BackgroundRenderMode(self):
+        return self._BackgroundRenderMode
+
+    @BackgroundRenderMode.setter
+    def BackgroundRenderMode(self, BackgroundRenderMode):
+        self._BackgroundRenderMode = BackgroundRenderMode
+
 
     def _deserialize(self, params):
         if params.get("UserMediaStream") is not None:
@@ -4291,6 +4743,7 @@ class McuLayout(AbstractModel):
         if params.get("CustomCrop") is not None:
             self._CustomCrop = McuCustomCrop()
             self._CustomCrop._deserialize(params.get("CustomCrop"))
+        self._BackgroundRenderMode = params.get("BackgroundRenderMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4693,12 +5146,15 @@ class McuVideoParams(AbstractModel):
         :type BackgroundImageUrl: str
         :param _WaterMarkList: 混流布局的水印参数。
         :type WaterMarkList: list of McuWaterMarkParams
+        :param _BackgroundRenderMode: 背景图在输出时的显示模式：0为裁剪，1为缩放并显示黑底，2为变比例伸缩。后台默认为变比例伸缩。
+        :type BackgroundRenderMode: int
         """
         self._VideoEncode = None
         self._LayoutParams = None
         self._BackGroundColor = None
         self._BackgroundImageUrl = None
         self._WaterMarkList = None
+        self._BackgroundRenderMode = None
 
     @property
     def VideoEncode(self):
@@ -4740,6 +5196,14 @@ class McuVideoParams(AbstractModel):
     def WaterMarkList(self, WaterMarkList):
         self._WaterMarkList = WaterMarkList
 
+    @property
+    def BackgroundRenderMode(self):
+        return self._BackgroundRenderMode
+
+    @BackgroundRenderMode.setter
+    def BackgroundRenderMode(self, BackgroundRenderMode):
+        self._BackgroundRenderMode = BackgroundRenderMode
+
 
     def _deserialize(self, params):
         if params.get("VideoEncode") is not None:
@@ -4756,6 +5220,7 @@ class McuVideoParams(AbstractModel):
                 obj = McuWaterMarkParams()
                 obj._deserialize(item)
                 self._WaterMarkList.append(obj)
+        self._BackgroundRenderMode = params.get("BackgroundRenderMode")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6216,7 +6681,9 @@ class RecordParams(AbstractModel):
         :type StreamType: int
         :param _SubscribeStreamUserIds: 指定订阅流白名单或者黑名单。
         :type SubscribeStreamUserIds: :class:`tencentcloud.trtc.v20190722.models.SubscribeStreamUserIds`
-        :param _OutputFormat: 输出文件的格式，上传到云点播时此参数无效，存储到云点播时请关注TencentVod内的MediaType参数。0：(默认)输出文件为hls格式。1：输出文件格式为hls+mp4。2：输出文件格式为hls+aac 。3：输出文件格式为mp4。4：输出文件格式为aac。
+        :param _OutputFormat: 输出文件的格式（存储至COS等第三方存储时有效）。0：(默认)输出文件为hls格式。1：输出文件格式为hls+mp4。2：输出文件格式为hls+aac 。3：输出文件格式为mp4。4：输出文件格式为aac。
+
+存储到云点播VOD时此参数无效，存储到VOD时请通过TencentVod（https://cloud.tencent.com/document/api/647/44055#TencentVod）内的MediaType设置。
         :type OutputFormat: int
         :param _AvMerge: 单流录制模式下，用户的音视频是否合并，0：单流音视频不合并（默认）。1：单流音视频合并成一个ts。混流录制此参数无需设置，默认音视频合并。
         :type AvMerge: int
@@ -6659,6 +7126,40 @@ class RoomState(AbstractModel):
         
 
 
+class RowValues(AbstractModel):
+    """SeriesInfo类型的二维数组
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RowValue: 数据值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RowValue: list of int
+        """
+        self._RowValue = None
+
+    @property
+    def RowValue(self):
+        return self._RowValue
+
+    @RowValue.setter
+    def RowValue(self, RowValue):
+        self._RowValue = RowValue
+
+
+    def _deserialize(self, params):
+        self._RowValue = params.get("RowValue")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ScaleInfomation(AbstractModel):
     """历史规模信息
 
@@ -6912,6 +7413,58 @@ class SeriesInfo(AbstractModel):
     def _deserialize(self, params):
         self._Columns = params.get("Columns")
         self._Values = params.get("Values")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SeriesInfos(AbstractModel):
+    """SeriesInfos类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Columns: 数据列
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Columns: list of str
+        :param _Values: 数据值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Values: list of RowValues
+        """
+        self._Columns = None
+        self._Values = None
+
+    @property
+    def Columns(self):
+        return self._Columns
+
+    @Columns.setter
+    def Columns(self, Columns):
+        self._Columns = Columns
+
+    @property
+    def Values(self):
+        return self._Values
+
+    @Values.setter
+    def Values(self, Values):
+        self._Values = Values
+
+
+    def _deserialize(self, params):
+        self._Columns = params.get("Columns")
+        if params.get("Values") is not None:
+            self._Values = []
+            for item in params.get("Values"):
+                obj = RowValues()
+                obj._deserialize(item)
+                self._Values.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7991,6 +8544,71 @@ class TRTCDataResp(AbstractModel):
         
 
 
+class TRTCDataResult(AbstractModel):
+    """TRTC数据大盘/实时监控 API接口数据出参
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StatementID: StatementID值，监控仪表盘下固定为0。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatementID: int
+        :param _Series: 查询结果数据，以Columns-Values形式返回。	
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Series: list of SeriesInfos
+        :param _Total: Total值，监控仪表盘功能下固定为1。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Total: int
+        """
+        self._StatementID = None
+        self._Series = None
+        self._Total = None
+
+    @property
+    def StatementID(self):
+        return self._StatementID
+
+    @StatementID.setter
+    def StatementID(self, StatementID):
+        self._StatementID = StatementID
+
+    @property
+    def Series(self):
+        return self._Series
+
+    @Series.setter
+    def Series(self, Series):
+        self._Series = Series
+
+    @property
+    def Total(self):
+        return self._Total
+
+    @Total.setter
+    def Total(self, Total):
+        self._Total = Total
+
+
+    def _deserialize(self, params):
+        self._StatementID = params.get("StatementID")
+        if params.get("Series") is not None:
+            self._Series = []
+            for item in params.get("Series"):
+                obj = SeriesInfos()
+                obj._deserialize(item)
+                self._Series.append(obj)
+        self._Total = params.get("Total")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class TencentVod(AbstractModel):
     """腾讯云点播相关参数。
 
@@ -8013,7 +8631,8 @@ class TencentVod(AbstractModel):
         :type SessionContext: str
         :param _SourceContext: 上传上下文，上传完成回调时透传。
         :type SourceContext: str
-        :param _MediaType: 上传到vod平台的录制文件格式类型，0：mp4(默认), 1: hls, 2:aac(StreamType=1纯音频录制时有效)。
+        :param _MediaType: 上传到vod平台的录制文件格式类型，0：mp4(默认), 1: hls, 2:aac(StreamType=1纯音频录制时有效),
+3: hls+mp4, 4: hls+aac(StreamType=1纯音频录制时有效)。
         :type MediaType: int
         :param _UserDefineRecordId: 仅支持API录制上传vod，该参数表示用户可以自定义录制文件名前缀，【限制长度为64字节，只允许包含大小写英文字母（a-zA-Z）、数字（0-9）及下划线和连词符】。前缀与自动生成的录制文件名之间用__UserId_u_分开。
         :type UserDefineRecordId: str

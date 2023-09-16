@@ -26,6 +26,31 @@ class TioneClient(AbstractClient):
     _service = 'tione'
 
 
+    def ChatCompletion(self, request):
+        """该接口支持与两种类型大模型的聊天。
+        1. 与多行业多场景大模型的在线体验聊天
+        2. 与自行部署的开源大模型的聊天
+
+        :param request: Request instance for ChatCompletion.
+        :type request: :class:`tencentcloud.tione.v20211111.models.ChatCompletionRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.ChatCompletionResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChatCompletion", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChatCompletionResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateBatchModelAccTasks(self, request):
         """批量创建模型加速任务
 
@@ -109,6 +134,52 @@ class TioneClient(AbstractClient):
             body = self.call("CreateModelService", params, headers=headers)
             response = json.loads(body)
             model = models.CreateModelServiceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def CreateNotebook(self, request):
+        """创建Notebook
+
+        :param request: Request instance for CreateNotebook.
+        :type request: :class:`tencentcloud.tione.v20211111.models.CreateNotebookRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.CreateNotebookResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateNotebook", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateNotebookResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def CreateNotebookImage(self, request):
+        """保存镜像
+
+        :param request: Request instance for CreateNotebookImage.
+        :type request: :class:`tencentcloud.tione.v20211111.models.CreateNotebookImageRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.CreateNotebookImageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateNotebookImage", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateNotebookImageResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -293,6 +364,52 @@ class TioneClient(AbstractClient):
             body = self.call("DeleteModelServiceGroup", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteModelServiceGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteNotebook(self, request):
+        """删除Notebook
+
+        :param request: Request instance for DeleteNotebook.
+        :type request: :class:`tencentcloud.tione.v20211111.models.DeleteNotebookRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.DeleteNotebookResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteNotebook", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteNotebookResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteNotebookImageRecord(self, request):
+        """删除notebook镜像保存记录
+
+        :param request: Request instance for DeleteNotebookImageRecord.
+        :type request: :class:`tencentcloud.tione.v20211111.models.DeleteNotebookImageRecordRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.DeleteNotebookImageRecordResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteNotebookImageRecord", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteNotebookImageRecordResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -510,7 +627,7 @@ class TioneClient(AbstractClient):
 
 
     def DescribeBillingSpecsPrice(self, request):
-        """本接口(DescribeBillingSpecsPrice)用于查询计费项价格。
+        """本接口(DescribeBillingSpecsPrice)用于查询按量计费计费项价格。
 
         :param request: Request instance for DescribeBillingSpecsPrice.
         :type request: :class:`tencentcloud.tione.v20211111.models.DescribeBillingSpecsPriceRequest`
@@ -648,7 +765,7 @@ class TioneClient(AbstractClient):
 
 
     def DescribeLogs(self, request):
-        """获取训练、推理、Notebook服务的日志
+        """获取训练、推理、Notebook服务的日志 API
 
         :param request: Request instance for DescribeLogs.
         :type request: :class:`tencentcloud.tione.v20211111.models.DescribeLogsRequest`
@@ -900,6 +1017,98 @@ class TioneClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeNotebook(self, request):
+        """Notebook详情
+
+        :param request: Request instance for DescribeNotebook.
+        :type request: :class:`tencentcloud.tione.v20211111.models.DescribeNotebookRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.DescribeNotebookResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNotebook", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNotebookResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeNotebookImageKernels(self, request):
+        """查询镜像kernel
+
+        :param request: Request instance for DescribeNotebookImageKernels.
+        :type request: :class:`tencentcloud.tione.v20211111.models.DescribeNotebookImageKernelsRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.DescribeNotebookImageKernelsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNotebookImageKernels", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNotebookImageKernelsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeNotebookImageRecords(self, request):
+        """查看notebook镜像保存记录
+
+        :param request: Request instance for DescribeNotebookImageRecords.
+        :type request: :class:`tencentcloud.tione.v20211111.models.DescribeNotebookImageRecordsRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.DescribeNotebookImageRecordsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNotebookImageRecords", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNotebookImageRecordsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeNotebooks(self, request):
+        """Notebook列表
+
+        :param request: Request instance for DescribeNotebooks.
+        :type request: :class:`tencentcloud.tione.v20211111.models.DescribeNotebooksRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.DescribeNotebooksResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeNotebooks", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeNotebooksResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeTrainingFrameworks(self, request):
         """训练框架列表
 
@@ -1130,6 +1339,52 @@ class TioneClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ModifyNotebook(self, request):
+        """修改Notebook
+
+        :param request: Request instance for ModifyNotebook.
+        :type request: :class:`tencentcloud.tione.v20211111.models.ModifyNotebookRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.ModifyNotebookResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyNotebook", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyNotebookResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyNotebookTags(self, request):
+        """修改Notebook标签
+
+        :param request: Request instance for ModifyNotebookTags.
+        :type request: :class:`tencentcloud.tione.v20211111.models.ModifyNotebookTagsRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.ModifyNotebookTagsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyNotebookTags", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyNotebookTagsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ModifyServiceGroupWeights(self, request):
         """更新推理服务组流量分配
 
@@ -1199,6 +1454,52 @@ class TioneClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def SendChatMessage(self, request):
+        """这是一个供您体验大模型聊天的接口。
+
+        :param request: Request instance for SendChatMessage.
+        :type request: :class:`tencentcloud.tione.v20211111.models.SendChatMessageRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.SendChatMessageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("SendChatMessage", params, headers=headers)
+            response = json.loads(body)
+            model = models.SendChatMessageResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def StartNotebook(self, request):
+        """启动Notebook
+
+        :param request: Request instance for StartNotebook.
+        :type request: :class:`tencentcloud.tione.v20211111.models.StartNotebookRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.StartNotebookResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StartNotebook", params, headers=headers)
+            response = json.loads(body)
+            model = models.StartNotebookResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def StartTrainingTask(self, request):
         """启动模型训练任务
 
@@ -1245,6 +1546,29 @@ class TioneClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def StopCreatingImage(self, request):
+        """停止保存镜像
+
+        :param request: Request instance for StopCreatingImage.
+        :type request: :class:`tencentcloud.tione.v20211111.models.StopCreatingImageRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.StopCreatingImageResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StopCreatingImage", params, headers=headers)
+            response = json.loads(body)
+            model = models.StopCreatingImageResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def StopModelAccelerateTask(self, request):
         """停止模型加速任务
 
@@ -1259,6 +1583,29 @@ class TioneClient(AbstractClient):
             body = self.call("StopModelAccelerateTask", params, headers=headers)
             response = json.loads(body)
             model = models.StopModelAccelerateTaskResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def StopNotebook(self, request):
+        """停止Notebook
+
+        :param request: Request instance for StopNotebook.
+        :type request: :class:`tencentcloud.tione.v20211111.models.StopNotebookRequest`
+        :rtype: :class:`tencentcloud.tione.v20211111.models.StopNotebookResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("StopNotebook", params, headers=headers)
+            response = json.loads(body)
+            model = models.StopNotebookResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
