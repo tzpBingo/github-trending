@@ -105,6 +105,59 @@ class Agent(AbstractModel):
         
 
 
+class ApproverComponentLimitType(AbstractModel):
+    """指定签署方经办人控件类型是个人印章签署控件（SIGN_SIGNATURE） 时，可选的签名方式。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RecipientId: 签署方经办人在模板中配置的参与方ID，与控件绑定，是控件的归属方，ID为32位字符串。
+        :type RecipientId: str
+        :param _Values: 签署方经办人控件类型是个人印章签署控件（SIGN_SIGNATURE） 时，可选的签名方式。
+
+签名方式：
+<ul>
+<li>HANDWRITE-手写签名</li>
+<li>ESIGN-个人印章类型</li>
+<li>OCR_ESIGN-AI智能识别手写签名</li>
+<li>SYSTEM_ESIGN-系统签名</li>
+</ul>
+        :type Values: list of str
+        """
+        self._RecipientId = None
+        self._Values = None
+
+    @property
+    def RecipientId(self):
+        return self._RecipientId
+
+    @RecipientId.setter
+    def RecipientId(self, RecipientId):
+        self._RecipientId = RecipientId
+
+    @property
+    def Values(self):
+        return self._Values
+
+    @Values.setter
+    def Values(self, Values):
+        self._Values = Values
+
+
+    def _deserialize(self, params):
+        self._RecipientId = params.get("RecipientId")
+        self._Values = params.get("Values")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ApproverOption(AbstractModel):
     """签署人个性化能力信息
 
@@ -1214,6 +1267,250 @@ class ChannelCreateBatchCancelFlowUrlResponse(AbstractModel):
         self._BatchCancelFlowUrl = params.get("BatchCancelFlowUrl")
         self._FailMessages = params.get("FailMessages")
         self._UrlExpireOn = params.get("UrlExpireOn")
+        self._RequestId = params.get("RequestId")
+
+
+class ChannelCreateBatchSignUrlRequest(AbstractModel):
+    """ChannelCreateBatchSignUrl请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Agent: 关于渠道应用的相关信息，包括子客企业及应用编、号等详细内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
+        :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
+        :param _Name: 签署方经办人的姓名。
+经办人的姓名将用于身份认证和电子签名，请确保填写的姓名为签署方的真实姓名，而非昵称等代名。
+
+注：`请确保和合同中填入的一致`
+        :type Name: str
+        :param _Mobile: 手机号码， 支持国内手机号11位数字(无需加+86前缀或其他字符)。
+请确认手机号所有方为此业务通知方。
+
+注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`
+        :type Mobile: str
+        :param _Operator: 执行本接口操作的员工信息。
+注: `在调用此接口时，请确保指定的员工已获得所需的接口调用权限，并具备接口传入的相应资源的数据权限。`
+        :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        :param _IdCardType: 证件类型，支持以下类型
+<ul><li>**ID_CARD** : 居民身份证 (默认值)</li>
+<li>**HONGKONG_AND_MACAO** : 港澳居民来往内地通行证</li>
+<li>**HONGKONG_MACAO_AND_TAIWAN** : 港澳台居民居住证(格式同居民身份证)</li></ul>
+
+注：`请确保和合同中填入的一致`
+        :type IdCardType: str
+        :param _IdCardNumber: 证件号码，应符合以下规则
+<ul><li>居民身份证号码应为18位字符串，由数字和大写字母X组成（如存在X，请大写）。</li>
+<li>港澳居民来往内地通行证号码应为9位字符串，第1位为“C”，第2位为英文字母（但“I”、“O”除外），后7位为阿拉伯数字。</li>
+<li>港澳台居民居住证号码编码规则与中国大陆身份证相同，应为18位字符串。</li></ul>
+
+注：`请确保和合同中填入的一致`
+        :type IdCardNumber: str
+        :param _NotifyType: 通知用户方式：
+<ul>
+<li>**NONE** : 不通知（默认）</li>
+<li>**SMS** : 短信通知（发送短信通知到Mobile参数所传的手机号）</li>
+</ul>
+        :type NotifyType: str
+        :param _FlowIds: 本次需要批量签署的合同流程ID列表。
+可以不传,  如不传则是发给对方的所有待签署合同流程。
+
+        :type FlowIds: list of str
+        :param _OrganizationName: 目标签署人的企业名称，签署人如果是企业员工身份，需要传此参数。
+
+注：
+<ul>
+<li>请确认该名称与企业营业执照中注册的名称一致。</li>
+<li>如果名称中包含英文括号()，请使用中文括号（）代替。</li>
+<li>请确保此企业已完成腾讯电子签企业认证。</li>
+</ul>
+        :type OrganizationName: str
+        :param _JumpToDetail: 是否直接跳转至合同内容页面进行签署
+<ul>
+<li>**false**: 会跳转至批量合同流程的列表,  点击需要批量签署合同后进入合同内容页面进行签署(默认)</li>
+<li>**true**: 跳过合同流程列表, 直接进入合同内容页面进行签署</li>
+</ul>
+        :type JumpToDetail: bool
+        """
+        self._Agent = None
+        self._Name = None
+        self._Mobile = None
+        self._Operator = None
+        self._IdCardType = None
+        self._IdCardNumber = None
+        self._NotifyType = None
+        self._FlowIds = None
+        self._OrganizationName = None
+        self._JumpToDetail = None
+
+    @property
+    def Agent(self):
+        return self._Agent
+
+    @Agent.setter
+    def Agent(self, Agent):
+        self._Agent = Agent
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def Mobile(self):
+        return self._Mobile
+
+    @Mobile.setter
+    def Mobile(self, Mobile):
+        self._Mobile = Mobile
+
+    @property
+    def Operator(self):
+        return self._Operator
+
+    @Operator.setter
+    def Operator(self, Operator):
+        self._Operator = Operator
+
+    @property
+    def IdCardType(self):
+        return self._IdCardType
+
+    @IdCardType.setter
+    def IdCardType(self, IdCardType):
+        self._IdCardType = IdCardType
+
+    @property
+    def IdCardNumber(self):
+        return self._IdCardNumber
+
+    @IdCardNumber.setter
+    def IdCardNumber(self, IdCardNumber):
+        self._IdCardNumber = IdCardNumber
+
+    @property
+    def NotifyType(self):
+        return self._NotifyType
+
+    @NotifyType.setter
+    def NotifyType(self, NotifyType):
+        self._NotifyType = NotifyType
+
+    @property
+    def FlowIds(self):
+        return self._FlowIds
+
+    @FlowIds.setter
+    def FlowIds(self, FlowIds):
+        self._FlowIds = FlowIds
+
+    @property
+    def OrganizationName(self):
+        return self._OrganizationName
+
+    @OrganizationName.setter
+    def OrganizationName(self, OrganizationName):
+        self._OrganizationName = OrganizationName
+
+    @property
+    def JumpToDetail(self):
+        return self._JumpToDetail
+
+    @JumpToDetail.setter
+    def JumpToDetail(self, JumpToDetail):
+        self._JumpToDetail = JumpToDetail
+
+
+    def _deserialize(self, params):
+        if params.get("Agent") is not None:
+            self._Agent = Agent()
+            self._Agent._deserialize(params.get("Agent"))
+        self._Name = params.get("Name")
+        self._Mobile = params.get("Mobile")
+        if params.get("Operator") is not None:
+            self._Operator = UserInfo()
+            self._Operator._deserialize(params.get("Operator"))
+        self._IdCardType = params.get("IdCardType")
+        self._IdCardNumber = params.get("IdCardNumber")
+        self._NotifyType = params.get("NotifyType")
+        self._FlowIds = params.get("FlowIds")
+        self._OrganizationName = params.get("OrganizationName")
+        self._JumpToDetail = params.get("JumpToDetail")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ChannelCreateBatchSignUrlResponse(AbstractModel):
+    """ChannelCreateBatchSignUrl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SignUrl: 批量签署链接，以短链形式返回，短链的有效期参考回参中的 ExpiredTime。
+
+注: `非小程序和APP集成使用`
+        :type SignUrl: str
+        :param _ExpiredTime: 链接过期时间以 Unix 时间戳格式表示，从生成链接时间起，往后7天有效期。过期后短链将失效，无法打开。
+        :type ExpiredTime: int
+        :param _MiniAppPath: 从客户小程序或者客户APP跳转至腾讯电子签小程序进行批量签署的跳转路径
+
+注: `小程序和APP集成使用`
+        :type MiniAppPath: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._SignUrl = None
+        self._ExpiredTime = None
+        self._MiniAppPath = None
+        self._RequestId = None
+
+    @property
+    def SignUrl(self):
+        return self._SignUrl
+
+    @SignUrl.setter
+    def SignUrl(self, SignUrl):
+        self._SignUrl = SignUrl
+
+    @property
+    def ExpiredTime(self):
+        return self._ExpiredTime
+
+    @ExpiredTime.setter
+    def ExpiredTime(self, ExpiredTime):
+        self._ExpiredTime = ExpiredTime
+
+    @property
+    def MiniAppPath(self):
+        return self._MiniAppPath
+
+    @MiniAppPath.setter
+    def MiniAppPath(self, MiniAppPath):
+        self._MiniAppPath = MiniAppPath
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._SignUrl = params.get("SignUrl")
+        self._ExpiredTime = params.get("ExpiredTime")
+        self._MiniAppPath = params.get("MiniAppPath")
         self._RequestId = params.get("RequestId")
 
 
@@ -2614,6 +2911,8 @@ class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
         :type ApproverRestrictions: :class:`tencentcloud.essbasic.v20210526.models.ApproverRestriction`
         :param _Operator: 暂未开放
         :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
+        :param _ApproverComponentLimitTypes: 指定签署方经办人控件类型是个人印章签署控件（SIGN_SIGNATURE） 时，可选的签名方式。
+        :type ApproverComponentLimitTypes: list of ApproverComponentLimitType
         """
         self._Agent = None
         self._TemplateId = None
@@ -2625,6 +2924,7 @@ class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
         self._CallbackUrl = None
         self._ApproverRestrictions = None
         self._Operator = None
+        self._ApproverComponentLimitTypes = None
 
     @property
     def Agent(self):
@@ -2718,6 +3018,14 @@ class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
 
         self._Operator = Operator
 
+    @property
+    def ApproverComponentLimitTypes(self):
+        return self._ApproverComponentLimitTypes
+
+    @ApproverComponentLimitTypes.setter
+    def ApproverComponentLimitTypes(self, ApproverComponentLimitTypes):
+        self._ApproverComponentLimitTypes = ApproverComponentLimitTypes
+
 
     def _deserialize(self, params):
         if params.get("Agent") is not None:
@@ -2741,6 +3049,12 @@ class ChannelCreateMultiFlowSignQRCodeRequest(AbstractModel):
         if params.get("Operator") is not None:
             self._Operator = UserInfo()
             self._Operator._deserialize(params.get("Operator"))
+        if params.get("ApproverComponentLimitTypes") is not None:
+            self._ApproverComponentLimitTypes = []
+            for item in params.get("ApproverComponentLimitTypes"):
+                obj = ApproverComponentLimitType()
+                obj._deserialize(item)
+                self._ApproverComponentLimitTypes.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6323,7 +6637,7 @@ ComponentType为SIGN_DATE时，支持以下参数：
 
 ComponentType为SIGN_SEAL类型时，支持以下参数：
 1.PageRanges：PageRange的数组，通过PageRanges属性设置该印章在PDF所有页面上盖章（适用于标书在所有页面盖章的情况）
-参数样例： "ComponentExtra":"{["PageRange":{"BeginPage":1,"EndPage":-1}]}"
+参数样例： "ComponentExtra":"{"PageRange":[{"BeginPage":1,"EndPage":-1}]}"
         :type ComponentExtra: str
         :param _ComponentValue: 控件填充vaule，ComponentType和传入值类型对应关系：
 TEXT - 文本内容
@@ -9437,7 +9751,12 @@ PERSON-个人/自然人；
 PERSON_AUTO_SIGN-个人自动签署，适用于个人自动签场景
 注: 个人自动签场景为白名单功能, 使用前请联系对接的客户经理沟通。
 ORGANIZATION-企业（企业签署方或模板发起时的企业静默签）；
-ENTERPRISESERVER-企业静默签（文件发起时的企业静默签字）。
+ENTERPRISESERVER-企业自动签（他方企业自动签署或文件发起时的本方企业自动签）
+
+若要实现他方企业（同一应用下）自动签，需要满足3个条件：
+条件1：ApproverType 设置为ENTERPRISESERVER
+条件2：子客之间完成授权
+条件3：联系对接的客户经理沟通
         :type ApproverType: str
         :param _RecipientId: 签署流程签署人在模板中对应的签署人Id；在非单方签署、以及非B2C签署的场景下必传，用于指定当前签署方在签署流程中的位置；
         :type RecipientId: str
@@ -10598,13 +10917,18 @@ class FormField(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _ComponentValue: 控件填充vaule，ComponentType和传入值类型对应关系：
-TEXT - 文本内容
-MULTI_LINE_TEXT - 文本内容
-CHECK_BOX - true/false
-FILL_IMAGE、ATTACHMENT - 附件的FileId，需要通过UploadFiles接口上传获取
-SELECTOR - 选项值
-DYNAMIC_TABLE - 传入json格式的表格内容，具体见数据结构FlowInfo
+        :param _ComponentValue: 控件填充值，ComponentType和传入值格式对应关系如下：
+<ul>
+<li>TEXT - 普通文本控件，需输入文本字符串；</li>
+<li>MULTI_LINE_TEXT - 多行文本控件，需输入文本字符串；</li>
+<li>CHECK_BOX - 勾选框控件，若选中需填写ComponentValue，填写 true或者 false 字符串；</li>
+<li>FILL_IMAGE - 图片控件，需填写ComponentValue为图片的资源 ID；</li>
+<li>DYNAMIC_TABLE - 动态表格控件；</li>
+<li>ATTACHMENT - 附件控件，需填写ComponentValue为附件图片的资源 ID列表，以逗号分割；</li>
+<li>DATE - 日期控件；格式为 <b>xxxx年xx月xx日</b> 字符串；</li>
+<li>DISTRICT - 省市区行政区控件，需填写ComponentValue为省市区行政区字符串内容；</li>
+</ul>
+
         :type ComponentValue: str
         :param _ComponentId: 表单域或控件的ID，跟ComponentName二选一，不能全为空；
 CreateFlowsByTemplates 接口不使用此字段。

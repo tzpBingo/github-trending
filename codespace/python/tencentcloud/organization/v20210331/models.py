@@ -94,10 +94,22 @@ class AddOrganizationMemberEmailResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _BindId: 绑定Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BindId: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._BindId = None
         self._RequestId = None
+
+    @property
+    def BindId(self):
+        return self._BindId
+
+    @BindId.setter
+    def BindId(self, BindId):
+        self._BindId = BindId
 
     @property
     def RequestId(self):
@@ -109,6 +121,7 @@ class AddOrganizationMemberEmailResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._BindId = params.get("BindId")
         self._RequestId = params.get("RequestId")
 
 
@@ -788,6 +801,61 @@ class CreateOrganizationMemberResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateOrganizationRequest(AbstractModel):
+    """CreateOrganization请求参数结构体
+
+    """
+
+
+class CreateOrganizationResponse(AbstractModel):
+    """CreateOrganization返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _OrgId: 企业组织ID
+        :type OrgId: int
+        :param _NickName: 创建者昵称
+        :type NickName: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._OrgId = None
+        self._NickName = None
+        self._RequestId = None
+
+    @property
+    def OrgId(self):
+        return self._OrgId
+
+    @OrgId.setter
+    def OrgId(self, OrgId):
+        self._OrgId = OrgId
+
+    @property
+    def NickName(self):
+        return self._NickName
+
+    @NickName.setter
+    def NickName(self, NickName):
+        self._NickName = NickName
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._OrgId = params.get("OrgId")
+        self._NickName = params.get("NickName")
+        self._RequestId = params.get("RequestId")
+
+
 class DeleteOrganizationMemberAuthIdentityRequest(AbstractModel):
     """DeleteOrganizationMemberAuthIdentity请求参数结构体
 
@@ -1009,6 +1077,37 @@ class DeleteOrganizationNodesRequest(AbstractModel):
 
 class DeleteOrganizationNodesResponse(AbstractModel):
     """DeleteOrganizationNodes返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteOrganizationRequest(AbstractModel):
+    """DeleteOrganization请求参数结构体
+
+    """
+
+
+class DeleteOrganizationResponse(AbstractModel):
+    """DeleteOrganization返回参数结构体
 
     """
 
@@ -1717,12 +1816,15 @@ class DescribeOrganizationMemberAuthIdentitiesRequest(AbstractModel):
         :type Offset: int
         :param _Limit: 限制数目。取值范围：1~50，默认值：10
         :type Limit: int
-        :param _MemberUin: 组织成员Uin。
+        :param _MemberUin: 组织成员Uin。入参MemberUin与IdentityId至少填写一个
         :type MemberUin: int
+        :param _IdentityId: 身份ID。入参MemberUin与IdentityId至少填写一个
+        :type IdentityId: int
         """
         self._Offset = None
         self._Limit = None
         self._MemberUin = None
+        self._IdentityId = None
 
     @property
     def Offset(self):
@@ -1748,11 +1850,20 @@ class DescribeOrganizationMemberAuthIdentitiesRequest(AbstractModel):
     def MemberUin(self, MemberUin):
         self._MemberUin = MemberUin
 
+    @property
+    def IdentityId(self):
+        return self._IdentityId
+
+    @IdentityId.setter
+    def IdentityId(self, IdentityId):
+        self._IdentityId = IdentityId
+
 
     def _deserialize(self, params):
         self._Offset = params.get("Offset")
         self._Limit = params.get("Limit")
         self._MemberUin = params.get("MemberUin")
+        self._IdentityId = params.get("IdentityId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2657,13 +2768,21 @@ class IdentityPolicy(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _PolicyId: 策略ID
+        :param _PolicyId: CAM预设策略ID。PolicyType 为预设策略时有效且必选
         :type PolicyId: int
-        :param _PolicyName: 策略名称
+        :param _PolicyName: CAM预设策略名称。PolicyType 为预设策略时有效且必选
         :type PolicyName: str
+        :param _PolicyType: 策略类型。取值 1-自定义策略  2-预设策略；默认值2
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PolicyType: int
+        :param _PolicyDocument: 自定义策略内容，遵循CAM策略语法。PolicyType 为自定义策略时有效且必选
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PolicyDocument: str
         """
         self._PolicyId = None
         self._PolicyName = None
+        self._PolicyType = None
+        self._PolicyDocument = None
 
     @property
     def PolicyId(self):
@@ -2681,10 +2800,28 @@ class IdentityPolicy(AbstractModel):
     def PolicyName(self, PolicyName):
         self._PolicyName = PolicyName
 
+    @property
+    def PolicyType(self):
+        return self._PolicyType
+
+    @PolicyType.setter
+    def PolicyType(self, PolicyType):
+        self._PolicyType = PolicyType
+
+    @property
+    def PolicyDocument(self):
+        return self._PolicyDocument
+
+    @PolicyDocument.setter
+    def PolicyDocument(self, PolicyDocument):
+        self._PolicyDocument = PolicyDocument
+
 
     def _deserialize(self, params):
         self._PolicyId = params.get("PolicyId")
         self._PolicyName = params.get("PolicyName")
+        self._PolicyType = params.get("PolicyType")
+        self._PolicyDocument = params.get("PolicyDocument")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -3579,18 +3716,27 @@ class OrgMemberAuthIdentity(AbstractModel):
         :param _IdentityRoleAliasName: 身份的角色别名。
 注意：此字段可能返回 null，表示取不到有效值。
         :type IdentityRoleAliasName: str
-        :param _Description: 描述。
+        :param _Description: 身份描述。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Description: str
-        :param _CreateTime: 创建时间。
+        :param _CreateTime: 首次配置成功的时间。
 注意：此字段可能返回 null，表示取不到有效值。
         :type CreateTime: str
-        :param _UpdateTime: 更新时间。
+        :param _UpdateTime: 最后一次配置成功的时间。
 注意：此字段可能返回 null，表示取不到有效值。
         :type UpdateTime: str
-        :param _IdentityType: 身份类型。取值： 1-预设  2-自定义
+        :param _IdentityType: 身份类型。取值： 1-预设身份  2-自定义身份
 注意：此字段可能返回 null，表示取不到有效值。
         :type IdentityType: int
+        :param _Status: 配置状态。取值：1-配置完成 2-需重新配置
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param _MemberUin: 成员Uin。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MemberUin: int
+        :param _MemberName: 成员名称。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MemberName: str
         """
         self._IdentityId = None
         self._IdentityRoleName = None
@@ -3599,6 +3745,9 @@ class OrgMemberAuthIdentity(AbstractModel):
         self._CreateTime = None
         self._UpdateTime = None
         self._IdentityType = None
+        self._Status = None
+        self._MemberUin = None
+        self._MemberName = None
 
     @property
     def IdentityId(self):
@@ -3656,6 +3805,30 @@ class OrgMemberAuthIdentity(AbstractModel):
     def IdentityType(self, IdentityType):
         self._IdentityType = IdentityType
 
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def MemberUin(self):
+        return self._MemberUin
+
+    @MemberUin.setter
+    def MemberUin(self, MemberUin):
+        self._MemberUin = MemberUin
+
+    @property
+    def MemberName(self):
+        return self._MemberName
+
+    @MemberName.setter
+    def MemberName(self, MemberName):
+        self._MemberName = MemberName
+
 
     def _deserialize(self, params):
         self._IdentityId = params.get("IdentityId")
@@ -3665,6 +3838,9 @@ class OrgMemberAuthIdentity(AbstractModel):
         self._CreateTime = params.get("CreateTime")
         self._UpdateTime = params.get("UpdateTime")
         self._IdentityType = params.get("IdentityType")
+        self._Status = params.get("Status")
+        self._MemberUin = params.get("MemberUin")
+        self._MemberName = params.get("MemberName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -4088,6 +4264,64 @@ class OrgProductFinancial(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class QuitOrganizationRequest(AbstractModel):
+    """QuitOrganization请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _OrgId: 企业组织ID
+        :type OrgId: int
+        """
+        self._OrgId = None
+
+    @property
+    def OrgId(self):
+        return self._OrgId
+
+    @OrgId.setter
+    def OrgId(self, OrgId):
+        self._OrgId = OrgId
+
+
+    def _deserialize(self, params):
+        self._OrgId = params.get("OrgId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QuitOrganizationResponse(AbstractModel):
+    """QuitOrganization返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
 
 
 class UpdateOrganizationMemberEmailBindRequest(AbstractModel):

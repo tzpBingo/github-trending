@@ -19,7 +19,7 @@ from tencentcloud.common.abstract_model import AbstractModel
 
 
 class AsyncRecognitionTaskInfo(AbstractModel):
-    """音频流异步识别任务信息
+    """[音频流异步识别](https://cloud.tencent.com/document/api/1093/37824#AsyncRecognitionTasks)任务信息
 
     """
 
@@ -64,7 +64,7 @@ class AsyncRecognitionTaskInfo(AbstractModel):
 
 
 class AsyncRecognitionTasks(AbstractModel):
-    """音频流异步识别任务列表
+    """[音频流异步识别任务列表](https://cloud.tencent.com/document/product/1093/52060#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)
 
     """
 
@@ -634,18 +634,18 @@ class CreateRecTaskRequest(AbstractModel):
 
 注意：如果传入参数值4，需确保账号已购买[语义分段资源包](https://cloud.tencent.com/document/product/1093/35686#97ae4aa0-29a0-4066-9f07-ccaf8856a16b)，或账号开启后付费；**若当前账号已开启后付费功能，并传入参数值4，将[自动计费](https://cloud.tencent.com/document/product/1093/35686#d912167d-ffd5-41a9-8b1c-2e89845a6852)）**
         :type ResTextFormat: int
-        :param _SourceType: 语音数据来源
-0：语音 URL；
-1：语音数据（post body）
+        :param _SourceType: 音频数据来源
+0：音频URL；
+1：音频数据（post body）
         :type SourceType: int
-        :param _Data: 语音数据base64编码
+        :param _Data: 音频数据base64编码
 **当 SourceType 值为 1 时须填写该字段，为 0 时不需要填写**
 
 注意：音频数据要小于5MB（含）
         :type Data: str
         :param _DataLen: 数据长度（此数据长度为数据未进行base64编码时的长度）
         :type DataLen: int
-        :param _Url: 语音URL的地址（需要公网环境浏览器可下载）
+        :param _Url: 音频URL的地址（需要公网环境浏览器可下载）
 **当 SourceType 值为 0 时须填写该字段，为 1 时不需要填写**
 
 注意：
@@ -1831,7 +1831,7 @@ class GetModelInfoResponse(AbstractModel):
 
 
 class HotWord(AbstractModel):
-    """热词的词和权重
+    """[热词的词和权重](https://cloud.tencent.com/document/product/1093/41111#2.-.E8.BE.93.E5.85.A5.E5.8F.82.E6.95.B0)
 
     """
 
@@ -1878,7 +1878,7 @@ class HotWord(AbstractModel):
 
 
 class Model(AbstractModel):
-    """自学习模型信息
+    """[自学习模型信息](https://cloud.tencent.com/document/product/1093/90813#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)
 
     """
 
@@ -2190,6 +2190,9 @@ class SentenceDetail(AbstractModel):
         :param _SliceSentence: 单句中间识别结果，使用空格拆分为多个词
 注意：此字段可能返回 null，表示取不到有效值。
         :type SliceSentence: str
+        :param _WrittenText: 口语转书面语结果，开启改功能才有值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type WrittenText: str
         :param _StartMs: 单句开始时间（毫秒）
 注意：此字段可能返回 null，表示取不到有效值。
         :type StartMs: int
@@ -2220,6 +2223,7 @@ class SentenceDetail(AbstractModel):
         """
         self._FinalSentence = None
         self._SliceSentence = None
+        self._WrittenText = None
         self._StartMs = None
         self._EndMs = None
         self._WordsNum = None
@@ -2245,6 +2249,14 @@ class SentenceDetail(AbstractModel):
     @SliceSentence.setter
     def SliceSentence(self, SliceSentence):
         self._SliceSentence = SliceSentence
+
+    @property
+    def WrittenText(self):
+        return self._WrittenText
+
+    @WrittenText.setter
+    def WrittenText(self, WrittenText):
+        self._WrittenText = WrittenText
 
     @property
     def StartMs(self):
@@ -2322,6 +2334,7 @@ class SentenceDetail(AbstractModel):
     def _deserialize(self, params):
         self._FinalSentence = params.get("FinalSentence")
         self._SliceSentence = params.get("SliceSentence")
+        self._WrittenText = params.get("WrittenText")
         self._StartMs = params.get("StartMs")
         self._EndMs = params.get("EndMs")
         self._WordsNum = params.get("WordsNum")
@@ -2717,7 +2730,7 @@ class SentenceRecognitionResponse(AbstractModel):
 
 
 class SentenceWord(AbstractModel):
-    """一句话识别返回的词时间戳
+    """[一句话识别](https://cloud.tencent.com/document/product/1093/35646#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)返回的词时间戳
 
     """
 
@@ -2916,7 +2929,7 @@ class SetVocabStateResponse(AbstractModel):
 
 
 class Task(AbstractModel):
-    """录音文件识别、实时语音异步识别请求的返回数据
+    """[录音文件识别](https://cloud.tencent.com/document/product/1093/37823#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)、[实时语音异步识别](https://cloud.tencent.com/document/product/1093/52061#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)请求的返回数据
 
     """
 
@@ -2949,7 +2962,7 @@ class Task(AbstractModel):
 
 
 class TaskStatus(AbstractModel):
-    """获取录音识别结果的返回参数
+    """[获取录音识别结果的返回参数](https://cloud.tencent.com/document/product/1093/37822#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)
 
     """
 
@@ -3185,7 +3198,7 @@ class UpdateAsrVocabResponse(AbstractModel):
 
 
 class Vocab(AbstractModel):
-    """词表内容
+    """[词表内容](https://cloud.tencent.com/document/product/1093/41484#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)
 
     """
 
@@ -3308,7 +3321,7 @@ class Vocab(AbstractModel):
 
 
 class VoicePrintBaseData(AbstractModel):
-    """说话人基础数据，包括说话人id和说话人昵称
+    """[说话人基础数据](https://cloud.tencent.com/document/product/1093/94483#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)，包括说话人id和说话人昵称
 
     """
 
@@ -3355,7 +3368,7 @@ class VoicePrintBaseData(AbstractModel):
 
 
 class VoicePrintCountData(AbstractModel):
-    """统计返回注册数量结构
+    """统计返回[说话人注册数量](https://cloud.tencent.com/document/product/1093/96061#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)
 
     """
 
@@ -3734,7 +3747,7 @@ class VoicePrintUpdateResponse(AbstractModel):
 
 
 class VoicePrintVerifyData(AbstractModel):
-    """说话人验证数据
+    """[说话人验证数据](https://cloud.tencent.com/document/product/1093/94481#3.-.E8.BE.93.E5.87.BA.E5.8F.82.E6.95.B0)
 
     """
 

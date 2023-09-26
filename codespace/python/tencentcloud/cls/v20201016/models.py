@@ -4045,6 +4045,9 @@ class CreateExportRequest(AbstractModel):
         :type Order: str
         :param _Format: 日志导出数据格式。json，csv，默认为json
         :type Format: str
+        :param _SyntaxRule: 语法规则,  默认值为0。
+0：Lucene语法，1：CQL语法。
+        :type SyntaxRule: int
         """
         self._TopicId = None
         self._Count = None
@@ -4053,6 +4056,7 @@ class CreateExportRequest(AbstractModel):
         self._To = None
         self._Order = None
         self._Format = None
+        self._SyntaxRule = None
 
     @property
     def TopicId(self):
@@ -4110,6 +4114,14 @@ class CreateExportRequest(AbstractModel):
     def Format(self, Format):
         self._Format = Format
 
+    @property
+    def SyntaxRule(self):
+        return self._SyntaxRule
+
+    @SyntaxRule.setter
+    def SyntaxRule(self, SyntaxRule):
+        self._SyntaxRule = SyntaxRule
+
 
     def _deserialize(self, params):
         self._TopicId = params.get("TopicId")
@@ -4119,6 +4131,7 @@ class CreateExportRequest(AbstractModel):
         self._To = params.get("To")
         self._Order = params.get("Order")
         self._Format = params.get("Format")
+        self._SyntaxRule = params.get("SyntaxRule")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -16247,6 +16260,242 @@ class PreviewLogStatistic(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class QueryMetricRequest(AbstractModel):
+    """QueryMetric请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Query: 查询语句，使用PromQL语法	
+        :type Query: str
+        :param _TopicId: 指标主题ID
+        :type TopicId: str
+        :param _Time: 查询时间，秒级Unix时间戳	
+        :type Time: int
+        """
+        self._Query = None
+        self._TopicId = None
+        self._Time = None
+
+    @property
+    def Query(self):
+        return self._Query
+
+    @Query.setter
+    def Query(self, Query):
+        self._Query = Query
+
+    @property
+    def TopicId(self):
+        return self._TopicId
+
+    @TopicId.setter
+    def TopicId(self, TopicId):
+        self._TopicId = TopicId
+
+    @property
+    def Time(self):
+        return self._Time
+
+    @Time.setter
+    def Time(self, Time):
+        self._Time = Time
+
+
+    def _deserialize(self, params):
+        self._Query = params.get("Query")
+        self._TopicId = params.get("TopicId")
+        self._Time = params.get("Time")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryMetricResponse(AbstractModel):
+    """QueryMetric返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResultType: 指标查询结果类型
+        :type ResultType: str
+        :param _Result: 指标查询结果
+        :type Result: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._ResultType = None
+        self._Result = None
+        self._RequestId = None
+
+    @property
+    def ResultType(self):
+        return self._ResultType
+
+    @ResultType.setter
+    def ResultType(self, ResultType):
+        self._ResultType = ResultType
+
+    @property
+    def Result(self):
+        return self._Result
+
+    @Result.setter
+    def Result(self, Result):
+        self._Result = Result
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._ResultType = params.get("ResultType")
+        self._Result = params.get("Result")
+        self._RequestId = params.get("RequestId")
+
+
+class QueryRangeMetricRequest(AbstractModel):
+    """QueryRangeMetric请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TopicId: 指标主题ID
+        :type TopicId: str
+        :param _Query: 查询语句，使用PromQL语法
+        :type Query: str
+        :param _Start: 查询起始时间，秒级Unix时间戳
+        :type Start: int
+        :param _End: 查询结束时间，秒级Unix时间戳
+        :type End: int
+        :param _Step: 查询时间间隔，单位秒
+        :type Step: int
+        """
+        self._TopicId = None
+        self._Query = None
+        self._Start = None
+        self._End = None
+        self._Step = None
+
+    @property
+    def TopicId(self):
+        return self._TopicId
+
+    @TopicId.setter
+    def TopicId(self, TopicId):
+        self._TopicId = TopicId
+
+    @property
+    def Query(self):
+        return self._Query
+
+    @Query.setter
+    def Query(self, Query):
+        self._Query = Query
+
+    @property
+    def Start(self):
+        return self._Start
+
+    @Start.setter
+    def Start(self, Start):
+        self._Start = Start
+
+    @property
+    def End(self):
+        return self._End
+
+    @End.setter
+    def End(self, End):
+        self._End = End
+
+    @property
+    def Step(self):
+        return self._Step
+
+    @Step.setter
+    def Step(self, Step):
+        self._Step = Step
+
+
+    def _deserialize(self, params):
+        self._TopicId = params.get("TopicId")
+        self._Query = params.get("Query")
+        self._Start = params.get("Start")
+        self._End = params.get("End")
+        self._Step = params.get("Step")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class QueryRangeMetricResponse(AbstractModel):
+    """QueryRangeMetric返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResultType: 指标查询结果类型
+        :type ResultType: str
+        :param _Result: 指标查询结果
+        :type Result: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._ResultType = None
+        self._Result = None
+        self._RequestId = None
+
+    @property
+    def ResultType(self):
+        return self._ResultType
+
+    @ResultType.setter
+    def ResultType(self, ResultType):
+        self._ResultType = ResultType
+
+    @property
+    def Result(self):
+        return self._Result
+
+    @Result.setter
+    def Result(self, Result):
+        self._Result = Result
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._ResultType = params.get("ResultType")
+        self._Result = params.get("Result")
+        self._RequestId = params.get("RequestId")
 
 
 class RetryShipperTaskRequest(AbstractModel):

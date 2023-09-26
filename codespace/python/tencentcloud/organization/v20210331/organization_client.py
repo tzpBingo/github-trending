@@ -118,6 +118,29 @@ class OrganizationClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateOrganization(self, request):
+        """创建企业组织
+
+        :param request: Request instance for CreateOrganization.
+        :type request: :class:`tencentcloud.organization.v20210331.models.CreateOrganizationRequest`
+        :rtype: :class:`tencentcloud.organization.v20210331.models.CreateOrganizationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateOrganization", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateOrganizationResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateOrganizationMember(self, request):
         """创建组织成员
 
@@ -178,6 +201,29 @@ class OrganizationClient(AbstractClient):
             body = self.call("CreateOrganizationMemberPolicy", params, headers=headers)
             response = json.loads(body)
             model = models.CreateOrganizationMemberPolicyResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteOrganization(self, request):
+        """删除企业组织
+
+        :param request: Request instance for DeleteOrganization.
+        :type request: :class:`tencentcloud.organization.v20210331.models.DeleteOrganizationRequest`
+        :rtype: :class:`tencentcloud.organization.v20210331.models.DeleteOrganizationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteOrganization", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteOrganizationResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -418,7 +464,7 @@ class OrganizationClient(AbstractClient):
 
 
     def DescribeOrganizationMemberAuthIdentities(self, request):
-        """获取组织成员可被管理的身份列表
+        """获取组织成员访问授权列表
 
         :param request: Request instance for DescribeOrganizationMemberAuthIdentities.
         :type request: :class:`tencentcloud.organization.v20210331.models.DescribeOrganizationMemberAuthIdentitiesRequest`
@@ -569,6 +615,29 @@ class OrganizationClient(AbstractClient):
             body = self.call("MoveOrganizationNodeMembers", params, headers=headers)
             response = json.loads(body)
             model = models.MoveOrganizationNodeMembersResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def QuitOrganization(self, request):
+        """退出企业组织
+
+        :param request: Request instance for QuitOrganization.
+        :type request: :class:`tencentcloud.organization.v20210331.models.QuitOrganizationRequest`
+        :rtype: :class:`tencentcloud.organization.v20210331.models.QuitOrganizationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("QuitOrganization", params, headers=headers)
+            response = json.loads(body)
+            model = models.QuitOrganizationResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

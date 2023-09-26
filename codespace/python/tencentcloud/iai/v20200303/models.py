@@ -521,12 +521,12 @@ class CompareFaceRequest(AbstractModel):
         r"""
         :param _ImageA: A 图片 base64 数据，base64 编码后大小不可超过5M。
 jpg格式长边像素不可超过4000，其他格式图片长边像素不可超2000。
-若图片中包含多张人脸，只选取其中人脸面积最大的人脸。
+若图片中包含多张人脸，只选取其中置信度最高的人脸。
 支持PNG、JPG、JPEG、BMP，不支持 GIF 图片。
         :type ImageA: str
         :param _ImageB: B 图片 base64 数据，base64 编码后大小不可超过5M。
 jpg格式长边像素不可超过4000，其他格式图片长边像素不可超2000。
-若图片中包含多张人脸，只选取其中人脸面积最大的人脸。
+若图片中包含多张人脸，只选取其中置信度最高的人脸。
 支持PNG、JPG、JPEG、BMP，不支持 GIF 图片。
         :type ImageB: str
         :param _UrlA: A 图片的 Url ，对应图片 base64 编码后大小不可超过5M。
@@ -3400,7 +3400,7 @@ class FaceDetailInfo(AbstractModel):
         :type FaceRect: :class:`tencentcloud.iai.v20200303.models.FaceRect`
         :param _FaceDetailAttributesInfo: 人脸属性信息，根据 FaceAttributesType 输入的类型，返回年龄（Age）、颜值（Beauty） 
 情绪（Emotion）、眼睛信息（Eye）、眉毛（Eyebrow）、性别（Gender） 
-头发（Hair）、帽子（Hat）、姿态（Headpose）、口罩（Mask）、嘴巴（Mouse）、胡子（Moustache） 
+头发（Hair）、帽子（Hat）、姿态（Headpose）、口罩（Mask）、嘴巴（Mouth）、胡子（Moustache） 
 鼻子（Nose）、脸型（Shape）、肤色（Skin）、微笑（Smile）等人脸属性信息。  
 若 FaceAttributesType 没有输入相关类型，则FaceDetaiAttributesInfo返回的细项不具备参考意义。
         :type FaceDetailAttributesInfo: :class:`tencentcloud.iai.v20200303.models.FaceDetailAttributesInfo`
