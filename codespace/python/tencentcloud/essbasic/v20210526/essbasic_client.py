@@ -995,6 +995,29 @@ class EssbasicClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateChannelOrganizationInfoChangeUrl(self, request):
+        """此接口（CreateChannelOrganizationInfoChangeUrl）用于创建子客企业信息变更链接，支持创建企业超管变更链接或企业基础信息变更链接，通过入参ChangeType指定。
+
+        :param request: Request instance for CreateChannelOrganizationInfoChangeUrl.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.CreateChannelOrganizationInfoChangeUrlRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.CreateChannelOrganizationInfoChangeUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateChannelOrganizationInfoChangeUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateChannelOrganizationInfoChangeUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateConsoleLoginUrl(self, request):
         """此接口（CreateConsoleLoginUrl）用于创建第三方平台子客企业控制台Web/移动登录链接。支持web控制台、电子签小程序和H5链接。登录链接是进入子客控制台的唯一入口。
         链接访问后，会根据企业的和员工的状态（企业根据ProxyOrganizationOpenId参数，员工根据OpenId参数判断），进入不同的流程，主要情况分类如下：
@@ -1303,7 +1326,33 @@ class EssbasicClient(AbstractClient):
 
 
     def ModifyExtendedService(self, request):
-        """修改（操作）企业扩展服务 ，企业经办人需要是企业超管或者法人
+        """修改（操作）企业扩展服务 ，企业经办人需要是企业超管或者法人。
+
+        跳转小程序的几种方式：主要是设置不同的EndPoint
+        1. 通过链接Url直接跳转到小程序，不需要返回
+        设置EndPoint为WEIXINAPP，得到链接打开即可。
+
+        2. 客户App直接跳转到小程序-->腾讯电子签小程序操作完成-->返回App
+        跳转到小程序的实现，参考官方文档
+        https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/launchApp.html
+        其中小程序的原始Id，请联系<对接技术人员>获取，或者查看小程序信息自助获取。
+        设置EndPoint为APP，得到path。
+
+        4. 客户小程序直接跳到电子签小程序-->腾讯电子签小程序操作完成--->回到客户小程序
+        跳转到小程序的实现，参考官方文档（分为全屏、半屏两种方式）
+        全屏方式：
+        （https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html）
+        半屏方式：
+        （https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html）
+        其中小程序的原始Id，请联系<对接技术人员>获取，或者查看小程序信息自助获取。
+        设置EndPoint为APP，得到path。
+
+        其中小程序的原始Id如下，或者查看小程序信息自助获取。
+
+        | 小程序 | AppID | 原始ID |
+        | ------------ | ------------ | ------------ |
+        | 腾讯电子签（正式版） | wxa023b292fd19d41d | gh_da88f6188665 |
+        | 腾讯电子签Demo | wx371151823f6f3edf | gh_39a5d3de69fa |
 
         :param request: Request instance for ModifyExtendedService.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ModifyExtendedServiceRequest`

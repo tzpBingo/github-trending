@@ -121,6 +121,9 @@ class AccelerationDomain(AbstractModel):
         :param _OwnershipVerification: 当域名需要进行归属权验证才能继续提供服务时，该对象会携带对应验证方式所需要的信息。
 注意：此字段可能返回 null，表示取不到有效值。
         :type OwnershipVerification: :class:`tencentcloud.teo.v20220901.models.OwnershipVerification`
+        :param _Certificate: 域名证书信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Certificate: :class:`tencentcloud.teo.v20220901.models.AccelerationDomainCertificate`
         """
         self._ZoneId = None
         self._DomainName = None
@@ -131,6 +134,7 @@ class AccelerationDomain(AbstractModel):
         self._CreatedOn = None
         self._ModifiedOn = None
         self._OwnershipVerification = None
+        self._Certificate = None
 
     @property
     def ZoneId(self):
@@ -204,6 +208,14 @@ class AccelerationDomain(AbstractModel):
     def OwnershipVerification(self, OwnershipVerification):
         self._OwnershipVerification = OwnershipVerification
 
+    @property
+    def Certificate(self):
+        return self._Certificate
+
+    @Certificate.setter
+    def Certificate(self, Certificate):
+        self._Certificate = Certificate
+
 
     def _deserialize(self, params):
         self._ZoneId = params.get("ZoneId")
@@ -219,6 +231,60 @@ class AccelerationDomain(AbstractModel):
         if params.get("OwnershipVerification") is not None:
             self._OwnershipVerification = OwnershipVerification()
             self._OwnershipVerification._deserialize(params.get("OwnershipVerification"))
+        if params.get("Certificate") is not None:
+            self._Certificate = AccelerationDomainCertificate()
+            self._Certificate._deserialize(params.get("Certificate"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AccelerationDomainCertificate(AbstractModel):
+    """加速域名所对应的证书信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Mode: 配置证书的模式，取值有： <li>disable：不配置证书；</li> <li>eofreecert：配置 EdgeOne 免费证书；</li> <li>sslcert：配置 SSL 证书。</li>
+        :type Mode: str
+        :param _List: 证书列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type List: list of CertificateInfo
+        """
+        self._Mode = None
+        self._List = None
+
+    @property
+    def Mode(self):
+        return self._Mode
+
+    @Mode.setter
+    def Mode(self, Mode):
+        self._Mode = Mode
+
+    @property
+    def List(self):
+        return self._List
+
+    @List.setter
+    def List(self, List):
+        self._List = List
+
+
+    def _deserialize(self, params):
+        self._Mode = params.get("Mode")
+        if params.get("List") is not None:
+            self._List = []
+            for item in params.get("List"):
+                obj = CertificateInfo()
+                obj._deserialize(item)
+                self._List.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2735,6 +2801,119 @@ class CachePrefresh(AbstractModel):
         
 
 
+class CertificateInfo(AbstractModel):
+    """https 服务端证书配置
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CertId: 服务器证书 ID。
+        :type CertId: str
+        :param _Alias: 证书备注名。
+        :type Alias: str
+        :param _Type: 证书类型，取值有：
+<li>default：默认证书；</li>
+<li>upload：用户上传；</li>
+<li>managed：腾讯云托管。</li>
+        :type Type: str
+        :param _ExpireTime: 证书过期时间。
+        :type ExpireTime: str
+        :param _DeployTime: 证书部署时间。
+        :type DeployTime: str
+        :param _SignAlgo: 签名算法。
+        :type SignAlgo: str
+        :param _Status: 证书状态，取值有：
+<li>deployed：已部署；</li>
+<li>processing：部署中；</li>
+<li>applying：申请中；</li>
+<li>failed：申请失败；</li>
+<li>issued：绑定失败。</li>
+        :type Status: str
+        """
+        self._CertId = None
+        self._Alias = None
+        self._Type = None
+        self._ExpireTime = None
+        self._DeployTime = None
+        self._SignAlgo = None
+        self._Status = None
+
+    @property
+    def CertId(self):
+        return self._CertId
+
+    @CertId.setter
+    def CertId(self, CertId):
+        self._CertId = CertId
+
+    @property
+    def Alias(self):
+        return self._Alias
+
+    @Alias.setter
+    def Alias(self, Alias):
+        self._Alias = Alias
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def ExpireTime(self):
+        return self._ExpireTime
+
+    @ExpireTime.setter
+    def ExpireTime(self, ExpireTime):
+        self._ExpireTime = ExpireTime
+
+    @property
+    def DeployTime(self):
+        return self._DeployTime
+
+    @DeployTime.setter
+    def DeployTime(self, DeployTime):
+        self._DeployTime = DeployTime
+
+    @property
+    def SignAlgo(self):
+        return self._SignAlgo
+
+    @SignAlgo.setter
+    def SignAlgo(self, SignAlgo):
+        self._SignAlgo = SignAlgo
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+
+    def _deserialize(self, params):
+        self._CertId = params.get("CertId")
+        self._Alias = params.get("Alias")
+        self._Type = params.get("Type")
+        self._ExpireTime = params.get("ExpireTime")
+        self._DeployTime = params.get("DeployTime")
+        self._SignAlgo = params.get("SignAlgo")
+        self._Status = params.get("Status")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CheckCnameStatusRequest(AbstractModel):
     """CheckCnameStatus请求参数结构体
 
@@ -4542,7 +4721,7 @@ class CreateZoneRequest(AbstractModel):
         :type Area: str
         :param _PlanId: 待绑定的目标套餐 ID。当您账号下已存在套餐时，可以填写此参数，直接将站点绑定至该套餐。若您当前没有可绑定的套餐时，请前往控制台购买套餐完成站点创建。
         :type PlanId: str
-        :param _AliasZoneName: 同名站点标识。限制输入数字、英文、- 和 _ 组合，长度 20 个字符以内。详情参考 [同名站点标识]()，无此使用场景时，该字段保留为空即可。
+        :param _AliasZoneName: 同名站点标识。限制输入数字、英文、- 和 _ 组合，长度 20 个字符以内。详情参考 [同名站点标识](https://cloud.tencent.com/document/product/1552/70202)，无此使用场景时，该字段保留为空即可。
         :type AliasZoneName: str
         :param _Tags: 标签。该参数用于对站点进行分权限管控、分账。需要先前往 [标签控制台](https://console.cloud.tencent.com/tag/taglist) 创建对应的标签才可以在此处传入对应的标签键和标签值。
         :type Tags: list of Tag
@@ -16737,14 +16916,7 @@ class RuleCondition(AbstractModel):
 <li> exist: 存在； </li>
 <li> notexist: 不存在。</li>
         :type Operator: str
-        :param _Target: 匹配类型，取值有：
-<li> filename：文件名； </li>
-<li> extension：文件后缀； </li>
-<li> host：HOST； </li>
-<li> full_url：URL Full，当前站点下完整 URL 路径，必须包含 HTTP 协议，Host 和 路径； </li>
-<li> url：URL Path，当前站点下 URL 路径的请求； </li><li>client_country：客户端国家/地区；</li>
-<li> query_string：查询字符串，当前站点下请求URL的查询字符串； </li>
-<li> request_header：HTTP请求头部。 </li>
+        :param _Target: 匹配类型，取值有： <li> filename：文件名； </li> <li> extension：文件后缀； </li> <li> host：HOST； </li> <li> full_url：URL Full，当前站点下完整 URL 路径，必须包含 HTTP 协议，Host 和 路径； </li> <li> url：URL Path，当前站点下 URL 路径的请求； </li><li>client_country：客户端国家/地区；</li> <li> query_string：查询字符串，当前站点下请求URL的查询字符串； </li> <li> request_header：HTTP请求头部。 </li>
         :type Target: str
         :param _Values: 对应匹配类型的参数值，仅在匹配类型为查询字符串或HTTP请求头并且运算符取值为存在或不存在时允许传空数组，对应匹配类型有：
 <li> 文件后缀：jpg、txt等文件后缀；</li>
@@ -16816,10 +16988,14 @@ class RuleCondition(AbstractModel):
 
     @property
     def IgnoreNameCase(self):
+        warnings.warn("parameter `IgnoreNameCase` is deprecated", DeprecationWarning) 
+
         return self._IgnoreNameCase
 
     @IgnoreNameCase.setter
     def IgnoreNameCase(self, IgnoreNameCase):
+        warnings.warn("parameter `IgnoreNameCase` is deprecated", DeprecationWarning) 
+
         self._IgnoreNameCase = IgnoreNameCase
 
 
@@ -19058,6 +19234,90 @@ class VanityNameServersIps(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class VerifyOwnershipRequest(AbstractModel):
+    """VerifyOwnership请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 站点或者加速域名。
+        :type Domain: str
+        """
+        self._Domain = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VerifyOwnershipResponse(AbstractModel):
+    """VerifyOwnership返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Status: 归属权验证结果。
+<li>success：验证成功；</li>
+<li>fail：验证失败。</li>
+        :type Status: str
+        :param _Result: 当验证结果为不通过时，该字段会返回原因，协助您排查问题。
+        :type Result: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Status = None
+        self._Result = None
+        self._RequestId = None
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def Result(self):
+        return self._Result
+
+    @Result.setter
+    def Result(self, Result):
+        self._Result = Result
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Status = params.get("Status")
+        self._Result = params.get("Result")
+        self._RequestId = params.get("RequestId")
 
 
 class Waf(AbstractModel):
