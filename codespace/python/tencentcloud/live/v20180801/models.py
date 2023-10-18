@@ -2803,6 +2803,11 @@ ContinueBreakPoint：播放完当前正在播放的点播 url 后再使用新的
         :param _ExtraCmd: 其他参数。
 示例: ignore_region  用于忽略传入地域, 内部按负载分配。
         :type ExtraCmd: str
+        :param _SpecifyTaskId: 自定义任务 ID。
+注：
+1. 该自定义 ID 为可选参数，如果传入，请确保该账号下传入的 ID 唯一。
+2. 该自定义 ID 用于防止重复发起请求时产生重复任务。后面也可以用 SpecifyTaskId 来修改或删除任务。
+        :type SpecifyTaskId: str
         :param _Comment: 任务描述，限制 512 字节。
         :type Comment: str
         :param _ToUrl: 完整目标 URL 地址。
@@ -2852,6 +2857,7 @@ PullVodPushLive -点播。
         self._VodRefreshType = None
         self._CallbackUrl = None
         self._ExtraCmd = None
+        self._SpecifyTaskId = None
         self._Comment = None
         self._ToUrl = None
         self._BackupSourceType = None
@@ -2973,6 +2979,14 @@ PullVodPushLive -点播。
         self._ExtraCmd = ExtraCmd
 
     @property
+    def SpecifyTaskId(self):
+        return self._SpecifyTaskId
+
+    @SpecifyTaskId.setter
+    def SpecifyTaskId(self, SpecifyTaskId):
+        self._SpecifyTaskId = SpecifyTaskId
+
+    @property
     def Comment(self):
         return self._Comment
 
@@ -3044,6 +3058,7 @@ PullVodPushLive -点播。
         self._VodRefreshType = params.get("VodRefreshType")
         self._CallbackUrl = params.get("CallbackUrl")
         self._ExtraCmd = params.get("ExtraCmd")
+        self._SpecifyTaskId = params.get("SpecifyTaskId")
         self._Comment = params.get("Comment")
         self._ToUrl = params.get("ToUrl")
         self._BackupSourceType = params.get("BackupSourceType")
@@ -7028,7 +7043,10 @@ class DescribeAllStreamPlayInfoListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _QueryTime: 查询时间点，精确到分钟粒度，支持最近1个月的数据查询，数据延迟为5分钟左右，如果要查询实时的数据，建议传递5分钟前的时间点，格式为yyyy-mm-dd HH:MM:00。（只精确至分钟，秒数填00）。
+        :param _QueryTime: 查询时间点，精确到分钟粒度，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO%20%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F,-ISO%20%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+支持最近1个月的数据查询，数据延迟为5分钟左右，如果要查询实时的数据，建议传递5分钟前的整点时间点。
         :type QueryTime: str
         :param _PlayDomains: 播放域名列表，若不填，表示总体数据。
         :type PlayDomains: list of str
@@ -18920,6 +18938,10 @@ ResetTaskConfig：任务更新回调。
 注意：
 1. 单位：秒，配合FileIndex使用。
         :type OffsetTime: int
+        :param _SpecifyTaskId: 指定任务 ID 修改任务。
+
+注意：该自定义任务 ID 只有在创建任务时指定了，才可在此处修改时使用。否则请使用系统返回的任务 ID。
+        :type SpecifyTaskId: str
         :param _ToUrl: 目标 Url。
 换目标地址，会断流重推到新地址。
         :type ToUrl: str
@@ -18965,6 +18987,7 @@ PullVodPushLive -点播。
         self._CallbackUrl = None
         self._FileIndex = None
         self._OffsetTime = None
+        self._SpecifyTaskId = None
         self._ToUrl = None
         self._Comment = None
         self._BackupSourceType = None
@@ -19069,6 +19092,14 @@ PullVodPushLive -点播。
         self._OffsetTime = OffsetTime
 
     @property
+    def SpecifyTaskId(self):
+        return self._SpecifyTaskId
+
+    @SpecifyTaskId.setter
+    def SpecifyTaskId(self, SpecifyTaskId):
+        self._SpecifyTaskId = SpecifyTaskId
+
+    @property
     def ToUrl(self):
         return self._ToUrl
 
@@ -19130,6 +19161,7 @@ PullVodPushLive -点播。
         self._CallbackUrl = params.get("CallbackUrl")
         self._FileIndex = params.get("FileIndex")
         self._OffsetTime = params.get("OffsetTime")
+        self._SpecifyTaskId = params.get("SpecifyTaskId")
         self._ToUrl = params.get("ToUrl")
         self._Comment = params.get("Comment")
         self._BackupSourceType = params.get("BackupSourceType")

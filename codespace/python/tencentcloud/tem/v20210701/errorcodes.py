@@ -269,6 +269,9 @@ INVALIDPARAMETERVALUE_PORTISRESERVED = 'InvalidParameterValue.PortIsReserved'
 # post start 不合法。
 INVALIDPARAMETERVALUE_POSTSTARTNOTVALID = 'InvalidParameterValue.PostStartNotValid'
 
+# pre stop 不合法。
+INVALIDPARAMETERVALUE_PRESTOPNOTVALID = 'InvalidParameterValue.PreStopNotValid'
+
 # 公有镜像参数错误。
 INVALIDPARAMETERVALUE_PUBLICREPOTYPEPARAMETERERROR = 'InvalidParameterValue.PublicRepoTypeParameterError'
 
@@ -346,6 +349,9 @@ MISSINGPARAMETER_NAMESPACEIDNULL = 'MissingParameter.NamespaceIdNull'
 
 # 包名不能为空。
 MISSINGPARAMETER_PKGNAMENULL = 'MissingParameter.PkgNameNull'
+
+# 镜像仓库服务器不能为空。
+MISSINGPARAMETER_REPOSERVERNULL = 'MissingParameter.RepoServerNull'
 
 # 弹性规则ID不能为空。
 MISSINGPARAMETER_SCALERIDNULL = 'MissingParameter.ScalerIdNull'

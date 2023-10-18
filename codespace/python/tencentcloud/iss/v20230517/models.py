@@ -1374,7 +1374,7 @@ class AddRecordBackupPlanResponse(AbstractModel):
 
 
 class AddRecordBackupTemplateData(AbstractModel):
-    """新增录像上云模版返回数据
+    """新增录像上云模板返回数据
 
     """
 
@@ -2792,6 +2792,53 @@ class BatchOperateDeviceResponse(AbstractModel):
             self._Data = BatchOperateDeviceData()
             self._Data._deserialize(params.get("Data"))
         self._RequestId = params.get("RequestId")
+
+
+class BitRateInfo(AbstractModel):
+    """视频通道码率返回结果
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ChannelId: 通道Id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ChannelId: str
+        :param _Bitrate: 码率,单位:kbps
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Bitrate: float
+        """
+        self._ChannelId = None
+        self._Bitrate = None
+
+    @property
+    def ChannelId(self):
+        return self._ChannelId
+
+    @ChannelId.setter
+    def ChannelId(self, ChannelId):
+        self._ChannelId = ChannelId
+
+    @property
+    def Bitrate(self):
+        return self._Bitrate
+
+    @Bitrate.setter
+    def Bitrate(self, Bitrate):
+        self._Bitrate = Bitrate
+
+
+    def _deserialize(self, params):
+        self._ChannelId = params.get("ChannelId")
+        self._Bitrate = params.get("Bitrate")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class BodyAIResultInfo(AbstractModel):
@@ -6876,7 +6923,7 @@ class DescribeRecordBackupPlanResponse(AbstractModel):
 
 
 class DescribeRecordBackupTemplateData(AbstractModel):
-    """查询录像上云模版返回数据
+    """查询录像上云模板返回数据
 
     """
 
@@ -8109,6 +8156,117 @@ class DescribeUserDeviceResponse(AbstractModel):
     def _deserialize(self, params):
         if params.get("Data") is not None:
             self._Data = DescribeDeviceData()
+            self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeVideoBitRateList(AbstractModel):
+    """查询视频通道码率的返回结果列表
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _BitRates: 通道码率列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BitRates: list of BitRateInfo
+        """
+        self._BitRates = None
+
+    @property
+    def BitRates(self):
+        return self._BitRates
+
+    @BitRates.setter
+    def BitRates(self, BitRates):
+        self._BitRates = BitRates
+
+
+    def _deserialize(self, params):
+        if params.get("BitRates") is not None:
+            self._BitRates = []
+            for item in params.get("BitRates"):
+                obj = BitRateInfo()
+                obj._deserialize(item)
+                self._BitRates.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeVideoBitRateRequest(AbstractModel):
+    """DescribeVideoBitRate请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ChannelIds: 通道ID列表
+        :type ChannelIds: list of str
+        """
+        self._ChannelIds = None
+
+    @property
+    def ChannelIds(self):
+        return self._ChannelIds
+
+    @ChannelIds.setter
+    def ChannelIds(self, ChannelIds):
+        self._ChannelIds = ChannelIds
+
+
+    def _deserialize(self, params):
+        self._ChannelIds = params.get("ChannelIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeVideoBitRateResponse(AbstractModel):
+    """DescribeVideoBitRate返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Data: 无
+        :type Data: :class:`tencentcloud.iss.v20230517.models.DescribeVideoBitRateList`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Data = None
+        self._RequestId = None
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Data") is not None:
+            self._Data = DescribeVideoBitRateList()
             self._Data._deserialize(params.get("Data"))
         self._RequestId = params.get("RequestId")
 
@@ -14524,7 +14682,7 @@ class UpdateRecordBackupPlanResponse(AbstractModel):
 
 
 class UpdateRecordBackupTemplateData(AbstractModel):
-    """修改录像上云模版返回数据
+    """修改录像上云模板返回数据
 
     """
 

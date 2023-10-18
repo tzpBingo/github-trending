@@ -323,8 +323,8 @@ class AbstractClient(object):
         return body
 
     def _check_status(self, resp_inter):
-        if resp_inter.status != 200:
-            raise TencentCloudSDKException("ServerNetworkError", resp_inter.data)
+        if resp_inter.status_code != 200:
+            raise TencentCloudSDKException("ServerNetworkError", resp_inter.content)
 
     def _format_sign_string(self, params):
         formatParam = {}
@@ -344,35 +344,74 @@ class AbstractClient(object):
             endpoint = self._get_service_domain()
         return endpoint
 
-    def _handle_response(self, data):
-        resp = json.loads(data)
-        if "Error" in resp["Response"]:
-            code = resp["Response"]["Error"]["Code"]
-            message = resp["Response"]["Error"]["Message"]
-            reqid = resp["Response"]["RequestId"]
+    def _check_error(self, resp):
+        ct = resp.headers.get('Content-Type')
+        if ct not in ('text/plain', _json_content):
+            return
+
+        data = json.loads(resp.content)
+        if "Error" in data["Response"]:
+            code = data["Response"]["Error"]["Code"]
+            message = data["Response"]["Error"]["Message"]
+            reqid = data["Response"]["RequestId"]
             raise TencentCloudSDKException(code, message, reqid)
-        if "DeprecatedWarning" in resp["Response"]:
+        if "DeprecatedWarning" in data["Response"]:
             import warnings
             warnings.filterwarnings("default")
-            warnings.warn("This action is deprecated, detail: %s" % resp["Response"]["DeprecatedWarning"],
+            warnings.warn("This action is deprecated, detail: %s" % data["Response"]["DeprecatedWarning"],
                           DeprecationWarning)
 
-    def call(self, action, params, options=None, headers=None):
+    @staticmethod
+    def _process_response_sse(resp):
+        e = {}
+
+        for line in resp.iter_lines():
+            if not line:
+                yield e
+                e = {}
+                continue
+
+            line = line.decode('utf-8')
+
+            # comment
+            if line[0] == ':':
+                continue
+
+            colon_idx = line.find(':')
+            key = line[:colon_idx]
+            val = line[colon_idx + 1:]
+            if key == 'data':
+                # The spec allows for multiple data fields per event, concatenated them with "\n".
+                if 'data' not in e:
+                    e['data'] = val
+                else:
+                    e['data'] += '\n' + val
+            elif key in ('event', 'id'):
+                e[key] = val
+            elif key == 'retry':
+                e[key] = int(val)
+
+    def _call(self, action, params, options=None, headers=None):
         if not self.profile.disable_region_breaker:
-            return self.call_with_region_breaker(action, params, options, headers)
+            return self._call_with_region_breaker(action, params, options, headers)
         req = RequestInternal(self._get_endpoint(),
                               self.profile.httpProfile.reqMethod,
                               self._requestPath,
                               header=headers)
         self._build_req_inter(action, params, req, options)
 
-        resp_inter = self.request.send_request(req)
-        self._check_status(resp_inter)
-        data = resp_inter.data
-        self._handle_response(data)
-        return data
+        if self.profile.httpProfile.apigw_endpoint:
+            req.host = self.profile.httpProfile.apigw_endpoint
+            req.header["Host"] = req.host
+        return self.request.send_request(req)
 
-    def call_with_region_breaker(self, action, params, options=None, headers=None):
+    def call(self, action, params, options=None, headers=None):
+        resp = self._call(action, params, options, headers)
+        self._check_status(resp)
+        self._check_error(resp)
+        return resp.content
+
+    def _call_with_region_breaker(self, action, params, options=None, headers=None):
         endpoint = self._get_endpoint()
         generation, need_break = self.circuit_breaker.before_requests()
         if need_break:
@@ -382,20 +421,22 @@ class AbstractClient(object):
                               self._requestPath,
                               header=headers)
         self._build_req_inter(action, params, req, options)
-        data = '{"Response": {}}'
+        resp = None
         try:
-            resp_inter = self.request.send_request(req)
-            self._check_status(resp_inter)
-            data = resp_inter.data
-            self._handle_response(data)
+            resp = self.request.send_request(req)
             self.circuit_breaker.after_requests(generation, True)
+            return resp
         except TencentCloudSDKException as e:
-            if "RequestId" in data and e.code != "InternalError":
+            if resp and "RequestId" in resp.content and e.code != "InternalError":
                 self.circuit_breaker.after_requests(generation, True)
             else:
                 self.circuit_breaker.after_requests(generation, False)
 
-        return data
+    def call_with_region_breaker(self, action, params, options=None, headers=None):
+        resp = self._call_with_region_breaker(action, params, options, headers)
+        self._check_status(resp)
+        self._check_error(resp)
+        return resp.content
 
     def call_octet_stream(self, action, headers, body):
         """
@@ -420,20 +461,16 @@ class AbstractClient(object):
 
         req = RequestInternal(self._get_endpoint(),
                               self.profile.httpProfile.reqMethod,
-                              self._requestPath)
-        for key in headers:
-            req.header[key] = headers[key]
+                              self._requestPath,
+                              header=headers)
         req.data = body
         options = {"IsOctetStream": True}
         self._build_req_inter(action, None, req, options)
 
         resp = self.request.send_request(req)
         self._check_status(resp)
-        data = resp.data
-        self._handle_response(data)
-
-        json_rsp = json.loads(data)
-        return json_rsp
+        self._check_error(resp)
+        return json.loads(resp.content)
 
     def call_json(self, action, params, headers=None, options=None):
         """
@@ -448,9 +485,16 @@ class AbstractClient(object):
         :type options: dict
         :param options: request options, like {"SkipSign": False, "IsMultipart": False, "IsOctetStream": False, "BinaryParams": []}
         """
-        body = self.call(action, params, options, headers)
-        response = json.loads(body)
-        return response
+        resp = self._call(action, params, options, headers)
+        self._check_status(resp)
+        self._check_error(resp)
+        return json.loads(resp.content)
+
+    def call_sse(self, action, params, headers=None, options=None):
+        resp = self._call(action, params, options, headers)
+        self._check_status(resp)
+        self._check_error(resp)
+        return self._process_response_sse(resp)
 
     def set_stream_logger(self, stream=None, level=logging.DEBUG, log_format=None):
         """
@@ -487,7 +531,7 @@ class AbstractClient(object):
         log = logging.getLogger(LOGGER_NAME)
         log.setLevel(level)
         mb = 1024 * 1024
-        fh = logging.handlers.RotatingFileHandler(file_path, maxBytes=512*mb, backupCount=10)
+        fh = logging.handlers.RotatingFileHandler(file_path, maxBytes=512 * mb, backupCount=10)
         fh.setLevel(level)
         if log_format is None:
             log_format = self.FMT

@@ -1325,6 +1325,8 @@ class CreateCallOutSessionRequest(AbstractModel):
         :type IsForceUseMobile: bool
         :param _Uui: 自定义数据，长度限制 1024 字节
         :type Uui: str
+        :param _UUI: 自定义数据，长度限制 1024 字节
+        :type UUI: str
         """
         self._SdkAppId = None
         self._UserId = None
@@ -1333,6 +1335,7 @@ class CreateCallOutSessionRequest(AbstractModel):
         self._Callers = None
         self._IsForceUseMobile = None
         self._Uui = None
+        self._UUI = None
 
     @property
     def SdkAppId(self):
@@ -1384,11 +1387,23 @@ class CreateCallOutSessionRequest(AbstractModel):
 
     @property
     def Uui(self):
+        warnings.warn("parameter `Uui` is deprecated", DeprecationWarning) 
+
         return self._Uui
 
     @Uui.setter
     def Uui(self, Uui):
+        warnings.warn("parameter `Uui` is deprecated", DeprecationWarning) 
+
         self._Uui = Uui
+
+    @property
+    def UUI(self):
+        return self._UUI
+
+    @UUI.setter
+    def UUI(self, UUI):
+        self._UUI = UUI
 
 
     def _deserialize(self, params):
@@ -1399,6 +1414,7 @@ class CreateCallOutSessionRequest(AbstractModel):
         self._Callers = params.get("Callers")
         self._IsForceUseMobile = params.get("IsForceUseMobile")
         self._Uui = params.get("Uui")
+        self._UUI = params.get("UUI")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2983,10 +2999,14 @@ class DescribeChatMessagesRequest(AbstractModel):
 
     @property
     def InstanceId(self):
+        warnings.warn("parameter `InstanceId` is deprecated", DeprecationWarning) 
+
         return self._InstanceId
 
     @InstanceId.setter
     def InstanceId(self, InstanceId):
+        warnings.warn("parameter `InstanceId` is deprecated", DeprecationWarning) 
+
         self._InstanceId = InstanceId
 
     @property
@@ -3388,6 +3408,154 @@ class DescribeExtensionsResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeIMCdrListRequest(AbstractModel):
+    """DescribeIMCdrList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SdkAppId: 应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
+        :type SdkAppId: int
+        :param _StartTimestamp: 起始时间（必填），Unix 秒级时间戳
+        :type StartTimestamp: int
+        :param _EndTimestamp: 结束时间（必填），Unix 秒级时间戳
+        :type EndTimestamp: int
+        :param _Limit: 返回记录条数，最大为100默认20
+        :type Limit: int
+        :param _Offset: 返回记录偏移，默认为 0
+        :type Offset: int
+        :param _Type: 1为全媒体，2为文本客服，不填则查询全部
+        :type Type: int
+        """
+        self._SdkAppId = None
+        self._StartTimestamp = None
+        self._EndTimestamp = None
+        self._Limit = None
+        self._Offset = None
+        self._Type = None
+
+    @property
+    def SdkAppId(self):
+        return self._SdkAppId
+
+    @SdkAppId.setter
+    def SdkAppId(self, SdkAppId):
+        self._SdkAppId = SdkAppId
+
+    @property
+    def StartTimestamp(self):
+        return self._StartTimestamp
+
+    @StartTimestamp.setter
+    def StartTimestamp(self, StartTimestamp):
+        self._StartTimestamp = StartTimestamp
+
+    @property
+    def EndTimestamp(self):
+        return self._EndTimestamp
+
+    @EndTimestamp.setter
+    def EndTimestamp(self, EndTimestamp):
+        self._EndTimestamp = EndTimestamp
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+
+    def _deserialize(self, params):
+        self._SdkAppId = params.get("SdkAppId")
+        self._StartTimestamp = params.get("StartTimestamp")
+        self._EndTimestamp = params.get("EndTimestamp")
+        self._Limit = params.get("Limit")
+        self._Offset = params.get("Offset")
+        self._Type = params.get("Type")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeIMCdrListResponse(AbstractModel):
+    """DescribeIMCdrList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TotalCount: 总记录数
+        :type TotalCount: int
+        :param _IMCdrList: 服务记录列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IMCdrList: list of IMCdrInfo
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._TotalCount = None
+        self._IMCdrList = None
+        self._RequestId = None
+
+    @property
+    def TotalCount(self):
+        return self._TotalCount
+
+    @TotalCount.setter
+    def TotalCount(self, TotalCount):
+        self._TotalCount = TotalCount
+
+    @property
+    def IMCdrList(self):
+        return self._IMCdrList
+
+    @IMCdrList.setter
+    def IMCdrList(self, IMCdrList):
+        self._IMCdrList = IMCdrList
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._TotalCount = params.get("TotalCount")
+        if params.get("IMCdrList") is not None:
+            self._IMCdrList = []
+            for item in params.get("IMCdrList"):
+                obj = IMCdrInfo()
+                obj._deserialize(item)
+                self._IMCdrList.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeIMCdrsRequest(AbstractModel):
     """DescribeIMCdrs请求参数结构体
 
@@ -3436,10 +3604,14 @@ class DescribeIMCdrsRequest(AbstractModel):
 
     @property
     def InstanceId(self):
+        warnings.warn("parameter `InstanceId` is deprecated", DeprecationWarning) 
+
         return self._InstanceId
 
     @InstanceId.setter
     def InstanceId(self, InstanceId):
+        warnings.warn("parameter `InstanceId` is deprecated", DeprecationWarning) 
+
         self._InstanceId = InstanceId
 
     @property
@@ -3504,11 +3676,15 @@ class DescribeIMCdrsResponse(AbstractModel):
         :type TotalCount: int
         :param _IMCdrs: 服务记录列表
         :type IMCdrs: list of IMCdrInfo
+        :param _IMCdrList: 服务记录列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IMCdrList: list of IMCdrInfo
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._TotalCount = None
         self._IMCdrs = None
+        self._IMCdrList = None
         self._RequestId = None
 
     @property
@@ -3521,11 +3697,23 @@ class DescribeIMCdrsResponse(AbstractModel):
 
     @property
     def IMCdrs(self):
+        warnings.warn("parameter `IMCdrs` is deprecated", DeprecationWarning) 
+
         return self._IMCdrs
 
     @IMCdrs.setter
     def IMCdrs(self, IMCdrs):
+        warnings.warn("parameter `IMCdrs` is deprecated", DeprecationWarning) 
+
         self._IMCdrs = IMCdrs
+
+    @property
+    def IMCdrList(self):
+        return self._IMCdrList
+
+    @IMCdrList.setter
+    def IMCdrList(self, IMCdrList):
+        self._IMCdrList = IMCdrList
 
     @property
     def RequestId(self):
@@ -3544,6 +3732,12 @@ class DescribeIMCdrsResponse(AbstractModel):
                 obj = IMCdrInfo()
                 obj._deserialize(item)
                 self._IMCdrs.append(obj)
+        if params.get("IMCdrList") is not None:
+            self._IMCdrList = []
+            for item in params.get("IMCdrList"):
+                obj = IMCdrInfo()
+                obj._deserialize(item)
+                self._IMCdrList.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -3861,11 +4055,14 @@ class DescribeProtectedTelCdrResponse(AbstractModel):
         :type TotalCount: int
         :param _TelCdrs: 话单记录
         :type TelCdrs: list of TelCdrInfo
+        :param _TelCdrList: 话单记录
+        :type TelCdrList: list of TelCdrInfo
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._TotalCount = None
         self._TelCdrs = None
+        self._TelCdrList = None
         self._RequestId = None
 
     @property
@@ -3878,11 +4075,23 @@ class DescribeProtectedTelCdrResponse(AbstractModel):
 
     @property
     def TelCdrs(self):
+        warnings.warn("parameter `TelCdrs` is deprecated", DeprecationWarning) 
+
         return self._TelCdrs
 
     @TelCdrs.setter
     def TelCdrs(self, TelCdrs):
+        warnings.warn("parameter `TelCdrs` is deprecated", DeprecationWarning) 
+
         self._TelCdrs = TelCdrs
+
+    @property
+    def TelCdrList(self):
+        return self._TelCdrList
+
+    @TelCdrList.setter
+    def TelCdrList(self, TelCdrList):
+        self._TelCdrList = TelCdrList
 
     @property
     def RequestId(self):
@@ -3901,6 +4110,12 @@ class DescribeProtectedTelCdrResponse(AbstractModel):
                 obj = TelCdrInfo()
                 obj._deserialize(item)
                 self._TelCdrs.append(obj)
+        if params.get("TelCdrList") is not None:
+            self._TelCdrList = []
+            for item in params.get("TelCdrList"):
+                obj = TelCdrInfo()
+                obj._deserialize(item)
+                self._TelCdrList.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -4381,6 +4596,8 @@ class DescribeTelCallInfoResponse(AbstractModel):
         :type SeatUsedCount: int
         :param _VoipCallInCount: 音频套餐包消耗分钟数
         :type VoipCallInCount: int
+        :param _VOIPCallInCount: 音频套餐包消耗分钟数
+        :type VOIPCallInCount: int
         :param _AsrOfflineCount: 离线语音转文字套餐包消耗分钟数
         :type AsrOfflineCount: int
         :param _AsrRealtimeCount: 实时语音转文字套餐包消耗分钟数
@@ -4392,6 +4609,7 @@ class DescribeTelCallInfoResponse(AbstractModel):
         self._TelCallInCount = None
         self._SeatUsedCount = None
         self._VoipCallInCount = None
+        self._VOIPCallInCount = None
         self._AsrOfflineCount = None
         self._AsrRealtimeCount = None
         self._RequestId = None
@@ -4422,11 +4640,23 @@ class DescribeTelCallInfoResponse(AbstractModel):
 
     @property
     def VoipCallInCount(self):
+        warnings.warn("parameter `VoipCallInCount` is deprecated", DeprecationWarning) 
+
         return self._VoipCallInCount
 
     @VoipCallInCount.setter
     def VoipCallInCount(self, VoipCallInCount):
+        warnings.warn("parameter `VoipCallInCount` is deprecated", DeprecationWarning) 
+
         self._VoipCallInCount = VoipCallInCount
+
+    @property
+    def VOIPCallInCount(self):
+        return self._VOIPCallInCount
+
+    @VOIPCallInCount.setter
+    def VOIPCallInCount(self, VOIPCallInCount):
+        self._VOIPCallInCount = VOIPCallInCount
 
     @property
     def AsrOfflineCount(self):
@@ -4458,6 +4688,7 @@ class DescribeTelCallInfoResponse(AbstractModel):
         self._TelCallInCount = params.get("TelCallInCount")
         self._SeatUsedCount = params.get("SeatUsedCount")
         self._VoipCallInCount = params.get("VoipCallInCount")
+        self._VOIPCallInCount = params.get("VOIPCallInCount")
         self._AsrOfflineCount = params.get("AsrOfflineCount")
         self._AsrRealtimeCount = params.get("AsrRealtimeCount")
         self._RequestId = params.get("RequestId")
@@ -4520,10 +4751,14 @@ class DescribeTelCdrRequest(AbstractModel):
 
     @property
     def InstanceId(self):
+        warnings.warn("parameter `InstanceId` is deprecated", DeprecationWarning) 
+
         return self._InstanceId
 
     @InstanceId.setter
     def InstanceId(self, InstanceId):
+        warnings.warn("parameter `InstanceId` is deprecated", DeprecationWarning) 
+
         self._InstanceId = InstanceId
 
     @property
@@ -4615,11 +4850,14 @@ class DescribeTelCdrResponse(AbstractModel):
         :type TotalCount: int
         :param _TelCdrs: 话单记录
         :type TelCdrs: list of TelCdrInfo
+        :param _TelCdrList: 话单记录
+        :type TelCdrList: list of TelCdrInfo
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._TotalCount = None
         self._TelCdrs = None
+        self._TelCdrList = None
         self._RequestId = None
 
     @property
@@ -4632,11 +4870,23 @@ class DescribeTelCdrResponse(AbstractModel):
 
     @property
     def TelCdrs(self):
+        warnings.warn("parameter `TelCdrs` is deprecated", DeprecationWarning) 
+
         return self._TelCdrs
 
     @TelCdrs.setter
     def TelCdrs(self, TelCdrs):
+        warnings.warn("parameter `TelCdrs` is deprecated", DeprecationWarning) 
+
         self._TelCdrs = TelCdrs
+
+    @property
+    def TelCdrList(self):
+        return self._TelCdrList
+
+    @TelCdrList.setter
+    def TelCdrList(self, TelCdrList):
+        self._TelCdrList = TelCdrList
 
     @property
     def RequestId(self):
@@ -4655,6 +4905,12 @@ class DescribeTelCdrResponse(AbstractModel):
                 obj = TelCdrInfo()
                 obj._deserialize(item)
                 self._TelCdrs.append(obj)
+        if params.get("TelCdrList") is not None:
+            self._TelCdrList = []
+            for item in params.get("TelCdrList"):
+                obj = TelCdrInfo()
+                obj._deserialize(item)
+                self._TelCdrList.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -5776,9 +6032,12 @@ class NumberInfo(AbstractModel):
         :type Number: str
         :param _CallOutSkillGroupIds: 绑定的外呼技能组
         :type CallOutSkillGroupIds: list of int non-negative
+        :param _State: 号码状态，1-正常，2-欠费停用，4-管理员停用，5-违规停用
+        :type State: int
         """
         self._Number = None
         self._CallOutSkillGroupIds = None
+        self._State = None
 
     @property
     def Number(self):
@@ -5796,10 +6055,19 @@ class NumberInfo(AbstractModel):
     def CallOutSkillGroupIds(self, CallOutSkillGroupIds):
         self._CallOutSkillGroupIds = CallOutSkillGroupIds
 
+    @property
+    def State(self):
+        return self._State
+
+    @State.setter
+    def State(self, State):
+        self._State = State
+
 
     def _deserialize(self, params):
         self._Number = params.get("Number")
         self._CallOutSkillGroupIds = params.get("CallOutSkillGroupIds")
+        self._State = params.get("State")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7721,7 +7989,7 @@ class TelCdrInfo(AbstractModel):
 
 电话呼入	            107	       ivrEnd	               IVR 后直接结束
 
-电话呼入	            100	      CallinBlockedContact  呼入黑名单 
+电话呼入	            100	      blackList 呼入黑名单 
 
 电话呼出               2	              unconnected	未接通
                          
@@ -7792,7 +8060,7 @@ class TelCdrInfo(AbstractModel):
 
 电话呼入	            107	       ivrEnd	               IVR 后直接结束
 
-电话呼入	            100	      CallinBlockedContact  呼入黑名单 
+电话呼入	            100	      blackList 呼入黑名单 
 
 电话呼出               2	              unconnected	未接通
                          
@@ -7841,6 +8109,9 @@ class TelCdrInfo(AbstractModel):
         :param _Uui: 客户自定义数据（User-to-User Interface）
 注意：此字段可能返回 null，表示取不到有效值。
         :type Uui: str
+        :param _UUI: 客户自定义数据（User-to-User Interface）
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UUI: str
         :param _IVRKeyPressedEx: IVR按键信息（e.g. [{"Key":"1","Label":"非常满意"}]）
 注意：此字段可能返回 null，表示取不到有效值。
         :type IVRKeyPressedEx: list of IVRKeyPressedElement
@@ -7890,6 +8161,7 @@ class TelCdrInfo(AbstractModel):
         self._ProtectedCaller = None
         self._ProtectedCallee = None
         self._Uui = None
+        self._UUI = None
         self._IVRKeyPressedEx = None
         self._AsrUrl = None
         self._CustomRecordURL = None
@@ -8108,11 +8380,23 @@ class TelCdrInfo(AbstractModel):
 
     @property
     def Uui(self):
+        warnings.warn("parameter `Uui` is deprecated", DeprecationWarning) 
+
         return self._Uui
 
     @Uui.setter
     def Uui(self, Uui):
+        warnings.warn("parameter `Uui` is deprecated", DeprecationWarning) 
+
         self._Uui = Uui
+
+    @property
+    def UUI(self):
+        return self._UUI
+
+    @UUI.setter
+    def UUI(self, UUI):
+        self._UUI = UUI
 
     @property
     def IVRKeyPressedEx(self):
@@ -8211,6 +8495,7 @@ class TelCdrInfo(AbstractModel):
         self._ProtectedCaller = params.get("ProtectedCaller")
         self._ProtectedCallee = params.get("ProtectedCallee")
         self._Uui = params.get("Uui")
+        self._UUI = params.get("UUI")
         if params.get("IVRKeyPressedEx") is not None:
             self._IVRKeyPressedEx = []
             for item in params.get("IVRKeyPressedEx"):

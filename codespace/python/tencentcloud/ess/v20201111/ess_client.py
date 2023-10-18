@@ -498,7 +498,7 @@ class EssClient(AbstractClient):
         `1. 该接口目前仅支持签署人类型是个人签署方的场景（PERSON）。` <br/>
         `2. 该接口可生成签署链接的C端签署人必须仅有手写签名和时间类型的签署控件，不支持填写控件 。` <br/>
         `3. 该签署链接有效期为30分钟，过期后将失效，如需签署可重新创建签署链接 。` <br/>
-        `4. 该接口返回的签署链接是用于APP集成的场景，支持APP打开或浏览器直接打开，不支持微信小程序嵌入`。<br/>
+        `4. 该接口返回的签署链接适用于APP集成的场景，支持APP打开或浏览器直接打开，不支持微信小程序嵌入`。<br/>
         跳转到小程序的实现，参考微信官方文档（分为<a href="https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html">全屏</a>、<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html">半屏</a>两种方式），如何配置也可以请参考: <a href="https://qian.tencent.com/developers/company/openwxminiprogram">跳转电子签小程序配置</a>
 
         :param request: Request instance for CreateFlowSignUrl.
@@ -572,7 +572,8 @@ class EssClient(AbstractClient):
 
         适用场景1：创建当前企业的自定义SaaS角色或集团角色，并且创建时不进行权限的设置（PermissionGroups 参数不传），角色中的权限内容可通过控制台编辑角色或通过接口 ModifyIntegrationRole 完成更新。
 
-        适用场景2：创建当前企业的自定义SaaS角色或集团角色，并且创建时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 DescribeIntegrationRoles 的输出。
+        适用场景2：创建当前企业的自定义SaaS角色或集团角色，并且创建时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 DescribeIntegrationRoles 的输出。此处注意权限树内容可能会更新，需尽量拉取最新的权限树内容，并且权限树内容 PermissionGroups 必须是一颗完整的权限树。
+
         适用场景3：创建集团角色时可同时设置角色管理的子企业列表，可通过设置 SubOrganizationIds 参数达到此效果。
 
         适用场景4：主企业代理子企业操作的场景，需要设置Agent参数，并且ProxyOrganizationId设置为子企业的id即可。
@@ -929,6 +930,36 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateUserAutoSignSealUrl(self, request):
+        """获取设置自动签印章小程序链接。
+
+        注意：
+        <ul><li>需要<code>企业开通自动签</code>后使用。</li>
+        <li>仅支持<code>已经开通了自动签的个人</code>更换自动签印章。</li>
+        <li>链接有效期默认7天，<code>最多30天</code>。</li>
+        <li>该接口的链接适用于<code>小程序</code>端。</li>
+        <li>该接口不会扣除您的合同套餐，暂不参与计费。</li></ul>
+
+        :param request: Request instance for CreateUserAutoSignSealUrl.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateUserAutoSignSealUrlRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateUserAutoSignSealUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateUserAutoSignSealUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateUserAutoSignSealUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateWebThemeConfig(self, request):
         """用来设置本企业嵌入式页面个性化主题配置（例如是否展示电子签logo、定义主题色等），设置后获取的web签署界面都会使用此配置进行展示。
 
@@ -1052,11 +1083,12 @@ class EssClient(AbstractClient):
 
     def DescribeExtendedServiceAuthInfos(self, request):
         """查询企业扩展服务的开通和授权情况，当前支持查询以下内容：
-        1. 企业静默签
+        1. 企业自动签
         2. 企业与港澳台居民签署合同
         3. 使用手机号验证签署方身份
         4. 骑缝章
         5. 批量签署能力
+        6. 拓宽签署方年龄限制
 
         :param request: Request instance for DescribeExtendedServiceAuthInfos.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeExtendedServiceAuthInfosRequest`
@@ -1550,7 +1582,8 @@ class EssClient(AbstractClient):
 
         适用场景1：更新当前企业的自定义SaaS角色或集团角色，并且更新时不进行角色中权限的更新（PermissionGroups 参数不传）。
 
-        适用场景2：更新当前企业的自定义SaaS角色或集团角色，并且更新时进行角色中权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 DescribeIntegrationRoles 的输出。
+        适用场景2：更新当前企业的自定义SaaS角色或集团角色，并且更新时进行角色中权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 DescribeIntegrationRoles 的输出。此处注意权限树内容可能会更新，需尽量拉取最新的权限树内容，并且权限树内容 PermissionGroups 必须是一颗完整的权限树。
+
         适用场景3：更新集团角色管理的子企业列表，可通过设置 SubOrganizationIds 参数达到此效果。
 
         适用场景4：主企业代理子企业操作的场景，需要设置Agent参数，并且ProxyOrganizationId设置为子企业的id即可。

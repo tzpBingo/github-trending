@@ -861,6 +861,129 @@ class AddAntiInfoLeakRulesResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class AddAttackWhiteRuleRequest(AbstractModel):
+    """AddAttackWhiteRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+        :type Domain: str
+        :param _SignatureId: 规则Id
+        :type SignatureId: str
+        :param _Status: 规则状态
+        :type Status: int
+        :param _Rules: 匹配规则项列表
+        :type Rules: list of UserWhiteRuleItem
+        :param _RuleId: 规则序号
+        :type RuleId: int
+        """
+        self._Domain = None
+        self._SignatureId = None
+        self._Status = None
+        self._Rules = None
+        self._RuleId = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def SignatureId(self):
+        return self._SignatureId
+
+    @SignatureId.setter
+    def SignatureId(self, SignatureId):
+        self._SignatureId = SignatureId
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def Rules(self):
+        return self._Rules
+
+    @Rules.setter
+    def Rules(self, Rules):
+        self._Rules = Rules
+
+    @property
+    def RuleId(self):
+        return self._RuleId
+
+    @RuleId.setter
+    def RuleId(self, RuleId):
+        self._RuleId = RuleId
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._SignatureId = params.get("SignatureId")
+        self._Status = params.get("Status")
+        if params.get("Rules") is not None:
+            self._Rules = []
+            for item in params.get("Rules"):
+                obj = UserWhiteRuleItem()
+                obj._deserialize(item)
+                self._Rules.append(obj)
+        self._RuleId = params.get("RuleId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class AddAttackWhiteRuleResponse(AbstractModel):
+    """AddAttackWhiteRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RuleId: 规则总数
+        :type RuleId: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RuleId = None
+        self._RequestId = None
+
+    @property
+    def RuleId(self):
+        return self._RuleId
+
+    @RuleId.setter
+    def RuleId(self, RuleId):
+        self._RuleId = RuleId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RuleId = params.get("RuleId")
+        self._RequestId = params.get("RequestId")
+
+
 class AddCustomRuleRequest(AbstractModel):
     """AddCustomRule请求参数结构体
 
@@ -3311,6 +3434,207 @@ class ClbHostsParams(AbstractModel):
         
 
 
+class ClbObject(AbstractModel):
+    """Clb类型防护对象
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ObjectId: 对象ID
+        :type ObjectId: str
+        :param _InstanceId: 实例ID
+        :type InstanceId: str
+        :param _InstanceName: 实例名称
+        :type InstanceName: str
+        :param _PreciseDomains: 精准域名列表
+        :type PreciseDomains: list of str
+        :param _Status: WAF功能开关状态，0关闭1开启
+        :type Status: int
+        :param _ClsStatus: WAF日志开关状态，0关闭1开启
+        :type ClsStatus: int
+        :param _VirtualDomain: CLB对象对应的虚拟域名
+        :type VirtualDomain: str
+        :param _ObjectName: 对象名称
+        :type ObjectName: str
+        :param _PublicIp: 公网地址
+        :type PublicIp: list of str
+        :param _PrivateIp: 内网地址
+        :type PrivateIp: list of str
+        :param _VpcName: VPC名称
+        :type VpcName: str
+        :param _Vpc: VPC ID
+        :type Vpc: str
+        :param _InstanceLevel: waf实例等级，如果未绑定实例为0
+        :type InstanceLevel: int
+        :param _PostCLSStatus: clb投递开关
+        :type PostCLSStatus: int
+        :param _PostCKafkaStatus: kafka投递开关
+        :type PostCKafkaStatus: int
+        """
+        self._ObjectId = None
+        self._InstanceId = None
+        self._InstanceName = None
+        self._PreciseDomains = None
+        self._Status = None
+        self._ClsStatus = None
+        self._VirtualDomain = None
+        self._ObjectName = None
+        self._PublicIp = None
+        self._PrivateIp = None
+        self._VpcName = None
+        self._Vpc = None
+        self._InstanceLevel = None
+        self._PostCLSStatus = None
+        self._PostCKafkaStatus = None
+
+    @property
+    def ObjectId(self):
+        return self._ObjectId
+
+    @ObjectId.setter
+    def ObjectId(self, ObjectId):
+        self._ObjectId = ObjectId
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+    @property
+    def InstanceName(self):
+        return self._InstanceName
+
+    @InstanceName.setter
+    def InstanceName(self, InstanceName):
+        self._InstanceName = InstanceName
+
+    @property
+    def PreciseDomains(self):
+        return self._PreciseDomains
+
+    @PreciseDomains.setter
+    def PreciseDomains(self, PreciseDomains):
+        self._PreciseDomains = PreciseDomains
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def ClsStatus(self):
+        return self._ClsStatus
+
+    @ClsStatus.setter
+    def ClsStatus(self, ClsStatus):
+        self._ClsStatus = ClsStatus
+
+    @property
+    def VirtualDomain(self):
+        return self._VirtualDomain
+
+    @VirtualDomain.setter
+    def VirtualDomain(self, VirtualDomain):
+        self._VirtualDomain = VirtualDomain
+
+    @property
+    def ObjectName(self):
+        return self._ObjectName
+
+    @ObjectName.setter
+    def ObjectName(self, ObjectName):
+        self._ObjectName = ObjectName
+
+    @property
+    def PublicIp(self):
+        return self._PublicIp
+
+    @PublicIp.setter
+    def PublicIp(self, PublicIp):
+        self._PublicIp = PublicIp
+
+    @property
+    def PrivateIp(self):
+        return self._PrivateIp
+
+    @PrivateIp.setter
+    def PrivateIp(self, PrivateIp):
+        self._PrivateIp = PrivateIp
+
+    @property
+    def VpcName(self):
+        return self._VpcName
+
+    @VpcName.setter
+    def VpcName(self, VpcName):
+        self._VpcName = VpcName
+
+    @property
+    def Vpc(self):
+        return self._Vpc
+
+    @Vpc.setter
+    def Vpc(self, Vpc):
+        self._Vpc = Vpc
+
+    @property
+    def InstanceLevel(self):
+        return self._InstanceLevel
+
+    @InstanceLevel.setter
+    def InstanceLevel(self, InstanceLevel):
+        self._InstanceLevel = InstanceLevel
+
+    @property
+    def PostCLSStatus(self):
+        return self._PostCLSStatus
+
+    @PostCLSStatus.setter
+    def PostCLSStatus(self, PostCLSStatus):
+        self._PostCLSStatus = PostCLSStatus
+
+    @property
+    def PostCKafkaStatus(self):
+        return self._PostCKafkaStatus
+
+    @PostCKafkaStatus.setter
+    def PostCKafkaStatus(self, PostCKafkaStatus):
+        self._PostCKafkaStatus = PostCKafkaStatus
+
+
+    def _deserialize(self, params):
+        self._ObjectId = params.get("ObjectId")
+        self._InstanceId = params.get("InstanceId")
+        self._InstanceName = params.get("InstanceName")
+        self._PreciseDomains = params.get("PreciseDomains")
+        self._Status = params.get("Status")
+        self._ClsStatus = params.get("ClsStatus")
+        self._VirtualDomain = params.get("VirtualDomain")
+        self._ObjectName = params.get("ObjectName")
+        self._PublicIp = params.get("PublicIp")
+        self._PrivateIp = params.get("PrivateIp")
+        self._VpcName = params.get("VpcName")
+        self._Vpc = params.get("Vpc")
+        self._InstanceLevel = params.get("InstanceLevel")
+        self._PostCLSStatus = params.get("PostCLSStatus")
+        self._PostCKafkaStatus = params.get("PostCKafkaStatus")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CreateAccessExportRequest(AbstractModel):
     """CreateAccessExport请求参数结构体
 
@@ -3847,6 +4171,89 @@ class DeleteAttackDownloadRecordResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteAttackWhiteRuleRequest(AbstractModel):
+    """DeleteAttackWhiteRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Ids: 规则序号组
+        :type Ids: list of int non-negative
+        :param _Domain: 用户域名
+        :type Domain: str
+        """
+        self._Ids = None
+        self._Domain = None
+
+    @property
+    def Ids(self):
+        return self._Ids
+
+    @Ids.setter
+    def Ids(self, Ids):
+        self._Ids = Ids
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+
+    def _deserialize(self, params):
+        self._Ids = params.get("Ids")
+        self._Domain = params.get("Domain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteAttackWhiteRuleResponse(AbstractModel):
+    """DeleteAttackWhiteRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FailIds: 删除失败的规则序号组
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FailIds: list of int non-negative
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._FailIds = None
+        self._RequestId = None
+
+    @property
+    def FailIds(self):
+        return self._FailIds
+
+    @FailIds.setter
+    def FailIds(self, FailIds):
+        self._FailIds = FailIds
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._FailIds = params.get("FailIds")
         self._RequestId = params.get("RequestId")
 
 
@@ -6074,6 +6481,294 @@ class DescribeAttackOverviewResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeAttackTypeRequest(AbstractModel):
+    """DescribeAttackType请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FromTime: 起始时间
+        :type FromTime: str
+        :param _ToTime: 结束时间
+        :type ToTime: str
+        :param _Host: 兼容Host，逐步淘汰Host字段
+        :type Host: str
+        :param _Edition: 只有两个值有效，sparta-waf，clb-waf，不传则不过滤
+        :type Edition: str
+        :param _InstanceID: WAF实例ID，不传则不过滤
+        :type InstanceID: str
+        :param _Domain: 域名过滤，不传则不过滤，用于替代Host字段，逐步淘汰Host
+        :type Domain: str
+        """
+        self._FromTime = None
+        self._ToTime = None
+        self._Host = None
+        self._Edition = None
+        self._InstanceID = None
+        self._Domain = None
+
+    @property
+    def FromTime(self):
+        return self._FromTime
+
+    @FromTime.setter
+    def FromTime(self, FromTime):
+        self._FromTime = FromTime
+
+    @property
+    def ToTime(self):
+        return self._ToTime
+
+    @ToTime.setter
+    def ToTime(self, ToTime):
+        self._ToTime = ToTime
+
+    @property
+    def Host(self):
+        return self._Host
+
+    @Host.setter
+    def Host(self, Host):
+        self._Host = Host
+
+    @property
+    def Edition(self):
+        return self._Edition
+
+    @Edition.setter
+    def Edition(self, Edition):
+        self._Edition = Edition
+
+    @property
+    def InstanceID(self):
+        return self._InstanceID
+
+    @InstanceID.setter
+    def InstanceID(self, InstanceID):
+        self._InstanceID = InstanceID
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+
+    def _deserialize(self, params):
+        self._FromTime = params.get("FromTime")
+        self._ToTime = params.get("ToTime")
+        self._Host = params.get("Host")
+        self._Edition = params.get("Edition")
+        self._InstanceID = params.get("InstanceID")
+        self._Domain = params.get("Domain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAttackTypeResponse(AbstractModel):
+    """DescribeAttackType返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Piechart: 数量
+        :type Piechart: list of PiechartItem
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Piechart = None
+        self._RequestId = None
+
+    @property
+    def Piechart(self):
+        return self._Piechart
+
+    @Piechart.setter
+    def Piechart(self, Piechart):
+        self._Piechart = Piechart
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Piechart") is not None:
+            self._Piechart = []
+            for item in params.get("Piechart"):
+                obj = PiechartItem()
+                obj._deserialize(item)
+                self._Piechart.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeAttackWhiteRuleRequest(AbstractModel):
+    """DescribeAttackWhiteRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 需要查询的域名
+        :type Domain: str
+        :param _Offset: 分页
+        :type Offset: int
+        :param _Limit: 每页容量
+        :type Limit: int
+        :param _By: 排序字段，支持user_id, signature_id, modify_time
+        :type By: str
+        :param _Order: 排序方式
+        :type Order: str
+        :param _Filters: 筛选条件，支持SignatureId, MatchContent
+        :type Filters: list of FiltersItemNew
+        """
+        self._Domain = None
+        self._Offset = None
+        self._Limit = None
+        self._By = None
+        self._Order = None
+        self._Filters = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def By(self):
+        return self._By
+
+    @By.setter
+    def By(self, By):
+        self._By = By
+
+    @property
+    def Order(self):
+        return self._Order
+
+    @Order.setter
+    def Order(self, Order):
+        self._Order = Order
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        self._By = params.get("By")
+        self._Order = params.get("Order")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = FiltersItemNew()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeAttackWhiteRuleResponse(AbstractModel):
+    """DescribeAttackWhiteRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Total: 规则总数
+        :type Total: int
+        :param _List: 规则白名单列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type List: list of UserWhiteRule
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Total = None
+        self._List = None
+        self._RequestId = None
+
+    @property
+    def Total(self):
+        return self._Total
+
+    @Total.setter
+    def Total(self, Total):
+        self._Total = Total
+
+    @property
+    def List(self):
+        return self._List
+
+    @List.setter
+    def List(self, List):
+        self._List = List
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Total = params.get("Total")
+        if params.get("List") is not None:
+            self._List = []
+            for item in params.get("List"):
+                obj = UserWhiteRule()
+                obj._deserialize(item)
+                self._List.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeAutoDenyIPRequest(AbstractModel):
     """DescribeAutoDenyIP请求参数结构体
 
@@ -6553,6 +7248,161 @@ class DescribeCCRuleResponse(AbstractModel):
         if params.get("Data") is not None:
             self._Data = CCRuleData()
             self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeCertificateVerifyResultRequest(AbstractModel):
+    """DescribeCertificateVerifyResult请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+        :type Domain: str
+        :param _CertType: 证书类型
+        :type CertType: int
+        :param _Certificate: 证书公钥
+        :type Certificate: str
+        :param _CertID: 证书ID
+        :type CertID: str
+        :param _PrivateKey: 私钥信息
+        :type PrivateKey: str
+        """
+        self._Domain = None
+        self._CertType = None
+        self._Certificate = None
+        self._CertID = None
+        self._PrivateKey = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def CertType(self):
+        return self._CertType
+
+    @CertType.setter
+    def CertType(self, CertType):
+        self._CertType = CertType
+
+    @property
+    def Certificate(self):
+        return self._Certificate
+
+    @Certificate.setter
+    def Certificate(self, Certificate):
+        self._Certificate = Certificate
+
+    @property
+    def CertID(self):
+        return self._CertID
+
+    @CertID.setter
+    def CertID(self, CertID):
+        self._CertID = CertID
+
+    @property
+    def PrivateKey(self):
+        return self._PrivateKey
+
+    @PrivateKey.setter
+    def PrivateKey(self, PrivateKey):
+        self._PrivateKey = PrivateKey
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._CertType = params.get("CertType")
+        self._Certificate = params.get("Certificate")
+        self._CertID = params.get("CertID")
+        self._PrivateKey = params.get("PrivateKey")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeCertificateVerifyResultResponse(AbstractModel):
+    """DescribeCertificateVerifyResult返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Status: 状态码
+        :type Status: int
+        :param _Detail: 错误详情
+        :type Detail: list of str
+        :param _NotAfter: 过期时间
+        :type NotAfter: str
+        :param _Changed: 证书是否改变:1有改变，0没有改变
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Changed: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Status = None
+        self._Detail = None
+        self._NotAfter = None
+        self._Changed = None
+        self._RequestId = None
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def Detail(self):
+        return self._Detail
+
+    @Detail.setter
+    def Detail(self, Detail):
+        self._Detail = Detail
+
+    @property
+    def NotAfter(self):
+        return self._NotAfter
+
+    @NotAfter.setter
+    def NotAfter(self, NotAfter):
+        self._NotAfter = NotAfter
+
+    @property
+    def Changed(self):
+        return self._Changed
+
+    @Changed.setter
+    def Changed(self, Changed):
+        self._Changed = Changed
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Status = params.get("Status")
+        self._Detail = params.get("Detail")
+        self._NotAfter = params.get("NotAfter")
+        self._Changed = params.get("Changed")
         self._RequestId = params.get("RequestId")
 
 
@@ -7351,6 +8201,81 @@ class DescribeDomainDetailsSaasResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeDomainRulesRequest(AbstractModel):
+    """DescribeDomainRules请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 需要查询的域名
+        :type Domain: str
+        """
+        self._Domain = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeDomainRulesResponse(AbstractModel):
+    """DescribeDomainRules返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Rules: 规则列表详情
+        :type Rules: list of Rule
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Rules = None
+        self._RequestId = None
+
+    @property
+    def Rules(self):
+        return self._Rules
+
+    @Rules.setter
+    def Rules(self, Rules):
+        self._Rules = Rules
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Rules") is not None:
+            self._Rules = []
+            for item in params.get("Rules"):
+                obj = Rule()
+                obj._deserialize(item)
+                self._Rules.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeDomainVerifyResultRequest(AbstractModel):
     """DescribeDomainVerifyResult请求参数结构体
 
@@ -7952,6 +8877,160 @@ class DescribeFlowTrendResponse(AbstractModel):
                 obj = BotStatPointItem()
                 obj._deserialize(item)
                 self._Data.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeHistogramRequest(AbstractModel):
+    """DescribeHistogram请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FromTime: 起始时间
+        :type FromTime: str
+        :param _ToTime: 结束时间
+        :type ToTime: str
+        :param _QueryField: 聚类字段，ip为ip聚合，art为响应耗时聚合，url为url聚合，local为ip转化的城市聚合
+        :type QueryField: str
+        :param _Source: 条件，access为访问日志，attack为攻击日志
+        :type Source: str
+        :param _Host: 兼容Host，逐步淘汰Host字段
+        :type Host: str
+        :param _Edition: 只有两个值有效，sparta-waf，clb-waf，不传则不过滤
+        :type Edition: str
+        :param _InstanceID: WAF实例ID，不传则不过滤
+        :type InstanceID: str
+        :param _Domain: 域名过滤，不传则不过滤，用于替代Host字段，逐步淘汰Host
+        :type Domain: str
+        """
+        self._FromTime = None
+        self._ToTime = None
+        self._QueryField = None
+        self._Source = None
+        self._Host = None
+        self._Edition = None
+        self._InstanceID = None
+        self._Domain = None
+
+    @property
+    def FromTime(self):
+        return self._FromTime
+
+    @FromTime.setter
+    def FromTime(self, FromTime):
+        self._FromTime = FromTime
+
+    @property
+    def ToTime(self):
+        return self._ToTime
+
+    @ToTime.setter
+    def ToTime(self, ToTime):
+        self._ToTime = ToTime
+
+    @property
+    def QueryField(self):
+        return self._QueryField
+
+    @QueryField.setter
+    def QueryField(self, QueryField):
+        self._QueryField = QueryField
+
+    @property
+    def Source(self):
+        return self._Source
+
+    @Source.setter
+    def Source(self, Source):
+        self._Source = Source
+
+    @property
+    def Host(self):
+        return self._Host
+
+    @Host.setter
+    def Host(self, Host):
+        self._Host = Host
+
+    @property
+    def Edition(self):
+        return self._Edition
+
+    @Edition.setter
+    def Edition(self, Edition):
+        self._Edition = Edition
+
+    @property
+    def InstanceID(self):
+        return self._InstanceID
+
+    @InstanceID.setter
+    def InstanceID(self, InstanceID):
+        self._InstanceID = InstanceID
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+
+    def _deserialize(self, params):
+        self._FromTime = params.get("FromTime")
+        self._ToTime = params.get("ToTime")
+        self._QueryField = params.get("QueryField")
+        self._Source = params.get("Source")
+        self._Host = params.get("Host")
+        self._Edition = params.get("Edition")
+        self._InstanceID = params.get("InstanceID")
+        self._Domain = params.get("Domain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeHistogramResponse(AbstractModel):
+    """DescribeHistogram返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Histogram: 统计数据
+        :type Histogram: list of str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Histogram = None
+        self._RequestId = None
+
+    @property
+    def Histogram(self):
+        return self._Histogram
+
+    @Histogram.setter
+    def Histogram(self, Histogram):
+        self._Histogram = Histogram
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Histogram = params.get("Histogram")
         self._RequestId = params.get("RequestId")
 
 
@@ -8824,6 +9903,92 @@ class DescribeIpHitItemsResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeObjectsRequest(AbstractModel):
+    """DescribeObjects请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Filters: 支持的过滤器:
+	ObjectId: clb实例ID
+	VIP: clb实例的公网IP
+	InstanceId: waf实例ID
+	Domain: 精准域名
+	Status: waf防护开关状态: 0关闭，1开启
+	ClsStatus: waf日志开关: 0关闭，1开启
+        :type Filters: list of FiltersItemNew
+        """
+        self._Filters = None
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+
+    def _deserialize(self, params):
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = FiltersItemNew()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeObjectsResponse(AbstractModel):
+    """DescribeObjects返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ClbObjects: 对象列表
+        :type ClbObjects: list of ClbObject
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._ClbObjects = None
+        self._RequestId = None
+
+    @property
+    def ClbObjects(self):
+        return self._ClbObjects
+
+    @ClbObjects.setter
+    def ClbObjects(self, ClbObjects):
+        self._ClbObjects = ClbObjects
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("ClbObjects") is not None:
+            self._ClbObjects = []
+            for item in params.get("ClbObjects"):
+                obj = ClbObject()
+                obj._deserialize(item)
+                self._ClbObjects.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribePeakPointsRequest(AbstractModel):
     """DescribePeakPoints请求参数结构体
 
@@ -9558,6 +10723,146 @@ class DescribeTlsVersionResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeTopAttackDomainRequest(AbstractModel):
+    """DescribeTopAttackDomain请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FromTime: 查询起始时间
+        :type FromTime: str
+        :param _ToTime: 查询结束时间
+        :type ToTime: str
+        :param _Count: TOP N,可从0-10选择，默认是10
+        :type Count: int
+        :param _Edition: 只有两个值有效，sparta-waf，clb-waf，不传则不过滤
+        :type Edition: str
+        :param _InstanceID: WAF实例ID，不传则不过滤
+        :type InstanceID: str
+        """
+        self._FromTime = None
+        self._ToTime = None
+        self._Count = None
+        self._Edition = None
+        self._InstanceID = None
+
+    @property
+    def FromTime(self):
+        return self._FromTime
+
+    @FromTime.setter
+    def FromTime(self, FromTime):
+        self._FromTime = FromTime
+
+    @property
+    def ToTime(self):
+        return self._ToTime
+
+    @ToTime.setter
+    def ToTime(self, ToTime):
+        self._ToTime = ToTime
+
+    @property
+    def Count(self):
+        return self._Count
+
+    @Count.setter
+    def Count(self, Count):
+        self._Count = Count
+
+    @property
+    def Edition(self):
+        return self._Edition
+
+    @Edition.setter
+    def Edition(self, Edition):
+        self._Edition = Edition
+
+    @property
+    def InstanceID(self):
+        return self._InstanceID
+
+    @InstanceID.setter
+    def InstanceID(self, InstanceID):
+        self._InstanceID = InstanceID
+
+
+    def _deserialize(self, params):
+        self._FromTime = params.get("FromTime")
+        self._ToTime = params.get("ToTime")
+        self._Count = params.get("Count")
+        self._Edition = params.get("Edition")
+        self._InstanceID = params.get("InstanceID")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeTopAttackDomainResponse(AbstractModel):
+    """DescribeTopAttackDomain返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _CC: CC攻击域名列表
+        :type CC: list of KVInt
+        :param _Web: Web攻击域名列表
+        :type Web: list of KVInt
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._CC = None
+        self._Web = None
+        self._RequestId = None
+
+    @property
+    def CC(self):
+        return self._CC
+
+    @CC.setter
+    def CC(self, CC):
+        self._CC = CC
+
+    @property
+    def Web(self):
+        return self._Web
+
+    @Web.setter
+    def Web(self, Web):
+        self._Web = Web
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("CC") is not None:
+            self._CC = []
+            for item in params.get("CC"):
+                obj = KVInt()
+                obj._deserialize(item)
+                self._CC.append(obj)
+        if params.get("Web") is not None:
+            self._Web = []
+            for item in params.get("Web"):
+                obj = KVInt()
+                obj._deserialize(item)
+                self._Web.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeUserCdcClbWafRegionsRequest(AbstractModel):
     """DescribeUserCdcClbWafRegions请求参数结构体
 
@@ -9696,6 +11001,159 @@ class DescribeUserDomainInfoResponse(AbstractModel):
                 obj = UserDomainInfo()
                 obj._deserialize(item)
                 self._UsersInfo.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeUserSignatureRuleRequest(AbstractModel):
+    """DescribeUserSignatureRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 需要查询的域名
+        :type Domain: str
+        :param _Offset: 分页
+        :type Offset: int
+        :param _Limit: 每页容量
+        :type Limit: int
+        :param _By: 排序字段，支持 signature_id, modify_time
+        :type By: str
+        :param _Order: 排序方式
+        :type Order: str
+        :param _Filters: 筛选条件，支持 MainClassName，SubClassID ,CveID, Status, ID;  ID为规则id
+        :type Filters: list of FiltersItemNew
+        """
+        self._Domain = None
+        self._Offset = None
+        self._Limit = None
+        self._By = None
+        self._Order = None
+        self._Filters = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def By(self):
+        return self._By
+
+    @By.setter
+    def By(self, By):
+        self._By = By
+
+    @property
+    def Order(self):
+        return self._Order
+
+    @Order.setter
+    def Order(self, Order):
+        self._Order = Order
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        self._By = params.get("By")
+        self._Order = params.get("Order")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = FiltersItemNew()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeUserSignatureRuleResponse(AbstractModel):
+    """DescribeUserSignatureRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Total: 规则总数
+        :type Total: int
+        :param _Rules: 规则列表
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Rules: list of UserSignatureRule
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Total = None
+        self._Rules = None
+        self._RequestId = None
+
+    @property
+    def Total(self):
+        return self._Total
+
+    @Total.setter
+    def Total(self, Total):
+        self._Total = Total
+
+    @property
+    def Rules(self):
+        return self._Rules
+
+    @Rules.setter
+    def Rules(self, Rules):
+        self._Rules = Rules
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Total = params.get("Total")
+        if params.get("Rules") is not None:
+            self._Rules = []
+            for item in params.get("Rules"):
+                obj = UserSignatureRule()
+                obj._deserialize(item)
+                self._Rules.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -12470,6 +13928,9 @@ Saas 域名扩展包  sv_wsm_waf_domain
         :param _InstanceId: 对存在的实例购买bot 或api 安全
 注意：此字段可能返回 null，表示取不到有效值。
         :type InstanceId: str
+        :param _ResourceId: 资源id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceId: str
         """
         self._TimeSpan = None
         self._TimeUnit = None
@@ -12482,6 +13943,7 @@ Saas 域名扩展包  sv_wsm_waf_domain
         self._LabelCounts = None
         self._CurDeadline = None
         self._InstanceId = None
+        self._ResourceId = None
 
     @property
     def TimeSpan(self):
@@ -12571,6 +14033,14 @@ Saas 域名扩展包  sv_wsm_waf_domain
     def InstanceId(self, InstanceId):
         self._InstanceId = InstanceId
 
+    @property
+    def ResourceId(self):
+        return self._ResourceId
+
+    @ResourceId.setter
+    def ResourceId(self, ResourceId):
+        self._ResourceId = ResourceId
+
 
     def _deserialize(self, params):
         self._TimeSpan = params.get("TimeSpan")
@@ -12584,6 +14054,7 @@ Saas 域名扩展包  sv_wsm_waf_domain
         self._LabelCounts = params.get("LabelCounts")
         self._CurDeadline = params.get("CurDeadline")
         self._InstanceId = params.get("InstanceId")
+        self._ResourceId = params.get("ResourceId")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -13863,6 +15334,51 @@ class IpHitItemsData(AbstractModel):
         
 
 
+class KVInt(AbstractModel):
+    """Key-Value的形式，Value为Int
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Key: Key
+        :type Key: str
+        :param _Value: Value
+        :type Value: int
+        """
+        self._Key = None
+        self._Value = None
+
+    @property
+    def Key(self):
+        return self._Key
+
+    @Key.setter
+    def Key(self, Key):
+        self._Key = Key
+
+    @property
+    def Value(self):
+        return self._Value
+
+    @Value.setter
+    def Value(self, Value):
+        self._Value = Value
+
+
+    def _deserialize(self, params):
+        self._Key = params.get("Key")
+        self._Value = params.get("Value")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class LoadBalancer(AbstractModel):
     """负载均衡的监听器
 
@@ -15060,6 +16576,129 @@ class ModifyAreaBanStatusResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyAttackWhiteRuleRequest(AbstractModel):
+    """ModifyAttackWhiteRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RuleId: 规则序号
+        :type RuleId: int
+        :param _Domain: 域名
+        :type Domain: str
+        :param _SignatureId: 规则Id
+        :type SignatureId: str
+        :param _Status: 规则状态
+        :type Status: int
+        :param _Rules: 匹配规则项列表
+        :type Rules: list of UserWhiteRuleItem
+        """
+        self._RuleId = None
+        self._Domain = None
+        self._SignatureId = None
+        self._Status = None
+        self._Rules = None
+
+    @property
+    def RuleId(self):
+        return self._RuleId
+
+    @RuleId.setter
+    def RuleId(self, RuleId):
+        self._RuleId = RuleId
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def SignatureId(self):
+        return self._SignatureId
+
+    @SignatureId.setter
+    def SignatureId(self, SignatureId):
+        self._SignatureId = SignatureId
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def Rules(self):
+        return self._Rules
+
+    @Rules.setter
+    def Rules(self, Rules):
+        self._Rules = Rules
+
+
+    def _deserialize(self, params):
+        self._RuleId = params.get("RuleId")
+        self._Domain = params.get("Domain")
+        self._SignatureId = params.get("SignatureId")
+        self._Status = params.get("Status")
+        if params.get("Rules") is not None:
+            self._Rules = []
+            for item in params.get("Rules"):
+                obj = UserWhiteRuleItem()
+                obj._deserialize(item)
+                self._Rules.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyAttackWhiteRuleResponse(AbstractModel):
+    """ModifyAttackWhiteRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RuleId: 规则总数
+        :type RuleId: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RuleId = None
+        self._RequestId = None
+
+    @property
+    def RuleId(self):
+        return self._RuleId
+
+    @RuleId.setter
+    def RuleId(self, RuleId):
+        self._RuleId = RuleId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RuleId = params.get("RuleId")
         self._RequestId = params.get("RequestId")
 
 
@@ -16728,6 +18367,131 @@ class ModifyInstanceRenewFlagResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ModifyModuleStatusRequest(AbstractModel):
+    """ModifyModuleStatus请求参数结构体
+
+    """
+
+
+class ModifyModuleStatusResponse(AbstractModel):
+    """ModifyModuleStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyObjectRequest(AbstractModel):
+    """ModifyObject请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ObjectId: 修改对象标识
+        :type ObjectId: str
+        :param _OpType: 改动作类型:Status修改开关，InstanceId绑定实例
+        :type OpType: str
+        :param _Status: 新的Waf开关状态，如果和已有状态相同认为修改成功
+        :type Status: int
+        :param _InstanceId: 新的实例ID，如果和已绑定的实例相同认为修改成功
+        :type InstanceId: str
+        """
+        self._ObjectId = None
+        self._OpType = None
+        self._Status = None
+        self._InstanceId = None
+
+    @property
+    def ObjectId(self):
+        return self._ObjectId
+
+    @ObjectId.setter
+    def ObjectId(self, ObjectId):
+        self._ObjectId = ObjectId
+
+    @property
+    def OpType(self):
+        return self._OpType
+
+    @OpType.setter
+    def OpType(self, OpType):
+        self._OpType = OpType
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def InstanceId(self):
+        return self._InstanceId
+
+    @InstanceId.setter
+    def InstanceId(self, InstanceId):
+        self._InstanceId = InstanceId
+
+
+    def _deserialize(self, params):
+        self._ObjectId = params.get("ObjectId")
+        self._OpType = params.get("OpType")
+        self._Status = params.get("Status")
+        self._InstanceId = params.get("InstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyObjectResponse(AbstractModel):
+    """ModifyObject返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class ModifyProtectionStatusRequest(AbstractModel):
     """ModifyProtectionStatus请求参数结构体
 
@@ -17353,6 +19117,175 @@ class ModifySpartaProtectionResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ModifyUserLevelRequest(AbstractModel):
+    """ModifyUserLevel请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+        :type Domain: str
+        :param _Level: 防护规则等级 300=standard，400=extended
+        :type Level: int
+        """
+        self._Domain = None
+        self._Level = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def Level(self):
+        return self._Level
+
+    @Level.setter
+    def Level(self, Level):
+        self._Level = Level
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._Level = params.get("Level")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyUserLevelResponse(AbstractModel):
+    """ModifyUserLevel返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyUserSignatureRuleRequest(AbstractModel):
+    """ModifyUserSignatureRule请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+        :type Domain: str
+        :param _MainClassID: 主类id
+        :type MainClassID: str
+        :param _Status: 主类开关0=关闭，1=开启，2=只告警
+        :type Status: int
+        :param _RuleID: 下发修改的规则列表
+        :type RuleID: list of ReqUserRule
+        """
+        self._Domain = None
+        self._MainClassID = None
+        self._Status = None
+        self._RuleID = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def MainClassID(self):
+        return self._MainClassID
+
+    @MainClassID.setter
+    def MainClassID(self, MainClassID):
+        self._MainClassID = MainClassID
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def RuleID(self):
+        return self._RuleID
+
+    @RuleID.setter
+    def RuleID(self, RuleID):
+        self._RuleID = RuleID
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._MainClassID = params.get("MainClassID")
+        self._Status = params.get("Status")
+        if params.get("RuleID") is not None:
+            self._RuleID = []
+            for item in params.get("RuleID"):
+                obj = ReqUserRule()
+                obj._deserialize(item)
+                self._RuleID.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyUserSignatureRuleResponse(AbstractModel):
+    """ModifyUserSignatureRule返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class ModifyWafAutoDenyRulesRequest(AbstractModel):
     """ModifyWafAutoDenyRules请求参数结构体
 
@@ -17618,6 +19551,80 @@ class ModifyWafThreatenIntelligenceResponse(AbstractModel):
         if params.get("WafThreatenIntelligenceDetails") is not None:
             self._WafThreatenIntelligenceDetails = WafThreatenIntelligenceDetails()
             self._WafThreatenIntelligenceDetails._deserialize(params.get("WafThreatenIntelligenceDetails"))
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyWebshellStatusRequest(AbstractModel):
+    """ModifyWebshellStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Webshell: 域名webshell状态
+        :type Webshell: :class:`tencentcloud.waf.v20180125.models.WebshellStatus`
+        """
+        self._Webshell = None
+
+    @property
+    def Webshell(self):
+        return self._Webshell
+
+    @Webshell.setter
+    def Webshell(self, Webshell):
+        self._Webshell = Webshell
+
+
+    def _deserialize(self, params):
+        if params.get("Webshell") is not None:
+            self._Webshell = WebshellStatus()
+            self._Webshell._deserialize(params.get("Webshell"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyWebshellStatusResponse(AbstractModel):
+    """ModifyWebshellStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Success: 成功的状态码，需要JSON解码后再使用，返回的格式是{"域名":"状态"}，成功的状态码为Success，其它的为失败的状态码（yunapi定义的错误码）
+        :type Success: :class:`tencentcloud.waf.v20180125.models.ResponseCode`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Success = None
+        self._RequestId = None
+
+    @property
+    def Success(self):
+        return self._Success
+
+    @Success.setter
+    def Success(self, Success):
+        self._Success = Success
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("Success") is not None:
+            self._Success = ResponseCode()
+            self._Success._deserialize(params.get("Success"))
         self._RequestId = params.get("RequestId")
 
 
@@ -17904,6 +19911,51 @@ class PeakPointsItem(AbstractModel):
         self._Tamper = params.get("Tamper")
         self._Leak = params.get("Leak")
         self._ACL = params.get("ACL")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class PiechartItem(AbstractModel):
+    """饼图数据类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Type: 类型
+        :type Type: str
+        :param _Count: 数量
+        :type Count: int
+        """
+        self._Type = None
+        self._Count = None
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def Count(self):
+        return self._Count
+
+    @Count.setter
+    def Count(self, Count):
+        self._Count = Count
+
+
+    def _deserialize(self, params):
+        self._Type = params.get("Type")
+        self._Count = params.get("Count")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -18461,6 +20513,71 @@ class RefreshAccessCheckResultResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ReqUserRule(AbstractModel):
+    """用户规则更新输出规则子项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: 特征序号
+        :type Id: str
+        :param _Status: 规则开关
+0：关
+1：开
+2：只告警
+        :type Status: int
+        :param _Reason: 修改原因
+0：无(兼容记录为空)
+1：业务自身特性误报避免
+2：规则误报上报
+3：核心业务规则灰度
+4：其它
+        :type Reason: int
+        """
+        self._Id = None
+        self._Status = None
+        self._Reason = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def Reason(self):
+        return self._Reason
+
+    @Reason.setter
+    def Reason(self, Reason):
+        self._Reason = Reason
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        self._Status = params.get("Status")
+        self._Reason = params.get("Reason")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ResponseCode(AbstractModel):
     """响应体的返回码
 
@@ -18496,6 +20613,127 @@ class ResponseCode(AbstractModel):
     def _deserialize(self, params):
         self._Code = params.get("Code")
         self._Message = params.get("Message")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class Rule(AbstractModel):
+    """规则列表详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Id: 规则id
+        :type Id: int
+        :param _Type: 规则类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param _Level: 规则等级
+        :type Level: str
+        :param _Description: 规则描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Description: str
+        :param _CVE: 规则防护的CVE编号
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CVE: str
+        :param _Status: 规则的状态
+        :type Status: int
+        :param _ModifyTime: 规则修改的时间
+        :type ModifyTime: str
+        :param _AddTime: 门神规则新增/更新时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AddTime: str
+        """
+        self._Id = None
+        self._Type = None
+        self._Level = None
+        self._Description = None
+        self._CVE = None
+        self._Status = None
+        self._ModifyTime = None
+        self._AddTime = None
+
+    @property
+    def Id(self):
+        return self._Id
+
+    @Id.setter
+    def Id(self, Id):
+        self._Id = Id
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def Level(self):
+        return self._Level
+
+    @Level.setter
+    def Level(self, Level):
+        self._Level = Level
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def CVE(self):
+        return self._CVE
+
+    @CVE.setter
+    def CVE(self, CVE):
+        self._CVE = CVE
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def ModifyTime(self):
+        return self._ModifyTime
+
+    @ModifyTime.setter
+    def ModifyTime(self, ModifyTime):
+        self._ModifyTime = ModifyTime
+
+    @property
+    def AddTime(self):
+        return self._AddTime
+
+    @AddTime.setter
+    def AddTime(self, AddTime):
+        self._AddTime = AddTime
+
+
+    def _deserialize(self, params):
+        self._Id = params.get("Id")
+        self._Type = params.get("Type")
+        self._Level = params.get("Level")
+        self._Description = params.get("Description")
+        self._CVE = params.get("CVE")
+        self._Status = params.get("Status")
+        self._ModifyTime = params.get("ModifyTime")
+        self._AddTime = params.get("AddTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -20544,6 +22782,333 @@ class UserDomainInfo(AbstractModel):
         
 
 
+class UserSignatureRule(AbstractModel):
+    """用户特征规则描述
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ID: 特征ID
+        :type ID: str
+        :param _Status: 规则开关
+        :type Status: int
+        :param _MainClassID: 主类ID
+        :type MainClassID: str
+        :param _SubClassID: 子类ID
+        :type SubClassID: str
+        :param _CveID: CVE ID
+        :type CveID: str
+        :param _CreateTime: 创建时间
+        :type CreateTime: str
+        :param _ModifyTime: 更新时间
+        :type ModifyTime: str
+        :param _MainClassName: 主类名字，根据Language字段输出中文/英文
+        :type MainClassName: str
+        :param _SubClassName: 子类名字，根据Language字段输出中文/英文，若子类id为00000000，此字段为空
+        :type SubClassName: str
+        :param _Description: 规则描述
+        :type Description: str
+        :param _Reason: 0/1
+        :type Reason: int
+        """
+        self._ID = None
+        self._Status = None
+        self._MainClassID = None
+        self._SubClassID = None
+        self._CveID = None
+        self._CreateTime = None
+        self._ModifyTime = None
+        self._MainClassName = None
+        self._SubClassName = None
+        self._Description = None
+        self._Reason = None
+
+    @property
+    def ID(self):
+        return self._ID
+
+    @ID.setter
+    def ID(self, ID):
+        self._ID = ID
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def MainClassID(self):
+        return self._MainClassID
+
+    @MainClassID.setter
+    def MainClassID(self, MainClassID):
+        self._MainClassID = MainClassID
+
+    @property
+    def SubClassID(self):
+        return self._SubClassID
+
+    @SubClassID.setter
+    def SubClassID(self, SubClassID):
+        self._SubClassID = SubClassID
+
+    @property
+    def CveID(self):
+        return self._CveID
+
+    @CveID.setter
+    def CveID(self, CveID):
+        self._CveID = CveID
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def ModifyTime(self):
+        return self._ModifyTime
+
+    @ModifyTime.setter
+    def ModifyTime(self, ModifyTime):
+        self._ModifyTime = ModifyTime
+
+    @property
+    def MainClassName(self):
+        return self._MainClassName
+
+    @MainClassName.setter
+    def MainClassName(self, MainClassName):
+        self._MainClassName = MainClassName
+
+    @property
+    def SubClassName(self):
+        return self._SubClassName
+
+    @SubClassName.setter
+    def SubClassName(self, SubClassName):
+        self._SubClassName = SubClassName
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+    @property
+    def Reason(self):
+        return self._Reason
+
+    @Reason.setter
+    def Reason(self, Reason):
+        self._Reason = Reason
+
+
+    def _deserialize(self, params):
+        self._ID = params.get("ID")
+        self._Status = params.get("Status")
+        self._MainClassID = params.get("MainClassID")
+        self._SubClassID = params.get("SubClassID")
+        self._CveID = params.get("CveID")
+        self._CreateTime = params.get("CreateTime")
+        self._ModifyTime = params.get("ModifyTime")
+        self._MainClassName = params.get("MainClassName")
+        self._SubClassName = params.get("SubClassName")
+        self._Description = params.get("Description")
+        self._Reason = params.get("Reason")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UserWhiteRule(AbstractModel):
+    """用户规则白名单
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _WhiteRuleId: 白名单的id
+        :type WhiteRuleId: int
+        :param _SignatureId: 规则id
+        :type SignatureId: str
+        :param _Status: 状态
+        :type Status: int
+        :param _MatchField: 匹配域
+        :type MatchField: str
+        :param _MatchMethod: 匹配方法
+        :type MatchMethod: str
+        :param _MatchContent: 匹配内容
+        :type MatchContent: str
+        :param _CreateTime: 创建时间
+        :type CreateTime: str
+        :param _ModifyTime: 修改时间
+        :type ModifyTime: str
+        """
+        self._WhiteRuleId = None
+        self._SignatureId = None
+        self._Status = None
+        self._MatchField = None
+        self._MatchMethod = None
+        self._MatchContent = None
+        self._CreateTime = None
+        self._ModifyTime = None
+
+    @property
+    def WhiteRuleId(self):
+        return self._WhiteRuleId
+
+    @WhiteRuleId.setter
+    def WhiteRuleId(self, WhiteRuleId):
+        self._WhiteRuleId = WhiteRuleId
+
+    @property
+    def SignatureId(self):
+        return self._SignatureId
+
+    @SignatureId.setter
+    def SignatureId(self, SignatureId):
+        self._SignatureId = SignatureId
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def MatchField(self):
+        return self._MatchField
+
+    @MatchField.setter
+    def MatchField(self, MatchField):
+        self._MatchField = MatchField
+
+    @property
+    def MatchMethod(self):
+        return self._MatchMethod
+
+    @MatchMethod.setter
+    def MatchMethod(self, MatchMethod):
+        self._MatchMethod = MatchMethod
+
+    @property
+    def MatchContent(self):
+        return self._MatchContent
+
+    @MatchContent.setter
+    def MatchContent(self, MatchContent):
+        self._MatchContent = MatchContent
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def ModifyTime(self):
+        return self._ModifyTime
+
+    @ModifyTime.setter
+    def ModifyTime(self, ModifyTime):
+        self._ModifyTime = ModifyTime
+
+
+    def _deserialize(self, params):
+        self._WhiteRuleId = params.get("WhiteRuleId")
+        self._SignatureId = params.get("SignatureId")
+        self._Status = params.get("Status")
+        self._MatchField = params.get("MatchField")
+        self._MatchMethod = params.get("MatchMethod")
+        self._MatchContent = params.get("MatchContent")
+        self._CreateTime = params.get("CreateTime")
+        self._ModifyTime = params.get("ModifyTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class UserWhiteRuleItem(AbstractModel):
+    """用户规则白名单规则子项
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _MatchField: 匹配域
+        :type MatchField: str
+        :param _MatchMethod: 匹配方法
+        :type MatchMethod: str
+        :param _MatchContent: 匹配内容
+        :type MatchContent: str
+        """
+        self._MatchField = None
+        self._MatchMethod = None
+        self._MatchContent = None
+
+    @property
+    def MatchField(self):
+        return self._MatchField
+
+    @MatchField.setter
+    def MatchField(self, MatchField):
+        self._MatchField = MatchField
+
+    @property
+    def MatchMethod(self):
+        return self._MatchMethod
+
+    @MatchMethod.setter
+    def MatchMethod(self, MatchMethod):
+        self._MatchMethod = MatchMethod
+
+    @property
+    def MatchContent(self):
+        return self._MatchContent
+
+    @MatchContent.setter
+    def MatchContent(self, MatchContent):
+        self._MatchContent = MatchContent
+
+
+    def _deserialize(self, params):
+        self._MatchField = params.get("MatchField")
+        self._MatchMethod = params.get("MatchMethod")
+        self._MatchContent = params.get("MatchContent")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class VipInfo(AbstractModel):
     """Vip信息
 
@@ -20816,6 +23381,51 @@ class WafThreatenIntelligenceDetails(AbstractModel):
         self._Tags = params.get("Tags")
         self._DefenseStatus = params.get("DefenseStatus")
         self._LastUpdateTime = params.get("LastUpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class WebshellStatus(AbstractModel):
+    """域名的webshell开启状态
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 域名
+        :type Domain: str
+        :param _Status: webshell开关，1：开。0：关。2：观察
+        :type Status: int
+        """
+        self._Domain = None
+        self._Status = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._Status = params.get("Status")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

@@ -1588,9 +1588,9 @@ class DataDisk(AbstractModel):
 注意：此字段可能返回 null，表示取不到有效值。
         :type SnapshotId: str
         :param _Encrypt: 数据盘是加密。取值范围：
-<li>TRUE：加密
-<li>FALSE：不加密<br>
-默认取值：FALSE<br>
+<li>true：加密
+<li>false：不加密<br>
+默认取值：false<br>
 该参数目前仅用于 `RunInstances` 接口。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Encrypt: bool
@@ -5484,6 +5484,9 @@ class InstanceTypeQuotaItem(AbstractModel):
         :type GpuCount: float
         :param _Frequency: 实例的CPU主频信息
         :type Frequency: str
+        :param _StatusCategory: 描述库存情况。取值范围： <br><li> UnderStock：表示对应库存即将售罄<br><li> NormalStock：表示对应库存供应有保障<br><li> EnoughStock：表示对应库存非常充足<br><li> WithoutStock：表示对应库存已经售罄
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StatusCategory: str
         """
         self._Zone = None
         self._InstanceType = None
@@ -5507,6 +5510,7 @@ class InstanceTypeQuotaItem(AbstractModel):
         self._Remark = None
         self._GpuCount = None
         self._Frequency = None
+        self._StatusCategory = None
 
     @property
     def Zone(self):
@@ -5684,6 +5688,14 @@ class InstanceTypeQuotaItem(AbstractModel):
     def Frequency(self, Frequency):
         self._Frequency = Frequency
 
+    @property
+    def StatusCategory(self):
+        return self._StatusCategory
+
+    @StatusCategory.setter
+    def StatusCategory(self, StatusCategory):
+        self._StatusCategory = StatusCategory
+
 
     def _deserialize(self, params):
         self._Zone = params.get("Zone")
@@ -5717,6 +5729,7 @@ class InstanceTypeQuotaItem(AbstractModel):
         self._Remark = params.get("Remark")
         self._GpuCount = params.get("GpuCount")
         self._Frequency = params.get("Frequency")
+        self._StatusCategory = params.get("StatusCategory")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7753,7 +7766,7 @@ class RunAutomationServiceEnabled(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Enabled: 是否开启云自动化助手。取值范围：<br><li>TRUE：表示开启云自动化助手服务<br><li>FALSE：表示不开启云自动化助手服务<br><br>默认取值：FALSE。
+        :param _Enabled: 是否开启云自动化助手。取值范围：<br><li>true：表示开启云自动化助手服务<br><li>false：表示不开启云自动化助手服务<br><br>默认取值：false。
         :type Enabled: bool
         """
         self._Enabled = None
@@ -7786,7 +7799,8 @@ class RunMonitorServiceEnabled(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Enabled: 是否开启[云监控](/document/product/248)服务。取值范围：<br><li>TRUE：表示开启云监控服务<br><li>FALSE：表示不开启云监控服务<br><br>默认取值：TRUE。
+        :param _Enabled: 是否开启[云监控](/document/product/248)服务。取值范围：<br><li>true：表示开启云监控服务<br><li>false：表示不开启云监控服务<br><br>默认取值：true。
+注意：此字段可能返回 null，表示取不到有效值。
         :type Enabled: bool
         """
         self._Enabled = None
@@ -8055,7 +8069,7 @@ class SystemDisk(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_BSSD：通用性SSD云硬盘<br><br>默认取值：当前有库存的硬盘类型。
+        :param _DiskType: 系统盘类型。系统盘类型限制详见[存储概述](https://cloud.tencent.com/document/product/213/4952)。取值范围：<br><li>LOCAL_BASIC：本地硬盘<br><li>LOCAL_SSD：本地SSD硬盘<br><li>CLOUD_BASIC：普通云硬盘<br><li>CLOUD_SSD：SSD云硬盘<br><li>CLOUD_PREMIUM：高性能云硬盘<br><li>CLOUD_BSSD：通用性SSD云硬盘<br><li>CLOUD_HSSD：增强型SSD云硬盘<br><li>CLOUD_TSSD：极速型SSD云硬盘<br><br>默认取值：当前有库存的硬盘类型。
         :type DiskType: str
         :param _DiskId: 系统盘ID。LOCAL_BASIC 和 LOCAL_SSD 类型没有ID。暂时不支持该参数。
 该参数目前仅用于`DescribeInstances`等查询类接口的返回参数，不可用于`RunInstances`等写接口的入参。
@@ -9403,7 +9417,7 @@ class VirtualPrivateCloud(AbstractModel):
         :type VpcId: str
         :param _SubnetId: 私有网络子网ID，形如`subnet-xxx`。有效的私有网络子网ID可通过登录[控制台](https://console.cloud.tencent.com/vpc/subnet?rid=1)查询；也可以调用接口  [DescribeSubnets](/document/api/215/15784) ，从接口返回中的`unSubnetId`字段获取。若在创建子机时SubnetId与VpcId同时传入`DEFAULT`，则强制使用默认vpc网络。
         :type SubnetId: str
-        :param _AsVpcGateway: 是否用作公网网关。公网网关只有在实例拥有公网IP以及处于私有网络下时才能正常使用。取值范围：<br><li>TRUE：表示用作公网网关<br><li>FALSE：表示不作为公网网关<br><br>默认取值：FALSE。
+        :param _AsVpcGateway: 是否用作公网网关。公网网关只有在实例拥有公网IP以及处于私有网络下时才能正常使用。取值范围：<br><li>true：表示用作公网网关<br><li>false：表示不作为公网网关<br><br>默认取值：false。
         :type AsVpcGateway: bool
         :param _PrivateIpAddresses: 私有网络子网 IP 数组，在创建实例、修改实例vpc属性操作中可使用此参数。当前仅批量创建多台实例时支持传入相同子网的多个 IP。
         :type PrivateIpAddresses: list of str

@@ -1441,7 +1441,7 @@ class AuditRuleTemplateInfo(AbstractModel):
         :param _AlarmPolicy: 告警策略。0-不告警，1-告警。
 注意：此字段可能返回 null，表示取不到有效值。
         :type AlarmPolicy: int
-        :param _Status: 模版状态。0-无任务 ，1-修改中。
+        :param _Status: 模板状态。0-无任务 ，1-修改中。
 注意：此字段可能返回 null，表示取不到有效值。
         :type Status: int
         :param _AffectedInstances: 规则模板应用在哪些在实例。
@@ -3401,7 +3401,7 @@ cpu最大值，可选范围参考DescribeServerlessInstanceSpecs接口返回
         :type ClusterParams: list of ParamItem
         :param _DealMode: 交易模式，0-下单且支付，1-下单
         :type DealMode: int
-        :param _ParamTemplateId: 参数模版ID，可以通过查询参数模板信息DescribeParamTemplates获得参数模板ID
+        :param _ParamTemplateId: 参数模板ID，可以通过查询参数模板信息DescribeParamTemplates获得参数模板ID
         :type ParamTemplateId: int
         :param _SlaveZone: 多可用区地址
         :type SlaveZone: str
@@ -15030,7 +15030,7 @@ class InstanceNetInfo(AbstractModel):
         :param _WanDomain: 外网域名
 注意：此字段可能返回 null，表示取不到有效值。
         :type WanDomain: str
-        :param _WanIP: 外网Ip
+        :param _WanIP: 外网IP
 注意：此字段可能返回 null，表示取不到有效值。
         :type WanIP: str
         :param _WanPort: 外网端口

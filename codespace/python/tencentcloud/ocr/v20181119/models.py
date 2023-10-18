@@ -17212,6 +17212,7 @@ RideHailingDriverLicense -- 网约车驾驶证
 RideHailingTransportLicense -- 网约车运输证
 WayBill -- 快递运单
 AccountOpeningPermit -- 银行开户许可证
+InvoiceEng -- 海外发票模版
         :type ConfigId: str
         """
         self._ImageUrl = None
@@ -20266,6 +20267,8 @@ class TrainTicket(AbstractModel):
         :type QRCodeMark: int
         :param _ReimburseOnlyMark: 是否仅供报销使用（0：没有，1：有）
         :type ReimburseOnlyMark: int
+        :param _RefundMark: 是否有退票费标识（0：没有，1：有）
+        :type RefundMark: int
         """
         self._Title = None
         self._Number = None
@@ -20291,6 +20294,7 @@ class TrainTicket(AbstractModel):
         self._ReceiptNumber = None
         self._QRCodeMark = None
         self._ReimburseOnlyMark = None
+        self._RefundMark = None
 
     @property
     def Title(self):
@@ -20484,6 +20488,14 @@ class TrainTicket(AbstractModel):
     def ReimburseOnlyMark(self, ReimburseOnlyMark):
         self._ReimburseOnlyMark = ReimburseOnlyMark
 
+    @property
+    def RefundMark(self):
+        return self._RefundMark
+
+    @RefundMark.setter
+    def RefundMark(self, RefundMark):
+        self._RefundMark = RefundMark
+
 
     def _deserialize(self, params):
         self._Title = params.get("Title")
@@ -20510,6 +20522,7 @@ class TrainTicket(AbstractModel):
         self._ReceiptNumber = params.get("ReceiptNumber")
         self._QRCodeMark = params.get("QRCodeMark")
         self._ReimburseOnlyMark = params.get("ReimburseOnlyMark")
+        self._RefundMark = params.get("RefundMark")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -24058,7 +24071,7 @@ class VatInvoiceVerifyNewRequest(AbstractModel):
         :param _RegionCode: 地区编码，通用机打电子发票时必填。
 广东:4400，浙江:3300
         :type RegionCode: str
-        :param _SellerTaxCode: 销方税号，通用机打电子发票必填
+        :param _SellerTaxCode: 销方税号，通用机打电子发票必填，区块链发票时必填
         :type SellerTaxCode: str
         :param _EnableCommonElectronic: 是否开启通用机打电子发票，默认为关闭。
         :type EnableCommonElectronic: bool
@@ -24692,9 +24705,9 @@ class VehicleInvoiceInfo(AbstractModel):
         :type TaxtationOrgName: str
         :param _MotorTaxRate: 税率
         :type MotorTaxRate: str
-        :param _MotorBankName: 开户行
+        :param _MotorBankName: 银行账号
         :type MotorBankName: str
-        :param _MotorBankAccount: 账号
+        :param _MotorBankAccount: 开户行
         :type MotorBankAccount: str
         :param _SellerAddress: 销售地址
         :type SellerAddress: str

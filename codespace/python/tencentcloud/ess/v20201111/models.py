@@ -312,6 +312,8 @@ class ApproverInfo(AbstractModel):
 
 注：`限制印章控件或骑缝章控件情况下,仅本企业签署方可以指定具体印章（通过传递ComponentValue,支持多个），他方企业或个人只支持限制控件类型。`
         :type AddSignComponentsLimits: list of ComponentLimit
+        :param _SignInstructionContent: 签署须知：支持传入富文本，最长字数：500个中文字符
+        :type SignInstructionContent: str
         """
         self._ApproverType = None
         self._ApproverName = None
@@ -333,6 +335,7 @@ class ApproverInfo(AbstractModel):
         self._ApproverSignTypes = None
         self._ApproverNeedSignReview = None
         self._AddSignComponentsLimits = None
+        self._SignInstructionContent = None
 
     @property
     def ApproverType(self):
@@ -494,6 +497,14 @@ class ApproverInfo(AbstractModel):
     def AddSignComponentsLimits(self, AddSignComponentsLimits):
         self._AddSignComponentsLimits = AddSignComponentsLimits
 
+    @property
+    def SignInstructionContent(self):
+        return self._SignInstructionContent
+
+    @SignInstructionContent.setter
+    def SignInstructionContent(self, SignInstructionContent):
+        self._SignInstructionContent = SignInstructionContent
+
 
     def _deserialize(self, params):
         self._ApproverType = params.get("ApproverType")
@@ -528,6 +539,7 @@ class ApproverInfo(AbstractModel):
                 obj = ComponentLimit()
                 obj._deserialize(item)
                 self._AddSignComponentsLimits.append(obj)
+        self._SignInstructionContent = params.get("SignInstructionContent")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1601,6 +1613,14 @@ SIGN_LEGAL_PERSON_SEAL - 企业法定代表人控件。
         :type ComponentRecipientId: str
         :param _ComponentExtra: 扩展参数：
 为JSON格式。
+不同类型的控件会有部分非通用参数
+
+ComponentType为TEXT、MULTI_LINE_TEXT时，支持以下参数：
+1 Font：目前只支持黑体、宋体
+2 FontSize： 范围12-72
+3 FontAlign： Left/Right/Center，左对齐/居中/右对齐
+4 FontColor：字符串类型，格式为RGB颜色数字
+参数样例：{\"FontColor\":\"255,0,0\",\"FontSize\":12}
 
 ComponentType为FILL_IMAGE时，支持以下参数：
 NotMakeImageCenter：bool。是否设置图片居中。false：居中（默认）。 true: 不居中
@@ -1623,11 +1643,11 @@ ComponentType为SIGN_DATE时，支持以下参数：
 5 Gaps:： 字符串类型，仅在Format为“yyyy m d”时起作用，格式为用逗号分开的两个整数，例如”2,2”，两个数字分别是日期格式的前后两个空隙中的空格个数
 如果extra参数为空，默认为”yyyy年m月d日”格式的居中日期
 特别地，如果extra中Format字段为空或无法被识别，则extra参数会被当作默认值处理（Font，FontSize，Gaps和FontAlign都不会起效）
-参数样例：    "ComponentExtra": "{\"Format\":“yyyy m d”,\"FontSize\":12,\"Gaps\":\"2,2\", \"FontAlign\":\"Right\"}"
+参数样例： "ComponentExtra": "{"Format":“yyyy m d”,"FontSize":12,"Gaps":"2,2", "FontAlign":"Right"}"
 
 ComponentType为SIGN_SEAL类型时，支持以下参数：
 1.PageRanges：PageRange的数组，通过PageRanges属性设置该印章在PDF所有页面上盖章（适用于标书在所有页面盖章的情况）
-参数样例："ComponentExtra":"{\"PageRanges\":[{\"BeginPage\":1,\"EndPage\":-1}]}"
+参数样例： "ComponentExtra":"{"PageRange":[{"BeginPage":1,"EndPage":-1}]}"
         :type ComponentExtra: str
         :param _IsFormType: 是否是表单域类型，默认false-不是
 注意：此字段可能返回 null，表示取不到有效值。
@@ -3112,10 +3132,24 @@ class CreateFlowApproversResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _FillError: 批量补充签署人时，补充失败的报错说明
+
+注:`目前仅补充动态签署人时会返回补充失败的原因`
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FillError: list of FillError
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._FillError = None
         self._RequestId = None
+
+    @property
+    def FillError(self):
+        return self._FillError
+
+    @FillError.setter
+    def FillError(self, FillError):
+        self._FillError = FillError
 
     @property
     def RequestId(self):
@@ -3127,6 +3161,12 @@ class CreateFlowApproversResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        if params.get("FillError") is not None:
+            self._FillError = []
+            for item in params.get("FillError"):
+                obj = FillError()
+                obj._deserialize(item)
+                self._FillError.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -3168,7 +3208,6 @@ class CreateFlowByFilesRequest(AbstractModel):
         :type Components: list of Component
         :param _CcInfos: 合同流程的抄送人列表，最多可支持50个抄送人，抄送人可查看合同内容及签署进度，但无需参与合同签署。
 
-注:`此功能为白名单功能，使用前请联系对接的客户经理沟通。`
         :type CcInfos: list of CcInfo
         :param _CcNotifyType: 可以设置以下时间节点来给抄送人发送短信通知来查看合同内容：
 <ul><li> **0**：合同发起时通知（默认值）</li>
@@ -6919,7 +6958,8 @@ class CreateSchemeUrlRequest(AbstractModel):
 
 <ul><li> **0** : 腾讯电子签小程序个人首页 (默认)</li>
 <li> **1** : 腾讯电子签小程序流程合同的详情页 (即合同签署页面)</li>
-<li> **2** : 腾讯电子签小程序合同列表页</li></ul>
+<li> **2** : 腾讯电子签小程序合同列表页</li><li> **3** : 腾讯电子签小程序合同封面页
+注：`生成动态签署人补充链接时，必须指定为封面页`</li></ul>
         :type PathType: int
         :param _AutoJumpBack: 签署完成后是否自动回跳
 <ul><li>**false**：否, 签署完成不会自动跳转回来(默认)</li><li>**true**：是, 签署完成会自动跳转回来</li></ul>
@@ -6937,7 +6977,9 @@ class CreateSchemeUrlRequest(AbstractModel):
 
 注:  `字段为数组, 可以传值隐藏多个按钮`
         :type Hides: list of int
-        :param _RecipientId: 签署节点ID，用于生成动态签署人链接完成领取
+        :param _RecipientId: 签署节点ID，用于生成动态签署人链接完成领取。
+
+注：`生成动态签署人补充链接时必传。`
         :type RecipientId: str
         """
         self._Operator = None
@@ -7865,6 +7907,183 @@ class CreateUserAutoSignEnableUrlResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateUserAutoSignSealUrlRequest(AbstractModel):
+    """CreateUserAutoSignSealUrl请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Operator: 执行本接口操作的员工信息。
+注: `在调用此接口时，请确保指定的员工已获得所需的接口调用权限，并具备接口传入的相应资源的数据权限。`
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param _SceneKey: 自动签使用的场景值, 可以选择的场景值如下:
+<ul><li> **E_PRESCRIPTION_AUTO_SIGN** :  电子处方场景</li></ul>
+
+注: `现在仅支持电子处方场景`
+        :type SceneKey: str
+        :param _UserInfo: 自动签开通个人用户信息, 包括名字,身份证等。
+        :type UserInfo: :class:`tencentcloud.ess.v20201111.models.UserThreeFactor`
+        :param _Agent: 代理企业和员工的信息。
+在集团企业代理子企业操作的场景中，需设置此参数。在此情境下，ProxyOrganizationId（子企业的组织ID）为必填项。
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        :param _ExpiredTime: 链接的过期时间，格式为Unix时间戳，不能早于当前时间，且最大为当前时间往后30天。`如果不传，默认过期时间为当前时间往后7天。`
+        :type ExpiredTime: int
+        """
+        self._Operator = None
+        self._SceneKey = None
+        self._UserInfo = None
+        self._Agent = None
+        self._ExpiredTime = None
+
+    @property
+    def Operator(self):
+        return self._Operator
+
+    @Operator.setter
+    def Operator(self, Operator):
+        self._Operator = Operator
+
+    @property
+    def SceneKey(self):
+        return self._SceneKey
+
+    @SceneKey.setter
+    def SceneKey(self, SceneKey):
+        self._SceneKey = SceneKey
+
+    @property
+    def UserInfo(self):
+        return self._UserInfo
+
+    @UserInfo.setter
+    def UserInfo(self, UserInfo):
+        self._UserInfo = UserInfo
+
+    @property
+    def Agent(self):
+        return self._Agent
+
+    @Agent.setter
+    def Agent(self, Agent):
+        self._Agent = Agent
+
+    @property
+    def ExpiredTime(self):
+        return self._ExpiredTime
+
+    @ExpiredTime.setter
+    def ExpiredTime(self, ExpiredTime):
+        self._ExpiredTime = ExpiredTime
+
+
+    def _deserialize(self, params):
+        if params.get("Operator") is not None:
+            self._Operator = UserInfo()
+            self._Operator._deserialize(params.get("Operator"))
+        self._SceneKey = params.get("SceneKey")
+        if params.get("UserInfo") is not None:
+            self._UserInfo = UserThreeFactor()
+            self._UserInfo._deserialize(params.get("UserInfo"))
+        if params.get("Agent") is not None:
+            self._Agent = Agent()
+            self._Agent._deserialize(params.get("Agent"))
+        self._ExpiredTime = params.get("ExpiredTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateUserAutoSignSealUrlResponse(AbstractModel):
+    """CreateUserAutoSignSealUrl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AppId: 腾讯电子签小程序的AppId，用于其他小程序/APP等应用跳转至腾讯电子签小程序使用。
+        :type AppId: str
+        :param _AppOriginalId: 腾讯电子签小程序的原始Id，用于其他小程序/APP等应用跳转至腾讯电子签小程序使用。
+        :type AppOriginalId: str
+        :param _Url: 个人用户自动签的开通链接, 短链形式。过期时间受 `ExpiredTime` 参数控制。
+        :type Url: str
+        :param _Path: 腾讯电子签小程序的跳转路径，用于其他小程序/APP等应用跳转至腾讯电子签小程序使用。
+        :type Path: str
+        :param _QrCode: base64格式的跳转二维码图片，可通过微信扫描后跳转到腾讯电子签小程序的开通界面。
+        :type QrCode: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._AppId = None
+        self._AppOriginalId = None
+        self._Url = None
+        self._Path = None
+        self._QrCode = None
+        self._RequestId = None
+
+    @property
+    def AppId(self):
+        return self._AppId
+
+    @AppId.setter
+    def AppId(self, AppId):
+        self._AppId = AppId
+
+    @property
+    def AppOriginalId(self):
+        return self._AppOriginalId
+
+    @AppOriginalId.setter
+    def AppOriginalId(self, AppOriginalId):
+        self._AppOriginalId = AppOriginalId
+
+    @property
+    def Url(self):
+        return self._Url
+
+    @Url.setter
+    def Url(self, Url):
+        self._Url = Url
+
+    @property
+    def Path(self):
+        return self._Path
+
+    @Path.setter
+    def Path(self, Path):
+        self._Path = Path
+
+    @property
+    def QrCode(self):
+        return self._QrCode
+
+    @QrCode.setter
+    def QrCode(self, QrCode):
+        self._QrCode = QrCode
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._AppId = params.get("AppId")
+        self._AppOriginalId = params.get("AppOriginalId")
+        self._Url = params.get("Url")
+        self._Path = params.get("Path")
+        self._QrCode = params.get("QrCode")
+        self._RequestId = params.get("RequestId")
+
+
 class CreateWebThemeConfigRequest(AbstractModel):
     """CreateWebThemeConfig请求参数结构体
 
@@ -8530,7 +8749,9 @@ class DescribeExtendedServiceAuthInfosRequest(AbstractModel):
 <li>OVERSEA_SIGN：企业与港澳台居民签署合同</li>
 <li>MOBILE_CHECK_APPROVER：使用手机号验证签署方身份</li>
 <li>PAGING_SEAL：骑缝章</li>
-<li>BATCH_SIGN：批量签署</li></ul>
+<li>BATCH_SIGN：批量签署</li>
+<li>AGE_LIMIT_EXPANSION：拓宽签署方年龄限制</li></ul>
+
         :type ExtendServiceType: str
         :param _Agent: 代理企业和员工的信息。
 在集团企业代理子企业操作的场景中，需设置此参数。在此情境下，ProxyOrganizationId（子企业的组织ID）为必填项。
@@ -11611,6 +11832,53 @@ WEWORKAPP: 企业微信
         
 
 
+class FillError(AbstractModel):
+    """批量补充签署人时，补充失败的报错说明
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RecipientId: 为签署方经办人在签署合同中的参与方ID，与控件绑定，是控件的归属方，ID为32位字符串。与入参中补充的签署人角色ID对应，批量补充部分失败返回对应的错误信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecipientId: str
+        :param _ErrMessage: 补充失败错误说明
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrMessage: str
+        """
+        self._RecipientId = None
+        self._ErrMessage = None
+
+    @property
+    def RecipientId(self):
+        return self._RecipientId
+
+    @RecipientId.setter
+    def RecipientId(self, RecipientId):
+        self._RecipientId = RecipientId
+
+    @property
+    def ErrMessage(self):
+        return self._ErrMessage
+
+    @ErrMessage.setter
+    def ErrMessage(self, ErrMessage):
+        self._ErrMessage = ErrMessage
+
+
+    def _deserialize(self, params):
+        self._RecipientId = params.get("RecipientId")
+        self._ErrMessage = params.get("ErrMessage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class FilledComponent(AbstractModel):
     """文档内的填充控件返回结构体，返回控件的基本信息和填写内容值
 
@@ -12262,7 +12530,7 @@ class FlowCreateApprover(AbstractModel):
         :type ApproverIdCardNumber: str
         :param _RecipientId: 签署方经办人在模板中配置的参与方ID，与控件绑定，是控件的归属方，ID为32位字符串。
 模板发起合同时，该参数为必填项。
-文件发起合同是，该参数无需传值。
+文件发起合同时，该参数无需传值。
 如果开发者后续用合同模板发起合同，建议保存此值，在用合同模板发起合同中需此值绑定对应的签署经办人 。
         :type RecipientId: str
         :param _VerifyChannel: 签署意愿确认渠道，默认为WEIXINAPP:人脸识别
@@ -13084,7 +13352,7 @@ class FormField(AbstractModel):
 
     当控件的 ComponentType='TEXT'时，FormField.ComponentValue填入文本内容
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "文本内容"
@@ -13092,7 +13360,7 @@ class FormField(AbstractModel):
     ```
     当控件的 ComponentType='MULTI_LINE_TEXT'时，FormField.ComponentValue填入文本内容，支持自动换行。
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "多行文本内容"
@@ -13100,7 +13368,7 @@ class FormField(AbstractModel):
     ```
     当控件的 ComponentType='CHECK_BOX'时，FormField.ComponentValue填入true或false文本
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "true"
@@ -13108,7 +13376,7 @@ class FormField(AbstractModel):
     ```
     当控件的 ComponentType='FILL_IMAGE'时，FormField.ComponentValue填入图片的资源ID
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "yDwhsxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -13116,7 +13384,7 @@ class FormField(AbstractModel):
     ```
     当控件的 ComponentType='ATTACHMENT'时，FormField.ComponentValue填入附件图片的资源ID列表，以逗号分隔，单个附件控件最多支持6个资源ID；
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "yDwhsxxxxxxxxxxxxxxxxxxxxxxxxxx1,yDwhsxxxxxxxxxxxxxxxxxxxxxxxxxx2,yDwhsxxxxxxxxxxxxxxxxxxxxxxxxxx3"
@@ -13124,7 +13392,7 @@ class FormField(AbstractModel):
     ```
     当控件的 ComponentType='SELECTOR'时，FormField.ComponentValue填入选择的选项内容；
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "选择的内容"
@@ -13132,7 +13400,7 @@ class FormField(AbstractModel):
     ```
     当控件的 ComponentType='DATE'时，FormField.ComponentValue填入日期内容；
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "2023年01月01日"
@@ -13140,7 +13408,7 @@ class FormField(AbstractModel):
     ```
     当控件的 ComponentType='DISTRICT'时，FormField.ComponentValue填入省市区内容；
     ```
-    FormFiled输入示例：
+    FormField输入示例：
     {
         "ComponentId": "componentId1",
         "ComponentValue": "广东省深圳市福田区"
@@ -16453,6 +16721,9 @@ true-已发布
 false-未发布
 注意：此字段可能返回 null，表示取不到有效值。
         :type Published: bool
+        :param _ShareTemplateId: 分享来源的模板ID。用在集团账号子企业模板里
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ShareTemplateId: str
         :param _TemplateSeals: 模板内部指定的印章列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type TemplateSeals: list of SealInfo
@@ -16480,6 +16751,7 @@ false-未发布
         self._PreviewUrl = None
         self._TemplateVersion = None
         self._Published = None
+        self._ShareTemplateId = None
         self._TemplateSeals = None
         self._Seals = None
 
@@ -16644,6 +16916,14 @@ false-未发布
         self._Published = Published
 
     @property
+    def ShareTemplateId(self):
+        return self._ShareTemplateId
+
+    @ShareTemplateId.setter
+    def ShareTemplateId(self, ShareTemplateId):
+        self._ShareTemplateId = ShareTemplateId
+
+    @property
     def TemplateSeals(self):
         return self._TemplateSeals
 
@@ -16707,6 +16987,7 @@ false-未发布
         self._PreviewUrl = params.get("PreviewUrl")
         self._TemplateVersion = params.get("TemplateVersion")
         self._Published = params.get("Published")
+        self._ShareTemplateId = params.get("ShareTemplateId")
         if params.get("TemplateSeals") is not None:
             self._TemplateSeals = []
             for item in params.get("TemplateSeals"):

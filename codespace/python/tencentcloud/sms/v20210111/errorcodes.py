@@ -252,7 +252,7 @@ UNAUTHORIZEDOPERATION_REQUESTPERMISSIONDENY = 'UnauthorizedOperation.RequestPerm
 UNAUTHORIZEDOPERATION_SDKAPPIDISDISABLED = 'UnauthorizedOperation.SdkAppIdIsDisabled'
 
 # 欠费被停止服务，可自行登录腾讯云充值来缴清欠款。
-UNAUTHORIZEDOPERATION_SERIVCESUSPENDDUETOARREARS = 'UnauthorizedOperation.SerivceSuspendDueToArrears'
+UNAUTHORIZEDOPERATION_SERVICESUSPENDDUETOARREARS = 'UnauthorizedOperation.ServiceSuspendDueToArrears'
 
 # SmsSdkAppId 校验失败，请检查 [SmsSdkAppId](https://console.cloud.tencent.com/smsv2/app-manage) 是否属于 [云API密钥](https://console.cloud.tencent.com/cam/capi) 的关联账户。
 UNAUTHORIZEDOPERATION_SMSSDKAPPIDVERIFYFAIL = 'UnauthorizedOperation.SmsSdkAppIdVerifyFail'
@@ -270,4 +270,4 @@ UNSUPPORTEDOPERATION_CONTAINDOMESTICANDINTERNATIONALPHONENUMBER = 'UnsupportedOp
 UNSUPPORTEDOPERATION_GLOBALTEMPLATETOCHINESEMAINLANDPHONE = 'UnsupportedOperation.GlobalTemplateToChineseMainlandPhone'
 
 # 不支持该地区短信下发。
-UNSUPPORTEDOPERATION_UNSUPORTEDREGION = 'UnsupportedOperation.UnsuportedRegion'
+UNSUPPORTEDOPERATION_UNSUPPORTEDREGION = 'UnsupportedOperation.UnsupportedRegion'

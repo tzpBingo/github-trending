@@ -262,8 +262,38 @@ class EssbasicClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ChannelCreateFlowApprovers(self, request):
+        """适用场景：
+        当通过模板或文件发起合同时，若未指定企业签署人信息，则可调用此接口动态补充签署人。同一签署人只允许补充一人，最终实际签署人取决于谁先领取合同完成签署。
+
+        限制条件：
+        1. 本企业（发起方企业）企业签署人仅支持通过企业名称+姓名+手机号进行补充。
+        2. 个人签署人仅支持通过姓名+手机号进行补充。
+
+        :param request: Request instance for ChannelCreateFlowApprovers.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateFlowApproversRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateFlowApproversResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreateFlowApprovers", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCreateFlowApproversResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ChannelCreateFlowByFiles(self, request):
-        """接口（ChannelCreateFlowByFiles）用于通过文件创建签署流程。此接口静默签能力不可直接使用，请联系客户经理申请使用
+        """接口（ChannelCreateFlowByFiles）用PDF文件创建签署流程。
+
+        注: `此接口静默签(企业自动签)能力为白名单功能，使用前请联系对接的客户经理沟通。`
 
         :param request: Request instance for ChannelCreateFlowByFiles.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateFlowByFilesRequest`
@@ -447,6 +477,34 @@ class EssbasicClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def ChannelCreateOrganizationBatchSignUrl(self, request):
+        """通过此接口，创建小程序批量签署链接，可以创建企业批量签署链接，员工只需点击链接即可跳转至控制台进行批量签署。
+
+        注：
+        - 员工必须在企业下完成实名认证，且需作为批量签署合同的签署方或者领取方。
+        - 仅支持传入待签署或者待领取的合同，待填写暂不支持。
+        - 员工批量签署，支持多种签名方式，包括手写签名、临摹签名、系统签名、个人印章，暂不支持签批控件
+
+        :param request: Request instance for ChannelCreateOrganizationBatchSignUrl.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateOrganizationBatchSignUrlRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateOrganizationBatchSignUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreateOrganizationBatchSignUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCreateOrganizationBatchSignUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def ChannelCreateOrganizationModifyQrCode(self, request):
         """生成渠道子客编辑企业信息二维码
 
@@ -549,7 +607,7 @@ class EssbasicClient(AbstractClient):
 
         适用场景1：创建当前企业的自定义角色，并且创建时不进行权限的设置（PermissionGroups 参数不传），角色中的权限内容可通过接口 ChannelModifyRole 完成更新。
 
-        适用场景2：创建当前企业的自定义角色，并且创建时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 ChannelDescribeRoles 的输出。
+        适用场景2：创建当前企业的自定义角色，并且创建时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 ChannelDescribeRoles 的输出。此处注意权限树内容可能会更新，需尽量拉取最新的权限树内容，并且权限树内容 PermissionGroups 必须是一颗完整的权限树。
 
         :param request: Request instance for ChannelCreateRole.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateRoleRequest`
@@ -608,6 +666,36 @@ class EssbasicClient(AbstractClient):
             body = self.call("ChannelCreateUserAutoSignEnableUrl", params, headers=headers)
             response = json.loads(body)
             model = models.ChannelCreateUserAutoSignEnableUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ChannelCreateUserAutoSignSealUrl(self, request):
+        """获取设置自动签印章小程序链接。
+
+        注意：
+        <ul><li>需要<code>企业开通自动签</code>后使用。</li>
+        <li>仅支持<code>已经开通了自动签的个人</code>更换自动签印章。</li>
+        <li>链接有效期默认7天，<code>最多30天</code>。</li>
+        <li>该接口的链接适用于<code>小程序</code>端。</li>
+        <li>该接口不会扣除您的合同套餐，暂不参与计费。</li></ul>
+
+        :param request: Request instance for ChannelCreateUserAutoSignSealUrl.
+        :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateUserAutoSignSealUrlRequest`
+        :rtype: :class:`tencentcloud.essbasic.v20210526.models.ChannelCreateUserAutoSignSealUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ChannelCreateUserAutoSignSealUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.ChannelCreateUserAutoSignSealUrlResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -806,7 +894,8 @@ class EssbasicClient(AbstractClient):
 
 
     def ChannelDescribeRoles(self, request):
-        """分页查询企业角色列表，法人的角色是系统保留角色，不会返回，按照角色创建时间升序排列
+        """分页查询企业角色列表，法人的角色是系统保留角色，不会返回，按照角色创建时间升序排列。
+        相关系统默认角色说明可参考文档：https://cloud.tencent.com/document/product/1323/61355
 
         :param request: Request instance for ChannelDescribeRoles.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelDescribeRolesRequest`
@@ -903,7 +992,7 @@ class EssbasicClient(AbstractClient):
 
         适用场景1：更新当前企业的自定义角色的名称或描述等其他信息，更新时不进行权限的设置（PermissionGroups 参数不传）。
 
-        适用场景2：更新当前企业的自定义角色的权限信息，更新时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 ChannelDescribeRoles 的输出。
+        适用场景2：更新当前企业的自定义角色的权限信息，更新时进行权限的设置（PermissionGroups 参数要传），权限树内容 PermissionGroups 可参考接口 ChannelDescribeRoles 的输出。此处注意权限树内容可能会更新，需尽量拉取最新的权限树内容，并且权限树内容 PermissionGroups 必须是一颗完整的权限树。
 
         :param request: Request instance for ChannelModifyRole.
         :type request: :class:`tencentcloud.essbasic.v20210526.models.ChannelModifyRoleRequest`
@@ -1117,9 +1206,9 @@ class EssbasicClient(AbstractClient):
         4. 客户小程序直接跳到电子签小程序-->签署完成退出电子签小程序-->回到客户小程序
         跳转到小程序的实现，参考官方文档（分为全屏、半屏两种方式）
         全屏方式：
-        （https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html）
+        （https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html ）
         半屏方式：
-        （https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html）
+        （https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html ）
         其中小程序的原始Id，请联系<对接技术人员>获取，或者查看小程序信息自助获取。
         使用CreateSignUrls，设置EndPoint为APP，得到path。
 
