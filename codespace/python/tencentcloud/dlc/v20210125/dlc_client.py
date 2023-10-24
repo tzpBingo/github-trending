@@ -1061,6 +1061,29 @@ class DlcClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeAdvancedStoreLocation(self, request):
+        """查询sql查询界面高级设置
+
+        :param request: Request instance for DescribeAdvancedStoreLocation.
+        :type request: :class:`tencentcloud.dlc.v20210125.models.DescribeAdvancedStoreLocationRequest`
+        :rtype: :class:`tencentcloud.dlc.v20210125.models.DescribeAdvancedStoreLocationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeAdvancedStoreLocation", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeAdvancedStoreLocationResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeDMSDatabase(self, request):
         """DMS元数据获取库
 
@@ -1374,6 +1397,29 @@ class DlcClient(AbstractClient):
             body = self.call("DescribeLakeFsInfo", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeLakeFsInfoResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeLakeFsTaskResult(self, request):
+        """获取LakeFs上task执行结果访问信息
+
+        :param request: Request instance for DescribeLakeFsTaskResult.
+        :type request: :class:`tencentcloud.dlc.v20210125.models.DescribeLakeFsTaskResultRequest`
+        :rtype: :class:`tencentcloud.dlc.v20210125.models.DescribeLakeFsTaskResultResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeLakeFsTaskResult", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeLakeFsTaskResultResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2179,6 +2225,29 @@ class DlcClient(AbstractClient):
             body = self.call("LockMetaData", params, headers=headers)
             response = json.loads(body)
             model = models.LockMetaDataResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyAdvancedStoreLocation(self, request):
+        """修改sql查询界面高级设置。
+
+        :param request: Request instance for ModifyAdvancedStoreLocation.
+        :type request: :class:`tencentcloud.dlc.v20210125.models.ModifyAdvancedStoreLocationRequest`
+        :rtype: :class:`tencentcloud.dlc.v20210125.models.ModifyAdvancedStoreLocationResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyAdvancedStoreLocation", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyAdvancedStoreLocationResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

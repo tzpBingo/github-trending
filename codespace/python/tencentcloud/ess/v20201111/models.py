@@ -632,10 +632,20 @@ class ApproverOption(AbstractModel):
 <ul><li> **1** : ( 动态签署人（可发起合同后再补充签署人信息）</li>
 </ul>
         :type FillType: int
+        :param _FlowReadLimit: 签署人阅读合同限制参数
+ <br/>取值：
+<ul>
+<li> LimitReadTimeAndBottom，阅读合同必须限制阅读时长并且必须阅读到底</li>
+<li> LimitReadTime，阅读合同仅限制阅读时长</li>
+<li> LimitBottom，阅读合同仅限制必须阅读到底</li>
+<li> NoReadTimeAndBottom，阅读合同不限制阅读时长且不限制阅读到底（白名单功能，请联系客户经理开白使用）</li>
+</ul>
+        :type FlowReadLimit: str
         """
         self._NoRefuse = None
         self._NoTransfer = None
         self._FillType = None
+        self._FlowReadLimit = None
 
     @property
     def NoRefuse(self):
@@ -661,11 +671,20 @@ class ApproverOption(AbstractModel):
     def FillType(self, FillType):
         self._FillType = FillType
 
+    @property
+    def FlowReadLimit(self):
+        return self._FlowReadLimit
+
+    @FlowReadLimit.setter
+    def FlowReadLimit(self, FlowReadLimit):
+        self._FlowReadLimit = FlowReadLimit
+
 
     def _deserialize(self, params):
         self._NoRefuse = params.get("NoRefuse")
         self._NoTransfer = params.get("NoTransfer")
         self._FillType = params.get("FillType")
+        self._FlowReadLimit = params.get("FlowReadLimit")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -1560,7 +1579,14 @@ class CcInfo(AbstractModel):
 
 
 class Component(AbstractModel):
-    """模板/流程中控件信息，可以是填充控件或签署控件
+    """此结构体 (Component) 用于描述控件属性。
+
+    在通过文件发起合同时，对应的component有三种定位方式
+    1. 绝对定位方式
+    2. 表单域(FIELD)定位方式
+    3. 关键字(KEYWORD)定位方式，使用关键字定位时，请确保PDF原始文件内是关键字以文字形式保存在PDF文件中，不支持对图片内文字进行关键字查找
+    可以参考官网说明
+    https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.8D.E5.AE.9A.E4.BD.8D.E6.96.B9.E5.BC.8F.E8.AF.B4.E6.98.8E
 
     """
 
@@ -1729,9 +1755,10 @@ SIGN_PAGING_SEAL - 可以指定印章ID，于控制台查询获取
 学历控件：
   同单行文本控件约束，填写选择值中的字符串
         :type ComponentValue: str
-        :param _GenerateMode: NORMAL 正常模式，使用坐标制定签署控件位置
-FIELD 表单域，需使用ComponentName指定表单域名称
-KEYWORD 关键字，使用ComponentId指定关键字
+        :param _GenerateMode: 控件生成的方式：
+NORMAL - 普通控件
+FIELD - 表单域
+KEYWORD - 关键字（设置关键字时，请确保PDF原始文件内是关键字以文字形式保存在PDF文件中，不支持对图片内文字进行关键字查找）
         :type GenerateMode: str
         :param _ComponentDateFontSize: 日期签署控件的字号，默认为 12
         :type ComponentDateFontSize: int
@@ -9602,6 +9629,8 @@ Key：template-id Values：需要查询的模板Id列表
         :type Organization: :class:`tencentcloud.ess.v20201111.models.OrganizationInfo`
         :param _GenerateSource: 暂未开放
         :type GenerateSource: int
+        :param _WithPreviewUrl: 是否获取模板预览链接
+        :type WithPreviewUrl: bool
         """
         self._Operator = None
         self._Agent = None
@@ -9613,6 +9642,7 @@ Key：template-id Values：需要查询的模板Id列表
         self._IsChannel = None
         self._Organization = None
         self._GenerateSource = None
+        self._WithPreviewUrl = None
 
     @property
     def Operator(self):
@@ -9706,6 +9736,14 @@ Key：template-id Values：需要查询的模板Id列表
 
         self._GenerateSource = GenerateSource
 
+    @property
+    def WithPreviewUrl(self):
+        return self._WithPreviewUrl
+
+    @WithPreviewUrl.setter
+    def WithPreviewUrl(self, WithPreviewUrl):
+        self._WithPreviewUrl = WithPreviewUrl
+
 
     def _deserialize(self, params):
         if params.get("Operator") is not None:
@@ -9729,6 +9767,7 @@ Key：template-id Values：需要查询的模板Id列表
             self._Organization = OrganizationInfo()
             self._Organization._deserialize(params.get("Organization"))
         self._GenerateSource = params.get("GenerateSource")
+        self._WithPreviewUrl = params.get("WithPreviewUrl")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -17752,12 +17791,15 @@ class VerifyPdfResponse(AbstractModel):
         :type PdfVerifyResults: list of PdfVerifyResult
         :param _VerifySerialNo: 验签序列号, 为11为数组组成的字符串
         :type VerifySerialNo: str
+        :param _PdfResourceMd5: 合同文件MD5哈希值
+        :type PdfResourceMd5: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._VerifyResult = None
         self._PdfVerifyResults = None
         self._VerifySerialNo = None
+        self._PdfResourceMd5 = None
         self._RequestId = None
 
     @property
@@ -17785,6 +17827,14 @@ class VerifyPdfResponse(AbstractModel):
         self._VerifySerialNo = VerifySerialNo
 
     @property
+    def PdfResourceMd5(self):
+        return self._PdfResourceMd5
+
+    @PdfResourceMd5.setter
+    def PdfResourceMd5(self, PdfResourceMd5):
+        self._PdfResourceMd5 = PdfResourceMd5
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -17802,6 +17852,7 @@ class VerifyPdfResponse(AbstractModel):
                 obj._deserialize(item)
                 self._PdfVerifyResults.append(obj)
         self._VerifySerialNo = params.get("VerifySerialNo")
+        self._PdfResourceMd5 = params.get("PdfResourceMd5")
         self._RequestId = params.get("RequestId")
 
 

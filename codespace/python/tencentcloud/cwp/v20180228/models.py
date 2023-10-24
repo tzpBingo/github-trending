@@ -3143,7 +3143,7 @@ class AssetMachineDetail(AbstractModel):
         :type MachineWanIp: str
         :param _CpuSize: Cpu数量
         :type CpuSize: int
-        :param _CpuLoad: Cpu使用率百分比
+        :param _CpuLoad: Cpu负载
         :type CpuLoad: str
         :param _ProtectLevel: 防护级别：0基础版，1专业版，2旗舰版，3普惠版
         :type ProtectLevel: int
@@ -3193,6 +3193,12 @@ class AssetMachineDetail(AbstractModel):
         :param _MachineExtraInfo: 主机二外信息
 注意：此字段可能返回 null，表示取不到有效值。
         :type MachineExtraInfo: :class:`tencentcloud.cwp.v20180228.models.MachineExtraInfo`
+        :param _CpuLoadVul: CpuLoadVul
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CpuLoadVul: str
+        :param _FirstTime: 时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FirstTime: str
         """
         self._Quuid = None
         self._Uuid = None
@@ -3230,6 +3236,8 @@ class AssetMachineDetail(AbstractModel):
         self._InstanceId = None
         self._UpdateTime = None
         self._MachineExtraInfo = None
+        self._CpuLoadVul = None
+        self._FirstTime = None
 
     @property
     def Quuid(self):
@@ -3519,6 +3527,22 @@ class AssetMachineDetail(AbstractModel):
     def MachineExtraInfo(self, MachineExtraInfo):
         self._MachineExtraInfo = MachineExtraInfo
 
+    @property
+    def CpuLoadVul(self):
+        return self._CpuLoadVul
+
+    @CpuLoadVul.setter
+    def CpuLoadVul(self, CpuLoadVul):
+        self._CpuLoadVul = CpuLoadVul
+
+    @property
+    def FirstTime(self):
+        return self._FirstTime
+
+    @FirstTime.setter
+    def FirstTime(self, FirstTime):
+        self._FirstTime = FirstTime
+
 
     def _deserialize(self, params):
         self._Quuid = params.get("Quuid")
@@ -3569,6 +3593,8 @@ class AssetMachineDetail(AbstractModel):
         if params.get("MachineExtraInfo") is not None:
             self._MachineExtraInfo = MachineExtraInfo()
             self._MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
+        self._CpuLoadVul = params.get("CpuLoadVul")
+        self._FirstTime = params.get("FirstTime")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -16081,6 +16107,93 @@ class CreateWhiteListOrderRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param _LicenseType: 授权类型
+        :type LicenseType: int
+        :param _LicenseNum: 授权数量,最小为1 最大99999
+        :type LicenseNum: int
+        :param _Deadline: 到期时间,最小为1
+        :type Deadline: int
+        :param _RuleName: 规则名称,大资产中心:asset_center
+        :type RuleName: str
+        :param _RegionId: 地域, 1 广州 9新加坡, 默认为 1. 非必要情况不要选9
+        :type RegionId: int
+        :param _ExtraParam: 额外参数,json字符串,包含ResourceId 资源ID,LicenseType 授权类型
+        :type ExtraParam: str
+        """
+        self._LicenseType = None
+        self._LicenseNum = None
+        self._Deadline = None
+        self._RuleName = None
+        self._RegionId = None
+        self._ExtraParam = None
+
+    @property
+    def LicenseType(self):
+        return self._LicenseType
+
+    @LicenseType.setter
+    def LicenseType(self, LicenseType):
+        self._LicenseType = LicenseType
+
+    @property
+    def LicenseNum(self):
+        return self._LicenseNum
+
+    @LicenseNum.setter
+    def LicenseNum(self, LicenseNum):
+        self._LicenseNum = LicenseNum
+
+    @property
+    def Deadline(self):
+        return self._Deadline
+
+    @Deadline.setter
+    def Deadline(self, Deadline):
+        self._Deadline = Deadline
+
+    @property
+    def RuleName(self):
+        return self._RuleName
+
+    @RuleName.setter
+    def RuleName(self, RuleName):
+        self._RuleName = RuleName
+
+    @property
+    def RegionId(self):
+        return self._RegionId
+
+    @RegionId.setter
+    def RegionId(self, RegionId):
+        self._RegionId = RegionId
+
+    @property
+    def ExtraParam(self):
+        return self._ExtraParam
+
+    @ExtraParam.setter
+    def ExtraParam(self, ExtraParam):
+        self._ExtraParam = ExtraParam
+
+
+    def _deserialize(self, params):
+        self._LicenseType = params.get("LicenseType")
+        self._LicenseNum = params.get("LicenseNum")
+        self._Deadline = params.get("Deadline")
+        self._RuleName = params.get("RuleName")
+        self._RegionId = params.get("RegionId")
+        self._ExtraParam = params.get("ExtraParam")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class CreateWhiteListOrderResponse(AbstractModel):
     """CreateWhiteListOrder返回参数结构体
@@ -21831,7 +21944,15 @@ class DescribeAssetMachineListRequest(AbstractModel):
     def __init__(self):
         r"""
         :param _Filters: 过滤条件。
-<li>IpOrAlias - String - 是否必填：否 - 主机ip或别名筛选</li>
+<li>MachineName  主机名称
+
+
+
+InstanceID  实例ID  
+
+ 
+
+IP   内网IP或公网IP</li>
 <li>OsType - String - 是否必填：否 - windows或linux</li>
 <li>CpuLoad - Int - 是否必填：否 - 
 0: 未知  1: 低负载
@@ -36213,6 +36334,33 @@ class DescribeLicenseWhiteConfigRequest(AbstractModel):
     """DescribeLicenseWhiteConfig请求参数结构体
 
     """
+
+    def __init__(self):
+        r"""
+        :param _RuleName: 规则名称,例如: cwp
+        :type RuleName: str
+        """
+        self._RuleName = None
+
+    @property
+    def RuleName(self):
+        return self._RuleName
+
+    @RuleName.setter
+    def RuleName(self, RuleName):
+        self._RuleName = RuleName
+
+
+    def _deserialize(self, params):
+        self._RuleName = params.get("RuleName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class DescribeLicenseWhiteConfigResponse(AbstractModel):

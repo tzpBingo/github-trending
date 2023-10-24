@@ -2692,6 +2692,8 @@ class CreateDataEngineRequest(AbstractModel):
         :type ElasticLimit: int
         :param _SessionResourceTemplate: spark作业集群session资源配置模板
         :type SessionResourceTemplate: :class:`tencentcloud.dlc.v20210125.models.SessionResourceTemplate`
+        :param _AutoAuthorization: 自动授权
+        :type AutoAuthorization: bool
         """
         self._EngineType = None
         self._DataEngineName = None
@@ -2723,6 +2725,7 @@ class CreateDataEngineRequest(AbstractModel):
         self._ElasticSwitch = None
         self._ElasticLimit = None
         self._SessionResourceTemplate = None
+        self._AutoAuthorization = None
 
     @property
     def EngineType(self):
@@ -2968,6 +2971,14 @@ class CreateDataEngineRequest(AbstractModel):
     def SessionResourceTemplate(self, SessionResourceTemplate):
         self._SessionResourceTemplate = SessionResourceTemplate
 
+    @property
+    def AutoAuthorization(self):
+        return self._AutoAuthorization
+
+    @AutoAuthorization.setter
+    def AutoAuthorization(self, AutoAuthorization):
+        self._AutoAuthorization = AutoAuthorization
+
 
     def _deserialize(self, params):
         self._EngineType = params.get("EngineType")
@@ -3014,6 +3025,7 @@ class CreateDataEngineRequest(AbstractModel):
         if params.get("SessionResourceTemplate") is not None:
             self._SessionResourceTemplate = SessionResourceTemplate()
             self._SessionResourceTemplate._deserialize(params.get("SessionResourceTemplate"))
+        self._AutoAuthorization = params.get("AutoAuthorization")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -6897,6 +6909,9 @@ class DataEngineInfo(AbstractModel):
         :param _SessionResourceTemplate: SessionResourceTemplate
 注意：此字段可能返回 null，表示取不到有效值。
         :type SessionResourceTemplate: :class:`tencentcloud.dlc.v20210125.models.SessionResourceTemplate`
+        :param _AutoAuthorization: 自动授权开关
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AutoAuthorization: bool
         """
         self._DataEngineName = None
         self._EngineType = None
@@ -6943,6 +6958,7 @@ class DataEngineInfo(AbstractModel):
         self._UserAppId = None
         self._UserUin = None
         self._SessionResourceTemplate = None
+        self._AutoAuthorization = None
 
     @property
     def DataEngineName(self):
@@ -7304,6 +7320,14 @@ class DataEngineInfo(AbstractModel):
     def SessionResourceTemplate(self, SessionResourceTemplate):
         self._SessionResourceTemplate = SessionResourceTemplate
 
+    @property
+    def AutoAuthorization(self):
+        return self._AutoAuthorization
+
+    @AutoAuthorization.setter
+    def AutoAuthorization(self, AutoAuthorization):
+        self._AutoAuthorization = AutoAuthorization
+
 
     def _deserialize(self, params):
         self._DataEngineName = params.get("DataEngineName")
@@ -7365,6 +7389,7 @@ class DataEngineInfo(AbstractModel):
         if params.get("SessionResourceTemplate") is not None:
             self._SessionResourceTemplate = SessionResourceTemplate()
             self._SessionResourceTemplate._deserialize(params.get("SessionResourceTemplate"))
+        self._AutoAuthorization = params.get("AutoAuthorization")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -8769,6 +8794,86 @@ class DeleteWorkGroupResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeAdvancedStoreLocationRequest(AbstractModel):
+    """DescribeAdvancedStoreLocation请求参数结构体
+
+    """
+
+
+class DescribeAdvancedStoreLocationResponse(AbstractModel):
+    """DescribeAdvancedStoreLocation返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Enable: 是否启用高级设置：0-否，1-是
+        :type Enable: int
+        :param _StoreLocation: 查询结果保存cos路径
+        :type StoreLocation: str
+        :param _HasLakeFs: 是否有托管存储权限
+        :type HasLakeFs: bool
+        :param _LakeFsStatus: 托管存储状态，HasLakeFs等于true时，该值才有意义
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LakeFsStatus: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Enable = None
+        self._StoreLocation = None
+        self._HasLakeFs = None
+        self._LakeFsStatus = None
+        self._RequestId = None
+
+    @property
+    def Enable(self):
+        return self._Enable
+
+    @Enable.setter
+    def Enable(self, Enable):
+        self._Enable = Enable
+
+    @property
+    def StoreLocation(self):
+        return self._StoreLocation
+
+    @StoreLocation.setter
+    def StoreLocation(self, StoreLocation):
+        self._StoreLocation = StoreLocation
+
+    @property
+    def HasLakeFs(self):
+        return self._HasLakeFs
+
+    @HasLakeFs.setter
+    def HasLakeFs(self, HasLakeFs):
+        self._HasLakeFs = HasLakeFs
+
+    @property
+    def LakeFsStatus(self):
+        return self._LakeFsStatus
+
+    @LakeFsStatus.setter
+    def LakeFsStatus(self, LakeFsStatus):
+        self._LakeFsStatus = LakeFsStatus
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Enable = params.get("Enable")
+        self._StoreLocation = params.get("StoreLocation")
+        self._HasLakeFs = params.get("HasLakeFs")
+        self._LakeFsStatus = params.get("LakeFsStatus")
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeDMSDatabaseRequest(AbstractModel):
     """DescribeDMSDatabase请求参数结构体
 
@@ -9983,7 +10088,7 @@ class DescribeDataEnginesRequest(AbstractModel):
         r"""
         :param _Offset: 偏移量，默认为0。
         :type Offset: int
-        :param _Filters: 过滤类型，支持如下的过滤类型，传参Name应为以下其中一个, data-engine-name - String（数据引擎名称）：engine-type - String（引擎类型：spark：spark 引擎，presto：presto引擎），state - String (数据引擎状态 -2已删除 -1失败 0初始化中 1挂起 2运行中 3准备删除 4删除中) ， mode - String（计费模式 0共享模式 1按量计费 2包年包月） ， create-time - String（创建时间，10位时间戳） message - String （描述信息），cluster-type - String (集群资源类型 spark_private/presto_private/presto_cu/spark_cu)，engine-id - String（数据引擎ID），key-word - String（数据引擎名称或集群资源类型或描述信息模糊搜索），engine-exec-type - String（引擎执行任务类型，SQL/BATCH）
+        :param _Filters: 过滤类型，支持如下的过滤类型，传参Name应为以下其中一个, data-engine-name - String（数据引擎名称）：engine-type - String（引擎类型：spark：spark 引擎，presto：presto引擎），state - String (数据引擎状态 -2已删除 -1失败 0初始化中 1挂起 2运行中 3准备删除 4删除中) ， mode - String（计费模式 0共享模式 1按量计费 2包年包月） ， create-time - String（创建时间，10位时间戳） message - String （描述信息），cluster-type - String (集群资源类型 spark_private/presto_private/presto_cu/spark_cu/kyuubi_cu)，engine-id - String（数据引擎ID），key-word - String（数据引擎名称或集群资源类型或描述信息模糊搜索），engine-exec-type - String（引擎执行任务类型，SQL/BATCH），engine-network-id - String（引擎网络Id）
         :type Filters: list of Filter
         :param _SortBy: 排序字段，支持如下字段类型，create-time
         :type SortBy: str
@@ -9999,7 +10104,7 @@ class DescribeDataEnginesRequest(AbstractModel):
         :type AccessTypes: list of str
         :param _EngineExecType: 引擎执行任务类型，有效值：SQL/BATCH，默认为SQL
         :type EngineExecType: str
-        :param _EngineType: 引擎类型，有效值：spark/presto
+        :param _EngineType: 引擎类型，有效值：spark/presto/kyuubi，为空时默认获取非kyuubi引擎（网关引擎）
         :type EngineType: str
         :param _DatasourceConnectionNameSet: 网络配置列表，若传入该参数，则返回网络配置关联的计算引擎
         :type DatasourceConnectionNameSet: list of str
@@ -10720,6 +10825,78 @@ class DescribeLakeFsInfoResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeLakeFsTaskResultRequest(AbstractModel):
+    """DescribeLakeFsTaskResult请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FsPath: 需要访问的任务结果路径
+        :type FsPath: str
+        """
+        self._FsPath = None
+
+    @property
+    def FsPath(self):
+        return self._FsPath
+
+    @FsPath.setter
+    def FsPath(self, FsPath):
+        self._FsPath = FsPath
+
+
+    def _deserialize(self, params):
+        self._FsPath = params.get("FsPath")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeLakeFsTaskResultResponse(AbstractModel):
+    """DescribeLakeFsTaskResult返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _AccessToken: 路径的访问实例
+        :type AccessToken: :class:`tencentcloud.dlc.v20210125.models.LakeFileSystemToken`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._AccessToken = None
+        self._RequestId = None
+
+    @property
+    def AccessToken(self):
+        return self._AccessToken
+
+    @AccessToken.setter
+    def AccessToken(self, AccessToken):
+        self._AccessToken = AccessToken
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("AccessToken") is not None:
+            self._AccessToken = LakeFileSystemToken()
+            self._AccessToken._deserialize(params.get("AccessToken"))
         self._RequestId = params.get("RequestId")
 
 
@@ -15582,6 +15759,87 @@ class KerberosInfo(AbstractModel):
         
 
 
+class LakeFileSystemToken(AbstractModel):
+    """LakeFileSystem使用的临时token
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SecretId: Token使用的临时秘钥的ID
+        :type SecretId: str
+        :param _SecretKey: Token使用的临时秘钥
+        :type SecretKey: str
+        :param _Token: Token信息
+        :type Token: str
+        :param _ExpiredTime: 过期时间
+        :type ExpiredTime: int
+        :param _IssueTime: 颁布时间
+        :type IssueTime: int
+        """
+        self._SecretId = None
+        self._SecretKey = None
+        self._Token = None
+        self._ExpiredTime = None
+        self._IssueTime = None
+
+    @property
+    def SecretId(self):
+        return self._SecretId
+
+    @SecretId.setter
+    def SecretId(self, SecretId):
+        self._SecretId = SecretId
+
+    @property
+    def SecretKey(self):
+        return self._SecretKey
+
+    @SecretKey.setter
+    def SecretKey(self, SecretKey):
+        self._SecretKey = SecretKey
+
+    @property
+    def Token(self):
+        return self._Token
+
+    @Token.setter
+    def Token(self, Token):
+        self._Token = Token
+
+    @property
+    def ExpiredTime(self):
+        return self._ExpiredTime
+
+    @ExpiredTime.setter
+    def ExpiredTime(self, ExpiredTime):
+        self._ExpiredTime = ExpiredTime
+
+    @property
+    def IssueTime(self):
+        return self._IssueTime
+
+    @IssueTime.setter
+    def IssueTime(self, IssueTime):
+        self._IssueTime = IssueTime
+
+
+    def _deserialize(self, params):
+        self._SecretId = params.get("SecretId")
+        self._SecretKey = params.get("SecretKey")
+        self._Token = params.get("Token")
+        self._ExpiredTime = params.get("ExpiredTime")
+        self._IssueTime = params.get("IssueTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class ListTaskJobLogDetailRequest(AbstractModel):
     """ListTaskJobLogDetail请求参数结构体
 
@@ -16035,6 +16293,76 @@ class LockMetaDataResponse(AbstractModel):
     def _deserialize(self, params):
         self._LockId = params.get("LockId")
         self._LockState = params.get("LockState")
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyAdvancedStoreLocationRequest(AbstractModel):
+    """ModifyAdvancedStoreLocation请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StoreLocation: 查询结果保存cos路径
+        :type StoreLocation: str
+        :param _Enable: 是否启用高级设置：0-否，1-是
+        :type Enable: int
+        """
+        self._StoreLocation = None
+        self._Enable = None
+
+    @property
+    def StoreLocation(self):
+        return self._StoreLocation
+
+    @StoreLocation.setter
+    def StoreLocation(self, StoreLocation):
+        self._StoreLocation = StoreLocation
+
+    @property
+    def Enable(self):
+        return self._Enable
+
+    @Enable.setter
+    def Enable(self, Enable):
+        self._Enable = Enable
+
+
+    def _deserialize(self, params):
+        self._StoreLocation = params.get("StoreLocation")
+        self._Enable = params.get("Enable")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyAdvancedStoreLocationResponse(AbstractModel):
+    """ModifyAdvancedStoreLocation返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
         self._RequestId = params.get("RequestId")
 
 

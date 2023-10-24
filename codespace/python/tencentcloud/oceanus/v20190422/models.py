@@ -1065,6 +1065,219 @@ class ClusterSession(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param _ClusterGroupSerialId: 集群SerialId
+        :type ClusterGroupSerialId: str
+        :param _AppId: 创建者appId
+        :type AppId: int
+        :param _OwnerUin: 创建者主账号
+        :type OwnerUin: str
+        :param _CreatorUin: 创建者账号
+        :type CreatorUin: str
+        :param _Region: 区域
+        :type Region: str
+        :param _Zone: zone
+        :type Zone: str
+        :param _Status: Session集群状态
+        :type Status: int
+        :param _CuNum: Session集群消耗的cu数量
+        :type CuNum: float
+        :param _FlinkVersion: Session集群的Flink版本
+        :type FlinkVersion: str
+        :param _WebUIUrl: session集群FlinkUi地址
+        :type WebUIUrl: str
+        :param _Properties: session集群高级参数
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Properties: list of Property
+        :param _JobManagerCuSpec: JobManager的规格
+        :type JobManagerCuSpec: float
+        :param _TaskManagerCuSpec: TaskManager的规格
+        :type TaskManagerCuSpec: float
+        :param _TaskManagerNum: TaskManager启动的数量
+        :type TaskManagerNum: int
+        :param _CreateTime: 创建时间
+        :type CreateTime: str
+        :param _UpdateTime: 更新时间
+        :type UpdateTime: str
+        """
+        self._ClusterGroupSerialId = None
+        self._AppId = None
+        self._OwnerUin = None
+        self._CreatorUin = None
+        self._Region = None
+        self._Zone = None
+        self._Status = None
+        self._CuNum = None
+        self._FlinkVersion = None
+        self._WebUIUrl = None
+        self._Properties = None
+        self._JobManagerCuSpec = None
+        self._TaskManagerCuSpec = None
+        self._TaskManagerNum = None
+        self._CreateTime = None
+        self._UpdateTime = None
+
+    @property
+    def ClusterGroupSerialId(self):
+        return self._ClusterGroupSerialId
+
+    @ClusterGroupSerialId.setter
+    def ClusterGroupSerialId(self, ClusterGroupSerialId):
+        self._ClusterGroupSerialId = ClusterGroupSerialId
+
+    @property
+    def AppId(self):
+        return self._AppId
+
+    @AppId.setter
+    def AppId(self, AppId):
+        self._AppId = AppId
+
+    @property
+    def OwnerUin(self):
+        return self._OwnerUin
+
+    @OwnerUin.setter
+    def OwnerUin(self, OwnerUin):
+        self._OwnerUin = OwnerUin
+
+    @property
+    def CreatorUin(self):
+        return self._CreatorUin
+
+    @CreatorUin.setter
+    def CreatorUin(self, CreatorUin):
+        self._CreatorUin = CreatorUin
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def Zone(self):
+        return self._Zone
+
+    @Zone.setter
+    def Zone(self, Zone):
+        self._Zone = Zone
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def CuNum(self):
+        return self._CuNum
+
+    @CuNum.setter
+    def CuNum(self, CuNum):
+        self._CuNum = CuNum
+
+    @property
+    def FlinkVersion(self):
+        return self._FlinkVersion
+
+    @FlinkVersion.setter
+    def FlinkVersion(self, FlinkVersion):
+        self._FlinkVersion = FlinkVersion
+
+    @property
+    def WebUIUrl(self):
+        return self._WebUIUrl
+
+    @WebUIUrl.setter
+    def WebUIUrl(self, WebUIUrl):
+        self._WebUIUrl = WebUIUrl
+
+    @property
+    def Properties(self):
+        return self._Properties
+
+    @Properties.setter
+    def Properties(self, Properties):
+        self._Properties = Properties
+
+    @property
+    def JobManagerCuSpec(self):
+        return self._JobManagerCuSpec
+
+    @JobManagerCuSpec.setter
+    def JobManagerCuSpec(self, JobManagerCuSpec):
+        self._JobManagerCuSpec = JobManagerCuSpec
+
+    @property
+    def TaskManagerCuSpec(self):
+        return self._TaskManagerCuSpec
+
+    @TaskManagerCuSpec.setter
+    def TaskManagerCuSpec(self, TaskManagerCuSpec):
+        self._TaskManagerCuSpec = TaskManagerCuSpec
+
+    @property
+    def TaskManagerNum(self):
+        return self._TaskManagerNum
+
+    @TaskManagerNum.setter
+    def TaskManagerNum(self, TaskManagerNum):
+        self._TaskManagerNum = TaskManagerNum
+
+    @property
+    def CreateTime(self):
+        return self._CreateTime
+
+    @CreateTime.setter
+    def CreateTime(self, CreateTime):
+        self._CreateTime = CreateTime
+
+    @property
+    def UpdateTime(self):
+        return self._UpdateTime
+
+    @UpdateTime.setter
+    def UpdateTime(self, UpdateTime):
+        self._UpdateTime = UpdateTime
+
+
+    def _deserialize(self, params):
+        self._ClusterGroupSerialId = params.get("ClusterGroupSerialId")
+        self._AppId = params.get("AppId")
+        self._OwnerUin = params.get("OwnerUin")
+        self._CreatorUin = params.get("CreatorUin")
+        self._Region = params.get("Region")
+        self._Zone = params.get("Zone")
+        self._Status = params.get("Status")
+        self._CuNum = params.get("CuNum")
+        self._FlinkVersion = params.get("FlinkVersion")
+        self._WebUIUrl = params.get("WebUIUrl")
+        if params.get("Properties") is not None:
+            self._Properties = []
+            for item in params.get("Properties"):
+                obj = Property()
+                obj._deserialize(item)
+                self._Properties.append(obj)
+        self._JobManagerCuSpec = params.get("JobManagerCuSpec")
+        self._TaskManagerCuSpec = params.get("TaskManagerCuSpec")
+        self._TaskManagerNum = params.get("TaskManagerNum")
+        self._CreateTime = params.get("CreateTime")
+        self._UpdateTime = params.get("UpdateTime")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class ClusterVersion(AbstractModel):
     """集群的版本相关信息
@@ -2367,6 +2580,252 @@ class CreateResourceResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateWorkSpaceRequest(AbstractModel):
+    """CreateWorkSpace请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _WorkSpaceName: 工作空间名称
+        :type WorkSpaceName: str
+        :param _Description: 项目空间备注
+        :type Description: str
+        """
+        self._WorkSpaceName = None
+        self._Description = None
+
+    @property
+    def WorkSpaceName(self):
+        return self._WorkSpaceName
+
+    @WorkSpaceName.setter
+    def WorkSpaceName(self, WorkSpaceName):
+        self._WorkSpaceName = WorkSpaceName
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+
+    def _deserialize(self, params):
+        self._WorkSpaceName = params.get("WorkSpaceName")
+        self._Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateWorkSpaceResponse(AbstractModel):
+    """CreateWorkSpace返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _WorkSpaceId: 工作空间 SerialId
+        :type WorkSpaceId: str
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._WorkSpaceId = None
+        self._RequestId = None
+
+    @property
+    def WorkSpaceId(self):
+        return self._WorkSpaceId
+
+    @WorkSpaceId.setter
+    def WorkSpaceId(self, WorkSpaceId):
+        self._WorkSpaceId = WorkSpaceId
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._WorkSpaceId = params.get("WorkSpaceId")
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteFoldersRequest(AbstractModel):
+    """DeleteFolders请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FolderIds: 需删除的文件夹唯一ID
+        :type FolderIds: list of str
+        :param _FolderType: 文件夹类型，0是任务文件夹，1是依赖文件夹
+        :type FolderType: int
+        :param _WorkSpaceId: 工作空间 SerialId
+        :type WorkSpaceId: str
+        """
+        self._FolderIds = None
+        self._FolderType = None
+        self._WorkSpaceId = None
+
+    @property
+    def FolderIds(self):
+        return self._FolderIds
+
+    @FolderIds.setter
+    def FolderIds(self, FolderIds):
+        self._FolderIds = FolderIds
+
+    @property
+    def FolderType(self):
+        return self._FolderType
+
+    @FolderType.setter
+    def FolderType(self, FolderType):
+        self._FolderType = FolderType
+
+    @property
+    def WorkSpaceId(self):
+        return self._WorkSpaceId
+
+    @WorkSpaceId.setter
+    def WorkSpaceId(self, WorkSpaceId):
+        self._WorkSpaceId = WorkSpaceId
+
+
+    def _deserialize(self, params):
+        self._FolderIds = params.get("FolderIds")
+        self._FolderType = params.get("FolderType")
+        self._WorkSpaceId = params.get("WorkSpaceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteFoldersResponse(AbstractModel):
+    """DeleteFolders返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteJobConfigsRequest(AbstractModel):
+    """DeleteJobConfigs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _JobId: 作业ID
+        :type JobId: str
+        :param _JobConfigVersions: 作业配置版本数组
+        :type JobConfigVersions: list of int
+        :param _WorkSpaceId: 工作空间 SerialId
+        :type WorkSpaceId: str
+        """
+        self._JobId = None
+        self._JobConfigVersions = None
+        self._WorkSpaceId = None
+
+    @property
+    def JobId(self):
+        return self._JobId
+
+    @JobId.setter
+    def JobId(self, JobId):
+        self._JobId = JobId
+
+    @property
+    def JobConfigVersions(self):
+        return self._JobConfigVersions
+
+    @JobConfigVersions.setter
+    def JobConfigVersions(self, JobConfigVersions):
+        self._JobConfigVersions = JobConfigVersions
+
+    @property
+    def WorkSpaceId(self):
+        return self._WorkSpaceId
+
+    @WorkSpaceId.setter
+    def WorkSpaceId(self, WorkSpaceId):
+        self._WorkSpaceId = WorkSpaceId
+
+
+    def _deserialize(self, params):
+        self._JobId = params.get("JobId")
+        self._JobConfigVersions = params.get("JobConfigVersions")
+        self._WorkSpaceId = params.get("WorkSpaceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteJobConfigsResponse(AbstractModel):
+    """DeleteJobConfigs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class DeleteJobsRequest(AbstractModel):
     """DeleteJobs请求参数结构体
 
@@ -2680,6 +3139,76 @@ class DeleteTableConfigResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class DeleteWorkSpaceRequest(AbstractModel):
+    """DeleteWorkSpace请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _WorkSpaceId: 工作空间 SerialId
+        :type WorkSpaceId: str
+        """
+        self._WorkSpaceId = None
+
+    @property
+    def WorkSpaceId(self):
+        return self._WorkSpaceId
+
+    @WorkSpaceId.setter
+    def WorkSpaceId(self, WorkSpaceId):
+        self._WorkSpaceId = WorkSpaceId
+
+
+    def _deserialize(self, params):
+        self._WorkSpaceId = params.get("WorkSpaceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DeleteWorkSpaceResponse(AbstractModel):
+    """DeleteWorkSpace返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Delete: 是否删除
+        :type Delete: bool
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Delete = None
+        self._RequestId = None
+
+    @property
+    def Delete(self):
+        return self._Delete
+
+    @Delete.setter
+    def Delete(self, Delete):
+        self._Delete = Delete
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Delete = params.get("Delete")
         self._RequestId = params.get("RequestId")
 
 
@@ -4638,6 +5167,69 @@ class FetchSqlGatewayStatementResultRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param _ClusterId: 集群ID
+        :type ClusterId: str
+        :param _SessionId: Sql Gateway会话ID
+        :type SessionId: str
+        :param _OperationHandleId: sql的查询id
+        :type OperationHandleId: str
+        :param _ResultUri: 下一条结果的获取url，首次获取执行结果时可以为空，当获取下一批查询结果时需要传递
+        :type ResultUri: str
+        """
+        self._ClusterId = None
+        self._SessionId = None
+        self._OperationHandleId = None
+        self._ResultUri = None
+
+    @property
+    def ClusterId(self):
+        return self._ClusterId
+
+    @ClusterId.setter
+    def ClusterId(self, ClusterId):
+        self._ClusterId = ClusterId
+
+    @property
+    def SessionId(self):
+        return self._SessionId
+
+    @SessionId.setter
+    def SessionId(self, SessionId):
+        self._SessionId = SessionId
+
+    @property
+    def OperationHandleId(self):
+        return self._OperationHandleId
+
+    @OperationHandleId.setter
+    def OperationHandleId(self, OperationHandleId):
+        self._OperationHandleId = OperationHandleId
+
+    @property
+    def ResultUri(self):
+        return self._ResultUri
+
+    @ResultUri.setter
+    def ResultUri(self, ResultUri):
+        self._ResultUri = ResultUri
+
+
+    def _deserialize(self, params):
+        self._ClusterId = params.get("ClusterId")
+        self._SessionId = params.get("SessionId")
+        self._OperationHandleId = params.get("OperationHandleId")
+        self._ResultUri = params.get("ResultUri")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class FetchSqlGatewayStatementResultResponse(AbstractModel):
     """FetchSqlGatewayStatementResult返回参数结构体
@@ -4646,10 +5238,82 @@ class FetchSqlGatewayStatementResultResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _ErrorMessage: 错误信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: list of str
+        :param _ResultType: 返回类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResultType: str
+        :param _IsQueryResult: 是否DQL结果
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsQueryResult: bool
+        :param _ResultKind: 结果类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResultKind: str
+        :param _Results: 结果
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Results: :class:`tencentcloud.oceanus.v20190422.models.StatementResult`
+        :param _NextResultUri: 下一次请求的uri
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NextResultUri: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._ErrorMessage = None
+        self._ResultType = None
+        self._IsQueryResult = None
+        self._ResultKind = None
+        self._Results = None
+        self._NextResultUri = None
         self._RequestId = None
+
+    @property
+    def ErrorMessage(self):
+        return self._ErrorMessage
+
+    @ErrorMessage.setter
+    def ErrorMessage(self, ErrorMessage):
+        self._ErrorMessage = ErrorMessage
+
+    @property
+    def ResultType(self):
+        return self._ResultType
+
+    @ResultType.setter
+    def ResultType(self, ResultType):
+        self._ResultType = ResultType
+
+    @property
+    def IsQueryResult(self):
+        return self._IsQueryResult
+
+    @IsQueryResult.setter
+    def IsQueryResult(self, IsQueryResult):
+        self._IsQueryResult = IsQueryResult
+
+    @property
+    def ResultKind(self):
+        return self._ResultKind
+
+    @ResultKind.setter
+    def ResultKind(self, ResultKind):
+        self._ResultKind = ResultKind
+
+    @property
+    def Results(self):
+        return self._Results
+
+    @Results.setter
+    def Results(self, Results):
+        self._Results = Results
+
+    @property
+    def NextResultUri(self):
+        return self._NextResultUri
+
+    @NextResultUri.setter
+    def NextResultUri(self, NextResultUri):
+        self._NextResultUri = NextResultUri
 
     @property
     def RequestId(self):
@@ -4661,6 +5325,14 @@ class FetchSqlGatewayStatementResultResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._ErrorMessage = params.get("ErrorMessage")
+        self._ResultType = params.get("ResultType")
+        self._IsQueryResult = params.get("IsQueryResult")
+        self._ResultKind = params.get("ResultKind")
+        if params.get("Results") is not None:
+            self._Results = StatementResult()
+            self._Results._deserialize(params.get("Results"))
+        self._NextResultUri = params.get("NextResultUri")
         self._RequestId = params.get("RequestId")
 
 
@@ -5890,6 +6562,184 @@ class LogContent(AbstractModel):
         
 
 
+class LogicalType(AbstractModel):
+    """SqlGateway返回LogicalType类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Type: 类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Type: str
+        :param _NullAble: 是否允许为空
+注意：此字段可能返回 null，表示取不到有效值。
+        :type NullAble: bool
+        :param _Length: 长度
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Length: int
+        """
+        self._Type = None
+        self._NullAble = None
+        self._Length = None
+
+    @property
+    def Type(self):
+        return self._Type
+
+    @Type.setter
+    def Type(self, Type):
+        self._Type = Type
+
+    @property
+    def NullAble(self):
+        return self._NullAble
+
+    @NullAble.setter
+    def NullAble(self, NullAble):
+        self._NullAble = NullAble
+
+    @property
+    def Length(self):
+        return self._Length
+
+    @Length.setter
+    def Length(self, Length):
+        self._Length = Length
+
+
+    def _deserialize(self, params):
+        self._Type = params.get("Type")
+        self._NullAble = params.get("NullAble")
+        self._Length = params.get("Length")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyFolderRequest(AbstractModel):
+    """ModifyFolder请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _SourceFolderId: 文件夹ID（必填）
+        :type SourceFolderId: str
+        :param _TargetFolderId: 如需拖拽文件夹，需传入目标文件夹ID
+        :type TargetFolderId: str
+        :param _FolderName: 如需修改文件夹名，需传入FolderName字段
+        :type FolderName: str
+        :param _FolderType: 文件夹类型，0是任务文件夹，1是依赖文件夹
+        :type FolderType: int
+        :param _SourceJobIds: 批量移动的作业serial id 列表
+        :type SourceJobIds: list of str
+        :param _WorkSpaceId: 工作空间 SerialId
+        :type WorkSpaceId: str
+        """
+        self._SourceFolderId = None
+        self._TargetFolderId = None
+        self._FolderName = None
+        self._FolderType = None
+        self._SourceJobIds = None
+        self._WorkSpaceId = None
+
+    @property
+    def SourceFolderId(self):
+        return self._SourceFolderId
+
+    @SourceFolderId.setter
+    def SourceFolderId(self, SourceFolderId):
+        self._SourceFolderId = SourceFolderId
+
+    @property
+    def TargetFolderId(self):
+        return self._TargetFolderId
+
+    @TargetFolderId.setter
+    def TargetFolderId(self, TargetFolderId):
+        self._TargetFolderId = TargetFolderId
+
+    @property
+    def FolderName(self):
+        return self._FolderName
+
+    @FolderName.setter
+    def FolderName(self, FolderName):
+        self._FolderName = FolderName
+
+    @property
+    def FolderType(self):
+        return self._FolderType
+
+    @FolderType.setter
+    def FolderType(self, FolderType):
+        self._FolderType = FolderType
+
+    @property
+    def SourceJobIds(self):
+        return self._SourceJobIds
+
+    @SourceJobIds.setter
+    def SourceJobIds(self, SourceJobIds):
+        self._SourceJobIds = SourceJobIds
+
+    @property
+    def WorkSpaceId(self):
+        return self._WorkSpaceId
+
+    @WorkSpaceId.setter
+    def WorkSpaceId(self, WorkSpaceId):
+        self._WorkSpaceId = WorkSpaceId
+
+
+    def _deserialize(self, params):
+        self._SourceFolderId = params.get("SourceFolderId")
+        self._TargetFolderId = params.get("TargetFolderId")
+        self._FolderName = params.get("FolderName")
+        self._FolderType = params.get("FolderType")
+        self._SourceJobIds = params.get("SourceJobIds")
+        self._WorkSpaceId = params.get("WorkSpaceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyFolderResponse(AbstractModel):
+    """ModifyFolder返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class ModifyJobRequest(AbstractModel):
     """ModifyJob请求参数结构体
 
@@ -5973,6 +6823,88 @@ class ModifyJobRequest(AbstractModel):
 
 class ModifyJobResponse(AbstractModel):
     """ModifyJob返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class ModifyWorkSpaceRequest(AbstractModel):
+    """ModifyWorkSpace请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _WorkSpaceId: 工作空间 SerialId
+        :type WorkSpaceId: str
+        :param _WorkSpaceName: 待修改的工作空间名称
+        :type WorkSpaceName: str
+        :param _Description: 待修改的工作空间备注
+        :type Description: str
+        """
+        self._WorkSpaceId = None
+        self._WorkSpaceName = None
+        self._Description = None
+
+    @property
+    def WorkSpaceId(self):
+        return self._WorkSpaceId
+
+    @WorkSpaceId.setter
+    def WorkSpaceId(self, WorkSpaceId):
+        self._WorkSpaceId = WorkSpaceId
+
+    @property
+    def WorkSpaceName(self):
+        return self._WorkSpaceName
+
+    @WorkSpaceName.setter
+    def WorkSpaceName(self, WorkSpaceName):
+        self._WorkSpaceName = WorkSpaceName
+
+    @property
+    def Description(self):
+        return self._Description
+
+    @Description.setter
+    def Description(self, Description):
+        self._Description = Description
+
+
+    def _deserialize(self, params):
+        self._WorkSpaceId = params.get("WorkSpaceId")
+        self._WorkSpaceName = params.get("WorkSpaceName")
+        self._Description = params.get("Description")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ModifyWorkSpaceResponse(AbstractModel):
+    """ModifyWorkSpace返回参数结构体
 
     """
 
@@ -7003,6 +7935,115 @@ class ResourceRefJobInfo(AbstractModel):
         
 
 
+class ResultColumn(AbstractModel):
+    """Sql Gateway返回Column类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Name: 名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Name: str
+        :param _LogicalType: 本地类型描述
+注意：此字段可能返回 null，表示取不到有效值。
+        :type LogicalType: :class:`tencentcloud.oceanus.v20190422.models.LogicalType`
+        :param _Comment: 备注
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Comment: str
+        """
+        self._Name = None
+        self._LogicalType = None
+        self._Comment = None
+
+    @property
+    def Name(self):
+        return self._Name
+
+    @Name.setter
+    def Name(self, Name):
+        self._Name = Name
+
+    @property
+    def LogicalType(self):
+        return self._LogicalType
+
+    @LogicalType.setter
+    def LogicalType(self, LogicalType):
+        self._LogicalType = LogicalType
+
+    @property
+    def Comment(self):
+        return self._Comment
+
+    @Comment.setter
+    def Comment(self, Comment):
+        self._Comment = Comment
+
+
+    def _deserialize(self, params):
+        self._Name = params.get("Name")
+        if params.get("LogicalType") is not None:
+            self._LogicalType = LogicalType()
+            self._LogicalType._deserialize(params.get("LogicalType"))
+        self._Comment = params.get("Comment")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResultData(AbstractModel):
+    """Sql Gateway返回数据
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Kind: 操作类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Kind: str
+        :param _Fields: 结果
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Fields: list of str
+        """
+        self._Kind = None
+        self._Fields = None
+
+    @property
+    def Kind(self):
+        return self._Kind
+
+    @Kind.setter
+    def Kind(self, Kind):
+        self._Kind = Kind
+
+    @property
+    def Fields(self):
+        return self._Fields
+
+    @Fields.setter
+    def Fields(self, Fields):
+        self._Fields = Fields
+
+
+    def _deserialize(self, params):
+        self._Kind = params.get("Kind")
+        self._Fields = params.get("Fields")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class RoleAuth(AbstractModel):
     """角色授权信息
 
@@ -7370,6 +8411,57 @@ class RunSqlGatewayStatementRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param _ClusterId: 集群ID
+        :type ClusterId: str
+        :param _Sql: 需要执行的sql，该sql会被Sql Gateway执行，当前支持的是paimon修改需求，因此主要是DDL语句
+        :type Sql: str
+        :param _SessionId: Sql Gateway会话ID，可不填，如果不填则会自动创建一个会话ID，每个会话ID都有一个存活时间，测试环境为10分钟，线上默认是30分钟
+        :type SessionId: str
+        """
+        self._ClusterId = None
+        self._Sql = None
+        self._SessionId = None
+
+    @property
+    def ClusterId(self):
+        return self._ClusterId
+
+    @ClusterId.setter
+    def ClusterId(self, ClusterId):
+        self._ClusterId = ClusterId
+
+    @property
+    def Sql(self):
+        return self._Sql
+
+    @Sql.setter
+    def Sql(self, Sql):
+        self._Sql = Sql
+
+    @property
+    def SessionId(self):
+        return self._SessionId
+
+    @SessionId.setter
+    def SessionId(self, SessionId):
+        self._SessionId = SessionId
+
+
+    def _deserialize(self, params):
+        self._ClusterId = params.get("ClusterId")
+        self._Sql = params.get("Sql")
+        self._SessionId = params.get("SessionId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class RunSqlGatewayStatementResponse(AbstractModel):
     """RunSqlGatewayStatement返回参数结构体
@@ -7378,10 +8470,44 @@ class RunSqlGatewayStatementResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _ErrorMessage: 错误信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ErrorMessage: list of str
+        :param _SessionId: 会话id，若入参未传，则返回自动创建的会话id，若入参已经传递，则返回值与原传入值一致
+        :type SessionId: str
+        :param _OperationHandleId: 返回执行id，可以根据该执行id和会话id获取执行结果
+        :type OperationHandleId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._ErrorMessage = None
+        self._SessionId = None
+        self._OperationHandleId = None
         self._RequestId = None
+
+    @property
+    def ErrorMessage(self):
+        return self._ErrorMessage
+
+    @ErrorMessage.setter
+    def ErrorMessage(self, ErrorMessage):
+        self._ErrorMessage = ErrorMessage
+
+    @property
+    def SessionId(self):
+        return self._SessionId
+
+    @SessionId.setter
+    def SessionId(self, SessionId):
+        self._SessionId = SessionId
+
+    @property
+    def OperationHandleId(self):
+        return self._OperationHandleId
+
+    @OperationHandleId.setter
+    def OperationHandleId(self, OperationHandleId):
+        self._OperationHandleId = OperationHandleId
 
     @property
     def RequestId(self):
@@ -7393,6 +8519,9 @@ class RunSqlGatewayStatementResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._ErrorMessage = params.get("ErrorMessage")
+        self._SessionId = params.get("SessionId")
+        self._OperationHandleId = params.get("OperationHandleId")
         self._RequestId = params.get("RequestId")
 
 
@@ -7872,6 +9001,76 @@ class SqlGatewayItem(AbstractModel):
                 obj = Property()
                 obj._deserialize(item)
                 self._Properties.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StatementResult(AbstractModel):
+    """Sql Gateway 返回Result结构类型
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Columns: 返回结果列
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Columns: list of ResultColumn
+        :param _RowFormat: 格式
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RowFormat: str
+        :param _Data: 结果值
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Data: list of ResultData
+        """
+        self._Columns = None
+        self._RowFormat = None
+        self._Data = None
+
+    @property
+    def Columns(self):
+        return self._Columns
+
+    @Columns.setter
+    def Columns(self, Columns):
+        self._Columns = Columns
+
+    @property
+    def RowFormat(self):
+        return self._RowFormat
+
+    @RowFormat.setter
+    def RowFormat(self, RowFormat):
+        self._RowFormat = RowFormat
+
+    @property
+    def Data(self):
+        return self._Data
+
+    @Data.setter
+    def Data(self, Data):
+        self._Data = Data
+
+
+    def _deserialize(self, params):
+        if params.get("Columns") is not None:
+            self._Columns = []
+            for item in params.get("Columns"):
+                obj = ResultColumn()
+                obj._deserialize(item)
+                self._Columns.append(obj)
+        self._RowFormat = params.get("RowFormat")
+        if params.get("Data") is not None:
+            self._Data = []
+            for item in params.get("Data"):
+                obj = ResultData()
+                obj._deserialize(item)
+                self._Data.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

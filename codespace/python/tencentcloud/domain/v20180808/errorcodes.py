@@ -86,8 +86,35 @@ FAILEDOPERATION_VERIFYUINISREALNAME = 'FailedOperation.VerifyUinIsRealname'
 # 内部错误。
 INTERNALERROR = 'InternalError'
 
+# IP格式错误。
+INTERNALERROR_DNSHOSTIPCHECKERR = 'InternalError.DNSHostIPCheckErr'
+
+# 数据库报错。
+INTERNALERROR_DBERROR = 'InternalError.DbError'
+
+# 查询域名信息失败。
+INTERNALERROR_DESCRIBEDOMAININFOERR = 'InternalError.DescribeDomainInfoErr'
+
 # 网络报错，请稍后重试。
 INTERNALERROR_DOMAININTERNALERROR = 'InternalError.DomainInternalError'
+
+# 禁止请求。
+INTERNALERROR_FORBIDDENREQUEST = 'InternalError.ForbiddenRequest'
+
+# 转json错误。
+INTERNALERROR_JSONMARSHAL = 'InternalError.JsonMarshal'
+
+# method不匹配。
+INTERNALERROR_METHODNOTMATCH = 'InternalError.MethodNotMatch'
+
+# 修改DNSHost失败。
+INTERNALERROR_MODIFYDNSHOSTERR = 'InternalError.ModifyDNSHostErr'
+
+# 需要登陆。
+INTERNALERROR_NEEDLOGIN = 'InternalError.NeedLogin'
+
+# 读取body失败。
+INTERNALERROR_READBODYERROR = 'InternalError.ReadBodyError'
 
 # 参数错误。
 INVALIDPARAMETER = 'InvalidParameter'
@@ -101,11 +128,20 @@ INVALIDPARAMETER_CERTIFICATEIMAGEISINVALID = 'InvalidParameter.CertificateImageI
 # 类型只能为手机或者邮箱。
 INVALIDPARAMETER_CODETYPEISINVALID = 'InvalidParameter.CodeTypeIsInvalid'
 
+# 自定义 DNS Host 名称未找到。
+INVALIDPARAMETER_CUSTOMDNSNAMENOTFOUND = 'InvalidParameter.CustomDnsNameNotFound'
+
 # 无权限自定义DNS。
 INVALIDPARAMETER_CUSTOMDNSNOTALLOWED = 'InvalidParameter.CustomDnsNotAllowed'
 
+# 域名输入不规范。
+INVALIDPARAMETER_DOMAINISINVALID = 'InvalidParameter.DomainIsInvalid'
+
 # 域名输入为空或者不正确。
 INVALIDPARAMETER_DOMAINNAMEISINVALID = 'InvalidParameter.DomainNameIsInvalid'
+
+# 自定义DNS Host 名称已经存在。
+INVALIDPARAMETER_DUPLICATECUSTOMDNSNAME = 'InvalidParameter.DuplicateCustomDnsName'
 
 # 存在重复域名，请检查后重新提交。
 INVALIDPARAMETER_DUPLICATEDOMAINEXISTS = 'InvalidParameter.DuplicateDomainExists'
@@ -173,11 +209,20 @@ INVALIDPARAMETER_VERIFYCODEISINVALID = 'InvalidParameter.VerifyCodeIsInvalid'
 # 邮编为空或者不合法。
 INVALIDPARAMETER_ZIPCODEISINVALID = 'InvalidParameter.ZipCodeIsInvalid'
 
+# 表单参数取值错误。
+INVALIDPARAMETERVALUE_INVALIDPARAMETERFORMAT = 'InvalidParameterValue.InvalidParameterFormat'
+
+# 超过配额限制。
+LIMITEXCEEDED = 'LimitExceeded'
+
 # 请求频率超过限制。
 LIMITEXCEEDED_REQUESTLIMIT = 'LimitExceeded.RequestLimit'
 
 # 缺少参数错误。
 MISSINGPARAMETER = 'MissingParameter'
+
+# 未定义路由。
+MISSINGPARAMETER_ACTIONNOTFOUND = 'MissingParameter.ActionNotFound'
 
 # 域名不能为空。
 MISSINGPARAMETER_DOMAINISEMPTY = 'MissingParameter.DomainIsEmpty'
@@ -193,6 +238,9 @@ MISSINGPARAMETER_TEMPLATEIDISEXIST = 'MissingParameter.TemplateIdIsExist'
 
 # 请求的次数超过了频率限制。
 REQUESTLIMITEXCEEDED = 'RequestLimitExceeded'
+
+# 资源被占用。
+RESOURCEINUSE = 'ResourceInUse'
 
 # 当前正在执行中的任务过多，请稍后再提交新的任务。
 RESOURCEINSUFFICIENT_OVERWORK = 'ResourceInsufficient.Overwork'
@@ -214,6 +262,9 @@ RESOURCEUNAVAILABLE_DOMAINISMODIFYINGDNS = 'ResourceUnavailable.DomainIsModifyin
 
 # 账户实名认证未通过。
 UNSUPPORTEDOPERATION_ACCOUNTREALNAME = 'UnsupportedOperation.AccountRealName'
+
+# 创建的自定义DNS Host数量已达到最大限制。
+UNSUPPORTEDOPERATION_CUSTOMHOSTOVERLIMIT = 'UnsupportedOperation.CustomHostOverLimit'
 
 # 当前域名未完成实名认证，无法完成该操作。
 UNSUPPORTEDOPERATION_DOMAINNOTVERIFIED = 'UnsupportedOperation.DomainNotVerified'

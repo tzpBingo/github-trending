@@ -533,6 +533,192 @@ VerifyType 传 fileCheck 时，为文件内容。
         self._RequestId = params.get("RequestId")
 
 
+class BackupStreamDetailData(AbstractModel):
+    """主备流详细信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _DomainName: 推流域名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type DomainName: str
+        :param _AppName: 推流路径。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type AppName: str
+        :param _PublishTime:  UTC 格式，例如：2018-06-29T19:00:00Z。
+注意：和北京时间相差8小时。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PublishTime: str
+        :param _UpstreamSequence: 推流唯一标识。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UpstreamSequence: str
+        :param _SourceFrom: 推流来源。示例：
+直推流；
+拉流转推(1234)；
+注意：拉流转推来源括号中为拉流转推的任务 
+ ID。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SourceFrom: str
+        :param _MasterFlag: 主备标识。
+当前流为主流：1，
+当前流为备流: 0。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type MasterFlag: int
+        """
+        self._DomainName = None
+        self._AppName = None
+        self._PublishTime = None
+        self._UpstreamSequence = None
+        self._SourceFrom = None
+        self._MasterFlag = None
+
+    @property
+    def DomainName(self):
+        return self._DomainName
+
+    @DomainName.setter
+    def DomainName(self, DomainName):
+        self._DomainName = DomainName
+
+    @property
+    def AppName(self):
+        return self._AppName
+
+    @AppName.setter
+    def AppName(self, AppName):
+        self._AppName = AppName
+
+    @property
+    def PublishTime(self):
+        return self._PublishTime
+
+    @PublishTime.setter
+    def PublishTime(self, PublishTime):
+        self._PublishTime = PublishTime
+
+    @property
+    def UpstreamSequence(self):
+        return self._UpstreamSequence
+
+    @UpstreamSequence.setter
+    def UpstreamSequence(self, UpstreamSequence):
+        self._UpstreamSequence = UpstreamSequence
+
+    @property
+    def SourceFrom(self):
+        return self._SourceFrom
+
+    @SourceFrom.setter
+    def SourceFrom(self, SourceFrom):
+        self._SourceFrom = SourceFrom
+
+    @property
+    def MasterFlag(self):
+        return self._MasterFlag
+
+    @MasterFlag.setter
+    def MasterFlag(self, MasterFlag):
+        self._MasterFlag = MasterFlag
+
+
+    def _deserialize(self, params):
+        self._DomainName = params.get("DomainName")
+        self._AppName = params.get("AppName")
+        self._PublishTime = params.get("PublishTime")
+        self._UpstreamSequence = params.get("UpstreamSequence")
+        self._SourceFrom = params.get("SourceFrom")
+        self._MasterFlag = params.get("MasterFlag")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BackupStreamGroupInfo(AbstractModel):
+    """主备流分组信息。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StreamName: 流名称。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StreamName: str
+        :param _BackupList: 主备流信息。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BackupList: list of BackupStreamDetailData
+        :param _OptimalEnable: 是否对该流开启了择优调度。
+0 - 未开启。
+1 - 已开启。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OptimalEnable: int
+        :param _HostGroupName: 域名分组的分组名称。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type HostGroupName: str
+        """
+        self._StreamName = None
+        self._BackupList = None
+        self._OptimalEnable = None
+        self._HostGroupName = None
+
+    @property
+    def StreamName(self):
+        return self._StreamName
+
+    @StreamName.setter
+    def StreamName(self, StreamName):
+        self._StreamName = StreamName
+
+    @property
+    def BackupList(self):
+        return self._BackupList
+
+    @BackupList.setter
+    def BackupList(self, BackupList):
+        self._BackupList = BackupList
+
+    @property
+    def OptimalEnable(self):
+        return self._OptimalEnable
+
+    @OptimalEnable.setter
+    def OptimalEnable(self, OptimalEnable):
+        self._OptimalEnable = OptimalEnable
+
+    @property
+    def HostGroupName(self):
+        return self._HostGroupName
+
+    @HostGroupName.setter
+    def HostGroupName(self, HostGroupName):
+        self._HostGroupName = HostGroupName
+
+
+    def _deserialize(self, params):
+        self._StreamName = params.get("StreamName")
+        if params.get("BackupList") is not None:
+            self._BackupList = []
+            for item in params.get("BackupList"):
+                obj = BackupStreamDetailData()
+                obj._deserialize(item)
+                self._BackupList.append(obj)
+        self._OptimalEnable = params.get("OptimalEnable")
+        self._HostGroupName = params.get("HostGroupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class BandwidthInfo(AbstractModel):
     """带宽信息
 
@@ -7237,6 +7423,82 @@ class DescribeAreaBillBandwidthAndFluxListResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class DescribeBackupStreamListRequest(AbstractModel):
+    """DescribeBackupStreamList请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StreamName: 流名称，用于精确查询。
+        :type StreamName: str
+        """
+        self._StreamName = None
+
+    @property
+    def StreamName(self):
+        return self._StreamName
+
+    @StreamName.setter
+    def StreamName(self, StreamName):
+        self._StreamName = StreamName
+
+
+    def _deserialize(self, params):
+        self._StreamName = params.get("StreamName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBackupStreamListResponse(AbstractModel):
+    """DescribeBackupStreamList返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StreamInfoList: 主备流分组信息列表。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type StreamInfoList: list of BackupStreamGroupInfo
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._StreamInfoList = None
+        self._RequestId = None
+
+    @property
+    def StreamInfoList(self):
+        return self._StreamInfoList
+
+    @StreamInfoList.setter
+    def StreamInfoList(self, StreamInfoList):
+        self._StreamInfoList = StreamInfoList
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("StreamInfoList") is not None:
+            self._StreamInfoList = []
+            for item in params.get("StreamInfoList"):
+                obj = BackupStreamGroupInfo()
+                obj._deserialize(item)
+                self._StreamInfoList.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
 class DescribeBillBandwidthAndFluxListRequest(AbstractModel):
     """DescribeBillBandwidthAndFluxList请求参数结构体
 
@@ -13785,9 +14047,15 @@ class DescribePushBandwidthAndFluxListRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _StartTime: 起始时间点，格式为 yyyy-mm-dd HH:MM:SS。
+        :param _StartTime: 查询开始时间点，精确到分钟粒度，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO%20%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F,-ISO%20%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+支持最近三年的查询，查询开始和结束时间跨度不支持超过31天。
         :type StartTime: str
-        :param _EndTime: 结束时间点，格式为 yyyy-mm-dd HH:MM:SS，起始和结束时间跨度不支持超过31天。
+        :param _EndTime: 查询结束时间点，精确到分钟粒度，接口查询支持两种时间格式：
+1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/267/38543#:~:text=I-,ISO%20%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F,-ISO%20%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F)。
+2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
+支持最近三年的查询，查询开始和结束时间跨度不支持超过31天。
         :type EndTime: str
         :param _PushDomains: 域名，可以填多个，若不填，表示总体数据。
         :type PushDomains: list of str
@@ -13907,11 +14175,17 @@ class DescribePushBandwidthAndFluxListResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _PeakBandwidthTime: 峰值带宽所在时间点，格式为 yyyy-mm-dd HH:MM:SS。
+        :param _PeakBandwidthTime: 峰值带宽所在时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type PeakBandwidthTime: str
         :param _PeakBandwidth: 峰值带宽，单位是 Mbps。
         :type PeakBandwidth: float
-        :param _P95PeakBandwidthTime: 95峰值带宽所在时间点，格式为 yyyy-mm-dd HH:MM:SS。
+        :param _P95PeakBandwidthTime: 95峰值带宽所在时间点，
+使用UTC格式时间，
+例如：2019-01-08T10:00:00Z。
+注意：北京时间值为 UTC 时间值 + 8 小时，格式按照 ISO 8601 标准表示，详见 [ISO 日期格式说明](https://cloud.tencent.com/document/product/266/11732#I)。
         :type P95PeakBandwidthTime: str
         :param _P95PeakBandwidth: 95峰值带宽，单位是 Mbps。
         :type P95PeakBandwidth: float
@@ -14163,7 +14437,7 @@ class DescribeScreenShotSheetNumListRequest(AbstractModel):
         :param _EndTime: 结束时间点，接口查询支持两种时间格式：
 1）YYYY-MM-DDThh:mm:ssZ：UTC时间格式，详见IOS日期格式说明文档: https://cloud.tencent.com/document/product/266/11732#I
 2）YYYY-MM-DD hh:mm:ss：使用此格式时，默认代表北京时间。
-支持查询最近1年的数据。
+支持最近三个月的查询，查询开始和结束时间跨度不支持超过31天。
         :type EndTime: str
         :param _Zone: 地域信息，可选值包括Mainland，Oversea，前者是查询中国大陆范围内的数据，后者是除中国大陆范围之外的数据，若不传该参数，则查询所有地区的数据。
         :type Zone: str
@@ -16514,6 +16788,90 @@ class EnableLiveDomainRequest(AbstractModel):
 
 class EnableLiveDomainResponse(AbstractModel):
     """EnableLiveDomain返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
+class EnableOptimalSwitchingRequest(AbstractModel):
+    """EnableOptimalSwitching请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StreamName: 针对该流 ID 启用择优调度。
+        :type StreamName: str
+        :param _EnableSwitch: 启用开关，默认为启用。
+0 - 禁用。
+1 - 启用。
+        :type EnableSwitch: int
+        :param _HostGroupName: 要启用自动择优的流所属的域名分组名称。
+        :type HostGroupName: str
+        """
+        self._StreamName = None
+        self._EnableSwitch = None
+        self._HostGroupName = None
+
+    @property
+    def StreamName(self):
+        return self._StreamName
+
+    @StreamName.setter
+    def StreamName(self, StreamName):
+        self._StreamName = StreamName
+
+    @property
+    def EnableSwitch(self):
+        return self._EnableSwitch
+
+    @EnableSwitch.setter
+    def EnableSwitch(self, EnableSwitch):
+        self._EnableSwitch = EnableSwitch
+
+    @property
+    def HostGroupName(self):
+        return self._HostGroupName
+
+    @HostGroupName.setter
+    def HostGroupName(self, HostGroupName):
+        self._HostGroupName = HostGroupName
+
+
+    def _deserialize(self, params):
+        self._StreamName = params.get("StreamName")
+        self._EnableSwitch = params.get("EnableSwitch")
+        self._HostGroupName = params.get("HostGroupName")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class EnableOptimalSwitchingResponse(AbstractModel):
+    """EnableOptimalSwitching返回参数结构体
 
     """
 
@@ -24587,6 +24945,100 @@ class StreamOnlineInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class SwitchBackupStreamRequest(AbstractModel):
+    """SwitchBackupStream请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PushDomainName: 推流域名。
+        :type PushDomainName: str
+        :param _AppName: 应用名称。
+        :type AppName: str
+        :param _StreamName: 流名称。
+        :type StreamName: str
+        :param _UpstreamSequence: 查询接口获取到该流所有在推的上行 Sequence。指定要切到的目标上行 Sequence。
+        :type UpstreamSequence: str
+        """
+        self._PushDomainName = None
+        self._AppName = None
+        self._StreamName = None
+        self._UpstreamSequence = None
+
+    @property
+    def PushDomainName(self):
+        return self._PushDomainName
+
+    @PushDomainName.setter
+    def PushDomainName(self, PushDomainName):
+        self._PushDomainName = PushDomainName
+
+    @property
+    def AppName(self):
+        return self._AppName
+
+    @AppName.setter
+    def AppName(self, AppName):
+        self._AppName = AppName
+
+    @property
+    def StreamName(self):
+        return self._StreamName
+
+    @StreamName.setter
+    def StreamName(self, StreamName):
+        self._StreamName = StreamName
+
+    @property
+    def UpstreamSequence(self):
+        return self._UpstreamSequence
+
+    @UpstreamSequence.setter
+    def UpstreamSequence(self, UpstreamSequence):
+        self._UpstreamSequence = UpstreamSequence
+
+
+    def _deserialize(self, params):
+        self._PushDomainName = params.get("PushDomainName")
+        self._AppName = params.get("AppName")
+        self._StreamName = params.get("StreamName")
+        self._UpstreamSequence = params.get("UpstreamSequence")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class SwitchBackupStreamResponse(AbstractModel):
+    """SwitchBackupStream返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
 
 
 class TaskStatusInfo(AbstractModel):
