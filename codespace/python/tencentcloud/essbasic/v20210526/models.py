@@ -1061,9 +1061,16 @@ class ChannelCancelMultiFlowSignQRCodeRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId必填。
+        :param _Agent: 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
+
+此接口下面信息必填。
+<ul>
+<li>渠道应用标识:  Agent.ProxyOrganizationOpenId</li>
+<li>第三方平台子客企业标识: Agent. ProxyOperator.OpenId</li>
+<li>第三方平台子客企业中的员工标识: Agent.AppId</li>
+</ul>
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
-        :param _QrCodeId: 二维码id
+        :param _QrCodeId: 二维码ID，为32位字符串。
         :type QrCodeId: str
         :param _Operator: 暂未开放
         :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
@@ -2523,18 +2530,28 @@ class ChannelCreateFlowGroupByFilesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _FlowFileInfos: 每个子合同的发起所需的信息，数量限制2-50
+        :param _FlowFileInfos: 合同组中每个合同签署流程的信息，合同组中最少包含2个合同，不能超过50个合同。
         :type FlowFileInfos: list of FlowFileInfo
-        :param _FlowGroupName: 合同组名称，长度不超过200个字符
+        :param _FlowGroupName: 合同组的名称（可自定义此名称），长度不能超过200，只能由中文、字母、数字和下划线组成。
         :type FlowGroupName: str
-        :param _Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 必填。
+        :param _Agent: 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
+
+此接口下面信息必填。
+<ul>
+<li>渠道应用标识:  Agent.ProxyOrganizationOpenId</li>
+<li>第三方平台子客企业标识: Agent. ProxyOperator.OpenId</li>
+<li>第三方平台子客企业中的员工标识: Agent.AppId</li>
+</ul>
+子客企业和子客企业中的员工比较走完创建和实名过程
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
-        :param _ApproverVerifyType: 签署人校验方式
-VerifyCheck: 人脸识别（默认）
-MobileCheck：手机号验证
-参数说明：若选择后者，未实名的个人签署方查看合同时，无需进行人脸识别实名认证（但签署合同时仍然需要人脸实名），该能力仅适用于个人签署方。
+        :param _ApproverVerifyType: 合同组中签署人校验和认证的方式：
+<ul><li>**VerifyCheck**：人脸识别（默认）</li>
+<li>**MobileCheck**：手机号验证</li></ul>
+注意：
+`1. MobileCheck 方式，未实名的个人/自然人签署方无需进行人脸识别实名认证即可查看合同（但签署合同时仍然需要人脸实名），企业签署方需经过人脸认证。`
+`2. 合同组的校验和认证的方式会优先使用，会覆盖合同组中单个合同和合同签署方认证方式的限制配置。`
         :type ApproverVerifyType: str
-        :param _FlowGroupOptions: 合同组的配置项信息包括：在合同组签署过程中，是否需要对每个子合同进行独立的意愿确认。
+        :param _FlowGroupOptions: 合同组的签署配置项信息，例如在合同组签署过程中，是否需要对每个子合同进行独立的意愿确认。
         :type FlowGroupOptions: :class:`tencentcloud.essbasic.v20210526.models.FlowGroupOptions`
         :param _Operator: 操作者的信息，此参数不用传
         :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
@@ -2634,10 +2651,14 @@ class ChannelCreateFlowGroupByFilesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _FlowGroupId: 合同组ID
+        :param _FlowGroupId: 合同组ID，为32位字符串。
+建议开发者妥善保存此合同组ID，以便于顺利进行后续操作。
 注意：此字段可能返回 null，表示取不到有效值。
         :type FlowGroupId: str
-        :param _FlowIds: 子合同ID列表
+        :param _FlowIds: 合同组中每个合同流程ID，每个ID均为32位字符串。
+
+注:
+`此数组的顺序和入参中的FlowGroupInfos顺序回不一致`
 注意：此字段可能返回 null，表示取不到有效值。
         :type FlowIds: list of str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -2685,11 +2706,19 @@ class ChannelCreateFlowGroupByTemplatesRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 均必填。
+        :param _Agent: 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
+
+此接口下面信息必填。
+<ul>
+<li>渠道应用标识:  Agent.ProxyOrganizationOpenId</li>
+<li>第三方平台子客企业标识: Agent. ProxyOperator.OpenId</li>
+<li>第三方平台子客企业中的员工标识: Agent.AppId</li>
+</ul>
+子客企业和子客企业中的员工比较走完创建和实名过程
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
-        :param _FlowInfos: 每个子合同的发起所需的信息，数量限制2-50（合同组暂不支持抄送功能）
+        :param _FlowInfos: 合同组中每个合同签署流程的信息，合同组中最少包含2个合同，不能超过50个合同。
         :type FlowInfos: list of FlowInfo
-        :param _FlowGroupName: 合同组名称，长度不超过200个字符
+        :param _FlowGroupName: 合同组的名称（可自定义此名称），长度不能超过200，只能由中文、字母、数字和下划线组成。
         :type FlowGroupName: str
         """
         self._Agent = None
@@ -2749,9 +2778,13 @@ class ChannelCreateFlowGroupByTemplatesResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _FlowGroupId: 合同组ID
+        :param _FlowGroupId: 合同组ID，为32位字符串。
+建议开发者妥善保存此合同组ID，以便于顺利进行后续操作。
         :type FlowGroupId: str
-        :param _FlowIds: 子合同ID列表
+        :param _FlowIds: 合同组中每个合同流程ID，每个ID均为32位字符串。
+
+注:
+`此数组的顺序和入参中的FlowInfos顺序回不一致`
         :type FlowIds: list of str
         :param _TaskInfos: 复杂文档合成任务（如，包含动态表格的预览任务）的任务信息数组；
 如果文档需要异步合成，此字段会返回该异步任务的任务信息，后续可以通过ChannelGetTaskResultApi接口查询任务详情；
@@ -2816,9 +2849,16 @@ class ChannelCreateFlowRemindsRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 必填。
+        :param _Agent: 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
+
+此接口下面信息必填。
+<ul>
+<li>渠道应用标识:  Agent.ProxyOrganizationOpenId</li>
+<li>第三方平台子客企业标识: Agent. ProxyOperator.OpenId</li>
+<li>第三方平台子客企业中的员工标识: Agent.AppId</li>
+</ul>
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
-        :param _FlowIds: 签署流程Id数组，最多100个，超过100不处理
+        :param _FlowIds: 需执行催办的签署流程ID数组，最多包含100个。
         :type FlowIds: list of str
         """
         self._Agent = None
@@ -2863,7 +2903,7 @@ class ChannelCreateFlowRemindsResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _RemindFlowRecords: 合同催办详情信息
+        :param _RemindFlowRecords: 合同催办结果的详细信息列表。
         :type RemindFlowRecords: list of RemindFlowRecords
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
@@ -8598,38 +8638,55 @@ class CreateSealByImageRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Agent: 代理企业和员工的信息。
-在集团企业代理子企业操作的场景中，需设置此参数。在此情境下，ProxyOrganizationId（子企业的组织ID）为必填项。
+        :param _Agent: 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
+
+此接口下面信息必填。
+<ul>
+<li>渠道应用标识:  Agent.ProxyOrganizationOpenId</li>
+<li>第三方平台子客企业标识: Agent. ProxyOperator.OpenId</li>
+<li>第三方平台子客企业中的员工标识: Agent.AppId</li>
+</ul>
+第三方平台子客企业和员工必须已经经过实名认证
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
-        :param _SealName: 印章名称，最大长度不超过50字符
+        :param _SealName: 电子印章名字，1-50个中文字符
+注:`同一企业下电子印章名字不能相同`
         :type SealName: str
-        :param _SealImage: 印章图片base64，大小不超过10M（原始图片不超过7.6M）
+        :param _SealImage: 电子印章图片base64编码，大小不超过10M（原始图片不超过5M），只支持PNG或JPG图片格式
+
+注: `通过图片创建的电子印章，需电子签平台人工审核`
+
+
         :type SealImage: str
         :param _Operator: 操作者的信息
         :type Operator: :class:`tencentcloud.essbasic.v20210526.models.UserInfo`
-        :param _GenerateSource: 本接口支持上传图片印章及系统直接生成印章； 如果要使用系统生成印章，此值传：SealGenerateSourceSystem； 如果要使用图片上传请传字段 SealImage
+        :param _GenerateSource: 电子印章生成方式
+<ul>
+<li><strong>空值</strong>:(默认)使用上传的图片生成印章, 此时需要上传SealImage图片</li>
+<li><strong>SealGenerateSourceSystem</strong>: 系统生成印章, 无需上传SealImage图片</li>
+</ul>
         :type GenerateSource: str
-        :param _SealType: 电子印章类型：
-<ul><li>OFFICIAL-公章</li>
-<li>CONTRACT-合同专用章;</li>
-<li>FINANCE-合财务专用章;</li>
-<li>PERSONNEL-人事专用章
-</li>
-<li>默认：OFFICIAL</li>
+        :param _SealType: 电子印章类型 , 可选类型如下: 
+<ul><li>**OFFICIAL**: (默认)公章</li>
+<li>**CONTRACT**: 合同专用章;</li>
+<li>**FINANCE**: 合财务专用章;</li>
+<li>**PERSONNEL**: 人事专用章</li>
 </ul>
+注: `同企业下只能有一个公章, 重复创建会报错`
         :type SealType: str
-        :param _SealHorizontalText: 企业印章横向文字，最多可填15个汉字（若超过印章最大宽度，优先压缩字间距，其次缩小字号
-        :type SealHorizontalText: str
-        :param _SealStyle: 印章样式:
+        :param _SealHorizontalText: 企业印章横向文字，最多可填15个汉字  (若超过印章最大宽度，优先压缩字间距，其次缩小字号)
+横向文字的位置如下图中的"印章横向文字在这里"
 
-<ul><li>cycle:圆形印章</li>
-<li>ellipse:椭圆印章</li>
-<li> 注：默认圆形印章</li></ul>
+![image](https://dyn.ess.tencent.cn/guide/capi/CreateSealByImage2.png)
+
+        :type SealHorizontalText: str
+        :param _SealStyle: 印章样式, 可以选择的样式如下: 
+<ul><li>**circle**:(默认)圆形印章</li>
+<li>**ellipse**:椭圆印章</li></ul>
         :type SealStyle: str
-        :param _SealSize: 印章尺寸取值描述：<ul><li> 42_42 圆形企业公章直径42mm</li>
-<li> 40_40 圆形企业印章直径40mm</li>
-<li> 45_30 椭圆形印章45mm x 30mm</li>
-</ul>
+        :param _SealSize: 印章尺寸取值描述, 可以选择的尺寸如下: 
+<ul><li> **42_42**: 圆形企业公章直径42mm, 当SealStyle是圆形的时候才有效</li>
+<li> **40_40**: 圆形企业印章直径40mm, 当SealStyle是圆形的时候才有效</li>
+<li> **45_30**: 椭圆形印章45mm x 30mm, 当SealStyle是椭圆的时候才有效</li></ul>
         :type SealSize: str
         """
         self._Agent = None
@@ -8752,9 +8809,10 @@ class CreateSealByImageResponse(AbstractModel):
         r"""
         :param _SealId: 电子印章ID，为32位字符串。
 建议开发者保留此印章ID，后续指定签署区印章或者操作印章需此印章ID。
-可登录腾讯电子签控制台，在 "印章"->"印章中心"选择查看的印章，在"印章详情" 中查看某个印章的SealId(在页面中展示为印章ID)。
         :type SealId: str
         :param _ImageUrl: 电子印章预览链接地址，地址默认失效时间为24小时。
+
+注:`图片上传生成的电子印章无预览链接地址`
 注意：此字段可能返回 null，表示取不到有效值。
         :type ImageUrl: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -10715,21 +10773,21 @@ class FlowApproverInfo(AbstractModel):
     <td>场景一</td>
     <td>第三方子企业A员工</td>
     <td>第三方子企业A员工</td>
-    <td>OpenId、OrgName、OrgOpenId必传 ,ApproverType设置为ORGANIZATION</td>
+    <td>OpenId、OrganizationName、OrganizationOpenId必传 ,ApproverType设置为ORGANIZATION</td>
     </tr>
 
     <tr>
     <td>场景二</td>
     <td>第三方子企业A员工</td>
     <td>第三方子企业B(不指定经办人)</td>
-    <td>OrgName、OrgOpenId必传 ,ApproverType设置为ORGANIZATION</td>
+    <td>OrganizationName、OrganizationOpenId必传 ,ApproverType设置为ORGANIZATION</td>
     </tr>
 
     <tr>
     <td>场景三</td>
     <td>第三方子企业A员工</td>
     <td>第三方子企业B员工</td>
-    <td>OpenId、OrgName、OrgOpenId必传, ApproverType设置为ORGANIZATION</td>
+    <td>OpenId、OrganizationOpenId、OrganizationName必传, ApproverType设置为ORGANIZATION</td>
     </tr>
 
     <tr>
@@ -10743,7 +10801,7 @@ class FlowApproverInfo(AbstractModel):
     <td>场景五</td>
     <td>第三方子企业A员工</td>
     <td>SaaS平台企业员工</td>
-    <td>Name、Mobile、OrgName必传，且NotChannelOrganization=True。 ApproverType设置为ORGANIZATION</td>
+    <td>Name、Mobile、OrganizationName必传，且NotChannelOrganization=True。 ApproverType设置为ORGANIZATION</td>
     </tr>
     </tbody>
     </table>
@@ -11620,15 +11678,13 @@ class FlowGroupOptions(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _SelfOrganizationApproverSignEach: 发起方企业经办人（即签署人为发起方企业员工）是否需要对子合同进行独立的意愿确认：
-fasle：发起方企业经办人签署时对所有子合同进行统一的意愿确认
-true：发起方企业经办人签署时需要对子合同进行独立的意愿确认
-默认为fasle。
+        :param _SelfOrganizationApproverSignEach: 发起方企业经办人（即签署人为发起方企业员工）是否需要对子合同进行独立的意愿确认
+<ul><li>**false**（默认）：发起方企业经办人签署时对所有子合同进行统一的意愿确认。</li>
+<li>**true**：发起方企业经办人签署时需要对子合同进行独立的意愿确认。</li></ul>
         :type SelfOrganizationApproverSignEach: bool
-        :param _OtherApproverSignEach: 非发起方企业经办人（即：签署人为个人或者不为发起方企业的员工）是否需要对子合同进行独立的意愿确认：
-fasle：非发起方企业经办人签署时对所有子合同进行统一的意愿确认
-true：非发起方企业经办人签署时需要对子合同进行独立的意愿确认
-默认为false。
+        :param _OtherApproverSignEach: 非发起方企业经办人（即：签署人为个人或者不为发起方企业的员工）是否需要对子合同进行独立的意愿确认
+<ul><li>**false**（默认）：非发起方企业经办人签署时对所有子合同进行统一的意愿确认。</li>
+<li>**true**：非发起方企业经办人签署时需要对子合同进行独立的意愿确认。</li></ul>
         :type OtherApproverSignEach: bool
         """
         self._SelfOrganizationApproverSignEach = None
@@ -12408,17 +12464,22 @@ class ModifyExtendedServiceRequest(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Agent: 应用相关信息。 此接口Agent.ProxyOrganizationOpenId、Agent. ProxyOperator.OpenId、Agent.AppId 必填。
+        :param _Agent: 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
 
-注: 此接口 参数Agent. ProxyOperator.OpenId 需要传递超管或者法人的OpenId
+此接口下面信息必填。
+<ul>
+<li>渠道应用标识:  Agent.ProxyOrganizationOpenId</li>
+<li>第三方平台子客企业标识: Agent. ProxyOperator.OpenId</li>
+<li>第三方平台子客企业中的员工标识: Agent.AppId</li>
+</ul>
         :type Agent: :class:`tencentcloud.essbasic.v20210526.models.Agent`
         :param _ServiceType:   扩展服务类型
 <ul>
-  <li>AUTO_SIGN             企业自动签（自动签署）</li>
+<li>AUTO_SIGN             企业自动签（自动签署）</li>
 <li>  OVERSEA_SIGN          企业与港澳台居民*签署合同</li>
 <li>  MOBILE_CHECK_APPROVER 使用手机号验证签署方身份</li>
- <li> PAGING_SEAL           骑缝章</li>
- <li> DOWNLOAD_FLOW         授权渠道下载合同 </li>
+<li> PAGING_SEAL           骑缝章</li>
+<li> DOWNLOAD_FLOW         授权渠道下载合同 </li>
 <li>AGE_LIMIT_EXPANSION 拓宽签署方年龄限制</li>
 </ul>
         :type ServiceType: str
@@ -12427,8 +12488,10 @@ OPEN:开通
 CLOSE:关闭
         :type Operate: str
         :param _Endpoint: 链接跳转类型，支持以下类型
-<ul><li>WEIXINAPP : 短链直接跳转到电子签小程序  (默认值)</li>
-<li>APP : 第三方APP或小程序跳转电子签小程序</li></ul>
+<ul>
+<li>WEIXINAPP : 短链直接跳转到电子签小程序  (默认值)</li>
+<li>APP : 第三方APP或小程序跳转电子签小程序</li>
+</ul>
         :type Endpoint: str
         """
         self._Agent = None
@@ -14153,17 +14216,17 @@ class RelieveInfo(AbstractModel):
 
 
 class RemindFlowRecords(AbstractModel):
-    """催办接口返回详细信息
+    """催办接口返回的详细信息。
 
     """
 
     def __init__(self):
         r"""
-        :param _CanRemind: 是否能够催办，true-是，false-否
+        :param _CanRemind: 合同流程是否可以催办： true - 可以，false - 不可以。 若无法催办，将返回RemindMessage以解释原因。	
         :type CanRemind: bool
-        :param _FlowId: 合同id
+        :param _FlowId: 合同流程ID，为32位字符串。	
         :type FlowId: str
-        :param _RemindMessage: 催办详情信息
+        :param _RemindMessage: 在合同流程无法催办的情况下，系统将返回RemindMessage以阐述原因。	
         :type RemindMessage: str
         """
         self._CanRemind = None

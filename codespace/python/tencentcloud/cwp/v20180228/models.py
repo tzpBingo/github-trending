@@ -12388,6 +12388,9 @@ class BruteAttackInfo(AbstractModel):
         :param _Location: 地理位置中文名
 注意：此字段可能返回 null，表示取不到有效值。
         :type Location: str
+        :param _RiskLevel: 威胁等级：0低危，1中危，2高危
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RiskLevel: int
         """
         self._Id = None
         self._Uuid = None
@@ -12412,6 +12415,7 @@ class BruteAttackInfo(AbstractModel):
         self._DataStatus = None
         self._MachineExtraInfo = None
         self._Location = None
+        self._RiskLevel = None
 
     @property
     def Id(self):
@@ -12597,6 +12601,14 @@ class BruteAttackInfo(AbstractModel):
     def Location(self, Location):
         self._Location = Location
 
+    @property
+    def RiskLevel(self):
+        return self._RiskLevel
+
+    @RiskLevel.setter
+    def RiskLevel(self, RiskLevel):
+        self._RiskLevel = RiskLevel
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -12624,6 +12636,7 @@ class BruteAttackInfo(AbstractModel):
             self._MachineExtraInfo = MachineExtraInfo()
             self._MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         self._Location = params.get("Location")
+        self._RiskLevel = params.get("RiskLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -15798,10 +15811,22 @@ class CreateScanMalwareSettingResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _TaskId: 任务id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskId: int
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._TaskId = None
         self._RequestId = None
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
 
     @property
     def RequestId(self):
@@ -15813,6 +15838,7 @@ class CreateScanMalwareSettingResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        self._TaskId = params.get("TaskId")
         self._RequestId = params.get("RequestId")
 
 
@@ -16117,6 +16143,8 @@ class CreateWhiteListOrderRequest(AbstractModel):
         :type Deadline: int
         :param _RuleName: 规则名称,大资产中心:asset_center
         :type RuleName: str
+        :param _SourceType: 订单类型, 1 试用 2 赠送 3 体验 4 SSL-证书赠送 5 cvm赠送
+        :type SourceType: int
         :param _RegionId: 地域, 1 广州 9新加坡, 默认为 1. 非必要情况不要选9
         :type RegionId: int
         :param _ExtraParam: 额外参数,json字符串,包含ResourceId 资源ID,LicenseType 授权类型
@@ -16126,6 +16154,7 @@ class CreateWhiteListOrderRequest(AbstractModel):
         self._LicenseNum = None
         self._Deadline = None
         self._RuleName = None
+        self._SourceType = None
         self._RegionId = None
         self._ExtraParam = None
 
@@ -16162,6 +16191,14 @@ class CreateWhiteListOrderRequest(AbstractModel):
         self._RuleName = RuleName
 
     @property
+    def SourceType(self):
+        return self._SourceType
+
+    @SourceType.setter
+    def SourceType(self, SourceType):
+        self._SourceType = SourceType
+
+    @property
     def RegionId(self):
         return self._RegionId
 
@@ -16183,6 +16220,7 @@ class CreateWhiteListOrderRequest(AbstractModel):
         self._LicenseNum = params.get("LicenseNum")
         self._Deadline = params.get("Deadline")
         self._RuleName = params.get("RuleName")
+        self._SourceType = params.get("SourceType")
         self._RegionId = params.get("RegionId")
         self._ExtraParam = params.get("ExtraParam")
         memeber_set = set(params.keys())
@@ -36370,10 +36408,43 @@ class DescribeLicenseWhiteConfigResponse(AbstractModel):
 
     def __init__(self):
         r"""
+        :param _FlagShip: 旗舰版 配置信息
+        :type FlagShip: :class:`tencentcloud.cwp.v20180228.models.VersionWhiteConfig`
+        :param _Professional: 专业版 配置信息
+        :type Professional: :class:`tencentcloud.cwp.v20180228.models.VersionWhiteConfig`
+        :param _PrattWhitney: 普惠版 配置信息
+        :type PrattWhitney: :class:`tencentcloud.cwp.v20180228.models.VersionWhiteConfig`
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
+        self._FlagShip = None
+        self._Professional = None
+        self._PrattWhitney = None
         self._RequestId = None
+
+    @property
+    def FlagShip(self):
+        return self._FlagShip
+
+    @FlagShip.setter
+    def FlagShip(self, FlagShip):
+        self._FlagShip = FlagShip
+
+    @property
+    def Professional(self):
+        return self._Professional
+
+    @Professional.setter
+    def Professional(self, Professional):
+        self._Professional = Professional
+
+    @property
+    def PrattWhitney(self):
+        return self._PrattWhitney
+
+    @PrattWhitney.setter
+    def PrattWhitney(self, PrattWhitney):
+        self._PrattWhitney = PrattWhitney
 
     @property
     def RequestId(self):
@@ -36385,6 +36456,15 @@ class DescribeLicenseWhiteConfigResponse(AbstractModel):
 
 
     def _deserialize(self, params):
+        if params.get("FlagShip") is not None:
+            self._FlagShip = VersionWhiteConfig()
+            self._FlagShip._deserialize(params.get("FlagShip"))
+        if params.get("Professional") is not None:
+            self._Professional = VersionWhiteConfig()
+            self._Professional._deserialize(params.get("Professional"))
+        if params.get("PrattWhitney") is not None:
+            self._PrattWhitney = VersionWhiteConfig()
+            self._PrattWhitney._deserialize(params.get("PrattWhitney"))
         self._RequestId = params.get("RequestId")
 
 
@@ -78604,7 +78684,7 @@ class ReverseShell(AbstractModel):
         :type MachineName: str
         :param _ProcTree: 进程树
         :type ProcTree: str
-        :param _DetectBy: 检测方法
+        :param _DetectBy: 检测方法: 0行为分析; 1命令特征检测
         :type DetectBy: int
         :param _MachineExtraInfo:  主机额外信息
 注意：此字段可能返回 null，表示取不到有效值。
@@ -78612,6 +78692,9 @@ class ReverseShell(AbstractModel):
         :param _Pid: 进程id
 注意：此字段可能返回 null，表示取不到有效值。
         :type Pid: int
+        :param _RiskLevel: 威胁等级：0中危，1高危
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RiskLevel: int
         """
         self._Id = None
         self._Uuid = None
@@ -78635,6 +78718,7 @@ class ReverseShell(AbstractModel):
         self._DetectBy = None
         self._MachineExtraInfo = None
         self._Pid = None
+        self._RiskLevel = None
 
     @property
     def Id(self):
@@ -78812,6 +78896,14 @@ class ReverseShell(AbstractModel):
     def Pid(self, Pid):
         self._Pid = Pid
 
+    @property
+    def RiskLevel(self):
+        return self._RiskLevel
+
+    @RiskLevel.setter
+    def RiskLevel(self, RiskLevel):
+        self._RiskLevel = RiskLevel
+
 
     def _deserialize(self, params):
         self._Id = params.get("Id")
@@ -78838,6 +78930,7 @@ class ReverseShell(AbstractModel):
             self._MachineExtraInfo = MachineExtraInfo()
             self._MachineExtraInfo._deserialize(params.get("MachineExtraInfo"))
         self._Pid = params.get("Pid")
+        self._RiskLevel = params.get("RiskLevel")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -85501,6 +85594,75 @@ class ValueInfo(AbstractModel):
         self._Type = params.get("Type")
         self._SqlFlag = params.get("SqlFlag")
         self._ContainZH = params.get("ContainZH")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class VersionWhiteConfig(AbstractModel):
+    """授权版本白名单配置信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Deadline: 到期天数
+        :type Deadline: int
+        :param _LicenseNum: 授权数量
+        :type LicenseNum: int
+        :param _IsApplyFor: 是否可申请
+        :type IsApplyFor: bool
+        :param _SourceType: 类型
+        :type SourceType: int
+        """
+        self._Deadline = None
+        self._LicenseNum = None
+        self._IsApplyFor = None
+        self._SourceType = None
+
+    @property
+    def Deadline(self):
+        return self._Deadline
+
+    @Deadline.setter
+    def Deadline(self, Deadline):
+        self._Deadline = Deadline
+
+    @property
+    def LicenseNum(self):
+        return self._LicenseNum
+
+    @LicenseNum.setter
+    def LicenseNum(self, LicenseNum):
+        self._LicenseNum = LicenseNum
+
+    @property
+    def IsApplyFor(self):
+        return self._IsApplyFor
+
+    @IsApplyFor.setter
+    def IsApplyFor(self, IsApplyFor):
+        self._IsApplyFor = IsApplyFor
+
+    @property
+    def SourceType(self):
+        return self._SourceType
+
+    @SourceType.setter
+    def SourceType(self, SourceType):
+        self._SourceType = SourceType
+
+
+    def _deserialize(self, params):
+        self._Deadline = params.get("Deadline")
+        self._LicenseNum = params.get("LicenseNum")
+        self._IsApplyFor = params.get("IsApplyFor")
+        self._SourceType = params.get("SourceType")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

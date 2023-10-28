@@ -166,6 +166,29 @@ class TeoClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateOriginGroup(self, request):
+        """创建源站组，以源站组的方式管理业务源站。此处配置的源站组可于**添加加速域名**和**四层代理**等功能中引用。
+
+        :param request: Request instance for CreateOriginGroup.
+        :type request: :class:`tencentcloud.teo.v20220901.models.CreateOriginGroupRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.CreateOriginGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateOriginGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateOriginGroupResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreatePlanForZone(self, request):
         """为未购买套餐的站点购买套餐
 
@@ -414,6 +437,29 @@ class TeoClient(AbstractClient):
             body = self.call("DeleteApplicationProxyRule", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteApplicationProxyRuleResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteOriginGroup(self, request):
+        """删除源站组，若源站组仍然被服务（例如：四层代理，域名服务，负载均衡，规则引起）引用，将不允许删除。
+
+        :param request: Request instance for DeleteOriginGroup.
+        :type request: :class:`tencentcloud.teo.v20220901.models.DeleteOriginGroupRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.DeleteOriginGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteOriginGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteOriginGroupResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -906,6 +952,29 @@ class TeoClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeSecurityTemplateBindings(self, request):
+        """查询指定策略模板的绑定关系列表。
+
+        :param request: Request instance for DescribeSecurityTemplateBindings.
+        :type request: :class:`tencentcloud.teo.v20220901.models.DescribeSecurityTemplateBindingsRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.DescribeSecurityTemplateBindingsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeSecurityTemplateBindings", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeSecurityTemplateBindingsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeTimingL4Data(self, request):
         """本接口（DescribeTimingL4Data）用于查询四层时序流量数据列表。
 
@@ -1336,6 +1405,29 @@ class TeoClient(AbstractClient):
             body = self.call("ModifyHostsCertificate", params, headers=headers)
             response = json.loads(body)
             model = models.ModifyHostsCertificateResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def ModifyOriginGroup(self, request):
+        """修改源站组配置，新提交的源站记录将会覆盖原有源站组中的源站记录。
+
+        :param request: Request instance for ModifyOriginGroup.
+        :type request: :class:`tencentcloud.teo.v20220901.models.ModifyOriginGroupRequest`
+        :rtype: :class:`tencentcloud.teo.v20220901.models.ModifyOriginGroupResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("ModifyOriginGroup", params, headers=headers)
+            response = json.loads(body)
+            model = models.ModifyOriginGroupResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

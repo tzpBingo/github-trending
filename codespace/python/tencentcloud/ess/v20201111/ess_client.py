@@ -183,13 +183,13 @@ class EssClient(AbstractClient):
 
 
     def CreateConvertTaskApi(self, request):
-        """此接口（CreateConvertTaskApi）用来将word、excel、图片、txt类型文件转换为PDF文件。<br />
+        """此接口（CreateConvertTaskApi）用来将word、excel、html、图片、txt类型文件转换为PDF文件。<br />
         前提条件：源文件已经通过 <a href="https://qian.tencent.com/developers/companyApis/templatesAndFiles/UploadFiles" target="_blank">文件上传接口</a>完成上传，并得到了源文件的资源Id。<br />
         适用场景1：已经上传了一个word文件，希望将该word文件转换成pdf文件后发起合同
         适用场景2：已经上传了一个jpg图片文件，希望将该图片文件转换成pdf文件后发起合同<br />
         转换文件是一个耗时操作，若想查看转换任务是否完成，可以通过<a href="https://qian.tencent.com/developers/companyApis/templatesAndFiles/GetTaskResultApi" target="_blank">查询转换任务状态</a>接口获取任务状态。<br />
         注:
-        1. `支持的文件类型有doc、docx、xls、xlsx、jpg、jpeg、png、bmp、txt`
+        1. `支持的文件类型有doc、docx、xls、xlsx、html、jpg、jpeg、png、bmp、txt`
         2. `可通过发起合同时设置预览来检查转换文件是否达到预期效果`
 
         :param request: Request instance for CreateConvertTaskApi.
@@ -262,6 +262,31 @@ class EssClient(AbstractClient):
             body = self.call("CreateEmbedWebUrl", params, headers=headers)
             response = json.loads(body)
             model = models.CreateEmbedWebUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def CreateExtendedServiceAuthInfos(self, request):
+        """创建企业扩展服务授权，当前仅支持授权 “企业自动签” 给企业员工。
+
+        注：支持集团代子企业操作，请联系运营开通此功能。
+
+        :param request: Request instance for CreateExtendedServiceAuthInfos.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateExtendedServiceAuthInfosRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateExtendedServiceAuthInfosResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateExtendedServiceAuthInfos", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateExtendedServiceAuthInfosResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -896,6 +921,11 @@ class EssClient(AbstractClient):
     def CreateSeal(self, request):
         """本接口（CreateSeal）用于创建企业电子印章，支持创建企业公章，合同章，财务专用章和人事专用章创建。
 
+        1. 可以**通过图片**创建印章，图片最大5MB
+        2. 可以**系统创建**创建印章, 系统创建的印章样子下图(样式可以调整)
+
+        ![image](https://dyn.ess.tencent.cn/guide/capi/CreateSealByImage.png)
+
         :param request: Request instance for CreateSeal.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateSealRequest`
         :rtype: :class:`tencentcloud.ess.v20201111.models.CreateSealResponse`
@@ -1010,6 +1040,31 @@ class EssClient(AbstractClient):
             body = self.call("CreateWebThemeConfig", params, headers=headers)
             response = json.loads(body)
             model = models.CreateWebThemeConfigResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DeleteExtendedServiceAuthInfos(self, request):
+        """删除企业扩展服务授权，当前仅支持 “企业自动签” 取消授权。
+
+        注：支持集团代子企业操作，请联系运营开通此功能。
+
+        :param request: Request instance for DeleteExtendedServiceAuthInfos.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DeleteExtendedServiceAuthInfosRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DeleteExtendedServiceAuthInfosResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DeleteExtendedServiceAuthInfos", params, headers=headers)
+            response = json.loads(body)
+            model = models.DeleteExtendedServiceAuthInfosResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

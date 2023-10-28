@@ -464,6 +464,9 @@ INVALIDPARAMETERVALUE_CONTENTSAMEASNAME = 'InvalidParameterValue.ContentSameAsNa
 # 入参中的域名与站点参数不匹配，请更正后重试。
 INVALIDPARAMETERVALUE_DOMAINNOTMATCHZONE = 'InvalidParameterValue.DomainNotMatchZone'
 
+# 无效的别称域名后缀（该域名为内部接入域名，暂不支持作为别称域名接入）。
+INVALIDPARAMETERVALUE_INVALIDALIASNAMESUFFIX = 'InvalidParameterValue.InvalidAliasNameSuffix'
+
 # DNS 记录内容错误。
 INVALIDPARAMETERVALUE_INVALIDDNSCONTENT = 'InvalidParameterValue.InvalidDNSContent'
 
@@ -556,6 +559,9 @@ OPERATIONDENIED_L4PROXYINPROGRESSSTATUS = 'OperationDenied.L4ProxyInProgressStat
 
 # 存在四层代理实例处于停用中状态，暂不支持停用站点。
 OPERATIONDENIED_L4PROXYINSTOPPINGSTATUS = 'OperationDenied.L4ProxyInStoppingStatus'
+
+# 绑定4层实例有处于非运行中的状态，禁止操作。
+OPERATIONDENIED_L4STATUSNOTINONLINE = 'OperationDenied.L4StatusNotInOnline'
 
 # 存在加速域名处于部署中状态，暂不支持停用站点。
 OPERATIONDENIED_L7HOSTINPROCESSSTATUS = 'OperationDenied.L7HostInProcessStatus'

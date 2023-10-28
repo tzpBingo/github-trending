@@ -23890,9 +23890,11 @@ class DescribeIntegrationVersionNodesInfoRequest(AbstractModel):
         :type TaskId: str
         :param _ProjectId: 项目id
         :type ProjectId: str
-        :param _TaskVersionPath: task version path
+        :param _TaskVersionPath: 该任务选定版本的存储路径：
+DescribeDsTaskVersionList 或者 DescribeDsTaskVersionInfo 返回的对应的 TaskInfo.TaskExt.Properties 下 Base64.encode($region | $bucket | $ftp.file.name) 值
         :type TaskVersionPath: str
-        :param _TaskVersion: task version
+        :param _TaskVersion: 该任务选定版本id：
+DescribeDsTaskVersionList 或者 DescribeDsTaskVersionInfo 返回的对应的 VersionId 取值
         :type TaskVersion: str
         """
         self._TaskId = None
@@ -24539,6 +24541,8 @@ class DescribeOperateOpsTasksRequest(AbstractModel):
         :type AlarmType: str
         :param _ExecutorGroupIdList: 资源组id,多个资源组id之间以英文字符逗号分隔
         :type ExecutorGroupIdList: str
+        :param _TaskTags: 任务标签
+        :type TaskTags: list of TaskTag
         """
         self._ProjectId = None
         self._FolderIdList = None
@@ -24561,6 +24565,7 @@ class DescribeOperateOpsTasksRequest(AbstractModel):
         self._TargetServiceType = None
         self._AlarmType = None
         self._ExecutorGroupIdList = None
+        self._TaskTags = None
 
     @property
     def ProjectId(self):
@@ -24730,6 +24735,14 @@ class DescribeOperateOpsTasksRequest(AbstractModel):
     def ExecutorGroupIdList(self, ExecutorGroupIdList):
         self._ExecutorGroupIdList = ExecutorGroupIdList
 
+    @property
+    def TaskTags(self):
+        return self._TaskTags
+
+    @TaskTags.setter
+    def TaskTags(self, TaskTags):
+        self._TaskTags = TaskTags
+
 
     def _deserialize(self, params):
         self._ProjectId = params.get("ProjectId")
@@ -24753,6 +24766,12 @@ class DescribeOperateOpsTasksRequest(AbstractModel):
         self._TargetServiceType = params.get("TargetServiceType")
         self._AlarmType = params.get("AlarmType")
         self._ExecutorGroupIdList = params.get("ExecutorGroupIdList")
+        if params.get("TaskTags") is not None:
+            self._TaskTags = []
+            for item in params.get("TaskTags"):
+                obj = TaskTag()
+                obj._deserialize(item)
+                self._TaskTags.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -68132,6 +68151,51 @@ class TaskScriptContent(AbstractModel):
 
     def _deserialize(self, params):
         self._ScriptContent = params.get("ScriptContent")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class TaskTag(AbstractModel):
+    """任务标签，可用于检索任务的条件
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TagName: 标签名称
+        :type TagName: str
+        :param _TagValues: 标签值列表
+        :type TagValues: list of str
+        """
+        self._TagName = None
+        self._TagValues = None
+
+    @property
+    def TagName(self):
+        return self._TagName
+
+    @TagName.setter
+    def TagName(self, TagName):
+        self._TagName = TagName
+
+    @property
+    def TagValues(self):
+        return self._TagValues
+
+    @TagValues.setter
+    def TagValues(self, TagValues):
+        self._TagValues = TagValues
+
+
+    def _deserialize(self, params):
+        self._TagName = params.get("TagName")
+        self._TagValues = params.get("TagValues")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

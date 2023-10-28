@@ -4859,10 +4859,14 @@ class CreateSparkSessionBatchSQLResponse(AbstractModel):
         r"""
         :param _BatchId: 批任务唯一标识
         :type BatchId: str
+        :param _Statements: Statement任务列表信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Statements: list of StatementInformation
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._BatchId = None
+        self._Statements = None
         self._RequestId = None
 
     @property
@@ -4872,6 +4876,14 @@ class CreateSparkSessionBatchSQLResponse(AbstractModel):
     @BatchId.setter
     def BatchId(self, BatchId):
         self._BatchId = BatchId
+
+    @property
+    def Statements(self):
+        return self._Statements
+
+    @Statements.setter
+    def Statements(self, Statements):
+        self._Statements = Statements
 
     @property
     def RequestId(self):
@@ -4884,6 +4896,12 @@ class CreateSparkSessionBatchSQLResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._BatchId = params.get("BatchId")
+        if params.get("Statements") is not None:
+            self._Statements = []
+            for item in params.get("Statements"):
+                obj = StatementInformation()
+                obj._deserialize(item)
+                self._Statements.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -10468,6 +10486,8 @@ DatasourceConnectionType   （数据源连接连接类型）
         :type DatasourceConnectionNames: list of str
         :param _DatasourceConnectionTypes: 连接类型，支持Mysql/HiveCos/Kafka/DataLakeCatalog
         :type DatasourceConnectionTypes: list of str
+        :param _HiveVersion: 返回指定hive版本的数据源，该参数指定后，会过滤掉该参数指定版本以外的hive数据源，非hive数据源正常返回
+        :type HiveVersion: list of str
         """
         self._DatasourceConnectionIds = None
         self._Filters = None
@@ -10479,6 +10499,7 @@ DatasourceConnectionType   （数据源连接连接类型）
         self._EndTime = None
         self._DatasourceConnectionNames = None
         self._DatasourceConnectionTypes = None
+        self._HiveVersion = None
 
     @property
     def DatasourceConnectionIds(self):
@@ -10560,6 +10581,14 @@ DatasourceConnectionType   （数据源连接连接类型）
     def DatasourceConnectionTypes(self, DatasourceConnectionTypes):
         self._DatasourceConnectionTypes = DatasourceConnectionTypes
 
+    @property
+    def HiveVersion(self):
+        return self._HiveVersion
+
+    @HiveVersion.setter
+    def HiveVersion(self, HiveVersion):
+        self._HiveVersion = HiveVersion
+
 
     def _deserialize(self, params):
         self._DatasourceConnectionIds = params.get("DatasourceConnectionIds")
@@ -10577,6 +10606,7 @@ DatasourceConnectionType   （数据源连接连接类型）
         self._EndTime = params.get("EndTime")
         self._DatasourceConnectionNames = params.get("DatasourceConnectionNames")
         self._DatasourceConnectionTypes = params.get("DatasourceConnectionTypes")
+        self._HiveVersion = params.get("HiveVersion")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -20723,6 +20753,53 @@ class SparkSessionBatchLogOperate(AbstractModel):
                 obj = KVPair()
                 obj._deserialize(item)
                 self._Supplement.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class StatementInformation(AbstractModel):
+    """statement信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _TaskId: SQL任务唯一ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskId: str
+        :param _SQL: SQL内容
+注意：此字段可能返回 null，表示取不到有效值。
+        :type SQL: str
+        """
+        self._TaskId = None
+        self._SQL = None
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
+
+    @property
+    def SQL(self):
+        return self._SQL
+
+    @SQL.setter
+    def SQL(self, SQL):
+        self._SQL = SQL
+
+
+    def _deserialize(self, params):
+        self._TaskId = params.get("TaskId")
+        self._SQL = params.get("SQL")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
