@@ -2776,6 +2776,7 @@ class DriverLicenseOCRRequest(AbstractModel):
         :type ImageUrl: str
         :param _CardSide: FRONT 为驾驶证主页正面（有红色印章的一面），
 BACK 为驾驶证副页正面（有档案编号的一面）。
+DOUBLE 支持自动识别驾驶证正副页单面，和正副双面同框识别
 默认值为：FRONT。
         :type CardSide: str
         """
@@ -2829,7 +2830,7 @@ class DriverLicenseOCRResponse(AbstractModel):
 
     def __init__(self):
         r"""
-        :param _Name: 姓名
+        :param _Name: 驾驶证正页姓名
         :type Name: str
         :param _Sex: 性别
         :type Sex: str
@@ -2848,7 +2849,7 @@ class DriverLicenseOCRResponse(AbstractModel):
         :param _EndDate: 有效期截止时间（新版驾驶证返回 YYYY-MM-DD，
 老版驾驶证返回有效期限 X年）
         :type EndDate: str
-        :param _CardCode: 证号
+        :param _CardCode: 驾驶证正页证号
         :type CardCode: str
         :param _ArchivesCode: 档案编号
         :type ArchivesCode: str
@@ -2874,6 +2875,10 @@ WARN_DRIVER_LICENSE_SCREENED_CARD 翻拍件告警
         :type CurrentTime: str
         :param _GenerateTime: 生成时间（仅电子驾驶证支持返回该字段）
         :type GenerateTime: str
+        :param _BackPageName: 驾驶证副页姓名
+        :type BackPageName: str
+        :param _BackPageCardCode: 驾驶证副页证号
+        :type BackPageCardCode: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -2896,6 +2901,8 @@ WARN_DRIVER_LICENSE_SCREENED_CARD 翻拍件告警
         self._CumulativeScore = None
         self._CurrentTime = None
         self._GenerateTime = None
+        self._BackPageName = None
+        self._BackPageCardCode = None
         self._RequestId = None
 
     @property
@@ -3051,6 +3058,22 @@ WARN_DRIVER_LICENSE_SCREENED_CARD 翻拍件告警
         self._GenerateTime = GenerateTime
 
     @property
+    def BackPageName(self):
+        return self._BackPageName
+
+    @BackPageName.setter
+    def BackPageName(self, BackPageName):
+        self._BackPageName = BackPageName
+
+    @property
+    def BackPageCardCode(self):
+        return self._BackPageCardCode
+
+    @BackPageCardCode.setter
+    def BackPageCardCode(self, BackPageCardCode):
+        self._BackPageCardCode = BackPageCardCode
+
+    @property
     def RequestId(self):
         return self._RequestId
 
@@ -3079,6 +3102,8 @@ WARN_DRIVER_LICENSE_SCREENED_CARD 翻拍件告警
         self._CumulativeScore = params.get("CumulativeScore")
         self._CurrentTime = params.get("CurrentTime")
         self._GenerateTime = params.get("GenerateTime")
+        self._BackPageName = params.get("BackPageName")
+        self._BackPageCardCode = params.get("BackPageCardCode")
         self._RequestId = params.get("RequestId")
 
 
@@ -7158,14 +7183,16 @@ FailedOperation.UnKnowError：表示识别失败；
         :type SingleInvoiceInfos: :class:`tencentcloud.ocr.v20181119.models.SingleInvoiceItem`
         :param _Page: 发票处于识别图片或PDF文件中的页教，默认从1开始。
         :type Page: int
-        :param _SubType: 发票详细类型，详见上方 SubType 返回值说明
+        :param _SubType: 发票详细类型，详见票据识别（高级版）接口文档说明中 SubType 返回值说明
         :type SubType: str
-        :param _TypeDescription: 发票类型描述，详见上方 TypeDescription  返回值说明
+        :param _TypeDescription: 发票类型描述，详见票据识别（高级版）接口文档说明中 TypeDescription  返回值说明
         :type TypeDescription: str
         :param _CutImage: 切割单图文件，Base64编码后的切图后的图片文件，开启 EnableCutImage 后进行返回
         :type CutImage: str
         :param _SubTypeDescription: 发票详细类型描述，详见上方 SubType 返回值说明
         :type SubTypeDescription: str
+        :param _ItemPolygon: 该发票中所有字段坐标信息。包括字段英文名称、字段值所在位置四点坐标、字段所属行号，具体内容请点击左侧链接。
+        :type ItemPolygon: list of ItemPolygonInfo
         """
         self._Code = None
         self._Type = None
@@ -7177,6 +7204,7 @@ FailedOperation.UnKnowError：表示识别失败；
         self._TypeDescription = None
         self._CutImage = None
         self._SubTypeDescription = None
+        self._ItemPolygon = None
 
     @property
     def Code(self):
@@ -7258,6 +7286,14 @@ FailedOperation.UnKnowError：表示识别失败；
     def SubTypeDescription(self, SubTypeDescription):
         self._SubTypeDescription = SubTypeDescription
 
+    @property
+    def ItemPolygon(self):
+        return self._ItemPolygon
+
+    @ItemPolygon.setter
+    def ItemPolygon(self, ItemPolygon):
+        self._ItemPolygon = ItemPolygon
+
 
     def _deserialize(self, params):
         self._Code = params.get("Code")
@@ -7274,6 +7310,12 @@ FailedOperation.UnKnowError：表示识别失败；
         self._TypeDescription = params.get("TypeDescription")
         self._CutImage = params.get("CutImage")
         self._SubTypeDescription = params.get("SubTypeDescription")
+        if params.get("ItemPolygon") is not None:
+            self._ItemPolygon = []
+            for item in params.get("ItemPolygon"):
+                obj = ItemPolygonInfo()
+                obj._deserialize(item)
+                self._ItemPolygon.append(obj)
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7394,6 +7436,65 @@ class ItemInfo(AbstractModel):
         if params.get("Value") is not None:
             self._Value = Value()
             self._Value._deserialize(params.get("Value"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ItemPolygonInfo(AbstractModel):
+    """发票字段坐标信息。包括字段英文名称、字段值所在位置的四点坐标、字段所属行号，具体内容请点击左侧链接。
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Key: 发票的英文字段名称（如Title）
+        :type Key: str
+        :param _Polygon: 字段值所在位置的四点坐标
+        :type Polygon: :class:`tencentcloud.ocr.v20181119.models.Polygon`
+        :param _Row: 字段属于第几行，用于相同字段的排版，如发票明细表格项目，普通字段使用默认值为-1，表示无列排版。
+        :type Row: int
+        """
+        self._Key = None
+        self._Polygon = None
+        self._Row = None
+
+    @property
+    def Key(self):
+        return self._Key
+
+    @Key.setter
+    def Key(self, Key):
+        self._Key = Key
+
+    @property
+    def Polygon(self):
+        return self._Polygon
+
+    @Polygon.setter
+    def Polygon(self, Polygon):
+        self._Polygon = Polygon
+
+    @property
+    def Row(self):
+        return self._Row
+
+    @Row.setter
+    def Row(self, Row):
+        self._Row = Row
+
+
+    def _deserialize(self, params):
+        self._Key = params.get("Key")
+        if params.get("Polygon") is not None:
+            self._Polygon = Polygon()
+            self._Polygon._deserialize(params.get("Polygon"))
+        self._Row = params.get("Row")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -12591,6 +12692,8 @@ class RecognizeGeneralInvoiceRequest(AbstractModel):
         :type EnableMultiplePage: bool
         :param _EnableCutImage: 是否返回切割图片base64，默认值为false。
         :type EnableCutImage: bool
+        :param _EnableItemPolygon: 是否打开字段坐标返回。默认为false。
+        :type EnableItemPolygon: bool
         """
         self._ImageBase64 = None
         self._ImageUrl = None
@@ -12600,6 +12703,7 @@ class RecognizeGeneralInvoiceRequest(AbstractModel):
         self._PdfPageNumber = None
         self._EnableMultiplePage = None
         self._EnableCutImage = None
+        self._EnableItemPolygon = None
 
     @property
     def ImageBase64(self):
@@ -12665,6 +12769,14 @@ class RecognizeGeneralInvoiceRequest(AbstractModel):
     def EnableCutImage(self, EnableCutImage):
         self._EnableCutImage = EnableCutImage
 
+    @property
+    def EnableItemPolygon(self):
+        return self._EnableItemPolygon
+
+    @EnableItemPolygon.setter
+    def EnableItemPolygon(self, EnableItemPolygon):
+        self._EnableItemPolygon = EnableItemPolygon
+
 
     def _deserialize(self, params):
         self._ImageBase64 = params.get("ImageBase64")
@@ -12675,6 +12787,7 @@ class RecognizeGeneralInvoiceRequest(AbstractModel):
         self._PdfPageNumber = params.get("PdfPageNumber")
         self._EnableMultiplePage = params.get("EnableMultiplePage")
         self._EnableCutImage = params.get("EnableCutImage")
+        self._EnableItemPolygon = params.get("EnableItemPolygon")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

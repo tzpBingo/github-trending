@@ -50,6 +50,9 @@ FAILEDOPERATION_INQUIRYREFUNDPRICEFAILED = 'FailedOperation.InquiryRefundPriceFa
 # 镜像状态繁忙，请稍后重试。
 FAILEDOPERATION_INVALIDIMAGESTATE = 'FailedOperation.InvalidImageState'
 
+# 不支持操作的applicationRole实例
+FAILEDOPERATION_INVALIDINSTANCEAPPLICATIONROLE = 'FailedOperation.InvalidInstanceApplicationRole'
+
 # 请求不支持`EMR`的实例`ins-xxxxxxxx`。
 FAILEDOPERATION_INVALIDINSTANCEAPPLICATIONROLEEMR = 'FailedOperation.InvalidInstanceApplicationRoleEmr'
 
@@ -508,6 +511,9 @@ INVALIDPARAMETERVALUE_PREHEATNOTSUPPORTEDINSTANCETYPE = 'InvalidParameterValue.P
 
 # 该可用区目前不支持预热功能
 INVALIDPARAMETERVALUE_PREHEATNOTSUPPORTEDZONE = 'InvalidParameterValue.PreheatNotSupportedZone'
+
+# 预热地域不可用，请检查预热地域是否正确。
+INVALIDPARAMETERVALUE_PREHEATUNAVAILABLEZONES = 'InvalidParameterValue.PreheatUnavailableZones'
 
 #  无效参数值。参数值取值范围不合法。
 INVALIDPARAMETERVALUE_RANGE = 'InvalidParameterValue.Range'
