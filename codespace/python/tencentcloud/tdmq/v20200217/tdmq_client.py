@@ -233,6 +233,29 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateProCluster(self, request):
+        """创建专业集群——预付费，仅通过api调用
+
+        :param request: Request instance for CreateProCluster.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.CreateProClusterRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.CreateProClusterResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateProCluster", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateProClusterResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateRabbitMQUser(self, request):
         """创建RabbitMQ的用户
 
@@ -1222,6 +1245,29 @@ class TdmqClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def DescribeMsgTrace(self, request):
+        """查询消息轨迹
+
+        :param request: Request instance for DescribeMsgTrace.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeMsgTraceRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeMsgTraceResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeMsgTrace", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeMsgTraceResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def DescribeNamespaceBundlesOpt(self, request):
         """运营端获取命名空间bundle列表
 
@@ -1581,6 +1627,29 @@ class TdmqClient(AbstractClient):
             body = self.call("DescribeRocketMQClusters", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeRocketMQClustersResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeRocketMQConsumeStats(self, request):
+        """获取消费详情列表
+
+        :param request: Request instance for DescribeRocketMQConsumeStats.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQConsumeStatsRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeRocketMQConsumeStatsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeRocketMQConsumeStats", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeRocketMQConsumeStatsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1995,6 +2064,29 @@ class TdmqClient(AbstractClient):
             body = self.call("DescribeSubscriptions", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeSubscriptionsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeTopicMsgs(self, request):
+        """消息查询
+
+        :param request: Request instance for DescribeTopicMsgs.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.DescribeTopicMsgsRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.DescribeTopicMsgsResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeTopicMsgs", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeTopicMsgsResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -2776,6 +2868,29 @@ class TdmqClient(AbstractClient):
             body = self.call("UnbindCmqDeadLetter", params, headers=headers)
             response = json.loads(body)
             model = models.UnbindCmqDeadLetterResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def VerifyRocketMQConsume(self, request):
+        """Rocketmq消费验证
+
+        :param request: Request instance for VerifyRocketMQConsume.
+        :type request: :class:`tencentcloud.tdmq.v20200217.models.VerifyRocketMQConsumeRequest`
+        :rtype: :class:`tencentcloud.tdmq.v20200217.models.VerifyRocketMQConsumeResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("VerifyRocketMQConsume", params, headers=headers)
+            response = json.loads(body)
+            model = models.VerifyRocketMQConsumeResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

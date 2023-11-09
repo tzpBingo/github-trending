@@ -1951,6 +1951,184 @@ class AddSpartaProtectionResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class ApiPkg(AbstractModel):
+    """API安全资源信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceIds: 资源id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceIds: str
+        :param _Status: 状态
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param _Region: 地域
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Region: int
+        :param _BeginTime: 开始时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BeginTime: str
+        :param _EndTime: 结束时间
+注意：此字段可能返回 null，表示取不到有效值。
+        :type EndTime: str
+        :param _InquireNum: 申请数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type InquireNum: int
+        :param _UsedNum: 使用数量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UsedNum: int
+        :param _RenewFlag: 续费标志
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RenewFlag: int
+        :param _BillingItem: 计费项
+注意：此字段可能返回 null，表示取不到有效值。
+        :type BillingItem: str
+        :param _APICPWaf: 1 API安全6折
+注意：此字段可能返回 null，表示取不到有效值。
+        :type APICPWaf: int
+        :param _APINPWaf: 1 表示5折折扣
+2 表示4折折扣
+注意：此字段可能返回 null，表示取不到有效值。
+        :type APINPWaf: int
+        :param _IsAPISecurityTrial: api安全7天试用标识。1试用。0没试用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsAPISecurityTrial: int
+        """
+        self._ResourceIds = None
+        self._Status = None
+        self._Region = None
+        self._BeginTime = None
+        self._EndTime = None
+        self._InquireNum = None
+        self._UsedNum = None
+        self._RenewFlag = None
+        self._BillingItem = None
+        self._APICPWaf = None
+        self._APINPWaf = None
+        self._IsAPISecurityTrial = None
+
+    @property
+    def ResourceIds(self):
+        return self._ResourceIds
+
+    @ResourceIds.setter
+    def ResourceIds(self, ResourceIds):
+        self._ResourceIds = ResourceIds
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def Region(self):
+        return self._Region
+
+    @Region.setter
+    def Region(self, Region):
+        self._Region = Region
+
+    @property
+    def BeginTime(self):
+        return self._BeginTime
+
+    @BeginTime.setter
+    def BeginTime(self, BeginTime):
+        self._BeginTime = BeginTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def InquireNum(self):
+        return self._InquireNum
+
+    @InquireNum.setter
+    def InquireNum(self, InquireNum):
+        self._InquireNum = InquireNum
+
+    @property
+    def UsedNum(self):
+        return self._UsedNum
+
+    @UsedNum.setter
+    def UsedNum(self, UsedNum):
+        self._UsedNum = UsedNum
+
+    @property
+    def RenewFlag(self):
+        return self._RenewFlag
+
+    @RenewFlag.setter
+    def RenewFlag(self, RenewFlag):
+        self._RenewFlag = RenewFlag
+
+    @property
+    def BillingItem(self):
+        return self._BillingItem
+
+    @BillingItem.setter
+    def BillingItem(self, BillingItem):
+        self._BillingItem = BillingItem
+
+    @property
+    def APICPWaf(self):
+        return self._APICPWaf
+
+    @APICPWaf.setter
+    def APICPWaf(self, APICPWaf):
+        self._APICPWaf = APICPWaf
+
+    @property
+    def APINPWaf(self):
+        return self._APINPWaf
+
+    @APINPWaf.setter
+    def APINPWaf(self, APINPWaf):
+        self._APINPWaf = APINPWaf
+
+    @property
+    def IsAPISecurityTrial(self):
+        return self._IsAPISecurityTrial
+
+    @IsAPISecurityTrial.setter
+    def IsAPISecurityTrial(self, IsAPISecurityTrial):
+        self._IsAPISecurityTrial = IsAPISecurityTrial
+
+
+    def _deserialize(self, params):
+        self._ResourceIds = params.get("ResourceIds")
+        self._Status = params.get("Status")
+        self._Region = params.get("Region")
+        self._BeginTime = params.get("BeginTime")
+        self._EndTime = params.get("EndTime")
+        self._InquireNum = params.get("InquireNum")
+        self._UsedNum = params.get("UsedNum")
+        self._RenewFlag = params.get("RenewFlag")
+        self._BillingItem = params.get("BillingItem")
+        self._APICPWaf = params.get("APICPWaf")
+        self._APINPWaf = params.get("APINPWaf")
+        self._IsAPISecurityTrial = params.get("IsAPISecurityTrial")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class AttackLogInfo(AbstractModel):
     """攻击日志详情
 
@@ -2321,6 +2499,9 @@ class BotPkg(AbstractModel):
         :param _BotNPWaf: 控制台买bot5折
 注意：此字段可能返回 null，表示取不到有效值。
         :type BotNPWaf: int
+        :param _IsBotTrial: 7天bot试用标识 1 试用 0 没有试用
+注意：此字段可能返回 null，表示取不到有效值。
+        :type IsBotTrial: int
         """
         self._ResourceIds = None
         self._Status = None
@@ -2333,6 +2514,7 @@ class BotPkg(AbstractModel):
         self._RenewFlag = None
         self._BotCPWaf = None
         self._BotNPWaf = None
+        self._IsBotTrial = None
 
     @property
     def ResourceIds(self):
@@ -2422,6 +2604,14 @@ class BotPkg(AbstractModel):
     def BotNPWaf(self, BotNPWaf):
         self._BotNPWaf = BotNPWaf
 
+    @property
+    def IsBotTrial(self):
+        return self._IsBotTrial
+
+    @IsBotTrial.setter
+    def IsBotTrial(self, IsBotTrial):
+        self._IsBotTrial = IsBotTrial
+
 
     def _deserialize(self, params):
         self._ResourceIds = params.get("ResourceIds")
@@ -2435,6 +2625,7 @@ class BotPkg(AbstractModel):
         self._RenewFlag = params.get("RenewFlag")
         self._BotCPWaf = params.get("BotCPWaf")
         self._BotNPWaf = params.get("BotNPWaf")
+        self._IsBotTrial = params.get("IsBotTrial")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7219,6 +7410,98 @@ class DescribeCCRuleListRequest(AbstractModel):
 
     """
 
+    def __init__(self):
+        r"""
+        :param _Domain: 需要查询的API所属的域名
+        :type Domain: str
+        :param _Offset: 偏移
+        :type Offset: int
+        :param _Limit: 容量
+        :type Limit: int
+        :param _By: 目前支持根据ts_version排序
+        :type By: str
+        :param _Filters: 过滤数组,name可以是如下的值： RuleID,ParamName,Url,Action,Method,Source,Status
+        :type Filters: list of FiltersItemNew
+        :param _Order: asc或者desc
+        :type Order: str
+        """
+        self._Domain = None
+        self._Offset = None
+        self._Limit = None
+        self._By = None
+        self._Filters = None
+        self._Order = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def By(self):
+        return self._By
+
+    @By.setter
+    def By(self, By):
+        self._By = By
+
+    @property
+    def Filters(self):
+        return self._Filters
+
+    @Filters.setter
+    def Filters(self, Filters):
+        self._Filters = Filters
+
+    @property
+    def Order(self):
+        return self._Order
+
+    @Order.setter
+    def Order(self, Order):
+        self._Order = Order
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        self._By = params.get("By")
+        if params.get("Filters") is not None:
+            self._Filters = []
+            for item in params.get("Filters"):
+                obj = FiltersItemNew()
+                obj._deserialize(item)
+                self._Filters.append(obj)
+        self._Order = params.get("Order")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
 
 class DescribeCCRuleListResponse(AbstractModel):
     """DescribeCCRuleList返回参数结构体
@@ -10027,6 +10310,136 @@ class DescribeIpHitItemsResponse(AbstractModel):
         if params.get("Data") is not None:
             self._Data = IpHitItemsData()
             self._Data._deserialize(params.get("Data"))
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeModuleStatusRequest(AbstractModel):
+    """DescribeModuleStatus请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 要查询状态的域名
+        :type Domain: str
+        """
+        self._Domain = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeModuleStatusResponse(AbstractModel):
+    """DescribeModuleStatus返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _WebSecurity: WEB安全规则是否开启
+        :type WebSecurity: int
+        :param _AccessControl: 访问控制规则是否开启
+        :type AccessControl: int
+        :param _CcProtection: CC防护是否开启
+        :type CcProtection: int
+        :param _AntiTamper: 网页防篡改是否开启
+        :type AntiTamper: int
+        :param _AntiLeakage: 信息防泄漏是否开启
+        :type AntiLeakage: int
+        :param _ApiProtection: API安全是否开启
+        :type ApiProtection: int
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._WebSecurity = None
+        self._AccessControl = None
+        self._CcProtection = None
+        self._AntiTamper = None
+        self._AntiLeakage = None
+        self._ApiProtection = None
+        self._RequestId = None
+
+    @property
+    def WebSecurity(self):
+        return self._WebSecurity
+
+    @WebSecurity.setter
+    def WebSecurity(self, WebSecurity):
+        self._WebSecurity = WebSecurity
+
+    @property
+    def AccessControl(self):
+        return self._AccessControl
+
+    @AccessControl.setter
+    def AccessControl(self, AccessControl):
+        self._AccessControl = AccessControl
+
+    @property
+    def CcProtection(self):
+        return self._CcProtection
+
+    @CcProtection.setter
+    def CcProtection(self, CcProtection):
+        self._CcProtection = CcProtection
+
+    @property
+    def AntiTamper(self):
+        return self._AntiTamper
+
+    @AntiTamper.setter
+    def AntiTamper(self, AntiTamper):
+        self._AntiTamper = AntiTamper
+
+    @property
+    def AntiLeakage(self):
+        return self._AntiLeakage
+
+    @AntiLeakage.setter
+    def AntiLeakage(self, AntiLeakage):
+        self._AntiLeakage = AntiLeakage
+
+    @property
+    def ApiProtection(self):
+        return self._ApiProtection
+
+    @ApiProtection.setter
+    def ApiProtection(self, ApiProtection):
+        self._ApiProtection = ApiProtection
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._WebSecurity = params.get("WebSecurity")
+        self._AccessControl = params.get("AccessControl")
+        self._CcProtection = params.get("CcProtection")
+        self._AntiTamper = params.get("AntiTamper")
+        self._AntiLeakage = params.get("AntiLeakage")
+        self._ApiProtection = params.get("ApiProtection")
         self._RequestId = params.get("RequestId")
 
 
@@ -15712,6 +16125,9 @@ class InstanceInfo(AbstractModel):
         :param _HybridPkg: 混合云子节点包
 注意：此字段可能返回 null，表示取不到有效值。
         :type HybridPkg: :class:`tencentcloud.waf.v20180125.models.HybridPkg`
+        :param _ApiPkg: API安全资源包
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ApiPkg: :class:`tencentcloud.waf.v20180125.models.ApiPkg`
         """
         self._InstanceId = None
         self._InstanceName = None
@@ -15746,6 +16162,7 @@ class InstanceInfo(AbstractModel):
         self._IsAPISecurityTrial = None
         self._MajorEventsPkg = None
         self._HybridPkg = None
+        self._ApiPkg = None
 
     @property
     def InstanceId(self):
@@ -16011,6 +16428,14 @@ class InstanceInfo(AbstractModel):
     def HybridPkg(self, HybridPkg):
         self._HybridPkg = HybridPkg
 
+    @property
+    def ApiPkg(self):
+        return self._ApiPkg
+
+    @ApiPkg.setter
+    def ApiPkg(self, ApiPkg):
+        self._ApiPkg = ApiPkg
+
 
     def _deserialize(self, params):
         self._InstanceId = params.get("InstanceId")
@@ -16060,6 +16485,9 @@ class InstanceInfo(AbstractModel):
         if params.get("HybridPkg") is not None:
             self._HybridPkg = HybridPkg()
             self._HybridPkg._deserialize(params.get("HybridPkg"))
+        if params.get("ApiPkg") is not None:
+            self._ApiPkg = ApiPkg()
+            self._ApiPkg._deserialize(params.get("ApiPkg"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -19524,6 +19952,105 @@ class ModifyModuleStatusRequest(AbstractModel):
     """ModifyModuleStatus请求参数结构体
 
     """
+
+    def __init__(self):
+        r"""
+        :param _Domain: 需要设置的domain
+        :type Domain: str
+        :param _WebSecurity: WEB 安全模块开关，0或1
+        :type WebSecurity: int
+        :param _AccessControl: 访问控制模块开关，0或者1
+        :type AccessControl: int
+        :param _CcProtection: CC模块开关，0或者1
+        :type CcProtection: int
+        :param _ApiProtection: API安全模块开关，0或者1
+        :type ApiProtection: int
+        :param _AntiTamper: 防篡改模块开关，0或者1
+        :type AntiTamper: int
+        :param _AntiLeakage: 防泄漏模块开关，0或者1
+        :type AntiLeakage: int
+        """
+        self._Domain = None
+        self._WebSecurity = None
+        self._AccessControl = None
+        self._CcProtection = None
+        self._ApiProtection = None
+        self._AntiTamper = None
+        self._AntiLeakage = None
+
+    @property
+    def Domain(self):
+        return self._Domain
+
+    @Domain.setter
+    def Domain(self, Domain):
+        self._Domain = Domain
+
+    @property
+    def WebSecurity(self):
+        return self._WebSecurity
+
+    @WebSecurity.setter
+    def WebSecurity(self, WebSecurity):
+        self._WebSecurity = WebSecurity
+
+    @property
+    def AccessControl(self):
+        return self._AccessControl
+
+    @AccessControl.setter
+    def AccessControl(self, AccessControl):
+        self._AccessControl = AccessControl
+
+    @property
+    def CcProtection(self):
+        return self._CcProtection
+
+    @CcProtection.setter
+    def CcProtection(self, CcProtection):
+        self._CcProtection = CcProtection
+
+    @property
+    def ApiProtection(self):
+        return self._ApiProtection
+
+    @ApiProtection.setter
+    def ApiProtection(self, ApiProtection):
+        self._ApiProtection = ApiProtection
+
+    @property
+    def AntiTamper(self):
+        return self._AntiTamper
+
+    @AntiTamper.setter
+    def AntiTamper(self, AntiTamper):
+        self._AntiTamper = AntiTamper
+
+    @property
+    def AntiLeakage(self):
+        return self._AntiLeakage
+
+    @AntiLeakage.setter
+    def AntiLeakage(self, AntiLeakage):
+        self._AntiLeakage = AntiLeakage
+
+
+    def _deserialize(self, params):
+        self._Domain = params.get("Domain")
+        self._WebSecurity = params.get("WebSecurity")
+        self._AccessControl = params.get("AccessControl")
+        self._CcProtection = params.get("CcProtection")
+        self._ApiProtection = params.get("ApiProtection")
+        self._AntiTamper = params.get("AntiTamper")
+        self._AntiLeakage = params.get("AntiLeakage")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
 
 
 class ModifyModuleStatusResponse(AbstractModel):

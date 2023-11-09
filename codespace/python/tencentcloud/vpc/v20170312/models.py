@@ -3250,7 +3250,8 @@ class BandwidthPackage(AbstractModel):
         :type BandwidthPackageId: str
         :param _NetworkType: 带宽包类型，包括'BGP','SINGLEISP','ANYCAST','SINGLEISP_CMCC','SINGLEISP_CTCC','SINGLEISP_CUCC'
         :type NetworkType: str
-        :param _ChargeType: 带宽包计费类型，包括'TOP5_POSTPAID_BY_MONTH'和'PERCENT95_POSTPAID_BY_MONTH'
+        :param _ChargeType: 带宽包计费类型，包括:<li>'TOP5_POSTPAID_BY_MONTH':按月后付费TOP5计费</li><li> 'PERCENT95_POSTPAID_BY_MONTH':按月后付费月95计费</li><li>'ENHANCED95_POSTPAID_BY_MONTH':按月后付费增强型95计费</li><li>'FIXED_PREPAID_BY_MONTH':包月预付费计费</li><li>‘PEAK_BANDWIDTH_POSTPAID_BY_DAY’: 后付费日结按带宽计费</li>
+
         :type ChargeType: str
         :param _BandwidthPackageName: 带宽包名称
         :type BandwidthPackageName: str
@@ -3265,6 +3266,9 @@ class BandwidthPackage(AbstractModel):
         :param _Egress: 网络出口
 注意：此字段可能返回 null，表示取不到有效值。
         :type Egress: str
+        :param _Deadline: 带宽包到期时间，只有预付费会返回，按量计费返回为null
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Deadline: str
         """
         self._BandwidthPackageId = None
         self._NetworkType = None
@@ -3275,6 +3279,7 @@ class BandwidthPackage(AbstractModel):
         self._ResourceSet = None
         self._Bandwidth = None
         self._Egress = None
+        self._Deadline = None
 
     @property
     def BandwidthPackageId(self):
@@ -3348,6 +3353,14 @@ class BandwidthPackage(AbstractModel):
     def Egress(self, Egress):
         self._Egress = Egress
 
+    @property
+    def Deadline(self):
+        return self._Deadline
+
+    @Deadline.setter
+    def Deadline(self, Deadline):
+        self._Deadline = Deadline
+
 
     def _deserialize(self, params):
         self._BandwidthPackageId = params.get("BandwidthPackageId")
@@ -3364,6 +3377,7 @@ class BandwidthPackage(AbstractModel):
                 self._ResourceSet.append(obj)
         self._Bandwidth = params.get("Bandwidth")
         self._Egress = params.get("Egress")
+        self._Deadline = params.get("Deadline")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -15386,10 +15400,10 @@ class DescribeBandwidthPackagesRequest(AbstractModel):
         :param _BandwidthPackageIds: 带宽包唯一ID列表
         :type BandwidthPackageIds: list of str
         :param _Filters: 每次请求的`Filters`的上限为10。参数不支持同时指定`BandwidthPackageIds`和`Filters`。详细的过滤条件如下：
-<li> bandwidth-package_id - String - 是否必填：否 - （过滤条件）按照带宽包的唯一标识ID过滤。</li>
+<li> bandwidth-package-id - String - 是否必填：否 - （过滤条件）按照带宽包的唯一标识ID过滤。</li>
 <li> bandwidth-package-name - String - 是否必填：否 - （过滤条件）按照 带宽包名称过滤。不支持模糊过滤。</li>
 <li> network-type - String - 是否必填：否 - （过滤条件）按照带宽包的类型过滤。类型包括'HIGH_QUALITY_BGP','BGP','SINGLEISP'和'ANYCAST'。</li>
-<li> charge-type - String - 是否必填：否 - （过滤条件）按照带宽包的计费类型过滤。计费类型包括'TOP5_POSTPAID_BY_MONTH'和'PERCENT95_POSTPAID_BY_MONTH'。</li>
+<li> charge-type - String - 是否必填：否 - （过滤条件）按照带宽包的计费类型过滤。计费类型包括: <li>'TOP5_POSTPAID_BY_MONTH':按月后付费TOP5计费</li><li> 'PERCENT95_POSTPAID_BY_MONTH':按月后付费月95计费</li><li>'ENHANCED95_POSTPAID_BY_MONTH':按月后付费增强型95计费</li><li>'FIXED_PREPAID_BY_MONTH':包月预付费计费</li><li>‘PEAK_BANDWIDTH_POSTPAID_BY_DAY’: 后付费日结按带宽计费</li>
 <li> resource.resource-type - String - 是否必填：否 - （过滤条件）按照带宽包资源类型过滤。资源类型包括'Address'和'LoadBalance'</li>
 <li> resource.resource-id - String - 是否必填：否 - （过滤条件）按照带宽包资源Id过滤。资源Id形如'eip-xxxx','lb-xxxx'</li>
 <li> resource.address-ip - String - 是否必填：否 - （过滤条件）按照带宽包资源Ip过滤。</li>
@@ -34767,10 +34781,13 @@ class ModifyVpnGatewayAttributeRequest(AbstractModel):
         :type VpnGatewayName: str
         :param _InstanceChargeType: VPN网关计费模式，目前只支持预付费（即包年包月）到后付费（即按量计费）的转换。即参数只支持：POSTPAID_BY_HOUR。
         :type InstanceChargeType: str
+        :param _BgpAsn: BGP ASN。ASN取值范围为1- 4294967295，默认值64551，其中139341、45090和58835不可用。
+        :type BgpAsn: int
         """
         self._VpnGatewayId = None
         self._VpnGatewayName = None
         self._InstanceChargeType = None
+        self._BgpAsn = None
 
     @property
     def VpnGatewayId(self):
@@ -34796,11 +34813,20 @@ class ModifyVpnGatewayAttributeRequest(AbstractModel):
     def InstanceChargeType(self, InstanceChargeType):
         self._InstanceChargeType = InstanceChargeType
 
+    @property
+    def BgpAsn(self):
+        return self._BgpAsn
+
+    @BgpAsn.setter
+    def BgpAsn(self, BgpAsn):
+        self._BgpAsn = BgpAsn
+
 
     def _deserialize(self, params):
         self._VpnGatewayId = params.get("VpnGatewayId")
         self._VpnGatewayName = params.get("VpnGatewayName")
         self._InstanceChargeType = params.get("InstanceChargeType")
+        self._BgpAsn = params.get("BgpAsn")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -40072,7 +40098,9 @@ EIP：云服务器的公网IP；
 LOCAL_GATEWAY：本地网关。
         :type GatewayType: str
         :param _GatewayId: 下一跳地址，这里只需要指定不同下一跳类型的网关ID，系统会自动匹配到下一跳地址。
-特殊说明：GatewayType为NORMAL_CVM时，GatewayId填写实例的内网IP。
+特殊说明：
+GatewayType为NORMAL_CVM时，GatewayId填写实例的内网IP。
+GatewayType为EIP时，GatewayId填写0。
         :type GatewayId: str
         :param _RouteId: 路由策略ID。IPv4路由策略ID是有意义的值，IPv6路由策略是无意义的值0。后续建议完全使用字符串唯一ID `RouteItemId`操作路由策略。
 该字段在删除时必填，其他字段无需填写。
@@ -40090,6 +40118,7 @@ CCN：云联网路由，系统默认下发，不可编辑与删除。
         :param _RouteTableId: 路由表实例ID，例如：rtb-azd4dt1c。
         :type RouteTableId: str
         :param _DestinationIpv6CidrBlock: 目的IPv6网段，取值不能在私有网络网段内，例如：2402:4e00:1000:810b::/64。
+注意：此字段可能返回 null，表示取不到有效值。
         :type DestinationIpv6CidrBlock: str
         :param _RouteItemId: 路由唯一策略ID。
         :type RouteItemId: str

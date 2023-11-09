@@ -6855,6 +6855,12 @@ class SeatUserInfo(AbstractModel):
         :param _SkillGroupNameList: 坐席关联的技能组列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type SkillGroupNameList: list of str
+        :param _Role: 1:管理员
+2:质检员
+3:普通座席
+else:自定义角色ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Role: int
         """
         self._Name = None
         self._Mail = None
@@ -6863,6 +6869,7 @@ class SeatUserInfo(AbstractModel):
         self._Nick = None
         self._UserId = None
         self._SkillGroupNameList = None
+        self._Role = None
 
     @property
     def Name(self):
@@ -6920,6 +6927,14 @@ class SeatUserInfo(AbstractModel):
     def SkillGroupNameList(self, SkillGroupNameList):
         self._SkillGroupNameList = SkillGroupNameList
 
+    @property
+    def Role(self):
+        return self._Role
+
+    @Role.setter
+    def Role(self, Role):
+        self._Role = Role
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -6929,6 +6944,7 @@ class SeatUserInfo(AbstractModel):
         self._Nick = params.get("Nick")
         self._UserId = params.get("UserId")
         self._SkillGroupNameList = params.get("SkillGroupNameList")
+        self._Role = params.get("Role")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -7967,6 +7983,9 @@ class TelCdrInfo(AbstractModel):
         :type Duration: int
         :param _RecordURL: 录音信息
         :type RecordURL: str
+        :param _RecordId: 录音 ID
+注意：此字段可能返回 null，表示取不到有效值。
+        :type RecordId: str
         :param _SeatUser: 坐席信息
         :type SeatUser: :class:`tencentcloud.ccc.v20200210.models.SeatUserInfo`
         :param _EndStatus: EndStatus与EndStatusString一一对应，具体枚举如下：
@@ -8011,6 +8030,8 @@ class TelCdrInfo(AbstractModel):
 
 电话呼出	        210	           notInService	不在服务区
 
+电话呼入&呼出	211    clientError    客户端错误
+
         :type EndStatus: int
         :param _SkillGroup: 技能组名称
         :type SkillGroup: str
@@ -8031,7 +8052,7 @@ class TelCdrInfo(AbstractModel):
         :param _IVRKeyPressed: IVR 按键信息 ，e.g. ["1","2","3"]
 注意：此字段可能返回 null，表示取不到有效值。
         :type IVRKeyPressed: list of str
-        :param _HungUpSide: 挂机方 seat 坐席 user 用户
+        :param _HungUpSide: 挂机方 seat 坐席 user 用户 system 系统
 注意：此字段可能返回 null，表示取不到有效值。
         :type HungUpSide: str
         :param _ServeParticipants: 服务参与者列表
@@ -8065,7 +8086,7 @@ class TelCdrInfo(AbstractModel):
 电话呼出               2	              unconnected	未接通
                          
 电话呼出             201            unknown	未知状态
-听
+
 电话呼出            203	    userReject	拒接挂断
 
 电话呼出	          204	    powerOff	关机
@@ -8081,6 +8102,8 @@ class TelCdrInfo(AbstractModel):
 电话呼出         	209	           callerCancel	主叫取消
 
 电话呼出	        210	           notInService	不在服务区
+
+电话呼入&呼出	211    clientError    客户端错误
 
 
 注意：此字段可能返回 null，表示取不到有效值。
@@ -8140,6 +8163,7 @@ class TelCdrInfo(AbstractModel):
         self._Direction = None
         self._Duration = None
         self._RecordURL = None
+        self._RecordId = None
         self._SeatUser = None
         self._EndStatus = None
         self._SkillGroup = None
@@ -8217,6 +8241,14 @@ class TelCdrInfo(AbstractModel):
     @RecordURL.setter
     def RecordURL(self, RecordURL):
         self._RecordURL = RecordURL
+
+    @property
+    def RecordId(self):
+        return self._RecordId
+
+    @RecordId.setter
+    def RecordId(self, RecordId):
+        self._RecordId = RecordId
 
     @property
     def SeatUser(self):
@@ -8462,6 +8494,7 @@ class TelCdrInfo(AbstractModel):
         self._Direction = params.get("Direction")
         self._Duration = params.get("Duration")
         self._RecordURL = params.get("RecordURL")
+        self._RecordId = params.get("RecordId")
         if params.get("SeatUser") is not None:
             self._SeatUser = SeatUserInfo()
             self._SeatUser._deserialize(params.get("SeatUser"))

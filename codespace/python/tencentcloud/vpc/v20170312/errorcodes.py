@@ -596,6 +596,9 @@ RESOURCEINSUFFICIENT = 'ResourceInsufficient'
 # 网段资源不足。
 RESOURCEINSUFFICIENT_CIDRBLOCK = 'ResourceInsufficient.CidrBlock'
 
+# 指定实例类型已售罄。
+RESOURCEINSUFFICIENT_INSTANCE = 'ResourceInsufficient.Instance'
+
 # 子网IP资源不足, 无法分配IP。
 RESOURCEINSUFFICIENT_SUBNET = 'ResourceInsufficient.Subnet'
 
@@ -1081,6 +1084,9 @@ UNSUPPORTEDOPERATION_VPNUNSUPPORTEDBGP = 'UnsupportedOperation.VpnUnsupportedBgp
 
 # 对端网关BGP ASN和已有的通道对端或云上VPN的BGP ASN相同。
 UNSUPPORTEDOPERATION_VPNUNSUPPORTEDBGPASNEQUAL = 'UnsupportedOperation.VpnUnsupportedBgpAsnEqual'
+
+# VPN不支持修改BGP ASN。
+UNSUPPORTEDOPERATION_VPNUNSUPPORTEDMODIFYBGPASN = 'UnsupportedOperation.VpnUnsupportedModifyBgpAsn'
 
 # VPN未配置BGP ASN。
 UNSUPPORTEDOPERATION_VPNUNSUPPORTEDNOTEXISTBGPASN = 'UnsupportedOperation.VpnUnsupportedNotExistBgpAsn'

@@ -441,7 +441,9 @@ class WafClient(AbstractClient):
 
 
     def DeleteDownloadRecord(self, request):
-        """删除访问日志下载记录
+        """废弃接口，无有效调用
+
+        删除访问日志下载记录
 
         :param request: Request instance for DeleteDownloadRecord.
         :type request: :class:`tencentcloud.waf.v20180125.models.DeleteDownloadRecordRequest`
@@ -672,7 +674,9 @@ class WafClient(AbstractClient):
 
 
     def DescribeAntiFakeUrl(self, request):
-        """获取防篡改url
+        """废弃接口
+
+        获取防篡改url
 
         :param request: Request instance for DescribeAntiFakeUrl.
         :type request: :class:`tencentcloud.waf.v20180125.models.DescribeAntiFakeUrlRequest`
@@ -812,9 +816,7 @@ class WafClient(AbstractClient):
 
 
     def DescribeAutoDenyIP(self, request):
-        """接口已废弃
-
-        描述WAF自动封禁IP详情,对齐自动封堵状态
+        """描述WAF自动封禁IP详情,对齐自动封堵状态
 
         :param request: Request instance for DescribeAutoDenyIP.
         :type request: :class:`tencentcloud.waf.v20180125.models.DescribeAutoDenyIPRequest`
@@ -860,7 +862,9 @@ class WafClient(AbstractClient):
 
 
     def DescribeCCRule(self, request):
-        """Waf  CC V2 Query接口
+        """没有在使用。
+
+        Waf  CC V2 Query接口
 
         :param request: Request instance for DescribeCCRule.
         :type request: :class:`tencentcloud.waf.v20180125.models.DescribeCCRuleRequest`
@@ -1356,6 +1360,29 @@ class WafClient(AbstractClient):
             body = self.call("DescribeIpHitItems", params, headers=headers)
             response = json.loads(body)
             model = models.DescribeIpHitItemsResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeModuleStatus(self, request):
+        """查询各个waf基础安全模块的开关状态，看每个模块是否开启
+
+        :param request: Request instance for DescribeModuleStatus.
+        :type request: :class:`tencentcloud.waf.v20180125.models.DescribeModuleStatusRequest`
+        :rtype: :class:`tencentcloud.waf.v20180125.models.DescribeModuleStatusResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeModuleStatus", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeModuleStatusResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:

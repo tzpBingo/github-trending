@@ -256,7 +256,9 @@ class ApproverInfo(AbstractModel):
 <li>   **3** :见证人</li></ul>
 注: `收据场景为白名单功能，使用前请联系对接的客户经理沟通。`
         :type ApproverRole: int
-        :param _ApproverRoleName: 自定义签署人角色名：收款人、开具人、见证人
+        :param _ApproverRoleName: 可以自定义签署人角色名：收款人、开具人、见证人等，长度不能超过20，只能由中文、字母、数字和下划线组成。
+
+注: `如果是用模板发起, 优先使用此处上传的, 如果不传则用模板的配置的`
         :type ApproverRoleName: str
         :param _VerifyChannel: 签署意愿确认渠道，默认为WEIXINAPP:人脸识别
 
@@ -289,7 +291,7 @@ class ApproverInfo(AbstractModel):
 </li></ul>
 注: 
 <ul><li>如果合同流程设置ApproverVerifyType查看合同的校验方式,    则忽略此签署人的查看合同的校验方式</li>
-<li>此字段不可传多个校验方式</li></ul>
+<li>此字段可传多个校验方式</li></ul>
         :type ApproverVerifyTypes: list of int
         :param _ApproverSignTypes: 您可以指定签署方签署合同的认证校验方式，可传递以下值：
 <ul><li>**1**：人脸认证，需进行人脸识别成功后才能签署合同；</li>
@@ -915,6 +917,202 @@ class AutoSignConfig(AbstractModel):
         self._CallbackUrl = params.get("CallbackUrl")
         self._VerifyChannels = params.get("VerifyChannels")
         self._LicenseType = params.get("LicenseType")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class BillUsageDetail(AbstractModel):
+    """用户计费使用情况详情
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FlowId: 合同流程ID，为32位字符串。
+建议开发者妥善保存此流程ID，以便于顺利进行后续操作。
+可登录腾讯电子签控制台，在 "合同"->"合同中心" 中查看某个合同的FlowId(在页面中展示为合同ID)。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FlowId: str
+        :param _OperatorName: 合同经办人名称
+如果有多个经办人用分号隔开。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type OperatorName: str
+        :param _CreateOrganizationName: 发起方组织机构名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CreateOrganizationName: str
+        :param _FlowName: 合同流程的名称（可自定义此名称），长度不能超过200，只能由中文、字母、数字和下划线组成。
+该名称还将用于合同签署完成后的下载文件名。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type FlowName: str
+        :param _Status: 当前合同状态,如下是状态码对应的状态。
+0-还没有发起
+1-等待签署
+2-部分签署 
+3-拒签
+4-已签署 
+5-已过期 
+6-已撤销 
+7-还没有预发起
+8-等待填写
+9-部分填写 
+10-拒填
+11-已解除
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Status: int
+        :param _QuotaType: 套餐类型
+对应关系如下
+CloudEnterprise-企业版合同
+SingleSignature-单方签章
+CloudProve-签署报告
+CloudOnlineSign-腾讯会议在线签约
+ChannelWeCard-微工卡
+SignFlow-合同套餐
+SignFace-签署意愿（人脸识别）
+SignPassword-签署意愿（密码）
+SignSMS-签署意愿（短信）
+PersonalEssAuth-签署人实名（腾讯电子签认证）
+PersonalThirdAuth-签署人实名（信任第三方认证）
+OrgEssAuth-签署企业实名
+FlowNotify-短信通知
+AuthService-企业工商信息查询
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QuotaType: str
+        :param _UseCount: 合同使用量
+注意：此字段可能返回 null，表示取不到有效值。
+        :type UseCount: int
+        :param _CostTime: 消耗的时间戳，格式为Unix标准时间戳（秒）。
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CostTime: int
+        :param _QuotaName: 消耗的套餐名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type QuotaName: str
+        :param _CostType: 消耗类型
+1.扣费 2.撤销返还
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CostType: int
+        :param _Remark: 备注
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Remark: str
+        """
+        self._FlowId = None
+        self._OperatorName = None
+        self._CreateOrganizationName = None
+        self._FlowName = None
+        self._Status = None
+        self._QuotaType = None
+        self._UseCount = None
+        self._CostTime = None
+        self._QuotaName = None
+        self._CostType = None
+        self._Remark = None
+
+    @property
+    def FlowId(self):
+        return self._FlowId
+
+    @FlowId.setter
+    def FlowId(self, FlowId):
+        self._FlowId = FlowId
+
+    @property
+    def OperatorName(self):
+        return self._OperatorName
+
+    @OperatorName.setter
+    def OperatorName(self, OperatorName):
+        self._OperatorName = OperatorName
+
+    @property
+    def CreateOrganizationName(self):
+        return self._CreateOrganizationName
+
+    @CreateOrganizationName.setter
+    def CreateOrganizationName(self, CreateOrganizationName):
+        self._CreateOrganizationName = CreateOrganizationName
+
+    @property
+    def FlowName(self):
+        return self._FlowName
+
+    @FlowName.setter
+    def FlowName(self, FlowName):
+        self._FlowName = FlowName
+
+    @property
+    def Status(self):
+        return self._Status
+
+    @Status.setter
+    def Status(self, Status):
+        self._Status = Status
+
+    @property
+    def QuotaType(self):
+        return self._QuotaType
+
+    @QuotaType.setter
+    def QuotaType(self, QuotaType):
+        self._QuotaType = QuotaType
+
+    @property
+    def UseCount(self):
+        return self._UseCount
+
+    @UseCount.setter
+    def UseCount(self, UseCount):
+        self._UseCount = UseCount
+
+    @property
+    def CostTime(self):
+        return self._CostTime
+
+    @CostTime.setter
+    def CostTime(self, CostTime):
+        self._CostTime = CostTime
+
+    @property
+    def QuotaName(self):
+        return self._QuotaName
+
+    @QuotaName.setter
+    def QuotaName(self, QuotaName):
+        self._QuotaName = QuotaName
+
+    @property
+    def CostType(self):
+        return self._CostType
+
+    @CostType.setter
+    def CostType(self, CostType):
+        self._CostType = CostType
+
+    @property
+    def Remark(self):
+        return self._Remark
+
+    @Remark.setter
+    def Remark(self, Remark):
+        self._Remark = Remark
+
+
+    def _deserialize(self, params):
+        self._FlowId = params.get("FlowId")
+        self._OperatorName = params.get("OperatorName")
+        self._CreateOrganizationName = params.get("CreateOrganizationName")
+        self._FlowName = params.get("FlowName")
+        self._Status = params.get("Status")
+        self._QuotaType = params.get("QuotaType")
+        self._UseCount = params.get("UseCount")
+        self._CostTime = params.get("CostTime")
+        self._QuotaName = params.get("QuotaName")
+        self._CostType = params.get("CostType")
+        self._Remark = params.get("Remark")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -2263,6 +2461,173 @@ class CreateBatchCancelFlowUrlResponse(AbstractModel):
         self._RequestId = params.get("RequestId")
 
 
+class CreateBatchQuickSignUrlRequest(AbstractModel):
+    """CreateBatchQuickSignUrl请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FlowIds: 批量签署的合同流程ID数组。
+注: `在调用此接口时，请确保合同流程均为本企业发起，且合同数量不超过100个。`
+        :type FlowIds: list of str
+        :param _FlowApproverInfo: 批量签署的流程签署人，其中姓名(ApproverName)、参与人类型(ApproverType)必传，手机号(ApproverMobile)和证件信息(ApproverIdCardType、ApproverIdCardNumber)可任选一种或全部传入。
+注:
+`1. ApproverType目前只支持个人类型的签署人。`
+`2. 签署人只能有手写签名和时间类型的签署控件，其他类型的填写控件和签署控件暂时都未支持。`
+`3. 当需要通过短信验证码签署时，手机号ApproverMobile需要与发起合同时填写的用户手机号一致。`
+        :type FlowApproverInfo: :class:`tencentcloud.ess.v20201111.models.FlowCreateApprover`
+        :param _Agent: 代理企业和员工的信息。
+在集团企业代理子企业操作的场景中，需设置此参数。在此情境下，ProxyOrganizationId(子企业的组织ID)为必填项。
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        :param _Operator: 执行本接口操作的员工信息。
+注: `在调用此接口时，请确保指定的员工已获得所需的接口调用权限，并具备接口传入的相应资源的数据权限。`
+        :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
+        :param _JumpUrl: 签署完之后的H5页面的跳转链接，此链接及支持http://和https://，最大长度1000个字符。(建议https协议)
+        :type JumpUrl: str
+        :param _SignatureTypes: 指定批量签署合同的签名类型，可传递以下值：
+<ul><li>**0**：手写签名(默认)</li>
+<li>**1**：OCR楷体</li></ul>
+注：
+<ul><li>默认情况下，签名类型为手写签名</li>
+<li>您可以传递多种值，表示可用多种签名类型。</li></ul>
+        :type SignatureTypes: list of int
+        :param _ApproverSignTypes: 指定批量签署合同的认证校验方式，可传递以下值：
+<ul><li>**1**：人脸认证(默认)，需进行人脸识别成功后才能签署合同</li>
+<li>**3**：运营商三要素，需到运营商处比对手机号实名信息(名字、手机号、证件号)校验一致才能成功进行合同签署。</li></ul>
+注：
+<ul><li>默认情况下，认证校验方式为人脸认证</li>
+<li>您可以传递多种值，表示可用多种认证校验方式。</li></ul>
+        :type ApproverSignTypes: list of int
+        """
+        self._FlowIds = None
+        self._FlowApproverInfo = None
+        self._Agent = None
+        self._Operator = None
+        self._JumpUrl = None
+        self._SignatureTypes = None
+        self._ApproverSignTypes = None
+
+    @property
+    def FlowIds(self):
+        return self._FlowIds
+
+    @FlowIds.setter
+    def FlowIds(self, FlowIds):
+        self._FlowIds = FlowIds
+
+    @property
+    def FlowApproverInfo(self):
+        return self._FlowApproverInfo
+
+    @FlowApproverInfo.setter
+    def FlowApproverInfo(self, FlowApproverInfo):
+        self._FlowApproverInfo = FlowApproverInfo
+
+    @property
+    def Agent(self):
+        return self._Agent
+
+    @Agent.setter
+    def Agent(self, Agent):
+        self._Agent = Agent
+
+    @property
+    def Operator(self):
+        return self._Operator
+
+    @Operator.setter
+    def Operator(self, Operator):
+        self._Operator = Operator
+
+    @property
+    def JumpUrl(self):
+        return self._JumpUrl
+
+    @JumpUrl.setter
+    def JumpUrl(self, JumpUrl):
+        self._JumpUrl = JumpUrl
+
+    @property
+    def SignatureTypes(self):
+        return self._SignatureTypes
+
+    @SignatureTypes.setter
+    def SignatureTypes(self, SignatureTypes):
+        self._SignatureTypes = SignatureTypes
+
+    @property
+    def ApproverSignTypes(self):
+        return self._ApproverSignTypes
+
+    @ApproverSignTypes.setter
+    def ApproverSignTypes(self, ApproverSignTypes):
+        self._ApproverSignTypes = ApproverSignTypes
+
+
+    def _deserialize(self, params):
+        self._FlowIds = params.get("FlowIds")
+        if params.get("FlowApproverInfo") is not None:
+            self._FlowApproverInfo = FlowCreateApprover()
+            self._FlowApproverInfo._deserialize(params.get("FlowApproverInfo"))
+        if params.get("Agent") is not None:
+            self._Agent = Agent()
+            self._Agent._deserialize(params.get("Agent"))
+        if params.get("Operator") is not None:
+            self._Operator = UserInfo()
+            self._Operator._deserialize(params.get("Operator"))
+        self._JumpUrl = params.get("JumpUrl")
+        self._SignatureTypes = params.get("SignatureTypes")
+        self._ApproverSignTypes = params.get("ApproverSignTypes")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CreateBatchQuickSignUrlResponse(AbstractModel):
+    """CreateBatchQuickSignUrl返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _FlowApproverUrlInfo: 签署人签署链接信息
+        :type FlowApproverUrlInfo: :class:`tencentcloud.ess.v20201111.models.FlowApproverUrlInfo`
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._FlowApproverUrlInfo = None
+        self._RequestId = None
+
+    @property
+    def FlowApproverUrlInfo(self):
+        return self._FlowApproverUrlInfo
+
+    @FlowApproverUrlInfo.setter
+    def FlowApproverUrlInfo(self, FlowApproverUrlInfo):
+        self._FlowApproverUrlInfo = FlowApproverUrlInfo
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("FlowApproverUrlInfo") is not None:
+            self._FlowApproverUrlInfo = FlowApproverUrlInfo()
+            self._FlowApproverUrlInfo._deserialize(params.get("FlowApproverUrlInfo"))
+        self._RequestId = params.get("RequestId")
+
+
 class CreateBatchSignUrlRequest(AbstractModel):
     """CreateBatchSignUrl请求参数结构体
 
@@ -3051,12 +3416,10 @@ class CreateExtendedServiceAuthInfosRequest(AbstractModel):
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param _UserIds: 本企业员工的id，需要已实名，正常在职员工
         :type UserIds: list of str
-        :param _ExtendServiceType: 要查询的扩展服务类型。
-默认为空，即查询当前支持的所有扩展服务信息。
-若需查询单个扩展服务的开通情况，请传递相应的值，如下所示：
+        :param _ExtendServiceType: 取值
 <ul><li>OPEN_SERVER_SIGN：企业自动签</li>
+<li>BATCH_SIGN：批量签署</li>
 </ul>
-
         :type ExtendServiceType: str
         :param _Agent: 代理企业和员工的信息。
 在集团企业代理子企业操作的场景中，需设置此参数。在此情境下，ProxyOrganizationId（子企业的组织ID）为必填项。
@@ -6606,10 +6969,13 @@ class CreatePrepareFlowResponse(AbstractModel):
         r"""
         :param _Url: 发起流程的web页面链接，有效期5分钟
         :type Url: str
+        :param _FlowId: 创建的合同id（还未实际发起），每次调用会生成新的id，用户可以记录此字段对应后续页面发起的合同，若在页面上未成功发起，则此字段无效。
+        :type FlowId: str
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
         self._Url = None
+        self._FlowId = None
         self._RequestId = None
 
     @property
@@ -6619,6 +6985,14 @@ class CreatePrepareFlowResponse(AbstractModel):
     @Url.setter
     def Url(self, Url):
         self._Url = Url
+
+    @property
+    def FlowId(self):
+        return self._FlowId
+
+    @FlowId.setter
+    def FlowId(self, FlowId):
+        self._FlowId = FlowId
 
     @property
     def RequestId(self):
@@ -6631,6 +7005,7 @@ class CreatePrepareFlowResponse(AbstractModel):
 
     def _deserialize(self, params):
         self._Url = params.get("Url")
+        self._FlowId = params.get("FlowId")
         self._RequestId = params.get("RequestId")
 
 
@@ -7486,7 +7861,7 @@ class CreateSealRequest(AbstractModel):
         :param _SealType: 电子印章类型 , 可选类型如下: 
 <ul><li>**OFFICIAL**: (默认)公章</li>
 <li>**CONTRACT**: 合同专用章;</li>
-<li>**FINANCE**: 合财务专用章;</li>
+<li>**FINANCE**: 财务专用章;</li>
 <li>**PERSONNEL**: 人事专用章</li>
 </ul>
 注: `同企业下只能有一个公章, 重复创建会报错`
@@ -8336,12 +8711,10 @@ class DeleteExtendedServiceAuthInfosRequest(AbstractModel):
         :type Operator: :class:`tencentcloud.ess.v20201111.models.UserInfo`
         :param _UserIds: 本企业员工的id，需要已实名，正常在职员工
         :type UserIds: list of str
-        :param _ExtendServiceType: 要查询的扩展服务类型。
-默认为空，即查询当前支持的所有扩展服务信息。
-若需查询单个扩展服务的开通情况，请传递相应的值，如下所示：
+        :param _ExtendServiceType: 取值如下所示：
 <ul><li>OPEN_SERVER_SIGN：企业自动签</li>
+<li>BATCH_SIGN：批量签署</li>
 </ul>
-
         :type ExtendServiceType: str
         :param _Agent: 代理企业和员工的信息。
 在集团企业代理子企业操作的场景中，需设置此参数。在此情境下，ProxyOrganizationId（子企业的组织ID）为必填项。
@@ -8972,6 +9345,171 @@ class Department(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class DescribeBillUsageDetailRequest(AbstractModel):
+    """DescribeBillUsageDetail请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _StartTime: 查询开始时间字符串，格式为yyyymmdd,时间跨度不能大于31天
+        :type StartTime: str
+        :param _EndTime: 查询结束时间字符串，格式为yyyymmdd,时间跨度不能大于31天
+        :type EndTime: str
+        :param _Offset: 指定分页返回第几页的数据，如果不传默认返回第一页，页码从 0 开始，即首页为 0
+        :type Offset: int
+        :param _Limit: 指定分页每页返回的数据条数，如果不传默认为 50，单页最大支持 50。
+        :type Limit: int
+        :param _QuotaType: 查询的套餐类型 （选填 ）不传则查询所有套餐；
+对应关系如下
+CloudEnterprise-企业版合同
+SingleSignature-单方签章
+CloudProve-签署报告
+CloudOnlineSign-腾讯会议在线签约
+ChannelWeCard-微工卡
+SignFlow-合同套餐
+SignFace-签署意愿（人脸识别）
+SignPassword-签署意愿（密码）
+SignSMS-签署意愿（短信）
+PersonalEssAuth-签署人实名（腾讯电子签认证）
+PersonalThirdAuth-签署人实名（信任第三方认证）
+OrgEssAuth-签署企业实名
+FlowNotify-短信通知
+AuthService-企业工商信息查询
+        :type QuotaType: str
+        :param _Agent: 代理企业和员工的信息。
+在集团企业代理子企业操作的场景中，需设置此参数。在此情境下，ProxyOrganizationId（子企业的组织ID）为必填项。
+        :type Agent: :class:`tencentcloud.ess.v20201111.models.Agent`
+        """
+        self._StartTime = None
+        self._EndTime = None
+        self._Offset = None
+        self._Limit = None
+        self._QuotaType = None
+        self._Agent = None
+
+    @property
+    def StartTime(self):
+        return self._StartTime
+
+    @StartTime.setter
+    def StartTime(self, StartTime):
+        self._StartTime = StartTime
+
+    @property
+    def EndTime(self):
+        return self._EndTime
+
+    @EndTime.setter
+    def EndTime(self, EndTime):
+        self._EndTime = EndTime
+
+    @property
+    def Offset(self):
+        return self._Offset
+
+    @Offset.setter
+    def Offset(self, Offset):
+        self._Offset = Offset
+
+    @property
+    def Limit(self):
+        return self._Limit
+
+    @Limit.setter
+    def Limit(self, Limit):
+        self._Limit = Limit
+
+    @property
+    def QuotaType(self):
+        return self._QuotaType
+
+    @QuotaType.setter
+    def QuotaType(self, QuotaType):
+        self._QuotaType = QuotaType
+
+    @property
+    def Agent(self):
+        return self._Agent
+
+    @Agent.setter
+    def Agent(self, Agent):
+        self._Agent = Agent
+
+
+    def _deserialize(self, params):
+        self._StartTime = params.get("StartTime")
+        self._EndTime = params.get("EndTime")
+        self._Offset = params.get("Offset")
+        self._Limit = params.get("Limit")
+        self._QuotaType = params.get("QuotaType")
+        if params.get("Agent") is not None:
+            self._Agent = Agent()
+            self._Agent._deserialize(params.get("Agent"))
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBillUsageDetailResponse(AbstractModel):
+    """DescribeBillUsageDetail返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _Total: 总数
+        :type Total: int
+        :param _Details: 消耗详情
+        :type Details: list of BillUsageDetail
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._Total = None
+        self._Details = None
+        self._RequestId = None
+
+    @property
+    def Total(self):
+        return self._Total
+
+    @Total.setter
+    def Total(self, Total):
+        self._Total = Total
+
+    @property
+    def Details(self):
+        return self._Details
+
+    @Details.setter
+    def Details(self, Details):
+        self._Details = Details
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._Total = params.get("Total")
+        if params.get("Details") is not None:
+            self._Details = []
+            for item in params.get("Details"):
+                obj = BillUsageDetail()
+                obj._deserialize(item)
+                self._Details.append(obj)
+        self._RequestId = params.get("RequestId")
 
 
 class DescribeExtendedServiceAuthInfosRequest(AbstractModel):
@@ -10203,6 +10741,7 @@ class DescribeIntegrationEmployeesRequest(AbstractModel):
   <li>Key:**"UserId"**，根据用户ID查询员工，Values为指定的用户ID：**["UserId"]**</li>
   <li>Key:**"UserWeWorkOpenId"**，根据用户企微账号ID查询员工，Values为指定用户的企微账号ID：**["UserWeWorkOpenId"]**</li>
   <li>Key:**"StaffOpenId"**，根据第三方系统用户OpenId查询员工，Values为第三方系统用户OpenId列表：**["OpenId1","OpenId2",...]**</li>
+  <li>Key:**"RoleId"**，根据电子签角色ID查询员工，Values为指定的角色ID，满足其中任意一个角色即可：**["RoleId1","RoleId2",...]**</li>
 </ul>
         :type Filters: list of Filter
         :param _Offset: 指定分页返回第几页的数据，如果不传默认返回第一页。页码从 0 开始，即首页为 0，最大20000。
@@ -12501,30 +13040,32 @@ class FlowApproverDetail(AbstractModel):
 
 
 class FlowApproverUrlInfo(AbstractModel):
-    """签署链接信息
+    """签署链接信息。
 
     """
 
     def __init__(self):
         r"""
-        :param _SignUrl: 签署链接(短链形式呈现)。请注意保密，不要将其外泄给无关用户。
-注: `注意该链接有效期为30分钟`
+        :param _SignUrl: 签署短链接。</br>
+注意:
+- 该链接有效期为**30分钟**，同时需要注意保密，不要外泄给无关用户。
+- 该链接不支持小程序嵌入，仅支持**移动端浏览器**打开。
 注意：此字段可能返回 null，表示取不到有效值。
         :type SignUrl: str
-        :param _ApproverType: 签署参与人类型 
-<ul><li> **1** :个人参与方</li></ul>
-
-注: `现在仅支持个人参与方`
+        :param _ApproverType: 签署人类型。
+- **1**: 个人
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverType: int
-        :param _ApproverName: 签署人姓名
+        :param _ApproverName: 签署人姓名。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverName: str
-        :param _ApproverMobile: 签署人手机号
+        :param _ApproverMobile: 签署人手机号。
 注意：此字段可能返回 null，表示取不到有效值。
         :type ApproverMobile: str
-        :param _LongUrl: 签署链接(长链形式呈现)。请注意保密，不要将其外泄给无关用户。
-注: `注意该链接有效期为30分钟`
+        :param _LongUrl: 签署长链接。</br>
+注意:
+- 该链接有效期为**30分钟**，同时需要注意保密，不要外泄给无关用户。
+- 该链接不支持小程序嵌入，仅支持**移动端浏览器**打开。
 注意：此字段可能返回 null，表示取不到有效值。
         :type LongUrl: str
         """
@@ -12866,7 +13407,7 @@ class FlowCreateApprover(AbstractModel):
 </li></ul>
 注: 
 <ul><li>如果合同流程设置ApproverVerifyType查看合同的校验方式,    则忽略此签署人的查看合同的校验方式</li>
-<li>此字段不可传多个校验方式</li></ul>
+<li>此字段可传多个校验方式</li></ul>
 
 `此参数仅针对文件发起设置生效,模板发起合同签署流程, 请以模板配置为主`
 
@@ -15097,27 +15638,37 @@ class PdfVerifyResult(AbstractModel):
         r"""
         :param _VerifyResult: 验签结果。0-签名域未签名；1-验签成功； 3-验签失败；4-未找到签名域：文件内没有签名域；5-签名值格式不正确。
         :type VerifyResult: int
-        :param _SignPlatform: 签署平台，如果文件是在腾讯电子签平台签署，则返回腾讯电子签，如果文件不在腾讯电子签平台签署，则返回其他平台。
+        :param _SignPlatform: 签署平台
+如果文件是在腾讯电子签平台签署，则为**腾讯电子签**，
+如果文件不在腾讯电子签平台签署，则为**其他平台**。
         :type SignPlatform: str
-        :param _SignerName: 签署人名称
+        :param _SignerName: 申请证书的主体的名字
+
+如果是在腾讯电子签平台签署, 则对应的主体的名字个数如下
+**企业**:  ESS@企业名称@编码
+**个人**: ESS@个人姓名@证件号@808854
+
+如果在其他平台签署的, 主体的名字参考其他平台的说明
         :type SignerName: str
-        :param _SignTime: 签署时间戳，单位秒
+        :param _SignTime: 签署时间的Unix时间戳，单位毫秒
         :type SignTime: int
-        :param _SignAlgorithm: 签名算法
+        :param _SignAlgorithm: 证书签名算法,  如SHA1withRSA等算法
         :type SignAlgorithm: str
-        :param _CertSn: 签名证书序列号
+        :param _CertSn: CA供应商下发给用户的证书编号
+
+注意：`腾讯电子签接入多家CA供应商以提供容灾能力，不同CA下发的证书编号区别较大，但基本都是由数字和字母组成，长度在200以下`。
         :type CertSn: str
-        :param _CertNotBefore: 证书起始时间戳，单位毫秒
+        :param _CertNotBefore: 证书起始时间的Unix时间戳，单位毫秒
         :type CertNotBefore: int
-        :param _CertNotAfter: 证书过期时间戳，单位毫秒
+        :param _CertNotAfter: 证书过期时间的时间戳，单位毫秒
         :type CertNotAfter: int
-        :param _ComponentPosX: 签名域横坐标，单位pt
+        :param _ComponentPosX: 签名域横坐标，单位px
         :type ComponentPosX: float
-        :param _ComponentPosY: 签名域纵坐标，单位pt
+        :param _ComponentPosY: 签名域纵坐标，单位px
         :type ComponentPosY: float
-        :param _ComponentWidth: 签名域宽度，单位pt
+        :param _ComponentWidth: 签名域宽度，单位px
         :type ComponentWidth: float
-        :param _ComponentHeight: 签名域高度，单位pt
+        :param _ComponentHeight: 签名域高度，单位px
         :type ComponentHeight: float
         :param _ComponentPage: 签名域所在页码，1～N
         :type ComponentPage: int

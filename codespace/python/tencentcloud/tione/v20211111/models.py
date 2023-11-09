@@ -4353,6 +4353,53 @@ class CronScaleJob(AbstractModel):
         
 
 
+class CrossTenantENIInfo(AbstractModel):
+    """跨租户弹性网卡下Pod调用信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PrimaryIP: Pod IP
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PrimaryIP: str
+        :param _Port: Pod Port
+注意：此字段可能返回 null，表示取不到有效值。
+        :type Port: str
+        """
+        self._PrimaryIP = None
+        self._Port = None
+
+    @property
+    def PrimaryIP(self):
+        return self._PrimaryIP
+
+    @PrimaryIP.setter
+    def PrimaryIP(self, PrimaryIP):
+        self._PrimaryIP = PrimaryIP
+
+    @property
+    def Port(self):
+        return self._Port
+
+    @Port.setter
+    def Port(self, Port):
+        self._Port = Port
+
+
+    def _deserialize(self, params):
+        self._PrimaryIP = params.get("PrimaryIP")
+        self._Port = params.get("Port")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
 class CustomTrainingData(AbstractModel):
     """自定义指标
 
@@ -6746,6 +6793,94 @@ class DescribeBillingResourceGroupsResponse(AbstractModel):
                 obj = ResourceGroup()
                 obj._deserialize(item)
                 self._ResourceGroupSet.append(obj)
+        self._RequestId = params.get("RequestId")
+
+
+class DescribeBillingResourceInstanceRunningJobsRequest(AbstractModel):
+    """DescribeBillingResourceInstanceRunningJobs请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceGroupId: 资源组id
+        :type ResourceGroupId: str
+        :param _ResourceInstanceId: 资源组节点id
+        :type ResourceInstanceId: str
+        """
+        self._ResourceGroupId = None
+        self._ResourceInstanceId = None
+
+    @property
+    def ResourceGroupId(self):
+        return self._ResourceGroupId
+
+    @ResourceGroupId.setter
+    def ResourceGroupId(self, ResourceGroupId):
+        self._ResourceGroupId = ResourceGroupId
+
+    @property
+    def ResourceInstanceId(self):
+        return self._ResourceInstanceId
+
+    @ResourceInstanceId.setter
+    def ResourceInstanceId(self, ResourceInstanceId):
+        self._ResourceInstanceId = ResourceInstanceId
+
+
+    def _deserialize(self, params):
+        self._ResourceGroupId = params.get("ResourceGroupId")
+        self._ResourceInstanceId = params.get("ResourceInstanceId")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class DescribeBillingResourceInstanceRunningJobsResponse(AbstractModel):
+    """DescribeBillingResourceInstanceRunningJobs返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _ResourceInstanceRunningJobInfos: 资源组节点运行中的任务信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type ResourceInstanceRunningJobInfos: list of ResourceInstanceRunningJobInfo
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._ResourceInstanceRunningJobInfos = None
+        self._RequestId = None
+
+    @property
+    def ResourceInstanceRunningJobInfos(self):
+        return self._ResourceInstanceRunningJobInfos
+
+    @ResourceInstanceRunningJobInfos.setter
+    def ResourceInstanceRunningJobInfos(self, ResourceInstanceRunningJobInfos):
+        self._ResourceInstanceRunningJobInfos = ResourceInstanceRunningJobInfos
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        if params.get("ResourceInstanceRunningJobInfos") is not None:
+            self._ResourceInstanceRunningJobInfos = []
+            for item in params.get("ResourceInstanceRunningJobInfos"):
+                obj = ResourceInstanceRunningJobInfo()
+                obj._deserialize(item)
+                self._ResourceInstanceRunningJobInfos.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -9923,7 +10058,7 @@ class DescribeTrainingTaskPodsResponse(AbstractModel):
         :param _TotalCount: 数量
         :type TotalCount: int
         :param _PodInfoList: pod详细信息
-        :type PodInfoList: :class:`tencentcloud.tione.v20211111.models.PodInfo`
+        :type PodInfoList: list of PodInfo
         :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
         :type RequestId: str
         """
@@ -9969,8 +10104,11 @@ class DescribeTrainingTaskPodsResponse(AbstractModel):
         self._PodNames = params.get("PodNames")
         self._TotalCount = params.get("TotalCount")
         if params.get("PodInfoList") is not None:
-            self._PodInfoList = PodInfo()
-            self._PodInfoList._deserialize(params.get("PodInfoList"))
+            self._PodInfoList = []
+            for item in params.get("PodInfoList"):
+                obj = PodInfo()
+                obj._deserialize(item)
+                self._PodInfoList.append(obj)
         self._RequestId = params.get("RequestId")
 
 
@@ -15014,6 +15152,9 @@ class Pod(AbstractModel):
         :param _ContainerInfos: 容器列表
 注意：此字段可能返回 null，表示取不到有效值。
         :type ContainerInfos: list of Container
+        :param _CrossTenantENIInfo: 容器调用信息
+注意：此字段可能返回 null，表示取不到有效值。
+        :type CrossTenantENIInfo: :class:`tencentcloud.tione.v20211111.models.CrossTenantENIInfo`
         """
         self._Name = None
         self._Uid = None
@@ -15023,6 +15164,7 @@ class Pod(AbstractModel):
         self._CreateTime = None
         self._Containers = None
         self._ContainerInfos = None
+        self._CrossTenantENIInfo = None
 
     @property
     def Name(self):
@@ -15088,6 +15230,14 @@ class Pod(AbstractModel):
     def ContainerInfos(self, ContainerInfos):
         self._ContainerInfos = ContainerInfos
 
+    @property
+    def CrossTenantENIInfo(self):
+        return self._CrossTenantENIInfo
+
+    @CrossTenantENIInfo.setter
+    def CrossTenantENIInfo(self, CrossTenantENIInfo):
+        self._CrossTenantENIInfo = CrossTenantENIInfo
+
 
     def _deserialize(self, params):
         self._Name = params.get("Name")
@@ -15105,6 +15255,9 @@ class Pod(AbstractModel):
                 obj = Container()
                 obj._deserialize(item)
                 self._ContainerInfos.append(obj)
+        if params.get("CrossTenantENIInfo") is not None:
+            self._CrossTenantENIInfo = CrossTenantENIInfo()
+            self._CrossTenantENIInfo._deserialize(params.get("CrossTenantENIInfo"))
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]
@@ -15860,6 +16013,79 @@ RealGpu=100表示实际使用了一张gpu卡, 对应实际的实例机型, 有�
                 obj = GpuDetail()
                 obj._deserialize(item)
                 self._RealGpuDetailSet.append(obj)
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ResourceInstanceRunningJobInfo(AbstractModel):
+    """资源组节点运行任务信息
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _PodName: pod名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type PodName: str
+        :param _TaskType: 任务类型
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskType: str
+        :param _TaskId: 任务id
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskId: str
+        :param _TaskName: 任务自定义名称
+注意：此字段可能返回 null，表示取不到有效值。
+        :type TaskName: str
+        """
+        self._PodName = None
+        self._TaskType = None
+        self._TaskId = None
+        self._TaskName = None
+
+    @property
+    def PodName(self):
+        return self._PodName
+
+    @PodName.setter
+    def PodName(self, PodName):
+        self._PodName = PodName
+
+    @property
+    def TaskType(self):
+        return self._TaskType
+
+    @TaskType.setter
+    def TaskType(self, TaskType):
+        self._TaskType = TaskType
+
+    @property
+    def TaskId(self):
+        return self._TaskId
+
+    @TaskId.setter
+    def TaskId(self, TaskId):
+        self._TaskId = TaskId
+
+    @property
+    def TaskName(self):
+        return self._TaskName
+
+    @TaskName.setter
+    def TaskName(self, TaskName):
+        self._TaskName = TaskName
+
+
+    def _deserialize(self, params):
+        self._PodName = params.get("PodName")
+        self._TaskType = params.get("TaskType")
+        self._TaskId = params.get("TaskId")
+        self._TaskName = params.get("TaskName")
         memeber_set = set(params.keys())
         for name, value in vars(self).items():
             property_name = name[1:]

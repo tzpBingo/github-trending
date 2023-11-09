@@ -153,6 +153,36 @@ class EssClient(AbstractClient):
                 raise TencentCloudSDKException(type(e).__name__, str(e))
 
 
+    def CreateBatchQuickSignUrl(self, request):
+        """该接口用于发起合同后，生成个人用户的批量签署链接, 暂时不支持企业端签署 <br/>
+        `注意：`<br/>
+        `1. 该接口目前仅支持签署人类型是个人签署方的批量签署场景(ApproverType=1)。` <br/>
+        `2. 该接口可生成批量签署链接的C端签署人必须仅有手写签名和时间类型的签署控件，不支持填写控件 。` <br/>
+        `3. 请确保C端签署人在批量签署合同中为待签署状态，如需顺序签署请待前一位参与人签署完成后，再创建该C端用户的签署链接。` <br/>
+        `4. 该签署链接有效期为30分钟，过期后将失效，如需签署可重新创建批量签署链接 。` <br/>
+        `5. 该接口返回的签署链接适用于APP集成的场景，支持APP打开或浏览器直接打开，不支持微信小程序嵌入。`<br/>
+        跳转到小程序的实现，参考微信官方文档(分为<a href="https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html">全屏</a>、<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html">半屏</a>两种方式)，如何配置也可以请参考: <a href="https://qian.tencent.com/developers/company/openwxminiprogram">跳转电子签小程序配置</a>
+
+        :param request: Request instance for CreateBatchQuickSignUrl.
+        :type request: :class:`tencentcloud.ess.v20201111.models.CreateBatchQuickSignUrlRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.CreateBatchQuickSignUrlResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("CreateBatchQuickSignUrl", params, headers=headers)
+            response = json.loads(body)
+            model = models.CreateBatchQuickSignUrlResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
     def CreateBatchSignUrl(self, request):
         """通过此接口，创建小程序批量签署链接，个人/企业员工点击此链接即可跳转小程序进行批量签署。
         请确保生成链接时候的身份信息和签署合同参与方的信息保持一致。
@@ -272,9 +302,10 @@ class EssClient(AbstractClient):
 
 
     def CreateExtendedServiceAuthInfos(self, request):
-        """创建企业扩展服务授权，当前仅支持授权 “企业自动签” 给企业员工。
+        """创建企业扩展服务授权，当前仅支持授权 “企业自动签” 和 “批量签署” 给企业员工。
+        该接口作用和电子签控制台 企业设置-扩展服务-企业自动签署和批量签署授权 两个模块功能相同，可通过该接口授权给企业员工。
 
-        注：支持集团代子企业操作，请联系运营开通此功能。
+        注：“企业自动签授权”支持集团代子企业操作，请联系运营开通此功能。
 
         :param request: Request instance for CreateExtendedServiceAuthInfos.
         :type request: :class:`tencentcloud.ess.v20201111.models.CreateExtendedServiceAuthInfosRequest`
@@ -1050,7 +1081,8 @@ class EssClient(AbstractClient):
 
 
     def DeleteExtendedServiceAuthInfos(self, request):
-        """删除企业扩展服务授权，当前仅支持 “企业自动签” 取消授权。
+        """删除企业扩展服务授权，当前仅支持 “企业自动签” 和“批量签署”  的取消授权。
+        该接口作用和电子签控制台 企业设置-扩展服务-企业自动签署和批量签署授权 两个模块功能相同，可通过该接口取消企业员工授权。
 
         注：支持集团代子企业操作，请联系运营开通此功能。
 
@@ -1161,6 +1193,29 @@ class EssClient(AbstractClient):
             body = self.call("DeleteSealPolicies", params, headers=headers)
             response = json.loads(body)
             model = models.DeleteSealPoliciesResponse()
+            model._deserialize(response["Response"])
+            return model
+        except Exception as e:
+            if isinstance(e, TencentCloudSDKException):
+                raise
+            else:
+                raise TencentCloudSDKException(type(e).__name__, str(e))
+
+
+    def DescribeBillUsageDetail(self, request):
+        """通过此接口（DescribeBillUsageDetail）查询该企业的套餐消耗详情。
+
+        :param request: Request instance for DescribeBillUsageDetail.
+        :type request: :class:`tencentcloud.ess.v20201111.models.DescribeBillUsageDetailRequest`
+        :rtype: :class:`tencentcloud.ess.v20201111.models.DescribeBillUsageDetailResponse`
+
+        """
+        try:
+            params = request._serialize()
+            headers = request.headers
+            body = self.call("DescribeBillUsageDetail", params, headers=headers)
+            response = json.loads(body)
+            model = models.DescribeBillUsageDetailResponse()
             model._deserialize(response["Response"])
             return model
         except Exception as e:
@@ -1330,18 +1385,23 @@ class EssClient(AbstractClient):
 
     def DescribeFlowTemplates(self, request):
         """此接口（DescribeFlowTemplates）用于查询本企业模板列表信息。
-        >  一个模板通常会包含以下结构信息
-        >- 模板基本信息
-        >- 发起方参与信息Promoter、签署参与方 Recipients，后者会在模板发起合同时用于指定参与方
-        >- 填写控件 Components
-        >- 签署控件 SignComponents
-        >- 生成模板的文件基础信息 FileInfos
 
-        当模板较多或模板中的控件较多时，可以通过查询模板接口更方便的获取模板列表，以及每个模板内的控件信息。
 
-        适用场景：
+        **适用场景**
         该接口常用来配合<a href="https://qian.tencent.com/developers/companyApis/startFlows/CreateDocument" target="_blank">模板发起合同-创建电子文档</a>接口，作为创建电子文档的前置接口使用。
         通过此接口查询到模板信息后，再通过调用创建电子文档接口，指定模板ID，指定模板中需要的填写控件内容等，完成电子文档的创建。
+
+        **一个模板通常会包含以下结构信息**
+
+        - 模板模版ID, 模板名字等基本信息
+        - 发起方参与信息Promoter、签署参与方 Recipients，后者会在模板发起合同时用于指定参与方
+        - 发起方和签署方的填写控件 Components
+        - 签署方的签署控件 SignComponents
+
+        ![image](https://dyn.ess.tencent.cn/guide/capi/channel_DescribeTemplates.png)
+
+        模版中各元素的层级关系, 所有的填写控件和签署控件都归属某一个角色(通过控件的ComponentRecipientId来关联)
+        ![image](https://qcloudimg.tencent-cloud.cn/raw/45c638bd93f9c8024763add9ab47c27f.png)
 
         :param request: Request instance for DescribeFlowTemplates.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeFlowTemplatesRequest`
@@ -1411,8 +1471,6 @@ class EssClient(AbstractClient):
 
     def DescribeIntegrationRoles(self, request):
         """此接口（DescribeIntegrationRoles）用于分页查询企业角色列表，列表按照角色创建时间升序排列。
-
-        注：`法人角色是系统保留角色，因此返回列表中不含法人角色。`
 
         :param request: Request instance for DescribeIntegrationRoles.
         :type request: :class:`tencentcloud.ess.v20201111.models.DescribeIntegrationRolesRequest`

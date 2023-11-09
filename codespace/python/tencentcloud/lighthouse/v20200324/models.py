@@ -1204,6 +1204,76 @@ class Bundle(AbstractModel):
         
 
 
+class CancelShareBlueprintAcrossAccountsRequest(AbstractModel):
+    """CancelShareBlueprintAcrossAccounts请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _BlueprintId: 镜像ID, 可以通过[DescribeBlueprints](https://cloud.tencent.com/document/product/1207/47689)接口返回的BlueprintId获取。
+        :type BlueprintId: str
+        :param _AccountIds: 接收共享镜像的账号ID列表。帐号ID不同于QQ号，查询用户帐号ID请查看帐号信息中的帐号ID栏。账号个数取值最大为10。
+        :type AccountIds: list of str
+        """
+        self._BlueprintId = None
+        self._AccountIds = None
+
+    @property
+    def BlueprintId(self):
+        return self._BlueprintId
+
+    @BlueprintId.setter
+    def BlueprintId(self, BlueprintId):
+        self._BlueprintId = BlueprintId
+
+    @property
+    def AccountIds(self):
+        return self._AccountIds
+
+    @AccountIds.setter
+    def AccountIds(self, AccountIds):
+        self._AccountIds = AccountIds
+
+
+    def _deserialize(self, params):
+        self._BlueprintId = params.get("BlueprintId")
+        self._AccountIds = params.get("AccountIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class CancelShareBlueprintAcrossAccountsResponse(AbstractModel):
+    """CancelShareBlueprintAcrossAccounts返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
+
+
 class CcnAttachedInstance(AbstractModel):
     """云联网关联的实例列表。
 
@@ -2083,7 +2153,7 @@ false（默认）：发送正常请求，通过检查后直接创建实例
         :type Containers: list of DockerContainerConfiguration
         :param _AutoVoucher: 是否自动使用代金券。默认不使用。
         :type AutoVoucher: bool
-        :param _FirewallTemplateId: 防火墙模版ID。若不指定该参数，则使用默认防火墙策略。
+        :param _FirewallTemplateId: 防火墙模板ID。若不指定该参数，则使用默认防火墙策略。
         :type FirewallTemplateId: str
         :param _Tags: 标签键和标签值。
 如果指定多个标签，则会为指定资源同时创建并绑定该多个标签。
@@ -5375,13 +5445,13 @@ class DescribeFirewallTemplatesRequest(AbstractModel):
         :param _TemplateIds: 防火墙模板ID列表。
         :type TemplateIds: list of str
         :param _Filters: 过滤器列表。
-<li>template-id</li>按照【防火墙模版所属的ID】进行过滤。
+<li>template-id</li>按照【防火墙模板所属的ID】进行过滤。
 类型：String
 必选：否
-<li>template-name</li>按照【防火墙模版所属的名称】进行过滤。
+<li>template-name</li>按照【防火墙模板所属的名称】进行过滤。
 类型：String
 必选：否
-<li>template-type</li>按照【防火墙模版的类型】进行过滤。
+<li>template-type</li>按照【防火墙模板的类型】进行过滤。
 类型：String
 必选：否
 每次请求的 Filters 的上限为 10，Filter.Values 的上限为 100。参数不支持同时指定 TemplateIds 和 Filters。
@@ -13956,6 +14026,76 @@ class SceneInfo(AbstractModel):
         if len(memeber_set) > 0:
             warnings.warn("%s fileds are useless." % ",".join(memeber_set))
         
+
+
+class ShareBlueprintAcrossAccountsRequest(AbstractModel):
+    """ShareBlueprintAcrossAccounts请求参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _BlueprintId: 镜像ID, 可以通过[DescribeBlueprints](https://cloud.tencent.com/document/product/1207/47689)接口返回的BlueprintId获取。
+        :type BlueprintId: str
+        :param _AccountIds: 接收共享镜像的账号Id列表。帐号ID不同于QQ号，查询用户帐号ID请查看帐号信息中的帐号ID栏。账号个数取值最大为10。
+        :type AccountIds: list of str
+        """
+        self._BlueprintId = None
+        self._AccountIds = None
+
+    @property
+    def BlueprintId(self):
+        return self._BlueprintId
+
+    @BlueprintId.setter
+    def BlueprintId(self, BlueprintId):
+        self._BlueprintId = BlueprintId
+
+    @property
+    def AccountIds(self):
+        return self._AccountIds
+
+    @AccountIds.setter
+    def AccountIds(self, AccountIds):
+        self._AccountIds = AccountIds
+
+
+    def _deserialize(self, params):
+        self._BlueprintId = params.get("BlueprintId")
+        self._AccountIds = params.get("AccountIds")
+        memeber_set = set(params.keys())
+        for name, value in vars(self).items():
+            property_name = name[1:]
+            if property_name in memeber_set:
+                memeber_set.remove(property_name)
+        if len(memeber_set) > 0:
+            warnings.warn("%s fileds are useless." % ",".join(memeber_set))
+        
+
+
+class ShareBlueprintAcrossAccountsResponse(AbstractModel):
+    """ShareBlueprintAcrossAccounts返回参数结构体
+
+    """
+
+    def __init__(self):
+        r"""
+        :param _RequestId: 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+        :type RequestId: str
+        """
+        self._RequestId = None
+
+    @property
+    def RequestId(self):
+        return self._RequestId
+
+    @RequestId.setter
+    def RequestId(self, RequestId):
+        self._RequestId = RequestId
+
+
+    def _deserialize(self, params):
+        self._RequestId = params.get("RequestId")
 
 
 class Snapshot(AbstractModel):
